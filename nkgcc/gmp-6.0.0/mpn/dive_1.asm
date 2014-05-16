@@ -1,0 +1,1 @@
+../mpn/x86/dive_1.asm

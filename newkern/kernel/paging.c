@@ -1,0 +1,95 @@
+/**
+ * kernel/paging.c
+ *
+ * Part of P-OS kernel.
+ *
+ * Written by Peter Bosch <peterbosc@gmail.com>
+ *
+ * Changelog:
+ * 30-03-2014 - Created
+ */
+
+#include <stddef.h>
+
+#include "kernel/paging.h"
+#include "kernel/physmm.h"
+#include "kernel/heapmm.h"
+#include "kernel/exception.h"
+#include "kernel/earlycon.h"
+#include "kernel/process.h"
+page_dir_t *paging_active_dir;
+
+size_t heapmm_request_core ( void *address, size_t size )
+{	
+	size_t size_counter;
+	physaddr_t frame;
+	if (paging_active_dir == NULL)
+		return 0;
+
+	//debugcon_printf("[0x%x] %i morecore \n", address, size);
+	for (size_counter = 0; size_counter < size; size_counter += PHYSMM_PAGE_SIZE) {
+		frame = physmm_alloc_frame();
+		if (frame == PHYSMM_NO_FRAME){
+			debugcon_aputs(" KHEAP:: OUT OF MEM !!!!");
+			earlycon_aputs(" KHEAP:: OUT OF MEM !!!!");
+			break;
+		}
+		paging_map(address, frame, PAGING_PAGE_FLAG_RW);
+		paging_tag(address, PAGING_PAGE_TAG_KERNEL_DATA);
+		address = (void *) ( ((uintptr_t) address) + ((uintptr_t) PHYSMM_PAGE_SIZE) );
+	}
+	return size_counter;
+}
+
+void paging_handle_out_of_memory()
+{
+	earlycon_printf("OOM NOH\n");
+}
+
+void paging_handle_fault(void *virt_addr, void * instr_ptr, void *state, size_t state_size, int present, int write, int user)
+{
+	uintptr_t addr = (uintptr_t) virt_addr;
+	physaddr_t phys_addr;
+	//earlycon_printf("\n PF: 0x%x at IP:0x%x\n", virt_addr, instr_ptr);
+	//debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+	/* Handle page fault here */
+	if (user && (addr > 0xC0000000)) {
+		//TODO: Dispatch exception, usermode program tried to access kernel space
+		//debugcon_printf("umode violation!");
+		debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+		exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
+	}
+	if (!present) {
+		if ((addr >= 0xBFFF0000) && (addr < 0xBFFFB000)) {
+			/* Task stack area, add more stack */
+			virt_addr = (void *)(addr & ~PHYSMM_PAGE_ADDRESS_MASK);
+			phys_addr = physmm_alloc_frame();		
+			if (phys_addr == PHYSMM_NO_FRAME) {
+				paging_handle_out_of_memory();
+				phys_addr = physmm_alloc_frame();
+			}
+			//TODO: Assess potential for race conditions
+			paging_map(virt_addr, phys_addr, PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
+			paging_tag(virt_addr, PAGING_PAGE_TAG_USER_DATA);		
+		} else if ((addr >= 0xE0000000) && (addr < 0xFFC00000)) {
+			/* Kernel heap, check whether we have previously swapped out this page */
+			//TODO: Swapping, for now: PANIC!!!
+			//TODO: PANIC!
+		} else if (addr < 0xC0000000){
+			/* Application space page fault */
+			//TODO: Check for dynamic libraries, mmapped files and swapped out pages
+			//TODO: If no fix was found, dispatch exception
+			if (!procvmm_handle_fault(virt_addr)){
+				debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+				exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
+			}
+		} else {
+			exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
+			debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+		}
+	} else if (write) {
+		//TODO: Copy on write, 
+		debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+		exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
+	}
+}

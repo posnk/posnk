@@ -1,0 +1,1 @@
+#undef CONFIG_HUSH_MODE_X

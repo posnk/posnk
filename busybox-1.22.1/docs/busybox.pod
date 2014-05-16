@@ -1,0 +1,808 @@
+# vi: set sw=4 ts=4:
+
+=head1 NAME
+
+BusyBox - The Swiss Army Knife of Embedded Linux
+
+=head1 SYNTAX
+
+ busybox <applet> [arguments...]  # or
+
+ <applet> [arguments...]	  # if symlinked
+
+=head1 DESCRIPTION
+
+BusyBox combines tiny versions of many common UNIX utilities into a single
+small executable. It provides minimalist replacements for most of the utilities
+you usually find in GNU coreutils, util-linux, etc. The utilities in BusyBox
+generally have fewer options than their full-featured GNU cousins; however, the
+options that are included provide the expected functionality and behave very
+much like their GNU counterparts.
+
+BusyBox has been written with size-optimization and limited resources in mind.
+It is also extremely modular so you can easily include or exclude commands (or
+features) at compile time. This makes it easy to customize your embedded
+systems. To create a working system, just add /dev, /etc, and a Linux kernel.
+BusyBox provides a fairly complete POSIX environment for any small or embedded
+system.
+
+BusyBox is extremely configurable.  This allows you to include only the
+components you need, thereby reducing binary size. Run 'make config' or 'make
+menuconfig' to select the functionality that you wish to enable.  Then run
+'make' to compile BusyBox using your configuration.
+
+After the compile has finished, you should use 'make install' to install
+BusyBox. This will install the 'bin/busybox' binary, in the target directory
+specified by CONFIG_PREFIX. CONFIG_PREFIX can be set when configuring BusyBox,
+or you can specify an alternative location at install time (i.e., with a
+command line like 'make CONFIG_PREFIX=/tmp/foo install'). If you enabled
+any applet installation scheme (either as symlinks or hardlinks), these will
+also be installed in the location pointed to by CONFIG_PREFIX.
+
+=head1 USAGE
+
+BusyBox is a multi-call binary.  A multi-call binary is an executable program
+that performs the same job as more than one utility program.  That means there
+is just a single BusyBox binary, but that single binary acts like a large
+number of utilities.  This allows BusyBox to be smaller since all the built-in
+utility programs (we call them applets) can share code for many common
+operations.
+
+You can also invoke BusyBox by issuing a command as an argument on the
+command line.  For example, entering
+
+	/bin/busybox ls
+
+will also cause BusyBox to behave as 'ls'.
+
+Of course, adding '/bin/busybox' into every command would be painful.  So most
+people will invoke BusyBox using links to the BusyBox binary.
+
+For example, entering
+
+	ln -s /bin/busybox ls
+	./ls
+
+will cause BusyBox to behave as 'ls' (if the 'ls' command has been compiled
+into BusyBox).  Generally speaking, you should never need to make all these
+links yourself, as the BusyBox build system will do this for you when you run
+the 'make install' command.
+
+If you invoke BusyBox with no arguments, it will provide you with a list of the
+applets that have been compiled into your BusyBox binary.
+
+=head1 COMMON OPTIONS
+
+Most BusyBox applets support the B<--help> argument to provide a terse runtime
+description of their behavior.  If the CONFIG_FEATURE_VERBOSE_USAGE option has
+been enabled, more detailed usage information will also be available.
+
+=head1 COMMANDS
+
+Currently available applets include:
+
+	basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
+	echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
+	od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
+	tail, tar, touch, true, tty, wc, whoami, yes
+
+=head1 COMMAND DESCRIPTIONS
+
+=over 4
+
+=item B<basename>
+
+basename FILE [SUFFIX]
+
+Strip directory path and .SUFFIX from FILE
+
+
+=item B<bzip2>
+
+bzip2 [OPTIONS] [FILE]...
+
+Compress FILEs (or stdin) with bzip2 algorithm
+
+	-1..9	Compression level
+	-d	Decompress
+	-c	Write to stdout
+	-f	Force
+
+=item B<cal>
+
+cal [-jy] [[MONTH] YEAR]
+
+Display a calendar
+
+	-j	Use julian dates
+	-y	Display the entire year
+
+=item B<cat>
+
+cat [FILE]...
+
+Concatenate FILEs and print them to stdout
+
+=item B<chmod>
+
+chmod [-R] MODE[,MODE]... FILE...
+
+Each MODE is one or more of the letters ugoa, one of the
+symbols +-= and one or more of the letters rwxst
+
+	-R	Recurse
+
+=item B<chown>
+
+chown [-RhLHP]... OWNER[<.|:>[GROUP]] FILE...
+
+Change the owner and/or group of each FILE to OWNER and/or GROUP
+
+	-R	Recurse
+	-h	Affect symlinks instead of symlink targets
+	-L	Traverse all symlinks to directories
+	-H	Traverse symlinks on command line only
+	-P	Don't traverse symlinks (default)
+
+=item B<clear>
+
+clear 
+
+Clear screen
+
+=item B<cp>
+
+cp [OPTIONS] SOURCE... DEST
+
+Copy SOURCE(s) to DEST
+
+	-a	Same as -dpR
+	-R,-r	Recurse
+	-d,-P	Preserve symlinks (default if -R)
+	-L	Follow all symlinks
+	-H	Follow symlinks on command line
+	-p	Preserve file attributes if possible
+	-f	Overwrite
+	-i	Prompt before overwrite
+	-l,-s	Create (sym)links
+
+=item B<cpio>
+
+cpio [-dmvu] [-F FILE] [-H newc] [-tio] [-p DIR] [EXTR_FILE]...
+
+Extract or list files from a cpio archive, or
+create an archive (-o) or copy files (-p) using file list on stdin
+
+Main operation mode:
+
+	-t	List
+	-i	Extract EXTR_FILEs (or all)
+	-o	Create (requires -H newc)
+	-p DIR	Copy files to DIR
+	-d	Make leading directories
+	-m	Preserve mtime
+	-v	Verbose
+	-u	Overwrite
+	-F FILE	Input (-t,-i,-p) or output (-o) file
+	-H newc	Archive format
+
+=item B<dpkg>
+
+dpkg [-ilCPru] [-F OPT] PACKAGE
+
+Install, remove and manage Debian packages
+
+	-i		Install the package
+	-l		List of installed packages
+	-C		Configure an unpackaged package
+	-P		Purge all files of a package
+	-r		Remove all but the configuration files for a package
+	-u		Unpack a package, but don't configure it
+	-F depends	Ignore dependency problems
+	-F confnew	Overwrite existing config files when installing
+	-F confold	Keep old config files when installing
+
+=item B<echo>
+
+echo [-neE] [ARG]...
+
+Print the specified ARGs to stdout
+
+	-n	Suppress trailing newline
+	-e	Interpret backslash escapes (i.e., \t=tab)
+	-E	Don't interpret backslash escapes (default)
+
+=item B<ed>
+
+ed
+
+=item B<env>
+
+env [-iu] [-] [name=value]... [PROG ARGS]
+
+Print the current environment or run PROG after setting up
+the specified environment
+
+	-, -i	Start with an empty environment
+	-u	Remove variable from the environment
+
+=item B<expr>
+
+expr EXPRESSION
+
+Print the value of EXPRESSION to stdout
+
+EXPRESSION may be:
+
+	ARG1 | ARG2	ARG1 if it is neither null nor 0, otherwise ARG2
+	ARG1 & ARG2	ARG1 if neither argument is null or 0, otherwise 0
+	ARG1 < ARG2	1 if ARG1 is less than ARG2, else 0. Similarly:
+	ARG1 <= ARG2
+	ARG1 = ARG2
+	ARG1 != ARG2
+	ARG1 >= ARG2
+	ARG1 > ARG2
+	ARG1 + ARG2	Sum of ARG1 and ARG2. Similarly:
+	ARG1 - ARG2
+	ARG1 * ARG2
+	ARG1 / ARG2
+	ARG1 % ARG2
+	STRING : REGEXP		Anchored pattern match of REGEXP in STRING
+	match STRING REGEXP	Same as STRING : REGEXP
+	substr STRING POS LENGTH Substring of STRING, POS counted from 1
+	index STRING CHARS	Index in STRING where any CHARS is found, or 0
+	length STRING		Length of STRING
+	quote TOKEN		Interpret TOKEN as a string, even if
+				it is a keyword like 'match' or an
+				operator like '/'
+	(EXPRESSION)		Value of EXPRESSION
+
+Beware that many operators need to be escaped or quoted for shells.
+Comparisons are arithmetic if both ARGs are numbers, else
+lexicographical. Pattern matches return the string matched between
+\( and \) or null; if \( and \) are not used, they return the number
+of characters matched or 0.
+
+=item B<false>
+
+false 
+
+Return an exit code of FALSE (1)
+
+=item B<gzip>
+
+gzip [-cfd] [FILE]...
+
+Compress FILEs (or stdin)
+
+	-d	Decompress
+	-c	Write to stdout
+	-f	Force
+
+=item B<id>
+
+id [OPTIONS] [USER]
+
+Print information about USER or the current user
+
+	-u	User ID
+	-g	Group ID
+	-G	Supplementary group IDs
+	-n	Print names instead of numbers
+	-r	Print real ID instead of effective ID
+
+=item B<kill>
+
+kill [-l] [-SIG] PID...
+
+Send a signal (default: TERM) to given PIDs
+
+	-l	List all signal names and numbers
+
+=item B<ln>
+
+ln [OPTIONS] TARGET... LINK|DIR
+
+Create a link LINK or DIR/TARGET to the specified TARGET(s)
+
+	-s	Make symlinks instead of hardlinks
+	-f	Remove existing destinations
+	-n	Don't dereference symlinks - treat like normal file
+	-b	Make a backup of the target (if exists) before link operation
+	-S suf	Use suffix instead of ~ when making backup files
+	-T	2nd arg must be a DIR
+	-v	Verbose
+
+=item B<ls>
+
+ls [-1AaCxdLHRFplinsehrSXvctu] [-w WIDTH] [FILE]...
+
+List directory contents
+
+	-1	One column output
+	-a	Include entries which start with .
+	-A	Like -a, but exclude . and ..
+	-C	List by columns
+	-x	List by lines
+	-d	List directory entries instead of contents
+	-L	Follow symlinks
+	-H	Follow symlinks on command line
+	-R	Recurse
+	-p	Append / to dir entries
+	-F	Append indicator (one of */=@|) to entries
+	-l	Long listing format
+	-i	List inode numbers
+	-n	List numeric UIDs and GIDs instead of names
+	-s	List allocated blocks
+	-e	List full date and time
+	-h	List sizes in human readable format (1K 243M 2G)
+	-r	Sort in reverse order
+	-S	Sort by size
+	-X	Sort by extension
+	-v	Sort by version
+	-c	With -l: sort by ctime
+	-t	With -l: sort by mtime
+	-u	With -l: sort by atime
+	-w N	Assume the terminal is N columns wide
+
+=item B<mkdir>
+
+mkdir [OPTIONS] DIRECTORY...
+
+Create DIRECTORY
+
+	-m MODE	Mode
+	-p	No error if exists; make parent directories as needed
+
+=item B<mknod>
+
+mknod [-m MODE] NAME TYPE MAJOR MINOR
+
+Create a special file (block, character, or pipe)
+
+	-m MODE	Creation mode (default a=rw)
+TYPE:
+	b	Block device
+	c or u	Character device
+	p	Named pipe (MAJOR and MINOR are ignored)
+
+=item B<od>
+
+od [-aBbcDdeFfHhIiLlOovXx] [FILE]
+
+Print FILE (or stdin) unambiguously, as octal bytes by default
+
+=item B<printenv>
+
+printenv [VARIABLE]...
+
+Print environment VARIABLEs.
+If no VARIABLE specified, print all.
+
+=item B<pwd>
+
+pwd 
+
+Print the full filename of the current working directory
+
+=item B<readlink>
+
+readlink FILE
+
+Display the value of a symlink
+
+=item B<seq>
+
+seq [-w] [-s SEP] [FIRST [INC]] LAST
+
+Print numbers from FIRST to LAST, in steps of INC.
+FIRST, INC default to 1.
+
+	-w	Pad to last with leading zeros
+	-s SEP	String separator
+
+=item B<setsid>
+
+setsid PROG ARGS
+
+Run PROG in a new session. PROG will have no controlling terminal
+and will not be affected by keyboard signals (Ctrl-C etc).
+See setsid(2) for details.
+
+=item B<split>
+
+split [OPTIONS] [INPUT [PREFIX]]
+
+	-b N[k|m]	Split by N (kilo|mega)bytes
+	-l N		Split by N lines
+	-a N		Use N letters as suffix
+
+=item B<strings>
+
+strings [-afo] [-n LEN] [FILE]...
+
+Display printable strings in a binary file
+
+	-a	Scan whole file (default)
+	-f	Precede strings with filenames
+	-n LEN	At least LEN characters form a string (default 4)
+	-o	Precede strings with decimal offsets
+
+=item B<stty>
+
+stty [-a|g] [-F DEVICE] [SETTING]...
+
+Without arguments, prints baud rate, line discipline,
+and deviations from stty sane
+
+	-F DEVICE	Open device instead of stdin
+	-a		Print all current settings in human-readable form
+	-g		Print in stty-readable form
+	[SETTING]	See manpage
+
+=item B<tail>
+
+tail [OPTIONS] [FILE]...
+
+Print last 10 lines of each FILE (or stdin) to stdout.
+With more than one FILE, precede each with a filename header.
+
+	-f		Print data as file grows
+	-s SECONDS	Wait SECONDS between reads with -f
+	-n N[kbm]	Print last N lines
+	-n +N[kbm]	Start on Nth line and print the rest
+	-c [+]N[kbm]	Print last N bytes
+	-q		Never print headers
+	-v		Always print headers
+
+N may be suffixed by k (x1024), b (x512), or m (x1024^2).
+
+=item B<tar>
+
+tar -[cxtzhmvO] [-X FILE] [-T FILE] [-f TARFILE] [-C DIR] [FILE]...
+
+Create, extract, or list files from a tar file
+
+Operation:
+
+	c	Create
+	x	Extract
+	t	List
+	f	Name of TARFILE ('-' for stdin/out)
+	C	Change to DIR before operation
+	v	Verbose
+	z	(De)compress using gzip
+	O	Extract to stdout
+	h	Follow symlinks
+	m	Don't restore mtime
+	X	File with names to exclude
+	T	File with names to include
+
+=item B<touch>
+
+touch [-c] FILE...
+
+Update the last-modified date on the given FILE[s]
+
+	-c	Don't create files
+
+=item B<true>
+
+true 
+
+Return an exit code of TRUE (0)
+
+=item B<tty>
+
+tty 
+
+Print file name of stdin's terminal
+
+=item B<wc>
+
+wc [-clwL] [FILE]...
+
+Count lines, words, and bytes for each FILE (or stdin)
+
+	-c	Count bytes
+	-l	Count newlines
+	-w	Count words
+	-L	Print longest line length
+
+=item B<whoami>
+
+whoami 
+
+Print the user name associated with the current effective user id
+
+=item B<yes>
+
+yes [STRING]
+
+Repeatedly output a line with STRING, or 'y'
+
+=back
+
+=head1 LIBC NSS
+
+GNU Libc (glibc) uses the Name Service Switch (NSS) to configure the behavior
+of the C library for the local environment, and to configure how it reads
+system data, such as passwords and group information.  This is implemented
+using an /etc/nsswitch.conf configuration file, and using one or more of the
+/lib/libnss_* libraries.  BusyBox tries to avoid using any libc calls that make
+use of NSS.  Some applets however, such as login and su, will use libc functions
+that require NSS.
+
+If you enable CONFIG_USE_BB_PWD_GRP, BusyBox will use internal functions to
+directly access the /etc/passwd, /etc/group, and /etc/shadow files without
+using NSS.  This may allow you to run your system without the need for
+installing any of the NSS configuration files and libraries.
+
+When used with glibc, the BusyBox 'networking' applets will similarly require
+that you install at least some of the glibc NSS stuff (in particular,
+/etc/nsswitch.conf, /lib/libnss_dns*, /lib/libnss_files*, and /lib/libresolv*).
+
+Shameless Plug: As an alternative, one could use a C library such as uClibc.  In
+addition to making your system significantly smaller, uClibc does not require the
+use of any NSS support files or libraries.
+
+=head1 MAINTAINER
+
+Denis Vlasenko <vda.linux@googlemail.com>
+
+=head1 AUTHORS
+
+The following people have contributed code to BusyBox whether they know it or
+not.  If you have written code included in BusyBox, you should probably be
+listed here so you can obtain your bit of eternal glory.  If you should be
+listed here, or the description of what you have done needs more detail, or is
+incorrect, please send in an update.
+
+
+=for html <br>
+
+Emanuele Aina <emanuele.aina@tiscali.it>
+    run-parts
+
+=for html <br>
+
+Erik Andersen <andersen@codepoet.org>
+
+    Tons of new stuff, major rewrite of most of the
+    core apps, tons of new apps as noted in header files.
+    Lots of tedious effort writing these boring docs that
+    nobody is going to actually read.
+
+=for html <br>
+
+Laurence Anderson <l.d.anderson@warwick.ac.uk>
+
+    rpm2cpio, unzip, get_header_cpio, read_gz interface, rpm
+
+=for html <br>
+
+Jeff Angielski <jeff@theptrgroup.com>
+
+    ftpput, ftpget
+
+=for html <br>
+
+Edward Betts <edward@debian.org>
+
+    expr, hostid, logname, whoami
+
+=for html <br>
+
+John Beppu <beppu@codepoet.org>
+
+    du, nslookup, sort
+
+=for html <br>
+
+Brian Candler <B.Candler@pobox.com>
+
+    tiny-ls(ls)
+
+=for html <br>
+
+Randolph Chung <tausq@debian.org>
+
+    fbset, ping, hostname
+
+=for html <br>
+
+Dave Cinege <dcinege@psychosis.com>
+
+    more(v2), makedevs, dutmp, modularization, auto links file,
+    various fixes, Linux Router Project maintenance
+
+=for html <br>
+
+Jordan Crouse <jordan@cosmicpenguin.net>
+
+    ipcalc
+
+=for html <br>
+
+Magnus Damm <damm@opensource.se>
+
+    tftp client insmod powerpc support
+
+=for html <br>
+
+Larry Doolittle <ldoolitt@recycle.lbl.gov>
+
+    pristine source directory compilation, lots of patches and fixes.
+
+=for html <br>
+
+Glenn Engel <glenne@engel.org>
+
+    httpd
+
+=for html <br>
+
+Gennady Feldman <gfeldman@gena01.com>
+
+    Sysklogd (single threaded syslogd, IPC Circular buffer support,
+    logread), various fixes.
+
+=for html <br>
+
+Karl M. Hegbloom <karlheg@debian.org>
+
+    cp_mv.c, the test suite, various fixes to utility.c, &c.
+
+=for html <br>
+
+Daniel Jacobowitz <dan@debian.org>
+
+    mktemp.c
+
+=for html <br>
+
+Matt Kraai <kraai@alumni.cmu.edu>
+
+    documentation, bugfixes, test suite
+
+=for html <br>
+
+Stephan Linz <linz@li-pro.net>
+
+    ipcalc, Red Hat equivalence
+
+=for html <br>
+
+John Lombardo <john@deltanet.com>
+
+    tr
+
+=for html <br>
+
+Glenn McGrath <bug1@iinet.net.au>
+
+    Common unarchiving code and unarchiving applets, ifupdown, ftpgetput,
+    nameif, sed, patch, fold, install, uudecode.
+    Various bugfixes, review and apply numerous patches.
+
+=for html <br>
+
+Manuel Novoa III <mjn3@codepoet.org>
+
+    cat, head, mkfifo, mknod, rmdir, sleep, tee, tty, uniq, usleep, wc, yes,
+    mesg, vconfig, make_directory, parse_mode, dirname, mode_string,
+    get_last_path_component, simplify_path, and a number trivial libbb routines
+
+    also bug fixes, partial rewrites, and size optimizations in
+    ash, basename, cal, cmp, cp, df, du, echo, env, ln, logname, md5sum, mkdir,
+    mv, realpath, rm, sort, tail, touch, uname, watch, arith, human_readable,
+    interface, dutmp, ifconfig, route
+
+=for html <br>
+
+Vladimir Oleynik <dzo@simtreas.ru>
+
+    cmdedit; xargs(current), httpd(current);
+    ports: ash, crond, fdisk, inetd, stty, traceroute, top;
+    locale, various fixes
+    and irreconcilable critic of everything not perfect.
+
+=for html <br>
+
+Bruce Perens <bruce@pixar.com>
+
+    Original author of BusyBox in 1995, 1996. Some of his code can
+    still be found hiding here and there...
+
+=for html <br>
+
+Tim Riker <Tim@Rikers.org>
+
+    bug fixes, member of fan club
+
+=for html <br>
+
+Kent Robotti <robotti@metconnect.com>
+
+    reset, tons and tons of bug reports and patches.
+
+=for html <br>
+
+Chip Rosenthal <chip@unicom.com>, <crosenth@covad.com>
+
+    wget - Contributed by permission of Covad Communications
+
+=for html <br>
+
+Pavel Roskin <proski@gnu.org>
+
+    Lots of bugs fixes and patches.
+
+=for html <br>
+
+Gyepi Sam <gyepi@praxis-sw.com>
+
+    Remote logging feature for syslogd
+
+=for html <br>
+
+Linus Torvalds <torvalds@transmeta.com>
+
+    mkswap, fsck.minix, mkfs.minix
+
+=for html <br>
+
+Mark Whitley <markw@codepoet.org>
+
+    grep, sed, cut, xargs(previous),
+    style-guide, new-applet-HOWTO, bug fixes, etc.
+
+=for html <br>
+
+Charles P. Wright <cpwright@villagenet.com>
+
+    gzip, mini-netcat(nc)
+
+=for html <br>
+
+Enrique Zanardi <ezanardi@ull.es>
+
+    tarcat (since removed), loadkmap, various fixes, Debian maintenance
+
+=for html <br>
+
+Tito Ragusa <farmatito@tiscali.it>
+
+    devfsd and size optimizations in strings, openvt and deallocvt.
+
+=for html <br>
+
+Paul Fox <pgf@foxharp.boston.ma.us>
+
+    vi editing mode for ash, various other patches/fixes
+
+=for html <br>
+
+Roberto A. Foglietta <me@roberto.foglietta.name>
+
+    port: dnsd
+
+=for html <br>
+
+Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+
+    misc
+
+=for html <br>
+
+Mike Frysinger <vapier@gentoo.org>
+
+    initial e2fsprogs, printenv, setarch, sum, misc
+
+=for html <br>
+
+Jie Zhang <jie.zhang@analog.com>
+
+    fixed two bugs in msh and hush (exitcode of killed processes)
+
+=cut

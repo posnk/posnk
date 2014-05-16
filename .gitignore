@@ -1,0 +1,42 @@
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.bin
+
+# Images
+*.iso
+
+vmpos
+
+*.tar
+*~
+
+initrd_gcc/
+initrd/
+
+build-*/
+cross-*/
+
+syscall_list.txt
+
+

@@ -1,0 +1,1 @@
+/* Script for ld -Ur: link w/out relocation, do create constructors */

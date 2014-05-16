@@ -1,0 +1,1 @@
+#undef CONFIG_SH_MATH_SUPPORT

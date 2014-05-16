@@ -1,0 +1,1 @@
+#define CONFIG_CROSS_COMPILER_PREFIX "i386-pc-posnk-"
