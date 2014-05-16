@@ -1,0 +1,9 @@
+Mixed licenses, see subdirectories for information.
+
+posnk original code is NOT public domain, although a license is still to be selected, this means you are not allowed to use 
+this code as if it was yours, you are however granted permission to study it and use it for non-commercial purposes.
+
+All third-party code is under it's original license, the included products include:
+* gcc
+* GNU binutils
+* RedHat newlib
