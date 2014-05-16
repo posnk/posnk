@@ -30,7 +30,7 @@ vmpos
 
 *.tar
 *~
-
+gcc_posnk/
 initrd_gcc/
 initrd/
 
