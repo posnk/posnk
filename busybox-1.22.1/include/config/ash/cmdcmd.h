@@ -1,1 +1,1 @@
-#undef CONFIG_ASH_CMDCMD
+#define CONFIG_ASH_CMDCMD 1

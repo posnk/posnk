@@ -1,62 +1,13 @@
-cmd_shell/ash.o := i386-pc-posnk-gcc -Wp,-MD,shell/.ash.o.d   -std=gnu99 -Iinclude -Ilibbb  -include include/autoconf.h -D_GNU_SOURCE -DNDEBUG  -D"BB_VER=KBUILD_STR(1.22.1)" -DBB_BT=AUTOCONF_TIMESTAMP  -Wall -Wshadow -Wwrite-strings -Wundef -Wstrict-prototypes -Wunused -Wunused-parameter -Wunused-function -Wunused-value -Wmissing-prototypes -Wmissing-declarations -Wno-format-security -Wdeclaration-after-statement -Wold-style-definition -fno-builtin-strlen -finline-limit=0 -fomit-frame-pointer -ffunction-sections -fdata-sections -fno-guess-branch-probability -funsigned-char -static-libgcc -falign-functions=1 -falign-jumps=1 -falign-labels=1 -falign-loops=1 -fno-unwind-tables -fno-asynchronous-unwind-tables -Os  -march=i386 -mpreferred-stack-boundary=2    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(ash)"  -D"KBUILD_MODNAME=KBUILD_STR(ash)" -c -o shell/ash.o shell/ash.c
+cmd_shell/math.o := i386-pc-posnk-gcc -Wp,-MD,shell/.math.o.d   -std=gnu99 -Iinclude -Ilibbb  -include include/autoconf.h -D_GNU_SOURCE -DNDEBUG  -D"BB_VER=KBUILD_STR(1.22.1)" -DBB_BT=AUTOCONF_TIMESTAMP  -Wall -Wshadow -Wwrite-strings -Wundef -Wstrict-prototypes -Wunused -Wunused-parameter -Wunused-function -Wunused-value -Wmissing-prototypes -Wmissing-declarations -Wno-format-security -Wdeclaration-after-statement -Wold-style-definition -fno-builtin-strlen -finline-limit=0 -fomit-frame-pointer -ffunction-sections -fdata-sections -fno-guess-branch-probability -funsigned-char -static-libgcc -falign-functions=1 -falign-jumps=1 -falign-labels=1 -falign-loops=1 -fno-unwind-tables -fno-asynchronous-unwind-tables -Os  -march=i386 -mpreferred-stack-boundary=2    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(math)"  -D"KBUILD_MODNAME=KBUILD_STR(math)" -c -o shell/math.o shell/math.c
 
-deps_shell/ash.o := \
-  shell/ash.c \
-    $(wildcard include/config/ash/job/control.h) \
-    $(wildcard include/config/sh/math/support.h) \
-    $(wildcard include/config/ash/random/support.h) \
-    $(wildcard include/config/feature/sh/standalone.h) \
-    $(wildcard include/config/ash.h) \
-    $(wildcard include/config/feature/sh/is/ash.h) \
-    $(wildcard include/config/feature/bash/is/ash.h) \
-    $(wildcard include/config/ash/bash/compat.h) \
-    $(wildcard include/config/ash/optimize/for/size.h) \
-    $(wildcard include/config/ash/alias.h) \
-    $(wildcard include/config/ash/getopts.h) \
-    $(wildcard include/config/locale/support.h) \
-    $(wildcard include/config/ash/mail.h) \
-    $(wildcard include/config/feature/editing/savehistory.h) \
-    $(wildcard include/config/feature/editing.h) \
-    $(wildcard include/config/feature/editing/fancy/prompt.h) \
-    $(wildcard include/config/ash/expand/prmt.h) \
-    $(wildcard include/config/feature/editing/max/len.h) \
-    $(wildcard include/config/ash/cmdcmd.h) \
-    $(wildcard include/config/feature/sh/extra/quiet.h) \
-    $(wildcard include/config/feature/editing/vi.h) \
-    $(wildcard include/config/ash/builtin/echo.h) \
-    $(wildcard include/config/ash/builtin/printf.h) \
-    $(wildcard include/config/ash/builtin/test.h) \
-    $(wildcard include/config/feature/sh/nofork.h) \
-    $(wildcard include/config/ash/idle/timeout.h) \
-    $(wildcard include/config/feature/tab/completion.h) \
-    $(wildcard include/config/feature/editing/save/on/exit.h) \
-    $(wildcard include/config/feature/sh/histfilesize.h) \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/paths.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/setjmp.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/_ansi.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/newlib.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/config.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/ieeefp.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/features.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/setjmp.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/fnmatch.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/cdefs.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/_default_types.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/include/stddef.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/times.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/_ansi.h \
-  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/types.h \
-  include/busybox.h \
-    $(wildcard include/config/feature/suid.h) \
-    $(wildcard include/config/feature/prefer/applets.h) \
-    $(wildcard include/config/feature/installer.h) \
-    $(wildcard include/config/build/libbusybox.h) \
-    $(wildcard include/config/feature/shared/busybox.h) \
+deps_shell/math.o := \
+  shell/math.c \
   include/libbb.h \
     $(wildcard include/config/feature/shadowpasswds.h) \
     $(wildcard include/config/use/bb/shadow.h) \
     $(wildcard include/config/selinux.h) \
     $(wildcard include/config/feature/utmp.h) \
+    $(wildcard include/config/locale/support.h) \
     $(wildcard include/config/use/bb/pwd/grp.h) \
     $(wildcard include/config/lfs.h) \
     $(wildcard include/config/feature/buffers/go/on/stack.h) \
@@ -68,6 +19,7 @@ deps_shell/ash.o := \
     $(wildcard include/config/feature/seamless/gz.h) \
     $(wildcard include/config/feature/seamless/z.h) \
     $(wildcard include/config/feature/check/names.h) \
+    $(wildcard include/config/feature/prefer/applets.h) \
     $(wildcard include/config/long/opts.h) \
     $(wildcard include/config/feature/getopt/long.h) \
     $(wildcard include/config/feature/pidfile.h) \
@@ -88,8 +40,13 @@ deps_shell/ash.o := \
     $(wildcard include/config/feature/adduser/to/group.h) \
     $(wildcard include/config/feature/del/user/from/group.h) \
     $(wildcard include/config/ioctl/hex2str/error.h) \
+    $(wildcard include/config/feature/editing.h) \
     $(wildcard include/config/feature/editing/history.h) \
+    $(wildcard include/config/feature/editing/savehistory.h) \
+    $(wildcard include/config/feature/tab/completion.h) \
     $(wildcard include/config/feature/username/completion.h) \
+    $(wildcard include/config/feature/editing/vi.h) \
+    $(wildcard include/config/feature/editing/save/on/exit.h) \
     $(wildcard include/config/pmap.h) \
     $(wildcard include/config/feature/show/threads.h) \
     $(wildcard include/config/feature/ps/additional/columns.h) \
@@ -111,14 +68,23 @@ deps_shell/ash.o := \
     $(wildcard include/config/nommu.h) \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/include-fixed/limits.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/stdint.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/_default_types.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/features.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/include/stdbool.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/unistd.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/unistd.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/_ansi.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/newlib.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/config.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/ieeefp.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/types.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/_types.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/_types.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/lock.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/include/stddef.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/types.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/ctype.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/_ansi.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/dirent.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/dirent.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/errno.h \
@@ -131,6 +97,8 @@ deps_shell/ash.o := \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/time.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/time.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/inttypes.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/setjmp.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/setjmp.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/signal.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/signal.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/stdio.h \
@@ -140,6 +108,7 @@ deps_shell/ash.o := \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/machine/stdlib.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/alloca.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/string.h \
+  /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/cdefs.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/string.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/libgen.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/sys/ioctl.h \
@@ -154,22 +123,9 @@ deps_shell/ash.o := \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/pwd.h \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/grp.h \
   include/xatonum.h \
-  include/applet_metadata.h \
-    $(wildcard include/config/install/no/usr.h) \
-  include/unicode.h \
-    $(wildcard include/config/unicode/using/locale.h) \
-    $(wildcard include/config/last/supported/wchar.h) \
-    $(wildcard include/config/unicode/combining/wchars.h) \
-    $(wildcard include/config/unicode/wide/wchars.h) \
-    $(wildcard include/config/unicode/bidi/support.h) \
-    $(wildcard include/config/feature/check/unicode/in/env.h) \
-    $(wildcard include/config/unicode/neutral/table.h) \
-  shell/shell_common.h \
   shell/math.h \
     $(wildcard include/config/sh/math/support/64.h) \
-  shell/random.h \
-  include/NUM_APPLETS.h \
 
-shell/ash.o: $(deps_shell/ash.o)
+shell/math.o: $(deps_shell/math.o)
 
-$(deps_shell/ash.o):
+$(deps_shell/math.o):

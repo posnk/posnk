@@ -16,6 +16,8 @@
 #include "kernel/pipe.h"
 #include "kernel/permissions.h"
 #include "kernel/device.h"
+#include "kernel/process.h"
+#include "kernel/signals.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/errno.h>
@@ -176,6 +178,8 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			st = pipe_read(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
 			if (st != 0) {
 				syscall_errno = st;
+				if (st == EPIPE)
+					process_send_signal(scheduler_current_task, SIGPIPE);
 				return (read_count == 0) ? ((ssize_t)-1) : (ssize_t) read_count; 
 			}
 			return (ssize_t) read_count;
@@ -218,6 +222,8 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 			semaphore_up(ptr->info->lock);
 			st = pipe_write(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
 			if (st != 0) {
+				if (st == EPIPE)
+					process_send_signal(scheduler_current_task, SIGPIPE);
 				syscall_errno = st;
 				return (read_count == 0) ? -1 : (ssize_t) read_count; 
 			}

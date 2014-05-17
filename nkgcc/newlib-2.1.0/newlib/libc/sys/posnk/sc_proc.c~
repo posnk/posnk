@@ -103,7 +103,7 @@ _DEFUN (getuid, (),
 }
 
 pid_t
-_DEFUN (getpgid, (),
+_DEFUN (getpgrp, (),
         _NOARGS)
 {
    int a[] = {0,0,0,0};
@@ -165,7 +165,10 @@ _DEFUN (setpgrp, (),
    return (int) nk_do_syscall(SYS_SETPGRP, a, b); 
 }
 
-
+int killpg(int pgrp, int sig)
+{
+	return kill(-pgrp, sig);
+}
 
 int getgroups(int size, gid_t list[])
 {
@@ -181,6 +184,18 @@ pid_t wait3(int *status, int options,
                    struct rusage *rusage)
 {
 	return waitpid(-1,status,options);
+}
+
+#include <signal.h>
+
+int sigaction(int signum, const struct sigaction *act,
+                     struct sigaction *oldact)
+{
+	return 0;
+}
+
+int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)
+{
 }
 
 unsigned int alarm(unsigned int seconds)
@@ -235,3 +250,11 @@ _DEFUN (times, (buf),
 int clearenv(){
 	return 0;
 }
+
+int getgrouplist(const char *user, gid_t group,
+                        gid_t *groups, int *ngroups)
+{
+	*ngroups = 0;
+	return *ngroups;
+}
+

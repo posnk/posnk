@@ -76,12 +76,17 @@ COMMON OPTIONS
 COMMANDS
     Currently available applets include:
 
-            basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
+            ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
             echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
             od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
             tail, tar, touch, true, tty, wc, whoami, yes
 
 COMMAND DESCRIPTIONS
+    ash ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE
+        [ARGS]]
+
+        Unix shell interpreter
+
     basename
         basename FILE [SUFFIX]
 

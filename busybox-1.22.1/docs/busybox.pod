@@ -81,7 +81,7 @@ been enabled, more detailed usage information will also be available.
 
 Currently available applets include:
 
-	basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
+	ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
 	echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
 	od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
 	tail, tar, touch, true, tty, wc, whoami, yes
@@ -89,6 +89,12 @@ Currently available applets include:
 =head1 COMMAND DESCRIPTIONS
 
 =over 4
+
+=item B<ash>
+
+ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]
+
+Unix shell interpreter
 
 =item B<basename>
 

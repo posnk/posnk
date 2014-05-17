@@ -87,7 +87,41 @@ int builtin_ls(char *argv[])
 }
 
 int main(int argc, char *argv[], char *envp[]){
-    execlp("/busybox", "ash", "/boot.sh");
+    char buffer[BUFFER_SIZE];
+    char *args[ARR_SIZE];
+
+    int ret_status;
+    size_t nargs;
+    pid_t pid;
+    
+    while(1){
+        printf("$ ");
+        fgets(buffer, BUFFER_SIZE, stdin);
+        parse_args(buffer, args, ARR_SIZE, &nargs); 
+
+        if (nargs==0) continue;
+        if (!strcmp(args[0], "exit" )) 
+		exit(0);
+	else if (!strcmp(args[0], "cd" )) 
+		builtin_cd(args);
+	else if (!strcmp(args[0], "export" )) 
+		builtin_export(args);
+	else if (!strcmp(args[0], "ls" )) 
+		builtin_ls(args);
+	else {
+		pid = fork();
+		if (pid){
+		    pid = wait(&ret_status);
+			if (WIFSIGNALED(ret_status))
+			    printf("%s: %s\n", args[0], strsignal(WTERMSIG(ret_status)));
+		} else {
+		    if( execvp(args[0], args)) {
+		        puts(strerror(errno));
+		        exit(127);
+		    }
+		}
+	}
+    }    
     return 0;
 }
 

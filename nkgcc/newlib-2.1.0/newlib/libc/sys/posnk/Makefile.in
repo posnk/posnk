@@ -70,10 +70,12 @@ ARFLAGS = cru
 lib_a_AR = $(AR) $(ARFLAGS)
 @MAY_SUPPLY_SYSCALLS_TRUE@am__DEPENDENCIES_1 = $(lpfx)posnk_sc.o \
 @MAY_SUPPLY_SYSCALLS_TRUE@	$(lpfx)sc_proc.o $(lpfx)sc_file.o \
-@MAY_SUPPLY_SYSCALLS_TRUE@	$(lpfx)sysconf.o $(lpfx)termios.o
+@MAY_SUPPLY_SYSCALLS_TRUE@	$(lpfx)sysconf.o $(lpfx)termios.o \
+@MAY_SUPPLY_SYSCALLS_TRUE@	$(lpfx)cfspeed.o
 am_lib_a_OBJECTS = lib_a-posnk_sc.$(OBJEXT) lib_a-sc_proc.$(OBJEXT) \
 	lib_a-sc_file.$(OBJEXT) lib_a-termios.$(OBJEXT) \
-	lib_a-sysconf.$(OBJEXT) lib_a-crt0.$(OBJEXT)
+	lib_a-sysconf.$(OBJEXT) lib_a-crt0.$(OBJEXT) \
+	lib_a-cfspeed.$(OBJEXT)
 lib_a_OBJECTS = $(am_lib_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp =
@@ -200,8 +202,8 @@ INCLUDES = $(NEWLIB_CFLAGS) $(CROSS_CFLAGS) $(TARGET_CFLAGS)
 AM_CCASFLAGS = $(INCLUDES)
 noinst_LIBRARIES = lib.a
 @MAY_SUPPLY_SYSCALLS_FALSE@extra_objs = 
-@MAY_SUPPLY_SYSCALLS_TRUE@extra_objs = $(lpfx)posnk_sc.o $(lpfx)sc_proc.o $(lpfx)sc_file.o $(lpfx)sysconf.o $(lpfx)termios.o
-lib_a_SOURCES = posnk_sc.c sc_proc.c sc_file.c termios.c sysconf.c crt0.S
+@MAY_SUPPLY_SYSCALLS_TRUE@extra_objs = $(lpfx)posnk_sc.o $(lpfx)sc_proc.o $(lpfx)sc_file.o $(lpfx)sysconf.o $(lpfx)termios.o $(lpfx)cfspeed.o
+lib_a_SOURCES = posnk_sc.c sc_proc.c sc_file.c termios.c sysconf.c crt0.S cfspeed.c
 lib_a_LIBADD = $(extra_objs)
 lib_a_DEPENDENCIES = $(extra_objs)
 lib_a_CCASFLAGS = $(AM_CCASFLAGS)
@@ -307,6 +309,12 @@ lib_a-sysconf.o: sysconf.c
 
 lib_a-sysconf.obj: sysconf.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-sysconf.obj `if test -f 'sysconf.c'; then $(CYGPATH_W) 'sysconf.c'; else $(CYGPATH_W) '$(srcdir)/sysconf.c'; fi`
+
+lib_a-cfspeed.o: cfspeed.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-cfspeed.o `test -f 'cfspeed.c' || echo '$(srcdir)/'`cfspeed.c
+
+lib_a-cfspeed.obj: cfspeed.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lib_a_CFLAGS) $(CFLAGS) -c -o lib_a-cfspeed.obj `if test -f 'cfspeed.c'; then $(CYGPATH_W) 'cfspeed.c'; else $(CYGPATH_W) '$(srcdir)/cfspeed.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
