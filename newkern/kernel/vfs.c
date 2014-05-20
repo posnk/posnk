@@ -137,6 +137,7 @@ int vfs_int_write(inode_t * inode, void * buffer, off_t file_offset, off_t count
 int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block)
 {
 	int status;
+	void *zbuffer;
 	if (!inode)
 		return EINVAL;
 	inode = vfs_effective_inode(inode);
@@ -152,9 +153,13 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 				if (file_offset > inode->size) {
 					/* Writing starts past EOF */
 					//TODO: Zero-pad gap
-					semaphore_up(inode->lock);
-					(*read_size) = 0;
-					return 0;					
+					//semaphore_up(inode->lock);
+					//(*read_size) = 0;
+					zbuffer = heapmm_alloc(file_offset - inode->size);
+					memset(zbuffer, 0, file_offset - inode->size);
+					vfs_int_write(inode, zbuffer, inode->size, (off_t)file_offset - inode->size);
+					heapmm_free(zbuffer,file_offset - inode->size);
+					//return 0;					
 				}
 				inode->size = (file_offset + ((off_t)count)); //TODO: Verify that size fits...
 			}				

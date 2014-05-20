@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "BUSYBOX 1"
-.TH BUSYBOX 1 "2014-05-17" "version 1.22.1" "busybox"
+.TH BUSYBOX 1 "2014-05-19" "version 1.22.1" "busybox"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -210,11 +210,12 @@ been enabled, more detailed usage information will also be available.
 .IX Header "COMMANDS"
 Currently available applets include:
 .PP
-.Vb 4
-\&        ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
-\&        echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
-\&        od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
-\&        tail, tar, touch, true, tty, wc, whoami, yes
+.Vb 5
+\&        ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
+\&        clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
+\&        gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
+\&        setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
+\&        uncompress, unzip, wc, whoami, yes, zcat
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -228,6 +229,26 @@ Unix shell interpreter
 basename \s-1FILE\s0 [\s-1SUFFIX\s0]
 .Sp
 Strip directory path and .SUFFIX from \s-1FILE\s0
+.IP "\fBbash\fR" 4
+.IX Item "bash"
+bash [\-/+OPTIONS] [\-/+o \s-1OPT\s0]... [\-c '\s-1SCRIPT\s0' [\s-1ARG0\s0 [\s-1ARGS\s0]] / \s-1FILE\s0 [\s-1ARGS\s0]]
+.Sp
+Unix shell interpreter
+.IP "\fBbunzip2\fR" 4
+.IX Item "bunzip2"
+bunzip2 [\-cf] [\s-1FILE\s0]...
+.Sp
+Decompress FILEs (or stdin)
+.Sp
+.Vb 2
+\&        \-c      Write to stdout
+\&        \-f      Force
+.Ve
+.IP "\fBbzcat\fR" 4
+.IX Item "bzcat"
+bzcat [\s-1FILE\s0]...
+.Sp
+Decompress to stdout
 .IP "\fBbzip2\fR" 4
 .IX Item "bzip2"
 bzip2 [\s-1OPTIONS\s0] [\s-1FILE\s0]...
@@ -328,15 +349,15 @@ dpkg [\-ilCPru] [\-F \s-1OPT\s0] \s-1PACKAGE\s0
 Install, remove and manage Debian packages
 .Sp
 .Vb 9
-\&        \-i              Install the package
-\&        \-l              List of installed packages
-\&        \-C              Configure an unpackaged package
-\&        \-P              Purge all files of a package
-\&        \-r              Remove all but the configuration files for a package
-\&        \-u              Unpack a package, but don\*(Aqt configure it
-\&        \-F depends      Ignore dependency problems
-\&        \-F confnew      Overwrite existing config files when installing
-\&        \-F confold      Keep old config files when installing
+\&        \-i,\-\-install    Install the package
+\&        \-l,\-\-list       List of installed packages
+\&        \-\-configure     Configure an unpackaged package
+\&        \-P,\-\-purge      Purge all files of a package
+\&        \-r,\-\-remove     Remove all but the configuration files for a package
+\&        \-\-unpack        Unpack a package, but don\*(Aqt configure it
+\&        \-\-force\-depends Ignore dependency problems
+\&        \-\-force\-confnew Overwrite existing config files when installing
+\&        \-\-force\-confold Keep old config files when installing
 .Ve
 .IP "\fBecho\fR" 4
 .IX Item "echo"
@@ -406,6 +427,30 @@ of characters matched or 0.
 false
 .Sp
 Return an exit code of \s-1FALSE\s0 (1)
+.IP "\fBgetopt\fR" 4
+.IX Item "getopt"
+getopt [\s-1OPTIONS\s0] [\-\-] \s-1OPTSTRING\s0 \s-1PARAMS\s0
+.Sp
+.Vb 7
+\&        \-n,\-\-name=PROGNAME              The name under which errors are reported
+\&        \-o,\-\-options=OPTSTRING          Short options to recognize
+\&        \-q,\-\-quiet                      No error messages on unrecognized options
+\&        \-Q,\-\-quiet\-output               No normal output
+\&        \-s,\-\-shell=SHELL                Set shell quoting conventions
+\&        \-T,\-\-test                       Version test (exits with 4)
+\&        \-u,\-\-unquoted                   Don\*(Aqt quote output
+.Ve
+.IP "\fBgunzip\fR" 4
+.IX Item "gunzip"
+gunzip [\-cft] [\s-1FILE\s0]...
+.Sp
+Decompress FILEs (or stdin)
+.Sp
+.Vb 3
+\&        \-c      Write to stdout
+\&        \-f      Force
+\&        \-t      Test file integrity
+.Ve
 .IP "\fBgzip\fR" 4
 .IX Item "gzip"
 gzip [\-cfd] [\s-1FILE\s0]...
@@ -486,6 +531,7 @@ List directory contents
 \&        \-t      With \-l: sort by mtime
 \&        \-u      With \-l: sort by atime
 \&        \-w N    Assume the terminal is N columns wide
+\&        \-\-color[={always,never,auto}]   Control coloring
 .Ve
 .IP "\fBmkdir\fR" 4
 .IX Item "mkdir"
@@ -510,6 +556,11 @@ Create a special file (block, character, or pipe)
 \&        c or u  Character device
 \&        p       Named pipe (MAJOR and MINOR are ignored)
 .Ve
+.IP "\fBmore\fR" 4
+.IX Item "more"
+more [\s-1FILE\s0]...
+.Sp
+View \s-1FILE\s0 (or stdin) one screenful at a time
 .IP "\fBod\fR" 4
 .IX Item "od"
 od [\-aBbcDdeFfHhIiLlOovXx] [\s-1FILE\s0]
@@ -526,11 +577,6 @@ If no \s-1VARIABLE\s0 specified, print all.
 pwd
 .Sp
 Print the full filename of the current working directory
-.IP "\fBreadlink\fR" 4
-.IX Item "readlink"
-readlink \s-1FILE\s0
-.Sp
-Display the value of a symlink
 .IP "\fBseq\fR" 4
 .IX Item "seq"
 seq [\-w] [\-s \s-1SEP\s0] [\s-1FIRST\s0 [\s-1INC\s0]] \s-1LAST\s0
@@ -549,6 +595,11 @@ setsid \s-1PROG\s0 \s-1ARGS\s0
 Run \s-1PROG\s0 in a new session. \s-1PROG\s0 will have no controlling terminal
 and will not be affected by keyboard signals (Ctrl-C etc).
 See \fIsetsid\fR\|(2) for details.
+.IP "\fBsh\fR" 4
+.IX Item "sh"
+sh [\-/+OPTIONS] [\-/+o \s-1OPT\s0]... [\-c '\s-1SCRIPT\s0' [\s-1ARG0\s0 [\s-1ARGS\s0]] / \s-1FILE\s0 [\s-1ARGS\s0]]
+.Sp
+Unix shell interpreter
 .IP "\fBsplit\fR" 4
 .IX Item "split"
 split [\s-1OPTIONS\s0] [\s-1INPUT\s0 [\s-1PREFIX\s0]]
@@ -609,7 +660,7 @@ Create, extract, or list files from a tar file
 .Sp
 Operation:
 .Sp
-.Vb 12
+.Vb 10
 \&        c       Create
 \&        x       Extract
 \&        t       List
@@ -620,6 +671,7 @@ Operation:
 \&        O       Extract to stdout
 \&        h       Follow symlinks
 \&        m       Don\*(Aqt restore mtime
+\&        exclude File to exclude
 \&        X       File with names to exclude
 \&        T       File with names to include
 .Ve
@@ -642,6 +694,31 @@ Return an exit code of \s-1TRUE\s0 (0)
 tty
 .Sp
 Print file name of stdin's terminal
+.IP "\fBuncompress\fR" 4
+.IX Item "uncompress"
+uncompress [\-cf] [\s-1FILE\s0]...
+.Sp
+Decompress .Z file[s]
+.Sp
+.Vb 2
+\&        \-c      Write to stdout
+\&        \-f      Overwrite
+.Ve
+.IP "\fBunzip\fR" 4
+.IX Item "unzip"
+unzip [\-lnopq] FILE[.zip] [\s-1FILE\s0]... [\-x \s-1FILE\s0...] [\-d \s-1DIR\s0]
+.Sp
+Extract FILEs from \s-1ZIP\s0 archive
+.Sp
+.Vb 7
+\&        \-l      List contents (with \-q for short form)
+\&        \-n      Never overwrite files (default: ask)
+\&        \-o      Overwrite
+\&        \-p      Print to stdout
+\&        \-q      Quiet
+\&        \-x FILE Exclude FILEs
+\&        \-d DIR  Extract into DIR
+.Ve
 .IP "\fBwc\fR" 4
 .IX Item "wc"
 wc [\-clwL] [\s-1FILE\s0]...
@@ -664,6 +741,11 @@ Print the user name associated with the current effective user id
 yes [\s-1STRING\s0]
 .Sp
 Repeatedly output a line with \s-1STRING\s0, or 'y'
+.IP "\fBzcat\fR" 4
+.IX Item "zcat"
+zcat [\s-1FILE\s0]...
+.Sp
+Decompress to stdout
 .SH "LIBC NSS"
 .IX Header "LIBC NSS"
 \&\s-1GNU\s0 Libc (glibc) uses the Name Service Switch (\s-1NSS\s0) to configure the behavior

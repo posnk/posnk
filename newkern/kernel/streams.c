@@ -628,19 +628,15 @@ int _sys_close(int fd)
 
 int _sys_close_int(process_info_t *process, int fd)
 {	
-			debugcon_aprintf("closing1 %i\n",fd);
 	stream_ptr_t *ptr = stream_get_ptr_o(process, fd);
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
 	}
-			debugcon_aprintf("closing2 %i\n",fd);
 	if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process = scheduler_current_task))
 		device_char_close(ptr->info->inode->if_dev, fd);//TODO: Handle result
 	llist_unlink((llist_t *) ptr);
-			debugcon_aprintf("closing %i\n",fd);
 	semaphore_down(ptr->info->lock);
-			debugcon_aprintf("closing2 %i\n",fd);
 	ptr->info->ref_count--;
 	if (ptr->info->ref_count == 0) {
 		switch (ptr->info->type) {

@@ -188,7 +188,6 @@ void process_handle_signals()
 
 void process_reap(process_info_t *process)
 {
-			debugcon_printf("reap\n");
 	//TODO: Implement
 	llist_unlink ((llist_t *) process);
 	heapmm_free(process->name, CONFIG_PROCESS_MAX_NAME_LENGTH);
@@ -197,7 +196,6 @@ void process_reap(process_info_t *process)
 	process->root_directory->usage_count--;
 	process->current_directory->usage_count--;
 	stream_do_close_all (process);
-			debugcon_printf("reap2\n");
 	semaphore_free(process->child_sema);
 	
 }
@@ -306,7 +304,7 @@ int process_exec(char *path, char **args, char **envs)
 
 	arg_size = (argl_size + 1) * sizeof(char *) + args_size;
 
-	procvmm_mmap_anon((void *) 0x4000000, arg_size, 0, "(args)");
+	procvmm_mmap_anon((void *) 0x4000000, arg_size, PROCESS_MMAP_FLAG_WRITE, "(args)");
 
 	ptr = 0x4000000 + sizeof(char *) * (argl_size + 1);
 	n_args = (char **) 0x4000000;
@@ -327,7 +325,7 @@ int process_exec(char *path, char **args, char **envs)
 
 	env_size = sizeof(char *) * (envl_size + 1) + envs_size;
 
-	procvmm_mmap_anon((void *) 0x4020000, env_size, 0, "(envs)");
+	procvmm_mmap_anon((void *) 0x4020000, env_size, PROCESS_MMAP_FLAG_WRITE, "(envs)");
 
 	ptr = 0x4020000 + sizeof(char *) * (envl_size + 1);
 	n_envs = (char **) 0x4020000;

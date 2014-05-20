@@ -14,6 +14,7 @@
 
 llist_t *kdbg_do_calltrace()
 {
+	int lvl = 0;
 	kdbg_calltrace_t *entry;
 	llist_t *t_list = kdbgmm_alloc(sizeof(llist_t));
 	llist_create(t_list);
@@ -25,11 +26,37 @@ llist_t *kdbg_do_calltrace()
 		entry->func_addr = c_eip;
 		llist_add_end(t_list, (llist_t *) entry);
 		if (c_ebp == 0xCAFE57AC)
+			return t_list;
+		c_eip = *((uintptr_t *) (c_ebp + 4));
+		c_ebp = *((uintptr_t *)  c_ebp);
+		lvl++;
+		if (lvl > 5)
+			return t_list;
+
+	}
+	return t_list;
+}
+
+void kdbg_p_calltrace()
+{
+	int lvl = 0;
+	kdbg_calltrace_t aentry;
+	kdbg_calltrace_t *entry = &aentry;
+	//llist_create(t_list);
+	uintptr_t c_ebp, c_eip = &kdbg_p_calltrace;
+	__asm__("movl %%ebp, %[fp]" :  /* output */ [fp] "=r" (c_ebp));
+	for (;;) {
+		//entry = kdbgmm_alloc(sizeof(kdbg_calltrace_t));
+		entry->frame_addr = c_ebp;
+		entry->func_addr = c_eip;
+		//llist_add_end(t_list, (llist_t *) entry);
+		if (c_ebp == 0xCAFE57AC)
 			return;
 		c_eip = *((uintptr_t *) (c_ebp + 4));
 		c_ebp = *((uintptr_t *)  c_ebp);
+		kdbg_printf("       0x%x () 0x%x\n",entry->func_addr, entry->frame_addr);
+
 	}
-	return t_list;
 }
 
 void kdbg_free_calltrace(llist_t *st)

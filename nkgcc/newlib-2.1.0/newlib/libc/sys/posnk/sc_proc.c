@@ -6,8 +6,6 @@
 #include <sys/times.h>
 #include <sys/types.h>
 #include "posnk_sc.h"
-#undef errno
-extern int errno;
 
 /*
  * Version of environ for POS.

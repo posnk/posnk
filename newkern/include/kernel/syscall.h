@@ -20,7 +20,7 @@ typedef uint32_t (*syscall_func_t)(uint32_t[4], uint32_t[4]);
 
 void syscall_init();
 void syscall_register(int call_id, syscall_func_t func);
-void syscall_dispatch(void *user_param_block);
+void syscall_dispatch(void *user_param_block, void *instr_ptr);
 int copy_user_to_kern(void *src, void *dest, size_t size);
 int copy_kern_to_user(void *src, void *dest, size_t size);
 

@@ -1,0 +1,1 @@
+exec configure --with-x=no --with-gnome=no --ioctl=termios --prefix= posix

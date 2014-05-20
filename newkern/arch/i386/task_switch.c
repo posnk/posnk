@@ -46,6 +46,7 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	paging_active_dir = new_task->page_directory;	
 	scheduler_current_task = new_task;
 	/* Now its time for some magic */
+	i386_fpu_on_cs();
 	i386_do_context_switch(((i386_task_context_t *)new_task->arch_state)->esp,
 				((i386_task_context_t *)new_task->arch_state)->ebp,
 				((i386_task_context_t *)new_task->arch_state)->eip,
@@ -81,6 +82,7 @@ int scheduler_invoke_signal_handler(int signal)
 	scheduler_current_task->isr_stack_pre_signal_size = 0x4000;
 	if (scheduler_current_task->arch_state == 0) {
 		scheduler_current_task->arch_state = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
+		memset(scheduler_current_task->arch_state, 0, sizeof(i386_task_context_t));
 	}
 	if (scheduler_current_task->arch_state_pre_signal == 0) {
 		scheduler_current_task->arch_state_pre_signal = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
@@ -107,6 +109,7 @@ void scheduler_exit_signal_handler()
 	scheduler_current_task->arch_state_pre_signal = 0;
 	scheduler_current_task->isr_stack_pre_signal = 0;
 	scheduler_current_task->isr_stack_pre_signal_size = 0;
+	i386_fpu_on_cs();
 	i386_do_context_switch(((i386_task_context_t *)scheduler_current_task->arch_state)->esp,
 				((i386_task_context_t *)scheduler_current_task->arch_state)->ebp,
 				((i386_task_context_t *)scheduler_current_task->arch_state)->eip,
@@ -128,8 +131,10 @@ int scheduler_fork_to(scheduler_task_t *new_task)
 	new_task->arch_state = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
 	if (scheduler_current_task->arch_state == 0) {
 		scheduler_current_task->arch_state = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
+		memset(scheduler_current_task->arch_state, 0, sizeof(i386_task_context_t));
 		//earlycon_printf("arch_s:%x\n",scheduler_current_task->arch_state);
 	}
+	memset(new_task->arch_state, 0, sizeof(i386_task_context_t));
 	((i386_task_context_t *)scheduler_current_task->arch_state)->eip = eip;
 	((i386_task_context_t *)scheduler_current_task->arch_state)->esp = esp;
 	((i386_task_context_t *)scheduler_current_task->arch_state)->ebp = ebp;

@@ -60,7 +60,7 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 	//debugcon_printf("isr %i\n", int_id);
 	if (int_id == 0x80) {
 		/* System call */
-		syscall_dispatch((void *)registers.eax);
+		syscall_dispatch((void *)registers.eax, (void *) instr_ptr);
 	} else if (int_id == 32) {
 		i386_interrupt_done (int_id - 32);
 		//debugcon_printf("tick tock tick tock\n");
@@ -77,6 +77,9 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		/* Dispatch to page fault handler */
 		paging_handle_fault(i386_get_page_fault_addr(), (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t)
 				, error_code & 1, error_code & 2, error_code & 4);
+	} else if ((int_id == I386_EXCEPTION_NO_COPROCESSOR) || (int_id == I386_EXCEPTION_INVALID_OPCODE)) {
+		if (!i386_fpu_handle_ill())
+			exception_handle(i386_exception_table[int_id], (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t));
 	} else {
 		/* Handle regular exceptions */
 		exception_handle(i386_exception_table[int_id], (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t));

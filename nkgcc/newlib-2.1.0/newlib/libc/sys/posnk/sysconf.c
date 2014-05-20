@@ -8,6 +8,9 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/types.h>
+#define _SC_PAGESIZE                      8
+
+#define PAGESIZE	4096
 
 long int 
 sysconf (int name)

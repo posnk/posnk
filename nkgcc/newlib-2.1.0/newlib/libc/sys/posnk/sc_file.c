@@ -7,8 +7,6 @@
 #include <sys/utime.h>
 #include <_ansi.h>
 #include "posnk_sc.h"
-#undef errno
-extern int errno;
 
 
 int

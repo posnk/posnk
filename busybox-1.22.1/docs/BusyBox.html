@@ -114,10 +114,11 @@ been enabled, more detailed usage information will also be available.</p>
 <h1><a name="commands">COMMANDS</a></h1>
 <p>Currently available applets include:</p>
 <pre>
-        ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
-        echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
-        od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
-        tail, tar, touch, true, tty, wc, whoami, yes</pre>
+        ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
+        clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
+        gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
+        setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
+        uncompress, unzip, wc, whoami, yes, zcat</pre>
 <p>
 </p>
 <hr />
@@ -134,6 +135,27 @@ been enabled, more detailed usage information will also be available.</p>
 <dd>
 <p>basename FILE [SUFFIX]</p>
 <p>Strip directory path and .SUFFIX from FILE</p>
+</dd>
+<dt><strong><a name="bash" class="item"><strong>bash</strong></a></strong></dt>
+
+<dd>
+<p>bash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
+<p>Unix shell interpreter</p>
+</dd>
+<dt><strong><a name="bunzip2" class="item"><strong>bunzip2</strong></a></strong></dt>
+
+<dd>
+<p>bunzip2 [-cf] [FILE]...</p>
+<p>Decompress FILEs (or stdin)</p>
+<pre>
+        -c      Write to stdout
+        -f      Force</pre>
+</dd>
+<dt><strong><a name="bzcat" class="item"><strong>bzcat</strong></a></strong></dt>
+
+<dd>
+<p>bzcat [FILE]...</p>
+<p>Decompress to stdout</p>
 </dd>
 <dt><strong><a name="bzip2" class="item"><strong>bzip2</strong></a></strong></dt>
 
@@ -229,15 +251,15 @@ create an archive (-o) or copy files (-p) using file list on stdin</p>
 <p>dpkg [-ilCPru] [-F OPT] PACKAGE</p>
 <p>Install, remove and manage Debian packages</p>
 <pre>
-        -i              Install the package
-        -l              List of installed packages
-        -C              Configure an unpackaged package
-        -P              Purge all files of a package
-        -r              Remove all but the configuration files for a package
-        -u              Unpack a package, but don't configure it
-        -F depends      Ignore dependency problems
-        -F confnew      Overwrite existing config files when installing
-        -F confold      Keep old config files when installing</pre>
+        -i,--install    Install the package
+        -l,--list       List of installed packages
+        --configure     Configure an unpackaged package
+        -P,--purge      Purge all files of a package
+        -r,--remove     Remove all but the configuration files for a package
+        --unpack        Unpack a package, but don't configure it
+        --force-depends Ignore dependency problems
+        --force-confnew Overwrite existing config files when installing
+        --force-confold Keep old config files when installing</pre>
 </dd>
 <dt><strong><a name="echo" class="item"><strong>echo</strong></a></strong></dt>
 
@@ -304,6 +326,29 @@ of characters matched or 0.</p>
 <dd>
 <p>false</p>
 <p>Return an exit code of FALSE (1)</p>
+</dd>
+<dt><strong><a name="getopt" class="item"><strong>getopt</strong></a></strong></dt>
+
+<dd>
+<p>getopt [OPTIONS] [--] OPTSTRING PARAMS</p>
+<pre>
+        -n,--name=PROGNAME              The name under which errors are reported
+        -o,--options=OPTSTRING          Short options to recognize
+        -q,--quiet                      No error messages on unrecognized options
+        -Q,--quiet-output               No normal output
+        -s,--shell=SHELL                Set shell quoting conventions
+        -T,--test                       Version test (exits with 4)
+        -u,--unquoted                   Don't quote output</pre>
+</dd>
+<dt><strong><a name="gunzip" class="item"><strong>gunzip</strong></a></strong></dt>
+
+<dd>
+<p>gunzip [-cft] [FILE]...</p>
+<p>Decompress FILEs (or stdin)</p>
+<pre>
+        -c      Write to stdout
+        -f      Force
+        -t      Test file integrity</pre>
 </dd>
 <dt><strong><a name="gzip" class="item"><strong>gzip</strong></a></strong></dt>
 
@@ -379,7 +424,8 @@ of characters matched or 0.</p>
         -c      With -l: sort by ctime
         -t      With -l: sort by mtime
         -u      With -l: sort by atime
-        -w N    Assume the terminal is N columns wide</pre>
+        -w N    Assume the terminal is N columns wide
+        --color[={always,never,auto}]   Control coloring</pre>
 </dd>
 <dt><strong><a name="mkdir" class="item"><strong>mkdir</strong></a></strong></dt>
 
@@ -402,6 +448,12 @@ TYPE:
         c or u  Character device
         p       Named pipe (MAJOR and MINOR are ignored)</pre>
 </dd>
+<dt><strong><a name="more" class="item"><strong>more</strong></a></strong></dt>
+
+<dd>
+<p>more [FILE]...</p>
+<p>View FILE (or stdin) one screenful at a time</p>
+</dd>
 <dt><strong><a name="od" class="item"><strong>od</strong></a></strong></dt>
 
 <dd>
@@ -421,12 +473,6 @@ If no VARIABLE specified, print all.</p>
 <p>pwd</p>
 <p>Print the full filename of the current working directory</p>
 </dd>
-<dt><strong><a name="readlink" class="item"><strong>readlink</strong></a></strong></dt>
-
-<dd>
-<p>readlink FILE</p>
-<p>Display the value of a symlink</p>
-</dd>
 <dt><strong><a name="seq" class="item"><strong>seq</strong></a></strong></dt>
 
 <dd>
@@ -444,6 +490,12 @@ FIRST, INC default to 1.</p>
 <p>Run PROG in a new session. PROG will have no controlling terminal
 and will not be affected by keyboard signals (Ctrl-C etc).
 See <a href="#setsid"><code>setsid(2)</code></a> for details.</p>
+</dd>
+<dt><strong><a name="sh" class="item"><strong>sh</strong></a></strong></dt>
+
+<dd>
+<p>sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
+<p>Unix shell interpreter</p>
 </dd>
 <dt><strong><a name="split" class="item"><strong>split</strong></a></strong></dt>
 
@@ -510,6 +562,7 @@ With more than one FILE, precede each with a filename header.</p>
         O       Extract to stdout
         h       Follow symlinks
         m       Don't restore mtime
+        exclude File to exclude
         X       File with names to exclude
         T       File with names to include</pre>
 </dd>
@@ -533,6 +586,29 @@ With more than one FILE, precede each with a filename header.</p>
 <p>tty</p>
 <p>Print file name of stdin's terminal</p>
 </dd>
+<dt><strong><a name="uncompress" class="item"><strong>uncompress</strong></a></strong></dt>
+
+<dd>
+<p>uncompress [-cf] [FILE]...</p>
+<p>Decompress .Z file[s]</p>
+<pre>
+        -c      Write to stdout
+        -f      Overwrite</pre>
+</dd>
+<dt><strong><a name="unzip" class="item"><strong>unzip</strong></a></strong></dt>
+
+<dd>
+<p>unzip [-lnopq] FILE[.zip] [FILE]... [-x FILE...] [-d DIR]</p>
+<p>Extract FILEs from ZIP archive</p>
+<pre>
+        -l      List contents (with -q for short form)
+        -n      Never overwrite files (default: ask)
+        -o      Overwrite
+        -p      Print to stdout
+        -q      Quiet
+        -x FILE Exclude FILEs
+        -d DIR  Extract into DIR</pre>
+</dd>
 <dt><strong><a name="wc" class="item"><strong>wc</strong></a></strong></dt>
 
 <dd>
@@ -555,6 +631,12 @@ With more than one FILE, precede each with a filename header.</p>
 <dd>
 <p>yes [STRING]</p>
 <p>Repeatedly output a line with STRING, or 'y'</p>
+</dd>
+<dt><strong><a name="zcat" class="item"><strong>zcat</strong></a></strong></dt>
+
+<dd>
+<p>zcat [FILE]...</p>
+<p>Decompress to stdout</p>
 </dd>
 </dl>
 <p>

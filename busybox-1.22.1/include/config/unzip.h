@@ -1,1 +1,1 @@
-#undef CONFIG_UNZIP
+#define CONFIG_UNZIP 1

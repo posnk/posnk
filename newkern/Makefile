@@ -70,6 +70,7 @@ arch/i386/init.c \
 arch/i386/isr.c \
 arch/i386/idt.c \
 arch/i386/pic.c \
+arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
 driver/console/vgacon.c \

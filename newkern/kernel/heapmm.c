@@ -76,7 +76,7 @@ void heapmm_morecore ( size_t size )
 	//TODO: Get lock on the free block table
 
 	/* Free small chunks of heap for which no block info's could be made */
-
+/*
 	for (	found_block = (heapmm_block_t *)
 			llist_iterate_select(&heapmm_free_blocks_list,
 					&heapmm_morecore_iterator, NULL);
@@ -87,16 +87,16 @@ void heapmm_morecore ( size_t size )
 		/* END OF MESSY FOR STATEMENT */
 
 		/* Unlink tag block info */
-		llist_unlink((llist_t *) found_block);
+		//llist_unlink((llist_t *) found_block);
 
 		//TODO: Release lock on the free block table
 
-		/* Free its memory */
-		heapmm_free_internal ( (void *) found_block , sizeof (heapmm_block_t) );	
+		/* Free its memory * /
+		//heapmm_free_internal ( (void *) found_block , sizeof (heapmm_block_t) );	
 
 		//TODO: Get lock on the free block table
 
-	}
+	}*/
 
 	//TODO: Release lock on the free block table
 	
@@ -232,11 +232,12 @@ void heapmm_free_internal(void *address, size_t size)
 		/* Next block can also be merged */
 		found_block->size += merge_block->size;
 
-		llist_unlink ((llist_t *) merge_block);		
+		//llist_unlink ((llist_t *) merge_block);
+		merge_block->size = 0;		
 
 		//TODO: Release a lock on the free block table
 
-		heapmm_free_internal( (void *) merge_block, sizeof(heapmm_block_t) );
+		//heapmm_free_internal( (void *) merge_block, sizeof(heapmm_block_t) );
 
 		//TODO: Get a lock on the free block table
 	}
@@ -250,12 +251,12 @@ void heapmm_free_internal(void *address, size_t size)
 
 		/* Previous block can also be merged */
 		merge_block->size += found_block->size;
-
-		llist_unlink ((llist_t *) found_block);		
+		found_block->size = 0;
+//		llist_unlink ((llist_t *) found_block);		
 
 		//TODO: Release a lock on the free block table
 
-		heapmm_free_internal( (void *) found_block, sizeof(heapmm_block_t) );
+		//heapmm_free_internal( (void *) found_block, sizeof(heapmm_block_t) );
 	}
 	heapmm_space_left+=size;
 
@@ -289,7 +290,7 @@ int heapmm_alloc_fit_iterator (llist_t *node, void *param)
  */
 void *heapmm_alloc_internal(size_t size, int morecore)
 {
-	heapmm_block_t *found_block;
+	heapmm_block_t *found_block = NULL;
 	void 		   *address;
 	if (((heapmm_space_left - size) < 1024) && morecore)
 		heapmm_morecore(PHYSMM_PAGE_SIZE);
@@ -297,6 +298,18 @@ void *heapmm_alloc_internal(size_t size, int morecore)
 	//TODO: Get a lock on the free block table
 
 	/* Try to find fitting free block */
+	if (size == sizeof(heapmm_block_t)) {		
+		found_block = (heapmm_block_t *)
+			llist_iterate_select(&heapmm_free_blocks_list,
+								 &heapmm_morecore_iterator,
+								 NULL);
+		if (found_block) {
+			llist_unlink((llist_t *) found_block);
+			return found_block;
+		}
+	}
+	
+	if (found_block == NULL)
 	found_block = (heapmm_block_t *)
 		llist_iterate_select(&heapmm_free_blocks_list,
 							 &heapmm_alloc_match_iterator,
@@ -362,14 +375,14 @@ void *heapmm_alloc_internal(size_t size, int morecore)
 	} else {
 		/* Block is a perfect fit */
 		/* Proceed to unlink and free block */
-		llist_unlink((llist_t *) found_block);
-
+		//llist_unlink((llist_t *) found_block);
+		found_block->size = 0;
 		//TODO: Release a lock on the free block table
 		//if (morecore){//HACKHACKHACK
 		//	void *test = heapmm_alloc_internal(3*sizeof(heapmm_block_t), TRUE);
 		//	heapmm_free_internal(test,3*sizeof(heapmm_block_t));
 		//}
-		heapmm_free_internal( (void *) found_block, sizeof(heapmm_block_t) );
+		//heapmm_free_internal( (void *) found_block, sizeof(heapmm_block_t) );
 	}
 
 	

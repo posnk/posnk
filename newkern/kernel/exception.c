@@ -31,7 +31,20 @@ char * exception_names[] = {
 	"Unresolved page fault",
 	"Floating-point unit error"
 };
-
+int exception_signals[] = {
+	SIGFPE,
+	SIGTRAP,
+	SIGFPE,
+	SIGSEGV,
+	SIGILL,
+	SIGFPE,
+	SIGSEGV,
+	SIGSEGV,
+	SIGSEGV,
+	SIGSEGV,
+	SIGSEGV,
+	SIGFPE
+};
 void exception_panic(int exception, void *instr_pointer, void *state, size_t state_size)
 {
 	earlycon_printf("PANIC! Unhandled kernelmode exception: %s(%i)\n",exception_names[exception],exception);
@@ -49,6 +62,10 @@ void exception_handle(int exception, void *instr_pointer, void *state, size_t st
 		//TODO: Kernel mode exception
 		exception_panic(exception, instr_pointer, state, state_size);
 	} else {
-		process_send_signal(scheduler_current_task, SIGSEGV); //TODO: Look up appropriate signal for exception
+		debugcon_printf("Userland exception: %s(%i), sending SIGSEGV!\n",exception_names[exception],exception);
+		debugcon_printf("Exception occurred at 0x%x\n", instr_pointer);
+		debugcon_printf("Register dump: \n");
+		debug_dump_state(state, state_size);
+		process_send_signal(scheduler_current_task, exception_signals[exception]); //TODO: Look up appropriate signal for exception
 	}
 }

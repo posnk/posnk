@@ -16,6 +16,7 @@
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
 #include "arch/i386/pic.h"
+#include "arch/i386/x86.h"
 #include "arch/i386/idt.h"
 #include "arch/i386/paging.h"
 #include "arch/i386/multiboot.h"
@@ -111,6 +112,8 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	earlycon_init();
 	debugcon_init();
 	debugcon_puts("Debugger console up on ttyS0\n");
+
+	i386_fpu_initialize();
 
 	earlycon_puts("Initializing physical memory manager...");
 	physmm_init();

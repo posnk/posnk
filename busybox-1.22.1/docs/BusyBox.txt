@@ -76,10 +76,11 @@ COMMON OPTIONS
 COMMANDS
     Currently available applets include:
 
-            ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
-            echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
-            od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
-            tail, tar, touch, true, tty, wc, whoami, yes
+            ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
+            clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
+            gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
+            setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
+            uncompress, unzip, wc, whoami, yes, zcat
 
 COMMAND DESCRIPTIONS
     ash ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE
@@ -91,6 +92,25 @@ COMMAND DESCRIPTIONS
         basename FILE [SUFFIX]
 
         Strip directory path and .SUFFIX from FILE
+
+    bash
+        bash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE
+        [ARGS]]
+
+        Unix shell interpreter
+
+    bunzip2
+        bunzip2 [-cf] [FILE]...
+
+        Decompress FILEs (or stdin)
+
+                -c      Write to stdout
+                -f      Force
+
+    bzcat
+        bzcat [FILE]...
+
+        Decompress to stdout
 
     bzip2
         bzip2 [OPTIONS] [FILE]...
@@ -175,15 +195,15 @@ COMMAND DESCRIPTIONS
 
         Install, remove and manage Debian packages
 
-                -i              Install the package
-                -l              List of installed packages
-                -C              Configure an unpackaged package
-                -P              Purge all files of a package
-                -r              Remove all but the configuration files for a package
-                -u              Unpack a package, but don't configure it
-                -F depends      Ignore dependency problems
-                -F confnew      Overwrite existing config files when installing
-                -F confold      Keep old config files when installing
+                -i,--install    Install the package
+                -l,--list       List of installed packages
+                --configure     Configure an unpackaged package
+                -P,--purge      Purge all files of a package
+                -r,--remove     Remove all but the configuration files for a package
+                --unpack        Unpack a package, but don't configure it
+                --force-depends Ignore dependency problems
+                --force-confnew Overwrite existing config files when installing
+                --force-confold Keep old config files when installing
 
     echo
         echo [-neE] [ARG]...
@@ -244,6 +264,26 @@ COMMAND DESCRIPTIONS
         false
 
         Return an exit code of FALSE (1)
+
+    getopt
+        getopt [OPTIONS] [--] OPTSTRING PARAMS
+
+                -n,--name=PROGNAME              The name under which errors are reported
+                -o,--options=OPTSTRING          Short options to recognize
+                -q,--quiet                      No error messages on unrecognized options
+                -Q,--quiet-output               No normal output
+                -s,--shell=SHELL                Set shell quoting conventions
+                -T,--test                       Version test (exits with 4)
+                -u,--unquoted                   Don't quote output
+
+    gunzip
+        gunzip [-cft] [FILE]...
+
+        Decompress FILEs (or stdin)
+
+                -c      Write to stdout
+                -f      Force
+                -t      Test file integrity
 
     gzip
         gzip [-cfd] [FILE]...
@@ -312,6 +352,7 @@ COMMAND DESCRIPTIONS
                 -t      With -l: sort by mtime
                 -u      With -l: sort by atime
                 -w N    Assume the terminal is N columns wide
+                --color[={always,never,auto}]   Control coloring
 
     mkdir
         mkdir [OPTIONS] DIRECTORY...
@@ -332,6 +373,11 @@ COMMAND DESCRIPTIONS
                 c or u  Character device
                 p       Named pipe (MAJOR and MINOR are ignored)
 
+    more
+        more [FILE]...
+
+        View FILE (or stdin) one screenful at a time
+
     od  od [-aBbcDdeFfHhIiLlOovXx] [FILE]
 
         Print FILE (or stdin) unambiguously, as octal bytes by default
@@ -344,11 +390,6 @@ COMMAND DESCRIPTIONS
     pwd pwd
 
         Print the full filename of the current working directory
-
-    readlink
-        readlink FILE
-
-        Display the value of a symlink
 
     seq seq [-w] [-s SEP] [FIRST [INC]] LAST
 
@@ -364,6 +405,11 @@ COMMAND DESCRIPTIONS
         Run PROG in a new session. PROG will have no controlling terminal
         and will not be affected by keyboard signals (Ctrl-C etc). See
         setsid(2) for details.
+
+    sh  sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE
+        [ARGS]]
+
+        Unix shell interpreter
 
     split
         split [OPTIONS] [INPUT [PREFIX]]
@@ -425,6 +471,7 @@ COMMAND DESCRIPTIONS
                 O       Extract to stdout
                 h       Follow symlinks
                 m       Don't restore mtime
+                exclude File to exclude
                 X       File with names to exclude
                 T       File with names to include
 
@@ -444,6 +491,27 @@ COMMAND DESCRIPTIONS
 
         Print file name of stdin's terminal
 
+    uncompress
+        uncompress [-cf] [FILE]...
+
+        Decompress .Z file[s]
+
+                -c      Write to stdout
+                -f      Overwrite
+
+    unzip
+        unzip [-lnopq] FILE[.zip] [FILE]... [-x FILE...] [-d DIR]
+
+        Extract FILEs from ZIP archive
+
+                -l      List contents (with -q for short form)
+                -n      Never overwrite files (default: ask)
+                -o      Overwrite
+                -p      Print to stdout
+                -q      Quiet
+                -x FILE Exclude FILEs
+                -d DIR  Extract into DIR
+
     wc  wc [-clwL] [FILE]...
 
         Count lines, words, and bytes for each FILE (or stdin)
@@ -461,6 +529,11 @@ COMMAND DESCRIPTIONS
     yes yes [STRING]
 
         Repeatedly output a line with STRING, or 'y'
+
+    zcat
+        zcat [FILE]...
+
+        Decompress to stdout
 
 LIBC NSS
     GNU Libc (glibc) uses the Name Service Switch (NSS) to configure the

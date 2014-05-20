@@ -1,10 +1,6 @@
 #include <stdint.h>
 #include <errno.h>
 #include "posnk_sc.h"
-#undef errno
-/* Supply a definition of errno if one not already provided.  */
-
-int errno;
 
 uint32_t __attribute__((optimize("O0"))) nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4])
 {

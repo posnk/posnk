@@ -81,10 +81,11 @@ been enabled, more detailed usage information will also be available.
 
 Currently available applets include:
 
-	ash, basename, bzip2, cal, cat, chmod, chown, clear, cp, cpio, dpkg,
-	echo, ed, env, expr, false, gzip, id, kill, ln, ls, mkdir, mknod,
-	od, printenv, pwd, readlink, seq, setsid, split, strings, stty,
-	tail, tar, touch, true, tty, wc, whoami, yes
+	ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
+	clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
+	gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
+	setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
+	uncompress, unzip, wc, whoami, yes, zcat
 
 =head1 COMMAND DESCRIPTIONS
 
@@ -102,6 +103,27 @@ basename FILE [SUFFIX]
 
 Strip directory path and .SUFFIX from FILE
 
+
+=item B<bash>
+
+bash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]
+
+Unix shell interpreter
+
+=item B<bunzip2>
+
+bunzip2 [-cf] [FILE]...
+
+Decompress FILEs (or stdin)
+
+	-c	Write to stdout
+	-f	Force
+
+=item B<bzcat>
+
+bzcat [FILE]...
+
+Decompress to stdout
 
 =item B<bzip2>
 
@@ -198,15 +220,15 @@ dpkg [-ilCPru] [-F OPT] PACKAGE
 
 Install, remove and manage Debian packages
 
-	-i		Install the package
-	-l		List of installed packages
-	-C		Configure an unpackaged package
-	-P		Purge all files of a package
-	-r		Remove all but the configuration files for a package
-	-u		Unpack a package, but don't configure it
-	-F depends	Ignore dependency problems
-	-F confnew	Overwrite existing config files when installing
-	-F confold	Keep old config files when installing
+	-i,--install	Install the package
+	-l,--list	List of installed packages
+	--configure	Configure an unpackaged package
+	-P,--purge	Purge all files of a package
+	-r,--remove	Remove all but the configuration files for a package
+	--unpack	Unpack a package, but don't configure it
+	--force-depends	Ignore dependency problems
+	--force-confnew	Overwrite existing config files when installing
+	--force-confold	Keep old config files when installing
 
 =item B<echo>
 
@@ -274,6 +296,28 @@ of characters matched or 0.
 false 
 
 Return an exit code of FALSE (1)
+
+=item B<getopt>
+
+getopt [OPTIONS] [--] OPTSTRING PARAMS
+
+	-n,--name=PROGNAME		The name under which errors are reported
+	-o,--options=OPTSTRING		Short options to recognize
+	-q,--quiet			No error messages on unrecognized options
+	-Q,--quiet-output		No normal output
+	-s,--shell=SHELL		Set shell quoting conventions
+	-T,--test			Version test (exits with 4)
+	-u,--unquoted			Don't quote output
+
+=item B<gunzip>
+
+gunzip [-cft] [FILE]...
+
+Decompress FILEs (or stdin)
+
+	-c	Write to stdout
+	-f	Force
+	-t	Test file integrity
 
 =item B<gzip>
 
@@ -350,6 +394,7 @@ List directory contents
 	-t	With -l: sort by mtime
 	-u	With -l: sort by atime
 	-w N	Assume the terminal is N columns wide
+	--color[={always,never,auto}]	Control coloring
 
 =item B<mkdir>
 
@@ -372,6 +417,12 @@ TYPE:
 	c or u	Character device
 	p	Named pipe (MAJOR and MINOR are ignored)
 
+=item B<more>
+
+more [FILE]...
+
+View FILE (or stdin) one screenful at a time
+
 =item B<od>
 
 od [-aBbcDdeFfHhIiLlOovXx] [FILE]
@@ -391,12 +442,6 @@ pwd
 
 Print the full filename of the current working directory
 
-=item B<readlink>
-
-readlink FILE
-
-Display the value of a symlink
-
 =item B<seq>
 
 seq [-w] [-s SEP] [FIRST [INC]] LAST
@@ -414,6 +459,12 @@ setsid PROG ARGS
 Run PROG in a new session. PROG will have no controlling terminal
 and will not be affected by keyboard signals (Ctrl-C etc).
 See setsid(2) for details.
+
+=item B<sh>
+
+sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]
+
+Unix shell interpreter
 
 =item B<split>
 
@@ -481,6 +532,7 @@ Operation:
 	O	Extract to stdout
 	h	Follow symlinks
 	m	Don't restore mtime
+	exclude	File to exclude
 	X	File with names to exclude
 	T	File with names to include
 
@@ -504,6 +556,29 @@ tty
 
 Print file name of stdin's terminal
 
+=item B<uncompress>
+
+uncompress [-cf] [FILE]...
+
+Decompress .Z file[s]
+
+	-c	Write to stdout
+	-f	Overwrite
+
+=item B<unzip>
+
+unzip [-lnopq] FILE[.zip] [FILE]... [-x FILE...] [-d DIR]
+
+Extract FILEs from ZIP archive
+
+	-l	List contents (with -q for short form)
+	-n	Never overwrite files (default: ask)
+	-o	Overwrite
+	-p	Print to stdout
+	-q	Quiet
+	-x FILE	Exclude FILEs
+	-d DIR	Extract into DIR
+
 =item B<wc>
 
 wc [-clwL] [FILE]...
@@ -526,6 +601,12 @@ Print the user name associated with the current effective user id
 yes [STRING]
 
 Repeatedly output a line with STRING, or 'y'
+
+=item B<zcat>
+
+zcat [FILE]...
+
+Decompress to stdout
 
 =back
 

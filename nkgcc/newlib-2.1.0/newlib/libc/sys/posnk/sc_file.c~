@@ -42,6 +42,17 @@ _DEFUN (chown, (path, owner, group),
 }
 
 int
+_DEFUN (lchown, (path, owner, group),
+        const char *path  _AND
+        uid_t owner _AND
+        gid_t group)
+{
+   int a[] = {(uint32_t) path, (uint32_t) owner, (uint32_t) group,0};
+   int b[] = {(uint32_t) 1+strlen(path),0,0,0};
+   return (int) nk_do_syscall(SYS_CHOWN, a, b); 
+}
+
+int
 _DEFUN (pipe, (pipefd),
         int pipefd[2])
 {

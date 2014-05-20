@@ -33,7 +33,8 @@ void dbgapi_register_memuse(void *addr, size_t size)
 	kdbg_heap_use_t *use = kdbgmm_alloc(sizeof(kdbg_heap_use_t));
 	use->start = (uintptr_t) addr;
 	use->size = size;
-	use->calltrace = kdbg_do_calltrace();
+	//use->calltrace = kdbg_do_calltrace();
+	//kdbg_p_calltrace();
 	llist_add_end(&kdbg_heap_use_list, (llist_t *) use);
 }
 
@@ -83,6 +84,6 @@ void dbgapi_unreg_memuse(void *addr, size_t size)
 		dbgapi_invoke_kdbg(1);
 	}
 	llist_unlink((llist_t*)use);	
-	kdbg_free_calltrace(use->calltrace);
+	//kdbg_free_calltrace(use->calltrace);
 	kdbgmm_free(use, sizeof(kdbg_heap_use_t));
 }

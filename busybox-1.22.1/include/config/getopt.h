@@ -1,1 +1,1 @@
-#undef CONFIG_GETOPT
+#define CONFIG_GETOPT 1
