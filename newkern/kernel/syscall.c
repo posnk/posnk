@@ -20,6 +20,57 @@
 #include "kernel/earlycon.h"
 #include "config.h"
 
+char *syscall_names[] =
+{
+	"dbgputs",
+	"fork",
+	"kill",
+	"getpid",
+	"getpgid",
+	"setsid",
+	"exit",
+	"yield",
+	"sbrk",
+	"getuid",
+	"geteuid",
+	"getgid",
+	"getegid",
+	"link",
+	"unlink",
+	"chdir",
+	"chown",
+	"chmod",
+	"mknod",
+	"mkdir",
+	"stat",
+	"fchdir",
+	"fchown",
+	"fchmod",
+	"fstat",
+	"dup2",
+	"dup",
+	"open",
+	"close",
+	"pipe2",
+	"pipe",
+	"read",
+	"write",
+	"lseek",
+	"rmdir",
+	"execve",
+	"waitpid",
+	"getppid",
+	"fcntl",
+	"umask",
+	"readlink",
+	"lstat",
+	"symlink",
+	"getdents",
+	"ioctl",
+	"setpgrp",
+	"getsid"
+};
+
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
 
 //TODO: Find way to free syscall buffers after signal kill
@@ -73,9 +124,12 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		process_send_signal(scheduler_current_task, SIGSYS);
 	syscall_errno = 0;
 	call = params.call_id;
-	debugcon_printf("syscall[%i] from %i with params (%x, %x, %x, %x) entered\n", call, curpid(), params.param[0], params.param[1], params.param[2], params.param[3]);
+	if (call == SYS_OPEN)
+		debugcon_printf("[%s:%i] %s(%s, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
+	else
+		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	result = syscall_table[params.call_id]((uint32_t*)params.param, (uint32_t*)params.param_size);
-	debugcon_printf("syscall[%i] from %i with params (%x, %x, %x, %x) returned %x (Errno: %i)\n", call, curpid(), params.param[0], params.param[1], params.param[2], params.param[3],result,syscall_errno);
+	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
 	params.return_val = result;
 	params.sc_errno = syscall_errno;
 	copy_kern_to_user(&params, user_param_block, sizeof(syscall_params_t));

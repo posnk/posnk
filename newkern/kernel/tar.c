@@ -118,7 +118,7 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		}
 			
 	} 
-	earlycon_printf("untar %s \n",header->name);
+	//earlycon_printf("untar %s \n",header->name);
 	switch(header->typeflag){
 		default:
 		case AREGTYPE:

@@ -2102,8 +2102,7 @@ static ELVBOOL color(fontcode, colornam, isfg, colorptr, rgb)
 	 * different.  We need to try both termcap & terminfo versions of that
 	 * string.
 	 */
-	if ((strcmp(UP,"\033[A") && (!AF || (strcmp(AF, "\033[3%dm") && strcmp(AF, "\033[3%p1%dm"))))
-	 || !coloransi(fontcode, colornam, isfg, colorptr, rgb))
+	if (!coloransi(fontcode, colornam, isfg, colorptr, rgb))
 		return ElvFalse;
 
 	/* Success!  Remember if we've set foreground or background */

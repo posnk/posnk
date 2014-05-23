@@ -1,0 +1,83 @@
+#include "driver/console/vgacon/vga_vterm.h"
+#include <string.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include "kernel/tty.h"
+#include "driver/console/vterm/vterm.h"
+#include "driver/console/vterm/vterm_private.h"
+
+void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int cols);
+
+vga_vterm_vc_t vterm_vga_all_vcs[9];
+
+int vterm_vga_current_vc = 0;
+
+int vga_vterm_colour_map[8] = {0,4,2,6,1,5,3,7};
+
+volatile vga_vterm_screen_character_t *vga_vterm_get_text_video_memory(){
+	return (volatile vga_vterm_screen_character_t *)(0xC00B8000); //TODO: Check for paging init
+}
+
+void vga_vterm_move_cursor(vga_vterm_vc_t *vc)
+{
+	int offset = (vc->cursor_x + (vc->cursor_y * 80));
+	vga_vterm_write_crtc_register(0x0E,offset >> 8);
+	vga_vterm_write_crtc_register(0x0F,offset);
+}
+
+void vterm_vga_position(vga_vterm_vc_t *vc, int x, int y,int move_cursor_)
+{
+	vc->cursor_x = x;
+	vc->cursor_y = y;
+	if (move_cursor_)
+		vga_vterm_move_cursor(vc);
+}
+
+void vga_vterm_write_crtc_register(char id,char val){
+	i386_outb(0x3D4,id);
+	i386_outb(0x3D5,val);
+}
+
+inline char vga_vterm_map_attr(short attr)
+{
+	char fg, bg;
+	fg = (char) vga_vterm_colour_map[attr & 0xF];
+	bg = (char) vga_vterm_colour_map[(attr & 0xF0) >> 4];
+	return fg | (bg << 4);
+}
+
+void vterm_update_screen(vterm_t *vt)
+{
+	int row, col;
+	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];
+	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
+	for (row = 0; row < vt->rows; row++)
+		for (col = 0; col < vt->cols; col++) {
+			cpt = (void *)(((uintptr_t)vc->video_buffer) + (col + row * 80)*2);
+			cpt->character = (char) vt->cells[row][col].ch;
+			cpt->attribute = (char) vga_vterm_map_attr(vt->cells[row][col].attr);
+		}
+	vterm_vga_position(vc, vt->ccol, vt->crow, 1);
+}
+
+void vterm_handle_bell(vterm_t *vt)
+{
+}
+void vterm_post_key_tty(dev_t dev, int keycode);
+void con_handle_key(int keycode)
+{
+	vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode);
+}
+
+void vterm_vga_init(){
+	int vc_id;
+        for (vc_id = 0;vc_id < 9;vc_id++){
+                vterm_vga_all_vcs[vc_id].cursor_x = 0;
+                vterm_vga_all_vcs[vc_id].cursor_y = 0;  
+                vterm_vga_all_vcs[vc_id].page_id = vc_id;
+                vterm_vga_all_vcs[vc_id].video_buffer = (vga_vterm_screen_character_t *)
+			( ((uint32_t)vga_vterm_get_text_video_memory()) + 80 * 25 * 2 * vc_id);
+        }
+
+	vterm_tty_setup("vgacon", 2, 9, 25,80);
+}

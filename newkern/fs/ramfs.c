@@ -14,6 +14,8 @@
 #include "util/llist.h"
 #include <string.h>
 
+//HACKHACKHACK: Uses inode cache as storage
+
 int ramfs_store_inode(inode_t *inode)
 {
 	return inode != 0;

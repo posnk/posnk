@@ -656,15 +656,13 @@ dir_cache_t *vfs_find_dirc(char * path)
 			}
 		} else if ((element_size == 2) && !strncmp(remaining_path, "..", 2)) {
 			newc = dirc->parent;
-			debugcon_aprintf("up node hit!\n");
 			if (newc != dirc) {		
 				if ((!dirc->usage_count))	
 					heapmm_free(dirc, sizeof(dir_cache_t));
 				parent = newc->inode;
 				dirc = newc;
 			}						
-		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {
-			debugcon_aprintf("current node hit!\n");					
+		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
 		} else {
 			strncpy(path_element, remaining_path, element_size);
 			path_element[element_size] = '\0';

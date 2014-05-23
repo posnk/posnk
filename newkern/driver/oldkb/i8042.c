@@ -71,10 +71,12 @@ void kbd_isr(){
                                                 kb_clear_modifier(KBD_MENU_BIT);
                                         break;
                         }
+			extended = 0;
                         return;        
                 }
                 if (scancode == currently_held_key){
                         kb_typed(scancode);//
+			extended = 0;
                         return;
                 }
                 currently_held_key = scancode;
@@ -113,6 +115,7 @@ void kbd_isr(){
                                         kb_toggle_modifier(KBD_NUMLCK_BIT);
                                         break;
                }    
+			extended = 0;
         }
 }
 

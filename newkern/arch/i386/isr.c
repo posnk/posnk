@@ -55,6 +55,9 @@ void kbd_isr();
 /**
  * Interrupt handler!
  */
+
+void sercon_isr();
+
 void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t data_segment, i386_pusha_registers_t registers, uint32_t error_code, uint32_t instr_ptr)
 {	
 	//debugcon_printf("isr %i\n", int_id);
@@ -69,6 +72,10 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		i386_interrupt_done (int_id - 32);
 		//debugcon_printf("tick tock tick tock\n");
 		kbd_isr();
+	} else if (int_id == 35) {
+		i386_interrupt_done (int_id - 32);
+		//debugcon_printf("tick tock tick tock\n");
+		sercon_isr();
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */
 		//earlycon_printf("Unhandled hardware interrupt %i\n", int_id - 32);

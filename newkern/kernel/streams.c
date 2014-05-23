@@ -165,7 +165,6 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 					if (read_count != 0)
 						ptr->info->offset += (off_t) read_count;
 					syscall_errno = st;
-					debugcon_aprintf("up\n");
 					semaphore_up(ptr->info->lock);
 					return -1;
 				}
@@ -430,6 +429,8 @@ int _sys_dup2(int oldfd, int newfd)
 		syscall_errno = EMFILE;
 		return -1;
 	}
+	if (newfd >= scheduler_current_task->fd_ctr)
+		scheduler_current_task->fd_ctr = newfd + 1;
 	newptr->info = oldptr->info;
 	newptr->id   = newfd;
 	newptr->fd_flags = 0;

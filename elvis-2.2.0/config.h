@@ -28,8 +28,8 @@
 #define	DISPLAY_MAN	/* man		formatted text */
 #define	DISPLAY_TEX	/* tex		formatted text */
 #define	DISPLAY_SYNTAX	/* syntax	generic syntax coloring */
-#define	PROTOCOL_HTTP	/* define to enable HTTP; undef to disable */
-#define	PROTOCOL_FTP	/* define to enable FTP; undef to disable */
+#undef	PROTOCOL_HTTP	/* define to enable HTTP; undef to disable */
+#undef	PROTOCOL_FTP	/* define to enable FTP; undef to disable */
 #define	FEATURE_ALIAS	/* the :alias command */
 #define	FEATURE_ARRAY	/* arrays in :calc expressions */
 #define	FEATURE_AUTOCMD	/* the :autocmd command */
@@ -54,7 +54,7 @@
 #define	FEATURE_MKEXRC	/* the :mkexrc command */
 #define	FEATURE_NORMAL	/* vim-style :normal command */
 #define	FEATURE_PROTO	/* using aliases to add new protocols */
-#undef	FEATURE_RAM	/* store edit buffer in RAM if "-f ram" */
+#define FEATURE_RAM	/* store edit buffer in RAM if "-f ram" */
 #define	FEATURE_RCSID	/* include RCS Id strings for all source files */
 #define FEATURE_REGION	/* the :region and :unregion commands */
 #define	FEATURE_SHOWTAG	/* the showtag option */
@@ -98,9 +98,9 @@
  */
 #undef	NEED_ABORT	/* replaces abort() with a simpler macro */
 #undef	NEED_ASSERT	/* defines a custom assert() macro */
-#undef	NEED_TGETENT	/* causes tinytcap.c to be used instead of library */
+#define	NEED_TGETENT	/* causes tinytcap.c to be used instead of library */
 #undef	NEED_WINSIZE	/* includes <ptem.h> -- required by SCO */
-#define	NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
+#undef  NEED_SPEED_T	/* includes <termcap.h> -- common on POSIX systems */
 #undef	NEED_STRDUP	/* uses a custom version of strdup() */
 #undef	NEED_MEMMOVE	/* uses a custom version of memmove() */
 #undef	NEED_OSPEED	/* causes guitcap.c to supply an ospeed variable */

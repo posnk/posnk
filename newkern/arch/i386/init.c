@@ -187,7 +187,10 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	
 } 
 
-	void vgacon_clear_video();
+void vgacon_clear_video();
+
+void vterm_vga_init();
+
 void i386_init_stub()
 {
 	int fd = _sys_open("/faketty", O_RDWR, 0);
@@ -273,9 +276,9 @@ void i386_kmain()
 
 	device_char_init();
 	tty_init();
-	vgacon_init();
+	vterm_vga_init();
 	earlycon_puts("Creating tty stub dev..");
-	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0C00))
+	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");

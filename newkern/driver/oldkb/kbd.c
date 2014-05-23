@@ -45,10 +45,12 @@ void kb_pressed(uint8_t scan){
         kb_typed(scan);
 }
 
+void con_handle_key(int keycode);
+
 void kb_typed(uint8_t scan){
-        char t = decode_keystroke(scan, modifiers);
-	if (t)
-		tty_input_char(0x0C00, t);
+        int t = decode_keystroke(scan, modifiers);
+	if (t)		
+		con_handle_key(t);
 }
 
 void kb_released(uint8_t scan){

@@ -43,6 +43,8 @@ int elf_load(char * path)
 		return EACCES;
 	}
 
+	strcpy(scheduler_current_task->name, inode->name);
+
 	elf_header = (Elf32_Ehdr *) heapmm_alloc(sizeof(Elf32_Ehdr));
 	if (!elf_header) {
 		return ENOMEM;

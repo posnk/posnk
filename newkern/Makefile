@@ -64,6 +64,34 @@ util/llist.c \
 crt/string.c \
 crt/stdlib.c 
 
+SRCS_DRV_VTCON = driver/console/vterm/vterm.c \
+driver/console/vterm/vterm_colors.c \
+driver/console/vterm/vterm_csi.c \
+driver/console/vterm/vterm_csi_CUP.c \
+driver/console/vterm/vterm_csi_CUx.c \
+driver/console/vterm/vterm_csi_DCH.c \
+driver/console/vterm/vterm_csi_DECSTBM.c \
+driver/console/vterm/vterm_csi_DL.c \
+driver/console/vterm/vterm_csi_ECH.c \
+driver/console/vterm/vterm_csi_ED.c \
+driver/console/vterm/vterm_csi_EL.c \
+driver/console/vterm/vterm_csi_ICH.c \
+driver/console/vterm/vterm_csi_IL.c \
+driver/console/vterm/vterm_csi_RESTORECUR.c \
+driver/console/vterm/vterm_csi_SAVECUR.c \
+driver/console/vterm/vterm_csi_SGR.c \
+driver/console/vterm/vterm_dec_RM.c \
+driver/console/vterm/vterm_dec_SM.c \
+driver/console/vterm/vterm_erase.c \
+driver/console/vterm/vterm_escape.c \
+driver/console/vterm/vterm_misc.c \
+driver/console/vterm/vterm_render.c \
+driver/console/vterm/vterm_resize.c \
+driver/console/vterm/vterm_scroll.c \
+driver/console/vterm/vterm_tty.c \
+driver/console/vterm/vterm_write.c \
+driver/console/vga_vterm.c
+
 SRCS_I386 = arch/i386/x86.c \
 arch/i386/paging.c \
 arch/i386/init.c \
@@ -74,6 +102,7 @@ arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
 driver/console/vgacon.c \
+driver/console/sercon.c \
 driver/console/vgacon_early.c \
 driver/console/sercon_debug.c \
 driver/oldkb/dec.c \
@@ -96,8 +125,8 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o)
-OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o) 
+OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o)
+OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)  
 all:	cdrom_i386 install_h
 
 kernel_i386: $(OBJS) $(OBJS_I386)

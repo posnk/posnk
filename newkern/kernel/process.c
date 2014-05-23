@@ -291,8 +291,6 @@ int process_exec(char *path, char **args, char **envs)
 		process_send_signal(scheduler_current_task, SIGSYS);
 		return status;	//NEVER REACHED
 	}
-
-	strcpy(scheduler_current_task->name,path);
 	//TODO: Verify arg and env list sizes
 
 	argl_size = strlistlen(args);
@@ -336,7 +334,7 @@ int process_exec(char *path, char **args, char **envs)
 		ptr += strlen(envs[c]) + 1;
 	}
 	n_envs[argl_size] = (char *) 0;
-	debugcon_printf("calling program\n");
+	//debugcon_printf("calling program\n");
 
 	process_user_call(scheduler_current_task->entry_point, scheduler_current_task->stack_bottom);
 	return 0;//NEVER REACHED

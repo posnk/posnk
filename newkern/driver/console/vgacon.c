@@ -18,7 +18,7 @@ volatile vgacon_screen_character_t *vgacon_get_text_video_memory(){
  * Write character to text buffer and move cursor
 */
 void vgacon_putch(char c){
-	int offset = (vgacon_vc.cursor_x + (vgacon_vc.cursor_y * 80/*get_BDA()->columns_per_row*/))*2;	
+	int offset = (vgacon_vc.cursor_x + (vgacon_vc.cursor_y * 80))*2;	
 	volatile vgacon_screen_character_t *location;
 	location = (vgacon_screen_character_t *) ( ((int)vgacon_vc.video_buffer) + offset);
 	location->attribute = vgacon_vc.attrib;
@@ -59,7 +59,7 @@ void vgacon_move_cursor()
 }
 
 void vgacon_handle_sgr(int par){
-	debugcon_aprintf("SGR : %i\n",par);
+//	debugcon_aprintf("SGR : %i\n",par);
 	if (par == 0) {
 		vgacon_vc.attrib = 0x07;
  	} else if ((par >=30) && (par <= 37)) {
@@ -117,17 +117,55 @@ void vgacon_handle_escape(char c)
 				for (par = 0; par < vgacon_escape_ppt; par++)
 					vgacon_handle_sgr(vgacon_escape_pars[par]);
 				break;
+			case 'f':
+				
+				vgacon_vc.cursor_y = vgacon_escape_pars[0];
+				vgacon_vc.cursor_x = vgacon_escape_pars[1];
+				break;
+			case 'h':
+				break;
 			default:
+				debugcon_aprintf("unh esc:%c\n",c);
 				break;
 		}
 		vgacon_escape_ptr = 0;
 		vgacon_escape_spt = 0;
 		vgacon_escape_ppt = 0;
 		vgacon_vc.escape = 0;
+		vgacon_escape_pars[0] = 0;
+		vgacon_escape_pars[1] = 0;
+	} else if ((c >= 'A') && (c <= 'Z')) {
+		vgacon_escape_pars[vgacon_escape_ppt++] = vgacon_parse_par(&vgacon_escape_buf[vgacon_escape_spt]);
+		vgacon_escape_spt = vgacon_escape_ptr;
+		switch (c) {
+			case 'H':
+				vgacon_vc.cursor_y = vgacon_escape_pars[0];
+				vgacon_vc.cursor_x = vgacon_escape_pars[1];
+				break;
+			case 'M':
+				vgacon_vc.cursor_y--;
+				break;
+			case 'D':
+				vgacon_vc.cursor_y++;
+				break;
+			case 'E':
+				vgacon_vc.cursor_y++;
+				break;
+			default:
+				debugcon_aprintf("unh esc:%c\n",c);
+				break;
+		}
+		vgacon_escape_ptr = 0;
+		vgacon_escape_spt = 0;
+		vgacon_escape_ppt = 0;
+		vgacon_vc.escape = 0;
+		vgacon_escape_pars[0] = 0;
+		vgacon_escape_pars[1] = 0;
 	} else if (c == ';') {		
 		vgacon_escape_pars[vgacon_escape_ppt++] = vgacon_parse_par(&vgacon_escape_buf[vgacon_escape_spt]);
 		vgacon_escape_spt = vgacon_escape_ptr;
-	}
+	} else
+		debugcon_aprintf("unh esc:%c\n",c);
 }
 
 int vgacon_putc(dev_t dev, char c)
@@ -143,7 +181,7 @@ int vgacon_putc(dev_t dev, char c)
 				vgacon_vc.escape = 0;
 			break;
 		case 2:
-			debugcon_putc(c);
+			//debugcon_putc(c);
 			vgacon_handle_escape(c);
 			return;
 	}
@@ -213,6 +251,7 @@ void vgacon_write_crtc_register(char id,char val){
 void kb_initialize();
 
 void vgacon_init(){
+	sercon_init();
 	kb_initialize();
 	/*vgacon_vc.attrib = 0x07;
 	vgacon_vc.cursor_x = 0;

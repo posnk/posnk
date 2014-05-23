@@ -14,14 +14,14 @@
 # If you're compiling with X-windows support, you may need to add a
 # "-I/usr/X11/include" flag or something similar.
 #CC=gcc -g -Wall -pedantic -Wtraditional -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -I/usr/include/freetype2 -I/usr/X11R6/include
-CC=gcc -O2
+CC=i386-pc-posnk-gcc -O2
 
 ################################################################################
 # This macro gives any arguments which will be needed during linking.
 # Mostly, this means "-Llibdir" and "-llib" flags.  If you're compiling with
 # X-windows support, then you'll have to add a "-lX11" and maybe a
 # "-L/usr/X11/lib" flag or something similar.
-LIBS=  -ltermcap 
+LIBS= 
 
 ################################################################################
 # This should be "unix" for all UNIX variants.  It causes the compiler to use
@@ -350,66 +350,6 @@ $(DISTRIB).tar.gz:
 	find $(DISTRIB) -type f -exec chmod +w {} \;
 	tar czf $(DISTRIB).tar.gz $(DISTRIB)
 	rm -rf $(DISTRIB)
-
-$(DISTRIB)-win32.tar.gz: $(WIN32EXE)
-	rm -rf bin-win32
-	mkdir bin-win32
-	cp $(WIN32EXE)/*.[eE][xX][eE] bin-win32
-	sed 's/$$//' <README.html >bin-win32/README.html
-	sed 's/$$//' <BUGS >bin-win32/BUGS
-	sed 's/$$//' <COPYING >bin-win32/COPYING
-	cp --recursive data bin-win32
-	cp --recursive doc bin-win32
-	chmod a+rw bin-win32/* bin-win32/*/* bin-win32/data/*/*
-	rm -rf bin-win32/data/RCS
-	rm -rf bin-win32/doc/RCS
-	showrgb | sed 's/ *\([0-9]\+\) *\([0-9]\+\) *\([0-9]\+\)[ 	]\+\(.*\)/\1	\2	\3	\4/; s/ //g' | tr '[A-Z]' '[a-z]' | sort -u +3 >bin-win32/data/rgb.txt
-	for i in doc/*.html; do sed 's/<title>Elvis[^ ]*/<title>Elvis-$(VERSION)/;s/ELVIS[^ <]*</ELVIS-$(VERSION)</' $$i >bin-win32/$$i; done
-	for i in doc/*.man; do sed 's/Elvis 2\.[0-9x][0-9a-z-]*/Elvis $(VERSION)/' $$i >bin-win32/$$i; done
-	sed 's/$$//' <doc/printdoc.bat >bin-win32/doc/printdoc.bat
-	sed 's/$$//' <doc/license.html >bin-win32/doc/license.html
-	sed 's/$$//' </usr/share/dict/words >bin-win32/data/words
-	(cd bin-win32/data/icons; xpm2ico *.xpm)
-	(cd bin-win32; tar czf ../$(DISTRIB)-win32.tar.gz *)
-
-$(DISTRIB)-msdos.tar.gz: $(DOSEXE)
-	rm -rf bin-msdos
-	mkdir bin-msdos
-	cp $(DOSEXE)/*.[eE][xX][eE] bin-msdos
-	sed 's/$$//' <README.html >bin-msdos/README.html
-	sed 's/$$//' <BUGS >bin-msdos/BUGS
-	sed 's/$$//' <COPYING >bin-msdos/COPYING
-	cp --recursive data bin-msdos
-	cp --recursive doc bin-msdos
-	chmod a+rw bin-msdos/* bin-msdos/*/* bin-msdos/data/*/*
-	rm -rf bin-msdos/data/RCS
-	rm -rf bin-msdos/doc/RCS
-	for i in doc/*.html; do sed 's/<title>Elvis[^ ]*/<title>Elvis-$(VERSION)/;s/ELVIS[^ <]*</ELVIS-$(VERSION)</' $$i >bin-msdos/$$i; done
-	for i in doc/*.man; do sed 's/Elvis 2\.[0-9x][0-9a-z-]*/Elvis $(VERSION)/' $$i >bin-msdos/$$i; done
-	sed 's/$$//' <doc/printdoc.bat >bin-msdos/doc/printdoc.bat
-	sed 's/$$//' <doc/license.html >bin-msdos/doc/license.html
-	(cd bin-msdos; tar czf ../$(DISTRIB)-msdos.tar.gz *)
-
-$(DISTRIB)-os2.tar.gz: $(OS2EXE)
-	rm -rf bin-os2
-	mkdir bin-os2
-	cp $(OS2EXE)/*.[eE][xX][eE] bin-os2
-	sed 's/$$//' <README.html >bin-os2/README.html
-	sed 's/$$//' <BUGS >bin-os2/BUGS
-	sed 's/$$//' <COPYING >bin-os2/COPYING
-	cp --recursive data bin-os2
-	cp --recursive doc bin-os2
-	for i in doc/*.html; do sed 's/<title>Elvis[^ ]*/<title>Elvis-$(VERSION)/;s/ELVIS[^ <]*</ELVIS-$(VERSION)</' $$i >bin-os2/$$i; done
-	for i in doc/*.man; do sed 's/Elvis 2\.[0-9x][0-9a-z-]*/Elvis $(VERSION)/' $$i >bin-os2/$$i; done
-	sed 's/$$//' <doc/printdoc.bat >bin-os2/doc/printdoc.bat
-	sed 's/$$//' <doc/printdoc.bat >bin-os2/doc/printdoc.cmd
-	sed 's/$$//' <doc/license.html >bin-os2/doc/license.html
-	sed 's/$$//' </usr/dict/words >bin-os2/data/words
-	(cd bin-win32/data/icons; xpm2ico *.xpm)
-	cp osos2/elvis.INF bin-os2/data/
-	cp osos2/README.os2 bin-os2/doc/
-	chmod a-w bin-os2/data/* bin-os2/doc/*
-	(cd bin-os2; tar czf ../$(DISTRIB)-os2.tar.gz *)
 
 doc$(SLASH)elvistrs.msg: $(SRCS)
 	sed -n '/%[cds]/d; s/\[[a-zA-Z]*\]//; s/\\\\/\\/g; s/.*msg(MSG_[A-Z]*, "\([^ 	"][^"]*\)".*/\1/p' *.c os*$(SLASH)*.c gui*$(SLASH)*.c | sort -u >doc$(SLASH)elvistrs.msg
