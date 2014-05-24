@@ -66,7 +66,6 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		syscall_dispatch((void *)registers.eax, (void *) instr_ptr);
 	} else if (int_id == 32) {
 		i386_interrupt_done (int_id - 32);
-		//debugcon_printf("tick tock tick tock\n");
 		schedule();
 	} else if (int_id == 33) {
 		i386_interrupt_done (int_id - 32);

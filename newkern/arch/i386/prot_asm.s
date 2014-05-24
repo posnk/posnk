@@ -27,7 +27,11 @@ i386_tss_flush:
 i386_protection_user_call:
      mov esi, [esp + 4]
      mov edi, [esp + 8]
+     pushf
 
+     mov ebx, [esp]
+     or  ebx, 0x200
+     
      mov ax,0x33
      mov ds,ax
      mov es,ax 
@@ -36,7 +40,7 @@ i386_protection_user_call:
  
      push 0x33  ;user data segment with bottom 2 bits set for ring 3
      push edi 
-     pushf
+     push ebx
      push 0x2B  ;user code segment with bottom 2 bits set for ring 3
      push esi 
      iret

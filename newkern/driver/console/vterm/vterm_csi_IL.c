@@ -50,6 +50,7 @@ void interpret_csi_IL(vterm_t *vterm,int param[],int pcount)
          vterm->cells[i][j].attr=vterm->curattr;
       }
    }
+   vterm_invalidate_screen(vterm);
 
    return;
 }

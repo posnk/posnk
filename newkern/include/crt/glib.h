@@ -77,6 +77,11 @@ typedef gint32	GTime;
 /* Function defining other function key values*/
 #define    KEY_F(n)       (KEY_F0+(n))
 
+/* First function key (block of 64 follow) */
+#define    KEY_VT0         0633
+/* Function defining other function key values*/
+#define    KEY_VT(n)       (KEY_VT0+(n))
+
 #define KEY_CODE_YES	0400
 #define KEY_BREAK		0401
 #define KEY_MIN			0401

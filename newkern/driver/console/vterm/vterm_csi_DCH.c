@@ -38,11 +38,13 @@ void interpret_csi_DCH(vterm_t *vterm, int param[], int pcount)
       if(i+n < vterm->cols)
       {
          vterm->cells[vterm->crow][i]=vterm->cells[vterm->crow][i+n];
+	 vterm_invalidate_cell(vterm, vterm->crow, i);
       }
       else
       {
          vterm->cells[vterm->crow][i].ch=0x20;
          vterm->cells[vterm->crow][i].attr=vterm->curattr;
+	 vterm_invalidate_cell(vterm, vterm->crow, i);
       }
    }
 }

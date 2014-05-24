@@ -141,8 +141,8 @@ int kbdus_ctrl[128] =
     0,  /* Alt */
   ' ',  /* Space bar */
     0,  /* Caps lock */
-    KEY_F(1),   KEY_F(2),   KEY_F(3),   KEY_F(4),   KEY_F(5),   KEY_F(6),   KEY_F(7),   KEY_F(8),   KEY_F(9),
-    KEY_F(10),  /* < ... F10 */
+    KEY_VT(1),   KEY_VT(2),   KEY_VT(3),   KEY_VT(4),   KEY_VT(5),   KEY_VT(6),   KEY_VT(7),   KEY_VT(8),   KEY_VT(9),
+    KEY_VT(10),  /* < ... F10 */
     0,  /* 69 - Num lock*/
     0,  /* Scroll Lock */
     KEY_HOME,  /* Home key */

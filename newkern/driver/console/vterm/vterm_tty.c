@@ -42,6 +42,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 vterm_t *vterm_minor_terms;
 
+void vterm_tty_invalidate_screen(dev_t dev)
+{
+	vterm_invalidate_screen(&(vterm_minor_terms[MINOR(dev)]));
+}
+
 void vterm_post_key_tty(dev_t dev, int keycode)
 {
 	vterm_write_pipe(&(vterm_minor_terms[MINOR(dev)]), keycode);
@@ -66,9 +71,9 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 	dev_t minor;
 	vterm_minor_terms = heapmm_alloc(sizeof(vterm_t) * minor_count);
 	for (minor = 0; minor < (dev_t) minor_count; minor++) {
+		vterm_minor_terms[minor].device_id = MAKEDEV(major, minor);
 		vterm_init(&(vterm_minor_terms[minor]), VTERM_FLAG_VT100, rows, cols);
 		//vterm_minor_terms[minor].ttyname   = "console";
-		vterm_minor_terms[minor].device_id = MAKEDEV(major, minor);
 	}
 	tty_register_driver(name, major, minor_count, &vterm_putc);
 }

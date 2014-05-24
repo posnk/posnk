@@ -1,6 +1,6 @@
 /* This is a generated file, don't edit */
 
-#define NUM_APPLETS 50
+#define NUM_APPLETS 49
 
 const char applet_names[] ALIGN1 = ""
 "ash" "\0"
@@ -48,7 +48,6 @@ const char applet_names[] ALIGN1 = ""
 "tty" "\0"
 "uncompress" "\0"
 "unzip" "\0"
-"vi" "\0"
 "wc" "\0"
 "whoami" "\0"
 "yes" "\0"
@@ -102,7 +101,6 @@ true_main,
 tty_main,
 uncompress_main,
 unzip_main,
-vi_main,
 wc_main,
 whoami_main,
 yes_main,
@@ -157,10 +155,9 @@ const uint16_t applet_nameofs[] ALIGN2 = {
 0x00df,
 0x00ea,
 0x00f0,
-0x00f3,
-0x30f6,
-0x30fd,
-0x0101,
+0x30f3,
+0x30fa,
+0x00fe,
 };
 
 const uint8_t applet_install_loc[] ALIGN1 = {
@@ -188,5 +185,5 @@ const uint8_t applet_install_loc[] ALIGN1 = {
 0x11,
 0x11,
 0x11,
-0x11,
+0x01,
 };

@@ -7,8 +7,6 @@
 #include <sys/utime.h>
 #include <_ansi.h>
 #include "posnk_sc.h"
-#undef errno
-extern int errno;
 
 
 int
@@ -53,12 +51,31 @@ _DEFUN (lchown, (path, owner, group),
 }
 
 int
+_DEFUN (pipe2, (pipefd, flags),
+        int pipefd[2] _AND
+        int   flags)
+{
+   int a[] = {(uint32_t) pipefd,0,0,0};
+   int b[] = {(uint32_t) 0,0,0,0};
+   return (int) nk_do_syscall(SYS_PIPE, a, b); 
+}
+
+int
 _DEFUN (pipe, (pipefd),
         int pipefd[2])
 {
    int a[] = {(uint32_t) pipefd,0,0,0};
    int b[] = {(uint32_t) 0,0,0,0};
    return (int) nk_do_syscall(SYS_PIPE, a, b); 
+}
+
+int
+_DEFUN (dup, (old),
+        int old)
+{
+   int a[] = {(uint32_t) old, 0,0,0};
+   int b[] = {(uint32_t) 0,0,0,0};
+   return (int) nk_do_syscall(SYS_DUP, a, b); 
 }
 
 int

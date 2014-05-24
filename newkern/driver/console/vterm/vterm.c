@@ -37,8 +37,12 @@ void vterm_init(vterm_t *vterm, guint flags, int rows, int cols)
    vterm->cols=cols;
 
    vterm->cells = heapmm_alloc(rows * sizeof(vterm_cell_t *));
-   for (row = 0; row < rows; row++)
+   for (row = 0; row < rows; row++){
        vterm->cells[row] = heapmm_alloc(cols * sizeof(vterm_cell_t));
+	
+   }
+   vterm->colors = 0x07;
+   vterm->curattr = 0x07;
    // initialize all cells with defaults
    vterm_erase(vterm);
 
@@ -48,12 +52,12 @@ void vterm_init(vterm_t *vterm, guint flags, int rows, int cols)
    vterm->state = 0;
    // default active colors
    //TODO:vterm->curattr=COLOR_PAIR(vterm->colors);
-   vterm->curattr = 0x07;
    // initial scrolling area is the whole window
    vterm->scroll_min=0;
    vterm->scroll_max=rows-1;
    vterm->fg = 7;
    vterm->bg = 0;
+   vterm->curattr = 0x07;
 
    vterm->flags=flags;
 

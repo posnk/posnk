@@ -72,6 +72,9 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_LSTAT	41
 #define SYS_SYMLINK	42
 #define SYS_GETDENTS	43
+#define SYS_IOCTL	44
+#define SYS_SETPGRP	45
+#define SYS_GETSID	46
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif

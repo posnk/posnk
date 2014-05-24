@@ -46,13 +46,15 @@
 #include <sys/types.h>
 #ifndef major
 //# include <sys/sysmacros.h>
-#define MINORBITS       20
+#define MINORBITS       8
 #define MINORMASK       ((1U << MINORBITS) - 1)
 
-#define major(dev)      ((unsigned int) ((dev) >> MINORBITS))
-#define minor(dev)      ((unsigned int) ((dev) & MINORMASK))
-#define MKDEV(ma,mi)    (((ma) << MINORBITS) | (mi))
-#define makedev(ma,mi)    (((ma) << MINORBITS) | (mi))
+#define major(d) ((d & 0xFF00) >> 8)
+#define minor(d) (d & 0xFF)
+
+#define MKDEV(m,n) (((m << 8) & 0xFF00) | (n & 0xFF))
+
+#define makedev(m,n) (((m << 8) & 0xFF00) | (n & 0xFF))
 
 
 #endif

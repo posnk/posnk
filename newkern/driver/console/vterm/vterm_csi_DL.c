@@ -51,6 +51,9 @@ void interpret_csi_DL(vterm_t *vterm,int param[],int pcount)
             vterm->cells[i][j].attr=vterm->curattr;
          }
       }
+      for(j=0;j < vterm->cols;j++)
+         vterm_invalidate_cell(vterm, i, j);
+	
    }
 
    return;

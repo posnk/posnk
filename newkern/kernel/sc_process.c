@@ -109,6 +109,28 @@ uint32_t sys_setpgrp(__attribute__((__unused__)) uint32_t param[4], __attribute_
 	return 0;
 }
 
+uint32_t sys_setpgid(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+{
+	process_info_t *task;
+	pid_t pid = (pid_t) param[0];//TODO: FIX PERMS
+	pid_t pgid = (pid_t) param[1];
+	if (pid == 0)
+		pid = scheduler_current_task->pid;
+	if (pgid == 0)
+		pgid = pid;
+	if (pgid < 0) {
+		syscall_errno = EINVAL;
+		return (uint32_t) -1;
+	}
+	task = process_get(pid);
+	if (!task) {
+		syscall_errno = ESRCH;
+		return (uint32_t) -1;	
+	}
+	task->pgid = pgid;
+	return 0;
+}
+
 uint32_t sys_exit(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
 	scheduler_current_task->state = PROCESS_KILLED;

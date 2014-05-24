@@ -14,5 +14,5 @@ typedef struct vgacon_vc {
 	volatile vga_vterm_screen_character_t *video_buffer;
 } vga_vterm_vc_t;
 
-void vga_vterm_write_crtc_register(char id,char val);
+void vterm_vga_write_crtc_register(char id,char val);
 #endif

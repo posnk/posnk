@@ -62,4 +62,5 @@ void interpret_csi_ED(vterm_t *vterm, int param[], int pcount)
          vterm->cells[r][c].attr=vterm->curattr;   // set to current attributes.
       }
    }
+   vterm_invalidate_screen(vterm);
 }

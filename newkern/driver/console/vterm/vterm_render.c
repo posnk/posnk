@@ -52,6 +52,7 @@ void vterm_put_char(vterm_t *vterm,chtype c)
 
    vterm->cells[vterm->crow][vterm->ccol].attr=vterm->curattr;
    vterm->ccol++;
+   vterm_invalidate_cell(vterm, vterm->crow, vterm->ccol - 1);
 
    return;
 }
@@ -169,7 +170,7 @@ void vterm_render(vterm_t *vterm,const char *data,int len)
         	vterm_put_char(vterm,*data);
       }
    }
-   vterm_update_screen(vterm);
+   vterm_invalidate_cursor(vterm);
 }
 
 

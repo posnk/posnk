@@ -31,6 +31,8 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c);
 void try_interpret_escape_seq(vterm_t *vterm);
 
 void vterm_handle_bell(vterm_t *vterm);
-void vterm_update_screen(vterm_t *vterm);
+void vterm_invalidate_cell(vterm_t *vt, int row, int col);
+void vterm_invalidate_screen(vterm_t *vt);
+void vterm_invalidate_cursor(vterm_t *vt);
 #endif
 

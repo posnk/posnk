@@ -222,6 +222,7 @@ void i386_idle_task()
 {	
 	scheduler_set_as_idle();	
 	strcpy(scheduler_current_task->name,"idle task");
+	asm ("sti");
 		
 	for (;;)
 		asm ("hlt;");

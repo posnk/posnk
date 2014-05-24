@@ -15,27 +15,3 @@ struct hostent* FAST_FUNC xgethostbyname(const char *name)
 		bb_herror_msg_and_die("%s", name);
 	return retval;
 }*/
-
-int setuid(int uid) {
-	return 0;
-}
-
-int setgid(int gid) {
-	return 0;
-}
-
-int setresuid(int uid) {
-	return 0;
-}
-
-int setresgid(int gid) {
-	return 0;
-}
-
-int getgrgid(){
-	return getgid();
-}
-
-int setpgid(int gid) {
-	return 0;
-}

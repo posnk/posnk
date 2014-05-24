@@ -47,7 +47,8 @@ void vterm_scroll_down(vterm_t *vterm)
 
    /* clear last row of the scrolling region */
    vterm_erase_row(vterm,vterm->scroll_max);
-
+vterm->colors & A_COLOR;
+   vterm_invalidate_screen(vterm);
    return;
 }
 
@@ -72,6 +73,7 @@ void vterm_scroll_up(vterm_t *vterm)
 
    /* clear first row of the scrolling region */
    vterm_erase_row(vterm,vterm->scroll_min);
+   vterm_invalidate_screen(vterm);
 
    return;
 }

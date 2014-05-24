@@ -163,6 +163,32 @@ _DEFUN (setpgrp, (),
    return (int) nk_do_syscall(SYS_SETPGRP, a, b); 
 }
 
+int setuid(int uid) {
+	return 0;
+}
+
+int setgid(int gid) {
+	return 0;
+}
+
+int setresuid(int uid) {
+	return 0;
+}
+
+int setresgid(int gid) {
+	return 0;
+}
+
+int getgrgid(){
+	return getgid();
+}
+
+int setpgid(pid_t pid, pid_t pgid) {
+   int a[] = {(int)pid,(int)pgid,0,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SETPGID, a, b); 
+}
+
 int killpg(int pgrp, int sig)
 {
 	return kill(-pgrp, sig);

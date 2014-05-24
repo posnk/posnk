@@ -50,6 +50,18 @@ _DEFUN (lchown, (path, owner, group),
    return (int) nk_do_syscall(SYS_CHOWN, a, b); 
 }
 
+void sync(){};
+
+int
+_DEFUN (pipe2, (pipefd, flags),
+        int pipefd[2] _AND
+        int   flags)
+{
+   int a[] = {(uint32_t) pipefd, (uint32_t) flags,0,0};
+   int b[] = {(uint32_t) 0,0,0,0};
+   return (int) nk_do_syscall(SYS_PIPE2, a, b); 
+}
+
 int
 _DEFUN (pipe, (pipefd),
         int pipefd[2])
@@ -57,6 +69,15 @@ _DEFUN (pipe, (pipefd),
    int a[] = {(uint32_t) pipefd,0,0,0};
    int b[] = {(uint32_t) 0,0,0,0};
    return (int) nk_do_syscall(SYS_PIPE, a, b); 
+}
+
+int
+_DEFUN (dup, (old),
+        int old)
+{
+   int a[] = {(uint32_t) old, 0,0,0};
+   int b[] = {(uint32_t) 0,0,0,0};
+   return (int) nk_do_syscall(SYS_DUP, a, b); 
 }
 
 int

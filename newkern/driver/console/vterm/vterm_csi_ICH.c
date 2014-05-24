@@ -35,12 +35,14 @@ void interpret_csi_ICH(vterm_t *vterm,int param[],int pcount)
    for (i=vterm->cols-1;i >= vterm->ccol+n;i--)
    {
       vterm->cells[vterm->crow][i]=vterm->cells[vterm->crow][i-n];
+      vterm_invalidate_cell(vterm, vterm->crow, i);
    }
 
    for(i=vterm->ccol;i < vterm->ccol+n;i++)
    {
       vterm->cells[vterm->crow][i].ch=0x20;
       vterm->cells[vterm->crow][i].attr = vterm->curattr;
+      vterm_invalidate_cell(vterm, vterm->crow, i);
    }
 
    return;

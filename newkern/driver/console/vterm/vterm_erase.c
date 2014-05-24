@@ -38,7 +38,8 @@ void vterm_erase(vterm_t *vterm)
       x=i%vterm->cols;
       y=(int)(i/vterm->cols);
       vterm->cells[y][x].ch=0x20;
-      vterm->cells[y][x].attr=0;//COLOR_PAIR(vterm->colors);
+      vterm->cells[y][x].attr=vterm->colors & A_COLOR;
+      vterm_invalidate_cell(vterm, y, x);
    }
 
    return;
@@ -55,7 +56,8 @@ void vterm_erase_row(vterm_t *vterm,gint row)
    for(i=0;i < vterm->cols;i++)
    {
       vterm->cells[row][i].ch=0x20;
-      vterm->cells[row][i].attr=0;//TODO:COLOR_PAIR(vterm->colors);
+      vterm->cells[row][i].attr=vterm->colors & A_COLOR;
+      vterm_invalidate_cell(vterm, row, i);
    }
 
    return;
@@ -86,7 +88,8 @@ void vterm_erase_col(vterm_t *vterm,gint col)
    for(i=0;i < vterm->rows;i++)
    {
       vterm->cells[i][col].ch=0x20;
-      vterm->cells[i][col].attr=0;//COLOR_PAIR(vterm->colors);
+      vterm->cells[i][col].attr=vterm->colors & A_COLOR;
+      vterm_invalidate_cell(vterm, i, col);
    }
 
    return;

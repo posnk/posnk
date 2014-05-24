@@ -21,8 +21,8 @@ volatile vga_vterm_screen_character_t *vga_vterm_get_text_video_memory(){
 void vga_vterm_move_cursor(vga_vterm_vc_t *vc)
 {
 	int offset = (vc->cursor_x + (vc->cursor_y * 80));
-	vga_vterm_write_crtc_register(0x0E,offset >> 8);
-	vga_vterm_write_crtc_register(0x0F,offset);
+	vterm_vga_write_crtc_register(0x0E,offset >> 8);
+	vterm_vga_write_crtc_register(0x0F,offset);
 }
 
 void vterm_vga_position(vga_vterm_vc_t *vc, int x, int y,int move_cursor_)
@@ -33,20 +33,24 @@ void vterm_vga_position(vga_vterm_vc_t *vc, int x, int y,int move_cursor_)
 		vga_vterm_move_cursor(vc);
 }
 
-void vga_vterm_write_crtc_register(char id,char val){
+void vterm_vga_write_crtc_register(char id,char val){
 	i386_outb(0x3D4,id);
 	i386_outb(0x3D5,val);
 }
 
-inline char vga_vterm_map_attr(short attr)
+inline char vga_vterm_map_attr(int attr)
 {
 	char fg, bg;
 	fg = (char) vga_vterm_colour_map[attr & 0xF];
 	bg = (char) vga_vterm_colour_map[(attr & 0xF0) >> 4];
+	if (attr & A_BOLD)
+		fg |= 8;
+	//if (attr & A_BOLD)
+	//	bg |= 8;
 	return fg | (bg << 4);
 }
 
-void vterm_update_screen(vterm_t *vt)
+void vterm_invalidate_screen(vterm_t *vt)
 {
 	int row, col;
 	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];
@@ -60,13 +64,47 @@ void vterm_update_screen(vterm_t *vt)
 	vterm_vga_position(vc, vt->ccol, vt->crow, 1);
 }
 
+void vterm_invalidate_cell(vterm_t *vt, int row, int col)
+{
+	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];
+	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
+	cpt = (void *)(((uintptr_t)vc->video_buffer) + (col + row * 80)*2);
+	cpt->character = (char) vt->cells[row][col].ch;
+	cpt->attribute = (char) vga_vterm_map_attr(vt->cells[row][col].attr);
+}
+
+void vterm_invalidate_cursor(vterm_t *vt)
+{
+	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];	
+	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
+	cpt = (void *)(((uintptr_t)vc->video_buffer) + (vt->ccol + vt->crow * 80)*2);
+	cpt->attribute = (char) vga_vterm_map_attr(vt->curattr);
+	vterm_vga_position(vc, vt->ccol, vt->crow, 1);
+}
+
 void vterm_handle_bell(vterm_t *vt)
 {
 }
+
+void vterm_tty_invalidate_screen(dev_t dev);
+void vterm_vga_switch_vc(int vc)
+{
+	short offset = (short)(vterm_vga_all_vcs[vc].video_buffer - vga_vterm_get_text_video_memory());
+	vterm_tty_invalidate_screen(MAKEDEV(2, vc));
+        vterm_vga_write_crtc_register(0x0C,offset >> 8);
+        vterm_vga_write_crtc_register(0x0D,(char) offset & 0xFF);
+
+	vterm_vga_current_vc = vc;
+
+}
+
 void vterm_post_key_tty(dev_t dev, int keycode);
 void con_handle_key(int keycode)
 {
-	vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode);
+	if (keycode > KEY_VT0){
+		vterm_vga_switch_vc(keycode - KEY_VT(1));
+	} else
+		vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode);
 }
 
 void vterm_vga_init(){
@@ -78,6 +116,6 @@ void vterm_vga_init(){
                 vterm_vga_all_vcs[vc_id].video_buffer = (vga_vterm_screen_character_t *)
 			( ((uint32_t)vga_vterm_get_text_video_memory()) + 80 * 25 * 2 * vc_id);
         }
-
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
+	vterm_vga_switch_vc(0);
 }

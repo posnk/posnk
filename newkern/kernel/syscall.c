@@ -68,7 +68,8 @@ char *syscall_names[] =
 	"getdents",
 	"ioctl",
 	"setpgrp",
-	"getsid"
+	"getsid",
+	"setpgid"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -187,4 +188,5 @@ void syscall_init()
 	syscall_register(SYS_IOCTL, &sys_ioctl);
 	syscall_register(SYS_GETSID, &sys_getsid);
 	syscall_register(SYS_SETPGRP, &sys_setpgrp);
+	syscall_register(SYS_SETPGID, &sys_setpgid);
 }
