@@ -184,7 +184,7 @@ int getgrgid(){
 }
 
 int setpgid(pid_t pid, pid_t pgid) {
-   int a[] = {pid,pgid,0,0};
+   int a[] = {(int)pid,(int)pgid,0,0};
    int b[] = {0,0,0,0};
    return (int) nk_do_syscall(SYS_SETPGID, a, b); 
 }
@@ -228,9 +228,31 @@ unsigned int alarm(unsigned int seconds)
 	return 0;
 }
 
+int nanosleep(const struct timespec *req, struct timespec *rem)
+{
+	sleep((unsigned int)req->tv_sec);
+	return 0;
+}
+
+int stime(time_t *t)
+{
+   int a[] = {(uint32_t) t, 0,0,0};
+   int b[] = {0,0,0,0};
+   return (void *) nk_do_syscall(SYS_STIME, a, b); 
+}
+
 unsigned int sleep(unsigned int seconds)
 {
-	return 0;
+   int a[] = {(uint32_t) seconds, 0,0,0};
+   int b[] = {0,0,0,0};
+   return (void *) nk_do_syscall(SYS_SLEEP, a, b); 
+}
+
+int usleep(useconds_t usec)
+{
+   int a[] = {(uint32_t) usec, 0,0,0};
+   int b[] = {0,0,0,0};
+   return (void *) nk_do_syscall(SYS_USLEEP, a, b); 
 }
 
 int

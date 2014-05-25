@@ -243,7 +243,7 @@ int fchdir(int fd)
 
 mode_t umask(mode_t mask)
 {
-   int a[] = {(uint32_t) mask,0,0};
+   int a[] = {(uint32_t) mask,0,0,0};
    int b[] = {0,0,0,0};
    return (mode_t) nk_do_syscall(SYS_UMASK, a, b);
 
@@ -252,6 +252,10 @@ mode_t umask(mode_t mask)
 
 int gettimeofday(struct timeval *tv, void *tz)
 {
+	int a[] = {0,0,0,0};
+	int b[] = {0,0,0,0};
+	
+	tv->tv_sec = (time_t) nk_do_syscall(SYS_TIME, a, b);
 	return 0;
 }
 

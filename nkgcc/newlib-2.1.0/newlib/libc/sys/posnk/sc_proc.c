@@ -230,7 +230,29 @@ unsigned int alarm(unsigned int seconds)
 
 unsigned int sleep(unsigned int seconds)
 {
+   int a[] = {(uint32_t) seconds, 0,0,0};
+   int b[] = {0,0,0,0};
+   return nk_do_syscall(SYS_SLEEP, a, b); 
+}
+
+int nanosleep(const struct timespec *req, struct timespec *rem)
+{
+	sleep((unsigned int)req->tv_sec);
 	return 0;
+}
+
+int stime(time_t *t)
+{
+   int a[] = {(uint32_t) t, 0,0,0};
+   int b[] = {0,0,0,0};
+   return nk_do_syscall(SYS_STIME, a, b); 
+}
+
+int usleep(useconds_t usec)
+{
+   int a[] = {(uint32_t) usec, 0,0,0};
+   int b[] = {0,0,0,0};
+   return nk_do_syscall(SYS_USLEEP, a, b); 
 }
 
 int

@@ -791,7 +791,7 @@ int main(int argc, char ** argv) {
 			printf("        Starting in %d...                \n", countdown_clock-k);
 
 			fflush(stdout);
-			//usleep(400000);
+			usleep(400000);
 			if (clear_screen) {
 				printf("\033[H"); /* Reset cursor */
 			} else {
@@ -903,9 +903,9 @@ int main(int argc, char ** argv) {
 			i = 0;
 		}
 		/* Wait */
-		//usleep(90000);
-		for (ss=0;ss<90000;ss++)
-			for(ww=0;ww<120;ww++);
+		usleep(90000);
+		//for (ss=0;ss<90000;ss++)
+		//	for(ww=0;ww<120;ww++);
 	}
 	return 0;
 }
