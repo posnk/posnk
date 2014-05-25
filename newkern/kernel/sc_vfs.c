@@ -161,6 +161,7 @@ int _sys_chmod(char *path, mode_t mode)
 		mode &= 0777;
 	inode->mode &= ~07777;
 	inode->mode |= mode & 07777;
+	inode->ctime = system_time;
 	return 0;
 }
 
@@ -202,6 +203,7 @@ int _sys_chown(char *path, uid_t owner, gid_t group)
 		inode->gid = group;
 	if (owner != 65535)
 		inode->uid = owner;
+	inode->ctime = system_time;
 	return 0;
 }
 
@@ -297,9 +299,9 @@ int _sys_stat(char *path, struct stat* buf)
 	buf->st_nlink = inode->hard_link_count;
 	buf->st_uid = inode->uid;
 	buf->st_gid = inode->gid;
-	buf->st_atime = 0; //TODO: Monitor file time
-	buf->st_mtime = 0; //TODO: Monitor file time
-	buf->st_ctime = 0; //TODO: Monitor file time
+	buf->st_atime = (time_t) inode->atime; 
+	buf->st_mtime = (time_t) inode->mtime;
+	buf->st_ctime = (time_t) inode->ctime;
 	return 0;
 }
 
@@ -411,9 +413,9 @@ int _sys_lstat(char *path, struct stat* buf)
 	buf->st_nlink = inode->hard_link_count;
 	buf->st_uid = inode->uid;
 	buf->st_gid = inode->gid;
-	buf->st_atime = 0; //TODO: Monitor file time
-	buf->st_mtime = 0; //TODO: Monitor file time
-	buf->st_ctime = 0; //TODO: Monitor file time
+	buf->st_atime = (time_t) inode->atime; 
+	buf->st_mtime = (time_t) inode->mtime;
+	buf->st_ctime = (time_t) inode->ctime;
 	return 0;
 }
 

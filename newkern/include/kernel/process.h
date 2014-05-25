@@ -12,6 +12,16 @@
 #ifndef __KERNEL_PROCESS_H__
 #define __KERNEL_PROCESS_H__
 
+#include <stddef.h>
+#include <stdint.h>
+#include <sys/types.h>
+
+#include "kernel/paging.h"
+#include "kernel/synch.h"
+#include "kernel/time.h"
+#include "kernel/vfs.h"
+#include "util/llist.h"
+
 #define PROCESS_RUNNING 	0
 #define PROCESS_WAITING 	1
 #define PROCESS_READY		2
@@ -31,16 +41,6 @@
 #define PROCESS_CHILD_KILLED	0
 #define PROCESS_CHILD_STOPPED	1
 #define PROCESS_CHILD_CONTD	2
-
-#include <stddef.h>
-#include <stdint.h>
-#include <sys/types.h>
-
-#include "kernel/paging.h"
-#include "kernel/synch.h"
-#include "kernel/time.h"
-#include "kernel/vfs.h"
-#include "util/llist.h"
 
 #define PROCESS_MMAP_FLAG_WRITE		(1<<1)
 #define PROCESS_MMAP_FLAG_FILE		(1<<2)
@@ -122,6 +122,8 @@ struct process_info {
 	void		*arch_state;
 	int		 state;
 	semaphore_t	*waiting_on;
+	ktime_t		 wait_timeout_u;//In microseconds
+	ktime_t		 wait_timeout_s;//In microseconds
 	semaphore_t	*child_sema;
 	llist_t		*child_events;
 

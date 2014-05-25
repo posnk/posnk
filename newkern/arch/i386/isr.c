@@ -18,6 +18,7 @@
 #include "kernel/system.h"
 #include "kernel/syscall.h"
 #include "kernel/scheduler.h"
+#include "kernel/time.h"
 #include "util/debug.h"
 
 int i386_exception_table[] = 
@@ -66,14 +67,12 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		syscall_dispatch((void *)registers.eax, (void *) instr_ptr);
 	} else if (int_id == 32) {
 		i386_interrupt_done (int_id - 32);
-		schedule();
+		timer_interrupt();
 	} else if (int_id == 33) {
 		i386_interrupt_done (int_id - 32);
-		//debugcon_printf("tick tock tick tock\n");
 		kbd_isr();
 	} else if (int_id == 35) {
-		i386_interrupt_done (int_id - 32);
-		//debugcon_printf("tick tock tick tock\n");
+		i386_interrupt_done (int_id - 32);;
 		sercon_isr();
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */

@@ -36,6 +36,10 @@ void scheduler_init();
 
 void scheduler_wait_on(semaphore_t *semaphore);
 
+int scheduler_wait_time(ktime_t time);
+
+int scheduler_wait_micros(ktime_t microtime);
+
 int scheduler_fork();
 
 void schedule();

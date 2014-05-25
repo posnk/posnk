@@ -79,7 +79,8 @@ void vterm_invalidate_cursor(vterm_t *vt)
 	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
 	cpt = (void *)(((uintptr_t)vc->video_buffer) + (vt->ccol + vt->crow * 80)*2);
 	cpt->attribute = (char) vga_vterm_map_attr(vt->curattr);
-	vterm_vga_position(vc, vt->ccol, vt->crow, 1);
+	if (MINOR(vt->device_id) == vterm_vga_current_vc)
+		vterm_vga_position(vc, vt->ccol, vt->crow, 1);
 }
 
 void vterm_handle_bell(vterm_t *vt)

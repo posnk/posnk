@@ -310,9 +310,9 @@ int _sys_fstat(int fd, struct stat* buf)
 	buf->st_nlink = ptr->info->inode->hard_link_count;
 	buf->st_uid = ptr->info->inode->uid;
 	buf->st_gid = ptr->info->inode->gid;
-	buf->st_atime = 0; //TODO: Monitor file time
-	buf->st_mtime = 0; //TODO: Monitor file time
-	buf->st_ctime = 0; //TODO: Monitor file time
+	buf->st_atime = (time_t) ptr->info->inode->atime; 
+	buf->st_mtime = (time_t) ptr->info->inode->mtime;
+	buf->st_ctime = (time_t) ptr->info->inode->ctime;
 	return 0;
 }
 

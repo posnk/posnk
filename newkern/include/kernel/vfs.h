@@ -13,6 +13,7 @@
 #include "kernel/synch.h"
 #include "kernel/permissions.h"
 #include "kernel/pipe.h"
+#include "kernel/time.h"
 #include "util/llist.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -55,6 +56,10 @@ struct inode {
 	uint32_t 	 usage_count;
 	/* Content */
 	off_t	 	 size;	
+	/* Access times */
+	ktime_t		 atime;
+	ktime_t		 mtime;
+	ktime_t		 ctime;
 };
 
 struct dirent {

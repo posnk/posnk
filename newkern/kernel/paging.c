@@ -75,6 +75,8 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, void *state, size_t 
 			/* Kernel heap, check whether we have previously swapped out this page */
 			//TODO: Swapping, for now: PANIC!!!
 			//TODO: PANIC!
+			debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+			exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
 		} else if (addr < 0xC0000000){
 			/* Application space page fault */
 			//TODO: Check for dynamic libraries, mmapped files and swapped out pages

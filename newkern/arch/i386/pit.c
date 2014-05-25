@@ -1,57 +1,46 @@
-#include "pit.h"
-#include "dri.h"
-#include "x86.h"
-uint32_t _pit_ticks = 0;
+/* 
+ * arch/i386/pit.c
+ *
+ * Part of P-OS kernel.
+ *
+ * Written by Peter Bosch <peterbosc@gmail.com>
+ *
+ * Changelog:
+ * 2010       - Created
+ * 24-05-2014 - Cleaned up
+ */
 
-void x86_pit_isr (registers_t regs) {
-	//! increment tick count
-	_pit_ticks++;
+
+#include "arch/i386/pit.h"
+#include "arch/i386/x86.h"
+#include "kernel/time.h"
+
+uint8_t i386_pit_data_ports[] = {I386_PIT_REG_COUNTER0, I386_PIT_REG_COUNTER1, I386_PIT_REG_COUNTER2};
+uint8_t i386_pit_ocw_ctrs[]   = {I386_PIT_OCW_COUNTER0, I386_PIT_OCW_COUNTER1, I386_PIT_OCW_COUNTER2};
+
+void i386_pit_send_command (uint8_t cmd) {
+	i386_outb (I386_PIT_REG_COMMAND, cmd);
 }
 
-void x86_pit_send_command (uint8_t cmd) {
-	_outp (I86_PIT_REG_COMMAND, cmd);
+void i386_pit_send_data (uint8_t counter, uint8_t data) {
+	i386_outb (i386_pit_data_ports[counter], data);
 }
 
-//! send data to a counter
-void x86_pit_send_data (uint8_t data, uint8_t counter) {
+void i386_pit_setup(uint32_t freq, int counter, uint8_t mode) {
 
-	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
-		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
-
-	_outp (port, data);
-}
-
-//! read data from counter
-uint8_t x86_pit_read_data (uint16_t counter) {
-
-	uint8_t	port= (counter==I86_PIT_OCW_COUNTER_0) ? I86_PIT_REG_COUNTER0 :
-		((counter==I86_PIT_OCW_COUNTER_1) ? I86_PIT_REG_COUNTER1 : I86_PIT_REG_COUNTER2);
-
-	return _inp (port);
-}
-
-void pit_initialize(){
-	dri_register_interrupt(0,(dri_interrupt_handler) x86_pit_isr);
-}
-
-void pit_start_counter (uint32_t freq, uint8_t counter, uint8_t mode) {
-
-	uint16_t divisor = 1193180 / freq;
-	uint8_t ocw=0;
-
-	if (freq==0)
+	uint16_t divisor;
+	if (freq == 0)
 		return;
 
-	//! send operational command
-	ocw = (ocw & ~I86_PIT_OCW_MASK_MODE) | mode;
-	ocw = (ocw & ~I86_PIT_OCW_MASK_RL) | I86_PIT_OCW_RL_DATA;
-	ocw = (ocw & ~I86_PIT_OCW_MASK_COUNTER) | counter;
-	x86_pit_send_command (ocw);
+	if (counter == 0)
+		timer_freq = (ticks_t) freq;
 
+	if (counter == 0)
+		timer_mfreq = (ticks_t) (freq / 1000);
+	
+	divisor =  1193180 / freq;
+	i386_pit_send_command (mode | I386_PIT_OCW_RL_DATA | i386_pit_ocw_ctrs[counter]);
 	//! set frequency rate
-	x86_pit_send_data (divisor & 0xff, 0);
-	x86_pit_send_data ((divisor >> 8) & 0xff, 0);
-
-	//! reset tick count
-	_pit_ticks=0;
+	i386_pit_send_data(0, divisor & 0xff);
+	i386_pit_send_data(0, (divisor >> 8) & 0xff);
 }

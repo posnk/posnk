@@ -69,7 +69,11 @@ char *syscall_names[] =
 	"ioctl",
 	"setpgrp",
 	"getsid",
-	"setpgid"
+	"setpgid",
+	"time",
+	"usleep",
+	"sleep",
+	"stime"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -189,4 +193,8 @@ void syscall_init()
 	syscall_register(SYS_GETSID, &sys_getsid);
 	syscall_register(SYS_SETPGRP, &sys_setpgrp);
 	syscall_register(SYS_SETPGID, &sys_setpgid);
+	syscall_register(SYS_TIME, &sys_time);
+	syscall_register(SYS_USLEEP, &sys_usleep);
+	syscall_register(SYS_SLEEP, &sys_sleep);
+	syscall_register(SYS_STIME, &sys_stime);
 }

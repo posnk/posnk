@@ -135,6 +135,7 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 				return ENOSPC;
 			}
 			file->size = (off_t) tar_num_dec(header->size,12);
+			file->mtime = file->atime = file->ctime = (time_t) tar_num_dec(header->mtime, 12);
 			if (file->size != 0) {
 				status = vfs_write(file, 0, (void*)(tar_data + (uintptr_t)*pos), file->size, &wd_count, 0);
 				(*pos) += tar_round_up(file->size,512);

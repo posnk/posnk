@@ -16,6 +16,7 @@
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
 #include "arch/i386/pic.h"
+#include "arch/i386/pit.h"
 #include "arch/i386/x86.h"
 #include "arch/i386/idt.h"
 #include "arch/i386/paging.h"
@@ -210,7 +211,7 @@ void i386_init_stub()
 	char *ptr = NULL;
 	void *nullaa = &ptr;
 	//vgacon_clear_video();
-	int status = process_exec("/init", nullaa, nullaa);
+	int status = process_exec("/sbin/init", nullaa, nullaa);
 	if (status) {
 		earlycon_printf("Error executing init : %i\n",status);
 	}
@@ -258,6 +259,11 @@ void i386_kmain()
 	earlycon_puts("Initializing interrupt controller...");
 	i386_pic_initialize();
 	earlycon_puts("OK\n");
+
+	earlycon_puts("Initializing system timer...");
+	i386_pit_setup(59659, 0, I386_PIT_OCW_MODE_RATEGEN);
+	earlycon_puts("OK\n");
+
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
 	if (vfs_initialize(ramfs_create()))

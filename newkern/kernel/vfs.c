@@ -167,6 +167,8 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 				semaphore_up(inode->lock);
 				return ENOSPC;	
 			}
+			if (count)
+				inode->mtime = system_time;
 			semaphore_up(inode->lock);
 			(*read_size) = count;
 			return 0;
@@ -219,6 +221,8 @@ int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, s
 				semaphore_up(inode->lock);
 				return EIO;	
 			}
+			if (count)
+				inode->atime = system_time;
 			semaphore_up(inode->lock);
 			(*read_size) = count;
 			return 0;
@@ -270,6 +274,8 @@ int vfs_getdents(inode_t * inode , off_t file_offset, dirent_t * buffer, size_t 
 				semaphore_up(inode->lock);
 				return EIO;	
 			}
+			if (count)
+				inode->atime = system_time;
 			semaphore_up(inode->lock);
 			(*read_size) = count;
 			return 0;
@@ -310,6 +316,7 @@ int vfs_mkdir(char *path, mode_t mode)
 		vfs_unlink(path);
 		return ENOSPC;
 	}
+	parent->mtime = system_time;
 	semaphore_up(dir->lock);
 	return 0;
 }
@@ -356,6 +363,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	inode->uid = scheduler_current_task->uid;
 	inode->gid = scheduler_current_task->gid;
 	inode->lock = semaphore_alloc();
+	inode->atime = inode->mtime = inode->ctime = system_time;
 	if (S_ISFIFO(inode->mode)) {
 		inode->fifo = pipe_create();
 	}
@@ -418,6 +426,7 @@ int vfs_symlink(char *oldpath, char *path)
 	inode->if_dev = 0;
 	inode->uid = scheduler_current_task->uid; 
 	inode->gid = scheduler_current_task->gid; 
+	inode->atime = inode->mtime = inode->ctime = system_time;
 	inode->lock = semaphore_alloc();
 	strcpy(inode->link_path, oldpath);
 	if (!vfs_int_mknod(inode)) { //Push inode to storage
@@ -477,6 +486,7 @@ int vfs_unlink(char *path)
 	}
 	semaphore_up(parent->lock);
 	inode->hard_link_count--;
+	inode->ctime = system_time;
 	if (inode->hard_link_count == 0) {
 		/* File is orphaned */
 		vfs_int_rmnod(inode); //This might error but there is little we can do about that anyway
@@ -551,58 +561,12 @@ int vfs_link(char *oldpath, char *newpath)
 		semaphore_up(parent->lock);	
 		return ENOSPC;
 	}
+	parent->mtime = system_time;
 	semaphore_up(parent->lock);
 	inode->hard_link_count++;
+	inode->ctime = system_time;
 	semaphore_up(inode->lock);
 	return 0;	
-}
-
-inode_t *vfs_find_parent(char * path)
-{
-	inode_t * parent = scheduler_current_task->current_directory->inode;
-	inode_t * p = parent;
-	char * separator;
-	char * path_element;
-	char * remaining_path = path;
-	char * end_of_path;
-	size_t element_size;
-	dirent_t *dirent;
-	int element_count = 0;	
-	if ((path == NULL) || ((*path) == '\0'))
-		return NULL;
-	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
-	end_of_path = strchr(remaining_path, 0);
-	for (;;) {
-		separator = strchrnul(remaining_path, (int) '/');
-		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
-		if ((element_count == 0) && (element_size == 0)) // First character is /
-			parent = scheduler_current_task->root_directory->inode;
-		else {
-			strncpy(path_element, remaining_path, element_size);
-			path_element[element_size] = '\0';
-			dirent = vfs_find_dirent(parent, path_element);
-			p = parent;
-			if (dirent == NULL) {
-				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-				if ((separator + 1) >= end_of_path) {
-					return p;
-				} else if ((separator + 2) >= end_of_path) {
-					return p;
-				}
-				return NULL;
-			}
-			parent = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));			
-		}
-		remaining_path = separator + 1;
-		if (remaining_path >= end_of_path) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			return p;
-		}
-		if (!S_ISDIR(parent->mode)) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			return NULL;
-		}
-	}
 }
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
@@ -624,6 +588,87 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 		vfs_dir_cache_release(dirc->parent);
 	dirc->inode->usage_count--;
 	heapmm_free(dirc, sizeof(dir_cache_t));	
+}
+
+dir_cache_t *vfs_find_dirc_parent(char * path)
+{
+	dir_cache_t *dirc = scheduler_current_task->current_directory;
+	dir_cache_t *newc;
+	inode_t * parent = dirc->inode;
+	char * separator;
+	char * path_element;
+	char * remaining_path = path;
+	char * end_of_path;
+	size_t element_size;
+	dirent_t *dirent;
+	int element_count = 0;	
+	if ((path == NULL) || ((*path) == '\0'))
+		return NULL;
+	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
+	end_of_path = strchr(remaining_path, 0);
+	for (;;) {
+		separator = strchrnul(remaining_path, (int) '/');
+		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
+		if ((element_count == 0) && (element_size == 0)){ // First character is / 
+			dirc = scheduler_current_task->root_directory;
+			parent = dirc->inode;
+		} else if (element_size == 0) {
+			if ((separator + 2) >= end_of_path) {
+				dirc->usage_count++;
+				dirc->inode->usage_count++;
+				return dirc;
+			}
+		} else if ((element_size == 2) && !strncmp(remaining_path, "..", 2)) {
+			newc = dirc->parent;
+			if (newc != dirc) {		
+				if ((!dirc->usage_count))	
+					heapmm_free(dirc, sizeof(dir_cache_t));
+				parent = newc->inode;
+				dirc = newc;
+			}						
+		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
+		} else {
+			strncpy(path_element, remaining_path, element_size);
+			path_element[element_size] = '\0';
+			dirent = vfs_find_dirent(parent, path_element);
+			if (dirent == NULL) {
+				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+				if ((separator + 1) >= end_of_path) {
+					dirc->usage_count++;
+					dirc->inode->usage_count++;
+					return dirc;
+				} else if (dirc && dirc->usage_count == 0){
+					vfs_dir_cache_release(dirc->parent);
+					heapmm_free(dirc, sizeof(dir_cache_t));
+				}
+				return NULL;
+			}
+			dirc->inode->usage_count++;
+			dirc->usage_count++;
+			newc = heapmm_alloc(sizeof(dir_cache_t));
+			newc->parent = dirc;
+			newc->inode = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));
+			newc->usage_count = 0;
+			dirc = newc;		
+			parent = dirc->inode;
+		}
+		remaining_path = separator + 1;
+		if (remaining_path >= end_of_path) {
+			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+			dirc->parent->usage_count++;
+			dirc->parent->inode->usage_count++;
+			vfs_dir_cache_release(dirc);
+			return dirc->parent;
+		}
+		if (!S_ISDIR(parent->mode)) {
+			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+			if (dirc && dirc->usage_count == 0){
+				vfs_dir_cache_release(dirc->parent);
+				heapmm_free(dirc, sizeof(dir_cache_t));
+			}
+			return NULL;
+		}
+	}
 }
 
 dir_cache_t *vfs_find_dirc(char * path)
@@ -700,6 +745,17 @@ dir_cache_t *vfs_find_dirc(char * path)
 			return NULL;
 		}
 	}
+} 
+
+inode_t *vfs_find_parent(char * path)
+{ //TODO: Check for search permission
+	inode_t *ino;
+	dir_cache_t *dirc = vfs_find_dirc_parent(path);
+	if (!dirc)
+		return NULL;
+	ino = dirc->inode;
+	vfs_dir_cache_release(dirc);
+	return ino;
 } 
 
 inode_t *vfs_find_inode(char * path)

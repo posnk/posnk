@@ -23,7 +23,7 @@ INCLUDES = -I./include -I./include/crt
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -lgcc
+LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
@@ -50,10 +50,12 @@ kernel/elfloader.c \
 kernel/tar.c \
 kernel/syscall.c \
 kernel/streams.c \
+kernel/time.c \
 kernel/sc_process.c \
 kernel/sc_perm.c \
 kernel/sc_vfs.c \
 kernel/sc_streams.c \
+kernel/sc_time.c \
 kdbg/heapdbg.c \
 kdbg/kdbg.c \
 kdbg/kdbgio.c \
@@ -98,6 +100,7 @@ arch/i386/init.c \
 arch/i386/isr.c \
 arch/i386/idt.c \
 arch/i386/pic.c \
+arch/i386/pit.c \
 arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \

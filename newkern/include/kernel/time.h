@@ -16,4 +16,18 @@
 
 typedef uint64_t		ticks_t;
  
+typedef uint64_t		ktime_t;
+
+extern ticks_t timer_ticks;
+
+extern ticks_t timer_freq;
+
+extern ticks_t timer_mfreq;
+
+extern ktime_t system_time;
+
+extern ktime_t system_time_micros;
+
+void timer_interrupt();
+
  #endif
