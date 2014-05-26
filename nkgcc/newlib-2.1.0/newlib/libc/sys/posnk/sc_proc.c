@@ -164,11 +164,15 @@ _DEFUN (setpgrp, (),
 }
 
 int setuid(int uid) {
-	return 0;
+   int a[] = {uid,0,0,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SETUID, a, b); 
 }
 
 int setgid(int gid) {
-	return 0;
+   int a[] = {gid,0,0,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SETGID, a, b); 
 }
 
 int setresuid(int uid) {

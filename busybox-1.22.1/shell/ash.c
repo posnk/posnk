@@ -34,7 +34,7 @@
 #define DEBUG_SIG 1
 
 #define PROFILE 0
-#define _PATH_TTY "/faketty"
+#define _PATH_TTY xmalloc_ttyname(STDIN_FILENO)
 #define JOBS ENABLE_ASH_JOB_CONTROL
 
 #include <paths.h>

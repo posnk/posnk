@@ -1,1 +1,1 @@
-#undef CONFIG_PRINTF
+#define CONFIG_PRINTF 1

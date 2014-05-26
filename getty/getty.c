@@ -37,7 +37,7 @@ int main(int argc, char *argv[], char *envp[]){
 	print_issue(argv[1]);
 	while (strlen(username) == 0) {
 		printf("login: ");
-		scanf("%s\n", username);
+		scanf("%s", username);
 	}
 	
 	execlp(LOGIN_PROGRAM, LOGIN_PROGRAM, username, NULL);

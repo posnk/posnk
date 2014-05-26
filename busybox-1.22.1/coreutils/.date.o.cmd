@@ -1,8 +1,12 @@
-cmd_coreutils/sort.o := i386-pc-posnk-gcc -Wp,-MD,coreutils/.sort.o.d   -std=gnu99 -Iinclude -Ilibbb  -include include/autoconf.h -D_GNU_SOURCE -DNDEBUG  -D"BB_VER=KBUILD_STR(1.22.1)" -DBB_BT=AUTOCONF_TIMESTAMP  -Wall -Wshadow -Wwrite-strings -Wundef -Wstrict-prototypes -Wunused -Wunused-parameter -Wunused-function -Wunused-value -Wmissing-prototypes -Wmissing-declarations -Wno-format-security -Wdeclaration-after-statement -Wold-style-definition -fno-builtin-strlen -finline-limit=0 -fomit-frame-pointer -ffunction-sections -fdata-sections -fno-guess-branch-probability -funsigned-char -static-libgcc -falign-functions=1 -falign-jumps=1 -falign-labels=1 -falign-loops=1 -fno-unwind-tables -fno-asynchronous-unwind-tables -g -O0  -march=i386 -mpreferred-stack-boundary=2    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(sort)"  -D"KBUILD_MODNAME=KBUILD_STR(sort)" -c -o coreutils/sort.o coreutils/sort.c
+cmd_coreutils/date.o := i386-pc-posnk-gcc -Wp,-MD,coreutils/.date.o.d   -std=gnu99 -Iinclude -Ilibbb  -include include/autoconf.h -D_GNU_SOURCE -DNDEBUG  -D"BB_VER=KBUILD_STR(1.22.1)" -DBB_BT=AUTOCONF_TIMESTAMP  -Wall -Wshadow -Wwrite-strings -Wundef -Wstrict-prototypes -Wunused -Wunused-parameter -Wunused-function -Wunused-value -Wmissing-prototypes -Wmissing-declarations -Wno-format-security -Wdeclaration-after-statement -Wold-style-definition -fno-builtin-strlen -finline-limit=0 -fomit-frame-pointer -ffunction-sections -fdata-sections -fno-guess-branch-probability -funsigned-char -static-libgcc -falign-functions=1 -falign-jumps=1 -falign-labels=1 -falign-loops=1 -fno-unwind-tables -fno-asynchronous-unwind-tables -g -O0  -march=i386 -mpreferred-stack-boundary=2    -D"KBUILD_STR(s)=\#s" -D"KBUILD_BASENAME=KBUILD_STR(date)"  -D"KBUILD_MODNAME=KBUILD_STR(date)" -c -o coreutils/date.o coreutils/date.c
 
-deps_coreutils/sort.o := \
-  coreutils/sort.c \
-    $(wildcard include/config/feature/sort/big.h) \
+deps_coreutils/date.o := \
+  coreutils/date.c \
+    $(wildcard include/config/date.h) \
+    $(wildcard include/config/long/opts.h) \
+    $(wildcard include/config/feature/date/isofmt.h) \
+    $(wildcard include/config/feature/date/compat.h) \
+    $(wildcard include/config/feature/date/nano.h) \
     $(wildcard include/config/locale/support.h) \
   include/libbb.h \
     $(wildcard include/config/feature/shadowpasswds.h) \
@@ -21,7 +25,6 @@ deps_coreutils/sort.o := \
     $(wildcard include/config/feature/seamless/z.h) \
     $(wildcard include/config/feature/check/names.h) \
     $(wildcard include/config/feature/prefer/applets.h) \
-    $(wildcard include/config/long/opts.h) \
     $(wildcard include/config/feature/getopt/long.h) \
     $(wildcard include/config/feature/pidfile.h) \
     $(wildcard include/config/feature/syslog.h) \
@@ -125,6 +128,6 @@ deps_coreutils/sort.o := \
   /home/peterbjornx/nk/gcc_posnk/lib/gcc/i386-pc-posnk/4.7.2/../../../../i386-pc-posnk/include/grp.h \
   include/xatonum.h \
 
-coreutils/sort.o: $(deps_coreutils/sort.o)
+coreutils/date.o: $(deps_coreutils/date.o)
 
-$(deps_coreutils/sort.o):
+$(deps_coreutils/date.o):

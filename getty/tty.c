@@ -20,6 +20,9 @@ int tty_open(char *path)
 	int o_fd = open(path, O_RDWR);
 	if (o_fd == -1)
 		return 0;
+	close(0);
+	close(1);
+	close(2);
 	res = dup2(o_fd, 0);
 	if (res == -1) {
 		close(o_fd);
@@ -35,6 +38,7 @@ int tty_open(char *path)
 		close(o_fd);
 		return 0;
 	}
+	close(o_fd);
 	ioctl(0, TIOCSCTTY, 1);
 	return 1;
 }

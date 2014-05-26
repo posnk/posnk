@@ -115,10 +115,11 @@ been enabled, more detailed usage information will also be available.</p>
 <p>Currently available applets include:</p>
 <pre>
         ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
-        clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
-        gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
-        setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
-        uncompress, unzip, wc, whoami, yes, zcat</pre>
+        clear, cp, cpio, date, dpkg, echo, ed, env, expr, false, getopt,
+        gunzip, gzip, hd, hexdump, id, kill, ln, ls, md5sum, mkdir, mknod,
+        more, od, printenv, printf, pwd, seq, setsid, sh, sleep, sort,
+        split, strings, stty, tail, tar, tee, touch, true, tty, uncompress,
+        unzip, usleep, wc, which, whoami, yes, zcat</pre>
 <p>
 </p>
 <hr />
@@ -245,6 +246,30 @@ create an archive (-o) or copy files (-p) using file list on stdin</p>
         -F FILE Input (-t,-i,-p) or output (-o) file
         -H newc Archive format</pre>
 </dd>
+<dt><strong><a name="date" class="item"><strong>date</strong></a></strong></dt>
+
+<dd>
+<p>date [OPTIONS] [+FMT] [TIME]</p>
+<p>Display time (using +FMT), or set time</p>
+<pre>
+        [-s,--set] TIME Set time to TIME
+        -u,--utc        Work in UTC (don't convert to local time)
+        -R,--rfc-2822   Output RFC-2822 compliant date string
+        -I[SPEC]        Output ISO-8601 compliant date string
+                        SPEC='date' (default) for date only,
+                        'hours', 'minutes', or 'seconds' for date and
+                        time to the indicated precision
+        -r,--reference FILE     Display last modification time of FILE
+        -d,--date TIME  Display TIME, not 'now'
+        -D FMT          Use FMT for -d TIME conversion</pre>
+<p>Recognized TIME formats:</p>
+<pre>
+        hh:mm[:ss]
+        [YYYY.]MM.DD-hh:mm[:ss]
+        YYYY-MM-DD hh:mm[:ss]
+        [[[[[YY]YY]MM]DD]hh]mm[.ss]
+        'date TIME' form accepts MMDDhhmm[[YY]YY][.ss] instead</pre>
+</dd>
 <dt><strong><a name="dpkg" class="item"><strong>dpkg</strong></a></strong></dt>
 
 <dd>
@@ -360,6 +385,31 @@ of characters matched or 0.</p>
         -c      Write to stdout
         -f      Force</pre>
 </dd>
+<dt><strong><a name="hd" class="item"><strong>hd</strong></a></strong></dt>
+
+<dd>
+<p>hd FILE...</p>
+<p>hd is an alias for hexdump -C</p>
+</dd>
+<dt><strong><a name="hexdump" class="item"><strong>hexdump</strong></a></strong></dt>
+
+<dd>
+<p>hexdump [-bcCdefnosvxR] [FILE]...</p>
+<p>Display FILEs (or stdin) in a user specified format</p>
+<pre>
+        -b              One-byte octal display
+        -c              One-byte character display
+        -C              Canonical hex+ASCII, 16 bytes per line
+        -d              Two-byte decimal display
+        -e FORMAT_STRING
+        -f FORMAT_FILE
+        -n LENGTH       Interpret only LENGTH bytes of input
+        -o              Two-byte octal display
+        -s OFFSET       Skip OFFSET bytes
+        -v              Display all input data
+        -x              Two-byte hexadecimal display
+        -R              Reverse of 'hexdump -Cv'</pre>
+</dd>
 <dt><strong><a name="id" class="item"><strong>id</strong></a></strong></dt>
 
 <dd>
@@ -427,6 +477,16 @@ of characters matched or 0.</p>
         -w N    Assume the terminal is N columns wide
         --color[={always,never,auto}]   Control coloring</pre>
 </dd>
+<dt><strong><a name="md5sum" class="item"><strong>md5sum</strong></a></strong></dt>
+
+<dd>
+<p>md5sum [-c[sw]] [FILE]...</p>
+<p>Print or check MD5 checksums</p>
+<pre>
+        -c      Check sums against list in FILEs
+        -s      Don't output anything, status code shows success
+        -w      Warn about improperly formatted checksum lines</pre>
+</dd>
 <dt><strong><a name="mkdir" class="item"><strong>mkdir</strong></a></strong></dt>
 
 <dd>
@@ -467,6 +527,12 @@ TYPE:
 <p>Print environment VARIABLEs.
 If no VARIABLE specified, print all.</p>
 </dd>
+<dt><strong><a name="printf" class="item"><strong>printf</strong></a></strong></dt>
+
+<dd>
+<p>printf FORMAT [ARG]...</p>
+<p>Format and print ARG(s) according to FORMAT (a-la C printf)</p>
+</dd>
 <dt><strong><a name="pwd" class="item"><strong>pwd</strong></a></strong></dt>
 
 <dd>
@@ -496,6 +562,37 @@ See <a href="#setsid"><code>setsid(2)</code></a> for details.</p>
 <dd>
 <p>sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
 <p>Unix shell interpreter</p>
+</dd>
+<dt><strong><a name="sleep" class="item"><strong>sleep</strong></a></strong></dt>
+
+<dd>
+<p>sleep [N]...</p>
+<p>Pause for a time equal to the total of the args given, where each arg can
+have an optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays</p>
+</dd>
+<dt><strong><a name="sort" class="item"><strong>sort</strong></a></strong></dt>
+
+<dd>
+<p>sort [-nrugMcszbdfimSTokt] [-o FILE] [-k start[.offset][opts][,end[.offset][opts]] [-t CHAR] [FILE]...</p>
+<p>Sort lines of text</p>
+<pre>
+        -b      Ignore leading blanks
+        -c      Check whether input is sorted
+        -d      Dictionary order (blank or alphanumeric only)
+        -f      Ignore case
+        -g      General numerical sort
+        -i      Ignore unprintable characters
+        -k      Sort key
+        -M      Sort month
+        -n      Sort numbers
+        -o      Output to file
+        -k      Sort by key
+        -t CHAR Key separator
+        -r      Reverse sort order
+        -s      Stable (don't sort ties alphabetically)
+        -u      Suppress duplicate lines
+        -z      Lines are terminated by NUL, not newline
+        -mST    Ignored for GNU compatibility</pre>
 </dd>
 <dt><strong><a name="split" class="item"><strong>split</strong></a></strong></dt>
 
@@ -566,6 +663,15 @@ With more than one FILE, precede each with a filename header.</p>
         X       File with names to exclude
         T       File with names to include</pre>
 </dd>
+<dt><strong><a name="tee" class="item"><strong>tee</strong></a></strong></dt>
+
+<dd>
+<p>tee [-ai] [FILE]...</p>
+<p>Copy stdin to each FILE, and also to stdout</p>
+<pre>
+        -a      Append to the given FILEs, don't overwrite
+        -i      Ignore interrupt signals (SIGINT)</pre>
+</dd>
 <dt><strong><a name="touch" class="item"><strong>touch</strong></a></strong></dt>
 
 <dd>
@@ -609,6 +715,12 @@ With more than one FILE, precede each with a filename header.</p>
         -x FILE Exclude FILEs
         -d DIR  Extract into DIR</pre>
 </dd>
+<dt><strong><a name="usleep" class="item"><strong>usleep</strong></a></strong></dt>
+
+<dd>
+<p>usleep N</p>
+<p>Pause for N microseconds</p>
+</dd>
 <dt><strong><a name="wc" class="item"><strong>wc</strong></a></strong></dt>
 
 <dd>
@@ -619,6 +731,12 @@ With more than one FILE, precede each with a filename header.</p>
         -l      Count newlines
         -w      Count words
         -L      Print longest line length</pre>
+</dd>
+<dt><strong><a name="which" class="item"><strong>which</strong></a></strong></dt>
+
+<dd>
+<p>which [COMMAND]...</p>
+<p>Locate a COMMAND</p>
 </dd>
 <dt><strong><a name="whoami" class="item"><strong>whoami</strong></a></strong></dt>
 

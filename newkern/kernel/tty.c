@@ -115,6 +115,8 @@ int tty_close(dev_t device, int fd)
 	tty->ref_count--;
 	if (!tty->ref_count) {
 		//TODO: process_strip_ctty(device);
+		if (device == scheduler_current_task->ctty)
+			scheduler_current_task->ctty = 0;
 	}	
 	return 0;
 }
@@ -258,7 +260,7 @@ int tty_ioctl(dev_t device, int fd, int func, int arg)			//device, fd, func, arg
 			return 0;
 
 		case TIOCSCTTY:
-			if ((scheduler_current_task->pid == scheduler_current_task->sid) && !scheduler_current_task->ctty) {
+			if ((scheduler_current_task->pid == scheduler_current_task->sid) && ((scheduler_current_task->ctty == device) || !scheduler_current_task->ctty)) {
 				scheduler_current_task->ctty = device; 
 				tty->ct_pid = scheduler_current_task->pid;
 				tty->fg_pgid = scheduler_current_task->pgid;

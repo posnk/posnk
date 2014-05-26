@@ -73,7 +73,9 @@ char *syscall_names[] =
 	"time",
 	"usleep",
 	"sleep",
-	"stime"
+	"stime",
+	"setuid",
+	"setgid"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -197,4 +199,6 @@ void syscall_init()
 	syscall_register(SYS_USLEEP, &sys_usleep);
 	syscall_register(SYS_SLEEP, &sys_sleep);
 	syscall_register(SYS_STIME, &sys_stime);
+	syscall_register(SYS_SETUID, &sys_setuid);
+	syscall_register(SYS_SETGID, &sys_setgid);
 }

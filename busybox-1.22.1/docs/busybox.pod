@@ -82,10 +82,11 @@ been enabled, more detailed usage information will also be available.
 Currently available applets include:
 
 	ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
-	clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
-	gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
-	setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
-	uncompress, unzip, wc, whoami, yes, zcat
+	clear, cp, cpio, date, dpkg, echo, ed, env, expr, false, getopt,
+	gunzip, gzip, hd, hexdump, id, kill, ln, ls, md5sum, mkdir, mknod,
+	more, od, printenv, printf, pwd, seq, setsid, sh, sleep, sort,
+	split, strings, stty, tail, tar, tee, touch, true, tty, uncompress,
+	unzip, usleep, wc, which, whoami, yes, zcat
 
 =head1 COMMAND DESCRIPTIONS
 
@@ -214,6 +215,31 @@ Main operation mode:
 	-F FILE	Input (-t,-i,-p) or output (-o) file
 	-H newc	Archive format
 
+=item B<date>
+
+date [OPTIONS] [+FMT] [TIME]
+
+Display time (using +FMT), or set time
+
+	[-s,--set] TIME	Set time to TIME
+	-u,--utc	Work in UTC (don't convert to local time)
+	-R,--rfc-2822	Output RFC-2822 compliant date string
+	-I[SPEC]	Output ISO-8601 compliant date string
+			SPEC='date' (default) for date only,
+			'hours', 'minutes', or 'seconds' for date and
+			time to the indicated precision
+	-r,--reference FILE	Display last modification time of FILE
+	-d,--date TIME	Display TIME, not 'now'
+	-D FMT		Use FMT for -d TIME conversion
+
+Recognized TIME formats:
+
+	hh:mm[:ss]
+	[YYYY.]MM.DD-hh:mm[:ss]
+	YYYY-MM-DD hh:mm[:ss]
+	[[[[[YY]YY]MM]DD]hh]mm[.ss]
+	'date TIME' form accepts MMDDhhmm[[YY]YY][.ss] instead
+
 =item B<dpkg>
 
 dpkg [-ilCPru] [-F OPT] PACKAGE
@@ -329,6 +355,31 @@ Compress FILEs (or stdin)
 	-c	Write to stdout
 	-f	Force
 
+=item B<hd>
+
+hd FILE...
+
+hd is an alias for hexdump -C
+
+=item B<hexdump>
+
+hexdump [-bcCdefnosvxR] [FILE]...
+
+Display FILEs (or stdin) in a user specified format
+
+	-b		One-byte octal display
+	-c		One-byte character display
+	-C		Canonical hex+ASCII, 16 bytes per line
+	-d		Two-byte decimal display
+	-e FORMAT_STRING
+	-f FORMAT_FILE
+	-n LENGTH	Interpret only LENGTH bytes of input
+	-o		Two-byte octal display
+	-s OFFSET	Skip OFFSET bytes
+	-v		Display all input data
+	-x		Two-byte hexadecimal display
+	-R		Reverse of 'hexdump -Cv'
+
 =item B<id>
 
 id [OPTIONS] [USER]
@@ -396,6 +447,16 @@ List directory contents
 	-w N	Assume the terminal is N columns wide
 	--color[={always,never,auto}]	Control coloring
 
+=item B<md5sum>
+
+md5sum [-c[sw]] [FILE]...
+
+Print or check MD5 checksums
+
+	-c	Check sums against list in FILEs
+	-s	Don't output anything, status code shows success
+	-w	Warn about improperly formatted checksum lines
+
 =item B<mkdir>
 
 mkdir [OPTIONS] DIRECTORY...
@@ -436,6 +497,12 @@ printenv [VARIABLE]...
 Print environment VARIABLEs.
 If no VARIABLE specified, print all.
 
+=item B<printf>
+
+printf FORMAT [ARG]...
+
+Format and print ARG(s) according to FORMAT (a-la C printf)
+
 =item B<pwd>
 
 pwd 
@@ -465,6 +532,37 @@ See setsid(2) for details.
 sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]
 
 Unix shell interpreter
+
+=item B<sleep>
+
+sleep [N]...
+
+Pause for a time equal to the total of the args given, where each arg can
+have an optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays
+
+=item B<sort>
+
+sort [-nrugMcszbdfimSTokt] [-o FILE] [-k start[.offset][opts][,end[.offset][opts]] [-t CHAR] [FILE]...
+
+Sort lines of text
+
+	-b	Ignore leading blanks
+	-c	Check whether input is sorted
+	-d	Dictionary order (blank or alphanumeric only)
+	-f	Ignore case
+	-g	General numerical sort
+	-i	Ignore unprintable characters
+	-k	Sort key
+	-M	Sort month
+	-n	Sort numbers
+	-o	Output to file
+	-k	Sort by key
+	-t CHAR	Key separator
+	-r	Reverse sort order
+	-s	Stable (don't sort ties alphabetically)
+	-u	Suppress duplicate lines
+	-z	Lines are terminated by NUL, not newline
+	-mST	Ignored for GNU compatibility
 
 =item B<split>
 
@@ -536,6 +634,15 @@ Operation:
 	X	File with names to exclude
 	T	File with names to include
 
+=item B<tee>
+
+tee [-ai] [FILE]...
+
+Copy stdin to each FILE, and also to stdout
+
+	-a	Append to the given FILEs, don't overwrite
+	-i	Ignore interrupt signals (SIGINT)
+
 =item B<touch>
 
 touch [-c] FILE...
@@ -579,6 +686,12 @@ Extract FILEs from ZIP archive
 	-x FILE	Exclude FILEs
 	-d DIR	Extract into DIR
 
+=item B<usleep>
+
+usleep N
+
+Pause for N microseconds
+
 =item B<wc>
 
 wc [-clwL] [FILE]...
@@ -589,6 +702,12 @@ Count lines, words, and bytes for each FILE (or stdin)
 	-l	Count newlines
 	-w	Count words
 	-L	Print longest line length
+
+=item B<which>
+
+which [COMMAND]...
+
+Locate a COMMAND
 
 =item B<whoami>
 

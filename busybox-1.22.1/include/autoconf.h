@@ -2,7 +2,7 @@
  * Automatically generated C config: don't edit
  * Busybox version: 1.22.1
  */
-#define AUTOCONF_TIMESTAMP "2014-05-24 01:04:31 CEST"
+#define AUTOCONF_TIMESTAMP "2014-05-26 03:37:44 CEST"
 
 #define CONFIG_HAVE_DOT_CONFIG 1
 #define ENABLE_HAVE_DOT_CONFIG 1
@@ -824,22 +824,34 @@
 # define IF_CAT(...) __VA_ARGS__
 #endif
 #define IF_NOT_CAT(...)
-#undef CONFIG_DATE
-#define ENABLE_DATE 0
-#define IF_DATE(...)
-#define IF_NOT_DATE(...) __VA_ARGS__
-#undef CONFIG_FEATURE_DATE_ISOFMT
-#define ENABLE_FEATURE_DATE_ISOFMT 0
-#define IF_FEATURE_DATE_ISOFMT(...)
-#define IF_NOT_FEATURE_DATE_ISOFMT(...) __VA_ARGS__
+#define CONFIG_DATE 1
+#define ENABLE_DATE 1
+#ifdef MAKE_SUID
+# define IF_DATE(...) __VA_ARGS__ "CONFIG_DATE"
+#else
+# define IF_DATE(...) __VA_ARGS__
+#endif
+#define IF_NOT_DATE(...)
+#define CONFIG_FEATURE_DATE_ISOFMT 1
+#define ENABLE_FEATURE_DATE_ISOFMT 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_DATE_ISOFMT(...) __VA_ARGS__ "CONFIG_FEATURE_DATE_ISOFMT"
+#else
+# define IF_FEATURE_DATE_ISOFMT(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_DATE_ISOFMT(...)
 #undef CONFIG_FEATURE_DATE_NANO
 #define ENABLE_FEATURE_DATE_NANO 0
 #define IF_FEATURE_DATE_NANO(...)
 #define IF_NOT_FEATURE_DATE_NANO(...) __VA_ARGS__
-#undef CONFIG_FEATURE_DATE_COMPAT
-#define ENABLE_FEATURE_DATE_COMPAT 0
-#define IF_FEATURE_DATE_COMPAT(...)
-#define IF_NOT_FEATURE_DATE_COMPAT(...) __VA_ARGS__
+#define CONFIG_FEATURE_DATE_COMPAT 1
+#define ENABLE_FEATURE_DATE_COMPAT 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_DATE_COMPAT(...) __VA_ARGS__ "CONFIG_FEATURE_DATE_COMPAT"
+#else
+# define IF_FEATURE_DATE_COMPAT(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_DATE_COMPAT(...)
 #undef CONFIG_HOSTID
 #define ENABLE_HOSTID 0
 #define IF_HOSTID(...)
@@ -1196,10 +1208,14 @@
 # define IF_FEATURE_LS_COLOR_IS_DEFAULT(...) __VA_ARGS__
 #endif
 #define IF_NOT_FEATURE_LS_COLOR_IS_DEFAULT(...)
-#undef CONFIG_MD5SUM
-#define ENABLE_MD5SUM 0
-#define IF_MD5SUM(...)
-#define IF_NOT_MD5SUM(...) __VA_ARGS__
+#define CONFIG_MD5SUM 1
+#define ENABLE_MD5SUM 1
+#ifdef MAKE_SUID
+# define IF_MD5SUM(...) __VA_ARGS__ "CONFIG_MD5SUM"
+#else
+# define IF_MD5SUM(...) __VA_ARGS__
+#endif
+#define IF_NOT_MD5SUM(...)
 #define CONFIG_MKDIR 1
 #define ENABLE_MKDIR 1
 #ifdef MAKE_SUID
@@ -1260,10 +1276,14 @@
 # define IF_PRINTENV(...) __VA_ARGS__
 #endif
 #define IF_NOT_PRINTENV(...)
-#undef CONFIG_PRINTF
-#define ENABLE_PRINTF 0
-#define IF_PRINTF(...)
-#define IF_NOT_PRINTF(...) __VA_ARGS__
+#define CONFIG_PRINTF 1
+#define ENABLE_PRINTF 1
+#ifdef MAKE_SUID
+# define IF_PRINTF(...) __VA_ARGS__ "CONFIG_PRINTF"
+#else
+# define IF_PRINTF(...) __VA_ARGS__
+#endif
+#define IF_NOT_PRINTF(...)
 #define CONFIG_PWD 1
 #define ENABLE_PWD 1
 #ifdef MAKE_SUID
@@ -1320,26 +1340,46 @@
 #define ENABLE_SHA3SUM 0
 #define IF_SHA3SUM(...)
 #define IF_NOT_SHA3SUM(...) __VA_ARGS__
-#undef CONFIG_SLEEP
-#define ENABLE_SLEEP 0
-#define IF_SLEEP(...)
-#define IF_NOT_SLEEP(...) __VA_ARGS__
-#undef CONFIG_FEATURE_FANCY_SLEEP
-#define ENABLE_FEATURE_FANCY_SLEEP 0
-#define IF_FEATURE_FANCY_SLEEP(...)
-#define IF_NOT_FEATURE_FANCY_SLEEP(...) __VA_ARGS__
-#undef CONFIG_FEATURE_FLOAT_SLEEP
-#define ENABLE_FEATURE_FLOAT_SLEEP 0
-#define IF_FEATURE_FLOAT_SLEEP(...)
-#define IF_NOT_FEATURE_FLOAT_SLEEP(...) __VA_ARGS__
-#undef CONFIG_SORT
-#define ENABLE_SORT 0
-#define IF_SORT(...)
-#define IF_NOT_SORT(...) __VA_ARGS__
-#undef CONFIG_FEATURE_SORT_BIG
-#define ENABLE_FEATURE_SORT_BIG 0
-#define IF_FEATURE_SORT_BIG(...)
-#define IF_NOT_FEATURE_SORT_BIG(...) __VA_ARGS__
+#define CONFIG_SLEEP 1
+#define ENABLE_SLEEP 1
+#ifdef MAKE_SUID
+# define IF_SLEEP(...) __VA_ARGS__ "CONFIG_SLEEP"
+#else
+# define IF_SLEEP(...) __VA_ARGS__
+#endif
+#define IF_NOT_SLEEP(...)
+#define CONFIG_FEATURE_FANCY_SLEEP 1
+#define ENABLE_FEATURE_FANCY_SLEEP 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_FANCY_SLEEP(...) __VA_ARGS__ "CONFIG_FEATURE_FANCY_SLEEP"
+#else
+# define IF_FEATURE_FANCY_SLEEP(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_FANCY_SLEEP(...)
+#define CONFIG_FEATURE_FLOAT_SLEEP 1
+#define ENABLE_FEATURE_FLOAT_SLEEP 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_FLOAT_SLEEP(...) __VA_ARGS__ "CONFIG_FEATURE_FLOAT_SLEEP"
+#else
+# define IF_FEATURE_FLOAT_SLEEP(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_FLOAT_SLEEP(...)
+#define CONFIG_SORT 1
+#define ENABLE_SORT 1
+#ifdef MAKE_SUID
+# define IF_SORT(...) __VA_ARGS__ "CONFIG_SORT"
+#else
+# define IF_SORT(...) __VA_ARGS__
+#endif
+#define IF_NOT_SORT(...)
+#define CONFIG_FEATURE_SORT_BIG 1
+#define ENABLE_FEATURE_SORT_BIG 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_SORT_BIG(...) __VA_ARGS__ "CONFIG_FEATURE_SORT_BIG"
+#else
+# define IF_FEATURE_SORT_BIG(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_SORT_BIG(...)
 #define CONFIG_SPLIT 1
 #define ENABLE_SPLIT 1
 #ifdef MAKE_SUID
@@ -1348,10 +1388,14 @@
 # define IF_SPLIT(...) __VA_ARGS__
 #endif
 #define IF_NOT_SPLIT(...)
-#undef CONFIG_FEATURE_SPLIT_FANCY
-#define ENABLE_FEATURE_SPLIT_FANCY 0
-#define IF_FEATURE_SPLIT_FANCY(...)
-#define IF_NOT_FEATURE_SPLIT_FANCY(...) __VA_ARGS__
+#define CONFIG_FEATURE_SPLIT_FANCY 1
+#define ENABLE_FEATURE_SPLIT_FANCY 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_SPLIT_FANCY(...) __VA_ARGS__ "CONFIG_FEATURE_SPLIT_FANCY"
+#else
+# define IF_FEATURE_SPLIT_FANCY(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_SPLIT_FANCY(...)
 #undef CONFIG_STAT
 #define ENABLE_STAT 0
 #define IF_STAT(...)
@@ -1396,14 +1440,22 @@
 # define IF_FEATURE_FANCY_TAIL(...) __VA_ARGS__
 #endif
 #define IF_NOT_FEATURE_FANCY_TAIL(...)
-#undef CONFIG_TEE
-#define ENABLE_TEE 0
-#define IF_TEE(...)
-#define IF_NOT_TEE(...) __VA_ARGS__
-#undef CONFIG_FEATURE_TEE_USE_BLOCK_IO
-#define ENABLE_FEATURE_TEE_USE_BLOCK_IO 0
-#define IF_FEATURE_TEE_USE_BLOCK_IO(...)
-#define IF_NOT_FEATURE_TEE_USE_BLOCK_IO(...) __VA_ARGS__
+#define CONFIG_TEE 1
+#define ENABLE_TEE 1
+#ifdef MAKE_SUID
+# define IF_TEE(...) __VA_ARGS__ "CONFIG_TEE"
+#else
+# define IF_TEE(...) __VA_ARGS__
+#endif
+#define IF_NOT_TEE(...)
+#define CONFIG_FEATURE_TEE_USE_BLOCK_IO 1
+#define ENABLE_FEATURE_TEE_USE_BLOCK_IO 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_TEE_USE_BLOCK_IO(...) __VA_ARGS__ "CONFIG_FEATURE_TEE_USE_BLOCK_IO"
+#else
+# define IF_FEATURE_TEE_USE_BLOCK_IO(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_TEE_USE_BLOCK_IO(...)
 #define CONFIG_TRUE 1
 #define ENABLE_TRUE 1
 #ifdef MAKE_SUID
@@ -1436,10 +1488,14 @@
 #define ENABLE_UNIQ 0
 #define IF_UNIQ(...)
 #define IF_NOT_UNIQ(...) __VA_ARGS__
-#undef CONFIG_USLEEP
-#define ENABLE_USLEEP 0
-#define IF_USLEEP(...)
-#define IF_NOT_USLEEP(...) __VA_ARGS__
+#define CONFIG_USLEEP 1
+#define ENABLE_USLEEP 1
+#ifdef MAKE_SUID
+# define IF_USLEEP(...) __VA_ARGS__ "CONFIG_USLEEP"
+#else
+# define IF_USLEEP(...) __VA_ARGS__
+#endif
+#define IF_NOT_USLEEP(...)
 #undef CONFIG_UUDECODE
 #define ENABLE_UUDECODE 0
 #define IF_UUDECODE(...)
@@ -1512,10 +1568,18 @@
 # define IF_FEATURE_HUMAN_READABLE(...) __VA_ARGS__
 #endif
 #define IF_NOT_FEATURE_HUMAN_READABLE(...)
-#undef CONFIG_FEATURE_MD5_SHA1_SUM_CHECK
-#define ENABLE_FEATURE_MD5_SHA1_SUM_CHECK 0
-#define IF_FEATURE_MD5_SHA1_SUM_CHECK(...)
-#define IF_NOT_FEATURE_MD5_SHA1_SUM_CHECK(...) __VA_ARGS__
+
+/*
+ * Common options for md5sum, sha1sum, sha256sum, sha512sum, sha3sum
+ */
+#define CONFIG_FEATURE_MD5_SHA1_SUM_CHECK 1
+#define ENABLE_FEATURE_MD5_SHA1_SUM_CHECK 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_MD5_SHA1_SUM_CHECK(...) __VA_ARGS__ "CONFIG_FEATURE_MD5_SHA1_SUM_CHECK"
+#else
+# define IF_FEATURE_MD5_SHA1_SUM_CHECK(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_MD5_SHA1_SUM_CHECK(...)
 
 /*
  * Console Utilities
@@ -1652,10 +1716,14 @@
 #define ENABLE_FEATURE_START_STOP_DAEMON_LONG_OPTIONS 0
 #define IF_FEATURE_START_STOP_DAEMON_LONG_OPTIONS(...)
 #define IF_NOT_FEATURE_START_STOP_DAEMON_LONG_OPTIONS(...) __VA_ARGS__
-#undef CONFIG_WHICH
-#define ENABLE_WHICH 0
-#define IF_WHICH(...)
-#define IF_NOT_WHICH(...) __VA_ARGS__
+#define CONFIG_WHICH 1
+#define ENABLE_WHICH 1
+#ifdef MAKE_SUID
+# define IF_WHICH(...) __VA_ARGS__ "CONFIG_WHICH"
+#else
+# define IF_WHICH(...) __VA_ARGS__
+#endif
+#define IF_NOT_WHICH(...)
 
 /*
  * Editors
@@ -2440,18 +2508,30 @@
 #define ENABLE_FEATURE_GETOPT_LONG 0
 #define IF_FEATURE_GETOPT_LONG(...)
 #define IF_NOT_FEATURE_GETOPT_LONG(...) __VA_ARGS__
-#undef CONFIG_HEXDUMP
-#define ENABLE_HEXDUMP 0
-#define IF_HEXDUMP(...)
-#define IF_NOT_HEXDUMP(...) __VA_ARGS__
-#undef CONFIG_FEATURE_HEXDUMP_REVERSE
-#define ENABLE_FEATURE_HEXDUMP_REVERSE 0
-#define IF_FEATURE_HEXDUMP_REVERSE(...)
-#define IF_NOT_FEATURE_HEXDUMP_REVERSE(...) __VA_ARGS__
-#undef CONFIG_HD
-#define ENABLE_HD 0
-#define IF_HD(...)
-#define IF_NOT_HD(...) __VA_ARGS__
+#define CONFIG_HEXDUMP 1
+#define ENABLE_HEXDUMP 1
+#ifdef MAKE_SUID
+# define IF_HEXDUMP(...) __VA_ARGS__ "CONFIG_HEXDUMP"
+#else
+# define IF_HEXDUMP(...) __VA_ARGS__
+#endif
+#define IF_NOT_HEXDUMP(...)
+#define CONFIG_FEATURE_HEXDUMP_REVERSE 1
+#define ENABLE_FEATURE_HEXDUMP_REVERSE 1
+#ifdef MAKE_SUID
+# define IF_FEATURE_HEXDUMP_REVERSE(...) __VA_ARGS__ "CONFIG_FEATURE_HEXDUMP_REVERSE"
+#else
+# define IF_FEATURE_HEXDUMP_REVERSE(...) __VA_ARGS__
+#endif
+#define IF_NOT_FEATURE_HEXDUMP_REVERSE(...)
+#define CONFIG_HD 1
+#define ENABLE_HD 1
+#ifdef MAKE_SUID
+# define IF_HD(...) __VA_ARGS__ "CONFIG_HD"
+#else
+# define IF_HD(...) __VA_ARGS__
+#endif
+#define IF_NOT_HD(...)
 #undef CONFIG_HWCLOCK
 #define ENABLE_HWCLOCK 0
 #define IF_HWCLOCK(...)

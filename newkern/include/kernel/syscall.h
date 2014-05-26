@@ -127,4 +127,8 @@ uint32_t sys_sleep(uint32_t param[4], __attribute__((__unused__)) uint32_t param
 
 uint32_t sys_stime(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
 
+uint32_t sys_setuid(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
+
+uint32_t sys_setgid(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
+
 #endif

@@ -1,1 +1,1 @@
-#undef CONFIG_WHICH
+#define CONFIG_WHICH 1

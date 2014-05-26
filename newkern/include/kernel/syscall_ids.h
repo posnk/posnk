@@ -80,6 +80,8 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_USLEEP	49
 #define SYS_SLEEP	50
 #define SYS_STIME	51
+#define SYS_SETUID	52
+#define SYS_SETGID	53
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif

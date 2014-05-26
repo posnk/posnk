@@ -54,7 +54,7 @@ void start_tty(int id)
 	if (tty_process_list[id]) {
 		if (difftime(time(NULL), tty_process_start[id]) < 1) {
 			fprintf(stderr, "init: tty %i respawning too fast!\nDropping into recovery shell\n", id);
-			execlp(RC_INTERPRETER_PATH, RC_INTERPRETER_NAME, NULL);
+			//execlp(RC_INTERPRETER_PATH, RC_INTERPRETER_NAME, NULL);
 		}			
 	}
 
@@ -66,7 +66,6 @@ void start_tty(int id)
 		tty_process_list[id] = pid;
 		return;
 	} else {	
-		setsid();//We are a new session!
 		execvp(args[0], args);
 	}
 }

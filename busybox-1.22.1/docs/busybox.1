@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "BUSYBOX 1"
-.TH BUSYBOX 1 "2014-05-24" "version 1.22.1" "busybox"
+.TH BUSYBOX 1 "2014-05-26" "version 1.22.1" "busybox"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -210,12 +210,13 @@ been enabled, more detailed usage information will also be available.
 .IX Header "COMMANDS"
 Currently available applets include:
 .PP
-.Vb 5
+.Vb 6
 \&        ash, basename, bash, bunzip2, bzcat, bzip2, cal, cat, chmod, chown,
-\&        clear, cp, cpio, dpkg, echo, ed, env, expr, false, getopt, gunzip,
-\&        gzip, id, kill, ln, ls, mkdir, mknod, more, od, printenv, pwd, seq,
-\&        setsid, sh, split, strings, stty, tail, tar, touch, true, tty,
-\&        uncompress, unzip, wc, whoami, yes, zcat
+\&        clear, cp, cpio, date, dpkg, echo, ed, env, expr, false, getopt,
+\&        gunzip, gzip, hd, hexdump, id, kill, ln, ls, md5sum, mkdir, mknod,
+\&        more, od, printenv, printf, pwd, seq, setsid, sh, sleep, sort,
+\&        split, strings, stty, tail, tar, tee, touch, true, tty, uncompress,
+\&        unzip, usleep, wc, which, whoami, yes, zcat
 .Ve
 .SH "COMMAND DESCRIPTIONS"
 .IX Header "COMMAND DESCRIPTIONS"
@@ -342,6 +343,34 @@ Main operation mode:
 \&        \-F FILE Input (\-t,\-i,\-p) or output (\-o) file
 \&        \-H newc Archive format
 .Ve
+.IP "\fBdate\fR" 4
+.IX Item "date"
+date [\s-1OPTIONS\s0] [+FMT] [\s-1TIME\s0]
+.Sp
+Display time (using +FMT), or set time
+.Sp
+.Vb 10
+\&        [\-s,\-\-set] TIME Set time to TIME
+\&        \-u,\-\-utc        Work in UTC (don\*(Aqt convert to local time)
+\&        \-R,\-\-rfc\-2822   Output RFC\-2822 compliant date string
+\&        \-I[SPEC]        Output ISO\-8601 compliant date string
+\&                        SPEC=\*(Aqdate\*(Aq (default) for date only,
+\&                        \*(Aqhours\*(Aq, \*(Aqminutes\*(Aq, or \*(Aqseconds\*(Aq for date and
+\&                        time to the indicated precision
+\&        \-r,\-\-reference FILE     Display last modification time of FILE
+\&        \-d,\-\-date TIME  Display TIME, not \*(Aqnow\*(Aq
+\&        \-D FMT          Use FMT for \-d TIME conversion
+.Ve
+.Sp
+Recognized \s-1TIME\s0 formats:
+.Sp
+.Vb 5
+\&        hh:mm[:ss]
+\&        [YYYY.]MM.DD\-hh:mm[:ss]
+\&        YYYY\-MM\-DD hh:mm[:ss]
+\&        [[[[[YY]YY]MM]DD]hh]mm[.ss]
+\&        \*(Aqdate TIME\*(Aq form accepts MMDDhhmm[[YY]YY][.ss] instead
+.Ve
 .IP "\fBdpkg\fR" 4
 .IX Item "dpkg"
 dpkg [\-ilCPru] [\-F \s-1OPT\s0] \s-1PACKAGE\s0
@@ -462,6 +491,31 @@ Compress FILEs (or stdin)
 \&        \-c      Write to stdout
 \&        \-f      Force
 .Ve
+.IP "\fBhd\fR" 4
+.IX Item "hd"
+hd \s-1FILE\s0...
+.Sp
+hd is an alias for hexdump \-C
+.IP "\fBhexdump\fR" 4
+.IX Item "hexdump"
+hexdump [\-bcCdefnosvxR] [\s-1FILE\s0]...
+.Sp
+Display FILEs (or stdin) in a user specified format
+.Sp
+.Vb 12
+\&        \-b              One\-byte octal display
+\&        \-c              One\-byte character display
+\&        \-C              Canonical hex+ASCII, 16 bytes per line
+\&        \-d              Two\-byte decimal display
+\&        \-e FORMAT_STRING
+\&        \-f FORMAT_FILE
+\&        \-n LENGTH       Interpret only LENGTH bytes of input
+\&        \-o              Two\-byte octal display
+\&        \-s OFFSET       Skip OFFSET bytes
+\&        \-v              Display all input data
+\&        \-x              Two\-byte hexadecimal display
+\&        \-R              Reverse of \*(Aqhexdump \-Cv\*(Aq
+.Ve
 .IP "\fBid\fR" 4
 .IX Item "id"
 id [\s-1OPTIONS\s0] [\s-1USER\s0]
@@ -533,6 +587,17 @@ List directory contents
 \&        \-w N    Assume the terminal is N columns wide
 \&        \-\-color[={always,never,auto}]   Control coloring
 .Ve
+.IP "\fBmd5sum\fR" 4
+.IX Item "md5sum"
+md5sum [\-c[sw]] [\s-1FILE\s0]...
+.Sp
+Print or check \s-1MD5\s0 checksums
+.Sp
+.Vb 3
+\&        \-c      Check sums against list in FILEs
+\&        \-s      Don\*(Aqt output anything, status code shows success
+\&        \-w      Warn about improperly formatted checksum lines
+.Ve
 .IP "\fBmkdir\fR" 4
 .IX Item "mkdir"
 mkdir [\s-1OPTIONS\s0] \s-1DIRECTORY\s0...
@@ -572,6 +637,11 @@ printenv [\s-1VARIABLE\s0]...
 .Sp
 Print environment VARIABLEs.
 If no \s-1VARIABLE\s0 specified, print all.
+.IP "\fBprintf\fR" 4
+.IX Item "printf"
+printf \s-1FORMAT\s0 [\s-1ARG\s0]...
+.Sp
+Format and print \s-1ARG\s0(s) according to \s-1FORMAT\s0 (a\-la C printf)
 .IP "\fBpwd\fR" 4
 .IX Item "pwd"
 pwd
@@ -600,6 +670,37 @@ See \fIsetsid\fR\|(2) for details.
 sh [\-/+OPTIONS] [\-/+o \s-1OPT\s0]... [\-c '\s-1SCRIPT\s0' [\s-1ARG0\s0 [\s-1ARGS\s0]] / \s-1FILE\s0 [\s-1ARGS\s0]]
 .Sp
 Unix shell interpreter
+.IP "\fBsleep\fR" 4
+.IX Item "sleep"
+sleep [N]...
+.Sp
+Pause for a time equal to the total of the args given, where each arg can
+have an optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays
+.IP "\fBsort\fR" 4
+.IX Item "sort"
+sort [\-nrugMcszbdfimSTokt] [\-o \s-1FILE\s0] [\-k start[.offset][opts][,end[.offset][opts]] [\-t \s-1CHAR\s0] [\s-1FILE\s0]...
+.Sp
+Sort lines of text
+.Sp
+.Vb 10
+\&        \-b      Ignore leading blanks
+\&        \-c      Check whether input is sorted
+\&        \-d      Dictionary order (blank or alphanumeric only)
+\&        \-f      Ignore case
+\&        \-g      General numerical sort
+\&        \-i      Ignore unprintable characters
+\&        \-k      Sort key
+\&        \-M      Sort month
+\&        \-n      Sort numbers
+\&        \-o      Output to file
+\&        \-k      Sort by key
+\&        \-t CHAR Key separator
+\&        \-r      Reverse sort order
+\&        \-s      Stable (don\*(Aqt sort ties alphabetically)
+\&        \-u      Suppress duplicate lines
+\&        \-z      Lines are terminated by NUL, not newline
+\&        \-mST    Ignored for GNU compatibility
+.Ve
 .IP "\fBsplit\fR" 4
 .IX Item "split"
 split [\s-1OPTIONS\s0] [\s-1INPUT\s0 [\s-1PREFIX\s0]]
@@ -675,6 +776,16 @@ Operation:
 \&        X       File with names to exclude
 \&        T       File with names to include
 .Ve
+.IP "\fBtee\fR" 4
+.IX Item "tee"
+tee [\-ai] [\s-1FILE\s0]...
+.Sp
+Copy stdin to each \s-1FILE\s0, and also to stdout
+.Sp
+.Vb 2
+\&        \-a      Append to the given FILEs, don\*(Aqt overwrite
+\&        \-i      Ignore interrupt signals (SIGINT)
+.Ve
 .IP "\fBtouch\fR" 4
 .IX Item "touch"
 touch [\-c] \s-1FILE\s0...
@@ -719,6 +830,11 @@ Extract FILEs from \s-1ZIP\s0 archive
 \&        \-x FILE Exclude FILEs
 \&        \-d DIR  Extract into DIR
 .Ve
+.IP "\fBusleep\fR" 4
+.IX Item "usleep"
+usleep N
+.Sp
+Pause for N microseconds
 .IP "\fBwc\fR" 4
 .IX Item "wc"
 wc [\-clwL] [\s-1FILE\s0]...
@@ -731,6 +847,11 @@ Count lines, words, and bytes for each \s-1FILE\s0 (or stdin)
 \&        \-w      Count words
 \&        \-L      Print longest line length
 .Ve
+.IP "\fBwhich\fR" 4
+.IX Item "which"
+which [\s-1COMMAND\s0]...
+.Sp
+Locate a \s-1COMMAND\s0
 .IP "\fBwhoami\fR" 4
 .IX Item "whoami"
 whoami

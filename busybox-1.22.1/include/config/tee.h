@@ -1,1 +1,1 @@
-#undef CONFIG_TEE
+#define CONFIG_TEE 1
