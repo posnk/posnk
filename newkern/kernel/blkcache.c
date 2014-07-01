@@ -5,6 +5,8 @@
  *
  * Implements a LRU cache for blocks
  *
+ * TODO: Rewrite this to be more time-efficient (stop using llist)
+ *
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
@@ -251,6 +253,7 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, off_t offset )
 		memset(entry->data, 0, cache->block_size);
 
 		/* Add the new block */
+		cache->entry_count++;
 		llist_add_end(&(cache->block_list), (llist_t *) entry);
 
 	}

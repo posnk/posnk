@@ -12,25 +12,50 @@
 #ifndef __KERNEL_DEVICE_H__
 #define __KERNEL_DEVICE_H__
 #include <sys/types.h>
+#include "kernel/blkcache.h"
+#include "kernel/synch.h"
 
 typedef struct char_dev	char_dev_t;
+typedef struct blk_dev	blk_dev_t;
 typedef struct tty_ops	tty_ops_t;
+typedef struct blk_ops	blk_ops_t;
 
 struct char_dev {
-	char		*name;
-	dev_t		 major;
-	tty_ops_t	*ops;	
+	char			 *name;
+	dev_t			  major;
+	tty_ops_t		 *ops;	
+};
+
+struct blk_dev {
+	char_dev		 *name;
+	dev_t			  major;
+	int			  minor_count;
+	size_t			  block_size;
+	int			  cache_size;
+	semaphore_t		**locks;
+	blkcache_cache_t	**caches;
+	blk_ops_t		 *ops;	
 };
 
 struct tty_ops {
-	int	(*open)		(dev_t, int, int);			//device, fd, options
-	int	(*close)	(dev_t, int);				//device, fd
-	int	(*write)	(dev_t, void *, size_t, size_t *, int); //device, buf, count, wr_size, non_block
-	int	(*read)		(dev_t, void *, size_t, size_t *, int);	//device, buf, count, rd_size, non_block
-	int	(*ioctl)	(dev_t, int, int, int);			//device, fd, func, arg
+	int	(*open)		  (dev_t, int, int);			//device, fd, options
+	int	(*close)	  (dev_t, int);				//device, fd
+	int	(*write)	  (dev_t, void *, size_t, size_t *, int); //device, buf, count, wr_size, non_block
+	int	(*read)		  (dev_t, void *, size_t, size_t *, int);	//device, buf, count, rd_size, non_block
+	int	(*ioctl)	  (dev_t, int, int, int);			//device, fd, func, arg
+};
+
+struct blk_ops {
+	int	(*open)		  (dev_t, int, int);			//device, fd, options
+	int	(*close)	  (dev_t, int);				//device, fd
+	int	(*write)	  (dev_t, off_t, void *);		//device, offset, buf
+	int	(*read)		  (dev_t, off_t, void *); 		//device, offset, buf
+	int	(*ioctl)	  (dev_t, int, int, int);		//device, fd, func, arg
 };
 
 void device_char_init();
+
+void device_block_init();
 
 int device_char_register(char_dev_t *driver);
 
