@@ -10,6 +10,7 @@
  * Changelog:
  * 24-05-2014 - Created
  */
+
 #include <sys/errno.h>
 #include "kernel/time.h"
 #include "kernel/scheduler.h"

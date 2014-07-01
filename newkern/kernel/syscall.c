@@ -75,7 +75,11 @@ char *syscall_names[] =
 	"sleep",
 	"stime",
 	"setuid",
-	"setgid"
+	"setgid",
+	"signal",
+	"exitsig",
+	"sigprocmask",
+	"ssigex"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -131,7 +135,7 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		process_send_signal(scheduler_current_task, SIGSYS);
 	syscall_errno = 0;
 	call = params.call_id;
-	if (call == SYS_OPEN)
+	if ((call == SYS_OPEN) || (call == SYS_STAT))
 		debugcon_printf("[%s:%i] %s(%s, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else
 		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
@@ -201,4 +205,8 @@ void syscall_init()
 	syscall_register(SYS_STIME, &sys_stime);
 	syscall_register(SYS_SETUID, &sys_setuid);
 	syscall_register(SYS_SETGID, &sys_setgid);
+	syscall_register(SYS_SIGNAL, &sys_signal);
+	syscall_register(SYS_EXITSIG, &sys_exitsig);
+	syscall_register(SYS_SIGPROCMASK, &sys_sigprocmask);
+	syscall_register(SYS_SSIGEX, &sys_ssigex);
 }

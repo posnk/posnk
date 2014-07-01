@@ -160,17 +160,21 @@ int process_was_interrupted(process_info_t *process)
 
 void process_handle_signals()
 {
-	//debugcon_printf("sighandle: %i\n", scheduler_current_task->pid);
+	
 	uint32_t bit_counter;
 	uint32_t sig_active = scheduler_current_task->waiting_signal_bitmap & ~scheduler_current_task->signal_mask_bitmap;
 	//debugcon_printf("sigactive: %i\n", sig_active);
 	if (sig_active != 0) {
+		debugcon_printf("sighandle: %i\n", scheduler_current_task->pid);
 		if (scheduler_current_task->state != PROCESS_INTERRUPTED) {
 			for (bit_counter = 0; bit_counter < 32; bit_counter++) {
 				if (sig_active & (1 << bit_counter)) {
 					scheduler_current_task->waiting_signal_bitmap &= ~ (1 << bit_counter);
+					debugcon_printf("handling signal: %i\n", sig_active);
 					if (scheduler_current_task->signal_handler_table[bit_counter] == NULL)
 						process_signal_handler_default(bit_counter);
+					else if (scheduler_current_task->signal_handler_table[bit_counter] == 1)
+						continue;
 					else
 						scheduler_invoke_signal_handler(bit_counter);
 					if (scheduler_current_task->state == PROCESS_KILLED) {

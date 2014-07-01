@@ -118,7 +118,7 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		}
 			
 	} 
-	//earlycon_printf("untar %s \n",header->name);
+	debugcon_printf("untar %s %c \n",header->name, header->typeflag);
 	switch(header->typeflag){
 		default:
 		case AREGTYPE:
@@ -126,12 +126,12 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		case CONTTYPE:
 			status = vfs_mknod(header->name, tar_get_mode(header), 0);
 			if (status) {
-				earlycon_printf("WARNING: error creating file while extracting %s, errno: %i\n",header->name, status);
+				debugcon_printf("WARNING: error creating file while extracting %s, errno: %i\n",header->name, status);
 				return status;
 			}
 			file = vfs_find_inode(header->name);
 			if (!file) {
-				earlycon_printf("WARNING: error opening file while extracting %s, errno: %i\n",header->name, status);
+				debugcon_printf("WARNING: error opening file while extracting %s, errno: %i\n",header->name, status);
 				return ENOSPC;
 			}
 			file->size = (off_t) tar_num_dec(header->size,12);
@@ -140,19 +140,26 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 				status = vfs_write(file, 0, (void*)(tar_data + (uintptr_t)*pos), file->size, &wd_count, 0);
 				(*pos) += tar_round_up(file->size,512);
 				if (status) {
-					earlycon_printf("WARNING: write error while extracting %s\n",header->name);
+					debugcon_printf("WARNING: write error while extracting %s\n",header->name);
 					return status;
 				}
 				if (wd_count !=  (size_t) file->size) {
-					earlycon_printf("WARNING: out of space while extracting %s\n",header->name);
+					debugcon_printf("WARNING: out of space while extracting %s\n",header->name);
 					return ENOSPC;
 				}
 			}
 			break;
 		case SYMTYPE://TODO: Implement proper symlinks
+			status = vfs_symlink(header->linkname, header->name);
+			if (status) {
+				debugcon_printf("WARNING: error symlinking %s\n",header->name);
+				return status;
+			}
+			break;
 		case LNKTYPE:
 			status = vfs_link(header->linkname, header->name);
 			if (status) {
+				debugcon_printf("WARNING: error linking %s\n",header->name);
 				return status;
 			}
 			break;
@@ -161,22 +168,23 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		case FIFOTYPE:
 			status = vfs_mknod(header->name, tar_get_mode(header), tar_get_dev(header));
 			if (status) {
+				debugcon_printf("WARNING: error mknod %s\n",header->name);
 				return status;
 			}
 			break;
 		case DIRTYPE:
 			status = vfs_mkdir(header->name, tar_get_mode(header));
 			if (status) {
-				earlycon_printf("WARNING: error creating directory while extracting %s, errno: %i\n",header->name, status);
+				debugcon_printf("WARNING: error creating directory while extracting %s, errno: %i\n",header->name, status);
 				return status;
 			}
 			break;
 		
 	}
-	if (header->typeflag != LNKTYPE) {
+	if ((header->typeflag != LNKTYPE) && (header->typeflag != SYMTYPE)) {
 		file = vfs_find_inode(header->name);
 		if (!file) {
-			earlycon_printf("WARNING: error opening node while extracting %s, errno: %i\n",header->name, status);
+			debugcon_printf("WARNING: error opening node while extracting %s, errno: %i\n",header->name, status);
 			return ENOSPC;
 		}
 		file->uid = (uid_t) tar_num_dec(header->uid,8);

@@ -47,6 +47,7 @@ int semaphore_idown(semaphore_t *semaphore)
 	if ((*semaphore) == 0) {
 		scheduler_wait_on(semaphore);
 		if (scheduler_current_task->state == PROCESS_INTERRUPTED){
+			debugcon_aprintf("semawait interrupted\n");
 			scheduler_current_task->state = PROCESS_RUNNING;
 			return -1;
 		}

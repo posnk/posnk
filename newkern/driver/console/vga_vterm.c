@@ -91,11 +91,11 @@ void vterm_tty_invalidate_screen(dev_t dev);
 void vterm_vga_switch_vc(int vc)
 {
 	short offset = (short)(vterm_vga_all_vcs[vc].video_buffer - vga_vterm_get_text_video_memory());
+
+	vterm_vga_current_vc = vc;
 	vterm_tty_invalidate_screen(MAKEDEV(2, vc));
         vterm_vga_write_crtc_register(0x0C,offset >> 8);
         vterm_vga_write_crtc_register(0x0D,(char) offset & 0xFF);
-
-	vterm_vga_current_vc = vc;
 
 }
 

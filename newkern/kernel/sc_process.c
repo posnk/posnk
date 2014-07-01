@@ -186,7 +186,10 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 				if (ev_info)		
 					process_absorb_event(ev_info);
 
-				semaphore_down(scheduler_current_task->child_sema);
+				if (semaphore_idown(scheduler_current_task->child_sema)) {
+					syscall_errno = EINTR;
+					return -1;
+				}
 			}
 		}
 	} else if (pid == -1) {
@@ -210,7 +213,10 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 				if (ev_info != (process_child_event_t *) scheduler_current_task->child_events)	
 					process_absorb_event(ev_info);
 
-				semaphore_down(scheduler_current_task->child_sema);
+				if (semaphore_idown(scheduler_current_task->child_sema)) {
+					syscall_errno = EINTR;
+					return -1;
+				}
 			}
 		}
 	} else if (pid > 0) {
@@ -234,7 +240,11 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 				if (ev_info)		
 					process_absorb_event(ev_info);
-				semaphore_down(scheduler_current_task->child_sema);
+
+				if (semaphore_idown(scheduler_current_task->child_sema)) {
+					syscall_errno = EINTR;
+					return -1;
+				}
 			}
 		}
 	}

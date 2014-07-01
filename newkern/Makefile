@@ -56,6 +56,7 @@ kernel/sc_perm.c \
 kernel/sc_vfs.c \
 kernel/sc_streams.c \
 kernel/sc_time.c \
+kernel/sc_signals.c \
 kdbg/heapdbg.c \
 kdbg/kdbg.c \
 kdbg/kdbgio.c \

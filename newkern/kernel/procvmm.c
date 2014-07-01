@@ -32,9 +32,10 @@ int procvmm_do_exec_mmaps()
 	scheduler_current_task->heap_start = (void *) scheduler_current_task->image_end;     //End of program image_base
 	scheduler_current_task->heap_end   = scheduler_current_task->heap_start;	
 	scheduler_current_task->heap_max = (void *) 0x40000000;     //User mmap area starts here
-	scheduler_current_task->stack_bottom = (void *) 0xBFBFFFFF; //Start of kernel stack area etc etc etc
+	scheduler_current_task->stack_bottom = (void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
 	scheduler_current_task->stack_top = (void *) 0xBF400000; //TODO: Implement dynamic stack size
-	return procvmm_mmap_anon(scheduler_current_task->stack_top, 0x800000, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(stack)");
+	procvmm_mmap_anon(0xBFBFF000, 0x1000, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(sigstack)");
+	return procvmm_mmap_anon(scheduler_current_task->stack_top, 0x7FEFFF, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(stack)");
 }
 
 int procvmm_check(void *dest, size_t size) {
