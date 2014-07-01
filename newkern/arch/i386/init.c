@@ -282,8 +282,11 @@ void i386_kmain()
 		earlycon_puts("FAIL\n");*/
 
 	device_char_init();
+	device_block_init();
+
 	tty_init();
 	vterm_vga_init();
+
 	earlycon_puts("Creating tty stub dev..");
 	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))
 		earlycon_puts("OK\n");

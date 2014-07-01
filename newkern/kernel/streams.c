@@ -402,11 +402,14 @@ int _sys_ioctl(int fd, int cmd, int arg)
 		syscall_errno = ENOTTY;
 		return -1;
 	}
-	if (!S_ISCHR(ptr->info->inode->mode)) {
+	if (S_ISCHR(ptr->info->inode->mode)) {
+		return device_char_ioctl(ptr->info->inode->if_dev, fd, cmd, arg);
+	} else if (S_ISBLK(ptr->info->inode->mode)) {
+		return device_block_ioctl(ptr->info->inode->if_dev, fd, cmd, arg);
+	} else {
 		syscall_errno = ENOTTY;
 		return -1;
 	}
-	return device_char_ioctl(ptr->info->inode->if_dev, fd, cmd, arg);
 }
 
 int _sys_dup2(int oldfd, int newfd)
@@ -619,6 +622,8 @@ int _sys_open(char *path, int flags, mode_t mode)
 	llist_add_end(scheduler_current_task->fd_table, (llist_t *) ptr);
 	if (S_ISCHR(inode->mode))
 		device_char_open(inode->if_dev, fd, flags);//TODO: Handle result
+	else if (S_ISBLK(inode->mode))
+		device_block_open(inode->if_dev, fd, flags);//TODO: Handle result
 	return fd;
 }
 
@@ -634,8 +639,10 @@ int _sys_close_int(process_info_t *process, int fd)
 		syscall_errno = EBADF;
 		return -1;
 	}
-	if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process = scheduler_current_task))
+	if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process == scheduler_current_task))
 		device_char_close(ptr->info->inode->if_dev, fd);//TODO: Handle result
+	else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISBLK(ptr->info->inode->mode) && (process == scheduler_current_task))
+		device_block_close(ptr->info->inode->if_dev, fd);//TODO: Handle result
 	llist_unlink((llist_t *) ptr);
 	semaphore_down(ptr->info->lock);
 	ptr->info->ref_count--;

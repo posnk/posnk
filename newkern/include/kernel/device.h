@@ -59,6 +59,14 @@ void device_block_init();
 
 int device_char_register(char_dev_t *driver);
 
+int device_block_register(blk_dev_t *driver);
+
+int device_block_ioctl(dev_t device, int fd, int func, int arg);
+
+int device_block_open(dev_t device, int fd, int options);
+
+int device_block_close(dev_t device, int fd);
+
 int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *write_size);
 
 int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *read_size);
