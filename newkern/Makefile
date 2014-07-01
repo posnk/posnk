@@ -34,6 +34,7 @@ LIBS =
 SRCS = kernel/heapmm.c \
 kernel/physmm.c \
 kernel/paging.c \
+kernel/blkcache.c \
 kernel/earlycon.c \
 kernel/exception.c \
 kernel/scheduler.c \

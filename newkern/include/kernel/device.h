@@ -27,7 +27,7 @@ struct char_dev {
 };
 
 struct blk_dev {
-	char_dev		 *name;
+	char			 *name;
 	dev_t			  major;
 	int			  minor_count;
 	size_t			  block_size;

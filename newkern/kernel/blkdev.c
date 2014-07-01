@@ -9,9 +9,11 @@
  * 17-04-2014 - Created
  */
 
+#include "kernel/heapmm.h"
 #include "kernel/device.h"
 #include <sys/types.h>
 #include <sys/errno.h>
+#include <string.h>
 
 //TODO: TODO: TODO: IMPLEMENT BLOCK DEVICES
 
@@ -19,11 +21,11 @@ blk_dev_t **block_dev_table;
 
 void device_block_init()
 {
-	block_dev_table = heapmm_alloc( sizeof(block_dev_t *) * 256 );
-	memset( block_dev_table, 0, sizeof(block_dev_t *) * 256 );
+	block_dev_table = heapmm_alloc( sizeof(blk_dev_t *) * 256 );
+	memset( block_dev_table, 0, sizeof(blk_dev_t *) * 256 );
 }
 
-int device_block_register(block_dev_t *driver)
+int device_block_register(blk_dev_t *driver)
 {
 	dev_t minor, _m;
 
@@ -114,7 +116,6 @@ int device_block_flush(dev_t device, off_t block_offset)
 
 int device_block_fetch(dev_t device, off_t block_offset)
 {
-	int rv;
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
 	blk_dev_t *drv = block_dev_table[major];
@@ -123,7 +124,8 @@ int device_block_fetch(dev_t device, off_t block_offset)
 
 	if (!entry) {
 
-		device_block_flush(blkcache_get_discard_candidate());
+		device_block_flush(device,
+			blkcache_get_discard_candidate(drv->caches[minor])->offset);
 
 		entry = blkcache_get(drv->caches[minor], block_offset);
 
@@ -139,33 +141,39 @@ int device_block_fetch(dev_t device, off_t block_offset)
 int device_block_ioctl(dev_t device, int fd, int func, int arg)
 {
 	dev_t major = MAJOR(device);
-	char_dev_t *drv = char_dev_table[major];
-	if (!drv) {
-		syscall_errno = ENODEV;
-		return -1;
+	dev_t minor = MINOR(device);
+	blk_dev_t *drv = block_dev_table[major];
+
+	if ((!drv) || (minor > drv->minor_count)) {
+		return ENODEV;
 	}
+
 	return drv->ops->ioctl(device, fd, func, arg);
 }
 
 int device_block_open(dev_t device, int fd, int options)
 {
 	dev_t major = MAJOR(device);
-	char_dev_t *drv = char_dev_table[major];
-	if (!drv) {
-		syscall_errno = ENODEV;
-		return -1;
+	dev_t minor = MINOR(device);
+	blk_dev_t *drv = block_dev_table[major];
+
+	if ((!drv) || (minor > drv->minor_count)) {
+		return ENODEV;
 	}
+
 	return drv->ops->open(device, fd, options);
 }
 
 int device_block_close(dev_t device, int fd)
 {
 	dev_t major = MAJOR(device);
-	char_dev_t *drv = char_dev_table[major];
-	if (!drv) {
-		syscall_errno = ENODEV;
-		return -1;
+	dev_t minor = MINOR(device);
+	blk_dev_t *drv = block_dev_table[major];
+
+	if ((!drv) || (minor > drv->minor_count)) {
+		return ENODEV;
 	}
+
 	return drv->ops->close(device, fd);
 }
 
@@ -179,7 +187,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	blkcache_entry_t *entry;
 	off_t	block_offset;
 	size_t	in_block_count;
-	uintptr_t in_block, in_buffer, curr_offset;
+	uintptr_t in_block, in_buffer;
 
 	if ((!drv) || (minor > drv->minor_count)) {
 		return ENODEV;
@@ -193,7 +201,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	
 		block_offset = file_offset % drv->block_size;
 
-		in_block  = curr_offset - block_offset;
+		in_block  = file_offset - block_offset + in_buffer;
 		in_block_count = count - in_buffer;
 
 		if(in_block_count > (drv->block_size - in_block))
@@ -216,7 +224,8 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 
 			if (!entry) {
 
-				device_block_flush(blkcache_get_discard_candidate());
+				device_block_flush(device,
+					blkcache_get_discard_candidate(drv->caches[minor])->offset);
 
 				entry = blkcache_get(drv->caches[minor], block_offset);
 
@@ -256,7 +265,7 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 	blkcache_entry_t *entry;
 	off_t	block_offset;
 	size_t	in_block_count;
-	uintptr_t in_block, in_buffer, curr_offset;
+	uintptr_t in_block, in_buffer;
 
 	if ((!drv) || (minor > drv->minor_count)) {
 		return ENODEV;
@@ -270,7 +279,7 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 	
 		block_offset = file_offset % drv->block_size;
 
-		in_block  = curr_offset - block_offset;
+		in_block  = file_offset - block_offset + in_buffer;
 		in_block_count = count - in_buffer;
 
 		if(in_block_count > (drv->block_size - in_block))

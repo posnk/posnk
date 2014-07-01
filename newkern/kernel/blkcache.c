@@ -19,6 +19,7 @@
 #include "kernel/device.h"
 #include <sys/types.h>
 #include <sys/errno.h>
+#include <string.h>
 
 /**
  * blkcache_create - Creates a new, empty block cache
@@ -130,9 +131,9 @@ blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, off_t offset )
 	/* Look up the block in the cache which satisfies the condition for */
 	/* blkcache_get_iterator */
 	return (blkcache_entry_t *) 
-		llist_iterate_select(	&(cache.block_list),
+		llist_iterate_select(	&(cache->block_list),
 					&blkcache_get_iterator,
-					(void *) offset)
+					(void *) offset);
 	
 }
 
