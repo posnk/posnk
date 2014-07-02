@@ -85,13 +85,10 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 	subclass = pci_config_read_byte( bus, device, function, PCI_CONFIG_SUBCLASS );
 	api = pci_config_read_short( bus, device, function, PCI_CONFIG_API_ID );
 
-	debugcon_printf("%i:%i.%i - %s %s\n", bus, device, function,
-			pci_vendor_lookup(vid),
-			pci_device_lookup(vid, pid));
-
 	if ((class == 0x06) && (subclass == 0x04)) {
 		secbus = pci_config_read_byte( bus, device, function, PCI_CONFIG_SECONDARY_BUS);
-		pci_enumerate_bus( secbus );		
+		pci_enumerate_bus( secbus );	
+		return;	
 	}
 	
 	busaddr = ((bus << 16) & 0xFF0000) | ((device << 8) & 0xFF00) | (function & 0xFF);
@@ -101,6 +98,10 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 
 	interface = ((class << 16) & 0xFF0000) | ((subclass << 8) & 0xFF00) | (api & 0xFF);
 
-	if (drivermgr_enumerate_device(DEVICE_TYPE_PCI, busaddr, interface))
+	if (drivermgr_enumerate_interface(DEVICE_TYPE_PCI, busaddr, interface))
 		return;
+
+	debugcon_printf("%i:%i.%i - %s %s NO DRIVER FOUND!!!\n", bus, device, function,
+			pci_vendor_lookup(vid),
+			pci_device_lookup(vid, pid));
 }
