@@ -97,6 +97,7 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 		return;
 
 	interface = ((class << 16) & 0xFF0000) | ((subclass << 8) & 0xFF00) | (api & 0xFF);
+	//debugcon_printf("Enumerating interface ifid %x\n", interface);
 
 	if (drivermgr_enumerate_interface(DEVICE_TYPE_PCI, busaddr, interface))
 		return;

@@ -31,6 +31,7 @@ struct drivermgr_interface_driver {
 	llist_t		link;
 	dev_type_t	type;
 	int		interface;
+	int		interface_mask;
 	int		(*probe)	(uint32_t bus_addr);
 };
 

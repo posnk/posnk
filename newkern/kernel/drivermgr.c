@@ -52,7 +52,8 @@ int drivermgr_enumerate_interface_iterator (llist_t *node, void *param)
 {
 	drivermgr_interface_driver_t *drv = (drivermgr_interface_driver_t *) node;
 	drivermgr_interface_driver_t *cmp = (drivermgr_interface_driver_t *) param;
-	return (drv->type == cmp->type) && (drv->interface == cmp->interface);		
+	//debugcon_printf("cmp %x %x\n",drv->interface ,cmp->interface);
+	return (drv->type == cmp->type) && (drv->interface == (cmp->interface & drv->interface_mask));		
 }
 
 int drivermgr_enumerate_interface(dev_type_t type, uint32_t bus_addr, uint32_t interface)

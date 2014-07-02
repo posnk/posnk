@@ -30,6 +30,9 @@ LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
 #   option, something like (this will link in libmylib.so and libm.so:
 LIBS = 
 
+SRCS_DRV_ATA_PCI = driver/block/pata/ata.c \
+driver/block/pata/ata_pci.c
+
 # define the C source files
 SRCS = kernel/heapmm.c \
 kernel/physmm.c \
@@ -134,7 +137,7 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # with the .o suffix
 #
 OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o)
-OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)  
+OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o) $(SRCS_DRV_ATA_PCI:.c=.o)
 all:	cdrom_i386 install_h
 
 kernel_i386: $(OBJS) $(OBJS_I386)
@@ -174,6 +177,12 @@ clean:
 	$(RM) fs/*.o
 	$(RM) arch/i386/*.o
 	$(RM) driver/console/*.o
+	$(RM) driver/bus/*.o
+	$(RM) driver/block/pata/*.o
+
+emulate:
+	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img 
+
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)
 	makedepend $(INCLUDES) $^
