@@ -35,6 +35,12 @@ typedef struct i386_pusha_registers i386_pusha_registers_t;
 uint8_t i386_inb(uint16_t port);
 void i386_outb(uint16_t port,uint8_t data);
 
+uint16_t i386_inw(uint16_t port);
+void i386_outw(uint16_t port,uint16_t value);
+
+uint32_t i386_inl(uint16_t port);
+void i386_outl(uint16_t port,uint32_t value);
+
 void i386_fpu_initialize();
 
 void i386_fpu_on_cs();

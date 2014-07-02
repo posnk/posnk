@@ -52,6 +52,7 @@ kernel/tar.c \
 kernel/syscall.c \
 kernel/streams.c \
 kernel/time.c \
+kernel/drivermgr.c \
 kernel/sc_process.c \
 kernel/sc_perm.c \
 kernel/sc_vfs.c \
@@ -112,7 +113,9 @@ driver/console/vgacon_early.c \
 driver/console/sercon_debug.c \
 driver/oldkb/dec.c \
 driver/oldkb/i8042.c \
-driver/oldkb/kbd.c 
+driver/oldkb/kbd.c \
+driver/bus/pci.c \
+driver/bus/pci_intel_host.c 
 
 ASMS_I386 = arch/i386/start.s \
 arch/i386/isr_entry.s \

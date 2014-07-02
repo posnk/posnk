@@ -228,7 +228,7 @@ void i386_idle_task()
 	for (;;)
 		asm ("hlt;");
 }
-
+void pci_enumerate_all();
 /**
  * Once we are here everything is set up properly
  * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
@@ -303,6 +303,8 @@ void i386_kmain()
 	earlycon_puts("Enabling interrupts...");
 	asm ("sti");
 	earlycon_puts("OK\n");
+
+	pci_enumerate_all();
 
 	pid_init = scheduler_fork();
 	asm ("sti");
