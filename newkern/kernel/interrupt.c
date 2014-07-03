@@ -22,13 +22,13 @@ void interrupt_dispatch(irq_id_t irq_id)
 	llist_t *list = &(interrupt_handler_lists[irq_id]);
 	for (_e = list->next; _e != list; _e = _e->next) {
 		e = (interrupt_handler_t *) _e;
-		if (e->handler(irq_id))
+		if (e->handler(irq_id, e->context))
 			return;
 	}
 	debugcon_printf("warning: unhandled IRQ%i!\n", irq_id);
 }
 
-void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler)
+void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler, void *context)
 {
 	interrupt_handler_t *desc = heapmm_alloc(sizeof(interrupt_handler_t));
 	if (!desc) {
@@ -36,6 +36,7 @@ void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler)
 		return;
 	}
 	desc->handler = handler;
+	desc->context = context;
 	llist_add_end(&(interrupt_handler_lists[irq_id]), (llist_t *) desc);
 	debugcon_printf("info: registered handler for IRQ%i!\n", irq_id);
 }

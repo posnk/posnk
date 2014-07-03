@@ -9,7 +9,7 @@ uint8_t modifiers = 0;
 void kb_initialize(){
         kb_set_leds(0xFF);
         kb_set_leds(0x00);
-	interrupt_register_handler(1, &kbd_isr);
+	interrupt_register_handler(1, &kbd_isr, NULL);
 	while (kbd_controller_status () & KBD_CTRL_STATUS_OUT_BUF_BIT)
                 kbd_encoder_read_buffer();
 }

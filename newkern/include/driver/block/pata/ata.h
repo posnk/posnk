@@ -13,6 +13,7 @@
 #define __DRIVER_BLOCK_PATA_ATA_H__
 
 #include <stdint.h>
+#include "kernel/interrupt.h"
 
 #define ATA_DATA_PORT			(0)
 
@@ -143,6 +144,7 @@ struct ata_device {
 	uint16_t	pio_base;
 	uint16_t	ctrl_base;
 	uint16_t	bmio_base;
+	irq_id_t	irq;
 	uint8_t		ctrl_reg;
 	ata_drive_t	drives[2];
 };

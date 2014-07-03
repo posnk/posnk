@@ -18,18 +18,19 @@
 #define INTERRUPT_IRQ_COUNT	(16)
 
 typedef uint8_t irq_id_t;
-typedef int (*irq_handler_t)(irq_id_t);
+typedef int (*irq_handler_t)(irq_id_t, void*);
 
 typedef struct interrupt_handler_s interrupt_handler_t;
 
 struct interrupt_handler_s {
-	llist_t		link;
-	irq_handler_t	handler;
+	llist_t		 link;
+	irq_handler_t	 handler;
+	void 		*context;
 };
 
 void interrupt_dispatch(irq_id_t irq_id);
 
-void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler);
+void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler, void *context);
 
 void interrupt_init();
 

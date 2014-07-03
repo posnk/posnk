@@ -37,7 +37,7 @@ void kbd_send_encoder_command(uint8_t cmd){
         i386_outb(KBD_ENC_IO_PORT,cmd);
 }
 
-int kbd_isr(irq_id_t irq_id){
+int kbd_isr(irq_id_t irq_id, void *context){
         uint8_t scancode;
         if (kbd_controller_status () & KBD_CTRL_STATUS_OUT_BUF_BIT){
                 scancode = kbd_encoder_read_buffer();

@@ -95,10 +95,23 @@ void ata_set_interrupts(ata_device_t *device, int enabled)
 	ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
 }
 
+int ata_irq_handler(irq_id_t irq_id, void *context)
+{
+	ata_device_t *device = context;
+	if (device->bmio_base) {
+		if (!(ata_read_port(device, ATA_BUSMASTER_STATUS_PORT) & ATA_BM_STATUS_FLAG_IREQ))
+			return 0;//Forward interrupt to next handlers
+		ata_write_port(device, ATA_BUSMASTER_STATUS_PORT, ATA_BM_STATUS_FLAG_IREQ);
+	}
+	//TODO: Handle IRQ
+	return 1;
+}
+
 void ata_initialize(ata_device_t *device)
 {
 	int drive, _t;
 	ata_set_interrupts(device, 0); //Disable interrupts for this device_id
+	interrupt_register_handler(device->irq, &ata_irq_handler, device);
 	device->bus_number = ata_bus_number_counter++;
 	for (drive = 0; drive < 2; drive++) {
 		device->drives[drive].type = ATA_DRIVE_NONE;
