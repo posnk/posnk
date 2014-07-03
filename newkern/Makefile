@@ -181,8 +181,8 @@ clean:
 	$(RM) driver/bus/*.o
 	$(RM) driver/block/pata/*.o
 
-emulate:
-	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img 
+emulate: cdrom_i386
+	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)

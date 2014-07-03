@@ -210,7 +210,7 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, off_t offset )
 		}
 
 		/* Actually remove block from the list */
-		llist_unlink((llist_t *) &entry);
+		llist_unlink((llist_t *) entry);
 
 		/* Proceed to reuse the block memory, reset descriptor */
 		entry->offset = offset;

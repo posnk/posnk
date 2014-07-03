@@ -11,6 +11,7 @@
 
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
+#include "kernel/earlycon.h"
 #include <sys/types.h>
 #include <sys/errno.h>
 #include <string.h>
@@ -72,6 +73,7 @@ int device_block_register(blk_dev_t *driver)
 
 	for (minor = 0; minor < driver->minor_count; minor++) {
 		driver->locks[minor] = semaphore_alloc();
+		semaphore_up(driver->locks[minor]);
 		if (!driver->caches[minor]) {
 			for (_m = 0; _m < minor; _m++)
 				semaphore_free(driver->locks[_m]);
@@ -190,6 +192,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	uintptr_t in_block, in_buffer;
 
 	if ((!drv) || (minor > drv->minor_count)) {
+		debugcon_printf("invalid %i %i\n", (int)major, (int)minor);
 		return ENODEV;
 	}
 
@@ -198,10 +201,10 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	semaphore_down(drv->locks[minor]);
 
 	while (in_buffer != ((uintptr_t) count)) {
-	
-		block_offset = file_offset % drv->block_size;
 
-		in_block  = file_offset - block_offset + in_buffer;
+		in_block  = (file_offset + in_buffer) % drv->block_size;
+	
+		block_offset = (file_offset + in_buffer) - in_block;
 		in_block_count = count - in_buffer;
 
 		if(in_block_count > (drv->block_size - in_block))
@@ -216,7 +219,9 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 					semaphore_up(drv->locks[minor]);
 					return rv;
 				}
-			}
+			}			
+		
+			entry = blkcache_find(drv->caches[minor], block_offset);
 
 		} else { //Just add it to the cache
 
@@ -241,6 +246,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 		}
 
 		memcpy( (void *) ( ((uintptr_t)entry->data) + in_block ) , (void *) ( ((uintptr_t) buffer) + in_buffer ), in_block_count ); 
+		entry->flags |= BLKCACHE_ENTRY_FLAG_DIRTY;
 
 		in_buffer += in_block_count;
 		block_offset += drv->block_size;
@@ -276,10 +282,11 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 	semaphore_down(drv->locks[minor]);
 
 	while (in_buffer != ((uintptr_t) count)) {
-	
-		block_offset = file_offset % drv->block_size;
 
-		in_block  = file_offset - block_offset + in_buffer;
+		in_block  = (file_offset + in_buffer) % drv->block_size;
+	
+		block_offset = (file_offset + in_buffer) - in_block;
+
 		in_block_count = count - in_buffer;
 
 		if(in_block_count > (drv->block_size - in_block))
@@ -291,7 +298,9 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 			if (rv) {
 				semaphore_up(drv->locks[minor]);
 				return rv;
-			}
+			}			
+		
+			entry = blkcache_find(drv->caches[minor], block_offset);
 		}
 
 		memcpy( (void *) ( ((uintptr_t) buffer) + in_buffer ), (void *) ( ((uintptr_t)entry->data) + in_block ), in_block_count ); 
