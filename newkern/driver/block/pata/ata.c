@@ -104,6 +104,7 @@ void ata_initialize(ata_device_t *device)
 		device->drives[drive].type = ATA_DRIVE_NONE;
 		ata_write_port(device, ATA_DRIVE_HEAD_PORT, ATA_DRVSEL_CHS(drive, 0));//Select drive
 		//TODO: Wait here ? osdev wiki says so but does not specify why.(no support for kernel-land sleeps yet)	
+		//NOTE: Seems to work fine on Qemu this way...
 		ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_IDENTIFY);//Execute #IDENTIFY
 		//TODO: ^^^^
 		if (!ata_read_port(device, ATA_STATUS_PORT))
@@ -133,12 +134,12 @@ void ata_initialize(ata_device_t *device)
 				device->drives[drive].serial[_t + 1] = (char) device->drives[drive].ident_data[ATA_IDENT_SERIAL + _t];
 			}
 			device->drives[drive].serial[20] = '\0';
-			debugcon_printf("ata: detected device: %i:%i which is a %s with serial %s\n",device->bus_number, drive, device->drives[drive].model, device->drives[drive].serial);
+			debugcon_printf("ata: detected device: %i:%i which is a %s with serial %s\n", device->bus_number, drive, device->drives[drive].model, device->drives[drive].serial);
 		} else {
 			//Possibly detected an ATAPI device
 			//TODO: Handle ATAPI devices
+			debugcon_printf("ata: detected device: %i:%i which is probably an ATAPI device!\n", device->bus_number, drive);
 			continue;//Ignoring this one
 		}
-	}
-	
+	}	
 }

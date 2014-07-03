@@ -41,7 +41,19 @@
 
 #define ATA_DEVADDRESS_PORT		(13)
 
+#define ATA_BUSMASTER_COMMAND_PORT	(14)
+#define ATA_BUSMASTER_STATUS_PORT	(16)
+#define ATA_BUSMASTER_PRDT_PTR_PORT	(18)
 
+#define ATA_BM_CMD_FLAG_DMA_ENABLE	(1<<0)
+#define ATA_BM_CMD_FLAG_READ		(1<<3)
+
+#define ATA_BM_STATUS_FLAG_SIMPLEX	(1<<7)
+#define ATA_BM_STATUS_FLAG_S_DMA	(1<<6)
+#define ATA_BM_STATUS_FLAG_M_DMA	(1<<5)
+#define ATA_BM_STATUS_FLAG_IREQ		(1<<2)
+#define ATA_BM_STATUS_FLAG_ERR		(1<<1)
+#define ATA_BM_STATUS_FLAG_DMAGO	(1<<0)
 
 #define ATA_STATUS_FLAG_ERR		(1<<0)
 #define ATA_STATUS_FLAG_DRQ		(1<<3)
@@ -98,6 +110,8 @@
 #define ATA_DRVSEL_LBA(ndrv, buppr)		(0xE0 | ( ((ndrv)&1) << 4) | ((buppr)&0xF) )
 #define ATA_DRVSEL_CHS(ndrv, nhead)		(0xA0 | ( ((ndrv)&1) << 4) | ((nhead)&0xF) )
 
+#define ATA_PRD_END_OF_LIST		(0x8000)
+
 #define ATA_DRIVE_NONE			(0)
 #define ATA_DRIVE_ATA			(1)
 #define ATA_DRIVE_ATAPI			(2)
@@ -132,6 +146,12 @@ struct ata_device {
 	uint8_t		ctrl_reg;
 	ata_drive_t	drives[2];
 };
+
+struct ata_prd {
+	uint32_t	buffer_phys;
+	uint16_t	byte_count;
+	uint16_t	end_of_list;
+}  __attribute__((packed));
 
 
 uint8_t ata_read_port(ata_device_t *device, uint16_t port);

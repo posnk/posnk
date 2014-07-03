@@ -394,16 +394,21 @@ void *heapmm_alloc_internal(size_t size, int morecore)
 	return address;
 }
 
+typedef struct heapmm_alignreq {
+	size_t		size;
+	uintptr_t	align;
+} heapmm_alignreq_t;
+
 /**
- * Iterator function that tests for page aligned, page sized blocks
+ * Iterator function that tests for aligned, matching sized blocks
  */
 int heapmm_alloc_page_match_iterator	 (llist_t *node, void *param)
 {
 	heapmm_block_t *block  = (heapmm_block_t *) node;
+	heapmm_alignreq_t *req = (heapmm_alignreq_t *) param;
 	uintptr_t		inpage = (uintptr_t) block->start;
-	size_t 			size  = (size_t) param;
-	inpage &= PHYSMM_PAGE_ADDRESS_MASK;			
-	return (inpage == 0) && (block->size == size);
+	inpage &= req->align - 1;			
+	return (inpage == 0) && (block->size == req->size);
 }
 
 /**
@@ -413,11 +418,11 @@ int heapmm_alloc_page_match_iterator	 (llist_t *node, void *param)
 int heapmm_alloc_page_split_iterator (llist_t *node, void *param)
 {
 	heapmm_block_t *block  = (heapmm_block_t *) node;
+	heapmm_alignreq_t *req = (heapmm_alignreq_t *) param;
 	uintptr_t		inpage = (uintptr_t) block->start;
-	size_t 			size  = (size_t) param;
 	size_t			reqsize;
-	inpage &= PHYSMM_PAGE_ADDRESS_MASK;			
-	reqsize = size + (size_t)(PHYSMM_PAGE_SIZE - inpage);
+	inpage &= req->align - 1;			
+	reqsize = req->size + (size_t)(req->align - inpage);
 	return block->size >= reqsize;
 }
 
@@ -427,23 +432,36 @@ int heapmm_alloc_page_split_iterator (llist_t *node, void *param)
 int heapmm_alloc_page_fit_iterator (llist_t *node, void *param)
 {
 	heapmm_block_t *block  = (heapmm_block_t *) node;
+	heapmm_alignreq_t *req = (heapmm_alignreq_t *) param;
 	uintptr_t		inpage = (uintptr_t) block->start;
-	size_t 			size  = (size_t) param;
-	inpage &= PHYSMM_PAGE_ADDRESS_MASK;			
-	return (inpage == 0) && (block->size >= size);
-	heapmm_space_left-=size;
+	inpage &= req->align - 1;			
+	return (inpage == 0) && (block->size >= req->size);
 }
+
 /**
  * Allocates a page alligned block of RAM
  */
 void *heapmm_alloc_page_alligned(size_t size)
 {
+	return heapmm_alloc_alligned(size, PHYSMM_PAGE_SIZE);
+}
+
+
+/**
+ * Allocates an alligned block of RAM
+ */
+void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
+{
 	heapmm_block_t *found_block;
+	heapmm_alignreq_t alignreq;
 	void 		   *address;
 	void		   *pad_address;
-	uintptr_t		in_page;
+	uintptr_t		in_page,alignmask;
 	if (((heapmm_space_left - size) < 1024))
 		heapmm_morecore(PHYSMM_PAGE_SIZE);
+	alignmask = alignment - 1;
+	alignreq.size = size;
+	alignreq.align = alignment;
 
 	//TODO: Get a lock on the free block table
 	
@@ -451,20 +469,20 @@ void *heapmm_alloc_page_alligned(size_t size)
 	found_block = (heapmm_block_t *)
 		llist_iterate_select(&heapmm_free_blocks_list,
 							 &heapmm_alloc_page_fit_iterator,
-							 (void *) size);
+							 &alignreq);
 	if (found_block == NULL) {
 		/* No fitting, aligned free block was found */
 		found_block = (heapmm_block_t *)
 			llist_iterate_select(&heapmm_free_blocks_list,
 								 &heapmm_alloc_page_match_iterator,
-								 (void *) size);
+								 &alignreq);
 	}
 	if (found_block == NULL) {
 		/* No aligned free block was found */
 		found_block = (heapmm_block_t *)
 			llist_iterate_select(&heapmm_free_blocks_list,
 								 &heapmm_alloc_page_split_iterator,
-								 (void *) size);
+								 &alignreq);
 	} 
 	if (found_block == NULL) {
 		/* No aligned or alignable free block was found */		
@@ -475,12 +493,12 @@ void *heapmm_alloc_page_alligned(size_t size)
 		
 		heapmm_morecore(size);
 
-		return heapmm_alloc_page();
+		return heapmm_alloc_alligned(size, alignment);
 	}
 
 	pad_address = address = found_block->start;
 	
-	in_page = ((size_t) address) & PHYSMM_PAGE_ADDRESS_MASK;
+	in_page = ((size_t) address) & alignmask;
 
 	if (in_page == 0) {
 		/* Block is aligned */
@@ -505,7 +523,7 @@ void *heapmm_alloc_page_alligned(size_t size)
 		/* Block is not aligned */
 
 		/* Proceed to shrink block */
- 		size_t padding = (size_t) (PHYSMM_PAGE_SIZE - in_page);
+ 		size_t padding = (size_t) (alignment - in_page);
 		found_block->start = (void *) ( ((uintptr_t)found_block->start) + ((uintptr_t) padding) + ((uintptr_t) size));
 		found_block->size -= padding + ((size_t) size);
 		

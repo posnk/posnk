@@ -55,6 +55,11 @@ void *heapmm_alloc_table();
 void *heapmm_alloc_page_alligned(size_t size);
 
 /**
+ * Allocates an alligned block of RAM
+ */
+void *heapmm_alloc_alligned(size_t size, uintptr_t alignment);
+
+/**
  * Allocates a new block of memory of given size to the caller
  */
 void *heapmm_alloc(size_t size);
