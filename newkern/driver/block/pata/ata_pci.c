@@ -45,7 +45,7 @@ int ata_pci_probe(uint32_t bus_addr) {
 	dev_s->pio_base = (bar2 > 1) ? bar2 : 0x170;
 	dev_s->ctrl_base = (bar3 > 1) ? bar3 : 0x374;
 	dev_s->bmio_base = bar4 + 8;
-	dev_p->irq = irq ? irq : 15;
+	dev_s->irq = irq ? irq : 15;
 
 	ata_initialize(dev_p);
 	ata_initialize(dev_s);

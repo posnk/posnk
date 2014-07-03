@@ -14,6 +14,7 @@
 
 #include <stdint.h>
 #include "kernel/interrupt.h"
+#include "kernel/synch.h"
 
 #define ATA_DATA_PORT			(0)
 
@@ -107,6 +108,8 @@
 #define ATA_IDENT_LLONG(DV, DR, PT)	(* ( (uint64_t *) &(DV->drives[DR].ident_data[PT]) ) )
 
 #define ATA_IDENT_CMDSET_FLAG_LBA48	(1<<26)
+#define ATA_IDENT_CAP_FLAG_DMA		(1<<8)
+#define ATA_IDENT_CAP_FLAG_LBA		(1<<9)
 
 #define ATA_DRVSEL_LBA(ndrv, buppr)		(0xE0 | ( ((ndrv)&1) << 4) | ((buppr)&0xF) )
 #define ATA_DRVSEL_CHS(ndrv, nhead)		(0xA0 | ( ((ndrv)&1) << 4) | ((nhead)&0xF) )
@@ -117,9 +120,19 @@
 #define ATA_DRIVE_ATA			(1)
 #define ATA_DRIVE_ATAPI			(2)
 
+#define ATA_MODE_CHS			(0)
+#define ATA_MODE_LBA28			(1)
+#define ATA_MODE_LBA48			(2)
+
+#define ATA_PRD_LIST_SIZE		(16)
+
 typedef struct ata_device ata_device_t;
 
 typedef struct ata_drive ata_drive_t;
+
+typedef struct ata_prd ata_prd_t;
+
+typedef uint64_t ata_lba_t;
 
 struct ata_drive {
 	int		type;
@@ -135,18 +148,24 @@ struct ata_drive {
 	uint16_t	heads;
 	uint16_t	sectors_per_track;
 /* Size */
-	uint64_t	max_lba;
+	ata_lba_t	max_lba;
+
+/* Operation mode */
+	int		lba_mode;
 	
 };
 
 struct ata_device {
-	int		bus_number;
-	uint16_t	pio_base;
-	uint16_t	ctrl_base;
-	uint16_t	bmio_base;
-	irq_id_t	irq;
-	uint8_t		ctrl_reg;
-	ata_drive_t	drives[2];
+	int		 bus_number;
+	uint16_t	 pio_base;
+	uint16_t	 ctrl_base;
+	uint16_t	 bmio_base;
+	irq_id_t	 irq;
+	uint8_t		 ctrl_reg;
+	ata_drive_t	 drives[2];
+	semaphore_t	*lock;
+	semaphore_t	*int_wait;
+	uint8_t		 int_status;
 };
 
 struct ata_prd {
@@ -165,4 +184,6 @@ int ata_poll_wait(ata_device_t *device);
 void ata_set_interrupts(ata_device_t *device, int enabled);
 
 void ata_initialize(ata_device_t *device);
+
+int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count);
 #endif
