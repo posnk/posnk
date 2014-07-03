@@ -248,6 +248,7 @@ void i386_kmain()
 {
 	pid_t pid_init, pid_idle;
 	int init_status, rv;
+	uint8_t firstsector[512];
 	uint32_t wp_params[4];
 
 	earlycon_puts("OK\n\n");

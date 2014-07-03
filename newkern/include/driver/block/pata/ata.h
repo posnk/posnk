@@ -184,6 +184,6 @@ int ata_poll_wait(ata_device_t *device);
 void ata_set_interrupts(ata_device_t *device, int enabled);
 
 void ata_initialize(ata_device_t *device);
-
+int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count);
 int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count);
 #endif
