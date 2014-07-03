@@ -30,6 +30,7 @@
 #include "kernel/device.h"
 #include "kernel/tty.h"
 #include "kernel/drivermgr.h"
+#include "kernel/interrupt.h"
 #include "fs/ramfs.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -261,6 +262,7 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing interrupt controller...");
+	interrupt_init();
 	i386_pic_initialize();
 	earlycon_puts("OK\n");
 
@@ -268,18 +270,26 @@ void i386_kmain()
 	i386_pit_setup(59659, 0, I386_PIT_OCW_MODE_RATEGEN);
 	earlycon_puts("OK\n");
 
+	earlycon_puts("Initializing driver framework...");
+	drivermgr_init();
+	device_char_init();
+	device_block_init();
+	earlycon_puts("OK\n");
+
+	earlycon_puts("Registering built in drivers...");
+	ata_pci_register();
+	earlycon_puts("OK\n");
+
+
+	earlycon_puts("Enumerating PCI buses...");
+	pci_enumerate_all();
+	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
 	if (vfs_initialize(ramfs_create()))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");
-
-	drivermgr_init();
-
-	ata_pci_register();
-
-	pci_enumerate_all();
 
 	earlycon_puts("Loading module files...");
 	i386_init_load_modules(mb_info);
@@ -290,9 +300,6 @@ void i386_kmain()
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");*/
-
-	device_char_init();
-	device_block_init();
 
 	tty_init();
 	vterm_vga_init();

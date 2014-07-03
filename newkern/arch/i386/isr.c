@@ -18,6 +18,7 @@
 #include "kernel/system.h"
 #include "kernel/syscall.h"
 #include "kernel/scheduler.h"
+#include "kernel/interrupt.h"
 #include "kernel/time.h"
 #include "util/debug.h"
 
@@ -49,7 +50,6 @@ void *i386_get_page_fault_addr() {
 	asm volatile("mov %%cr2, %0": "=r"(cr2));
 	return (void *) cr2;
 }
-void kbd_isr();
 //void i386_register_hardware_isr(int irq,void *isr){
 //}
 
@@ -68,16 +68,14 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 	} else if (int_id == 32) {
 		i386_interrupt_done (int_id - 32);
 		timer_interrupt();
-	} else if (int_id == 33) {
-		i386_interrupt_done (int_id - 32);
-		kbd_isr();
 	} else if (int_id == 35) {
 		i386_interrupt_done (int_id - 32);;
 		sercon_isr();
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */
 		//earlycon_printf("Unhandled hardware interrupt %i\n", int_id - 32);
-		i386_interrupt_done (int_id);
+		interrupt_dispatch(int_id - 32);
+		i386_interrupt_done (int_id - 32);
 	} else if (int_id == I386_EXCEPTION_PAGE_FAULT) {
 		/* Dispatch to page fault handler */
 		paging_handle_fault(i386_get_page_fault_addr(), (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t)

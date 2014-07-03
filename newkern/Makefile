@@ -40,6 +40,7 @@ kernel/paging.c \
 kernel/blkcache.c \
 kernel/earlycon.c \
 kernel/exception.c \
+kernel/interrupt.c \
 kernel/scheduler.c \
 kernel/synch.c \
 kernel/process.c \

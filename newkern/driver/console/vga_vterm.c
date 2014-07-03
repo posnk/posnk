@@ -119,4 +119,5 @@ void vterm_vga_init(){
         }
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
 	vterm_vga_switch_vc(0);
+	kb_initialize();
 }

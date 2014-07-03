@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include "arch/i386/x86.h"
+#include "kernel/interrupt.h"
+
 
 #define KBD_ENC_IO_PORT			0x60
 #define KBD_CTRL_IO_PORT		0x64
@@ -29,7 +31,7 @@ void kbd_send_controller_command(uint8_t cmd);
 
 uint8_t kbd_encoder_read_buffer();
 void kbd_send_encoder_command(uint8_t cmd);
-void kbd_isr();
+int kbd_isr(irq_id_t irq_id);
 
 #endif
 

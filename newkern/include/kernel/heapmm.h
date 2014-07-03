@@ -14,6 +14,7 @@
 
 #include "util/llist.h"
 #include <stddef.h>
+#include <stdint.h>
 
 /**
  * typedef for heapmm_block:

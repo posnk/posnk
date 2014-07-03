@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "kernel/interrupt.h"
 #include "arch/i386/x86.h"
 #include "driver/oldkb/i8042.h"
 #define KBD_CPSLCK_BIT 1
@@ -36,18 +37,18 @@ void kbd_send_encoder_command(uint8_t cmd){
         i386_outb(KBD_ENC_IO_PORT,cmd);
 }
 
-void kbd_isr(){
+int kbd_isr(irq_id_t irq_id){
         uint8_t scancode;
         if (kbd_controller_status () & KBD_CTRL_STATUS_OUT_BUF_BIT){
                 scancode = kbd_encoder_read_buffer();
                 if ((scancode == 0xE0) || (scancode == 0xE1)){
                         extended = 1;
-                        return;
+                        return 1;
                 }
                 if (scancode & 0x80){
                         kb_released(currently_held_key);//
                         if ((currently_held_key & 0x80) == scancode)
-                                return;
+                                return 1;
                         scancode &= ~0x80;
                         switch (scancode){
                                 case 0x1D:
@@ -72,12 +73,12 @@ void kbd_isr(){
                                         break;
                         }
 			extended = 0;
-                        return;        
+                        return 1;        
                 }
                 if (scancode == currently_held_key){
                         kb_typed(scancode);//
 			extended = 0;
-                        return;
+                        return 1;
                 }
                 currently_held_key = scancode;
                 kb_pressed(scancode);//
@@ -117,5 +118,6 @@ void kbd_isr(){
                }    
 			extended = 0;
         }
+	return 1;
 }
 

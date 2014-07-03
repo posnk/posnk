@@ -1,6 +1,7 @@
 #include "driver/oldkb/i8042.h"
 #include "driver/oldkb/kbd.h"
 #include "kernel/tty.h"
+#include "kernel/interrupt.h"
 
 
 uint8_t modifiers = 0;
@@ -8,6 +9,9 @@ uint8_t modifiers = 0;
 void kb_initialize(){
         kb_set_leds(0xFF);
         kb_set_leds(0x00);
+	interrupt_register_handler(1, &kbd_isr);
+	while (kbd_controller_status () & KBD_CTRL_STATUS_OUT_BUF_BIT)
+                kbd_encoder_read_buffer();
 }
 
 void kb_set_leds(uint8_t leds){
