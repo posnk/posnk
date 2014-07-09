@@ -69,6 +69,7 @@ kdbg/kdbgio.c \
 kdbg/kdbgmm.c \
 kdbg/stacktrc.c \
 fs/ramfs.c \
+fs/mbr.c \
 util/llist.c \
 crt/string.c \
 crt/stdlib.c 
@@ -182,7 +183,7 @@ clean:
 	$(RM) driver/block/pata/*.o
 
 emulate: cdrom_i386
-	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s
+	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)

@@ -15,6 +15,7 @@
 #include <stdint.h>
 #include "kernel/interrupt.h"
 #include "kernel/synch.h"
+#include "fs/partition.h"
 
 #define ATA_DATA_PORT			(0)
 
@@ -152,6 +153,9 @@ struct ata_drive {
 
 /* Operation mode */
 	int		lba_mode;
+
+/* Partitions */
+	partition_info_t partitions[31];
 	
 };
 

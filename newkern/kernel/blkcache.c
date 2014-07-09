@@ -242,7 +242,7 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, off_t offset )
 		entry->access_count = 0;
 
 		/* Allocate its data memory and */
-		entry->data = heapmm_alloc( cache->block_size );
+		entry->data = heapmm_alloc_alligned( cache->block_size, cache->block_size );
 
 		/* Handle out of memory errors */
 		if ( !entry->data ) {

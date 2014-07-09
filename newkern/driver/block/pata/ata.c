@@ -18,6 +18,7 @@
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
+#include "fs/mbr.h"
 
 int ata_bus_number_counter = 0;
 int ata_interrupt_enabled = 0;
@@ -59,6 +60,22 @@ void ata_write_port(ata_device_t *device, uint16_t port, uint8_t value)
 		i386_outb(device->ctrl_base + port - 10, value);
 	else if (port < 0x16)
 		i386_outb(device->bmio_base + port - 14, value);
+	if ((port > 0x07) && (port < 0x0C)) //LBA48
+		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
+}
+
+void ata_write_port_long(ata_device_t *device, uint16_t port, uint32_t value)
+{
+	if ((port > 0x07) && (port < 0x0C)) //LBA48
+		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
+	if (port < 0x08)
+		i386_outl(device->pio_base  + port, value);
+	else if (port < 0x0C)
+		i386_outl(device->pio_base  + port - 6, value);
+	else if (port < 0x0E)
+		i386_outl(device->ctrl_base + port - 10, value);
+	else if (port < 0x16)
+		i386_outl(device->bmio_base + port - 14, value);
 	if ((port > 0x07) && (port < 0x0C)) //LBA48
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
 }
@@ -147,6 +164,7 @@ int ata_irq_handler(irq_id_t irq_id, void *context)
 	}
 	device->int_status = ata_read_port(device, ATA_STATUS_PORT);
 	semaphore_up(device->int_wait);
+	//debugcon_printf("ata isr\n");
 	return 1;
 }
 
@@ -154,6 +172,13 @@ void ata_global_initialize()
 {
 	ata_global_inited = 1;
 	ata_buses = heapmm_alloc(sizeof(ata_device_t *) * 4);
+}
+
+void ata_load_partition_table(ata_device_t *device, int drive)
+{
+	uint8_t mbr[512];
+	ata_read(device, drive, 0, mbr, 1);
+	mbr_parse(device->drives[drive].partitions, mbr);
 }
 
 void ata_initialize(ata_device_t *device)
@@ -201,7 +226,7 @@ void ata_initialize(ata_device_t *device)
 				device->drives[drive].lba_mode  = ATA_MODE_LBA28;
 			} else {
 #ifndef HAVE_LIBGCC
-				debugcon_printf("ata: %i:%i doesn''t support LBA and kernel was compiled w/o libgcc, disabling it\n", device->bus_number, drive);
+				debugcon_printf("ata: %i:%i doesn't support LBA and kernel was compiled w/o libgcc, disabling it\n", device->bus_number, drive);
 				device->drives[drive].type = ATA_DRIVE_NONE;
 #endif
 				device->drives[drive].lba_mode  = ATA_MODE_CHS;
@@ -218,18 +243,19 @@ void ata_initialize(ata_device_t *device)
 			}
 			device->drives[drive].serial[20] = '\0';
 			debugcon_printf("ata: detected device: %i:%i which is a %s with serial %s\n", device->bus_number, drive, device->drives[drive].model, device->drives[drive].serial);
-			
+			ata_load_partition_table(device, drive);
 		} else {
 			//Possibly detected an ATAPI device
 			//TODO: Handle ATAPI devices
-			debugcon_printf("ata: detected device: %i:%i which is probably an ATAPI device!\n", device->bus_number, drive);
+			debugcon_printf("ata: detected device: %i:%i which is probably an ATAPI device\n", device->bus_number, drive);
 			continue;//Ignoring this one
 		}
 	}	
 	if (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) {
-		ata_prd_list = heapmm_alloc_alligned(ATA_PRD_LIST_SIZE, 8);
+		ata_prd_list = heapmm_alloc_alligned(ATA_PRD_LIST_SIZE * sizeof(ata_prd_t), 8);
 		if (ata_prd_list) {
-			ata_write_port(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address(ata_prd_list));
+			ata_write_port_long(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address(ata_prd_list));
+			debugcon_printf("ata: allocated DMA prd list at %x\n", ata_prd_list);
 		} else {
 			device->drives[drive].capabilities &= ~ATA_IDENT_CAP_FLAG_DMA;
 		}
@@ -299,6 +325,10 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 	int dma = (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
 	ata_setup_lba_transfer(device, drive, lba, count);
+	*(device->int_wait) = 0;
+#ifdef CONFIG_ATA_DEBUG
+	debugcon_printf("ata: read  %i:%i[%x]->M[%x] * %i blocks, DMA:%i\n", device->bus_number, drive, (uint32_t)lba, buffer,(uint32_t) count, dma);
+#endif
 	if (dma) {
 		if (device->drives[drive].lba_mode == ATA_MODE_LBA48)
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_READ_DMA_EXT);
@@ -351,7 +381,11 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 	size_t byte_count = count * 512;
 	int dma = (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
+	*(device->int_wait) = 0;
 	ata_setup_lba_transfer(device, drive, lba, count);
+#ifdef CONFIG_ATA_DEBUG
+	debugcon_printf("ata: write %i:%i[%x]<-M[%x] * %i blocks, DMA:%i\n", device->bus_number, drive, (uint32_t)lba, buffer,(uint32_t) count, dma);
+#endif
 	if (dma) {
 		if (device->drives[drive].lba_mode == ATA_MODE_LBA48)
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_WRITE_DMA_EXT);
@@ -411,15 +445,25 @@ int ata_blk_close(dev_t device, int fd) {return 0;}
 int ata_blk_write(dev_t device, off_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
-	dev_t minor = MAJOR(device);
+	dev_t minor = MINOR(device);
 	ata_device_t *_dev = ata_buses[major - 0x10];
 	ata_lba_t lba = ((ata_lba_t) file_offset) >> 9;
 	int drive = (minor & 32) ? 1 : 0;
 
-//TODO: Add partition handling here
-
 	if ((_dev == NULL) || (major >= 64))
 		return ENODEV;
+
+	minor &= 0x1F;
+
+	if (minor) {
+		if (_dev->drives[drive].partitions[minor - 1].type == 0)
+			return ENODEV;
+		if (lba > _dev->drives[drive].partitions[minor - 1].size)
+			return ENOSPC;
+		lba += _dev->drives[drive].partitions[minor - 1].start;
+	}
+
+
 	if(!ata_write(_dev, drive, lba, (uint8_t *) buffer, 1))
 		return EIO;
 	return 0;
@@ -428,15 +472,24 @@ int ata_blk_write(dev_t device, off_t file_offset, void * buffer )
 int ata_blk_read(dev_t device, off_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
-	dev_t minor = MAJOR(device);
+	dev_t minor = MINOR(device);
 	ata_device_t *_dev = ata_buses[major - 0x10];
 	ata_lba_t lba = ((ata_lba_t) file_offset) >> 9;
 	int drive = (minor & 32) ? 1 : 0;
 
-//TODO: Add partition handling here
-
 	if ((_dev == NULL) || (major >= 64))
 		return ENODEV;
+
+	minor &= 0x1F;
+
+	if (minor) {
+		if (_dev->drives[drive].partitions[minor - 1].type == 0)
+			return ENODEV;
+		if (lba > _dev->drives[drive].partitions[minor - 1].size)
+			return ENOSPC;
+		lba += _dev->drives[drive].partitions[minor - 1].start;
+	}
+
 	if(!ata_read(_dev, drive, lba, (uint8_t *) buffer, 1))
 		return EIO;
 	return 0;
