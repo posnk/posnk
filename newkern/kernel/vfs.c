@@ -134,6 +134,11 @@ int vfs_int_write(inode_t * inode, void * buffer, off_t file_offset, off_t count
 	return inode->device->ops->write_inode(inode, buffer, file_offset, count);
 }
 
+int vfs_int_truncate(inode_t * inode, off_t size)
+{
+	return inode->device->ops->trunc_inode(inode, size);
+}
+
 int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block)
 {
 	int status;
@@ -152,14 +157,10 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 				/* Writing past EOF */
 				if (file_offset > inode->size) {
 					/* Writing starts past EOF */
-					//TODO: Zero-pad gap
-					//semaphore_up(inode->lock);
-					//(*read_size) = 0;
 					zbuffer = heapmm_alloc(file_offset - inode->size);
 					memset(zbuffer, 0, file_offset - inode->size);
 					vfs_int_write(inode, zbuffer, inode->size, (off_t)file_offset - inode->size);
-					heapmm_free(zbuffer,file_offset - inode->size);
-					//return 0;					
+					heapmm_free(zbuffer,file_offset - inode->size);				
 				}
 				inode->size = (file_offset + ((off_t)count)); //TODO: Verify that size fits...
 			}				
@@ -189,6 +190,40 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 		default:			
 			semaphore_up(inode->lock);	
 			return EISDIR;		
+
+	}
+	
+}
+
+int vfs_truncate(inode_t * inode, off_t length)
+{
+	int status;
+	if (!inode)
+		return EINVAL;
+	inode = vfs_effective_inode(inode);
+
+	semaphore_down(inode->lock);
+
+	if (!vfs_have_permissions(inode, MODE_WRITE)) {
+		semaphore_up(inode->lock);
+		return EBADF;
+	}
+	switch ((inode->mode) & S_IFMT) {
+		case S_IFREG:			
+			status = vfs_int_truncate(inode, length);
+			if (!status)
+				inode->mtime = system_time;
+			semaphore_up(inode->lock);
+			return status;
+		case S_IFDIR:
+			semaphore_up(inode->lock);			
+			return EISDIR;
+		case S_IFBLK:	
+		case S_IFCHR:	
+		case S_IFIFO:
+		default:		
+			semaphore_up(inode->lock);
+			return EINVAL;		
 
 	}
 	

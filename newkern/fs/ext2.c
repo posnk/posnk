@@ -427,7 +427,8 @@ fs_device_operations_t ext2_ops = {
 	&ext2_finddir,//Find directory entry
 	NULL,//Make directory
 	NULL,//Make directory entry
-	NULL //Remove directory entry
+	NULL,//Remove directory entry
+	NULL //Change file length
 };
 
 fs_device_t *ext2_mount(dev_t device, uint32_t flags)

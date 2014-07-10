@@ -234,6 +234,39 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 	}
 }
 
+int _sys_ftruncate(int fd, off_t size)
+{
+	int st;
+	stream_ptr_t *ptr = stream_get_ptr(fd);
+	if (!ptr) {
+		syscall_errno = EBADF;
+		return -1;
+	}
+	semaphore_down(ptr->info->lock);
+	if ((ptr->info->flags & O_ACCMODE) == O_RDONLY) {
+		semaphore_up(ptr->info->lock);
+		syscall_errno = EINVAL;
+		return -1;		
+	}
+	switch (ptr->info->type) {
+		case STREAM_TYPE_FILE:
+			st = vfs_truncate(ptr->info->inode, size);
+			if (st != 0) {
+				syscall_errno = st;
+				semaphore_up(ptr->info->lock);
+				return -1;
+			}
+			semaphore_up(ptr->info->lock);
+			return 0;
+		case STREAM_TYPE_PIPE:
+		default:
+			semaphore_up(ptr->info->lock);
+			syscall_errno = EINVAL;
+			return -1;
+	}
+}
+
+
 off_t _sys_lseek(int fd, off_t offset, int whence)
 {
 	off_t old_offset;

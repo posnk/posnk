@@ -143,4 +143,6 @@ uint32_t sys_dbgdrop(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 
 uint32_t sys_mount(uint32_t param[4], uint32_t param_size[4]);
 
+uint32_t sys_ftruncate(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
+
 #endif

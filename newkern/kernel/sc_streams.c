@@ -201,3 +201,9 @@ uint32_t sys_lseek(uint32_t param[4], __attribute__((__unused__)) uint32_t param
 {
 	return (uint32_t) _sys_lseek((int) param[0], (off_t) param[1], (int) param[2]);
 }
+
+//int ftruncate(int fd, off_t length);
+uint32_t sys_ftruncate(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+{
+	return (uint32_t) _sys_ftruncate((int) param[0], (off_t) param[1]);
+}

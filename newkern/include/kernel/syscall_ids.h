@@ -88,6 +88,7 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_SSIGEX	57
 #define SYS_DBGDROP	58
 #define SYS_MOUNT	59
+#define SYS_FTRUNCATE	60
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif

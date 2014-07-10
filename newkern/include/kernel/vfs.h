@@ -88,6 +88,8 @@ struct fs_device_operations {
 	int		(*mkdir)	(inode_t *);		//dir_inode_id -> status
 	int		(*link)		(inode_t *, char *, ino_t);	//dir_inode_id, filename, inode_id -> status
 	int		(*unlink)	(inode_t *, char *);	//dir_inode_id, filename
+
+	int		(*trunc_inode)	(inode_t *, off_t);
 };
 
 struct fs_device {
@@ -125,6 +127,8 @@ int vfs_link(char *oldpath, char *newpath);
 int vfs_symlink(char *oldpath, char *newpath);
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
+
+int vfs_truncate(inode_t * inode, off_t length);
 
 inode_t *vfs_find_parent(char * path);
 
