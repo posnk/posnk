@@ -41,10 +41,10 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
 	uint32_t indirect_id = 0;
 	int status, o, d,dd;
-	if (block_id > (11 + indirect_count * indirect_count + indirect_count)) { //Triply indirect
+	if (block_id > (12 + indirect_count * indirect_count + indirect_count)) { //Triply indirect
 		status = ext2_read_block(device, 
 					 inode->block[14],
-				         ( (block_id - 11 - indirect_count * indirect_count - indirect_count) / (indirect_count * indirect_count) ) * 4,
+				         ( (block_id - 12 - indirect_count * indirect_count - indirect_count) / (indirect_count * indirect_count) ) * 4,
 					 &indirect_id,
 					 4, NULL);
 		if (status)
@@ -54,7 +54,7 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 		indirect_id = inode->block[13];
 	}
 	if (block_id > (11 + indirect_count)) { //Doubly indirect
-		o = block_id - 11 - indirect_count;
+		o = block_id - 12 - indirect_count;
 		d = o / indirect_count;
 		status = ext2_read_block(device, 
 					 indirect_id,
@@ -80,7 +80,7 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 	if (block_id > 11) { //Singly Indirect
 		status = ext2_read_block(device, 
 					 indirect_id,
-				         ( (block_id - 11) % indirect_count) * 4,
+				         ( (block_id - 12) % indirect_count) * 4,
 					 &indirect_id,
 					 4, NULL);
 		if (status)
