@@ -57,6 +57,8 @@
 typedef struct ext2_superblock		ext2_superblock_t;
 typedef struct ext2_block_group_desc	ext2_block_group_desc_t;
 typedef struct ext2_inode		ext2_inode_t;
+typedef struct ext2_dirent		ext2_dirent_t;
+typedef struct ext2_vinode		ext2_vinode_t;
 typedef struct ext2_device		ext2_device_t;
 
 struct ext2_superblock {
@@ -148,6 +150,18 @@ struct ext2_inode {
 	uint32_t faddr;
 	uint8_t	 osd2[12];
 }  __attribute__((packed));
+
+struct ext2_dirent {
+	uint32_t inode;
+	uint16_t rec_len;
+	uint8_t  name_len;
+	uint8_t  file_type;
+}  __attribute__((packed)); 
+
+struct ext2_vinode {
+	inode_t	     vfs_ino;
+	ext2_inode_t inode;
+};
 
 struct ext2_device {
 	fs_device_t		device;
