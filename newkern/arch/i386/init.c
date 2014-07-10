@@ -233,7 +233,6 @@ void i386_idle_task()
 }
 
 void ata_pci_register();
-fs_device_t *ext2_mount(dev_t device, uint32_t flags);
 /**
  * Once we are here everything is set up properly
  * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
@@ -248,10 +247,8 @@ void i386_kmain()
 {
 	pid_t pid_init, pid_idle;
 	int init_status, rv;
-	inode_t *hdd_mpt;
 	uint8_t firstsector[512];
 	uint32_t wp_params[4];
-	fs_device_t *hdd_dev;
 
 	earlycon_puts("OK\n\n");
 	earlycon_printf("P-OS Kernel v0.01 built on %s %s. %i MB free\n",__DATE__,__TIME__,physmm_count_free()/0x100000);
@@ -339,10 +336,6 @@ void i386_kmain()
 	wp_params[0] = (uint32_t) pid_init;
 	wp_params[1] = (uint32_t) &init_status;
 	wp_params[2] = 0;
-	
-	hdd_mpt = vfs_find_inode("/hdd");
-	hdd_dev = ext2_mount(MAKEDEV(0x10,1), 0);
-	hdd_mpt->mount = hdd_dev->ops->load_inode(hdd_dev, hdd_dev->root_inode_id);
 	rv = sys_waitpid(wp_params,wp_params);
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 

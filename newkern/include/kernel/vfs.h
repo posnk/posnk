@@ -124,6 +124,8 @@ int vfs_link(char *oldpath, char *newpath);
 
 int vfs_symlink(char *oldpath, char *newpath);
 
+int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
+
 inode_t *vfs_find_parent(char * path);
 
 inode_t *vfs_find_inode(char * path);

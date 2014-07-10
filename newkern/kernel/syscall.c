@@ -81,7 +81,8 @@ char *syscall_names[] =
 	"exitsig",
 	"sigprocmask",
 	"ssigex",
-	"dbgdrop"
+	"dbgdrop",
+	"mount"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -223,4 +224,5 @@ void syscall_init()
 	syscall_register(SYS_SIGPROCMASK, &sys_sigprocmask);
 	syscall_register(SYS_SSIGEX, &sys_ssigex);
 	syscall_register(SYS_DBGDROP, &sys_dbgdrop);
+	syscall_register(SYS_MOUNT, &sys_mount);
 }

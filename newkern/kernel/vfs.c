@@ -385,6 +385,37 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	semaphore_up(inode->lock);
 	return 0;	
 }
+fs_device_t *ext2_mount(dev_t device, uint32_t flags);
+
+int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
+{
+	fs_device_t *fsdevice;
+	inode_t	    *mp_inode;
+	inode_t	    *dev_inode;
+	mp_inode = vfs_find_inode(mountpoint);
+	if (!mp_inode)
+		return ENOENT;
+	if (!S_ISDIR(mp_inode->mode))
+		return ENOTDIR;
+
+	dev_inode = vfs_find_inode(device);
+	if (!dev_inode)
+		return ENOENT;
+	if (!S_ISBLK(dev_inode->mode))
+		return ENOTBLK;
+		
+	fsdevice = ext2_mount(dev_inode->if_dev, flags);
+	
+	if (!fsdevice)
+		return EINVAL;
+		
+	mp_inode->mount = fsdevice->ops->load_inode(fsdevice, fsdevice->root_inode_id);	
+	
+	if (!mp_inode->mount)
+		return EINVAL;
+
+	return 0;
+}
 
 int vfs_symlink(char *oldpath, char *path)
 {

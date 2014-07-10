@@ -52,6 +52,48 @@ uint32_t sys_link(uint32_t param[4], uint32_t param_size[4])
 	return (uint32_t) status;
 }
 
+uint32_t sys_mount(uint32_t param[4], uint32_t param_size[4])
+{
+	char *oldpath;
+	char *newpath;
+	char *fs;
+	int status;
+	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH) || (param_size[1] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+		syscall_errno = EFAULT;
+		return (uint32_t) -1;
+	}
+	oldpath = heapmm_alloc(param_size[0]);
+	if (!copy_user_to_kern((void *)param[0], oldpath, param_size[0])) {
+		syscall_errno = EFAULT;
+		heapmm_free(oldpath, param_size[0]);
+		return (uint32_t) -1;
+	}
+	newpath = heapmm_alloc(param_size[1]);
+	if (!copy_user_to_kern((void *)param[1], newpath, param_size[1])) {
+		syscall_errno = EFAULT;
+		heapmm_free(oldpath, param_size[0]);
+		heapmm_free(newpath, param_size[1]);
+		return (uint32_t) -1;
+	}
+	fs = heapmm_alloc(param_size[2]);
+	if (!copy_user_to_kern((void *)param[2], fs, param_size[2])) {
+		syscall_errno = EFAULT;
+		heapmm_free(oldpath, param_size[0]);
+		heapmm_free(newpath, param_size[1]);
+		heapmm_free(fs, param_size[2]);
+		return (uint32_t) -1;
+	}	
+	status = vfs_mount(oldpath, newpath, fs, param[3]);
+	if (status != 0) {
+		syscall_errno = status;
+		status = -1;
+	}
+	heapmm_free(oldpath, param_size[0]);
+	heapmm_free(newpath, param_size[1]);
+	heapmm_free(fs, param_size[2]);
+	return (uint32_t) status;
+}
+
 //int vfs_symlink(char *oldpath, char *newpath);
 uint32_t sys_symlink(uint32_t param[4], uint32_t param_size[4])
 {
