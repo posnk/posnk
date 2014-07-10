@@ -40,11 +40,11 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 {
 	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
 	uint32_t indirect_id = 0;
-	int status;
-	if (block_id > (11 + indirect_count * indirect_count)) { //Triply indirect
+	int status, o, d,dd;
+	if (block_id > (11 + indirect_count * indirect_count + indirect_count)) { //Triply indirect
 		status = ext2_read_block(device, 
 					 inode->block[14],
-				         ( (block_id - 11) / (indirect_count * indirect_count) ) * 4,
+				         ( (block_id - 11 - indirect_count * indirect_count - indirect_count) / (indirect_count * indirect_count) ) * 4,
 					 &indirect_id,
 					 4, NULL);
 		if (status)
@@ -54,13 +54,26 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 		indirect_id = inode->block[13];
 	}
 	if (block_id > (11 + indirect_count)) { //Doubly indirect
+		o = block_id - 11 - indirect_count;
+		d = o / indirect_count;
 		status = ext2_read_block(device, 
 					 indirect_id,
-				         ( ((block_id - 11) / indirect_count) % indirect_count) * 4,
+				         (d % indirect_count) * 4,
+					 &indirect_id,
+					 4, NULL);
+
+		if (status)
+			return 0;
+
+		status = ext2_read_block(device, 
+					 indirect_id,
+				         ( (o - d * indirect_count) % indirect_count) * 4,
 					 &indirect_id,
 					 4, NULL);
 		if (status)
 			return 0;
+
+		return indirect_id;
 	} else {
 		indirect_id = inode->block[12];
 	}
@@ -159,12 +172,12 @@ int ext2_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)
 		vfs_dir = (dirent_t *)&buffer[pos];
 
 		name = (uint8_t *) vfs_dir->name;
-
-		if (ext2_read_inode(_inode, name, pos + f_offset + sizeof(ext2_dirent_t), dirent->name_len + 1) != (dirent->name_len+1)) {
+		
+		if (ext2_read_inode(_inode, name, pos + f_offset + sizeof(ext2_dirent_t), dirent->name_len) != (dirent->name_len)) {
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
 			return pos;
 		}
-	
+		name[dirent->name_len] = 0;
 		vfs_dir->inode_id = dirent->inode;
 		vfs_dir->device_id = _inode->device_id;
 		vfs_dir->d_reclen = dirent->rec_len;
@@ -244,10 +257,10 @@ dirent_t *ext2_finddir(inode_t *_inode, char * name)
 		nread = ext2_readdir(_inode, buffer, fpos, 1024);
 		for (pos = 0; pos < nread; pos += dirent->d_reclen) {
 			dirent = (dirent_t *) &(buffer[pos]);
-			if (strncmp(name, dirent->name, CONFIG_FILE_MAX_NAME_LENGTH) == 0){
-				pp = heapmm_alloc(sizeof(dirent_t));
-				memcpy(pp, dirent, sizeof(dirent_t));
-				pp->d_reclen = sizeof(dirent_t);
+			if (strcmp(name, dirent->name) == 0){
+				pp = heapmm_alloc(sizeof(dirent_t));	
+				dirent->d_reclen = (dirent->d_reclen > sizeof(dirent_t)) ? sizeof(dirent_t) : dirent->d_reclen;
+				memcpy(pp, dirent,dirent->d_reclen);
 				heapmm_free(buffer, 1024);
 				return pp;
 			}

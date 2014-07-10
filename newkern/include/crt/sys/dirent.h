@@ -6,10 +6,10 @@
 struct sys_dirent
 {
     ino_t		d_ino;//2
-    uint32_t		d_dev;//4
+    dev_t		d_dev;//2
     unsigned short int  d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
-    char	 	d_name[256];//THIS IS ALLIGNED
-};
+    char	 	d_name[257];//THIS IS ALLIGNED
+}  __attribute__((packed));
 
 typedef struct sys_dirent sys_dirent_t;
 

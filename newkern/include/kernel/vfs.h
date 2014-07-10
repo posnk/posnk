@@ -62,10 +62,10 @@ struct inode {
 
 struct dirent {
 	ino_t	 inode_id;
-	uint32_t device_id;
+	dev_t	device_id;
 	unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
-	char	 name[CONFIG_FILE_MAX_NAME_LENGTH];
-};
+	char	 name[257];
+}  __attribute__((packed));
 
 struct dir_cache {
 	dir_cache_t	*parent;
