@@ -83,7 +83,8 @@ char *syscall_names[] =
 	"ssigex",
 	"dbgdrop",
 	"mount",
-	"ftruncate"
+	"ftruncate",
+	"truncate"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -126,7 +127,7 @@ uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 	return 1;	
 }
 
-uint32_t sys_dbgdrop(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_dbgdrop( __attribute__((__unused__)) uint32_t param[4],  __attribute__((__unused__)) uint32_t param_size[4])
 {
 	dbgapi_invoke_kdbg(0);
 	return 1;	
@@ -135,8 +136,10 @@ uint32_t sys_dbgdrop(uint32_t param[4], uint32_t param_size[4])
 int curpid();
 void syscall_dispatch(void *user_param_block, void *instr_ptr)
 {
-	int result,call;
-
+	int result;
+#ifdef CONFIG_SYSCALL_DEBUG
+	int call;
+#endif
 	syscall_params_t params;
 	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {	
 		debugcon_printf("Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x\n",scheduler_current_task->name,curpid(), instr_ptr, user_param_block);
@@ -145,8 +148,8 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	if ((params.magic != SYSCALL_MAGIC) || (params.call_id > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[params.call_id] == NULL)
 		process_send_signal(scheduler_current_task, SIGSYS);
 	syscall_errno = 0;
-	call = params.call_id;
 #ifdef CONFIG_SYSCALL_DEBUG
+	call = params.call_id;
 	if ((call == SYS_OPEN) || (call == SYS_STAT))
 		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else
@@ -227,4 +230,5 @@ void syscall_init()
 	syscall_register(SYS_DBGDROP, &sys_dbgdrop);
 	syscall_register(SYS_MOUNT, &sys_mount);
 	syscall_register(SYS_FTRUNCATE, &sys_ftruncate);
+	syscall_register(SYS_TRUNCATE, &sys_truncate);
 }

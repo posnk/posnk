@@ -145,4 +145,6 @@ uint32_t sys_mount(uint32_t param[4], uint32_t param_size[4]);
 
 uint32_t sys_ftruncate(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
 
+uint32_t sys_truncate(uint32_t param[4], uint32_t param_size[4]);
+
 #endif

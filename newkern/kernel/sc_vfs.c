@@ -269,6 +269,40 @@ uint32_t sys_chown(uint32_t param[4], uint32_t param_size[4])
 	return (uint32_t) status;
 }
 
+
+int _sys_truncate(char *path, off_t length)
+{
+	inode_t *inode = vfs_find_inode(path);
+	if (!inode) {
+		syscall_errno = ENOENT;
+		return -1;
+	}
+	//TODO: Add permission check
+	inode->ctime = system_time;
+	vfs_truncate(inode, length);
+	return 0;
+}
+
+//int truncate(char *path, off_t length);
+uint32_t sys_truncate(uint32_t param[4], uint32_t param_size[4])
+{
+	char *path;
+	int status;
+	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+		syscall_errno = EFAULT;
+		return (uint32_t) -1;
+	}
+	path = heapmm_alloc(param_size[0]);
+	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+		syscall_errno = EFAULT;
+		heapmm_free(path, param_size[0]);
+		return (uint32_t) -1;
+	}
+	status = _sys_truncate(path, (off_t) param[1]);
+	heapmm_free(path, param_size[0]);
+	return (uint32_t) status;
+}
+
 uint32_t sys_umask(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
 	mode_t old = scheduler_current_task->umask;
