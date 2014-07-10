@@ -177,7 +177,7 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 			return EISDIR;
 		case S_IFIFO:
 			semaphore_up(inode->lock);
-			return pipe_read(inode->fifo, buffer, count, read_size, non_block);		
+			return pipe_write(inode->fifo, buffer, count, read_size, non_block);		
 		case S_IFCHR:				
 			semaphore_up(inode->lock);		
 			status = device_char_write(inode->if_dev, file_offset, buffer, count, read_size, non_block);	
