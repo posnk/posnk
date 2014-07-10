@@ -270,14 +270,15 @@ int vfs_getdents(inode_t * inode , off_t file_offset, dirent_t * buffer, size_t 
 				}
 				count = (size_t) (inode->size - file_offset);	
 			}				
-			if (!vfs_int_read_dir(inode, buffer, file_offset, (off_t)count)) {
+			(*read_size) = vfs_int_read_dir(inode, buffer, file_offset, (off_t)count);
+			if (!count) {
 				semaphore_up(inode->lock);
 				return EIO;	
 			}
 			if (count)
 				inode->atime = system_time;
 			semaphore_up(inode->lock);
-			(*read_size) = count;
+			//(*read_size) = count;
 			return 0;
 		default:			
 			semaphore_up(inode->lock);	

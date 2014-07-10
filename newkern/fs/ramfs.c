@@ -52,8 +52,8 @@ int ramfs_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)/
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
 	uintptr_t b_data;
-	off_t remaining_length = length;
-	off_t block_off, current_off, in_blk_len;
+	uint32_t pos = 0;
+	off_t current_off;
 	ramfs_dirent_t *_block;
 	current_off = f_offset;
 	for (;;) {
@@ -67,18 +67,24 @@ int ramfs_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)/
 			plholder.start = current_off % (plholder.dir.d_reclen);
 		}
 		b_data = (uintptr_t) &(_block->dir);
+		if ((pos + _block->dir.d_reclen) > length)
+			return pos;
+		memcpy((void *) buffer, (void *) (b_data),  _block->dir.d_reclen);
+		pos += _block->dir.d_reclen;
+		buffer += _block->dir.d_reclen;
+		current_off += _block->dir.d_reclen;
+		/*
 		block_off = current_off - _block->start;
 		in_blk_len = sizeof(dirent_t) - block_off;
 		if (remaining_length < in_blk_len)
 			in_blk_len = remaining_length;
 		memcpy((void *) buffer, (void *) (b_data + block_off), (size_t) in_blk_len);
 		remaining_length -= in_blk_len;
-		current_off += in_blk_len;
 		buffer += in_blk_len;
 		if (remaining_length == 0)
-			break;
+			break;*/
 	}	
-	return remaining_length == 0;	
+	return pos;	
 }
 
 int ramfs_block_search_iterator (llist_t *node, void *param)

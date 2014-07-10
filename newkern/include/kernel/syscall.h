@@ -139,4 +139,7 @@ uint32_t sys_sigprocmask(uint32_t param[4], __attribute__((__unused__)) uint32_t
 
 uint32_t sys_ssigex(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
 
+uint32_t sys_dbgdrop(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
+
+
 #endif

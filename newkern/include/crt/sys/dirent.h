@@ -5,10 +5,10 @@
 
 struct sys_dirent
 {
-    char	 d_name[128];//THIS IS ALLIGNED
-    ino_t	 d_ino;//2
-    uint32_t	 d_dev;//4
-    unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
+    ino_t		d_ino;//2
+    uint32_t		d_dev;//4
+    unsigned short int  d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
+    char	 	d_name[256];//THIS IS ALLIGNED
 };
 
 typedef struct sys_dirent sys_dirent_t;

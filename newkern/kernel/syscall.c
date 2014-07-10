@@ -18,6 +18,7 @@
 #include "kernel/paging.h"
 #include "kernel/syscall.h"
 #include "kernel/earlycon.h"
+#include "kdbg/dbgapi.h"
 #include "config.h"
 
 char *syscall_names[] =
@@ -79,7 +80,8 @@ char *syscall_names[] =
 	"signal",
 	"exitsig",
 	"sigprocmask",
-	"ssigex"
+	"ssigex",
+	"dbgdrop"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -121,6 +123,13 @@ uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 	heapmm_free(buffer, param_size[0]);
 	return 1;	
 }
+
+uint32_t sys_dbgdrop(uint32_t param[4], uint32_t param_size[4])
+{
+	dbgapi_invoke_kdbg(0);
+	return 1;	
+}
+
 int curpid();
 void syscall_dispatch(void *user_param_block, void *instr_ptr)
 {
@@ -135,12 +144,16 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		process_send_signal(scheduler_current_task, SIGSYS);
 	syscall_errno = 0;
 	call = params.call_id;
+#ifdef CONFIG_SYSCALL_DEBUG
 	if ((call == SYS_OPEN) || (call == SYS_STAT))
-		debugcon_printf("[%s:%i] %s(%s, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
+		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else
 		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
+#endif
 	result = syscall_table[params.call_id]((uint32_t*)params.param, (uint32_t*)params.param_size);
+#ifdef CONFIG_SYSCALL_DEBUG
 	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
+#endif
 	params.return_val = result;
 	params.sc_errno = syscall_errno;
 	copy_kern_to_user(&params, user_param_block, sizeof(syscall_params_t));
@@ -209,4 +222,5 @@ void syscall_init()
 	syscall_register(SYS_EXITSIG, &sys_exitsig);
 	syscall_register(SYS_SIGPROCMASK, &sys_sigprocmask);
 	syscall_register(SYS_SSIGEX, &sys_ssigex);
+	syscall_register(SYS_DBGDROP, &sys_dbgdrop);
 }

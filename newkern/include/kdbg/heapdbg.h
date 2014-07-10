@@ -25,7 +25,7 @@ typedef struct kdbg_heap_use {
 } kdbg_heap_use_t;
 
 void kdbg_init_memuse();
-
+void kdbg_enable_memuse();
 void kdbg_print_memuse_brdr(void *addr);
 
 #endif

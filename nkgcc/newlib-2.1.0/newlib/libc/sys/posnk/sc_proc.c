@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <_ansi.h>
 #include <sys/times.h>
 #include <sys/types.h>
@@ -193,6 +194,60 @@ int setpgid(pid_t pid, pid_t pgid) {
    return (int) nk_do_syscall(SYS_SETPGID, a, b); 
 }
 
+typedef void (*sighandler_t)(int);
+
+sighandler_t signal(int signum, sighandler_t handler)
+{
+   int a[] = {(int)signum,(int)handler,0,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SIGNAL, a, b); 
+}
+
+void exitsig()
+{
+   int a[] = {0,0,0,0};
+   int b[] = {0,0,0,0};
+   nk_do_syscall(SYS_EXITSIG, a, b); 	
+}
+
+void ssigex()
+{
+   int a[] = {(uint32_t) &exitsig,0,0,0};
+   int b[] = {0,0,0,0};
+   nk_do_syscall(SYS_SSIGEX, a, b); 
+}
+
+int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)
+{
+   int a[] = {(uint32_t) how, (uint32_t) set, (uint32_t) oldset, 0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SIGPROCMASK, a, b); 
+}
+
+int sigsetmask(int mask)
+{
+	int old;
+	if (sigprocmask(SIG_SETMASK, (sigset_t *) &mask, (sigset_t *) &old))
+		return 0;
+	return old;
+}
+
+int sigblock(int mask)
+{
+	int old;
+	if (sigprocmask(SIG_BLOCK, (sigset_t *) &mask, (sigset_t *) &old))
+		return 0;
+	return old;
+}
+
+int siggetmask()
+{
+	int old, mask = 0;
+	if (sigprocmask(SIG_BLOCK, (sigset_t *) &mask, (sigset_t *) &old))
+		return 0;
+	return old;
+}
+
 int killpg(int pgrp, int sig)
 {
 	return kill(-pgrp, sig);
@@ -213,18 +268,10 @@ pid_t wait3(int *status, int options,
 {
 	return waitpid(-1,status,options);
 }
-
-#include <signal.h>
-
 int sigaction(int signum, const struct sigaction *act,
                      struct sigaction *oldact)
 {
-	return 0;
-}
-
-int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)
-{
-	return 0;
+	//printf("WARN: USING SIGACTION\n");
 }
 
 unsigned int alarm(unsigned int seconds)

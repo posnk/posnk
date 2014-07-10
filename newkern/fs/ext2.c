@@ -151,7 +151,7 @@ int ext2_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)
 			return pos;
 		}
 
-		if ((sizeof(dirent_t) + pos) > length){
+		if ((dirent->rec_len + pos) > length){
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
 			return pos;
 		}
@@ -173,7 +173,7 @@ int ext2_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)
 	heapmm_free(dirent, sizeof(ext2_dirent_t));
 	return pos;
 }
-
+/*
 dirent_t *ext2_finddir(inode_t *_inode, char *file)
 {
 	ext2_device_t *device;
@@ -228,9 +228,9 @@ dirent_t *ext2_finddir(inode_t *_inode, char *file)
 	}
 	heapmm_free(dirent, sizeof(ext2_dirent_t));
 	return NULL;
-}
+}*/
 
-/*dirent_t *ext2_finddir(inode_t *_inode, char * name)
+dirent_t *ext2_finddir(inode_t *_inode, char * name)
 {
 	uint8_t *buffer = heapmm_alloc(1024);
 	int nread;
@@ -255,7 +255,7 @@ dirent_t *ext2_finddir(inode_t *_inode, char *file)
 	}
 	heapmm_free(buffer, 1024);
 	return NULL;
-}*/
+}
 
 ext2_block_group_desc_t *ext2_load_bgd(ext2_device_t *device, uint32_t bg_id)
 {

@@ -146,34 +146,34 @@ _DEFUN (_raise_r, (ptr, sig),
      struct _reent *ptr _AND
      int sig)
 {
-  _sig_func_ptr func;
+ // _sig_func_ptr func;
 
-  if (sig < 0 || sig >= NSIG)
-    {
-      ptr->_errno = EINVAL;
-      return -1;
-    }
+ // if (sig < 0 || sig >= NSIG)
+  //  {
+ //     ptr->_errno = EINVAL;
+  //    return -1;
+   // }
 
-  if (ptr->_sig_func == NULL)
-    func = SIG_DFL;
-  else
-    func = ptr->_sig_func[sig];
+  //if (ptr->_sig_func == NULL)
+ //   func = SIG_DFL;
+ // else
+ //   func = ptr->_sig_func[sig];
 
-  if (func == SIG_DFL)
+ // if (func == SIG_DFL)
     return _kill_r (ptr, _getpid_r (ptr), sig);
-  else if (func == SIG_IGN)
-    return 0;
-  else if (func == SIG_ERR)
-    {
-      ptr->_errno = EINVAL;
-      return 1;
-    }
-  else
-    {
-      ptr->_sig_func[sig] = SIG_DFL;
-      func (sig);
-      return 0;
-    }
+ // else if (func == SIG_IGN)
+ //   return 0;
+ // else if (func == SIG_ERR)
+ //   {
+ //     ptr->_errno = EINVAL;
+ //     return 1;
+  //  }
+//  else
+ //   {
+ //     ptr->_sig_func[sig] = SIG_DFL;
+//      func (sig);
+  //    return 0;
+ //   }
 }
 
 int
@@ -215,13 +215,13 @@ _DEFUN (raise, (sig),
   return _raise_r (_REENT, sig);
 }
 
-_sig_func_ptr
-_DEFUN (signal, (sig, func),
-	int sig _AND
-	_sig_func_ptr func)
-{
-  return _signal_r (_REENT, sig, func);
-}
+//_sig_func_ptr
+//_DEFUN (signal, (sig, func),
+//	int sig _AND
+//	_sig_func_ptr func)
+//{
+//  return _signal_r (_REENT, sig, func);
+//}
 
 int 
 _DEFUN_VOID (_init_signal)

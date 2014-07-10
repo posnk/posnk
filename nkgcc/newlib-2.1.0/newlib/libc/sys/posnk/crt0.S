@@ -2,19 +2,27 @@
 .extern main
 .extern exit
 .extern strlistlen
+.extern ssigex
 _start:
  
 ## here you might want to get the argc/argv pairs somehow and then push
 ## them onto the stack...
- 
+
+# initialize signal handlers
+call ssigex
+
 # push envs
 push $0x4020000
+
 # push argv
 push $0x4000000
+
 # calculate argc
 call strlistlen
+
 # push argc
 push %eax
+
 # call user entry point
 call main
  

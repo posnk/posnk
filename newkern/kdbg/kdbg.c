@@ -57,6 +57,9 @@ void kdbg_shell()
 		kdbg_gets(buf, 80);
 		if (!strncmp(buf, "memuse", 6)) {
 			kdbg_print_memuse_brdr(kdbg_parsehex(buf));
+		} 
+		if (!strncmp(buf, "smu", 3)) {
+			kdbg_enable_memuse();
 		} else if (!strncmp(buf, "exit", 4)) {
 			kdbg_printf("Bye\n");
 			return;

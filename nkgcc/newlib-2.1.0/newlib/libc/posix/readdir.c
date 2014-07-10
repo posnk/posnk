@@ -48,7 +48,7 @@ struct dirent *
 _DEFUN(readdir, (dirp),
        register DIR *dirp)
 {
-  register struct dirent *dp;
+  volatile struct dirent *dp;
  
 #ifdef HAVE_DD_LOCK
   __lock_acquire_recursive(dirp->dd_lock);
@@ -72,6 +72,7 @@ _DEFUN(readdir, (dirp),
       continue;
     }
     dp = (struct dirent *)(dirp->dd_buf + dirp->dd_loc);
+//printf("%x\n", dp);
     if (dp->d_reclen <= 0 ||
 	dp->d_reclen > dirp->dd_len + 1 - dirp->dd_loc) {
 #ifdef HAVE_DD_LOCK
@@ -87,6 +88,6 @@ _DEFUN(readdir, (dirp),
 #endif
     return (dp);
   }
-}
+} __attribute__((optimize("-O0")));
 
 #endif /* ! HAVE_OPENDIR */

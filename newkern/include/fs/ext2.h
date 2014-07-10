@@ -156,7 +156,7 @@ struct ext2_dirent {
 	uint16_t rec_len;
 	uint8_t  name_len;
 	uint8_t  file_type;
-}  __attribute__((packed)); 
+}  __attribute__((packed)); //8 long
 
 struct ext2_vinode {
 	inode_t	     vfs_ino;

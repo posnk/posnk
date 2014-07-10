@@ -14,15 +14,15 @@
 
 #define HAVE_NO_D_NAMLEN	/* no struct dirent->d_namlen */
 
-#define MAXNAMLEN 127		/* sizeof(struct dirent.d_name)-1 */
+#define MAXNAMLEN 255		/* sizeof(struct dirent.d_name)-1 */
 
 
 struct dirent
 {
-    char	 d_name[128];//THIS IS ALLIGNED
-    ino_t	 d_ino;//2
-    unsigned long int d_dev;//4
-    unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
+    ino_t		d_ino;//2
+    unsigned long int	d_dev;//4
+    unsigned short int	d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
+    char		d_name[256];//THIS IS ALLIGNED
 };
 
 typedef struct {
