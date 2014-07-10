@@ -13,7 +13,7 @@
 #include "fs/ramfs.h"
 #include "util/llist.h"
 #include <string.h>
-
+#include <sys/errno.h>
 //HACKHACKHACK: Uses inode cache as storage
 
 int ramfs_store_inode(inode_t *inode)
@@ -158,6 +158,38 @@ int ramfs_write_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t leng
 	return 1;	
 }
 
+int ramfs_trunc_inode(inode_t *_inode, off_t size)//buffer, f_offset, length -> numbytes
+{
+	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
+	ramfs_block_t *_block;
+	if (size > _inode->size) {
+		_block = (ramfs_block_t *) heapmm_alloc(sizeof(ramfs_block_t));
+		if (!_block)
+			return ENOMEM;
+
+		_block->start =  _inode->size;
+		_block->length = size - _inode->size;
+
+		_block->data = heapmm_alloc((size_t) _block->length);
+		if (!_block->data) {
+			heapmm_free(_block, sizeof(ramfs_block_t));
+			return ENOMEM;
+		}
+
+		memset(_block->data, 0, (size_t) _block->length);
+
+		llist_add_end(inode->block_list, (llist_t *) _block);
+	} else if (size < _inode->size) {
+		//PSEUDOCODE:
+		//ITERATE OVER BLOCKS
+		//   IF BLOCK STARTS PAST EOF DELETE BLOCK
+		//   IF BLOCK EXTENDS PAST EOF TRUNCATE BLOCKS
+		return EIO;
+	}
+	_inode->size = size;
+	return 0;	
+}
+
 int ramfs_dirent_search_iterator (llist_t *node, void *param)
 {
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) node;
@@ -250,6 +282,7 @@ fs_device_t *ramfs_create()
 		ramfs_ops->mkdir = &ramfs_mkdir;
 		ramfs_ops->link = &ramfs_link;
 		ramfs_ops->unlink = &ramfs_unlink;
+		ramfs_ops->trunc_inode = &ramfs_trunc_inode;
 	}
 	dev->inode_id_ctr = 0;
 	dev->device.id = ramfs_device_ctr;
