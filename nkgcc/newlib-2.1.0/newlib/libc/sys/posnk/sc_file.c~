@@ -147,6 +147,16 @@ _DEFUN (lseek, (file, ptr, dir),
 }
 
 int
+_DEFUN (ftruncate, (file, length),
+        int   file  _AND
+        off_t length)
+{
+   int a[] = {(uint32_t) file, (uint32_t) length, 0,0};
+   int b[] = {0, 0, 0, 0};
+   return (int) nk_do_syscall(SYS_FTRUNCATE, a, b); 
+}
+
+int
 _DEFUN (open, (file, flags, mode),
         char *file  _AND
         int   flags _AND
@@ -252,19 +262,11 @@ mode_t umask(mode_t mask)
 
 int gettimeofday(struct timeval *tv, void *tz)
 {
-	return 0;
-}
-
-time_t oldtime(time_t *time)
-{
-   time_t _t;
-   int a[] = {0,0,0,0};
-   int b[] = {0,0,0,0};
-   _t = (time_t) nk_do_syscall(SYS_TIME, a, b);
-   if (time)
-	*time = _t;
-   return _t;
+	int a[] = {0,0,0,0};
+	int b[] = {0,0,0,0};
 	
+	tv->tv_sec = (time_t) nk_do_syscall(SYS_TIME, a, b);
+	return 0;
 }
 
 int access(const char *pathname, int mode){

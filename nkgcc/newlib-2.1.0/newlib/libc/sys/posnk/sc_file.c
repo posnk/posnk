@@ -147,6 +147,26 @@ _DEFUN (lseek, (file, ptr, dir),
 }
 
 int
+_DEFUN (ftruncate, (file, length),
+        int   file  _AND
+        off_t length)
+{
+   int a[] = {(uint32_t) file, (uint32_t) length, 0,0};
+   int b[] = {0, 0, 0, 0};
+   return (int) nk_do_syscall(SYS_FTRUNCATE, a, b); 
+}
+
+int
+_DEFUN (truncate, (file, length),
+        const char  *file  _AND
+        off_t length)
+{
+   int a[] = {(uint32_t) file, (uint32_t) length,0,0};
+   int b[] = {(uint32_t) 1+strlen(file),0,0,0};
+   return (int) nk_do_syscall(SYS_TRUNCATE, a, b); 
+}
+
+int
 _DEFUN (open, (file, flags, mode),
         char *file  _AND
         int   flags _AND

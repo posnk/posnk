@@ -20,10 +20,10 @@
 struct dirent
 {
     ino_t		d_ino;//2
-    unsigned long int	d_dev;//4
+    unsigned short int	d_dev;//4
     unsigned short int	d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
-    char		d_name[256];//THIS IS ALLIGNED
-};
+    char		d_name[257];//THIS IS ALLIGNED
+}  __attribute__((packed));
 
 typedef struct {
     int dd_fd;		/* directory file */

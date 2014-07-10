@@ -72,7 +72,7 @@ _DEFUN(readdir, (dirp),
       continue;
     }
     dp = (struct dirent *)(dirp->dd_buf + dirp->dd_loc);
-printf("%x\n", dp);
+//printf("%x\n", dp);
     if (dp->d_reclen <= 0 ||
 	dp->d_reclen > dirp->dd_len + 1 - dirp->dd_loc) {
 #ifdef HAVE_DD_LOCK
