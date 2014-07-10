@@ -233,7 +233,7 @@ void i386_idle_task()
 }
 
 void ata_pci_register();
-
+fs_device_t *ext2_mount(dev_t device, uint32_t flags);
 /**
  * Once we are here everything is set up properly
  * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
@@ -337,6 +337,7 @@ void i386_kmain()
 	wp_params[0] = (uint32_t) pid_init;
 	wp_params[1] = (uint32_t) &init_status;
 	wp_params[2] = 0;
+	ext2_mount(MAKEDEV(0x10,1), 0);
 	rv = sys_waitpid(wp_params,wp_params);
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 

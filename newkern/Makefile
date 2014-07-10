@@ -33,6 +33,8 @@ LIBS =
 SRCS_DRV_ATA_PCI = driver/block/pata/ata.c \
 driver/block/pata/ata_pci.c
 
+SRCS_EXT2 = fs/ext2.c
+
 # define the C source files
 SRCS = kernel/heapmm.c \
 kernel/physmm.c \
@@ -140,10 +142,11 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 #
 OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o) $(SRCS_DRV_ATA_PCI:.c=.o)
+OBJS_EXT2 = $(SRCS_EXT2:.c=.o)
 all:	cdrom_i386 install_h
 
-kernel_i386: $(OBJS) $(OBJS_I386)
-	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386)
+kernel_i386: $(OBJS) $(OBJS_I386) $(OBJS_EXT2)
+	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_EXT2)
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h

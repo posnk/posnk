@@ -21,8 +21,6 @@
 #ifndef __KERNEL_VFS_H__
 #define __KERNEL_VFS_H__
 
-
-
 typedef struct inode inode_t;
 
 typedef struct dirent dirent_t;

@@ -19,6 +19,8 @@ time_t	st_ctime;
 
 #define S_IFMT 00170000
 /* Regular file */
+#define S_IFSOCK 0200000
+/* Regular file */
 #define S_IFREG 0100000
 /* Block special file */
 #define S_IFBLK 0060000
