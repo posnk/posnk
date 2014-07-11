@@ -21,32 +21,32 @@
 #include "kernel/vfs.h"
 #include "kernel/earlycon.h"
 
-int ext2_read_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, size_t count, size_t *read_size)
+int ext2_read_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, aoff_t count, aoff_t *read_size)
 {
 	int status;
-	off_t	block_addr;	
-	size_t	_read_size;
+	aoff_t	block_addr;	
+	aoff_t	_read_size;
 	size_t *rs = read_size ? read_size : (&_read_size);
 	if (!dev)
 		return EFAULT;
 	block_addr = (block_ptr << (10 + dev->superblock.block_size_enc)) + in_block; 
 	status = device_block_read(dev->dev_id, block_addr, buffer, count, rs);	
-	if ((*rs) != count)
+	if ((!status) && ((*rs) != count))
 		return EIO;
 	return status;
 }
 
-int ext2_write_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, size_t count, size_t *write_size)
+int ext2_write_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, aoff_t count, aoff_t *write_size)
 {
 	int status;
-	off_t	block_addr;	
-	size_t	_write_size;
-	size_t *ws = write_size ? write_size : (&_write_size);
+	aoff_t	block_addr;	
+	aoff_t	_write_size;
+	aoff_t *ws = write_size ? write_size : (&_write_size);
 	if (!dev)
 		return EFAULT;
 	block_addr = (block_ptr << (10 + dev->superblock.block_size_enc)) + in_block; 
 	status = device_block_write(dev->dev_id, block_addr, buffer, count, ws);	
-	if ((*ws) != count)
+	if ((!status) && ((*ws) != count))
 		return EIO;
 	return status;
 }
@@ -55,7 +55,7 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 {
 	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
 	uint32_t indirect_id = 0;
-	int status, o, d,dd;
+	int status, o, d;
 	if (block_id > (12 + indirect_count * indirect_count + indirect_count)) { //Triply indirect
 		status = ext2_read_block(device, 
 					 inode->block[14],
@@ -105,21 +105,24 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 	return inode->block[block_id];
 }
 
-int ext2_read_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)
+int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
-	off_t count;
-	off_t block_size;
-	off_t in_blk_size;
-	off_t in_blk;
-	off_t in_file;
+	aoff_t count;
+	aoff_t block_size;
+	aoff_t in_blk_size;
+	aoff_t in_blk;
+	aoff_t in_file;
 	uint32_t block_addr;	
 	uint8_t *buffer = _buffer;
 	int status;
 
-	if (!_inode)
-		return 0;
+	if (!_inode) {	
+		*nread = 0;
+		return EFAULT;
+	}
+
 	device = (ext2_device_t *) _inode->device;
 	inode = (ext2_vinode_t *) _inode;
 
@@ -130,76 +133,92 @@ int ext2_read_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t length
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
+		*nread = count;
+
 		if (in_blk_size > block_size)
 			in_blk_size = block_size;
 
 		block_addr = ext2_decode_block_id (device, &(inode->inode), in_file / block_size);
 
 		if (!block_addr)
-			return count;
+			return EIO;
+
 		status = ext2_read_block(device, block_addr, in_blk, &(buffer[count]), in_blk_size, NULL);
 
 		if (status)
-			return count;
+			return status;
 	}
+	
+	*nread = count;
 
-	return count;
+	return 0;
 }
 
-int ext2_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)
+int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
 {
-	ext2_device_t *device;
-	ext2_vinode_t *inode;
+	int status;
 
 	ext2_dirent_t *dirent;
 	uint8_t *name;
 	uint8_t *buffer= _buffer;
 
 	dirent_t *vfs_dir;
-	int pos;
+	aoff_t pos, inode_nread;
 
-	if (!_inode)
-		return 0;
-	device = (ext2_device_t *) _inode->device;
-	inode = (ext2_vinode_t *) _inode;
+	*nread = 0;
+
+	if (!_inode) 
+		return EFAULT;
 
 	if (f_offset >= _inode->size)
-		return 0;
+		return EINVAL;
+
 	if ((f_offset + length) > _inode->size)
 		length = _inode->size - f_offset;
 
 	dirent = heapmm_alloc(sizeof(ext2_dirent_t));
 	
 	if (!dirent)
-		return 0;
+		return ENOMEM;
 
 	for (pos = 0; pos < length; pos += dirent->rec_len) {
-		if (ext2_read_inode(_inode, dirent, pos + f_offset, sizeof(ext2_dirent_t)) != sizeof(ext2_dirent_t)) {
+
+		*nread = pos;
+
+		status = ext2_read_inode(_inode, dirent, pos + f_offset, sizeof(ext2_dirent_t), &inode_nread);
+		if (status || (inode_nread != sizeof(ext2_dirent_t))) {
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return pos;
+			return status ? status : EIO;
 		}
 
 		if ((dirent->rec_len + pos) > length){
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return pos;
+			return 0;
 		}
 	
 		vfs_dir = (dirent_t *)&buffer[pos];
 
 		name = (uint8_t *) vfs_dir->name;
 		
-		if (ext2_read_inode(_inode, name, pos + f_offset + sizeof(ext2_dirent_t), dirent->name_len) != (dirent->name_len)) {
+		status = ext2_read_inode(_inode, name, pos + f_offset + sizeof(ext2_dirent_t), dirent->name_len, &inode_nread);
+
+		if (status || (inode_nread != dirent->name_len)) {
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return pos;
+			return status ? status : EIO;
 		}
+
 		name[dirent->name_len] = 0;
 		vfs_dir->inode_id = dirent->inode;
 		vfs_dir->device_id = _inode->device_id;
 		vfs_dir->d_reclen = dirent->rec_len;
 		
 	}
+
 	heapmm_free(dirent, sizeof(ext2_dirent_t));
-	return pos;
+
+	*nread = pos;
+
+	return 0;
 }
 /*
 dirent_t *ext2_finddir(inode_t *_inode, char *file)
@@ -261,15 +280,20 @@ dirent_t *ext2_finddir(inode_t *_inode, char *file)
 dirent_t *ext2_finddir(inode_t *_inode, char * name)
 {
 	uint8_t *buffer = heapmm_alloc(1024);
-	int nread;
-	int fpos = 0;
-	int pos;
+	int status;
+	aoff_t nread;
+	aoff_t fpos = 0;
+	aoff_t pos;
 	dirent_t *dirent;
 	dirent_t *pp;
 	if (!buffer)
 		return NULL;
 	for (fpos = 0; nread != 0; fpos += nread) {
-		nread = ext2_readdir(_inode, buffer, fpos, 1024);
+		status = ext2_readdir(_inode, buffer, fpos, 1024, &nread);
+		if (status) {
+			heapmm_free(buffer, 1024);
+			return NULL;
+		}
 		for (pos = 0; pos < nread; pos += dirent->d_reclen) {
 			dirent = (dirent_t *) &(buffer[pos]);
 			if (strcmp(name, dirent->name) == 0){
@@ -449,7 +473,7 @@ fs_device_operations_t ext2_ops = {
 fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 {
 	int status;
-	size_t	_read_size;
+	aoff_t	_read_size;
 
 	ext2_device_t *dev = heapmm_alloc(sizeof(ext2_device_t));
 	
