@@ -25,13 +25,13 @@
 struct blkcache_cache {
 	int	 entry_count;
 	int	 max_entries;
-	size_t	 block_size;
+	aoff_t	 block_size;
 	llist_t	 block_list;
 };
 
 struct blkcache_entry {
 	llist_t	 link;
-	off_t	 offset;
+	aoff_t	 offset;
 	int	 flags;
 	int	 access_count;
 	void	*data;
@@ -49,7 +49,7 @@ typedef struct blkcache_entry blkcache_entry_t;
  * @return The new cache or NULL if there was no memory left
  */
 
-blkcache_cache_t *blkcache_create( int block_size, int max_entries );
+blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries );
 
 /**
  * blkcache_free - Destroys a cache and releases all memory associated with it
@@ -71,7 +71,7 @@ int blkcache_free( blkcache_cache_t *cache );
  * @return The block that was requested, or NULL incase it is not in the cache
  */
 
-blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, off_t offset );
+blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset );
 /**
  * blkcache_bump - Notify the cache of the usage of a block
  *
@@ -103,6 +103,6 @@ blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache );
  * @error 2^32-1 is returned if there was not enough memory to add the block
  */
 
-blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, off_t offset );
+blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset );
 
 #endif

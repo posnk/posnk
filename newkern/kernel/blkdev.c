@@ -95,7 +95,7 @@ int device_block_register(blk_dev_t *driver)
 	return 1;
 }
 
-int device_block_flush(dev_t device, off_t block_offset)
+int device_block_flush(dev_t device, aoff_t block_offset)
 {
 	int rv;
 	dev_t major = MAJOR(device);
@@ -116,7 +116,7 @@ int device_block_flush(dev_t device, off_t block_offset)
 	return rv;
 }
 
-int device_block_fetch(dev_t device, off_t block_offset)
+int device_block_fetch(dev_t device, aoff_t block_offset)
 {
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
@@ -179,7 +179,7 @@ int device_block_close(dev_t device, int fd)
 	return drv->ops->close(device, fd);
 }
 
-int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *write_size)
+int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size)
 {
 
 	int rv;
@@ -187,8 +187,8 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	dev_t minor = MINOR(device);
 	blk_dev_t *drv = block_dev_table[major];
 	blkcache_entry_t *entry;
-	off_t	block_offset;
-	size_t	in_block_count;
+	aoff_t	block_offset;
+	aoff_t	in_block_count;
 	uintptr_t in_block, in_buffer;
 
 	if ((!drv) || (minor > drv->minor_count)) {
@@ -251,7 +251,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 		in_buffer += in_block_count;
 		block_offset += drv->block_size;
 
-		*write_size = (size_t) in_buffer;
+		*write_size = in_buffer;
 	}
 
 	semaphore_up(drv->locks[minor]);
@@ -261,7 +261,7 @@ int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t co
 	
 }
 
-int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *read_size)
+int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size)
 {
 
 	int rv;
@@ -269,8 +269,8 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 	dev_t minor = MINOR(device);
 	blk_dev_t *drv = block_dev_table[major];
 	blkcache_entry_t *entry;
-	off_t	block_offset;
-	size_t	in_block_count;
+	aoff_t	block_offset;
+	aoff_t	in_block_count;
 	uintptr_t in_block, in_buffer;
 
 	if ((!drv) || (minor > drv->minor_count)) {
@@ -308,7 +308,7 @@ int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t cou
 		in_buffer += in_block_count;
 		block_offset += drv->block_size;
 
-		*read_size = (size_t) in_buffer;
+		*read_size = in_buffer;
 	}
 
 	semaphore_up(drv->locks[minor]);

@@ -156,7 +156,7 @@ int vfs_int_truncate(inode_t * inode, aoff_t size)
 int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
 {
 	int status;
-	size_t pad_size = 0;
+	aoff_t pad_size = 0;
 	void *zbuffer;
 	if (!inode)
 		return EINVAL;

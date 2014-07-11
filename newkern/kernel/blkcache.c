@@ -30,7 +30,7 @@
  * @return The new cache or NULL if there was no memory left
  */
 
-blkcache_cache_t *blkcache_create( int block_size, int max_entries )
+blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries )
 {
 	blkcache_cache_t *cache = ( blkcache_cache_t * ) 
 		heapmm_alloc( sizeof(blkcache_cache_t) );
@@ -114,7 +114,7 @@ int blkcache_get_iterator ( llist_t *node, void *param )
 	blkcache_entry_t *block = (blkcache_entry_t *) node;
 
 	/* If the block starts at the requested offset return TRUE. */
-	return block->offset == (off_t) param;		
+	return block->offset == (aoff_t) param;		
 }
 
 /**
@@ -126,7 +126,7 @@ int blkcache_get_iterator ( llist_t *node, void *param )
  * @return The block that was requested, or NULL incase it is not in the cache
  */
 
-blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, off_t offset )
+blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset )
 {
 	/* Look up the block in the cache which satisfies the condition for */
 	/* blkcache_get_iterator */
@@ -184,7 +184,7 @@ blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache )
  * @error 2^32-1 is returned if there was not enough memory to add the block
  */
 
-blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, off_t offset )
+blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 {
 	blkcache_entry_t	*entry;
 	

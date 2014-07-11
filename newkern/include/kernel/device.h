@@ -30,7 +30,7 @@ struct blk_dev {
 	char			 *name;
 	dev_t			  major;
 	int			  minor_count;
-	size_t			  block_size;
+	aoff_t			  block_size;
 	int			  cache_size;
 	semaphore_t		**locks;
 	blkcache_cache_t	**caches;
@@ -40,16 +40,16 @@ struct blk_dev {
 struct tty_ops {
 	int	(*open)		  (dev_t, int, int);			//device, fd, options
 	int	(*close)	  (dev_t, int);				//device, fd
-	int	(*write)	  (dev_t, void *, size_t, size_t *, int); //device, buf, count, wr_size, non_block
-	int	(*read)		  (dev_t, void *, size_t, size_t *, int);	//device, buf, count, rd_size, non_block
+	int	(*write)	  (dev_t, void *, aoff_t, aoff_t *, int); //device, buf, count, wr_size, non_block
+	int	(*read)		  (dev_t, void *, aoff_t, aoff_t *, int);	//device, buf, count, rd_size, non_block
 	int	(*ioctl)	  (dev_t, int, int, int);			//device, fd, func, arg
 };
 
 struct blk_ops {
 	int	(*open)		  (dev_t, int, int);			//device, fd, options
 	int	(*close)	  (dev_t, int);				//device, fd
-	int	(*write)	  (dev_t, off_t, void *);		//device, offset, buf
-	int	(*read)		  (dev_t, off_t, void *); 		//device, offset, buf
+	int	(*write)	  (dev_t, aoff_t, void *);		//device, offset, buf
+	int	(*read)		  (dev_t, aoff_t, void *); 		//device, offset, buf
 	int	(*ioctl)	  (dev_t, int, int, int);		//device, fd, func, arg
 };
 
@@ -67,9 +67,9 @@ int device_block_open(dev_t device, int fd, int options);
 
 int device_block_close(dev_t device, int fd);
 
-int device_block_write(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *write_size);
+int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size);
 
-int device_block_read(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *read_size);
+int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size);
 
 int device_char_ioctl(dev_t device, int fd, int func, int arg);
 
@@ -77,8 +77,8 @@ int device_char_open(dev_t device, int fd, int options);
 
 int device_char_close(dev_t device, int fd);
 
-int device_char_write(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *write_size, int non_block);
+int device_char_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block);
 
-int device_char_read(dev_t device, off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block);
+int device_char_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
 #endif
