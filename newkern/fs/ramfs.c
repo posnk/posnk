@@ -25,18 +25,23 @@ int ramfs_mknod(inode_t *_inode)	//inode -> status
 {
 	ramfs_device_t *dev = (ramfs_device_t *) _inode->device;
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
+
 	inode->inode.id = dev->inode_id_ctr++;
+
 	inode->block_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
+
 	if (!(inode->block_list))
-		return 0;
+		return ENOMEM;
+
 	llist_create(inode->block_list);
-	return 1;	
+
+	return 0;	
 }
 
 int ramfs_rmnod(inode_t *inode)	//inode -> status
 {
 	//TODO: Free blocks
-	return inode != 0;
+	return inode ? 0 : EFAULT;
 }
 
 int ramfs_rawdir_search_iterator (llist_t *node, void *param)
@@ -206,11 +211,13 @@ dirent_t * ramfs_find_dirent(inode_t *_inode, char *name )	//dir_inode_id, filen
 int ramfs_mkdir(inode_t *_inode)
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
+
 	inode->dirent_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
 	if (!(inode->dirent_list))
-		return 0;
+		return ENOMEM;
+
 	llist_create(inode->dirent_list);
-	return 1;
+	return 0;
 }
 
 inode_t * ramfs_load_inode(fs_device_t *device, ino_t id)
@@ -240,14 +247,19 @@ int ramfs_link(inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, file
 {
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) heapmm_alloc(sizeof(ramfs_dirent_t));
 	ramfs_inode_t *_d_inode = (ramfs_inode_t *) _dir;
+
+	if (dirent)
+		return ENOSPC;
+
 	strcpy(dirent->dir.name, _name);
 	dirent->dir.inode_id = inode_id;
 	dirent->dir.device_id = _dir->device_id;
 	dirent->start = _dir->size;
 	dirent->dir.d_reclen = sizeof(dirent_t);
 	_dir->size += sizeof(dirent_t);
+
 	llist_add_end(_d_inode->dirent_list, (llist_t *) dirent);
-	return 1;	
+	return 0;	
 }
 
 int ramfs_unlink(inode_t *_inode, char *name )	//dir_inode_id, filename
@@ -255,10 +267,10 @@ int ramfs_unlink(inode_t *_inode, char *name )	//dir_inode_id, filename
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->block_list, &ramfs_dirent_search_iterator, (char *) name);
 	if (dirent == NULL)
-		return 0;
+		return ENOENT;
 	llist_unlink((llist_t *) dirent);
 	heapmm_free(dirent, sizeof(ramfs_dirent_t));
-	return 1;
+	return 0;
 }
 
 uint32_t ramfs_device_ctr = 0xF00F0000;
@@ -272,7 +284,7 @@ fs_device_t *ramfs_create()
 		ramfs_ops = (fs_device_operations_t *) heapmm_alloc(sizeof(fs_device_operations_t));
 		ramfs_ops->load_inode = &ramfs_load_inode;
 		ramfs_ops->mknod = &ramfs_mknod;
-		ramfs_ops->rmnod = &ramfs_rmnod;
+		ramfs_ops->rmnod = NULL; //&ramfs_rmnod;
 		ramfs_ops->read_inode = &ramfs_read_inode;
 		ramfs_ops->read_dir = &ramfs_readdir;
 		ramfs_ops->write_inode = &ramfs_write_inode;
