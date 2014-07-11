@@ -97,7 +97,7 @@ void stream_do_close_all (process_info_t *process)
 
 ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 {
-	size_t read_count;
+	aoff_t read_count;
 	int st;
 	stream_ptr_t *ptr = stream_get_ptr(fd);
 	if (!ptr) {
@@ -116,16 +116,16 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 				memset(buffer, 0, count);
 				read_count = count;
 			} else {
-				st = vfs_getdents(ptr->info->inode, ptr->info->offset, buffer, count, &read_count);
+				st = vfs_getdents(ptr->info->inode, ptr->info->offset, buffer, (aoff_t) count, &read_count);
 				if (st != 0) {
 					if (read_count != 0)
-						ptr->info->offset += (off_t) read_count;
+						ptr->info->offset += read_count;
 					syscall_errno = st;		
 					semaphore_up(ptr->info->lock);
 					return -1;
 				}
 			}
-			ptr->info->offset += (off_t) read_count;			
+			ptr->info->offset += read_count;			
 			semaphore_up(ptr->info->lock);
 			return (ssize_t) read_count;
 		case STREAM_TYPE_PIPE:
@@ -141,7 +141,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 
 ssize_t _sys_read(int fd, void * buffer, size_t count)
 {
-	size_t read_count;
+	aoff_t read_count;
 	int st;
 	stream_ptr_t *ptr = stream_get_ptr(fd);
 	if (!ptr) {
@@ -160,16 +160,16 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				memset(buffer, 0, count);
 				read_count = count;
 			} else {
-				st = vfs_read(ptr->info->inode, ptr->info->offset, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
+				st = vfs_read(ptr->info->inode, ptr->info->offset, buffer, (aoff_t) count, &read_count, ptr->info->flags & O_NONBLOCK);
 				if (st != 0) {
 					if (read_count != 0)
-						ptr->info->offset += (off_t) read_count;
+						ptr->info->offset += read_count;
 					syscall_errno = st;
 					semaphore_up(ptr->info->lock);
 					return -1;
 				}
 			}
-			ptr->info->offset += (off_t) read_count;			
+			ptr->info->offset += read_count;			
 			semaphore_up(ptr->info->lock);
 			return (ssize_t) read_count;
 		case STREAM_TYPE_PIPE:
@@ -191,7 +191,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 
 ssize_t _sys_write(int fd, void * buffer, size_t count)
 {
-	size_t read_count;
+	aoff_t read_count;
 	int st;
 	stream_ptr_t *ptr = stream_get_ptr(fd);
 	if (!ptr) {
@@ -206,15 +206,15 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 	}
 	switch (ptr->info->type) {
 		case STREAM_TYPE_FILE:
-			st = vfs_write(ptr->info->inode, ptr->info->offset, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
+			st = vfs_write(ptr->info->inode, ptr->info->offset, buffer, (aoff_t) count, &read_count, ptr->info->flags & O_NONBLOCK);
 			if (st != 0) {
 				if (read_count != 0)
-					ptr->info->offset += (off_t) read_count;
+					ptr->info->offset += read_count;
 				syscall_errno = st;
 				semaphore_up(ptr->info->lock);
 				return -1;
 			}
-			ptr->info->offset += (off_t) read_count;
+			ptr->info->offset += read_count;
 			semaphore_up(ptr->info->lock);
 			return (ssize_t) read_count;
 		case STREAM_TYPE_PIPE:
@@ -250,7 +250,7 @@ int _sys_ftruncate(int fd, off_t size)
 	}
 	switch (ptr->info->type) {
 		case STREAM_TYPE_FILE:
-			st = vfs_truncate(ptr->info->inode, size);
+			st = vfs_truncate(ptr->info->inode, (aoff_t) size);
 			if (st != 0) {
 				syscall_errno = st;
 				semaphore_up(ptr->info->lock);
@@ -269,7 +269,8 @@ int _sys_ftruncate(int fd, off_t size)
 
 off_t _sys_lseek(int fd, off_t offset, int whence)
 {
-	off_t old_offset;
+	int _before_begin = 0;
+	aoff_t old_offset;
 	stream_ptr_t *ptr = stream_get_ptr(fd);
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -286,23 +287,35 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 			ptr->info->offset = offset;
 			break;
 		case SEEK_CUR:
-			ptr->info->offset += offset;
+			if (offset > 0)
+				ptr->info->offset += (aoff_t) offset;
+			else if (offset < 0) {
+				if (((aoff_t) -offset) > ptr->info->offset)
+					_before_begin = 1;
+				ptr->info->offset -= (aoff_t) -offset;
+			}			
 			break;
 		case SEEK_END:
-			ptr->info->offset = ptr->info->inode->size + offset;
+			if (offset >= 0)
+				ptr->info->offset = ptr->info->inode->size + (aoff_t) offset;
+			else if (offset < 0) {
+				if (((aoff_t) -offset) > ptr->info->inode->size)
+					_before_begin = 1;
+				ptr->info->offset = ptr->info->inode->size - (aoff_t) -offset;
+			}
 			break;
 		default:
-			ptr->info->offset = (off_t) -1;
+			_before_begin = 1;
 			break;			
 	}
-	if (ptr->info->offset < 0) {
+	if (_before_begin) {
 		ptr->info->offset = old_offset;
 		syscall_errno = EINVAL;
 		semaphore_up(ptr->info->lock);
 		return (off_t) -1;
 	}
 	semaphore_up(ptr->info->lock);
-	return ptr->info->offset;
+	return (off_t) ptr->info->offset;
 }
 
 int _sys_fchdir(int fd)

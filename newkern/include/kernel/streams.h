@@ -35,7 +35,7 @@ struct stream_info {
 	int		 type;
 	int		 ref_count;
 	int	 	 flags;
-	off_t		 offset;
+	aoff_t		 offset;
 	inode_t		*inode;
 	dir_cache_t	*dirc;
 	semaphore_t	*lock;
