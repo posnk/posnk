@@ -248,7 +248,7 @@ int ramfs_link(inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, file
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) heapmm_alloc(sizeof(ramfs_dirent_t));
 	ramfs_inode_t *_d_inode = (ramfs_inode_t *) _dir;
 
-	if (dirent)
+	if (!dirent)
 		return ENOSPC;
 
 	strcpy(dirent->dir.name, _name);
@@ -266,7 +266,7 @@ int ramfs_unlink(inode_t *_inode, char *name )	//dir_inode_id, filename
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->block_list, &ramfs_dirent_search_iterator, (char *) name);
-	if (dirent == NULL)
+	if (!dirent)
 		return ENOENT;
 	llist_unlink((llist_t *) dirent);
 	heapmm_free(dirent, sizeof(ramfs_dirent_t));
@@ -284,7 +284,7 @@ fs_device_t *ramfs_create()
 		ramfs_ops = (fs_device_operations_t *) heapmm_alloc(sizeof(fs_device_operations_t));
 		ramfs_ops->load_inode = &ramfs_load_inode;
 		ramfs_ops->mknod = &ramfs_mknod;
-		ramfs_ops->rmnod = NULL; //&ramfs_rmnod;
+		ramfs_ops->rmnod = &ramfs_rmnod;
 		ramfs_ops->read_inode = &ramfs_read_inode;
 		ramfs_ops->read_dir = &ramfs_readdir;
 		ramfs_ops->write_inode = &ramfs_write_inode;

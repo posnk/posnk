@@ -196,6 +196,9 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 			if (*read_size)
 				inode->mtime = system_time;
 
+			if ((file_offset + *read_size) > inode->size)
+				inode->size = file_offset + *read_size;
+
 			semaphore_up(inode->lock);
 
 			return status;
@@ -500,6 +503,7 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 
 int vfs_symlink(char *oldpath, char *path)
 {
+	int status;
 	char * separator;
 	char * name;
 	inode_t *parent = vfs_find_parent(path);
@@ -636,6 +640,7 @@ int vfs_initialize(fs_device_t * root_device)
 
 int vfs_link(char *oldpath, char *newpath)
 {
+	int status;
 	char * separator;
 	char * name;
 	inode_t *parent = vfs_find_parent(newpath);

@@ -94,7 +94,7 @@ tty_info_t *tty_get(dev_t device)
 }
 
 
-int tty_open(dev_t device, int fd, int options)			//device, fd, options
+int tty_open(dev_t device, __attribute__((__unused__)) int fd, int options)			//device, fd, options
 {
 	tty_info_t *tty = tty_get(device);
 	tty->ref_count++;
@@ -109,7 +109,7 @@ int tty_open(dev_t device, int fd, int options)			//device, fd, options
 	
 }
 
-int tty_close(dev_t device, int fd)
+int tty_close(dev_t device, __attribute__((__unused__)) int fd)
 {
 	tty_info_t *tty = tty_get(device);
 	tty->ref_count--;
@@ -155,7 +155,7 @@ void tty_output_char(dev_t device, char c)
 
 void tty_input_char(dev_t device, char c)
 {
-	int a;
+	aoff_t a;
 	tty_info_t *tty = tty_get(device);
 	if (tty->termios.c_lflag & ICANON) { //TODO: Flow control
 		if ((tty->termios.c_iflag & INLCR) && (c == '\n'))
@@ -210,7 +210,7 @@ void tty_input_char(dev_t device, char c)
 	}
 }
 
-int tty_write(dev_t device, void *buf, aoff_t count, aoff_t *write_size, int non_block) //device, buf, count, wr_size, non_block
+int tty_write(dev_t device, void *buf, aoff_t count, aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
 {
 	aoff_t c;
 	char *b = buf;
@@ -226,7 +226,7 @@ int tty_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_b
 	return pipe_read(tty->pipe_in, buf, count, read_size, non_block);
 }
 
-int tty_ioctl(dev_t device, int fd, int func, int arg)			//device, fd, func, arg
+int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
 {
 	tty_info_t *tty = tty_get(device);
 	switch(func) {
