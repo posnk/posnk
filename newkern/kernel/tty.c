@@ -210,9 +210,9 @@ void tty_input_char(dev_t device, char c)
 	}
 }
 
-int tty_write(dev_t device, void *buf, size_t count, size_t *write_size, int non_block) //device, buf, count, wr_size, non_block
+int tty_write(dev_t device, void *buf, aoff_t count, aoff_t *write_size, int non_block) //device, buf, count, wr_size, non_block
 {
-	size_t c;
+	aoff_t c;
 	char *b = buf;
 	for (c = 0; c < count; c++)
 		tty_output_char(device, b[c]);
@@ -220,7 +220,7 @@ int tty_write(dev_t device, void *buf, size_t count, size_t *write_size, int non
 	return 0;
 }
 
-int tty_read(dev_t device, void *buf, size_t count, size_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
+int tty_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
 {
 	tty_info_t *tty = tty_get(device);
 	return pipe_read(tty->pipe_in, buf, count, read_size, non_block);
