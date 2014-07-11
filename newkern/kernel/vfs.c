@@ -374,19 +374,27 @@ int vfs_mkdir(char *path, mode_t mode)
 {
 	inode_t *dir;
 	inode_t *parent;
+
 	int err = vfs_mknod(path, S_IFDIR | (mode & 0777), 0);
+
 	if (err)
 		return err;
+
 	parent = vfs_find_parent(path);
 	dir = vfs_find_inode(path);
 	if ((!parent) || !dir)
 		return EFAULT;//TODO: Find more appropriate ERRNO
+
 	semaphore_down(dir->lock);
-	if (!vfs_int_mkdir(dir)) {
+
+	err = vfs_int_mkdir(dir);
+
+	if (err) {
 		semaphore_up(dir->lock);
 		vfs_unlink(path);
-		return ENOSPC;
+		return err;
 	}
+
 	parent->mtime = system_time;
 	semaphore_up(dir->lock);
 	return 0;
@@ -394,6 +402,7 @@ int vfs_mkdir(char *path, mode_t mode)
 
 int vfs_mknod(char *path, mode_t mode, dev_t dev)
 {
+	int status;
 	char * separator;
 	char * name;
 	inode_t *parent = vfs_find_parent(path);
@@ -438,18 +447,20 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	if (S_ISFIFO(inode->mode)) {
 		inode->fifo = pipe_create();
 	}
-	if (!vfs_int_mknod(inode)) { //Push inode to storage
+	status = vfs_int_mknod(inode);//Push inode to storage
+	if (status) { 
 		heapmm_free(inode, parent->device->inode_size);
-		return ENOSPC;
+		return status;
 	}	
 	llist_add_end(inode_cache, (llist_t *) inode);
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
-	if (!vfs_int_link(parent, name, inode->id)) {
+	status = vfs_int_link(parent, name, inode->id);
+	if (status) {
 		llist_unlink((llist_t *) inode);
-		vfs_int_rmnod(inode);
+		vfs_int_rmnod(inode);//TODO: Check result?
 		heapmm_free(inode, parent->device->inode_size);
-		return ENOSPC;
+		return status;
 	}
 	inode->hard_link_count++;
 	semaphore_up(inode->lock);
@@ -531,18 +542,23 @@ int vfs_symlink(char *oldpath, char *path)
 	inode->atime = inode->mtime = inode->ctime = system_time;
 	inode->lock = semaphore_alloc();
 	strcpy(inode->link_path, oldpath);
-	if (!vfs_int_mknod(inode)) { //Push inode to storage
+
+	status = vfs_int_mknod(inode);
+
+	if (status) { //Push inode to storage
 		heapmm_free(inode, parent->device->inode_size);
-		return ENOSPC;
+		return status;
 	}	
 	llist_add_end(inode_cache, (llist_t *) inode);
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
-	if (!vfs_int_link(parent, name, inode->id)) {
+	status = vfs_int_link(parent, name, inode->id);
+
+	if (status) {
 		llist_unlink((llist_t *) inode);
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
-		return ENOSPC;
+		return status;
 	}
 	inode->hard_link_count++;
 	semaphore_up(inode->lock);
@@ -551,6 +567,7 @@ int vfs_symlink(char *oldpath, char *path)
 
 int vfs_unlink(char *path)
 {
+	int status;
 	inode_t *inode = vfs_find_symlink(path);
 	inode_t *parent = vfs_find_parent(path);
 	char * separator;
@@ -581,10 +598,13 @@ int vfs_unlink(char *path)
 		return ENAMETOOLONG;
 	}
 	semaphore_down(parent->lock);
-	if (!vfs_int_unlink(parent, name)) {
+
+	status = vfs_int_unlink(parent, name);
+
+	if (status) {
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);
-		return EIO;
+		return status;
 	}
 	semaphore_up(parent->lock);
 	inode->hard_link_count--;
@@ -658,10 +678,12 @@ int vfs_link(char *oldpath, char *newpath)
 		semaphore_up(parent->lock);	
 		return ENAMETOOLONG;
 	}
-	if (!vfs_int_link(parent, name, inode->id)) {
+	status = vfs_int_link(parent, name, inode->id);
+	
+	if (status) {
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);	
-		return ENOSPC;
+		return status;
 	}
 	parent->mtime = system_time;
 	semaphore_up(parent->lock);
