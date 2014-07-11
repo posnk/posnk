@@ -96,26 +96,36 @@ dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 
 int vfs_int_mknod(inode_t * inode)
 {
+	if (!inode->device->ops->mknod)
+		return ENOTSUP;
 	return inode->device->ops->mknod(inode);
 }
 
 int vfs_int_rmnod(inode_t * inode)
 {
+	if (!inode->device->ops->rmnod)
+		return ENOTSUP;
 	return inode->device->ops->rmnod(inode);
 }
 
 int vfs_int_mkdir(inode_t * inode)
 {
+	if (!inode->device->ops->mkdir)
+		return ENOTSUP;
 	return inode->device->ops->mkdir(inode);
 }
 
 int vfs_int_link(inode_t * inode , char * name , ino_t nod_id)
 {
+	if (!inode->device->ops->link)
+		return ENOTSUP;
 	return inode->device->ops->link(inode, name, nod_id);
 }
 
 int vfs_int_unlink(inode_t * inode , char * name)
-{
+{	
+	if (!inode->device->ops->unlink)
+		return ENOTSUP;
 	return inode->device->ops->unlink(inode, name);
 }
 
@@ -131,11 +141,15 @@ int vfs_int_read(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t coun
 
 int vfs_int_write(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
 {
+	if (!inode->device->ops->write_inode)
+		return ENOTSUP;//TODO: Maybe return EROFS here?
 	return inode->device->ops->write_inode(inode, buffer, file_offset, count, write_size);
 }
 
 int vfs_int_truncate(inode_t * inode, aoff_t size)
 {
+	if (!inode->device->ops->trunc_inode)
+		return ENOTSUP;
 	return inode->device->ops->trunc_inode(inode, size);
 }
 
