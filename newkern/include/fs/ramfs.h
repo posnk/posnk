@@ -31,8 +31,8 @@ struct ramfs_inode {
 struct ramfs_block {	
 	llist_t  node;
 	inode_t  *inode;
-	off_t	 start;
-	off_t	 length;
+	aoff_t	 start;
+	aoff_t	 length;
 	void	*data;
 };
 
@@ -44,7 +44,7 @@ struct ramfs_device {
 struct ramfs_dirent {
 	llist_t  node;
 	dirent_t dir;
-	off_t	 start;
+	aoff_t	 start;
 };
 
 fs_device_t *ramfs_create();

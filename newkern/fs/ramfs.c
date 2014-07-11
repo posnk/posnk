@@ -41,19 +41,19 @@ int ramfs_rmnod(inode_t *inode)	//inode -> status
 
 int ramfs_rawdir_search_iterator (llist_t *node, void *param)
 {
-	off_t start = (off_t) param;
+	aoff_t start = (aoff_t) param;
 	ramfs_dirent_t *block = (ramfs_dirent_t *) node;
 	return (block->start == start);
 }
 
-int ramfs_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)//buffer, f_offset, length -> numbytes
+int ramfs_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)//buffer, f_offset, length -> numbytes
 {
 	ramfs_dirent_t plholder;
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
 	uintptr_t b_data;
-	uint32_t pos = 0;
-	off_t current_off;
+	aoff_t pos = 0;
+	aoff_t current_off;
 	ramfs_dirent_t *_block;
 	current_off = f_offset;
 	for (;;) {
@@ -67,40 +67,33 @@ int ramfs_readdir(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)/
 			plholder.start = current_off % (plholder.dir.d_reclen);
 		}
 		b_data = (uintptr_t) &(_block->dir);
-		if ((pos + _block->dir.d_reclen) > length)
-			return pos;
+		if ((pos + _block->dir.d_reclen) > length) {
+			*nread = pos;
+			return 0;
+		}
 		memcpy((void *) buffer, (void *) (b_data),  _block->dir.d_reclen);
 		pos += _block->dir.d_reclen;
 		buffer += _block->dir.d_reclen;
 		current_off += _block->dir.d_reclen;
-		/*
-		block_off = current_off - _block->start;
-		in_blk_len = sizeof(dirent_t) - block_off;
-		if (remaining_length < in_blk_len)
-			in_blk_len = remaining_length;
-		memcpy((void *) buffer, (void *) (b_data + block_off), (size_t) in_blk_len);
-		remaining_length -= in_blk_len;
-		buffer += in_blk_len;
-		if (remaining_length == 0)
-			break;*/
 	}	
-	return pos;	
+	*nread = pos;
+	return 0;	
 }
 
 int ramfs_block_search_iterator (llist_t *node, void *param)
 {
-	off_t start = (off_t) param;
+	aoff_t start = (aoff_t) param;
 	ramfs_block_t *block = (ramfs_block_t *) node;
 	return (block->start <= start) && ((block->start + block->length) > start);
 }
 
-int ramfs_read_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)//buffer, f_offset, length -> numbytes
+int ramfs_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
 	uintptr_t b_data;
-	off_t remaining_length = length;
-	off_t block_off, current_off, in_blk_len;
+	aoff_t remaining_length = length;
+	aoff_t block_off, current_off, in_blk_len;
 	ramfs_block_t *_block;
 	current_off = f_offset;
 	for (;;) {
@@ -119,16 +112,17 @@ int ramfs_read_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t lengt
 		if (remaining_length == 0)
 			break;
 	}	
-	return remaining_length == 0;	
+	*nread = length - remaining_length;
+	return remaining_length ? EIO : 0;	
 }
 
-int ramfs_write_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t length)//buffer, f_offset, length -> numbytes
+int ramfs_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nwritten)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
 	uintptr_t b_data;
-	off_t remaining_length = length;
-	off_t block_off, current_off, in_blk_len;
+	aoff_t remaining_length = length;
+	aoff_t block_off, current_off, in_blk_len;
 	ramfs_block_t *_block;
 	current_off = f_offset;
 	for (;;) {
@@ -144,21 +138,26 @@ int ramfs_write_inode(inode_t *_inode, void *_buffer, off_t f_offset, off_t leng
 		remaining_length -= in_blk_len;
 		current_off += in_blk_len;
 		buffer += in_blk_len;
-		if (remaining_length == 0)
-			return 1;
+		if (remaining_length == 0) {
+			*nwritten = length;
+			return 0;
+		}
 	}	
 	_block = (ramfs_block_t *) heapmm_alloc(sizeof(ramfs_block_t));
-	if (_block == NULL)
-		return 0;
+	if (_block == NULL) {
+		*nwritten = length - remaining_length;
+		return ENOSPC;
+	}
 	_block->start = current_off;
 	_block->length = remaining_length;
 	_block->data = heapmm_alloc((size_t) remaining_length);
 	memcpy(_block->data, (void *) buffer, (size_t) remaining_length);
 	llist_add_end(inode->block_list, (llist_t *) _block);
-	return 1;	
+	*nwritten = length;
+	return 0;	
 }
 
-int ramfs_trunc_inode(inode_t *_inode, off_t size)//buffer, f_offset, length -> numbytes
+int ramfs_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_block_t *_block;
