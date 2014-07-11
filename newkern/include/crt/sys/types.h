@@ -40,6 +40,7 @@ typedef unsigned short umode_t;
 typedef unsigned short nlink_t;
 typedef int daddr_t;
 typedef long off_t;
+typedef unsigned long aoff_t;
 typedef unsigned char u_char;
 typedef unsigned short ushort;
 

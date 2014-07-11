@@ -186,7 +186,6 @@ int ramfs_trunc_inode(inode_t *_inode, off_t size)//buffer, f_offset, length -> 
 		//   IF BLOCK EXTENDS PAST EOF TRUNCATE BLOCKS
 		return EIO;
 	}
-	_inode->size = size;
 	return 0;	
 }
 

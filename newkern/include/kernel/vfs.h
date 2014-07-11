@@ -53,7 +53,7 @@ struct inode {
 	semaphore_t 	*lock;
 	uint32_t 	 usage_count;
 	/* Content */
-	off_t	 	 size;	
+	aoff_t	 	 size;	
 	/* Access times */
 	ktime_t		 atime;
 	ktime_t		 mtime;
@@ -80,16 +80,16 @@ struct fs_device_operations {
 	int		(*mknod)	(inode_t *);	//inode -> status
 	int		(*rmnod)	(inode_t *);	//inode -> status
 
-	int		(*read_inode)	(inode_t *, void *, off_t, off_t);//buffer, f_offset, length -> numbytes
-	int		(*write_inode)	(inode_t *, void *, off_t, off_t);//buffer, f_offset, length -> numbytes
+	int		(*read_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread
+	int		(*write_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nwritten
 
-	int		(*read_dir)	(inode_t *, void *, off_t, off_t);//buffer, f_offset, length -> numbytes
+	int		(*read_dir)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread 
 	dirent_t *	(*find_dirent)	(inode_t *, char *);	//dir_inode_id, filename -> dirent_t  
 	int		(*mkdir)	(inode_t *);		//dir_inode_id -> status
 	int		(*link)		(inode_t *, char *, ino_t);	//dir_inode_id, filename, inode_id -> status
 	int		(*unlink)	(inode_t *, char *);	//dir_inode_id, filename
 
-	int		(*trunc_inode)	(inode_t *, off_t);
+	int		(*trunc_inode)	(inode_t *, aoff_t);
 };
 
 struct fs_device {
@@ -128,8 +128,6 @@ int vfs_symlink(char *oldpath, char *newpath);
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
 
-int vfs_truncate(inode_t * inode, off_t length);
-
 inode_t *vfs_find_parent(char * path);
 
 inode_t *vfs_find_inode(char * path);
@@ -144,10 +142,13 @@ dir_cache_t *vfs_find_dirc(char * path);
 
 int vfs_initialize(fs_device_t * root_device);
 
-int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block);
-int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block);
+int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
-int vfs_getdents(inode_t * inode , off_t file_offset, dirent_t * buffer, size_t count, size_t *read_size);
+int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
+
+int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size);
+
+int vfs_truncate(inode_t * inode, aoff_t length);
 
 #endif
 

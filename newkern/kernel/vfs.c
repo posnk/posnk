@@ -119,29 +119,30 @@ int vfs_int_unlink(inode_t * inode , char * name)
 	return inode->device->ops->unlink(inode, name);
 }
 
-int vfs_int_read_dir(inode_t * inode, void * buffer, off_t file_offset, off_t count)
+int vfs_int_read_dir(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
-	return inode->device->ops->read_dir(inode, buffer, file_offset, count);
+	return inode->device->ops->read_dir(inode, buffer, file_offset, count, read_size);
 }
 
-int vfs_int_read(inode_t * inode, void * buffer, off_t file_offset, off_t count)
+int vfs_int_read(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
-	return inode->device->ops->read_inode(inode, buffer, file_offset, count);
+	return inode->device->ops->read_inode(inode, buffer, file_offset, count, read_size);
 }
 
-int vfs_int_write(inode_t * inode, void * buffer, off_t file_offset, off_t count)
+int vfs_int_write(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
 {
-	return inode->device->ops->write_inode(inode, buffer, file_offset, count);
+	return inode->device->ops->write_inode(inode, buffer, file_offset, count, write_size);
 }
 
-int vfs_int_truncate(inode_t * inode, off_t size)
+int vfs_int_truncate(inode_t * inode, aoff_t size)
 {
 	return inode->device->ops->trunc_inode(inode, size);
 }
 
-int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block)
+int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
 {
 	int status;
+	size_t pad_size = 0;
 	void *zbuffer;
 	if (!inode)
 		return EINVAL;
@@ -153,26 +154,37 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 	}
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFREG:
-			if ((file_offset + ((off_t)count)) > inode->size) {
+			if ((file_offset + count) > inode->size) {
 				/* Writing past EOF */
 				if (file_offset > inode->size) {
 					/* Writing starts past EOF */
 					zbuffer = heapmm_alloc(file_offset - inode->size);
+
 					memset(zbuffer, 0, file_offset - inode->size);
-					vfs_int_write(inode, zbuffer, inode->size, (off_t)file_offset - inode->size);
-					heapmm_free(zbuffer,file_offset - inode->size);				
+
+					status = vfs_int_write(inode, zbuffer, inode->size, file_offset - inode->size, &pad_size);
+
+					heapmm_free(zbuffer,file_offset - inode->size);		
+
+					inode->size += pad_size;
+					if (pad_size)
+						inode->mtime = system_time;
+
+					if (status) {
+						*read_size = 0;
+						return status;	
+					}
 				}
-				inode->size = (file_offset + ((off_t)count)); //TODO: Verify that size fits...
-			}				
-			if (!vfs_int_write(inode, buffer, file_offset, (off_t)count)) {
-				semaphore_up(inode->lock);
-				return ENOSPC;	
-			}
-			if (count)
+			}		
+		
+			status = vfs_int_write(inode, buffer, file_offset, count, read_size);
+
+			if (*read_size)
 				inode->mtime = system_time;
+
 			semaphore_up(inode->lock);
-			(*read_size) = count;
-			return 0;
+
+			return status;
 		case S_IFDIR:
 			semaphore_up(inode->lock);			
 			return EISDIR;
@@ -195,7 +207,7 @@ int vfs_write(inode_t * inode , off_t file_offset, void * buffer, size_t count, 
 	
 }
 
-int vfs_truncate(inode_t * inode, off_t length)
+int vfs_truncate(inode_t * inode, aoff_t length)
 {
 	int status;
 	if (!inode)
@@ -211,9 +223,14 @@ int vfs_truncate(inode_t * inode, off_t length)
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFREG:			
 			status = vfs_int_truncate(inode, length);
-			if (!status)
+
+			if (!status) {
 				inode->mtime = system_time;
+				inode->size = length;
+			}
+
 			semaphore_up(inode->lock);
+
 			return status;
 		case S_IFDIR:
 			semaphore_up(inode->lock);			
@@ -229,7 +246,7 @@ int vfs_truncate(inode_t * inode, off_t length)
 	
 }
 
-int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, size_t *read_size, int non_block)
+int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
 {
 	int status;
 	if (!inode)
@@ -242,7 +259,7 @@ int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, s
 	}
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFREG:
-			if ((file_offset + ((off_t)count)) > inode->size) {
+			if ((file_offset + count) > inode->size) {
 				/* Reading past EOF */
 				if (file_offset >= inode->size) {
 					/* Read starts past EOF */
@@ -250,17 +267,16 @@ int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, s
 					(*read_size) = 0;
 					return 0;					
 				}
-				count = (size_t) (inode->size - file_offset);	
+				count = inode->size - file_offset;	
 			}				
-			if (!vfs_int_read(inode, buffer, file_offset, (off_t)count)) {
-				semaphore_up(inode->lock);
-				return EIO;	
-			}
-			if (count)
+			status = vfs_int_read(inode, buffer, file_offset, count, read_size);
+
+			if (*read_size)
 				inode->atime = system_time;
+
 			semaphore_up(inode->lock);
-			(*read_size) = count;
-			return 0;
+
+			return status;
 		case S_IFDIR:
 			semaphore_up(inode->lock);			
 			return EISDIR;
@@ -283,19 +299,25 @@ int vfs_read(inode_t * inode , off_t file_offset, void * buffer, size_t count, s
 	
 }
 
-int vfs_getdents(inode_t * inode , off_t file_offset, dirent_t * buffer, size_t count, size_t *read_size)
+int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size)
 {
+	int status;
+
 	if (!inode)
 		return EINVAL;
+
 	inode = vfs_effective_inode(inode);
+
 	semaphore_down(inode->lock);
+
 	if (!vfs_have_permissions(inode, MODE_READ)) {
 		semaphore_up(inode->lock);
 		return EBADF;
 	}
+
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFDIR:
-			if ((file_offset + ((off_t)count)) > inode->size) {
+			if ((file_offset + count) > inode->size) {
 				/* Reading past EOF */
 				if (file_offset >= inode->size) {
 					/* Read starts past EOF */
@@ -303,18 +325,17 @@ int vfs_getdents(inode_t * inode , off_t file_offset, dirent_t * buffer, size_t 
 					(*read_size) = 0;
 					return 0;					
 				}
-				count = (size_t) (inode->size - file_offset);	
-			}				
-			(*read_size) = vfs_int_read_dir(inode, buffer, file_offset, (off_t)count);
-			if (!count) {
-				semaphore_up(inode->lock);
-				return EIO;	
-			}
-			if (count)
+				count = inode->size - file_offset;	
+			}	
+			
+			status = vfs_int_read_dir(inode, buffer, file_offset, count, read_size);
+
+			if (*read_size)
 				inode->atime = system_time;
+
 			semaphore_up(inode->lock);
-			//(*read_size) = count;
-			return 0;
+
+			return status;
 		default:			
 			semaphore_up(inode->lock);	
 			return ENOTDIR;		

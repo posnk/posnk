@@ -36,6 +36,21 @@ int ext2_read_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, v
 	return status;
 }
 
+int ext2_write_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, size_t count, size_t *write_size)
+{
+	int status;
+	off_t	block_addr;	
+	size_t	_write_size;
+	size_t *ws = write_size ? write_size : (&_write_size);
+	if (!dev)
+		return EFAULT;
+	block_addr = (block_ptr << (10 + dev->superblock.block_size_enc)) + in_block; 
+	status = device_block_write(dev->dev_id, block_addr, buffer, count, ws);	
+	if ((*ws) != count)
+		return EIO;
+	return status;
+}
+
 uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block_id)
 {
 	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
