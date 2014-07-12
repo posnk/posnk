@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>posnk kernel: Main Page</title>
+<title>posnk kernel: _PCI_VENTABLE Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -35,9 +35,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -57,7 +57,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,15 +78,78 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">posnk kernel Documentation</div>  </div>
+<div class="title">_PCI_VENTABLE Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="pci__list_8h_source.html">pci_list.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a8df580b1447df15ebe8a128b8225e710"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__PCI__VENTABLE.html#a8df580b1447df15ebe8a128b8225e710">VenId</a></td></tr>
+<tr class="memitem:a37c44257d4237ef312626d97ef3a5fa5"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__PCI__VENTABLE.html#a37c44257d4237ef312626d97ef3a5fa5">VenShort</a></td></tr>
+<tr class="memitem:aad91ea393afe64b533c1ad399f12baf2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct__PCI__VENTABLE.html#aad91ea393afe64b533c1ad399f12baf2">VenFull</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="pci__list_8h_source.html#l00029">29</a> of file <a class="el" href="pci__list_8h_source.html">pci_list.h</a>.</p>
+</div><h2>Field Documentation</h2>
+<a class="anchor" id="aad91ea393afe64b533c1ad399f12baf2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* _PCI_VENTABLE::VenFull</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="pci__list_8h_source.html#l00033">33</a> of file <a class="el" href="pci__list_8h_source.html">pci_list.h</a>.</p>
+
+<p>Referenced by <a class="el" href="pci_8c_source.html#l00017">pci_vendor_lookup()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8df580b1447df15ebe8a128b8225e710"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned short _PCI_VENTABLE::VenId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="pci__list_8h_source.html#l00031">31</a> of file <a class="el" href="pci__list_8h_source.html">pci_list.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a37c44257d4237ef312626d97ef3a5fa5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* _PCI_VENTABLE::VenShort</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="pci__list_8h_source.html#l00032">32</a> of file <a class="el" href="pci__list_8h_source.html">pci_list.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/driver/bus/<a class="el" href="pci__list_8h_source.html">pci_list.h</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:08:30 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 12 2014 05:08:29 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

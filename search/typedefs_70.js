@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['page_5fdir_5ft',['page_dir_t',['../kernel_2paging_8h.html#aa130537144376c248177e9e65d9e7d0a',1,'paging.h']]],
+  ['page_5fflags_5ft',['page_flags_t',['../kernel_2paging_8h.html#a65b63a13c7c3240b83384b0fac2141c0',1,'paging.h']]],
+  ['page_5ftag_5ft',['page_tag_t',['../kernel_2paging_8h.html#ae70238d01c99de5ad9bc5389d1cded9e',1,'paging.h']]],
+  ['partition_5finfo_5ft',['partition_info_t',['../partition_8h.html#abb4cbede5d1976cf5f44563836fd79a4',1,'partition.h']]],
+  ['pci_5fclasscodetable',['PCI_CLASSCODETABLE',['../pci__list_8h.html#a5532c32fe8312433f2da2d7f6ea385fb',1,'pci_list.h']]],
+  ['pci_5fdevtable',['PCI_DEVTABLE',['../pci__list_8h.html#a09cfaf8246964380436bf1495ccb066b',1,'pci_list.h']]],
+  ['pci_5fventable',['PCI_VENTABLE',['../pci__list_8h.html#a6bc80ec3329e2808858485388d5af812',1,'pci_list.h']]],
+  ['perm_5fclass_5ft',['perm_class_t',['../permissions_8h.html#a22e726d412d3cf8ca4d1e6c7795c5c0f',1,'permissions.h']]],
+  ['physaddr_5ft',['physaddr_t',['../physmm_8h.html#a352786d1b241729e28a1a8e6ab39384d',1,'physmm.h']]],
+  ['pid_5ft',['pid_t',['../types_8h.html#a288e13e815d43b06e75819f8939524df',1,'types.h']]],
+  ['pipe_5finfo_5ft',['pipe_info_t',['../pipe_8h.html#a2442e60eafc61dc8d04261bc177024ca',1,'pipe.h']]],
+  ['ppci_5fclasscodetable',['PPCI_CLASSCODETABLE',['../pci__list_8h.html#a53f59bd8912804c9acd6ff4b346800ac',1,'pci_list.h']]],
+  ['ppci_5fdevtable',['PPCI_DEVTABLE',['../pci__list_8h.html#a800c3be31c1eca3899ee43fe95fa78d3',1,'pci_list.h']]],
+  ['ppci_5fventable',['PPCI_VENTABLE',['../pci__list_8h.html#ac7575dbc15162e14f66a81f24490fc2a',1,'pci_list.h']]],
+  ['printf_5fhelper_5ft',['printf_helper_t',['../earlycon_8c.html#a9148d36610887006a7cab016e04278e0',1,'earlycon.c']]],
+  ['process_5fchild_5fevent_5ft',['process_child_event_t',['../process_8h.html#a918dec3f00158b7557f51584d96f4177',1,'process.h']]],
+  ['process_5finfo_5ft',['process_info_t',['../process_8h.html#aba6f35930ecff1efae67096dfaa95185',1,'process.h']]],
+  ['process_5fmmap_5ft',['process_mmap_t',['../process_8h.html#a5653c0fe13ba0dacdabf950c8ae8492a',1,'process.h']]],
+  ['ptrdiff_5ft',['ptrdiff_t',['../types_8h.html#a1391029fd5d5d35fab28d7423c8cca9b',1,'types.h']]]
+];

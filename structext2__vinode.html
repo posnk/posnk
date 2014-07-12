@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>posnk kernel: Main Page</title>
+<title>posnk kernel: ext2_vinode Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -35,9 +35,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -57,7 +57,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +78,61 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">posnk kernel Documentation</div>  </div>
+<div class="title">ext2_vinode Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="ext2_8h_source.html">ext2.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:abba02729a2758ead0ef3de27aad698f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structext2__vinode.html#abba02729a2758ead0ef3de27aad698f6">vfs_ino</a></td></tr>
+<tr class="memitem:a1a46dc8515ab3563f6ef44b2ea66a8ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="ext2_8h.html#a084350cc1f27d25e34ffa28515f379b6">ext2_inode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba">inode</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="ext2_8h_source.html#l00161">161</a> of file <a class="el" href="ext2_8h_source.html">ext2.h</a>.</p>
+</div><h2>Field Documentation</h2>
+<a class="anchor" id="a1a46dc8515ab3563f6ef44b2ea66a8ba"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="ext2_8h.html#a084350cc1f27d25e34ffa28515f379b6">ext2_inode_t</a> ext2_vinode::inode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ext2_8h_source.html#l00163">163</a> of file <a class="el" href="ext2_8h_source.html">ext2.h</a>.</p>
+
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00439">ext2_load_inode()</a>, and <a class="el" href="ext2_8c_source.html#l00108">ext2_read_inode()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abba02729a2758ead0ef3de27aad698f6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> ext2_vinode::vfs_ino</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="ext2_8h_source.html#l00162">162</a> of file <a class="el" href="ext2_8h_source.html">ext2.h</a>.</p>
+
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>include/fs/<a class="el" href="ext2_8h_source.html">ext2.h</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

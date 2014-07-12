@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>posnk kernel: Main Page</title>
+<title>posnk kernel: include/driver/block/pata/ata_pio.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -35,10 +35,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -57,7 +57,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>Globals</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,15 +77,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_83ba6f82767b0f279bc133e96359d930.html">driver</a></li><li class="navelem"><a class="el" href="dir_8172c0b0c3f828bb49c395070efbc1be.html">block</a></li><li class="navelem"><a class="el" href="dir_71bc96dda4b2d1e290d9fb444eecb2e0.html">pata</a></li>  </ul>
+</div>
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">posnk kernel Documentation</div>  </div>
+<div class="title">ata_pio.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<a href="ata__pio_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef __DRIVER_BLOCK_PATA_ATA_PIO_H__</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __DRIVER_BLOCK_PATA_ATA_PIO_H__</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="ata__pio_8h.html#a328379c1d3318d2d4794d7b59d8336d9">   15</a></span>&#160;<span class="preprocessor">#define ATA_PIO_PRIMARY_PORT_BASE       (0x1F0)</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="ata__pio_8h.html#a1a98faacd1b4b5b7f98fcb81fa12e80d">   16</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ATA_PIO_PRIMARY_STATUS_PORT     (0x3F6)</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="code" href="ata__pio_8h.html#a6b6bfad42f8fae8872dfb65f95fa2296">   17</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ATA_PIO_SECONDARY_PORT_BASE     (0x170)</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="ata__pio_8h.html#af42d47a8f40467c838d69cdcd2625082">   18</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ATA_PIO_SECONDARY_STATUS_PORT   (0x376)</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+</div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:08:30 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 12 2014 05:08:29 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

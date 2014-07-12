@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-<title>posnk kernel: Main Page</title>
+<title>posnk kernel: sig_pgrp_param Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -35,9 +35,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -57,7 +57,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+    </ul>
+  </div>
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -72,11 +78,59 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">posnk kernel Documentation</div>  </div>
+<div class="title">sig_pgrp_param Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:afe99d95004ab540ad6e4a40f41d7b2fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#a288e13e815d43b06e75819f8939524df">pid_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsig__pgrp__param.html#afe99d95004ab540ad6e4a40f41d7b2fc">group</a></td></tr>
+<tr class="memitem:a06b09c94dd2248f271280e7a7baf30fb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsig__pgrp__param.html#a06b09c94dd2248f271280e7a7baf30fb">signal</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock">
+<p>Definition at line <a class="el" href="process_8c_source.html#l00223">223</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+</div><h2>Field Documentation</h2>
+<a class="anchor" id="afe99d95004ab540ad6e4a40f41d7b2fc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="types_8h.html#a288e13e815d43b06e75819f8939524df">pid_t</a> sig_pgrp_param::group</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="process_8c_source.html#l00224">224</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+
+<p>Referenced by <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, and <a class="el" href="process_8c_source.html#l00249">process_signal_pgroup()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a06b09c94dd2248f271280e7a7baf30fb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int sig_pgrp_param::signal</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="process_8c_source.html#l00225">225</a> of file <a class="el" href="process_8c_source.html">process.c</a>.</p>
+
+<p>Referenced by <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, and <a class="el" href="process_8c_source.html#l00249">process_signal_pgroup()</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>kernel/<a class="el" href="process_8c_source.html">process.c</a></li>
+</ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

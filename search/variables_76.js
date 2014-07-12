@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['value',['value',['../structi386__set__pd__param.html#af8217a88f8ef24a3498ee83caef06f75',1,'i386_set_pd_param']]],
+  ['vendor',['vendor',['../structdrivermgr__device__driver.html#ae55e68af63e7b064312d10b9c5a88de5',1,'drivermgr_device_driver']]],
+  ['venfull',['VenFull',['../struct__PCI__VENTABLE.html#aad91ea393afe64b533c1ad399f12baf2',1,'_PCI_VENTABLE']]],
+  ['venid',['VenId',['../struct__PCI__VENTABLE.html#a8df580b1447df15ebe8a128b8225e710',1,'_PCI_VENTABLE::VenId()'],['../struct__PCI__DEVTABLE.html#acab5aacfc4cdfc1f3c71e9f835c52a61',1,'_PCI_DEVTABLE::VenId()']]],
+  ['venshort',['VenShort',['../struct__PCI__VENTABLE.html#a37c44257d4237ef312626d97ef3a5fa5',1,'_PCI_VENTABLE']]],
+  ['version',['version',['../structtar__header.html#a9c591cb9f29798d5bd868b810d1ab08a',1,'tar_header::version()'],['../tar_8h.html#a981934c8bf4be1b7c2f3a93f998ef9c0',1,'version():&#160;tar.h']]],
+  ['version_5fmajor',['version_major',['../structext2__superblock.html#ace742f8b2213dbe70588fb5d2a5138c5',1,'ext2_superblock::version_major()'],['../ext2_8h.html#ae6af13393bbb4dabcb65cc1d5f4e9cc8',1,'version_major():&#160;ext2.h']]],
+  ['version_5fminor',['version_minor',['../structext2__superblock.html#af1e46e5a905dd398f2bcc0d693670431',1,'ext2_superblock::version_minor()'],['../ext2_8h.html#a166f22ce4b25488997425405d2a6e42d',1,'version_minor():&#160;ext2.h']]],
+  ['vfs_5fino',['vfs_ino',['../structext2__vinode.html#abba02729a2758ead0ef3de27aad698f6',1,'ext2_vinode']]],
+  ['vga_5fvterm_5fcolour_5fmap',['vga_vterm_colour_map',['../vga__vterm_8c.html#a6a0d8f2805ec9cb9df9a6d257ff83e21',1,'vga_vterm.c']]],
+  ['vgacon_5fcolour_5fmap',['vgacon_colour_map',['../vgacon_8c.html#a263af43dca16f3951ce9f6d6c291f6d2',1,'vgacon.c']]],
+  ['vgacon_5fearly_5fvc',['vgacon_early_vc',['../vgacon_8c.html#a362c1eaf85c1d080e8823b05f9adf27c',1,'vgacon_early_vc():&#160;vgacon_early.c'],['../vgacon__early_8c.html#a362c1eaf85c1d080e8823b05f9adf27c',1,'vgacon_early_vc():&#160;vgacon_early.c']]],
+  ['vgacon_5fescape_5fbuf',['vgacon_escape_buf',['../vgacon_8c.html#a0bb7c49f869ddc1912e23fb713ca13af',1,'vgacon.c']]],
+  ['vgacon_5fescape_5fpars',['vgacon_escape_pars',['../vgacon_8c.html#a46ffcf3d795015da4c89959750800420',1,'vgacon.c']]],
+  ['vgacon_5fescape_5fppt',['vgacon_escape_ppt',['../vgacon_8c.html#a883e16640f837086da43af2a25117d0f',1,'vgacon.c']]],
+  ['vgacon_5fescape_5fptr',['vgacon_escape_ptr',['../vgacon_8c.html#a0f3ed67f0994a84dc42f8f7985a9cfc1',1,'vgacon.c']]],
+  ['vgacon_5fescape_5fspt',['vgacon_escape_spt',['../vgacon_8c.html#aa15055a99727ffa13b28550188ca5f1a',1,'vgacon.c']]],
+  ['video_5fbuffer',['video_buffer',['../structvgacon__vc.html#ae0dcef160dc671ae1ca23098efe491de',1,'vgacon_vc::video_buffer()'],['../structvgacon__vc__info.html#afef3bebd84bb9139469d4b33ad5b974b',1,'vgacon_vc_info::video_buffer()']]],
+  ['volume_5fname',['volume_name',['../structext2__superblock.html#a4c757c652939b78847ec12fb31dd6924',1,'ext2_superblock::volume_name()'],['../ext2_8h.html#a246b0f1c7e3fc6cf67e5afe79d6eb64d',1,'volume_name():&#160;ext2.h']]],
+  ['vterm_5fminor_5fterms',['vterm_minor_terms',['../vterm__tty_8c.html#a61e91b11c41f577a3bdefd3a8ae9872b',1,'vterm_tty.c']]],
+  ['vterm_5fvga_5fall_5fvcs',['vterm_vga_all_vcs',['../vga__vterm_8c.html#a8b7ebc0c015821f82210689386910fed',1,'vga_vterm.c']]],
+  ['vterm_5fvga_5fcurrent_5fvc',['vterm_vga_current_vc',['../vga__vterm_8c.html#acf5a42e3e9e5256d2971b2b4af51dea6',1,'vga_vterm.c']]]
+];
