@@ -1,0 +1,4 @@
+<map id="vterm_erase_col" name="vterm_erase_col">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="173,5,317,35"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#adb0541135b548fc90f4471f2a5f6b7d3" title="vga_vterm_map_attr" alt="" coords="365,5,507,35"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="tty_init" name="tty_init">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="440,5,547,35"/>
+<area shape="rect" id="node7" href="$tty_8c.html#af011bf9f6db234c81150f165d8d2a590" title="tty_close" alt="" coords="115,133,189,163"/>
+<area shape="rect" id="node11" href="$tty_8c.html#a41c315ed12e65d1a4be58f291d7181de" title="tty_ioctl" alt="" coords="119,287,185,316"/>
+<area shape="rect" id="node20" href="$tty_8c.html#a81c9dc3480ed122aacfe00711228d42b" title="tty_open" alt="" coords="116,187,188,216"/>
+<area shape="rect" id="node23" href="$tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1" title="tty_read" alt="" coords="117,80,187,109"/>
+<area shape="rect" id="node29" href="$tty_8c.html#a006a76f172143fdb170deacb1ea2fef3" title="tty_write" alt="" coords="116,393,188,423"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="595,5,749,35"/>
+<area shape="rect" id="node9" href="$tty_8c.html#afa30a04526ae58f448f660f32de0e957" title="tty_get" alt="" coords="463,184,524,213"/>
+<area shape="rect" id="node14" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="249,287,380,316"/>
+<area shape="rect" id="node16" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="249,340,380,369"/>
+<area shape="rect" id="node18" href="$process_8c.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="237,393,392,423"/>
+<area shape="rect" id="node26" href="$pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="276,31,353,60"/>
+<area shape="rect" id="node31" href="$tty_8c.html#af04629abe6c2dbe5e5089f147877621d" title="tty_output_char" alt="" coords="259,447,371,476"/>
+</map>

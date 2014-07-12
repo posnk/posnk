@@ -1,0 +1,6 @@
+<map id="pipe_read" name="pipe_read">
+<area shape="rect" id="node3" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="133,5,216,35"/>
+<area shape="rect" id="node7" href="$tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1" title="tty_read" alt="" coords="140,59,209,88"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="264,5,339,35"/>
+<area shape="rect" id="node9" href="$tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="271,59,332,88"/>
+</map>

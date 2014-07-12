@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['_5f_5fattribute_5f_5f',['__attribute__',['../fpu_8c.html#a4e5b0a697013bc2daef7d9689e690416',1,'__attribute__((aligned(16))):&#160;fpu.c'],['../include_2arch_2i386_2idt_8h.html#aafe304468cb401b08bedbd8e83fb3105',1,'__attribute__((packed)):&#160;idt.h'],['../task__context_8h.html#a26ce59a9fdb3dca4a07e280cd7d727d4',1,'__attribute__((packed)):&#160;task_context.h'],['../x86_8h.html#a6863d5721057915ec121c9dfba6ca4d6',1,'__attribute__((packed)):&#160;x86.h'],['../dirent_8h.html#a71e9aa2b187400954cc6285bb04616b2',1,'__attribute__((packed)):&#160;dirent.h'],['../ata_8h.html#a91f23c28956ae08f9e591b66f2670e2a',1,'__attribute__((packed)):&#160;ata.h'],['../ext2_8h.html#aa5b1c9e84a60909d5f22bad8e28d7279',1,'__attribute__((packed)):&#160;ext2.h'],['../tar_8h.html#a2e974cbee7f2fe762639b19fa457a050',1,'__attribute__((packed)):&#160;tar.h'],['../vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d',1,'__attribute__((packed)):&#160;vfs.h']]],
   ['_5f_5fbuiltin_5freturn_5faddress',['__builtin_return_address',['../heapmm_8c.html#a11da0bf377a9ba347f30fa73913732ae',1,'heapmm.c']]],
   ['_5fsys_5fchdir',['_sys_chdir',['../sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c',1,'sc_vfs.c']]],
   ['_5fsys_5fchmod',['_sys_chmod',['../sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47',1,'sc_vfs.c']]],

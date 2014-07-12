@@ -1,0 +1,6 @@
+<map id="debug_postmortem_hook" name="debug_postmortem_hook">
+<area shape="rect" id="node3" href="$kdbg_8c.html#a9a04c1ab65a38aee691bae5cee7c8839" title="dbgapi_invoke_kdbg" alt="" coords="223,59,361,88"/>
+<area shape="rect" id="node5" href="$kdbg_8c.html#ad0f345e82788f12250e6f12c5289a36f" title="kdbg_enter" alt="" coords="412,5,497,35"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="413,59,496,88"/>
+<area shape="rect" id="node9" href="$kdbg_8c.html#a14105b86c9f94d4152fed5f2beaad387" title="kdbg_exit" alt="" coords="416,112,493,141"/>
+</map>

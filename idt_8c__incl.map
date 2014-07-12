@@ -1,0 +1,6 @@
+<map id="arch/i386/idt.c" name="arch/i386/idt.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="8,83,72,112"/>
+<area shape="rect" id="node7" href="$include_2arch_2i386_2idt_8h.html" title="arch/i386/idt.h" alt="" coords="96,83,200,112"/>
+<area shape="rect" id="node11" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="224,83,333,112"/>
+<area shape="rect" id="node14" href="$isr__entry_8h.html" title="arch/i386/isr_entry.h" alt="" coords="357,83,496,112"/>
+</map>

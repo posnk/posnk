@@ -1,0 +1,9 @@
+<map id="heapmm_morecore" name="heapmm_morecore">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="589,53,747,83"/>
+<area shape="rect" id="node12" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="187,117,341,147"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="391,53,540,83"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="844,112,937,141"/>
+<area shape="rect" id="node7" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="841,59,940,88"/>
+<area shape="rect" id="node10" href="$heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="795,5,987,35"/>
+<area shape="rect" id="node14" href="$heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="615,112,721,141"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="i386_init_load_modules" name="i386_init_load_modules">
+<area shape="rect" id="node3" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="236,155,327,184"/>
+<area shape="rect" id="node15" href="$arch_2i386_2paging_8c.html#a338d2f1e4c26f2a29bcb4f675d9e31a7" title="paging_unmap" alt="" coords="228,235,335,264"/>
+<area shape="rect" id="node17" href="$physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again." alt="" coords="211,288,352,317"/>
+<area shape="rect" id="node21" href="$tar_8c.html#ada2334eab3a4cd42b7ea2a267b2f0848" title="tar_extract_mem" alt="" coords="221,341,341,371"/>
+<area shape="rect" id="node5" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="404,5,551,35"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="404,58,551,105"/>
+<area shape="rect" id="node9" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="415,128,540,157"/>
+<area shape="rect" id="node11" href="$arch_2i386_2paging_8c.html#ae126e0164806db2314e492003686d74a" title="paging_set_pd_iterator" alt="" coords="401,181,553,211"/>
+<area shape="rect" id="node13" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="443,235,512,264"/>
+<area shape="rect" id="node19" href="$physmm_8c.html#a1ec9ba9902179e6e6d877c58006d81c8" title="physmm_set_bit" alt="" coords="419,288,536,317"/>
+<area shape="rect" id="node23" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="404,341,551,371"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="kdbgmm_morecore" name="kdbgmm_morecore">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="187,5,341,35"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="391,69,540,99"/>
+<area shape="rect" id="node10" href="$kdbgmm_8h.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="589,101,781,131"/>
+<area shape="rect" id="node5" href="$kdbgmm_8h.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="412,5,519,35"/>
+</map>

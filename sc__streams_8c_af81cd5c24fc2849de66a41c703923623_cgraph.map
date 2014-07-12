@@ -1,0 +1,16 @@
+<map id="sys_pipe2" name="sys_pipe2">
+<area shape="rect" id="node3" href="$streams_8c.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="159,316,247,345"/>
+<area shape="rect" id="node33" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="137,579,268,608"/>
+<area shape="rect" id="node5" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="333,264,421,293"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="653,163,760,192"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="656,344,757,373"/>
+<area shape="rect" id="node11" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="485,163,605,192"/>
+<area shape="rect" id="node14" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="488,317,603,347"/>
+<area shape="rect" id="node18" href="$pipe_8c.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="340,368,415,397"/>
+<area shape="rect" id="node25" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="321,472,433,501"/>
+<area shape="rect" id="node27" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="320,525,435,555"/>
+<area shape="rect" id="node29" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="324,5,431,35"/>
+<area shape="rect" id="node31" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="328,59,427,88"/>
+<area shape="rect" id="node35" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="319,579,436,608"/>
+<area shape="rect" id="node37" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="341,632,413,661"/>
+</map>

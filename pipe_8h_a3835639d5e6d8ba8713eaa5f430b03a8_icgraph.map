@@ -1,0 +1,5 @@
+<map id="pipe_close_write" name="pipe_close_write">
+<area shape="rect" id="node3" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="173,32,283,61"/>
+<area shape="rect" id="node5" href="$streams_8h.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="331,5,472,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="357,59,445,88"/>
+</map>

@@ -162,7 +162,7 @@ var searchData=
   ['ata_5fwrite_5fdata',['ata_write_data',['../ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089',1,'ata.c']]],
   ['ata_5fwrite_5fport',['ata_write_port',['../ata_8c.html#a18994a0dfdb78195142b5044246aaad5',1,'ata_write_port(ata_device_t *device, uint16_t port, uint8_t value):&#160;ata.c'],['../ata_8h.html#a18994a0dfdb78195142b5044246aaad5',1,'ata_write_port(ata_device_t *device, uint16_t port, uint8_t value):&#160;ata.c']]],
   ['ata_5fwrite_5fport_5flong',['ata_write_port_long',['../ata_8c.html#a5f7b78dafa71534b24b101521a9b1479',1,'ata.c']]],
-  ['atime',['atime',['../structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2',1,'ext2_inode::atime()'],['../structinode.html#a5f5ad74887646b6c08e3ac7f858e8dd5',1,'inode::atime()'],['../ext2_8h.html#a351d4469a875fcf02d73fcfa176d1cc6',1,'atime():&#160;ext2.h']]],
+  ['atime',['atime',['../structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2',1,'ext2_inode::atime()'],['../structinode.html#a5f5ad74887646b6c08e3ac7f858e8dd5',1,'inode::atime()']]],
   ['attr',['attr',['../struct__vterm__cell__s.html#a4409674e1fda98e76beb4191f3eca278',1,'_vterm_cell_s']]],
   ['attrib',['attrib',['../structvgacon__vc__info.html#aa490d20d6510196567eb03c129835fa1',1,'vgacon_vc_info']]],
   ['attribute',['attribute',['../structvga__vterm__screen__character.html#a37d81b493c5873e3d09a58c90513f102',1,'vga_vterm_screen_character::attribute()'],['../structvgacon__screen__character.html#a4a1e92f2c6ef3040c18840fa90051e07',1,'vgacon_screen_character::attribute()']]]

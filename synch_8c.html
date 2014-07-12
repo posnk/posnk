@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('synch_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
@@ -126,7 +143,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="ata_8c_source.html#l00184">ata_initialize()</a>, <a class="el" href="blkdev_8c_source.html#l00029">device_block_register()</a>, <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="ata_8c_source.html#l00184">ata_initialize()</a>, <a class="el" href="blkdev_8c_source.html#l00029">device_block_register()</a>, <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -148,7 +165,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="process_8h_source.html#l00030">PROCESS_INTERRUPTED</a>, <a class="el" href="process_8h_source.html#l00025">PROCESS_RUNNING</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="scheduler_8c_source.html#l00208">scheduler_wait_on()</a>, and <a class="el" href="process_8h_source.html#l00123">process_info::state</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00681">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="ata_8c_source.html#l00322">ata_read()</a>, <a class="el" href="ata_8c_source.html#l00379">ata_write()</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="vfs_8c_source.html#l00714">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l00570">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l00812">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00395">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00681">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="ata_8c_source.html#l00322">ata_read()</a>, <a class="el" href="ata_8c_source.html#l00379">ata_write()</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="vfs_8c_source.html#l00738">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01543">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00969">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l00594">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l00836">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00419">vfs_write()</a>.</p>
 
 </div>
 </div>
@@ -237,16 +254,20 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="synch_8c_source.html#l00023">23</a> of file <a class="el" href="synch_8c_source.html">synch.c</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00681">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="ata_8c_source.html#l00184">ata_initialize()</a>, <a class="el" href="ata_8c_source.html#l00154">ata_irq_handler()</a>, <a class="el" href="ata_8c_source.html#l00322">ata_read()</a>, <a class="el" href="ata_8c_source.html#l00379">ata_write()</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="blkdev_8c_source.html#l00029">device_block_register()</a>, <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="pipe_8c_source.html#l00069">pipe_close_read()</a>, <a class="el" href="pipe_8c_source.html#l00077">pipe_close_write()</a>, <a class="el" href="pipe_8c_source.html#l00121">pipe_read()</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="process_8c_source.html#l00137">process_child_event()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="vfs_8c_source.html#l00714">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00570">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l00812">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00395">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00681">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="ata_8c_source.html#l00184">ata_initialize()</a>, <a class="el" href="ata_8c_source.html#l00154">ata_irq_handler()</a>, <a class="el" href="ata_8c_source.html#l00322">ata_read()</a>, <a class="el" href="ata_8c_source.html#l00379">ata_write()</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="blkdev_8c_source.html#l00029">device_block_register()</a>, <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="pipe_8c_source.html#l00069">pipe_close_read()</a>, <a class="el" href="pipe_8c_source.html#l00077">pipe_close_write()</a>, <a class="el" href="pipe_8c_source.html#l00121">pipe_read()</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="process_8c_source.html#l00137">process_child_event()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="vfs_8c_source.html#l00738">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01543">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00969">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00594">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l00836">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00419">vfs_write()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="synch_8c.html">synch.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

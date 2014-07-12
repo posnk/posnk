@@ -1,0 +1,5 @@
+<map id="clamp_cursor_to_bounds" name="clamp_cursor_to_bounds">
+<area shape="rect" id="node3" href="$vterm__csi_8h.html#a8cd9d06a0ba842a3ff15593c1777f3e4" title="interpret_csi_CUP" alt="" coords="223,5,351,35"/>
+<area shape="rect" id="node7" href="$vterm__csi_8h.html#ab62feb3f817c05162219356841c06c14" title="interpret_csi_CUx" alt="" coords="224,59,349,88"/>
+<area shape="rect" id="node5" href="$vterm__csi_8h.html#a7ecdab35fc55c574febf07a8205a93ab" title="vterm_interpret_csi" alt="" coords="400,32,533,61"/>
+</map>

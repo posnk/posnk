@@ -1,0 +1,4 @@
+<map id="ext2_mount" name="ext2_mount">
+<area shape="rect" id="node3" href="$vfs_8h.html#a61886b169216dc8c85945584536fbb1d" title="Mount a filesystem." alt="" coords="144,5,227,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a9d19cbcb64ed126b4ea42e53a5ceef52" title="sys_mount" alt="" coords="276,5,361,35"/>
+</map>

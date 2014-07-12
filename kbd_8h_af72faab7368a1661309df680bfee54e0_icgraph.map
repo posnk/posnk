@@ -1,0 +1,4 @@
+<map id="kb_toggle_modifier" name="kb_toggle_modifier">
+<area shape="rect" id="node3" href="$i8042_8h.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="184,5,248,35"/>
+<area shape="rect" id="node5" href="$kbd_8h.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="296,5,387,35"/>
+</map>

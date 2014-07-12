@@ -1,0 +1,6 @@
+<map id="vfs_symlink" name="vfs_symlink">
+<area shape="rect" id="node3" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="175,5,268,35"/>
+<area shape="rect" id="node7" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="148,59,295,88"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="361,5,447,35"/>
+<area shape="rect" id="node9" href="$tar_8h.html#ada2334eab3a4cd42b7ea2a267b2f0848" title="tar_extract_mem" alt="" coords="344,59,464,88"/>
+</map>

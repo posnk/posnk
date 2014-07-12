@@ -1,0 +1,41 @@
+<map id="strlen" name="strlen">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb" title="_sys_lstat" alt="" coords="749,126,832,155"/>
+<area shape="rect" id="node7" href="$sc__vfs_8c.html#ac8eacdc1865661833934e2efa705757b" title="_sys_readlink" alt="" coords="740,281,841,310"/>
+<area shape="rect" id="node11" href="$earlycon_8c.html#abe587789ba3aae2924fbda10dfade470" title="earlycon_ivprintf" alt="" coords="117,1117,235,1146"/>
+<area shape="rect" id="node15" href="$kdbgio_8h.html#addb5788bb9efd8e52fa6722a8c7ce473" title="kdbg_parsehex" alt="" coords="121,154,231,183"/>
+<area shape="rect" id="node19" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="740,937,841,966"/>
+<area shape="rect" id="node21" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="315,909,469,938"/>
+<area shape="rect" id="node24" href="$procvmm_8c.html#a397f5205b0e71a49ba2feb1f8f39fd9c" title="procvmm_mmap_copy_iterator" alt="" coords="292,1383,492,1413"/>
+<area shape="rect" id="node26" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="321,962,463,991"/>
+<area shape="rect" id="node31" href="$process_8h.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="109,1170,243,1199"/>
+<area shape="rect" id="node33" href="$string_8h.html#ab4e007a1b54e9246f95feba209999539" title="startswith" alt="" coords="353,287,431,317"/>
+<area shape="rect" id="node35" href="$string_8h.html#a6f3dcb20ff11ff9db5904c3cfb61a38c" title="strcmp" alt="" coords="361,493,423,522"/>
+<area shape="rect" id="node41" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="543,649,689,678"/>
+<area shape="rect" id="node43" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="560,729,672,758"/>
+<area shape="rect" id="node45" href="$string_8h.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="147,1013,205,1042"/>
+<area shape="rect" id="node62" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="349,754,435,783"/>
+<area shape="rect" id="node66" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="347,597,437,626"/>
+<area shape="rect" id="node69" href="$string_8h.html#a6666865e6caf66fd05d4b8bd6c074cd2" title="strncmp" alt="" coords="141,234,211,263"/>
+<area shape="rect" id="node77" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="556,303,676,333"/>
+<area shape="rect" id="node81" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="751,379,831,409"/>
+<area shape="rect" id="node83" href="$string_8h.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="147,597,205,626"/>
+<area shape="rect" id="node88" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="359,701,425,730"/>
+<area shape="rect" id="node100" href="$vgacon_8c.html#af06cd0588cd48a44da608445a8b5abb5" title="vgacon_parse_par" alt="" coords="112,1223,240,1253"/>
+<area shape="rect" id="node104" href="$vterm__write_8h.html#affb730f3596bf8fdc6f6611ffe84e35c" title="vterm_write_rxvt" alt="" coords="117,1277,235,1306"/>
+<area shape="rect" id="node106" href="$vterm__write_8h.html#a773b8b48952c2094d6825abfc86c64a5" title="vterm_write_vt100" alt="" coords="112,1330,240,1359"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9" title="sys_lstat" alt="" coords="901,126,976,155"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f" title="sys_readlink" alt="" coords="892,281,985,310"/>
+<area shape="rect" id="node13" href="$earlycon_8h.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="332,1437,452,1466"/>
+<area shape="rect" id="node17" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="351,127,433,157"/>
+<area shape="rect" id="node28" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="583,962,649,991"/>
+<area shape="rect" id="node37" href="$ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2" title="ext2_finddir" alt="" coords="572,431,660,461"/>
+<area shape="rect" id="node39" href="$ramfs_8c.html#a20926ba3f668bd07c3034f4f8f32bc9b" title="ramfs_dirent_search\l_iterator" alt="" coords="547,484,685,531"/>
+<area shape="rect" id="node47" href="$init_8c.html#a2a80886e68b6c660514ae204bf594747" title="i386_idle_task" alt="" coords="340,1223,444,1253"/>
+<area shape="rect" id="node49" href="$ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a" title="ext2_e2tovfs_inode" alt="" coords="325,1277,459,1306"/>
+<area shape="rect" id="node51" href="$ramfs_8c.html#ac00e9b7316f12b39e02fb32526be062d" title="ramfs_link" alt="" coords="351,1330,433,1359"/>
+<area shape="rect" id="node58" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="341,1066,443,1095"/>
+<area shape="rect" id="node60" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="339,1119,445,1149"/>
+<area shape="rect" id="node73" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="323,181,461,210"/>
+<area shape="rect" id="node75" href="$vfs_8h.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="344,234,440,263"/>
+<area shape="rect" id="node102" href="$vgacon_8c.html#ae359bd608bac2333abb821c8c769af13" title="vgacon_handle_escape" alt="" coords="313,1490,471,1519"/>
+</map>

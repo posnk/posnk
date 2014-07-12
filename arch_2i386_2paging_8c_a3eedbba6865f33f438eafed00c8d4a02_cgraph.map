@@ -1,0 +1,8 @@
+<map id="paging_map" name="paging_map">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="161,5,287,35"/>
+<area shape="rect" id="node5" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="189,59,259,88"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="151,111,297,158"/>
+<area shape="rect" id="node9" href="$arch_2i386_2paging_8c.html#ae126e0164806db2314e492003686d74a" title="paging_set_pd_iterator" alt="" coords="148,181,300,211"/>
+<area shape="rect" id="node11" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="151,235,297,264"/>
+<area shape="rect" id="node13" href="$physmm_8c.html#a84c06c0742d5eeef6ad6c6201483b0ef" title="physmm_clear_bit" alt="" coords="349,235,477,264"/>
+</map>

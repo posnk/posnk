@@ -1,0 +1,16 @@
+<map id="arch/i386/isr.c" name="arch/i386/isr.c">
+<area shape="rect" id="node5" href="$include_2arch_2i386_2pic_8h.html" title="arch/i386/pic.h" alt="" coords="5,315,112,344"/>
+<area shape="rect" id="node8" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="136,315,245,344"/>
+<area shape="rect" id="node11" href="$exception_8h.html" title="kernel/exception.h" alt="" coords="976,237,1104,267"/>
+<area shape="rect" id="node15" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="1079,83,1199,112"/>
+<area shape="rect" id="node20" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="741,237,851,267"/>
+<area shape="rect" id="node27" href="$system_8h.html" title="kernel/system.h" alt="" coords="1273,83,1388,112"/>
+<area shape="rect" id="node29" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="412,83,524,112"/>
+<area shape="rect" id="node33" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="649,160,777,189"/>
+<area shape="rect" id="node38" href="$time_8h.html" title="kernel/time.h" alt="" coords="571,237,667,267"/>
+<area shape="rect" id="node47" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="451,160,568,189"/>
+<area shape="rect" id="node52" href="$debug_8h.html" title="util/debug.h" alt="" coords="1271,160,1359,189"/>
+<area shape="rect" id="node22" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="733,315,856,344"/>
+<area shape="rect" id="node43" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="371,315,507,344"/>
+<area shape="rect" id="node41" href="$llist_8h.html" title="util/llist.h" alt="" coords="472,237,547,267"/>
+</map>

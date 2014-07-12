@@ -1,0 +1,9 @@
+<map id="scheduler_exsig" name="scheduler_exsig">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="201,5,303,35"/>
+<area shape="rect" id="node7" href="$task__switch_8c.html#a31a3357b9fda6545b9eb122d16df98f5" title="i386_do_context_switch" alt="" coords="171,59,333,88"/>
+<area shape="rect" id="node9" href="$fpu_8c.html#a36cc162794be71646eff33f8b8c88a85" title="i386_fpu_on_cs" alt="" coords="196,112,308,141"/>
+<area shape="rect" id="node13" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="216,165,288,195"/>
+<area shape="rect" id="node15" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="183,218,321,265"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="383,5,532,35"/>
+<area shape="rect" id="node11" href="$fpu_8c.html#a4aeac13678754fcd080191d6cbfcb559" title="i386_disable_fpu" alt="" coords="399,112,516,141"/>
+</map>

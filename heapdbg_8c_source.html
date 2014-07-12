@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('heapdbg_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_e84ea528bf4fd33c6de99fa4f4e2c416.html">kdbg</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">heapdbg.c</div>  </div>
@@ -122,21 +139,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="comment">//heapdbg_up = 1;</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="code" href="dbgapi_8h.html#a8529720051a8962f217fd321f10aee19">   34</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapdbg_8c.html#a8529720051a8962f217fd321f10aee19">dbgapi_register_memuse</a>(<span class="keywordtype">void</span> *addr, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>)</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="code" href="dbgapi_8h.html#a8529720051a8962f217fd321f10aee19">   34</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapdbg_8c.html#a8529720051a8962f217fd321f10aee19">dbgapi_register_memuse</a>(<span class="keywordtype">void</span> *addr, <span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="comment">//kdbg_printf(&quot;A|%x|%x\n&quot;,addr,size);</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="heapdbg_8c.html#a573e2a2a8f7f206b3192e7366cf3aede">heapdbg_up</a>)</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a> *use = <a class="code" href="kdbgmm_8c.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller.">kdbgmm_alloc</a>(<span class="keyword">sizeof</span>(<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a>));</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        use-&gt;<a class="code" href="structkdbg__heap__use.html#a4e3d9cf257b4bfa4ddb28b369027a792">start</a> = (uintptr_t) addr;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        use-&gt;<a class="code" href="structkdbg__heap__use.html#a9080075b2c0358f02c29562ace327cd3">size</a> = <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        use-&gt;<a class="code" href="structkdbg__heap__use.html#a9080075b2c0358f02c29562ace327cd3">size</a> = size;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        use-&gt;<a class="code" href="structkdbg__heap__use.html#a560f15bb7aa7495cdaabdd97a4f76570">calltrace</a> = <a class="code" href="stacktrc_8c.html#a5a8efcfa83e2202f34400caacacb34e4" title="kdbg/stacktrc.c">kdbg_do_calltrace</a>();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="comment">//kdbg_p_calltrace();</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <a class="code" href="llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list.">llist_add_end</a>(&amp;kdbg_heap_use_list, (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *) use);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
 <div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="heapdbg_8c.html#a976b7b1d1449498f6a22c812fe432587">   47</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapdbg_8c.html#a976b7b1d1449498f6a22c812fe432587">kdbg_find_bf_iterator</a>(<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (((<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a> *)node)-&gt;start + ((<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a> *)node)-&gt;<a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>) == (uintptr_t) param;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> (((<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a> *)node)-&gt;start + ((<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a> *)node)-&gt;size) == (uintptr_t) param;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="heapdbg_8c.html#aa5dc9862ae0cb8294b9da6cbd663e861">   51</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapdbg_8c.html#aa5dc9862ae0cb8294b9da6cbd663e861">kdbg_find_in_iterator</a>(<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param) {</div>
@@ -168,7 +185,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="stacktrc_8c.html#a3298b39df155f9cff67cd0c56f3a7f8f">kdbg_print_calltrace</a>(use-&gt;<a class="code" href="structkdbg__heap__use.html#a560f15bb7aa7495cdaabdd97a4f76570">calltrace</a>);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="dbgapi_8h.html#a750537b522279461626df8b76279428d">   80</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapdbg_8c.html#a750537b522279461626df8b76279428d">dbgapi_unreg_memuse</a>(<span class="keywordtype">void</span> *addr, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>)</div>
+<div class="line"><a name="l00080"></a><span class="lineno"><a class="code" href="dbgapi_8h.html#a750537b522279461626df8b76279428d">   80</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapdbg_8c.html#a750537b522279461626df8b76279428d">dbgapi_unreg_memuse</a>(<span class="keywordtype">void</span> *addr, <span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;{</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">//kdbg_printf(&quot;F|%x|%x\n&quot;,addr,size);</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        </div>
@@ -188,11 +205,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="kdbgmm_8c.html#aa9bcfa313457de4f5d44bdb29e48167b" title="Releases a block of memory so it can be reallocated.">kdbgmm_free</a>(use, <span class="keyword">sizeof</span>(<a class="code" href="structkdbg__heap__use.html">kdbg_heap_use_t</a>));</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_e84ea528bf4fd33c6de99fa4f4e2c416.html">kdbg</a></li><li class="navelem"><a class="el" href="heapdbg_8c.html">heapdbg.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

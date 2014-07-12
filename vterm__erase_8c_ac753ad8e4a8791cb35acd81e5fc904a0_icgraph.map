@@ -1,0 +1,8 @@
+<map id="vterm_erase_row" name="vterm_erase_row">
+<area shape="rect" id="node3" href="$vterm_8h.html#ae51927ae3458e70141d8ae8ea2b2e518" title="vterm_erase_rows" alt="" coords="177,5,305,35"/>
+<area shape="rect" id="node5" href="$vterm_8h.html#ab07c6f12ecf530effcba746a607c505b" title="vterm_scroll_down" alt="" coords="176,59,307,88"/>
+<area shape="rect" id="node12" href="$vterm_8h.html#af5e7894e851255700239dd5f8be837b5" title="vterm_scroll_up" alt="" coords="184,112,299,141"/>
+<area shape="rect" id="node7" href="$vterm__render_8h.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="383,8,495,37"/>
+<area shape="rect" id="node9" href="$vterm__render_8h.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="571,35,725,64"/>
+<area shape="rect" id="node14" href="$vterm__render_8h.html#aeb267663cdbef3402fccf07a0d3b8ac6" title="try_interpret_escape_seq" alt="" coords="355,112,523,141"/>
+</map>

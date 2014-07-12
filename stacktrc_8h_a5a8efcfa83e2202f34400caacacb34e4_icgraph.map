@@ -1,0 +1,6 @@
+<map id="kdbg_do_calltrace" name="kdbg_do_calltrace">
+<area shape="rect" id="node3" href="$dbgapi_8h.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="183,55,348,84"/>
+<area shape="rect" id="node5" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="800,29,957,59"/>
+<area shape="rect" id="node8" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="397,55,552,84"/>
+<area shape="rect" id="node10" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="601,55,751,84"/>
+</map>

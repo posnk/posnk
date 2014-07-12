@@ -1,0 +1,5 @@
+<map id="interrupt_register_handler" name="interrupt_register_handler">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="175,5,268,35"/>
+<area shape="rect" id="node7" href="$kbd_8h.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="176,59,267,88"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="319,5,420,35"/>
+</map>

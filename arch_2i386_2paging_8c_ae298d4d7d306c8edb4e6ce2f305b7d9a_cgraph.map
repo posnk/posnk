@@ -1,0 +1,5 @@
+<map id="i386_alloc_page" name="i386_alloc_page">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a7c0a917d74eb74aa01007d83165dbfcb" title="Allocates a new page of heap space to the caller." alt="" coords="171,5,312,35"/>
+<area shape="rect" id="node7" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="168,59,315,88"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="363,5,555,35"/>
+</map>

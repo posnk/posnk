@@ -1,0 +1,8 @@
+<map id="ramfs_unlink" name="ramfs_unlink">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="169,5,271,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="540,32,665,61"/>
+<area shape="rect" id="node10" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="179,109,261,139"/>
+<area shape="rect" id="node12" href="$ramfs_8c.html#a20926ba3f668bd07c3034f4f8f32bc9b" title="ramfs_dirent_search\l_iterator" alt="" coords="151,162,289,209"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="340,5,489,35"/>
+<area shape="rect" id="node14" href="$string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c" title="strcmp" alt="" coords="384,171,445,200"/>
+</map>

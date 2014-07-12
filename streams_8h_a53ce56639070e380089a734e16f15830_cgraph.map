@@ -1,0 +1,13 @@
+<map id="_sys_close" name="_sys_close">
+<area shape="rect" id="node3" href="$streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="141,245,251,275"/>
+<area shape="rect" id="node5" href="$streams_8c.html#a3d159f64d97eb54699c85af7255727ca" title="stream_get_ptr_o" alt="" coords="305,5,428,35"/>
+<area shape="rect" id="node7" href="$chardev_8c.html#aaca0c578be4dc636f3164c9f9480a136" title="device_char_close" alt="" coords="301,59,432,88"/>
+<area shape="rect" id="node9" href="$blkdev_8c.html#a6dbb95e6c08c67610a971fa9c5ba4cbf" title="device_block_close" alt="" coords="299,112,435,141"/>
+<area shape="rect" id="node11" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="325,165,408,195"/>
+<area shape="rect" id="node13" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="305,219,428,248"/>
+<area shape="rect" id="node15" href="$pipe_8c.html#a4f51f162d223e63b17814bda844ad733" title="pipe_close_read" alt="" coords="309,272,424,301"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="483,324,589,353"/>
+<area shape="rect" id="node19" href="$pipe_8c.html#a3835639d5e6d8ba8713eaa5f430b03a8" title="pipe_close_write" alt="" coords="308,376,425,405"/>
+<area shape="rect" id="node22" href="$pipe_8c.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="329,429,404,459"/>
+<area shape="rect" id="node24" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="485,455,587,484"/>
+</map>

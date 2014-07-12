@@ -1,0 +1,11 @@
+<map id="scheduler_init" name="scheduler_init">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="325,45,432,74"/>
+<area shape="rect" id="node7" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="683,20,752,49"/>
+<area shape="rect" id="node9" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="168,96,267,125"/>
+<area shape="rect" id="node11" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="175,149,260,178"/>
+<area shape="rect" id="node14" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="157,202,277,232"/>
+<area shape="rect" id="node17" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="188,256,247,285"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="480,45,635,74"/>
+<area shape="rect" id="node19" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="343,229,415,258"/>
+<area shape="rect" id="node21" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="352,282,405,312"/>
+</map>

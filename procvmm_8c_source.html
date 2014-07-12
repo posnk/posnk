@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('procvmm_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">procvmm.c</div>  </div>
@@ -119,11 +136,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf">procvmm_mmap_anon</a>(<a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a74e113cd394998f71617f6e777824816">stack_top</a>, 0x7FEFFF, <a class="code" href="process_8h.html#a7f32d60d73995f3e04345a5c08a0e71e">PROCESS_MMAP_FLAG_WRITE</a> | <a class="code" href="process_8h.html#a3f6f9f1b77401c5c937ac338f95a25fe">PROCESS_MMAP_FLAG_STACK</a>, <span class="stringliteral">&quot;(stack)&quot;</span>);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="process_8h.html#a4b9b5c430a1ac8999454d045b38997ed">   41</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed">procvmm_check</a>(<span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="process_8h.html#a4b9b5c430a1ac8999454d045b38997ed">   41</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed">procvmm_check</a>(<span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> size) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        uintptr_t p = ((uintptr_t)dest) &amp; ~<a class="code" href="physmm_8h.html#aad10c60f6933607c737c256616a9f1fc">PHYSMM_PAGE_ADDRESS_MASK</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a4085c39065aff93896306515a2dbd8ed">pid</a> == 0)</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">for</span> (; p &lt; <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>; p += <a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">for</span> (; p &lt; size; p += <a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc">procvmm_get_memory_region</a>((<span class="keywordtype">void</span> *) p))</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> 1;</div>
@@ -206,7 +223,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf">  134</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf">procvmm_mmap_anon</a>(<span class="keywordtype">void</span> *start, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>, <span class="keywordtype">int</span> <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>, <span class="keywordtype">char</span> *<a class="code" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">name</a>)</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf">  134</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf">procvmm_mmap_anon</a>(<span class="keywordtype">void</span> *start, <span class="keywordtype">size_t</span> size, <span class="keywordtype">int</span> flags, <span class="keywordtype">char</span> *name)</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <a class="code" href="structprocess__mmap.html">process_mmap_t</a> *region;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        uintptr_t in_page = ((uintptr_t) start) &amp; <a class="code" href="physmm_8h.html#aad10c60f6933607c737c256616a9f1fc">PHYSMM_PAGE_ADDRESS_MASK</a>;</div>
@@ -225,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a> = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<a class="code" href="string_8c.html#a008e171a518fe0e0352f31b245e03875">strlen</a>(name)+1);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="string_8c.html#ac137d536ff0037b3856083cb8a1c19a7">strcpy</a>(region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a>, name);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aff5e2bd0765d4eccc9496b9973001c84">start</a> = start;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a> = <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a> = size;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a> = flags &amp; ~<a class="code" href="process_8h.html#ad89c4d335e1fd745c0d750fbcbe1ed40">PROCESS_MMAP_FLAG_FILE</a>;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(<a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a729d1c545dcca0ff2cc6fab1d5450175">memory_map</a>, &amp;<a class="code" href="procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address.">procvmm_collcheck_iterator</a>, (<span class="keywordtype">void</span> *) region)) {</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a>, <a class="code" href="string_8c.html#a008e171a518fe0e0352f31b245e03875">strlen</a>(name)+1);</div>
@@ -236,7 +253,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="code" href="process_8h.html#ab44f291fdbd477cce04bcaeaf371e841">  164</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#ab44f291fdbd477cce04bcaeaf371e841">procvmm_mmap_file</a>(<span class="keywordtype">void</span> *start, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>, <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a>* file, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> offset, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> file_sz, <span class="keywordtype">int</span> <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>, <span class="keywordtype">char</span> *<a class="code" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">name</a>)</div>
+<div class="line"><a name="l00164"></a><span class="lineno"><a class="code" href="process_8h.html#ab44f291fdbd477cce04bcaeaf371e841">  164</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#ab44f291fdbd477cce04bcaeaf371e841">procvmm_mmap_file</a>(<span class="keywordtype">void</span> *start, <span class="keywordtype">size_t</span> size, <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a>* file, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> offset, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> file_sz, <span class="keywordtype">int</span> flags, <span class="keywordtype">char</span> *name)</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        uintptr_t in_page;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <a class="code" href="structprocess__mmap.html">process_mmap_t</a> *region = <a class="code" href="procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc">procvmm_get_memory_region</a>(start);</div>
@@ -261,7 +278,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a> = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<a class="code" href="string_8c.html#a008e171a518fe0e0352f31b245e03875">strlen</a>(name)+1);</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="string_8c.html#ac137d536ff0037b3856083cb8a1c19a7">strcpy</a>(region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a>, name);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aff5e2bd0765d4eccc9496b9973001c84">start</a> = start;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a> = <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a> = size;</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a> = file;</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#af861d8f0730bda0cf50948dc50fc3988">offset</a> = offset;</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        region-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a> = flags | <a class="code" href="process_8h.html#ad89c4d335e1fd745c0d750fbcbe1ed40">PROCESS_MMAP_FLAG_FILE</a>;</div>
@@ -298,7 +315,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;</div>
 <div class="line"><a name="l00224"></a><span class="lineno"><a class="code" href="process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a">  224</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="procvmm_8c.html#a7e9e5731a4b5aa019c0d27c53d20654a">procvmm_handle_fault</a>(<span class="keywordtype">void</span> *address)</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;{<span class="comment">//TODO: Implement public mappings</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <a class="code" href="kernel_2paging_8h.html#a65b63a13c7c3240b83384b0fac2141c0" title="kernel/paging.h">page_flags_t</a> <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a> = <a class="code" href="kernel_2paging_8h.html#a1c5beed0c42f8f8555ba9e43e9af99f1">PAGING_PAGE_FLAG_USER</a>;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <a class="code" href="kernel_2paging_8h.html#a65b63a13c7c3240b83384b0fac2141c0" title="kernel/paging.h">page_flags_t</a> flags = <a class="code" href="kernel_2paging_8h.html#a1c5beed0c42f8f8555ba9e43e9af99f1">PAGING_PAGE_FLAG_USER</a>;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        uintptr_t in_region;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> file_off;</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordtype">size_t</span> read_size = <a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>;</div>
@@ -327,7 +344,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;                <span class="keywordflow">if</span> ((in_region &lt; (uintptr_t) region-&gt;<a class="code" href="structprocess__mmap.html#a5f630c09437619875ff2821b4c53f5b9">file_sz</a>) &amp;&amp; (file_off &lt; region-&gt;file-&gt;size)) {</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;                        <span class="keywordflow">if</span> ((in_region + read_size) &gt; (uintptr_t) region-&gt;<a class="code" href="structprocess__mmap.html#a5f630c09437619875ff2821b4c53f5b9">file_sz</a>)</div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;                                read_size = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) (region-&gt;<a class="code" href="structprocess__mmap.html#a5f630c09437619875ff2821b4c53f5b9">file_sz</a> - in_region);</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                        status = <a class="code" href="vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file.">vfs_read</a>(region-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>, file_off, address, read_size, &amp;rd_count, 0);</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;                        status = <a class="code" href="group__vfs.html#ga3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file.">vfs_read</a>(region-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>, file_off, address, read_size, &amp;rd_count, 0);</div>
 <div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;                        <span class="keywordflow">if</span> (status) {</div>
 <div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;                                <a class="code" href="arch_2i386_2paging_8c.html#a338d2f1e4c26f2a29bcb4f675d9e31a7">paging_unmap</a>(address);</div>
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;                                <a class="code" href="physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again.">physmm_free_frame</a>(frame);</div>
@@ -344,11 +361,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        </div>
 <div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="procvmm_8c.html">procvmm.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

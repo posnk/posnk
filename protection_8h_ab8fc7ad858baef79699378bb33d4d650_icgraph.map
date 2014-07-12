@@ -1,0 +1,6 @@
+<map id="i386_protection_user_call" name="i386_protection_user_call">
+<area shape="rect" id="node3" href="$process_8h.html#ae550710d29c59b9382f60c09cf5dc350" title="process_user_call" alt="" coords="244,5,369,35"/>
+<area shape="rect" id="node7" href="$scheduler_8h.html#a413ca2fd9749f8037c2cd560665a0d20" title="scheduler_invoke_signal\l_handler" alt="" coords="225,58,388,105"/>
+<area shape="rect" id="node5" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="468,5,569,35"/>
+<area shape="rect" id="node9" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="439,67,599,96"/>
+</map>

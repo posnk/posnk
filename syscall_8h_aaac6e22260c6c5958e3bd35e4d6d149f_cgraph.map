@@ -1,0 +1,12 @@
+<map id="sys_readlink" name="sys_readlink">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#ac8eacdc1865661833934e2efa705757b" title="_sys_readlink" alt="" coords="165,83,267,112"/>
+<area shape="rect" id="node12" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="151,216,281,245"/>
+<area shape="rect" id="node18" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="151,163,281,192"/>
+<area shape="rect" id="node22" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="163,269,269,299"/>
+<area shape="rect" id="node24" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="165,323,267,352"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="331,5,451,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="500,32,553,61"/>
+<area shape="rect" id="node9" href="$string_8c.html#a47d54f24198df56da51078a6c540b9ed" title="strncpy" alt="" coords="359,109,423,139"/>
+<area shape="rect" id="node14" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="332,216,449,245"/>
+<area shape="rect" id="node16" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="355,163,427,192"/>
+</map>

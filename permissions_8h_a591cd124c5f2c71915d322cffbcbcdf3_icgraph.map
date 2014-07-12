@@ -1,0 +1,23 @@
+<map id="get_perm_class" name="get_perm_class">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47" title="_sys_chmod" alt="" coords="205,5,301,35"/>
+<area shape="rect" id="node7" href="$sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0" title="_sys_chown" alt="" coords="207,59,300,88"/>
+<area shape="rect" id="node11" href="$streams_8h.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd" title="_sys_fchmod" alt="" coords="204,112,303,141"/>
+<area shape="rect" id="node15" href="$streams_8h.html#a9e340ed6aa36497a4150f75b9c0c193f" title="_sys_fchown" alt="" coords="204,165,303,195"/>
+<area shape="rect" id="node19" href="$process_8c.html#a45b5eb748b9e8e41b113a72011348e33" title="Iterator function that signals up processes with the given pgid." alt="" coords="168,219,339,248"/>
+<area shape="rect" id="node23" href="$sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686" title="sys_kill" alt="" coords="589,245,656,275"/>
+<area shape="rect" id="node26" href="$vfs_8h.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="177,507,329,536"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#aa029b9e6ea949765f08203e68e66a7a9" title="sys_chmod" alt="" coords="420,5,508,35"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#aabe150ad1d04c50d94110778087b5cc9" title="sys_chown" alt="" coords="420,59,508,88"/>
+<area shape="rect" id="node13" href="$sc__streams_8c.html#afcfd63de3881411624bea5aab0fcc8b3" title="sys_fchmod" alt="" coords="417,112,511,141"/>
+<area shape="rect" id="node17" href="$sc__streams_8c.html#a1c67be71e54c3204a71c9405b658880c" title="sys_fchown" alt="" coords="419,165,509,195"/>
+<area shape="rect" id="node21" href="$process_8h.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="387,219,541,248"/>
+<area shape="rect" id="node28" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="589,349,656,379"/>
+<area shape="rect" id="node30" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="427,373,501,403"/>
+<area shape="rect" id="node32" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="428,427,500,456"/>
+<area shape="rect" id="node35" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="416,480,512,509"/>
+<area shape="rect" id="node37" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="417,533,511,563"/>
+<area shape="rect" id="node39" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="421,587,507,616"/>
+<area shape="rect" id="node41" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="419,640,509,669"/>
+<area shape="rect" id="node43" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="424,693,504,723"/>
+<area shape="rect" id="node45" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="431,747,497,776"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ramfs_read_inode" name="ramfs_read_inode">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="185,5,311,35"/>
+<area shape="rect" id="node5" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="212,59,284,88"/>
+<area shape="rect" id="node7" href="$ramfs_8c.html#a2e5f1372fc44e9a21cd7825bac207161" title="ramfs_block_search\l_iterator" alt="" coords="179,111,317,158"/>
+</map>

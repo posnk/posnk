@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -66,12 +73,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('files.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -246,7 +267,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr id="row_4_5_21_" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="tar_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="tar_8h.html" target="_self">tar.h</a></td><td class="desc"></td></tr>
 <tr id="row_4_5_22_" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="time_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="time_8h.html" target="_self">time.h</a></td><td class="desc"></td></tr>
 <tr id="row_4_5_23_" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="tty_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="tty_8h.html" target="_self">tty.h</a></td><td class="desc"></td></tr>
-<tr id="row_4_5_24_" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="vfs_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="vfs_8h.html" target="_self">vfs.h</a></td><td class="desc"></td></tr>
+<tr id="row_4_5_24_" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="vfs_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="vfs_8h.html" target="_self">vfs.h</a></td><td class="desc">Exposes the VFS API</td></tr>
 <tr id="row_4_6_"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img id="arr_4_6_" src="ftv2pnode.png" alt="o" width="16" height="22" onclick="toggleFolder('4_6_')"/><img id="img_4_6_" src="ftv2folderclosed.png" alt="+" width="24" height="22" onclick="toggleFolder('4_6_')"/><a class="el" href="dir_84153ef5dc500c55ad1a0fb9c379d2a0.html" target="_self">util</a></td><td class="desc"></td></tr>
 <tr id="row_4_6_0_" class="even" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="debug_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="debug_8h.html" target="_self">debug.h</a></td><td class="desc"></td></tr>
 <tr id="row_4_6_1_" class="even" style="display:none;"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="llist_8h_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="llist_8h.html" target="_self">llist.h</a></td><td class="desc"></td></tr>
@@ -286,18 +307,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr id="row_6_25_"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="tar_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="tar_8c.html" target="_self">tar.c</a></td><td class="desc"></td></tr>
 <tr id="row_6_26_" class="even"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="time_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="time_8c.html" target="_self">time.c</a></td><td class="desc"></td></tr>
 <tr id="row_6_27_"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2node.png" alt="o" width="16" height="22" /><a href="tty_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="tty_8c.html" target="_self">tty.c</a></td><td class="desc"></td></tr>
-<tr id="row_6_28_" class="even"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="vfs_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="vfs_8c.html" target="_self">vfs.c</a></td><td class="desc">Part of P-OS kernel</td></tr>
+<tr id="row_6_28_" class="even"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="vfs_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="vfs_8c.html" target="_self">vfs.c</a></td><td class="desc">Implements the virtual filesystem layer</td></tr>
 <tr id="row_7_"><td class="entry"><img id="arr_7_" src="ftv2mnode.png" alt="o" width="16" height="22" onclick="toggleFolder('7_')"/><img id="img_7_" src="ftv2folderopen.png" alt="-" width="24" height="22" onclick="toggleFolder('7_')"/><a class="el" href="dir_e04f3e0fbe77f5d77543cff8f9f932f8.html" target="_self">util</a></td><td class="desc"></td></tr>
 <tr id="row_7_0_" class="even"><td class="entry"><img src="ftv2vertline.png" alt="|" width="16" height="22" /><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="llist_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="llist_8c.html" target="_self">llist.c</a></td><td class="desc"></td></tr>
 <tr id="row_8_"><td class="entry"><img src="ftv2lastnode.png" alt="\" width="16" height="22" /><a href="doxymain_8c_source.html"><img src="ftv2doc.png" alt="*" width="24" height="22" /></a><a class="el" href="doxymain_8c.html" target="_self">doxymain.c</a></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,23 @@
+<map id="include/crt/sys/errno.h" name="include/crt/sys/errno.h">
+<area shape="rect" id="node3" href="$blkcache_8c.html" title="kernel/blkcache.c" alt="" coords="5,83,128,112"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html" title="kernel/blkdev.c" alt="" coords="152,83,261,112"/>
+<area shape="rect" id="node7" href="$chardev_8c.html" title="kernel/chardev.c" alt="" coords="285,83,403,112"/>
+<area shape="rect" id="node9" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="427,83,547,112"/>
+<area shape="rect" id="node11" href="$pipe_8c.html" title="kernel/pipe.c" alt="" coords="571,83,667,112"/>
+<area shape="rect" id="node13" href="$process_8c.html" title="kernel/process.c" alt="" coords="691,83,808,112"/>
+<area shape="rect" id="node15" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="832,83,957,112"/>
+<area shape="rect" id="node17" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="981,83,1104,112"/>
+<area shape="rect" id="node19" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="1128,83,1267,112"/>
+<area shape="rect" id="node21" href="$sc__signals_8c.html" title="kernel/sc_signals.c" alt="" coords="1291,83,1424,112"/>
+<area shape="rect" id="node23" href="$sc__streams_8c.html" title="kernel/sc_streams.c" alt="" coords="1448,83,1587,112"/>
+<area shape="rect" id="node25" href="$sc__time_8c.html" title="kernel/sc_time.c" alt="" coords="1611,83,1728,112"/>
+<area shape="rect" id="node27" href="$sc__vfs_8c.html" title="kernel/sc_vfs.c" alt="" coords="1752,83,1861,112"/>
+<area shape="rect" id="node29" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="1885,83,2003,112"/>
+<area shape="rect" id="node31" href="$tar_8c.html" title="kernel/tar.c" alt="" coords="2027,83,2112,112"/>
+<area shape="rect" id="node33" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="2136,83,2221,112"/>
+<area shape="rect" id="node35" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="2245,83,2336,112"/>
+<area shape="rect" id="node37" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="2360,83,2432,112"/>
+<area shape="rect" id="node39" href="$ramfs_8c.html" title="fs/ramfs.c" alt="" coords="2456,83,2536,112"/>
+<area shape="rect" id="node41" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="2560,83,2709,112"/>
+<area shape="rect" id="node43" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="2733,83,2840,112"/>
+</map>

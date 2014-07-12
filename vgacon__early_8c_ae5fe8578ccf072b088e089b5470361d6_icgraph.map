@@ -1,0 +1,8 @@
+<map id="earlycon_aputs" name="earlycon_aputs">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a0cc80a37a9c074ead277042523d9eb86" title="earlycon_aprintf" alt="" coords="185,5,300,35"/>
+<area shape="rect" id="node5" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="165,59,320,88"/>
+<area shape="rect" id="node7" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="549,7,648,36"/>
+<area shape="rect" id="node9" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="383,32,487,61"/>
+<area shape="rect" id="node12" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="368,85,501,115"/>
+<area shape="rect" id="node14" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="368,139,501,168"/>
+</map>

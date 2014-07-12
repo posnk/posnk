@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -86,7 +93,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_0x67.html#index_g"><span>g</span></a></li>
       <li><a href="globals_0x68.html#index_h"><span>h</span></a></li>
       <li><a href="globals_0x69.html#index_i"><span>i</span></a></li>
-      <li><a href="globals_0x6a.html#index_j"><span>j</span></a></li>
       <li><a href="globals_0x6b.html#index_k"><span>k</span></a></li>
       <li><a href="globals_0x6c.html#index_l"><span>l</span></a></li>
       <li><a href="globals_0x6d.html#index_m"><span>m</span></a></li>
@@ -103,12 +109,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_0x74.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -311,8 +331,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="ctype_8h.html#adda03014c30b02d7b496fce96f37951b">ctype.h</a>
 </li>
 <li>TRUE
-: <a class="el" href="glib_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">glib.h</a>
-, <a class="el" href="heapmm_8c.html#aa8cecfc5c5c054d2875c03e77b7be15d">heapmm.c</a>
+: <a class="el" href="heapmm_8c.html#aa8cecfc5c5c054d2875c03e77b7be15d">heapmm.c</a>
+, <a class="el" href="glib_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">glib.h</a>
 , <a class="el" href="kdbgmm_8c.html#aa8cecfc5c5c054d2875c03e77b7be15d">kdbgmm.c</a>
 </li>
 <li>try_interpret_escape_seq()
@@ -327,7 +347,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74">tty.c</a>
 </li>
 <li>tty_close()
-: <a class="el" href="tty_8c.html#af011bf9f6db234c81150f165d8d2a590">tty.c</a>
+: <a class="el" href="tty_8c.html#a3918933914550c157c29424750aeb045">tty.c</a>
 </li>
 <li>tty_flush_line_buffer()
 : <a class="el" href="tty_8c.html#a890d88589585c3f34e4fdca210087d05">tty.c</a>
@@ -343,17 +363,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="tty_8c.html#a3bf9faf77dd76addc6deac2722b097e2">tty.c</a>
 </li>
 <li>tty_input_char()
-: <a class="el" href="tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty.h</a>
-, <a class="el" href="tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty.c</a>
+: <a class="el" href="tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty.c</a>
+, <a class="el" href="tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty.h</a>
 </li>
 <li>tty_ioctl()
-: <a class="el" href="tty_8c.html#a41c315ed12e65d1a4be58f291d7181de">tty.c</a>
+: <a class="el" href="tty_8c.html#aeb54be231efa53ed345f67fad6ccfdff">tty.c</a>
 </li>
 <li>tty_list
 : <a class="el" href="tty_8c.html#ae8d4a378168df61bd18d69f0dac0fc1b">tty.c</a>
 </li>
 <li>tty_open()
-: <a class="el" href="tty_8c.html#a81c9dc3480ed122aacfe00711228d42b">tty.c</a>
+: <a class="el" href="tty_8c.html#a1ce865d2795797c6595e97ac7bc373af">tty.c</a>
 </li>
 <li>tty_operations
 : <a class="el" href="tty_8c.html#a221508ec8f71512d60e1e4fd53e4fe69">tty.c</a>
@@ -368,14 +388,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1">tty.c</a>
 </li>
 <li>tty_register_driver()
-: <a class="el" href="tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab">tty.h</a>
-, <a class="el" href="tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640">tty.c</a>
+: <a class="el" href="tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640">tty.c</a>
+, <a class="el" href="tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab">tty.h</a>
 </li>
 <li>tty_reset_termios()
 : <a class="el" href="tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b">tty.c</a>
 </li>
 <li>tty_write()
-: <a class="el" href="tty_8c.html#a006a76f172143fdb170deacb1ea2fef3">tty.c</a>
+: <a class="el" href="tty_8c.html#a86f3d48cfb5841cbb0e6bcf4a9f42899">tty.c</a>
 </li>
 <li>tty_write_out_t
 : <a class="el" href="tty_8h.html#af045377e1be324b395b583429d9976e2">tty.h</a>
@@ -386,16 +406,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>TVERSLEN
 : <a class="el" href="tar_8h.html#a0ea3e1f11e45b223b1f3819a9eeff365">tar.h</a>
 </li>
-<li>typeflag
-: <a class="el" href="tar_8h.html#a50efaf1bb13addc723bc7ba7d6988f2e">tar.h</a>
-</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

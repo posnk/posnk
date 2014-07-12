@@ -1,0 +1,15 @@
+<map id="sys_read" name="sys_read">
+<area shape="rect" id="node3" href="$streams_8c.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="153,171,236,201"/>
+<area shape="rect" id="node11" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="347,305,416,334"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="511,250,617,279"/>
+<area shape="rect" id="node21" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="513,355,615,385"/>
+<area shape="rect" id="node28" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="129,459,260,489"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="327,251,436,281"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="503,14,625,43"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="511,93,617,122"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="345,41,417,70"/>
+<area shape="rect" id="node17" href="$pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="343,145,420,174"/>
+<area shape="rect" id="node26" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="309,198,453,227"/>
+<area shape="rect" id="node23" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="528,434,600,463"/>
+<area shape="rect" id="node30" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="323,459,440,489"/>
+</map>

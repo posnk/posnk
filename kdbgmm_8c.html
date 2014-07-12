@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('kdbgmm_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_e84ea528bf4fd33c6de99fa4f4e2c416.html">kdbg</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
@@ -110,14 +127,14 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9102851c5bf7325fd33051705f25fe16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16">kdbgmm_free_internal</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a9102851c5bf7325fd33051705f25fe16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16">kdbgmm_free_internal</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:a9102851c5bf7325fd33051705f25fe16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases a block of memory so it can be reallocated.  <a href="#a9102851c5bf7325fd33051705f25fe16"></a><br/></td></tr>
-<tr class="memitem:a00ee68ae673ec46a4f9d6fe7e63d189d"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d">kdbgmm_alloc_internal</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>, int morecore)</td></tr>
+<tr class="memitem:a00ee68ae673ec46a4f9d6fe7e63d189d"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d">kdbgmm_alloc_internal</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size, int morecore)</td></tr>
 <tr class="memdesc:a00ee68ae673ec46a4f9d6fe7e63d189d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a new block of memory of given size to the caller.  <a href="#a00ee68ae673ec46a4f9d6fe7e63d189d"></a><br/></td></tr>
-<tr class="memitem:a52516e68a1d132a4ca084131e00ed7fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a52516e68a1d132a4ca084131e00ed7fe">heapmm_request_core</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
-<tr class="memitem:ac66fc31a007c99c00faa0f78bb0b8bd5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#ac66fc31a007c99c00faa0f78bb0b8bd5">kdbgmm_morecore_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) void *param)</td></tr>
-<tr class="memdesc:ac66fc31a007c99c00faa0f78bb0b8bd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator function that tests for empty blocks.  <a href="#ac66fc31a007c99c00faa0f78bb0b8bd5"></a><br/></td></tr>
-<tr class="memitem:a4938c517363d3a719521900d6df4e98e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e">kdbgmm_morecore</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a52516e68a1d132a4ca084131e00ed7fe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a52516e68a1d132a4ca084131e00ed7fe">heapmm_request_core</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
+<tr class="memitem:ab2675eb14f23260550efe7cdb99f5f2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#ab2675eb14f23260550efe7cdb99f5f2a">kdbgmm_morecore_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
+<tr class="memdesc:ab2675eb14f23260550efe7cdb99f5f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator function that tests for empty blocks.  <a href="#ab2675eb14f23260550efe7cdb99f5f2a"></a><br/></td></tr>
+<tr class="memitem:a4938c517363d3a719521900d6df4e98e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e">kdbgmm_morecore</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:a4938c517363d3a719521900d6df4e98e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal function Requests more memory and adds it to the free block table, then cleans up low space markers.  <a href="#a4938c517363d3a719521900d6df4e98e"></a><br/></td></tr>
 <tr class="memitem:a623a969e9e2ea599c5d24895cdfe7e11"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a623a969e9e2ea599c5d24895cdfe7e11">kdbgmm_merge_start_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
 <tr class="memdesc:a623a969e9e2ea599c5d24895cdfe7e11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator function that tests for [our block][FREE] mergeable blocks.  <a href="#a623a969e9e2ea599c5d24895cdfe7e11"></a><br/></td></tr>
@@ -133,15 +150,15 @@ Functions</h2></td></tr>
 <tr class="memdesc:a11b923e607b77bbe1246c6861d2c2584"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator function that tests for blocks large enough to contain a whole page.  <a href="#a11b923e607b77bbe1246c6861d2c2584"></a><br/></td></tr>
 <tr class="memitem:af5439cb670888929c5239b4dedf6167a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#af5439cb670888929c5239b4dedf6167a">kdbgmm_alloc_page_fit_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
 <tr class="memdesc:af5439cb670888929c5239b4dedf6167a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator function that tests for page aligned, larger than page sized blocks.  <a href="#af5439cb670888929c5239b4dedf6167a"></a><br/></td></tr>
-<tr class="memitem:a25976b65c9d92a85bc502d5169712943"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a25976b65c9d92a85bc502d5169712943">kdbgmm_alloc_page_alligned</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a25976b65c9d92a85bc502d5169712943"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a25976b65c9d92a85bc502d5169712943">kdbgmm_alloc_page_alligned</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:a25976b65c9d92a85bc502d5169712943"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a page alligned block of RAM.  <a href="#a25976b65c9d92a85bc502d5169712943"></a><br/></td></tr>
-<tr class="memitem:a7be4d7b37b7114befd0f512f2f5543b0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a7be4d7b37b7114befd0f512f2f5543b0">kdbgmm_alloc</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a7be4d7b37b7114befd0f512f2f5543b0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a7be4d7b37b7114befd0f512f2f5543b0">kdbgmm_alloc</a> (<a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:a7be4d7b37b7114befd0f512f2f5543b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a new block of memory of given size to the caller.  <a href="#a7be4d7b37b7114befd0f512f2f5543b0"></a><br/></td></tr>
 <tr class="memitem:a7832df3c962e803662e506daedc8f583"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a7832df3c962e803662e506daedc8f583">kdbgmm_alloc_page</a> ()</td></tr>
 <tr class="memdesc:a7832df3c962e803662e506daedc8f583"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates a new page of heap space to the caller.  <a href="#a7832df3c962e803662e506daedc8f583"></a><br/></td></tr>
-<tr class="memitem:aa9bcfa313457de4f5d44bdb29e48167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#aa9bcfa313457de4f5d44bdb29e48167b">kdbgmm_free</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:aa9bcfa313457de4f5d44bdb29e48167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#aa9bcfa313457de4f5d44bdb29e48167b">kdbgmm_free</a> (void *address, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:aa9bcfa313457de4f5d44bdb29e48167b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Releases a block of memory so it can be reallocated.  <a href="#aa9bcfa313457de4f5d44bdb29e48167b"></a><br/></td></tr>
-<tr class="memitem:a196c42a754592f3cc9e777eba5ed4d07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a196c42a754592f3cc9e777eba5ed4d07">kdbgmm_init</a> (void *heap_start, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a196c42a754592f3cc9e777eba5ed4d07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdbgmm_8c.html#a196c42a754592f3cc9e777eba5ed4d07">kdbgmm_init</a> (void *heap_start, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memdesc:a196c42a754592f3cc9e777eba5ed4d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the heap memory manager.  <a href="#a196c42a754592f3cc9e777eba5ed4d07"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
@@ -270,7 +287,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00257">257</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="ext2_8h_source.html#l00155">size</a>.</p>
+<p>References <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>.</p>
 
@@ -301,14 +318,14 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allocates a new block of memory of given size to the caller. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000125">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000126">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000126">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000127">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000128">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000129">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00267">267</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="kdbgmm_8c_source.html#l00257">kdbgmm_alloc_fit_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00244">kdbgmm_alloc_match_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="kdbgmm_8c_source.html#l00047">kdbgmm_morecore_iterator()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="kdbgmm_8c_source.html#l00257">kdbgmm_alloc_fit_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00244">kdbgmm_alloc_match_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="kdbgmm_8c_source.html#l00047">kdbgmm_morecore_iterator()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00487">kdbgmm_alloc()</a>, and <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>.</p>
 
@@ -342,7 +359,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00244">244</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="kdbgmm_8c_source.html#l00032">kdbgmm_top_of_heap</a>, and <a class="el" href="ext2_8h_source.html#l00155">size</a>.</p>
+<p>References <a class="el" href="kdbgmm_8c_source.html#l00032">kdbgmm_top_of_heap</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>.</p>
 
@@ -386,15 +403,15 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Allocates a page alligned block of RAM. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000129">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000130">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000130">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000131">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000132">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000133">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000134">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00400">400</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="kdbgmm_8c_source.html#l00499">kdbgmm_alloc_page()</a>, <a class="el" href="kdbgmm_8c_source.html#l00389">kdbgmm_alloc_page_fit_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00362">kdbgmm_alloc_page_match_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00375">kdbgmm_alloc_page_split_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="ext2_8h_source.html#l00170">padding</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="kdbgmm_8c_source.html#l00499">kdbgmm_alloc_page()</a>, <a class="el" href="kdbgmm_8c_source.html#l00389">kdbgmm_alloc_page_fit_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00362">kdbgmm_alloc_page_match_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00375">kdbgmm_alloc_page_split_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00499">kdbgmm_alloc_page()</a>.</p>
 
@@ -428,7 +445,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00389">389</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00400">kdbgmm_alloc_page_alligned()</a>.</p>
 
@@ -462,7 +479,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00362">362</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00400">kdbgmm_alloc_page_alligned()</a>.</p>
 
@@ -496,7 +513,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00375">375</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00400">kdbgmm_alloc_page_alligned()</a>.</p>
 
@@ -561,17 +578,17 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Releases a block of memory so it can be reallocated. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000118">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000119">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000119">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000120">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000121">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000122">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000123">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000121">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000122">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000123">Todo:</a></b></dt><dd>: Get a lock on the free block table </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000124">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000125">Todo:</a></b></dt><dd>: Release a lock on the free block table </dd></dl>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00114">114</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="kdbgmm_8c_source.html#l00020">FALSE</a>, <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00104">kdbgmm_merge_end_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00095">kdbgmm_merge_start_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="kdbgmm_8c_source.html#l00020">FALSE</a>, <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00104">kdbgmm_merge_end_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00095">kdbgmm_merge_start_iterator()</a>, <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>, <a class="el" href="kdbgmm_8c_source.html#l00400">kdbgmm_alloc_page_alligned()</a>, <a class="el" href="kdbgmm_8c_source.html#l00507">kdbgmm_free()</a>, <a class="el" href="kdbgmm_8c_source.html#l00516">kdbgmm_init()</a>, and <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>.</p>
 
@@ -645,7 +662,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00104">104</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>.</p>
 
@@ -679,7 +696,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00095">95</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
+<p>References <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>, and <a class="el" href="kdbgmm_8h_source.html#l00031">kdbgmm_block::start</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00114">kdbgmm_free_internal()</a>.</p>
 
@@ -709,7 +726,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac66fc31a007c99c00faa0f78bb0b8bd5"></a>
+<a class="anchor" id="ab2675eb14f23260550efe7cdb99f5f2a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -722,7 +739,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) void *&#160;</td>
+          <td class="paramtype">void *&#160;</td>
           <td class="paramname"><em>param</em>&#160;</td>
         </tr>
         <tr>
@@ -737,7 +754,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="kdbgmm_8c_source.html#l00047">47</a> of file <a class="el" href="kdbgmm_8c_source.html">kdbgmm.c</a>.</p>
 
-<p>References <a class="el" href="ext2_8h_source.html#l00165">block</a>, and <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>.</p>
+<p>References <a class="el" href="kdbgmm_8h_source.html#l00032">kdbgmm_block::size</a>.</p>
 
 <p>Referenced by <a class="el" href="kdbgmm_8c_source.html#l00267">kdbgmm_alloc_internal()</a>, and <a class="el" href="kdbgmm_8c_source.html#l00058">kdbgmm_morecore()</a>.</p>
 
@@ -779,11 +796,15 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_e84ea528bf4fd33c6de99fa4f4e2c416.html">kdbg</a></li><li class="navelem"><a class="el" href="kdbgmm_8c.html">kdbgmm.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

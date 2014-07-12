@@ -1,0 +1,5 @@
+<map id="vfs_effective_inode" name="vfs_effective_inode">
+<area shape="rect" id="node3" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="189,32,296,61"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="344,5,440,35"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="488,32,640,61"/>
+</map>

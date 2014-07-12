@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('ext2_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_5a4132f7e575105e864e0906b1ff49aa.html">fs</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">ext2.c</div>  </div>
@@ -99,7 +116,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="ext2_8h.html">fs/ext2.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="heapmm_8h.html">kernel/heapmm.h</a>&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="device_8h.html">kernel/device.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html">kernel/vfs.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html" title="Exposes the VFS API.">kernel/vfs.h</a>&quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="earlycon_8h.html">kernel/earlycon.h</a>&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="code" href="ext2_8c.html#a16b3ec3019105dca2d3123ed2e023024">   24</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="ext2_8c.html#a16b3ec3019105dca2d3123ed2e023024" title="fs/ext2.c">ext2_read_block</a>(<a class="code" href="structext2__device.html">ext2_device_t</a> *dev, uint32_t block_ptr, uint32_t in_block, <span class="keywordtype">void</span> *buffer, <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</div>
@@ -189,7 +206,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="ext2_8c.html#aef8c4f574a233897b1c7195ff4a77abc">  108</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="ext2_8c.html#aef8c4f574a233897b1c7195ff4a77abc">ext2_read_inode</a>(<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *_inode, <span class="keywordtype">void</span> *_buffer, <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> f_offset, <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> length, <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *nread)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="structext2__device.html">ext2_device_t</a> *device;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="structext2__vinode.html">ext2_vinode_t</a> *<a class="code" href="ext2_8h.html#a84dc3916ea975b79482a6d01f78c3d9f">inode</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <a class="code" href="structext2__vinode.html">ext2_vinode_t</a> *<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode</a>;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> block_size;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> in_blk_size;</div>
@@ -239,11 +256,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordtype">int</span> status;</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="structext2__dirent.html">ext2_dirent_t</a> *<a class="code" href="structdirent.html">dirent</a>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        uint8_t *<a class="code" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">name</a>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="structext2__dirent.html">ext2_dirent_t</a> *<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent</a>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        uint8_t *name;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        uint8_t *buffer= _buffer;</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="structdirent.html">dirent_t</a> *vfs_dir;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *vfs_dir;</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> pos, inode_nread;</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        *nread = 0;</div>
@@ -277,9 +294,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                }</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                vfs_dir = (<a class="code" href="structdirent.html">dirent_t</a> *)&amp;buffer[pos];</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                vfs_dir = (<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *)&amp;buffer[pos];</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                name = (uint8_t *) vfs_dir-&gt;<a class="code" href="structdirent.html#a670ff727693d9eecffab475affc26116">name</a>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;                name = (uint8_t *) vfs_dir-&gt;<a class="code" href="structdirent.html#a670ff727693d9eecffab475affc26116" title="The name of the file described by this entry.">name</a>;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                </div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;                status = <a class="code" href="ext2_8c.html#aef8c4f574a233897b1c7195ff4a77abc">ext2_read_inode</a>(_inode, name, pos + f_offset + <span class="keyword">sizeof</span>(<a class="code" href="structext2__dirent.html">ext2_dirent_t</a>), dirent-&gt;<a class="code" href="structext2__dirent.html#a261eddd5cf8687c7af40b73bfb9fea8e">name_len</a>, &amp;inode_nread);</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
@@ -289,9 +306,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                }</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                name[dirent-&gt;<a class="code" href="structext2__dirent.html#a261eddd5cf8687c7af40b73bfb9fea8e">name_len</a>] = 0;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#ae0f981dec06778a49ac1aa526a10ce12">inode_id</a> = dirent-&gt;<a class="code" href="structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1">inode</a>;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#a9d8680b2254cfb264a9959e54c2d47a6">device_id</a> = _inode-&gt;<a class="code" href="structinode.html#a4c0d828b6e65ecdac1622e4a18e0e834" title="Block device this inode resides on.">device_id</a>;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a> = dirent-&gt;<a class="code" href="structext2__dirent.html#a81da90381f0b62a6b1661b6d98882bcd">rec_len</a>;</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#ae0f981dec06778a49ac1aa526a10ce12" title="The inode this entry points to.">inode_id</a> = dirent-&gt;<a class="code" href="structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1">inode</a>;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#a9d8680b2254cfb264a9959e54c2d47a6" title="The filesystem device this entry points to.">device_id</a> = _inode-&gt;<a class="code" href="structinode.html#a4c0d828b6e65ecdac1622e4a18e0e834" title="Block device this inode resides on.">device_id</a>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                vfs_dir-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a> = dirent-&gt;<a class="code" href="structext2__dirent.html#a81da90381f0b62a6b1661b6d98882bcd">rec_len</a>;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                </div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        }</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
@@ -358,15 +375,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">        return NULL;</span></div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="comment">}*/</span></div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno"><a class="code" href="ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2">  280</a></span>&#160;<a class="code" href="structdirent.html">dirent_t</a> *<a class="code" href="ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2">ext2_finddir</a>(<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *_inode, <span class="keywordtype">char</span> * <a class="code" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">name</a>)</div>
+<div class="line"><a name="l00280"></a><span class="lineno"><a class="code" href="ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2">  280</a></span>&#160;<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *<a class="code" href="ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2">ext2_finddir</a>(<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *_inode, <span class="keywordtype">char</span> * name)</div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;{</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        uint8_t *buffer = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(1024);</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <span class="keywordtype">int</span> status;</div>
 <div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> nread;</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> fpos = 0;</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> pos;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <a class="code" href="structdirent.html">dirent_t</a> *<a class="code" href="structdirent.html">dirent</a>;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <a class="code" href="structdirent.html">dirent_t</a> *pp;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        <a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent</a>;</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *pp;</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">if</span> (!buffer)</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">for</span> (fpos = 0; nread != 0; fpos += nread) {</div>
@@ -375,12 +392,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;                        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(buffer, 1024);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;                        <span class="keywordflow">return</span> <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;                }</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                <span class="keywordflow">for</span> (pos = 0; pos &lt; nread; pos += dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a>) {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                        dirent = (<a class="code" href="structdirent.html">dirent_t</a> *) &amp;(buffer[pos]);</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c">strcmp</a>(name, dirent-&gt;<a class="code" href="structdirent.html#a670ff727693d9eecffab475affc26116">name</a>) == 0){</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                                pp = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keyword">sizeof</span>(<a class="code" href="structdirent.html">dirent_t</a>));    </div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                                dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a> = (dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a> &gt; <span class="keyword">sizeof</span>(<a class="code" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a>)) ? <span class="keyword">sizeof</span>(<a class="code" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a>) : dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a>;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                                <a class="code" href="string_8c.html#a756c9204a58aa6f5c4923377c89f7088">memcpy</a>(pp, dirent,dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a>);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;                <span class="keywordflow">for</span> (pos = 0; pos &lt; nread; pos += dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a>) {</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;                        dirent = (<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a> *) &amp;(buffer[pos]);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c">strcmp</a>(name, dirent-&gt;<a class="code" href="structdirent.html#a670ff727693d9eecffab475affc26116" title="The name of the file described by this entry.">name</a>) == 0){</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;                                pp = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keyword">sizeof</span>(<a class="code" href="structdirent.html" title="Describes a directory entry in a portable FS independent format.">dirent_t</a>));    </div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;                                dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a> = (dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a> &gt; <span class="keyword">sizeof</span>(<a class="code" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87" title="An entry in the path element cache.">dirent_t</a>)) ? <span class="keyword">sizeof</span>(<a class="code" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87" title="An entry in the path element cache.">dirent_t</a>) : dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a>;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                                <a class="code" href="string_8c.html#a756c9204a58aa6f5c4923377c89f7088">memcpy</a>(pp, dirent,dirent-&gt;<a class="code" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd" title="The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they...">d_reclen</a>);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                                <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(buffer, 1024);</div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                                <span class="keywordflow">return</span> pp;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                        }</div>
@@ -423,7 +440,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(bgd, <span class="keyword">sizeof</span>(<a class="code" href="structext2__block__group__desc.html">ext2_block_group_desc_t</a>));</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno"><a class="code" href="ext2_8c.html#ab99f422659ed02df54fabecc6469477c">  345</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="ext2_8c.html#ab99f422659ed02df54fabecc6469477c">ext2_load_e2inode</a>(<a class="code" href="structext2__device.html">ext2_device_t</a> *device, <a class="code" href="structext2__inode.html">ext2_inode_t</a> *ino, uint32_t ino_id)</div>
+<div class="line"><a name="l00345"></a><span class="lineno"><a class="code" href="ext2_8c.html#ab99f422659ed02df54fabecc6469477c">  345</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="ext2_8c.html#ab99f422659ed02df54fabecc6469477c">ext2_load_e2inode</a>(<a class="code" href="structext2__device.html">ext2_device_t</a> *device, <a class="code" href="structext2__inode.html">ext2_inode_t</a> *<a class="code" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">ino</a>, uint32_t ino_id)</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;{</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <a class="code" href="structext2__block__group__desc.html">ext2_block_group_desc_t</a> *bgd;</div>
 <div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a>                   index, ino_offset;</div>
@@ -459,7 +476,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
 <div class="line"><a name="l00379"></a><span class="lineno"><a class="code" href="ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a">  379</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a">ext2_e2tovfs_inode</a>(<a class="code" href="structext2__device.html">ext2_device_t</a> *device, <a class="code" href="structext2__vinode.html">ext2_vinode_t</a> *_ino, <a class="code" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> ino_id)</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;{</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <a class="code" href="structext2__inode.html">ext2_inode_t</a> *ino;</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;        <a class="code" href="structext2__inode.html">ext2_inode_t</a> *<a class="code" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">ino</a>;</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *vfs_ino;</div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;</div>
 <div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        ino = &amp;(_ino-&gt;<a class="code" href="structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba">inode</a>);</div>
@@ -518,7 +535,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;}</div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;</div>
 <div class="line"><a name="l00439"></a><span class="lineno"><a class="code" href="ext2_8c.html#aa113d34f348dc3a68339eed66c5c5362">  439</a></span>&#160;<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *<a class="code" href="ext2_8c.html#aa113d34f348dc3a68339eed66c5c5362">ext2_load_inode</a>(<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *device, <a class="code" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> <span class="keywordtype">id</span>) {</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <a class="code" href="structext2__vinode.html">ext2_vinode_t</a> *ino;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <a class="code" href="structext2__vinode.html">ext2_vinode_t</a> *<a class="code" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">ino</a>;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        <a class="code" href="structext2__device.html">ext2_device_t</a> *_dev = (<a class="code" href="structext2__device.html">ext2_device_t</a> *) device;</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;        <span class="keywordflow">if</span> (!_dev)</div>
@@ -533,7 +550,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;</div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        <a class="code" href="ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a">ext2_e2tovfs_inode</a>(_dev, ino, <span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *) ino;</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a> *) <a class="code" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">ino</a>;</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;}</div>
 <div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;</div>
 <div class="line"><a name="l00458"></a><span class="lineno"><a class="code" href="ext2_8c.html#a8794cab3d6d00da238ff907c2d6b5574">  458</a></span>&#160;<a class="code" href="structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions.">fs_device_operations_t</a> <a class="code" href="ext2_8c.html#a8794cab3d6d00da238ff907c2d6b5574">ext2_ops</a> = {</div>
@@ -551,7 +568,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;        NULL <span class="comment">//Change file length</span></div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;};</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;</div>
-<div class="line"><a name="l00473"></a><span class="lineno"><a class="code" href="ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b">  473</a></span>&#160;<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *<a class="code" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>(<a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>)</div>
+<div class="line"><a name="l00473"></a><span class="lineno"><a class="code" href="ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b">  473</a></span>&#160;<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *<a class="code" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>(<a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t flags)</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;{</div>
 <div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        <span class="keywordtype">int</span> status;</div>
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>  _read_size;</div>
@@ -614,11 +631,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        <span class="keywordflow">return</span> (<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *) dev;</div>
 <div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_5a4132f7e575105e864e0906b1ff49aa.html">fs</a></li><li class="navelem"><a class="el" href="ext2_8c.html">ext2.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:55 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

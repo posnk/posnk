@@ -1,0 +1,13 @@
+<map id="_sys_getdents" name="_sys_getdents">
+<area shape="rect" id="node3" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="180,5,249,35"/>
+<area shape="rect" id="node5" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="345,53,468,83"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="353,107,460,136"/>
+<area shape="rect" id="node11" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="160,320,269,349"/>
+<area shape="rect" id="node17" href="$vfs_8c.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="167,160,263,189"/>
+<area shape="rect" id="node7" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="544,53,675,83"/>
+<area shape="rect" id="node13" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="344,373,469,403"/>
+<area shape="rect" id="node15" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="319,320,495,349"/>
+<area shape="rect" id="node19" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="340,160,473,189"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="331,213,483,243"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#a783b9df3cf72f06ddfee932bf644fcda" title="Read directory entries from backing storage." alt="" coords="349,267,464,296"/>
+</map>

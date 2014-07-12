@@ -1,0 +1,36 @@
+<map id="i386_outb" name="i386_outb">
+<area shape="rect" id="node3" href="$ata_8h.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="179,266,283,295"/>
+<area shape="rect" id="node38" href="$earlycon_8h.html#af6148ed91df1017bc3309ca13103492c" title="debugcon_init" alt="" coords="180,527,281,557"/>
+<area shape="rect" id="node42" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="176,581,285,610"/>
+<area shape="rect" id="node48" href="$pic_8c.html#a8b442733bb70ed866bec4f01c02b46b9" title="i386_pic_send_command" alt="" coords="147,687,315,717"/>
+<area shape="rect" id="node54" href="$pic_8c.html#a42f19c474bb931268023055b109725c4" title="i386_pic_send_data" alt="" coords="163,634,299,663"/>
+<area shape="rect" id="node57" href="$pit_8c.html#aa54913d53efba9a3300323322df379d1" title="i386_pit_send_command" alt="" coords="148,794,313,823"/>
+<area shape="rect" id="node61" href="$pit_8c.html#ab1de2c9adf2175b1a4d3efa2aef5ab60" title="i386_pit_send_data" alt="" coords="164,741,297,770"/>
+<area shape="rect" id="node64" href="$i8042_8h.html#abd73f17cfd03e51b9970e74f82413d7d" title="kbd_send_controller\l_command" alt="" coords="161,847,300,893"/>
+<area shape="rect" id="node66" href="$i8042_8h.html#a30383ff22dd0052abee07a7ae741f789" title="kbd_send_encoder_command" alt="" coords="133,917,328,946"/>
+<area shape="rect" id="node70" href="$sercon_8c.html#af5e57b7a31a51e7e7e43b7b81a3bc6ba" title="sercon_init" alt="" coords="424,973,509,1002"/>
+<area shape="rect" id="node72" href="$sercon_8c.html#a89bf6a3585afdbaa40ab7546d85ad429" title="sercon_putc" alt="" coords="184,970,277,999"/>
+<area shape="rect" id="node75" href="$vgacon_8h.html#ab979f6af999f6d09c7ae3b9eabe331ab" title="vgacon_write_crtc_register" alt="" coords="141,1074,320,1103"/>
+<area shape="rect" id="node81" href="$vga__vterm_8h.html#aaf09525adc710025d8573c3715020050" title="vterm_vga_write_crtc\l_register" alt="" coords="157,1127,304,1173"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="416,423,517,453"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="619,423,728,453"/>
+<area shape="rect" id="node9" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="791,141,884,170"/>
+<area shape="rect" id="node12" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="637,242,709,271"/>
+<area shape="rect" id="node14" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="636,318,711,347"/>
+<area shape="rect" id="node17" href="$ata_8c.html#a5f7b78dafa71534b24b101521a9b1479" title="ata_write_port_long" alt="" coords="607,61,740,90"/>
+<area shape="rect" id="node20" href="$ata_8c.html#a70e30cedd3a469033d65e4ecd423d373" title="ata_read_data" alt="" coords="415,162,519,191"/>
+<area shape="rect" id="node24" href="$ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089" title="ata_write_data" alt="" coords="413,370,520,399"/>
+<area shape="rect" id="node27" href="$ata_8h.html#af9b954fe8969622b9a7c82f4eee218d3" title="ata_set_interrupts" alt="" coords="611,114,736,143"/>
+<area shape="rect" id="node32" href="$ata_8c.html#a07edd740f812723cf51bbe5439ccbd06" title="ata_setup_lba_transfer" alt="" coords="389,266,544,295"/>
+<area shape="rect" id="node40" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="417,527,516,557"/>
+<area shape="rect" id="node44" href="$earlycon_8h.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="408,581,525,610"/>
+<area shape="rect" id="node46" href="$kdbgio_8h.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="425,634,508,663"/>
+<area shape="rect" id="node50" href="$include_2arch_2i386_2pic_8h.html#acc109e1a0dc80531844acb9d586e6cbc" title="Initialize pic." alt="" coords="405,687,528,717"/>
+<area shape="rect" id="node52" href="$include_2arch_2i386_2pic_8h.html#a6dccb6b78ad858a4573b1b26a7b73640" title="i386_send_end_of_interrupt" alt="" coords="376,741,557,770"/>
+<area shape="rect" id="node59" href="$pit_8h.html#a9e493055fc8c0801e6cd5f13f1d077ca" title="i386_pit_setup" alt="" coords="413,794,520,823"/>
+<area shape="rect" id="node68" href="$kbd_8h.html#a12f52ccc6f3a0a4c9d0e1a9454f8bc66" title="kb_set_leds" alt="" coords="421,917,512,946"/>
+<area shape="rect" id="node77" href="$vgacon_8c.html#a95e8f15681cc88ffa15adb2b181e3df8" title="vgacon_move_cursor" alt="" coords="393,1026,540,1055"/>
+<area shape="rect" id="node79" href="$vgacon__early_8c.html#a1df3f6b06a7d95db16b0dc6a1039f179" title="vgacon_early_move_cursor" alt="" coords="376,1079,557,1109"/>
+<area shape="rect" id="node83" href="$vga__vterm_8c.html#a5e0a5415f3ce6cad46883f6d5facdddc" title="vga_vterm_move_cursor" alt="" coords="384,1134,549,1163"/>
+<area shape="rect" id="node85" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="392,1187,541,1217"/>
+</map>

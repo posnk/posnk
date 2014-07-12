@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('sc__process_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
@@ -111,20 +128,20 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab91db027b5040c913707c538cda17e16"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ab91db027b5040c913707c538cda17e16">sys_fork</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memdesc:ab91db027b5040c913707c538cda17e16"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a>  <a href="#ab91db027b5040c913707c538cda17e16"></a><br/></td></tr>
-<tr class="memitem:a1f41c01a2a4422d630e77dac46da7686"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686">sys_kill</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a1146d8c8bf8d571e62771db1f2e48083"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a1146d8c8bf8d571e62771db1f2e48083">sys_getpid</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a9c3c7cba42f353246dd0e593242ab7e7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a9c3c7cba42f353246dd0e593242ab7e7">sys_getppid</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a9486623db7ecfa9da1720b259268373b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a9486623db7ecfa9da1720b259268373b">sys_getpgrp</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a483b72e7e4152c714adee54dfc2d818b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a483b72e7e4152c714adee54dfc2d818b">sys_getsid</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ae055081c2dcfcbf2fcc467b50e105480"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ae055081c2dcfcbf2fcc467b50e105480">sys_setsid</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a16fbb2e48d896e313f25d80b6942a5f1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a16fbb2e48d896e313f25d80b6942a5f1">sys_setpgrp</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a62605ebe8dfb8a0cee443478b053c6ff"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a62605ebe8dfb8a0cee443478b053c6ff">sys_setpgid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a63105adc898e3057d2df2bf9b8ab6339"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339">sys_exit</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a54aa47140a66b7972076e5b07cdb1617"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a54aa47140a66b7972076e5b07cdb1617">sys_yield</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ad636cebe991c7b6ff56d4788b069983b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ad636cebe991c7b6ff56d4788b069983b">sys_waitpid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ab2a6f3c56ff087ee363af4e020ea3461"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ab2a6f3c56ff087ee363af4e020ea3461">sys_sbrk</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
+<tr class="memitem:a269390f6a63cff7836f64b16c9030d60"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a269390f6a63cff7836f64b16c9030d60">sys_fork</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memdesc:a269390f6a63cff7836f64b16c9030d60"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a>  <a href="#a269390f6a63cff7836f64b16c9030d60"></a><br/></td></tr>
+<tr class="memitem:a9059e3c677a78bbfa5a12368ea6a604a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a9059e3c677a78bbfa5a12368ea6a604a">sys_kill</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:ab5a33a78456e3311729e39339698a1cb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ab5a33a78456e3311729e39339698a1cb">sys_getpid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a4ef8fd154b9533c4c16c9a1b660e1c83"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a4ef8fd154b9533c4c16c9a1b660e1c83">sys_getppid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:aee85f00ca9388d0d40c6eab40fc20056"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#aee85f00ca9388d0d40c6eab40fc20056">sys_getpgrp</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a25d703918f03646823948b7d9d0f177c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a25d703918f03646823948b7d9d0f177c">sys_getsid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:add59498942166cf78f6fb9633219a94d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#add59498942166cf78f6fb9633219a94d">sys_setsid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:ad75761f4f39df2f6a0f2455e3396912e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#ad75761f4f39df2f6a0f2455e3396912e">sys_setpgrp</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a01d9874db7dec827f8e2e7e18a1cce55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a01d9874db7dec827f8e2e7e18a1cce55">sys_setpgid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a52ab3405f2e1fe86bbab6930af485afc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a52ab3405f2e1fe86bbab6930af485afc">sys_exit</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:aad8d9ec8b2a4a999219de02061cbe615"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#aad8d9ec8b2a4a999219de02061cbe615">sys_yield</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a594fa135d60d1edbf409a0c50b530fbe"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a594fa135d60d1edbf409a0c50b530fbe">sys_waitpid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a258509c7bd40585df15de8f7182eb19a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a258509c7bd40585df15de8f7182eb19a">sys_sbrk</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a9fe4bca83582af75714e98de8a4c7f93"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#a9fe4bca83582af75714e98de8a4c7f93">strlistlen</a> (char **list)</td></tr>
 <tr class="memitem:acaf5f124566c234a14e7cafa5471bcd0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__process_8c.html#acaf5f124566c234a14e7cafa5471bcd0">sys_execve</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 </table>
@@ -214,20 +231,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a63105adc898e3057d2df2bf9b8ab6339"></a>
+<a class="anchor" id="a52ab3405f2e1fe86bbab6930af485afc"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_exit </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -246,20 +263,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab91db027b5040c913707c538cda17e16"></a>
+<a class="anchor" id="a269390f6a63cff7836f64b16c9030d60"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_fork </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -284,20 +301,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9486623db7ecfa9da1720b259268373b"></a>
+<a class="anchor" id="aee85f00ca9388d0d40c6eab40fc20056"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_getpgrp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -316,20 +333,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1146d8c8bf8d571e62771db1f2e48083"></a>
+<a class="anchor" id="ab5a33a78456e3311729e39339698a1cb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_getpid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -348,20 +365,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a9c3c7cba42f353246dd0e593242ab7e7"></a>
+<a class="anchor" id="a4ef8fd154b9533c4c16c9a1b660e1c83"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_getppid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -380,20 +397,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a483b72e7e4152c714adee54dfc2d818b"></a>
+<a class="anchor" id="a25d703918f03646823948b7d9d0f177c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_getsid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -412,7 +429,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1f41c01a2a4422d630e77dac46da7686"></a>
+<a class="anchor" id="a9059e3c677a78bbfa5a12368ea6a604a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -425,7 +442,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -445,7 +462,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab2a6f3c56ff087ee363af4e020ea3461"></a>
+<a class="anchor" id="a258509c7bd40585df15de8f7182eb19a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -458,7 +475,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -478,7 +495,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a62605ebe8dfb8a0cee443478b053c6ff"></a>
+<a class="anchor" id="a01d9874db7dec827f8e2e7e18a1cce55"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -491,7 +508,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -511,20 +528,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a16fbb2e48d896e313f25d80b6942a5f1"></a>
+<a class="anchor" id="ad75761f4f39df2f6a0f2455e3396912e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_setpgrp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -543,20 +560,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae055081c2dcfcbf2fcc467b50e105480"></a>
+<a class="anchor" id="add59498942166cf78f6fb9633219a94d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_setsid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -575,7 +592,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad636cebe991c7b6ff56d4788b069983b"></a>
+<a class="anchor" id="a594fa135d60d1edbf409a0c50b530fbe"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -588,7 +605,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -609,20 +626,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a54aa47140a66b7972076e5b07cdb1617"></a>
+<a class="anchor" id="aad8d9ec8b2a4a999219de02061cbe615"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_yield </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -642,11 +659,15 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="sc__process_8c.html">sc_process.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

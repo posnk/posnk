@@ -1,0 +1,26 @@
+<map id="semaphore_alloc" name="semaphore_alloc">
+<area shape="rect" id="node3" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="579,368,664,397"/>
+<area shape="rect" id="node11" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="391,237,479,267"/>
+<area shape="rect" id="node17" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="388,31,481,60"/>
+<area shape="rect" id="node21" href="$device_8h.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="175,5,321,35"/>
+<area shape="rect" id="node24" href="$ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a" title="ext2_e2tovfs_inode" alt="" coords="181,160,315,189"/>
+<area shape="rect" id="node28" href="$ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="203,264,293,293"/>
+<area shape="rect" id="node30" href="$pipe_8h.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="204,317,292,347"/>
+<area shape="rect" id="node35" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="392,420,477,449"/>
+<area shape="rect" id="node41" href="$ramfs_8h.html#a369234fe1ac316f9c231a05c4cb9d472" title="ramfs_create" alt="" coords="385,681,484,711"/>
+<area shape="rect" id="node44" href="$ramfs_8c.html#a3058314579ee457b7bf420a5f41e439c" title="ramfs_load_inode" alt="" coords="187,681,309,711"/>
+<area shape="rect" id="node47" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="195,577,301,607"/>
+<area shape="rect" id="node52" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="745,185,847,215"/>
+<area shape="rect" id="node56" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="203,472,293,501"/>
+<area shape="rect" id="node5" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="745,368,847,397"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="757,315,835,344"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="896,420,984,449"/>
+<area shape="rect" id="node13" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="584,264,659,293"/>
+<area shape="rect" id="node15" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="581,211,661,240"/>
+<area shape="rect" id="node19" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="571,31,672,60"/>
+<area shape="rect" id="node26" href="$ext2_8c.html#aa113d34f348dc3a68339eed66c5c5362" title="ext2_load_inode" alt="" coords="377,160,492,189"/>
+<area shape="rect" id="node33" href="$tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab" title="tty_register_driver" alt="" coords="372,316,497,345"/>
+<area shape="rect" id="node39" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="548,472,695,501"/>
+<area shape="rect" id="node50" href="$sc__process_8c.html#ab91db027b5040c913707c538cda17e16" title="kernel/sc_process.c" alt="" coords="399,577,471,607"/>
+<area shape="rect" id="node58" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="388,524,481,553"/>
+</map>

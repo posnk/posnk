@@ -1,0 +1,13 @@
+<map id="device_block_read" name="device_block_read">
+<area shape="rect" id="node3" href="$ext2_8c.html#a3599ddb5bac9a8256c5d5e1138c3890b" title="ext2_load_bgd" alt="" coords="189,5,296,35"/>
+<area shape="rect" id="node5" href="$ext2_8c.html#ab99f422659ed02df54fabecc6469477c" title="ext2_load_e2inode" alt="" coords="361,32,492,61"/>
+<area shape="rect" id="node8" href="$ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="197,109,288,139"/>
+<area shape="rect" id="node10" href="$ext2_8c.html#a16b3ec3019105dca2d3123ed2e023024" title="fs/ext2.c" alt="" coords="184,163,301,192"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="207,268,279,297"/>
+<area shape="rect" id="node12" href="$ext2_8c.html#affb3655a63d99ba71536f63de7e527d6" title="ext2_decode_block_id" alt="" coords="352,111,501,140"/>
+<area shape="rect" id="node14" href="$ext2_8c.html#aef8c4f574a233897b1c7195ff4a77abc" title="ext2_read_inode" alt="" coords="552,137,669,167"/>
+<area shape="rect" id="node19" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="385,215,468,244"/>
+<area shape="rect" id="node21" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="393,268,460,297"/>
+<area shape="rect" id="node23" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="351,321,503,351"/>
+<area shape="rect" id="node25" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="371,375,483,404"/>
+</map>

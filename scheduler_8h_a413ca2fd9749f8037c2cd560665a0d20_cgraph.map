@@ -1,0 +1,10 @@
+<map id="scheduler_invoke_signal_handler" name="scheduler_invoke_signal_handler">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="251,5,357,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="640,32,709,61"/>
+<area shape="rect" id="node9" href="$task__switch_8c.html#ab71bee6f2f63101ac5578b86c8e86f06" title="i386_get_return_address" alt="" coords="223,109,385,139"/>
+<area shape="rect" id="node11" href="$protection_8h.html#ab8fc7ad858baef79699378bb33d4d650" title="i386_protection_user_call" alt="" coords="220,163,388,192"/>
+<area shape="rect" id="node13" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="479,215,551,244"/>
+<area shape="rect" id="node16" href="$task__switch_8c.html#ab000f9cf14048843bb2f2f3c51c20cd6" title="process_push_user_data" alt="" coords="221,267,387,296"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="437,5,592,35"/>
+<area shape="rect" id="node19" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="456,268,573,297"/>
+</map>

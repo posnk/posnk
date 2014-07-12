@@ -1,0 +1,6 @@
+<map id="earlycon_sprintf_helper" name="earlycon_sprintf_helper">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="212,59,332,88"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="383,5,503,35"/>
+<area shape="rect" id="node7" href="$earlycon_8h.html#a0cc80a37a9c074ead277042523d9eb86" title="earlycon_aprintf" alt="" coords="385,59,500,88"/>
+<area shape="rect" id="node9" href="$earlycon_8h.html#a368d84608b62c09b5e4fdffae75dc8ec" title="earlycon_sprintf" alt="" coords="385,112,500,141"/>
+</map>

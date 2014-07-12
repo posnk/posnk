@@ -1,0 +1,5 @@
+<map id="scheduler_invoke_signal_handler" name="scheduler_invoke_signal_handler">
+<area shape="rect" id="node3" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="220,32,380,61"/>
+<area shape="rect" id="node5" href="$scheduler_8h.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="429,5,584,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="448,59,565,88"/>
+</map>

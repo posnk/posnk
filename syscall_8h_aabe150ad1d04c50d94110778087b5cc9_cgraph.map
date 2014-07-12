@@ -1,0 +1,10 @@
+<map id="sys_chown" name="sys_chown">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0" title="_sys_chown" alt="" coords="161,59,255,88"/>
+<area shape="rect" id="node9" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="143,112,273,141"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="155,165,261,195"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="157,219,259,248"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="329,5,436,35"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="325,59,440,88"/>
+<area shape="rect" id="node11" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="324,112,441,141"/>
+<area shape="rect" id="node13" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="347,165,419,195"/>
+</map>

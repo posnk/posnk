@@ -1,0 +1,22 @@
+<map id="vfs_effective_inode" name="vfs_effective_inode">
+<area shape="rect" id="node3" href="$vfs_8h.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="211,112,307,141"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="189,376,328,405"/>
+<area shape="rect" id="node26" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="211,431,307,460"/>
+<area shape="rect" id="node30" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="400,165,472,195"/>
+<area shape="rect" id="node38" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="389,325,483,355"/>
+<area shape="rect" id="node44" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="399,272,473,301"/>
+<area shape="rect" id="node5" href="$sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c" title="_sys_chdir" alt="" coords="393,5,479,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="393,59,479,88"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="383,219,489,248"/>
+<area shape="rect" id="node20" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="376,112,496,141"/>
+<area shape="rect" id="node11" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="588,165,655,195"/>
+<area shape="rect" id="node13" href="$sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a" title="_sys_truncate" alt="" coords="569,379,673,408"/>
+<area shape="rect" id="node15" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="548,325,695,355"/>
+<area shape="rect" id="node17" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="565,219,677,248"/>
+<area shape="rect" id="node24" href="$vfs_8h.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="381,379,491,408"/>
+<area shape="rect" id="node28" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="383,432,489,461"/>
+<area shape="rect" id="node33" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="545,59,697,88"/>
+<area shape="rect" id="node35" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="580,112,663,141"/>
+<area shape="rect" id="node41" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="568,432,675,461"/>
+<area shape="rect" id="node46" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="579,272,664,301"/>
+</map>

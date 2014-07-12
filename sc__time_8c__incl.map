@@ -1,0 +1,12 @@
+<map id="kernel/sc_time.c" name="kernel/sc_time.c">
+<area shape="rect" id="node3" href="$errno_8h.html" title="sys/errno.h" alt="" coords="81,83,166,112"/>
+<area shape="rect" id="node5" href="$time_8h.html" title="kernel/time.h" alt="" coords="751,315,847,344"/>
+<area shape="rect" id="node9" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="314,160,442,189"/>
+<area shape="rect" id="node32" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="190,83,302,112"/>
+<area shape="rect" id="node40" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="466,160,607,189"/>
+<area shape="rect" id="node14" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="618,315,727,344"/>
+<area shape="rect" id="node17" href="$process_8h.html" title="kernel/process.h" alt="" coords="474,237,591,267"/>
+<area shape="rect" id="node22" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="237,315,343,344"/>
+<area shape="rect" id="node27" href="$llist_8h.html" title="util/llist.h" alt="" coords="418,315,493,344"/>
+<area shape="rect" id="node37" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="26,237,162,267"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="memcpy_o" name="memcpy_o">
+<area shape="rect" id="node3" href="$pipe_8h.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="143,32,220,61"/>
+<area shape="rect" id="node5" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="269,5,352,35"/>
+<area shape="rect" id="node7" href="$tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1" title="tty_read" alt="" coords="276,59,345,88"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="kernel/pipe.c" name="kernel/pipe.c">
+<area shape="rect" id="node3" href="$errno_8h.html" title="sys/errno.h" alt="" coords="5,83,91,112"/>
+<area shape="rect" id="node5" href="$types_8h.html" title="sys/types.h" alt="" coords="115,83,205,112"/>
+<area shape="rect" id="node9" href="$string_8h.html" title="string.h" alt="" coords="192,160,256,189"/>
+<area shape="rect" id="node14" href="$config_8h.html" title="config.h" alt="" coords="659,83,725,112"/>
+<area shape="rect" id="node16" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="461,160,584,189"/>
+<area shape="rect" id="node22" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="331,160,437,189"/>
+<area shape="rect" id="node26" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="381,83,477,112"/>
+<area shape="rect" id="node18" href="$llist_8h.html" title="util/llist.h" alt="" coords="532,237,607,267"/>
+</map>

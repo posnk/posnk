@@ -1,0 +1,9 @@
+<map id="heapmm_alloc_alligned" name="heapmm_alloc_alligned">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="465,5,559,35"/>
+<area shape="rect" id="node7" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="463,76,561,105"/>
+<area shape="rect" id="node14" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="211,63,368,92"/>
+<area shape="rect" id="node19" href="$heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="416,141,608,171"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="673,5,775,35"/>
+<area shape="rect" id="node9" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="657,119,791,148"/>
+<area shape="rect" id="node11" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="840,93,973,123"/>
+</map>

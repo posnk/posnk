@@ -1,0 +1,6 @@
+<map id="inode" name="inode">
+<area shape="rect" id="node4" href="$structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions." alt="" coords="5,203,149,232"/>
+<area shape="rect" id="node2" href="$structfs__device.html" title="An instance of a filesystem driver." alt="" coords="117,299,195,328"/>
+<area shape="rect" id="node7" href="$structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a..." alt="" coords="31,8,73,37"/>
+<area shape="rect" id="node11" href="$structpipe__info.html" title="pipe_info" alt="" coords="151,8,225,37"/>
+</map>

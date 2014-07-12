@@ -1,0 +1,6 @@
+<map id="sys_sigprocmask" name="sys_sigprocmask">
+<area shape="rect" id="node3" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="180,5,311,35"/>
+<area shape="rect" id="node9" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="180,59,311,88"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="361,5,479,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="384,59,456,88"/>
+</map>

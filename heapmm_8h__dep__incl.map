@@ -1,0 +1,34 @@
+<map id="include/kernel/heapmm.h" name="include/kernel/heapmm.h">
+<area shape="rect" id="node3" href="$blkcache_8c.html" title="kernel/blkcache.c" alt="" coords="5,92,128,121"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html" title="kernel/blkdev.c" alt="" coords="152,92,261,121"/>
+<area shape="rect" id="node7" href="$chardev_8c.html" title="kernel/chardev.c" alt="" coords="285,92,403,121"/>
+<area shape="rect" id="node9" href="$drivermgr_8c.html" title="kernel/drivermgr.c" alt="" coords="427,92,552,121"/>
+<area shape="rect" id="node11" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="576,92,696,121"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="720,92,843,121"/>
+<area shape="rect" id="node15" href="$interrupt_8c.html" title="kernel/interrupt.c" alt="" coords="867,92,984,121"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="1008,92,1117,121"/>
+<area shape="rect" id="node19" href="$physmm_8c.html" title="kernel/physmm.c" alt="" coords="1141,92,1264,121"/>
+<area shape="rect" id="node21" href="$pipe_8c.html" title="kernel/pipe.c" alt="" coords="1288,92,1384,121"/>
+<area shape="rect" id="node23" href="$process_8c.html" title="kernel/process.c" alt="" coords="1408,92,1525,121"/>
+<area shape="rect" id="node25" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="1549,92,1675,121"/>
+<area shape="rect" id="node27" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="1699,92,1821,121"/>
+<area shape="rect" id="node29" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="1845,92,1984,121"/>
+<area shape="rect" id="node31" href="$sc__streams_8c.html" title="kernel/sc_streams.c" alt="" coords="2008,92,2147,121"/>
+<area shape="rect" id="node33" href="$sc__vfs_8c.html" title="kernel/sc_vfs.c" alt="" coords="2171,92,2280,121"/>
+<area shape="rect" id="node35" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="2304,92,2432,121"/>
+<area shape="rect" id="node37" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="2456,92,2573,121"/>
+<area shape="rect" id="node39" href="$synch_8c.html" title="kernel/synch.c" alt="" coords="2597,92,2704,121"/>
+<area shape="rect" id="node41" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="2728,92,2840,121"/>
+<area shape="rect" id="node43" href="$tar_8c.html" title="kernel/tar.c" alt="" coords="2864,92,2949,121"/>
+<area shape="rect" id="node45" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="2973,92,3059,121"/>
+<area shape="rect" id="node47" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="3083,92,3173,121"/>
+<area shape="rect" id="node49" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="3197,92,3269,121"/>
+<area shape="rect" id="node51" href="$ramfs_8c.html" title="fs/ramfs.c" alt="" coords="3293,92,3373,121"/>
+<area shape="rect" id="node53" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="3397,92,3547,121"/>
+<area shape="rect" id="node55" href="$ata__pci_8c.html" title="driver/block/pata/ata\l_pci.c" alt="" coords="3571,83,3709,130"/>
+<area shape="rect" id="node57" href="$vterm_8c.html" title="driver/console/vterm\l/vterm.c" alt="" coords="3733,83,3872,130"/>
+<area shape="rect" id="node59" href="$vterm__tty_8c.html" title="driver/console/vterm\l/vterm_tty.c" alt="" coords="3896,83,4035,130"/>
+<area shape="rect" id="node61" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="4059,92,4165,121"/>
+<area shape="rect" id="node63" href="$arch_2i386_2paging_8c.html" title="arch/i386/paging.c" alt="" coords="4189,92,4317,121"/>
+<area shape="rect" id="node65" href="$task__switch_8c.html" title="arch/i386/task_switch.c" alt="" coords="4341,92,4501,121"/>
+</map>

@@ -1,0 +1,18 @@
+<map id="scheduler_fork" name="scheduler_fork">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="656,440,763,469"/>
+<area shape="rect" id="node9" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="1043,282,1112,312"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="660,309,759,338"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="216,153,301,182"/>
+<area shape="rect" id="node15" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="852,77,924,106"/>
+<area shape="rect" id="node18" href="$procvmm_8c.html#a7843d24c9ea30efc0d88c415cf256388" title="procvmm_copy_memory_map" alt="" coords="160,568,357,597"/>
+<area shape="rect" id="node24" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="680,102,739,132"/>
+<area shape="rect" id="node28" href="$task__switch_8c.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="196,257,321,286"/>
+<area shape="rect" id="node39" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="447,620,567,649"/>
+<area shape="rect" id="node43" href="$streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba" title="stream_copy_fd_table" alt="" coords="184,672,333,701"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="811,440,965,469"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="1015,568,1140,597"/>
+<area shape="rect" id="node21" href="$procvmm_8c.html#a397f5205b0e71a49ba2feb1f8f39fd9c" title="procvmm_mmap_copy_iterator" alt="" coords="407,308,607,337"/>
+<area shape="rect" id="node31" href="$task__switch_8c.html#ab71bee6f2f63101ac5578b86c8e86f06" title="i386_get_return_address" alt="" coords="425,254,588,284"/>
+<area shape="rect" id="node34" href="$arch_2i386_2paging_8c.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="445,361,568,390"/>
+<area shape="rect" id="node46" href="$streams_8c.html#aa3106e5fbaa22fcc1be4d34082210937" title="stream_ptr_copy_iterator" alt="" coords="424,465,589,494"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ramfs_block" name="ramfs_block">
+<area shape="rect" id="node2" href="$structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a..." alt="" coords="5,8,48,37"/>
+<area shape="rect" id="node5" href="$structinode.html" title="Describes a file currently cached by the kernel." alt="" coords="117,107,171,136"/>
+<area shape="rect" id="node7" href="$structfs__device.html" title="An instance of a filesystem driver." alt="" coords="125,8,203,37"/>
+<area shape="rect" id="node11" href="$structpipe__info.html" title="pipe_info" alt="" coords="227,8,301,37"/>
+</map>

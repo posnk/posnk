@@ -1,0 +1,15 @@
+<map id="fs/ramfs.c" name="fs/ramfs.c">
+<area shape="rect" id="node3" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="5,315,128,344"/>
+<area shape="rect" id="node5" href="$llist_8h.html" title="util/llist.h" alt="" coords="133,392,208,421"/>
+<area shape="rect" id="node11" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="344,160,435,189"/>
+<area shape="rect" id="node41" href="$ramfs_8h.html" title="fs/ramfs.h" alt="" coords="349,83,429,112"/>
+<area shape="rect" id="node45" href="$string_8h.html" title="string.h" alt="" coords="649,160,713,189"/>
+<area shape="rect" id="node48" href="$errno_8h.html" title="sys/errno.h" alt="" coords="504,83,589,112"/>
+<area shape="rect" id="node13" href="$process_8h.html" title="kernel/process.h" alt="" coords="307,315,424,344"/>
+<area shape="rect" id="node17" href="$types_8h.html" title="sys/types.h" alt="" coords="632,392,723,421"/>
+<area shape="rect" id="node19" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="453,392,560,421"/>
+<area shape="rect" id="node23" href="$time_8h.html" title="kernel/time.h" alt="" coords="232,392,328,421"/>
+<area shape="rect" id="node29" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="379,237,520,267"/>
+<area shape="rect" id="node32" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="544,315,640,344"/>
+<area shape="rect" id="node38" href="$stat_8h.html" title="sys/stat.h" alt="" coords="696,237,776,267"/>
+</map>

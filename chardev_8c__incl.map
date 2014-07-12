@@ -1,0 +1,13 @@
+<map id="kernel/chardev.c" name="kernel/chardev.c">
+<area shape="rect" id="node3" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="173,83,285,112"/>
+<area shape="rect" id="node22" href="$device_8h.html" title="kernel/device.h" alt="" coords="651,83,760,112"/>
+<area shape="rect" id="node24" href="$types_8h.html" title="sys/types.h" alt="" coords="731,237,821,267"/>
+<area shape="rect" id="node31" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="469,160,592,189"/>
+<area shape="rect" id="node37" href="$errno_8h.html" title="sys/errno.h" alt="" coords="915,83,1000,112"/>
+<area shape="rect" id="node39" href="$string_8h.html" title="string.h" alt="" coords="864,160,928,189"/>
+<area shape="rect" id="node9" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="267,160,395,189"/>
+<area shape="rect" id="node19" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="5,237,141,267"/>
+<area shape="rect" id="node13" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="317,237,424,267"/>
+<area shape="rect" id="node17" href="$llist_8h.html" title="util/llist.h" alt="" coords="600,237,675,267"/>
+<area shape="rect" id="node26" href="$blkcache_8h.html" title="kernel/blkcache.h" alt="" coords="616,160,739,189"/>
+</map>

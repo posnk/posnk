@@ -1,0 +1,16 @@
+<map id="vterm_tty_setup" name="vterm_tty_setup">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="539,31,645,60"/>
+<area shape="rect" id="node7" href="$tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640" title="tty_register_driver" alt="" coords="172,163,297,192"/>
+<area shape="rect" id="node21" href="$vterm_8c.html#a46779f50ccfa4eb114381c82918af4fd" title="vterm_init" alt="" coords="196,374,273,403"/>
+<area shape="rect" id="node30" href="$vterm__tty_8c.html#ad84ed200435b9101258e8f854e879944" title="vterm_putc" alt="" coords="192,480,277,510"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="693,31,848,60"/>
+<area shape="rect" id="node10" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="375,56,463,86"/>
+<area shape="rect" id="node13" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="363,110,475,139"/>
+<area shape="rect" id="node15" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="361,163,476,192"/>
+<area shape="rect" id="node17" href="$tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b" title="tty_reset_termios" alt="" coords="357,216,480,246"/>
+<area shape="rect" id="node19" href="$chardev_8c.html#ada19604d825e698cfe2e37c86e1eff5d" title="device_char_register" alt="" coords="348,270,489,299"/>
+<area shape="rect" id="node24" href="$vterm__erase_8c.html#a013eb1159f27d1ad1c7a1735f37d51dc" title="vterm_erase" alt="" coords="372,374,465,403"/>
+<area shape="rect" id="node26" href="$vterm__write_8c.html#affb730f3596bf8fdc6f6611ffe84e35c" title="vterm_write_rxvt" alt="" coords="360,427,477,456"/>
+<area shape="rect" id="node28" href="$vterm__write_8c.html#a773b8b48952c2094d6825abfc86c64a5" title="vterm_write_vt100" alt="" coords="355,480,483,510"/>
+<area shape="rect" id="node32" href="$vterm__render_8c.html#a8de2659a11c0b9928698e673539eeb1a" title="vterm_render" alt="" coords="369,534,468,563"/>
+</map>

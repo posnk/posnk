@@ -1,0 +1,5 @@
+<map id="find_color_pair" name="find_color_pair">
+<area shape="rect" id="node3" href="$vterm__csi_8h.html#a1ce7b727b51afcb1217f933482363421" title="interpret_csi_SGR" alt="" coords="161,5,289,35"/>
+<area shape="rect" id="node7" href="$vterm_8h.html#a7d00d857987e5f932340e4d52b17187a" title="vterm_set_colors" alt="" coords="164,59,287,88"/>
+<area shape="rect" id="node5" href="$vterm__csi_8h.html#a7ecdab35fc55c574febf07a8205a93ab" title="vterm_interpret_csi" alt="" coords="339,5,472,35"/>
+</map>

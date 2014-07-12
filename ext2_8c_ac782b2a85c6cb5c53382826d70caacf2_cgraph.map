@@ -1,0 +1,9 @@
+<map id="ext2_finddir" name="ext2_finddir">
+<area shape="rect" id="node3" href="$ext2_8c.html#a05642123cdb3aacdc16ebd7440281348" title="ext2_readdir" alt="" coords="144,59,237,88"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="291,5,397,35"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="293,112,395,141"/>
+<area shape="rect" id="node13" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="155,163,227,192"/>
+<area shape="rect" id="node15" href="$string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c" title="strcmp" alt="" coords="160,216,221,245"/>
+<area shape="rect" id="node7" href="$ext2_8c.html#aef8c4f574a233897b1c7195ff4a77abc" title="ext2_read_inode" alt="" coords="285,59,403,88"/>
+<area shape="rect" id="node17" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="317,216,371,245"/>
+</map>

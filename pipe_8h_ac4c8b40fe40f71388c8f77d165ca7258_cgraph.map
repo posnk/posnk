@@ -1,0 +1,12 @@
+<map id="pipe_read" name="pipe_read">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="332,5,439,35"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="147,57,248,87"/>
+<area shape="rect" id="node12" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="349,137,421,167"/>
+<area shape="rect" id="node14" href="$string_8c.html#a31c8719f4acb09e5426b436df96c38cb" title="memcpy_o" alt="" coords="155,161,240,191"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="135,215,260,244"/>
+<area shape="rect" id="node23" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="144,268,251,297"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="509,32,664,61"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="311,59,460,88"/>
+<area shape="rect" id="node19" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="320,191,451,220"/>
+<area shape="rect" id="node21" href="$earlycon_8c.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="325,244,445,273"/>
+</map>

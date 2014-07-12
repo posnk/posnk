@@ -1,0 +1,11 @@
+<map id="include/kernel/device.h" name="include/kernel/device.h">
+<area shape="rect" id="node3" href="$blkcache_8c.html" title="kernel/blkcache.c" alt="" coords="5,83,128,112"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html" title="kernel/blkdev.c" alt="" coords="152,83,261,112"/>
+<area shape="rect" id="node7" href="$chardev_8c.html" title="kernel/chardev.c" alt="" coords="285,83,403,112"/>
+<area shape="rect" id="node9" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="427,83,544,112"/>
+<area shape="rect" id="node11" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="568,83,653,112"/>
+<area shape="rect" id="node13" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="677,83,768,112"/>
+<area shape="rect" id="node15" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="792,83,864,112"/>
+<area shape="rect" id="node17" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="888,83,1037,112"/>
+<area shape="rect" id="node19" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="1061,83,1168,112"/>
+</map>

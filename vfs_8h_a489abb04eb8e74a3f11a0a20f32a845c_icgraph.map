@@ -1,0 +1,8 @@
+<map id="vfs_find_dirent" name="vfs_find_dirent">
+<area shape="rect" id="node3" href="$vfs_8h.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="181,112,277,141"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="347,165,467,195"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="160,216,299,245"/>
+<area shape="rect" id="node5" href="$sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c" title="_sys_chdir" alt="" coords="364,5,449,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="364,59,449,88"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="353,112,460,141"/>
+</map>

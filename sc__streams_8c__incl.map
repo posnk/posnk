@@ -1,0 +1,14 @@
+<map id="kernel/sc_streams.c" name="kernel/sc_streams.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="5,83,69,112"/>
+<area shape="rect" id="node9" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="139,83,251,112"/>
+<area shape="rect" id="node22" href="$streams_8h.html" title="kernel/streams.h" alt="" coords="645,83,763,112"/>
+<area shape="rect" id="node31" href="$stat_8h.html" title="sys/stat.h" alt="" coords="907,237,987,267"/>
+<area shape="rect" id="node37" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="493,160,616,189"/>
+<area shape="rect" id="node42" href="$errno_8h.html" title="sys/errno.h" alt="" coords="957,83,1043,112"/>
+<area shape="rect" id="node13" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="131,160,259,189"/>
+<area shape="rect" id="node19" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="283,160,419,189"/>
+<area shape="rect" id="node17" href="$llist_8h.html" title="util/llist.h" alt="" coords="540,237,615,267"/>
+<area shape="rect" id="node24" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="741,160,832,189"/>
+<area shape="rect" id="node26" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="663,237,759,267"/>
+<area shape="rect" id="node29" href="$types_8h.html" title="sys/types.h" alt="" coords="824,315,915,344"/>
+</map>

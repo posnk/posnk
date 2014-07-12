@@ -1,0 +1,10 @@
+<map id="pci_config_read_long" name="pci_config_read_long">
+<area shape="rect" id="node3" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="415,5,516,35"/>
+<area shape="rect" id="node5" href="$pci_8h.html#a558a46983f9ad5bb6aaaa0e7efdfd268" title="pci_config_read_byte" alt="" coords="201,107,345,136"/>
+<area shape="rect" id="node17" href="$pci_8h.html#a2640b810982f167ccc591b61b1055e5a" title="pci_config_read_short" alt="" coords="199,160,348,189"/>
+<area shape="rect" id="node22" href="$pci_8h.html#a5bf188f68bcb3c247456cb480415cf21" title="pci_config_write_byte" alt="" coords="200,213,347,243"/>
+<area shape="rect" id="node24" href="$pci_8h.html#a1cbc5de8852d89ca5e22b59ab2d3efc4" title="pci_config_write_short" alt="" coords="197,267,349,296"/>
+<area shape="rect" id="node8" href="$pci_8h.html#ae7687154ac864ae0f4043e228f4a0518" title="pci_enumerate_all" alt="" coords="599,157,724,187"/>
+<area shape="rect" id="node10" href="$pci_8h.html#a57de29a327b780ddfab576e1f3cd146e" title="pci_enumerate_bus" alt="" coords="399,211,532,240"/>
+<area shape="rect" id="node13" href="$pci_8h.html#a9f99fffa4ca1e0e6af8b5a567368e83d" title="pci_enumerate_function" alt="" coords="581,211,741,240"/>
+</map>

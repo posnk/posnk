@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -86,7 +93,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_0x67.html#index_g"><span>g</span></a></li>
       <li><a href="globals_0x68.html#index_h"><span>h</span></a></li>
       <li><a href="globals_0x69.html#index_i"><span>i</span></a></li>
-      <li><a href="globals_0x6a.html#index_j"><span>j</span></a></li>
       <li><a href="globals_0x6b.html#index_k"><span>k</span></a></li>
       <li><a href="globals_0x6c.html#index_l"><span>l</span></a></li>
       <li><a href="globals_0x6d.html#index_m"><span>m</span></a></li>
@@ -103,12 +109,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_0x61.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -493,8 +513,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="ata__pio_8h.html#af42d47a8f40467c838d69cdcd2625082">ata_pio.h</a>
 </li>
 <li>ata_poll_wait()
-: <a class="el" href="ata_8c.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata.c</a>
-, <a class="el" href="ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata.h</a>
+: <a class="el" href="ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata.h</a>
+, <a class="el" href="ata_8c.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata.c</a>
 </li>
 <li>ATA_PRD_END_OF_LIST
 : <a class="el" href="ata_8h.html#a90fbe83aef614221b7edcffb612a37fd">ata.h</a>
@@ -564,22 +584,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089">ata.c</a>
 </li>
 <li>ata_write_port()
-: <a class="el" href="ata_8h.html#a18994a0dfdb78195142b5044246aaad5">ata.h</a>
-, <a class="el" href="ata_8c.html#a18994a0dfdb78195142b5044246aaad5">ata.c</a>
+: <a class="el" href="ata_8c.html#a18994a0dfdb78195142b5044246aaad5">ata.c</a>
+, <a class="el" href="ata_8h.html#a18994a0dfdb78195142b5044246aaad5">ata.h</a>
 </li>
 <li>ata_write_port_long()
 : <a class="el" href="ata_8c.html#a5f7b78dafa71534b24b101521a9b1479">ata.c</a>
 </li>
-<li>atime
-: <a class="el" href="ext2_8h.html#a351d4469a875fcf02d73fcfa176d1cc6">ext2.h</a>
-</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

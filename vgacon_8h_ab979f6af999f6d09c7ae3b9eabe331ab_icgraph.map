@@ -1,0 +1,8 @@
+<map id="vgacon_write_crtc_register" name="vgacon_write_crtc_register">
+<area shape="rect" id="node3" href="$vgacon__early_8c.html#a1df3f6b06a7d95db16b0dc6a1039f179" title="vgacon_early_move_cursor" alt="" coords="232,59,413,88"/>
+<area shape="rect" id="node9" href="$vgacon_8c.html#a95e8f15681cc88ffa15adb2b181e3df8" title="vgacon_move_cursor" alt="" coords="249,112,396,141"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#a4e343464aa2e816a36e210043de25701" title="earlycon_putc" alt="" coords="487,5,588,35"/>
+<area shape="rect" id="node7" href="$vgacon__early_8c.html#a522cbd4d08950250f66fa66528a1a46e" title="vgacon_early_position" alt="" coords="463,59,612,88"/>
+<area shape="rect" id="node11" href="$vgacon_8c.html#aabc422aed726c924768aab5ea837a3f0" title="vgacon_position" alt="" coords="480,112,595,141"/>
+<area shape="rect" id="node13" href="$vgacon_8c.html#af2c2ed4b849fef41ceb45917489f1a35" title="vgacon_putc" alt="" coords="489,165,585,195"/>
+</map>

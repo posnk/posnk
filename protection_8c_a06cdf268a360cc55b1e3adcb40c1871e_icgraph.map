@@ -1,0 +1,4 @@
+<map id="i386_tss_flush" name="i386_tss_flush">
+<area shape="rect" id="node3" href="$protection_8h.html#a7eb32a88b8c2e0d0ffaa2d5c2c804554" title="i386_protection_init" alt="" coords="161,5,295,35"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="344,5,432,35"/>
+</map>

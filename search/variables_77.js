@@ -10,7 +10,7 @@ var searchData=
   ['write_5flock',['write_lock',['../structpipe__info.html#ad392b536980d2aa3fc3c84d157702ba9',1,'pipe_info']]],
   ['write_5fout',['write_out',['../structtty__info.html#aee610653df929165ca06385ad9e405a2',1,'tty_info']]],
   ['write_5fptr',['write_ptr',['../structpipe__info.html#afd15e54db4bbaa2be505b6cd3ce3d0d5',1,'pipe_info']]],
-  ['write_5ftime',['write_time',['../structext2__superblock.html#aba4dfcb32c3988ff6bbb465f4e3dfe21',1,'ext2_superblock::write_time()'],['../ext2_8h.html#a130cf3fdad24456121ff7831607f62e5',1,'write_time():&#160;ext2.h']]],
+  ['write_5ftime',['write_time',['../structext2__superblock.html#aba4dfcb32c3988ff6bbb465f4e3dfe21',1,'ext2_superblock']]],
   ['write_5fusage_5fcount',['write_usage_count',['../structpipe__info.html#a3a710e6260c29f5a1611cd0088d2125a',1,'pipe_info']]],
   ['ws_5fcol',['ws_col',['../structwinsize.html#a80bedf71a49fd324e0d92d0702cc7005',1,'winsize']]],
   ['ws_5frow',['ws_row',['../structwinsize.html#a73698fa1d966374b0701e4bf225f0141',1,'winsize']]],

@@ -1,0 +1,17 @@
+<map id="sys_mkdir" name="sys_mkdir">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="137,59,268,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="495,211,601,240"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="497,264,599,293"/>
+<area shape="rect" id="node18" href="$vfs_8c.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="164,344,241,373"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="319,5,436,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="341,59,413,88"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="859,239,1013,268"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="660,264,809,293"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="335,317,420,347"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="493,371,603,400"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="495,436,601,465"/>
+<area shape="rect" id="node28" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="495,317,601,347"/>
+<area shape="rect" id="node32" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="487,512,609,541"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a84da51813b69ed18851aa4151e982949" title="Create directory structures on backing storage." alt="" coords="328,213,427,243"/>
+<area shape="rect" id="node37" href="$vfs_8c.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="337,371,417,400"/>
+</map>

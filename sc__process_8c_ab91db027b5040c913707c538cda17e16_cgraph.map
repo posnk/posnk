@@ -1,0 +1,13 @@
+<map id="sys_fork" name="sys_fork">
+<area shape="rect" id="node3" href="$scheduler_8c.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="125,240,232,269"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="525,373,632,403"/>
+<area shape="rect" id="node7" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="544,135,613,164"/>
+<area shape="rect" id="node9" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="349,5,408,35"/>
+<area shape="rect" id="node11" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="543,32,615,61"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="336,213,421,243"/>
+<area shape="rect" id="node15" href="$streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba" title="stream_copy_fd_table" alt="" coords="304,267,453,296"/>
+<area shape="rect" id="node17" href="$procvmm_8c.html#a7843d24c9ea30efc0d88c415cf256388" title="procvmm_copy_memory_map" alt="" coords="280,320,477,349"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="319,373,439,403"/>
+<area shape="rect" id="node23" href="$task__switch_8c.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="316,160,441,189"/>
+<area shape="rect" id="node27" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="329,477,428,507"/>
+</map>

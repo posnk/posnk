@@ -1,0 +1,4 @@
+<map id="i386_init_reserve_modules" name="i386_init_reserve_modules">
+<area shape="rect" id="node3" href="$physmm_8c.html#a1a03ac73b02ee6b7748256c9db0a4ef4" title="physmm_claim_range" alt="" coords="229,5,379,35"/>
+<area shape="rect" id="node5" href="$physmm_8c.html#a84c06c0742d5eeef6ad6c6201483b0ef" title="physmm_clear_bit" alt="" coords="427,5,555,35"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="procvmm_do_exec_mmaps" name="procvmm_do_exec_mmaps">
+<area shape="rect" id="node3" href="$procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="237,204,392,233"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="456,5,611,51"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="676,44,801,73"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="480,125,587,155"/>
+<area shape="rect" id="node11" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="712,203,765,232"/>
+<area shape="rect" id="node13" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="504,229,563,259"/>
+<area shape="rect" id="node17" href="$procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address." alt="" coords="441,283,625,312"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="483,336,584,365"/>
+<area shape="rect" id="node21" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="484,389,583,419"/>
+</map>

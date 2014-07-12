@@ -1,0 +1,49 @@
+<map id="llist_add_end" name="llist_add_end">
+<area shape="rect" id="node3" href="$streams_8h.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="211,57,296,87"/>
+<area shape="rect" id="node14" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="672,163,757,192"/>
+<area shape="rect" id="node19" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="209,399,297,428"/>
+<area shape="rect" id="node25" href="$blkcache_8h.html#ac28b13394fa1ed535737e375a702d0fa" title="blkcache_bump &#45; Notify the cache of the usage of a block" alt="" coords="197,452,309,481"/>
+<area shape="rect" id="node27" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="1264,536,1363,565"/>
+<area shape="rect" id="node34" href="$dbgapi_8h.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="404,599,569,628"/>
+<area shape="rect" id="node42" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="860,625,1009,655"/>
+<area shape="rect" id="node46" href="$drivermgr_8h.html#a0c043d3f70511f85137de2f7d17df869" title="drivermgr_register\l_device_driver" alt="" coords="191,734,316,781"/>
+<area shape="rect" id="node48" href="$drivermgr_8h.html#a34e2d9040b765559a41d58ece466ec87" title="drivermgr_register\l_interface_driver" alt="" coords="191,803,316,850"/>
+<area shape="rect" id="node53" href="$interrupt_8h.html#a902a3f129451ac2500394a638dcb051d" title="interrupt_register\l_handler" alt="" coords="195,873,312,919"/>
+<area shape="rect" id="node55" href="$stacktrc_8h.html#a5a8efcfa83e2202f34400caacacb34e4" title="kdbg/stacktrc.c" alt="" coords="191,631,316,660"/>
+<area shape="rect" id="node59" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="179,943,328,972"/>
+<area shape="rect" id="node75" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="192,996,315,1025"/>
+<area shape="rect" id="node77" href="$process_8h.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="183,1049,324,1079"/>
+<area shape="rect" id="node79" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="176,1103,331,1132"/>
+<area shape="rect" id="node81" href="$procvmm_8c.html#a397f5205b0e71a49ba2feb1f8f39fd9c" title="procvmm_mmap_copy_iterator" alt="" coords="153,1156,353,1185"/>
+<area shape="rect" id="node83" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="183,1209,324,1239"/>
+<area shape="rect" id="node85" href="$ramfs_8c.html#ac00e9b7316f12b39e02fb32526be062d" title="ramfs_link" alt="" coords="212,1263,295,1292"/>
+<area shape="rect" id="node87" href="$ramfs_8c.html#acb9c644b87c960581049f80b18182b8c" title="ramfs_trunc_inode" alt="" coords="189,1316,317,1345"/>
+<area shape="rect" id="node89" href="$ramfs_8c.html#af9a3972feb50efaacfbef6441721196d" title="ramfs_write_inode" alt="" coords="189,1369,317,1399"/>
+<area shape="rect" id="node91" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="200,1423,307,1452"/>
+<area shape="rect" id="node93" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="203,1476,304,1505"/>
+<area shape="rect" id="node95" href="$streams_8c.html#aa3106e5fbaa22fcc1be4d34082210937" title="stream_ptr_copy_iterator" alt="" coords="171,1529,336,1559"/>
+<area shape="rect" id="node97" href="$vfs_8h.html#a958c0c8e4b441808862e0911fbfc04be" title="Get an inode by it&#39;s ID." alt="" coords="203,320,304,349"/>
+<area shape="rect" id="node107" href="$vfs_8h.html#ac1913485037320335c4030439d537df8" title="Initialize the VFS layer." alt="" coords="207,1583,300,1612"/>
+<area shape="rect" id="node109" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="444,188,529,217"/>
+<area shape="rect" id="node112" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="208,1636,299,1665"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a9e29abc7702e850c4fe23dd86fc51139" title="_sys_dup" alt="" coords="448,31,525,60"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a0349abb01604f6c3a69996aa8905e186" title="_sys_fcntl" alt="" coords="673,5,756,35"/>
+<area shape="rect" id="node12" href="$sc__streams_8c.html#a93d9664737ea25e8c92ca304f7986d58" title="sys_dup2" alt="" coords="448,84,525,113"/>
+<area shape="rect" id="node9" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="884,96,985,125"/>
+<area shape="rect" id="node17" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="896,163,973,192"/>
+<area shape="rect" id="node21" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="449,399,524,428"/>
+<area shape="rect" id="node23" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="447,452,527,481"/>
+<area shape="rect" id="node29" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="1412,561,1545,591"/>
+<area shape="rect" id="node31" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="1595,536,1728,565"/>
+<area shape="rect" id="node36" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="1059,573,1216,603"/>
+<area shape="rect" id="node40" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="637,651,792,680"/>
+<area shape="rect" id="node50" href="$init_8c.html#a21fe5f3d36676f2354b03e07f878e825" title="ata_pci_register" alt="" coords="429,812,544,841"/>
+<area shape="rect" id="node61" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="420,943,553,972"/>
+<area shape="rect" id="node64" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="637,879,792,908"/>
+<area shape="rect" id="node67" href="$kdbgmm_8h.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="619,968,811,997"/>
+<area shape="rect" id="node71" href="$kdbgmm_8h.html#aa9bcfa313457de4f5d44bdb29e48167b" title="Releases a block of memory so it can be reallocated." alt="" coords="436,1047,537,1076"/>
+<area shape="rect" id="node73" href="$kdbgmm_8h.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="439,1100,535,1129"/>
+<area shape="rect" id="node99" href="$vfs_8h.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="439,241,535,271"/>
+<area shape="rect" id="node102" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="655,268,775,297"/>
+<area shape="rect" id="node104" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="417,345,556,375"/>
+</map>

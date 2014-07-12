@@ -1,0 +1,4 @@
+<map id="pci_config_write_long" name="pci_config_write_long">
+<area shape="rect" id="node3" href="$pci_8h.html#a5bf188f68bcb3c247456cb480415cf21" title="pci_config_write_byte" alt="" coords="203,5,349,35"/>
+<area shape="rect" id="node5" href="$pci_8h.html#a1cbc5de8852d89ca5e22b59ab2d3efc4" title="pci_config_write_short" alt="" coords="200,59,352,88"/>
+</map>

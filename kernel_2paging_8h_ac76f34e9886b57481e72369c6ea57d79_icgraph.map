@@ -1,0 +1,6 @@
+<map id="paging_create_dir" name="paging_create_dir">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="200,5,283,35"/>
+<area shape="rect" id="node7" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="179,59,304,88"/>
+<area shape="rect" id="node5" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="356,5,455,35"/>
+<area shape="rect" id="node9" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="352,59,459,88"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="debugcon_aputs" name="debugcon_aputs">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="188,84,308,113"/>
+<area shape="rect" id="node12" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="171,213,325,243"/>
+<area shape="rect" id="node5" href="$synch_8h.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="391,5,516,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="585,32,676,61"/>
+<area shape="rect" id="node10" href="$vgacon_8c.html#ae359bd608bac2333abb821c8c769af13" title="vgacon_handle_escape" alt="" coords="375,109,532,139"/>
+<area shape="rect" id="node14" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="581,187,680,216"/>
+<area shape="rect" id="node16" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="401,213,505,243"/>
+<area shape="rect" id="node19" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="387,267,520,296"/>
+<area shape="rect" id="node21" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="387,320,520,349"/>
+</map>

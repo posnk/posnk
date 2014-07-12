@@ -1,0 +1,7 @@
+<map id="i386_idt_initialize" name="i386_idt_initialize">
+<area shape="rect" id="node3" href="$idt_8c.html#a5018d8341f8c99f0509448e9c229311e" title="i386_idt_set_descriptor" alt="" coords="183,5,337,35"/>
+<area shape="rect" id="node7" href="$isr__entry_8h.html#a7c645725440864815c6ee9ecc53c2c86" title="i386_isr_entry_80h" alt="" coords="195,59,325,88"/>
+<area shape="rect" id="node9" href="$idt_8c.html#aae787cdb53ce1d99a9bc850a326dc6bf" title="i386_isr_entry_undefined" alt="" coords="177,112,343,141"/>
+<area shape="rect" id="node11" href="$idt_8c.html#abf973c2ecc36408c9a5f6b593dad7d0a" title="i386_load_idt" alt="" coords="211,165,309,195"/>
+<area shape="rect" id="node5" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="392,5,461,35"/>
+</map>

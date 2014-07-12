@@ -1,0 +1,51 @@
+<map id="heapmm_free_internal" name="heapmm_free_internal">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="387,29,544,59"/>
+<area shape="rect" id="node14" href="$heapmm_8h.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="221,1120,323,1149"/>
+<area shape="rect" id="node113" href="$heapmm_8h.html#a42b4201eaa2b3e98a0e456c42ae2ad94" title="Initializes the heap memory manager." alt="" coords="224,1173,320,1203"/>
+<area shape="rect" id="node115" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="205,820,339,849"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="840,396,933,425"/>
+<area shape="rect" id="node9" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="639,215,737,244"/>
+<area shape="rect" id="node12" href="$heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="592,81,784,111"/>
+<area shape="rect" id="node7" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="991,423,1092,452"/>
+<area shape="rect" id="node16" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="832,525,941,555"/>
+<area shape="rect" id="node18" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="423,859,508,888"/>
+<area shape="rect" id="node20" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="649,836,727,865"/>
+<area shape="rect" id="node22" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="843,629,931,659"/>
+<area shape="rect" id="node25" href="$blkcache_8h.html#a3b1f9f4db2e4045a8fe5c9904a053d20" title="blkcache_free &#45; Destroys a cache and releases all memory associated with it" alt="" coords="415,397,516,427"/>
+<area shape="rect" id="node27" href="$device_8h.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="615,396,761,425"/>
+<area shape="rect" id="node31" href="$syscall_8c.html#aff9334c02eb1357c9111f2e1a10aa001" title="debug_uputs" alt="" coords="417,912,513,941"/>
+<area shape="rect" id="node34" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="655,991,721,1020"/>
+<area shape="rect" id="node36" href="$ext2_8c.html#ac782b2a85c6cb5c53382826d70caacf2" title="ext2_finddir" alt="" coords="644,1095,732,1124"/>
+<area shape="rect" id="node38" href="$ext2_8c.html#aa07082a43b21cfc51b09dfc68acf152a" title="ext2_free_bgd" alt="" coords="413,1173,517,1203"/>
+<area shape="rect" id="node40" href="$ext2_8c.html#a3599ddb5bac9a8256c5d5e1138c3890b" title="ext2_load_bgd" alt="" coords="412,1227,519,1256"/>
+<area shape="rect" id="node42" href="$ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="420,1280,511,1309"/>
+<area shape="rect" id="node44" href="$ext2_8c.html#a05642123cdb3aacdc16ebd7440281348" title="ext2_readdir" alt="" coords="419,1120,512,1149"/>
+<area shape="rect" id="node47" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="404,1333,527,1363"/>
+<area shape="rect" id="node49" href="$pipe_8h.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="644,655,732,684"/>
+<area shape="rect" id="node52" href="$pipe_8h.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="651,551,725,580"/>
+<area shape="rect" id="node56" href="$pipe_8h.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="427,1387,504,1416"/>
+<area shape="rect" id="node58" href="$process_8h.html#a12de0ee1167ada9c9fc6778a679b1a16" title="process_absorb_event" alt="" coords="389,1440,541,1469"/>
+<area shape="rect" id="node60" href="$process_8h.html#a5f9014eb9739f05a53c41265055292dc" title="process_reap" alt="" coords="639,708,737,737"/>
+<area shape="rect" id="node62" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="388,1493,543,1523"/>
+<area shape="rect" id="node64" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="395,1016,536,1045"/>
+<area shape="rect" id="node67" href="$process_8h.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="399,1547,532,1576"/>
+<area shape="rect" id="node69" href="$ramfs_8c.html#acb9c644b87c960581049f80b18182b8c" title="ramfs_trunc_inode" alt="" coords="401,1600,529,1629"/>
+<area shape="rect" id="node71" href="$ramfs_8c.html#a2a1e581e5291ffff9a2921e0c6a3e4cf" title="ramfs_unlink" alt="" coords="417,1653,513,1683"/>
+<area shape="rect" id="node73" href="$task__switch_8c.html#a846408533d7477fc321bb74b88942129" title="scheduler_exsig" alt="" coords="408,1707,523,1736"/>
+<area shape="rect" id="node75" href="$synch_8h.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="408,603,523,632"/>
+<area shape="rect" id="node82" href="$syscall_8h.html#a6445c4088d5d956b36a0c8c1e638af87" title="sys_chdir" alt="" coords="427,1760,504,1789"/>
+<area shape="rect" id="node84" href="$syscall_8h.html#aa029b9e6ea949765f08203e68e66a7a9" title="sys_chmod" alt="" coords="421,1813,509,1843"/>
+<area shape="rect" id="node86" href="$syscall_8h.html#aabe150ad1d04c50d94110778087b5cc9" title="sys_chown" alt="" coords="421,1867,509,1896"/>
+<area shape="rect" id="node88" href="$syscall_8h.html#acaf5f124566c234a14e7cafa5471bcd0" title="sys_execve" alt="" coords="420,1920,511,1949"/>
+<area shape="rect" id="node90" href="$sc__streams_8c.html#a5125979bb691e68b06787680fc1e6f59" title="sys_fstat" alt="" coords="428,1973,503,2003"/>
+<area shape="rect" id="node92" href="$syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17" title="sys_getdents" alt="" coords="416,2027,515,2056"/>
+<area shape="rect" id="node94" href="$syscall_8h.html#a035259bafdc828ac2fe323ee657d6de9" title="sys_link" alt="" coords="431,2080,500,2109"/>
+<area shape="rect" id="node96" href="$syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9" title="sys_lstat" alt="" coords="428,2133,503,2163"/>
+<area shape="rect" id="node98" href="$syscall_8h.html#a8397464d241949d57679d42b28e17c39" title="sys_mkdir" alt="" coords="424,2187,507,2216"/>
+<area shape="rect" id="node100" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="421,2240,509,2269"/>
+<area shape="rect" id="node102" href="$syscall_8h.html#a9d19cbcb64ed126b4ea42e53a5ceef52" title="sys_mount" alt="" coords="423,2293,508,2323"/>
+<area shape="rect" id="node105" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="428,83,503,112"/>
+<area shape="rect" id="node107" href="$syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f" title="sys_readlink" alt="" coords="419,136,512,165"/>
+<area shape="rect" id="node109" href="$syscall_8h.html#a7f48b00d2089d7021cc6a62e8c56b331" title="sys_rmdir" alt="" coords="427,189,504,219"/>
+<area shape="rect" id="node111" href="$syscall_8h.html#a007358ce4b84fdf7a22af6652eab9c4d" title="sys_stat" alt="" coords="429,243,501,272"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="stream_do_close_on_exec" name="stream_do_close_on_exec">
+<area shape="rect" id="node3" href="$streams_8c.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="260,5,348,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="241,59,367,88"/>
+<area shape="rect" id="node9" href="$streams_8c.html#a886117f8be20d554d40ba6b296e9af54" title="stream_exec_iterator" alt="" coords="232,112,376,141"/>
+<area shape="rect" id="node5" href="$streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="424,5,533,35"/>
+</map>

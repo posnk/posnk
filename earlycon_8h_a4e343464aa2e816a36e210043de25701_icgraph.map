@@ -1,0 +1,5 @@
+<map id="earlycon_putc" name="earlycon_putc">
+<area shape="rect" id="node3" href="$earlycon_8h.html#ab2169cb63461fe4a8987918e24878251" title="earlycon_aputs" alt="" coords="159,32,268,61"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#a0cc80a37a9c074ead277042523d9eb86" title="earlycon_aprintf" alt="" coords="337,5,452,35"/>
+<area shape="rect" id="node7" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="317,59,472,88"/>
+</map>

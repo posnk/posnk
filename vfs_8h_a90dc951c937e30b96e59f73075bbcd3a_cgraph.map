@@ -1,0 +1,15 @@
+<map id="vfs_find_dirc" name="vfs_find_dirc">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="333,5,440,35"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="688,57,789,87"/>
+<area shape="rect" id="node12" href="$string_8c.html#afcd97f487174f9092b0f23c7ac78a55a" title="strchr" alt="" coords="191,109,244,139"/>
+<area shape="rect" id="node14" href="$string_8c.html#a5fdc439a5a6dd1801a86701d54552a63" title="strchrnul" alt="" coords="181,163,253,192"/>
+<area shape="rect" id="node16" href="$string_8c.html#a6666865e6caf66fd05d4b8bd6c074cd2" title="strncmp" alt="" coords="183,216,252,245"/>
+<area shape="rect" id="node18" href="$string_8c.html#a47d54f24198df56da51078a6c540b9ed" title="strncpy" alt="" coords="185,269,249,299"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="488,321,640,351"/>
+<area shape="rect" id="node24" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="151,373,284,403"/>
+<area shape="rect" id="node29" href="$vfs_8c.html#a489abb04eb8e74a3f11a0a20f32a845c" title="Find a directory entry." alt="" coords="164,427,271,456"/>
+<area shape="rect" id="node31" href="$vfs_8c.html#a958c0c8e4b441808862e0911fbfc04be" title="Get an inode by it&#39;s ID." alt="" coords="167,480,268,509"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="1037,32,1192,61"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="839,57,988,87"/>
+<area shape="rect" id="node26" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="333,373,440,403"/>
+</map>

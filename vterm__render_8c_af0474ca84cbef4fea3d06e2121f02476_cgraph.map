@@ -1,0 +1,9 @@
+<map id="vterm_render_ctrl_char" name="vterm_render_ctrl_char">
+<area shape="rect" id="node3" href="$vterm__escape_8c.html#aa3b1349da344da63d8afbfd356d0e039" title="vterm_escape_cancel" alt="" coords="208,5,357,35"/>
+<area shape="rect" id="node5" href="$vterm__escape_8c.html#a7c23f18f24a199457200cf483fa887c1" title="vterm_escape_start" alt="" coords="215,59,351,88"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a271bdefb4b6a8e260cf72c9b3aaf9584" title="vterm_handle_bell" alt="" coords="220,112,345,141"/>
+<area shape="rect" id="node9" href="$vterm__render_8c.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="227,165,339,195"/>
+<area shape="rect" id="node15" href="$vterm__scroll_8c.html#ab07c6f12ecf530effcba746a607c505b" title="vterm_scroll_down" alt="" coords="412,217,543,247"/>
+<area shape="rect" id="node11" href="$string_8c.html#afcd97f487174f9092b0f23c7ac78a55a" title="strchr" alt="" coords="451,111,504,140"/>
+<area shape="rect" id="node13" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="405,164,549,193"/>
+</map>

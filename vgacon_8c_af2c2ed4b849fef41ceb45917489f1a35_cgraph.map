@@ -1,0 +1,9 @@
+<map id="vgacon_putc" name="vgacon_putc">
+<area shape="rect" id="node3" href="$vgacon_8c.html#ae359bd608bac2333abb821c8c769af13" title="vgacon_handle_escape" alt="" coords="151,85,308,115"/>
+<area shape="rect" id="node11" href="$vgacon_8c.html#a95e8f15681cc88ffa15adb2b181e3df8" title="vgacon_move_cursor" alt="" coords="156,152,303,181"/>
+<area shape="rect" id="node15" href="$vgacon_8c.html#af7b608892962e06880a354c91ab9ccdf" title="Write character to text buffer and move cursor." alt="" coords="179,205,280,235"/>
+<area shape="rect" id="node5" href="$earlycon_8c.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="387,5,507,35"/>
+<area shape="rect" id="node7" href="$vgacon_8c.html#a5861ab93fa1cf931519a0def56cf336f" title="vgacon_handle_sgr" alt="" coords="380,59,513,88"/>
+<area shape="rect" id="node9" href="$vgacon_8c.html#af06cd0588cd48a44da608445a8b5abb5" title="vgacon_parse_par" alt="" coords="383,112,511,141"/>
+<area shape="rect" id="node13" href="$vgacon_8c.html#ab979f6af999f6d09c7ae3b9eabe331ab" title="vgacon_write_crtc_register" alt="" coords="357,165,536,195"/>
+</map>

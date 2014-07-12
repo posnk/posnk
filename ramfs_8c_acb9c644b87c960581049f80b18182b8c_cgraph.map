@@ -1,0 +1,8 @@
+<map id="ramfs_trunc_inode" name="ramfs_trunc_inode">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="356,5,463,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="736,57,805,87"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="184,59,285,88"/>
+<area shape="rect" id="node15" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="561,109,660,139"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="533,5,688,35"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="335,59,484,88"/>
+</map>

@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('streams_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,18 +101,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">streams.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="streams_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html">kernel/vfs.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html" title="Exposes the VFS API.">kernel/vfs.h</a>&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pipe_8h.html">kernel/pipe.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="llist_8h.html">util/llist.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">sys/types.h</a>&gt;</span></div>
@@ -119,7 +136,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="structstream__info.html#a554bcbd7e292fd136f4ac6190156d209">   37</a></span>&#160;        <span class="keywordtype">int</span>              <a class="code" href="structstream__info.html#a554bcbd7e292fd136f4ac6190156d209">flags</a>;</div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="structstream__info.html#a12d0bac40d8ec9b506a36c96e8f012a7">   38</a></span>&#160;        <a class="code" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>           <a class="code" href="structstream__info.html#a12d0bac40d8ec9b506a36c96e8f012a7">offset</a>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno"><a class="code" href="structstream__info.html#a5decda0a8d0fc9d61740d0fd08b08519">   39</a></span>&#160;        <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a>         *<a class="code" href="structstream__info.html#a5decda0a8d0fc9d61740d0fd08b08519">inode</a>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="structstream__info.html#a15fdb9da43e3e375ef0a490c7789cbed">   40</a></span>&#160;        <a class="code" href="structdir__cache.html">dir_cache_t</a>     *<a class="code" href="structstream__info.html#a15fdb9da43e3e375ef0a490c7789cbed">dirc</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="structstream__info.html#a15fdb9da43e3e375ef0a490c7789cbed">   40</a></span>&#160;        <a class="code" href="structdir__cache.html" title="An entry in the path element cache The kernel keeps track of these to resolve the ...">dir_cache_t</a>     *<a class="code" href="structstream__info.html#a15fdb9da43e3e375ef0a490c7789cbed">dirc</a>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="structstream__info.html#a47effc14102548f922692dcf91fc2494">   41</a></span>&#160;        <a class="code" href="synch_8h.html#af1d92288e7a28476c17ed043164b535d" title="kernel/synch.h">semaphore_t</a>     *<a class="code" href="structstream__info.html#a47effc14102548f922692dcf91fc2494">lock</a>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="structstream__info.html#a01d64bb9d42cb9b372d77de10d468d4f">   42</a></span>&#160;        <a class="code" href="structpipe__info.html">pipe_info_t</a>     *<a class="code" href="structstream__info.html#a01d64bb9d42cb9b372d77de10d468d4f">pipe</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
@@ -140,7 +157,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a769dcca95c6f80cd662fc28f0d581aef">_sys_fchdir</a>(<span class="keywordtype">int</span> fd);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd">_sys_fchmod</a>(<span class="keywordtype">int</span> fd, <a class="code" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> <a class="code" href="ext2_8h.html#af294e94ca5176720ef5e5cbedc95ca47">mode</a>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd">_sys_fchmod</a>(<span class="keywordtype">int</span> fd, <a class="code" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> mode);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a9e340ed6aa36497a4150f75b9c0c193f">_sys_fchown</a>(<span class="keywordtype">int</span> fd, <a class="code" href="types_8h.html#a75bb141dc55bc89a8ddc565fd374e3d9">uid_t</a> owner, <a class="code" href="types_8h.html#a3a7834be1a79bb0c5a65d3546c2e3bd8">gid_t</a> group);</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
@@ -152,9 +169,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>(<span class="keywordtype">int</span> oldfd);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#aa47253a2ed38cacde66dd0c8aabdcd21">_sys_pipe2</a>(<span class="keywordtype">int</span> pipefd[2], <span class="keywordtype">int</span> <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#aa47253a2ed38cacde66dd0c8aabdcd21">_sys_pipe2</a>(<span class="keywordtype">int</span> pipefd[2], <span class="keywordtype">int</span> flags);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a5f58feff0214b638bff817867024ca19">_sys_open</a>(<span class="keywordtype">char</span> *path, <span class="keywordtype">int</span> <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>, <a class="code" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> <a class="code" href="ext2_8h.html#af294e94ca5176720ef5e5cbedc95ca47">mode</a>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a5f58feff0214b638bff817867024ca19">_sys_open</a>(<span class="keywordtype">char</span> *path, <span class="keywordtype">int</span> flags, <a class="code" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> mode);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a53ce56639070e380089a734e16f15830">_sys_close</a>(<span class="keywordtype">int</span> fd);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
@@ -164,15 +181,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>(<a class="code" href="structprocess__info.html">process_info_t</a> *process, <span class="keywordtype">int</span> fd);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">int</span> <a class="code" href="sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a">_sys_truncate</a>(<span class="keywordtype">int</span> fd, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">int</span> <a class="code" href="sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a">_sys_truncate</a>(<span class="keywordtype">int</span> fd, <a class="code" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> size);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="streams_8h.html">streams.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

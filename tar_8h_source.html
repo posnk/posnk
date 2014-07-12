@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('tar_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">tar.h</div>  </div>
@@ -117,23 +134,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="code" href="structtar__header.html#a39a051e392f9101489eafc64b60e1ca0">   36</a></span>&#160;  <span class="keywordtype">char</span> <a class="code" href="structtar__header.html#a39a051e392f9101489eafc64b60e1ca0">devminor</a>[8];             <span class="comment">/* 337 */</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="structtar__header.html#ae5e30bdc4acba29e2699ebd70f7dbfbd">   37</a></span>&#160;  <span class="keywordtype">char</span> <a class="code" href="structtar__header.html#ae5e30bdc4acba29e2699ebd70f7dbfbd">prefix</a>[167];             <span class="comment">/* 345 */</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                                <span class="comment">/* 500 */</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="code" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">   40</a></span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;} __attribute__((packed));</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="tar_8h.html#a11c795c2f07bef8b0052132b0f0f2e3c">   41</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structtar__header.html" title="kernel/tar.h">tar_header</a> <a class="code" href="structtar__header.html" title="kernel/tar.h">tar_header_t</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="tar_8h.html#ac3087d42269e924157fba173cdcfa615">   42</a></span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="tar_8h.html#a59ed567b74e97bf17f583a82b9f5930f">   43</a></span>&#160;<span class="preprocessor">#define TMAGIC   &quot;ustar&quot;        </span><span class="comment">/* ustar and a null */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="tar_8h.html#a704c4bb08c5c7e1ae92fe882c50d37a1">   44</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TMAGLEN  6</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno"><a class="code" href="tar_8h.html#ac85f71ccd008c239db747feb8ad74c4a">   45</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TVERSION &quot;00&quot;           </span><span class="comment">/* 00 and no null */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="tar_8h.html#a0ea3e1f11e45b223b1f3819a9eeff365">   46</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define TVERSLEN 2</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="tar_8h.html#a50efaf1bb13addc723bc7ba7d6988f2e">   47</a></span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="tar_8h.html#aab9766d73bb8c3f486b081e191302ba8">   48</a></span>&#160;<span class="comment">/* Values used in typeflag field.  */</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">/* Values used in typeflag field.  */</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="tar_8h.html#ab281a9968505af6a7fd8e1ab5d644315">   49</a></span>&#160;<span class="preprocessor">#define REGTYPE  &#39;0&#39;            </span><span class="comment">/* regular file */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="tar_8h.html#a981934c8bf4be1b7c2f3a93f998ef9c0">   50</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define AREGTYPE &#39;\0&#39;           </span><span class="comment">/* regular file */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="tar_8h.html#a76f22ff4b5f957a39c9193ac9c143d95">   51</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define LNKTYPE  &#39;1&#39;            </span><span class="comment">/* link */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="tar_8h.html#ae3da8143ed9aec1cc70676b0cfed43b9">   50</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define AREGTYPE &#39;\0&#39;           </span><span class="comment">/* regular file */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="tar_8h.html#abed033f8c958d678ca08d012280c035b">   51</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define LNKTYPE  &#39;1&#39;            </span><span class="comment">/* link */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="code" href="tar_8h.html#acc0fdf064ea6654c0b3d7b3387532b3a">   52</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define SYMTYPE  &#39;2&#39;            </span><span class="comment">/* reserved */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="tar_8h.html#aa5878423f62a3a211035bc9d0ca9a325">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CHRTYPE  &#39;3&#39;            </span><span class="comment">/* character special */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="tar_8h.html#a5f82ae95a2185b5fad3975da2fedb71c">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BLKTYPE  &#39;4&#39;            </span><span class="comment">/* block special */</span><span class="preprocessor"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="tar_8h.html#a974786a01888a505b62e99a72560b0d6">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DIRTYPE  &#39;5&#39;            </span><span class="comment">/* directory */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="tar_8h.html#a28dd96209b4a46bc54a1dcc6c2d7e509">   53</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CHRTYPE  &#39;3&#39;            </span><span class="comment">/* character special */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="tar_8h.html#a0e5080c4d2f99d8b450c9641e7a2d782">   54</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BLKTYPE  &#39;4&#39;            </span><span class="comment">/* block special */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="code" href="tar_8h.html#a0e3302f58f5dc2351bf9652780d67817">   55</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define DIRTYPE  &#39;5&#39;            </span><span class="comment">/* directory */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00056"></a><span class="lineno"><a class="code" href="tar_8h.html#a31210800d51897e555db2ab0fe3dd877">   56</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define FIFOTYPE &#39;6&#39;            </span><span class="comment">/* FIFO special */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="tar_8h.html#a26cf8d896ecbc3cf464f476f15128bf4">   57</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define CONTTYPE &#39;7&#39;            </span><span class="comment">/* reserved */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor"></span></div>
@@ -145,11 +162,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tar_8c.html#ada2334eab3a4cd42b7ea2a267b2f0848">tar_extract_mem</a>(<span class="keywordtype">void</span> *data);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="tar_8h.html">tar.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

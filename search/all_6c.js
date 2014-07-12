@@ -1,7 +1,7 @@
 var searchData=
 [
   ['large_20cd_20image',['Large CD image',['../large.html',1,'downloads']]],
-  ['last_5fmountpoint',['last_mountpoint',['../structext2__superblock.html#a97f8566f10a1cf66efb9c8749466e23f',1,'ext2_superblock::last_mountpoint()'],['../ext2_8h.html#abd46727ea46a884f4197dd94f58604fb',1,'last_mountpoint():&#160;ext2.h']]],
+  ['last_5fmountpoint',['last_mountpoint',['../structext2__superblock.html#a97f8566f10a1cf66efb9c8749466e23f',1,'ext2_superblock']]],
   ['last_5fsignal',['last_signal',['../structprocess__info.html#ada39c3a1e69f3fc322f3dbe9a8b2aa63',1,'process_info']]],
   ['lba_5fmode',['lba_mode',['../structata__drive.html#ab0861c8c91c5f1326faff3e707e13a58',1,'ata_drive']]],
   ['ldiv_5ft',['ldiv_t',['../structldiv__t.html',1,'']]],
@@ -15,9 +15,9 @@ var searchData=
   ['line_5fbuffer_5fpos',['line_buffer_pos',['../structtty__info.html#a3bbc37ed4e9c285924631b575dbc615a',1,'tty_info']]],
   ['line_5fbuffer_5fsize',['line_buffer_size',['../structtty__info.html#a9bf28d2f596d8f68e355cee8856eb596',1,'tty_info']]],
   ['link',['link',['../structkdbg__heap__use.html#a84cfd1fbbef7287671dc2bf7aa461855',1,'kdbg_heap_use::link()'],['../structkdbg__calltrace.html#a4c3d44eed521b328544bf5bfa988eba3',1,'kdbg_calltrace::link()'],['../structblkcache__entry.html#aeeaf0c3f488b38e142c743353673f5d4',1,'blkcache_entry::link()'],['../structdrivermgr__device__driver.html#ad7250d190161ad3720e02afcbd943ff2',1,'drivermgr_device_driver::link()'],['../structdrivermgr__interface__driver.html#acd7c12ec4ecdf3b04530aa62d0787ffc',1,'drivermgr_interface_driver::link()'],['../structinterrupt__handler__s.html#a9a6c448ab29faab30a4261dc15bdac95',1,'interrupt_handler_s::link()'],['../structfs__device__operations.html#a063d2ae50d3a2e8c9b18222dab4a9266',1,'fs_device_operations::link()']]],
-  ['link_5fcount',['link_count',['../structext2__inode.html#a914bc0ee196623dc008e3b9f34a22b6c',1,'ext2_inode::link_count()'],['../ext2_8h.html#a4a684a227f2b100ec54a9604ce687f30',1,'link_count():&#160;ext2.h']]],
+  ['link_5fcount',['link_count',['../structext2__inode.html#a914bc0ee196623dc008e3b9f34a22b6c',1,'ext2_inode']]],
   ['link_5fpath',['link_path',['../structinode.html#a1b946d6c660592a1e1271ace59dbfddd',1,'inode']]],
-  ['linkname',['linkname',['../structtar__header.html#a0f87c06d6b8eec283fb0a5f2482053d9',1,'tar_header::linkname()'],['../tar_8h.html#aab9766d73bb8c3f486b081e191302ba8',1,'linkname():&#160;tar.h']]],
+  ['linkname',['linkname',['../structtar__header.html#a0f87c06d6b8eec283fb0a5f2482053d9',1,'tar_header']]],
   ['llist',['llist',['../structllist.html',1,'']]],
   ['llist_2ec',['llist.c',['../llist_8c.html',1,'']]],
   ['llist_2eh',['llist.h',['../llist_8h.html',1,'']]],

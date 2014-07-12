@@ -1,0 +1,10 @@
+<map id="vfs_read" name="vfs_read">
+<area shape="rect" id="node3" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="161,5,244,35"/>
+<area shape="rect" id="node7" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="169,59,236,88"/>
+<area shape="rect" id="node11" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="127,112,279,141"/>
+<area shape="rect" id="node15" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="147,165,259,195"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="360,5,435,35"/>
+<area shape="rect" id="node9" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="347,59,448,88"/>
+<area shape="rect" id="node13" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="329,112,465,141"/>
+<area shape="rect" id="node17" href="$tar_8h.html#a7bdab331782ae375d3b2b7de0d4ed49d" title="tar_extract" alt="" coords="356,165,439,195"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="i386_pic_send_command" name="i386_pic_send_command">
+<area shape="rect" id="node3" href="$include_2arch_2i386_2pic_8h.html#acc109e1a0dc80531844acb9d586e6cbc" title="Initialize pic." alt="" coords="253,5,376,35"/>
+<area shape="rect" id="node5" href="$include_2arch_2i386_2pic_8h.html#a6dccb6b78ad858a4573b1b26a7b73640" title="i386_send_end_of_interrupt" alt="" coords="224,59,405,88"/>
+</map>

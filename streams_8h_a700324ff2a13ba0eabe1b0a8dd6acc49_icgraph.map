@@ -1,0 +1,8 @@
+<map id="_sys_close_int" name="_sys_close_int">
+<area shape="rect" id="node3" href="$streams_8h.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="189,72,277,101"/>
+<area shape="rect" id="node11" href="$streams_8h.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="163,139,304,168"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="399,5,484,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#aa17c760186bd4ebee3bd6bc632279154" title="stream_do_close_on_exec" alt="" coords="353,59,529,88"/>
+<area shape="rect" id="node9" href="$sc__streams_8c.html#a719db2838733805862e62a7ef0e8e7f6" title="sys_close" alt="" coords="401,112,481,141"/>
+<area shape="rect" id="node13" href="$process_8h.html#a5f9014eb9739f05a53c41265055292dc" title="process_reap" alt="" coords="392,165,491,195"/>
+</map>

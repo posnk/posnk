@@ -1,0 +1,22 @@
+<map id="_sys_write" name="_sys_write">
+<area shape="rect" id="node3" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="345,596,425,626"/>
+<area shape="rect" id="node15" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="533,426,640,455"/>
+<area shape="rect" id="node17" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="699,72,843,102"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="525,174,648,203"/>
+<area shape="rect" id="node24" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="139,700,248,730"/>
+<area shape="rect" id="node29" href="$vfs_8c.html#a522e8a4f7dfc7d3a6994313d2d746a82" title="Write data to a file." alt="" coords="156,358,231,387"/>
+<area shape="rect" id="node5" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="551,332,623,362"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="524,558,649,587"/>
+<area shape="rect" id="node9" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="705,414,836,443"/>
+<area shape="rect" id="node11" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="891,414,965,443"/>
+<area shape="rect" id="node13" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="1015,648,1140,678"/>
+<area shape="rect" id="node27" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="297,751,473,780"/>
+<area shape="rect" id="node31" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="319,172,452,202"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="309,279,461,308"/>
+<area shape="rect" id="node37" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="332,383,439,412"/>
+<area shape="rect" id="node39" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="351,436,420,466"/>
+<area shape="rect" id="node41" href="$vfs_8c.html#a807b9f2f00baf5e47097fb6b599761b9" title="Write data to a file from backing storage." alt="" coords="337,490,433,519"/>
+<area shape="rect" id="node43" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="335,543,436,572"/>
+<area shape="rect" id="node46" href="$chardev_8c.html#a6c83c5a4f3e0c344dfc902ae3e687484" title="device_char_write" alt="" coords="323,68,448,98"/>
+<area shape="rect" id="node48" href="$blkdev_8c.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="319,226,452,255"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="_sys_fchdir" name="_sys_fchdir">
+<area shape="rect" id="node3" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="144,32,253,61"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="328,5,453,35"/>
+<area shape="rect" id="node7" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="303,59,479,88"/>
+</map>

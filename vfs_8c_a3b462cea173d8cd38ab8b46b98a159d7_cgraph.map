@@ -1,0 +1,17 @@
+<map id="vfs_read" name="vfs_read">
+<area shape="rect" id="node3" href="$blkdev_8c.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="136,113,267,143"/>
+<area shape="rect" id="node11" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="349,5,472,35"/>
+<area shape="rect" id="node13" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="357,165,464,195"/>
+<area shape="rect" id="node15" href="$chardev_8c.html#a3468d83984a097533165337248dfe2c6" title="device_char_read" alt="" coords="140,217,263,247"/>
+<area shape="rect" id="node17" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="161,271,241,300"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="135,324,268,353"/>
+<area shape="rect" id="node29" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="125,377,277,407"/>
+<area shape="rect" id="node35" href="$vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67" title="Read data from a file from backing storage." alt="" coords="155,431,248,460"/>
+<area shape="rect" id="node5" href="$blkcache_8c.html#a70e74e7691382d33032fda7f1eed71ab" title="blkcache_find &#45; Get a block from the cache" alt="" coords="360,112,461,141"/>
+<area shape="rect" id="node7" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="344,59,477,88"/>
+<area shape="rect" id="node9" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="375,219,447,248"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="348,272,473,301"/>
+<area shape="rect" id="node27" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="357,325,464,355"/>
+<area shape="rect" id="node31" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="353,432,468,461"/>
+<area shape="rect" id="node33" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="325,379,496,408"/>
+</map>

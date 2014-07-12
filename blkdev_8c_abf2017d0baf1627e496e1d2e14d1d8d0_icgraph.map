@@ -1,0 +1,5 @@
+<map id="device_block_flush" name="device_block_flush">
+<area shape="rect" id="node3" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="188,7,321,36"/>
+<area shape="rect" id="node7" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="371,59,504,88"/>
+<area shape="rect" id="node5" href="$device_8h.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="372,5,503,35"/>
+</map>

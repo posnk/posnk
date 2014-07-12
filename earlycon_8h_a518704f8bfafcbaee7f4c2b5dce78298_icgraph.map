@@ -1,0 +1,8 @@
+<map id="earlycon_vsprintf" name="earlycon_vsprintf">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="177,57,297,87"/>
+<area shape="rect" id="node12" href="$earlycon_8h.html#a0cc80a37a9c074ead277042523d9eb86" title="earlycon_aprintf" alt="" coords="180,111,295,140"/>
+<area shape="rect" id="node14" href="$earlycon_8h.html#a368d84608b62c09b5e4fdffae75dc8ec" title="earlycon_sprintf" alt="" coords="180,164,295,193"/>
+<area shape="rect" id="node5" href="$synch_8h.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="364,5,489,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="555,32,645,61"/>
+<area shape="rect" id="node10" href="$vgacon_8c.html#ae359bd608bac2333abb821c8c769af13" title="vgacon_handle_escape" alt="" coords="348,109,505,139"/>
+</map>

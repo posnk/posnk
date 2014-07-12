@@ -1,0 +1,19 @@
+<map id="paging_create_dir" name="paging_create_dir">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="427,32,533,61"/>
+<area shape="rect" id="node9" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="893,56,963,85"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a7c0a917d74eb74aa01007d83165dbfcb" title="Allocates a new page of heap space to the caller." alt="" coords="409,570,551,600"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="207,185,308,214"/>
+<area shape="rect" id="node22" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="671,237,769,266"/>
+<area shape="rect" id="node24" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="200,566,315,596"/>
+<area shape="rect" id="node27" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="407,410,553,440"/>
+<area shape="rect" id="node29" href="$arch_2i386_2paging_8h.html#ac596c3cfa12ef6060abbf092f066a5a0" title="i386_phys_copy_frame" alt="" coords="180,444,335,473"/>
+<area shape="rect" id="node33" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="188,496,327,543"/>
+<area shape="rect" id="node35" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="407,340,553,387"/>
+<area shape="rect" id="node37" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="212,289,303,318"/>
+<area shape="rect" id="node44" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="180,670,335,716"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="643,133,797,162"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="865,237,991,266"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="624,570,816,600"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="405,185,555,214"/>
+<area shape="rect" id="node47" href="$procvmm_8c.html#ab80b641c27611fc112ea7919aec0e89b" title="Iterator function that finds the mmap for the given address." alt="" coords="385,678,575,708"/>
+</map>

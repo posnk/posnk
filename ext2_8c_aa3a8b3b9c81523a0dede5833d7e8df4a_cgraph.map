@@ -1,0 +1,8 @@
+<map id="ext2_e2tovfs_inode" name="ext2_e2tovfs_inode">
+<area shape="rect" id="node3" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="189,5,309,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="196,59,303,88"/>
+<area shape="rect" id="node9" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="220,112,279,141"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="357,5,464,35"/>
+<area shape="rect" id="node11" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="375,85,447,115"/>
+<area shape="rect" id="node13" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="384,139,437,168"/>
+</map>

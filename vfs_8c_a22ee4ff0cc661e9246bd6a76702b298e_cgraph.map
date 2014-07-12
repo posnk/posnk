@@ -1,0 +1,29 @@
+<map id="vfs_mkdir" name="vfs_mkdir">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="297,5,420,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="305,317,412,347"/>
+<area shape="rect" id="node9" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="305,1000,412,1029"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="304,477,413,507"/>
+<area shape="rect" id="node30" href="$vfs_8c.html#a84da51813b69ed18851aa4151e982949" title="Create directory structures on backing storage." alt="" coords="135,788,233,817"/>
+<area shape="rect" id="node32" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="141,684,227,713"/>
+<area shape="rect" id="node69" href="$vfs_8c.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="144,291,224,320"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="487,5,617,35"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="669,811,821,840"/>
+<area shape="rect" id="node16" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="504,916,600,945"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="869,837,971,867"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="692,1051,799,1080"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="483,863,621,892"/>
+<area shape="rect" id="node38" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="283,424,435,453"/>
+<area shape="rect" id="node40" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="324,893,393,923"/>
+<area shape="rect" id="node42" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="523,316,581,345"/>
+<area shape="rect" id="node44" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="719,316,772,345"/>
+<area shape="rect" id="node47" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="523,605,581,635"/>
+<area shape="rect" id="node50" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="492,1103,612,1132"/>
+<area shape="rect" id="node53" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="315,1155,403,1184"/>
+<area shape="rect" id="node58" href="$vfs_8c.html#a5956d43ee65c457df7b078217e1aaadb" title="Push a new inode to backing storage." alt="" coords="305,947,412,976"/>
+<area shape="rect" id="node60" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="309,787,408,816"/>
+<area shape="rect" id="node62" href="$vfs_8c.html#a3430f50453f987084b69ea3a8f71878e" title="Create a directory entry on backing storage." alt="" coords="315,840,403,869"/>
+<area shape="rect" id="node64" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="317,531,400,560"/>
+<area shape="rect" id="node66" href="$vfs_8c.html#a4319ae3d06feb2038802df445ab1489f" title="Remove an inode from backing storage." alt="" coords="307,371,411,400"/>
+<area shape="rect" id="node71" href="$vfs_8c.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="299,264,419,293"/>
+<area shape="rect" id="node84" href="$vfs_8c.html#a90b9d075b4018a646b378da9610064db" title="Delete a directory entry from backing storage." alt="" coords="308,109,409,139"/>
+</map>

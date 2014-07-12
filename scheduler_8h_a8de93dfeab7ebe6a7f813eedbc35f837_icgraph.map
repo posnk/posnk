@@ -1,0 +1,24 @@
+<map id="scheduler_wait_on" name="scheduler_wait_on">
+<area shape="rect" id="node3" href="$synch_8h.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="187,552,309,581"/>
+<area shape="rect" id="node46" href="$synch_8h.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="185,109,311,139"/>
+<area shape="rect" id="node5" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="391,317,463,347"/>
+<area shape="rect" id="node7" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="389,371,464,400"/>
+<area shape="rect" id="node9" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="360,264,493,293"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="559,264,633,293"/>
+<area shape="rect" id="node13" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="699,212,784,241"/>
+<area shape="rect" id="node15" href="$device_8h.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="361,475,492,504"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="560,423,632,452"/>
+<area shape="rect" id="node19" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="700,423,783,452"/>
+<area shape="rect" id="node21" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="543,761,649,791"/>
+<area shape="rect" id="node25" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="543,865,649,895"/>
+<area shape="rect" id="node27" href="$streams_8h.html#a964f6b4cf457ce4fe771d7a4367f0585" title="_sys_lseek" alt="" coords="383,944,471,973"/>
+<area shape="rect" id="node29" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="372,997,481,1027"/>
+<area shape="rect" id="node33" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="379,787,475,816"/>
+<area shape="rect" id="node36" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="380,891,473,920"/>
+<area shape="rect" id="node39" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="557,604,635,633"/>
+<area shape="rect" id="node41" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="387,629,467,659"/>
+<area shape="rect" id="node44" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="393,683,460,712"/>
+<area shape="rect" id="node48" href="$pipe_8h.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="387,160,467,189"/>
+<area shape="rect" id="node53" href="$pipe_8h.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="557,160,635,189"/>
+<area shape="rect" id="node56" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="381,5,472,35"/>
+</map>

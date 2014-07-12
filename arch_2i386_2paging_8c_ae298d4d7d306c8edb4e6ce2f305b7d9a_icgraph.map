@@ -1,0 +1,5 @@
+<map id="i386_alloc_page" name="i386_alloc_page">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="169,57,292,87"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="363,5,445,35"/>
+<area shape="rect" id="node7" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="341,59,467,88"/>
+</map>

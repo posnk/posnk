@@ -1,0 +1,10 @@
+<map id="include/crt/sys/termios.h" name="include/crt/sys/termios.h">
+<area shape="rect" id="node3" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="5,169,91,199"/>
+<area shape="rect" id="node5" href="$tty_8h.html" title="include/kernel/tty.h" alt="" coords="379,83,509,112"/>
+<area shape="rect" id="node8" href="$sercon_8c.html" title="driver/console/sercon.c" alt="" coords="115,169,272,199"/>
+<area shape="rect" id="node10" href="$vga__vterm_8c.html" title="driver/console/vga\l_vterm.c" alt="" coords="296,161,424,207"/>
+<area shape="rect" id="node12" href="$vgacon_8c.html" title="driver/console/vgacon.c" alt="" coords="448,169,608,199"/>
+<area shape="rect" id="node14" href="$vterm__tty_8c.html" title="driver/console/vterm\l/vterm_tty.c" alt="" coords="632,161,771,207"/>
+<area shape="rect" id="node16" href="$kbd_8c.html" title="driver/oldkb/kbd.c" alt="" coords="795,169,920,199"/>
+<area shape="rect" id="node18" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="944,169,1051,199"/>
+</map>

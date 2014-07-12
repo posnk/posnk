@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('ext2_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_7a0f578204cef42ef22ef2f848a83ddf.html">fs</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">ext2.h</div>  </div>
@@ -94,7 +111,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define __FS_EXT2_H__</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html">kernel/vfs.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html" title="Exposes the VFS API.">kernel/vfs.h</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="ext2_8h.html#a8fe0cd33672aec92af3cf4feaad73803">   18</a></span>&#160;<span class="preprocessor">#define EXT2_FS_STATE_CLEAN             (1)</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad75059fc0fad505c79f2b03f0149fd50">   19</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define EXT2_FS_STATE_ERRORS            (2)</span></div>
@@ -198,68 +215,72 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00117"></a><span class="lineno"><a class="code" href="structext2__superblock.html#af070aeb4bab95002400294b68fdfe114">  117</a></span>&#160;        uint32_t <a class="code" href="structext2__superblock.html#af070aeb4bab95002400294b68fdfe114">first_meta_bg</a>;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
 <div class="line"><a name="l00119"></a><span class="lineno"><a class="code" href="structext2__superblock.html#ac3d8b664ef6a22802021794c4a99ff18">  119</a></span>&#160;        uint8_t  <a class="code" href="structext2__superblock.html#ac3d8b664ef6a22802021794c4a99ff18">spare_2</a>[788];</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="code" href="ext2_8h.html#a313cede54671ca27adc1456d9f7813c8">  121</a></span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="ext2_8h.html#a363d2f881a48a13506a9341784b7adf4">  122</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__block__group__desc.html">ext2_block_group_desc</a> {</div>
-<div class="line"><a name="l00123"></a><span class="lineno"><a class="code" href="ext2_8h.html#a7ab6d2a6907b3a24fd31637750c0018a">  123</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#a0dc99abce4bcbd099b8c62f22549050a">block_bitmap</a>;</div>
-<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="ext2_8h.html#ab0bcd364c855b6687fe0e65ed57a7dc9">  124</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#af4c50377af98f5f9d93c7f412315303d">inode_bitmap</a>;</div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="ext2_8h.html#aa6fd98058f12dd9621633f21b9e29bcf">  125</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#a2b364bddc4df748f9e318f632ab584bb">inode_table</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad2b682ee32952adb5b3544cf61fd086f">  126</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a0e55af05a3f2c6c5b8406c762f5edc8b">free_block_count</a>;</div>
-<div class="line"><a name="l00127"></a><span class="lineno"><a class="code" href="ext2_8h.html#af8f5dae5542872ccd7427f552bc72a7d">  127</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a3c2747d27acb53d922101572e24f7256">free_inode_count</a>;</div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="code" href="ext2_8h.html#a1f5a74387edce44d27717b1a23f1d3d7">  128</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#acb43cd3742e698b013669c8c69efe527">used_dir_count</a>;</div>
-<div class="line"><a name="l00129"></a><span class="lineno"><a class="code" href="ext2_8h.html#ae1372cda5c7033663dd3cd09337db20d">  129</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a9ddca147d96d1d4ebba2ffa3be730ab9">padding</a>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="code" href="ext2_8h.html#a184b0e38a6f3db3137469dde34cabd63">  130</a></span>&#160;        uint8_t  <a class="code" href="structext2__block__group__desc.html#ab622270e9f748457fe691aca442cd40d">reserved</a>[12];</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="code" href="ext2_8h.html#a06564c1dba755f9cf24eaecc32b00c67">  131</a></span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00132"></a><span class="lineno"><a class="code" href="ext2_8h.html#ada40d17d85d7ea4b13c66bc66a513f1c">  132</a></span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="code" href="ext2_8h.html#a130cf3fdad24456121ff7831607f62e5">  133</a></span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad8ae22aa3364b489899f862b0a8b89a5">  134</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__inode.html">ext2_inode</a> {</div>
-<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="ext2_8h.html#aa1b35169bd8527191171e33a47f1ac52">  135</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a7c9aa32e98e47be843508c1b36a89028">mode</a>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="ext2_8h.html#a78963c1ed5ab32c4ac2e81797f484e0f">  136</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#ab8eb0b22243e70bbce39e78e4997546e">uid</a>;</div>
-<div class="line"><a name="l00137"></a><span class="lineno"><a class="code" href="ext2_8h.html#ab70720d162d229f48c0b860e335e0de5">  137</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a5bed5efd55501b6c3fd76c886844f4a6">size</a>;</div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad54b16beef77c2cc189f3acbf9910488">  138</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2">atime</a>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="code" href="ext2_8h.html#a166f22ce4b25488997425405d2a6e42d">  139</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a07291898eeecca0ca2601bd33f4f37b7">ctime</a>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="code" href="ext2_8h.html#aa55f6fced9f0ff7d338bb75d5b246664">  140</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a63366413a1a3a1df6b219df3f0c6b850">mtime</a>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="code" href="ext2_8h.html#a08923a73aab8c791e55e3cb48d423de2">  141</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#abacb62562f5b42e26b7dcdb189ae355b">dtime</a>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad5ae9ea9f10b30d0fee2bfa3a530bb56">  142</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a108e9a14d5b7c333e23b36e35930b514">gid</a>;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="code" href="ext2_8h.html#ae6af13393bbb4dabcb65cc1d5f4e9cc8">  143</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a914bc0ee196623dc008e3b9f34a22b6c">link_count</a>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="code" href="ext2_8h.html#a58cceb7ac226e6f297c3f83c51d0115b">  144</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a585589f70a22ab82661ef52ca0771aa7">blocks</a>;</div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="code" href="ext2_8h.html#a4015630246113794394736935bd2f9e7">  145</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a3f814e9f2be5152d0379a6cb5e25ee23">flags</a>;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}  __attribute__((packed));</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html">  122</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__block__group__desc.html">ext2_block_group_desc</a> {</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#a0dc99abce4bcbd099b8c62f22549050a">  123</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#a0dc99abce4bcbd099b8c62f22549050a">block_bitmap</a>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#af4c50377af98f5f9d93c7f412315303d">  124</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#af4c50377af98f5f9d93c7f412315303d">inode_bitmap</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#a2b364bddc4df748f9e318f632ab584bb">  125</a></span>&#160;        uint32_t <a class="code" href="structext2__block__group__desc.html#a2b364bddc4df748f9e318f632ab584bb">inode_table</a>;</div>
+<div class="line"><a name="l00126"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#a0e55af05a3f2c6c5b8406c762f5edc8b">  126</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a0e55af05a3f2c6c5b8406c762f5edc8b">free_block_count</a>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#a3c2747d27acb53d922101572e24f7256">  127</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a3c2747d27acb53d922101572e24f7256">free_inode_count</a>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#acb43cd3742e698b013669c8c69efe527">  128</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#acb43cd3742e698b013669c8c69efe527">used_dir_count</a>;</div>
+<div class="line"><a name="l00129"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#a9ddca147d96d1d4ebba2ffa3be730ab9">  129</a></span>&#160;        uint16_t <a class="code" href="structext2__block__group__desc.html#a9ddca147d96d1d4ebba2ffa3be730ab9">padding</a>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="code" href="structext2__block__group__desc.html#ab622270e9f748457fe691aca442cd40d">  130</a></span>&#160;        uint8_t  <a class="code" href="structext2__block__group__desc.html#ab622270e9f748457fe691aca442cd40d">reserved</a>[12];</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}  __attribute__((packed));</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="structext2__inode.html">  134</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__inode.html">ext2_inode</a> {</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="code" href="structext2__inode.html#a7c9aa32e98e47be843508c1b36a89028">  135</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a7c9aa32e98e47be843508c1b36a89028">mode</a>;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="code" href="structext2__inode.html#ab8eb0b22243e70bbce39e78e4997546e">  136</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#ab8eb0b22243e70bbce39e78e4997546e">uid</a>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="code" href="structext2__inode.html#a5bed5efd55501b6c3fd76c886844f4a6">  137</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a5bed5efd55501b6c3fd76c886844f4a6">size</a>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="code" href="structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2">  138</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2">atime</a>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="code" href="structext2__inode.html#a07291898eeecca0ca2601bd33f4f37b7">  139</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a07291898eeecca0ca2601bd33f4f37b7">ctime</a>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="code" href="structext2__inode.html#a63366413a1a3a1df6b219df3f0c6b850">  140</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a63366413a1a3a1df6b219df3f0c6b850">mtime</a>;</div>
+<div class="line"><a name="l00141"></a><span class="lineno"><a class="code" href="structext2__inode.html#abacb62562f5b42e26b7dcdb189ae355b">  141</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#abacb62562f5b42e26b7dcdb189ae355b">dtime</a>;</div>
+<div class="line"><a name="l00142"></a><span class="lineno"><a class="code" href="structext2__inode.html#a108e9a14d5b7c333e23b36e35930b514">  142</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a108e9a14d5b7c333e23b36e35930b514">gid</a>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="code" href="structext2__inode.html#a914bc0ee196623dc008e3b9f34a22b6c">  143</a></span>&#160;        uint16_t <a class="code" href="structext2__inode.html#a914bc0ee196623dc008e3b9f34a22b6c">link_count</a>;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="code" href="structext2__inode.html#a585589f70a22ab82661ef52ca0771aa7">  144</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a585589f70a22ab82661ef52ca0771aa7">blocks</a>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="code" href="structext2__inode.html#a3f814e9f2be5152d0379a6cb5e25ee23">  145</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a3f814e9f2be5152d0379a6cb5e25ee23">flags</a>;</div>
 <div class="line"><a name="l00146"></a><span class="lineno"><a class="code" href="structext2__inode.html#ac76434df66e0134c5b236f247c1149fd">  146</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#ac76434df66e0134c5b236f247c1149fd">osd1</a>;</div>
 <div class="line"><a name="l00147"></a><span class="lineno"><a class="code" href="structext2__inode.html#afd4cd2061d757f3dd382078d8cce68ad">  147</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#afd4cd2061d757f3dd382078d8cce68ad">block</a>[15];</div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="ext2_8h.html#a0e1583fdd21f52560c18f9a5646e6c7e">  148</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a2aa2b4ad2e2c60a1a54a0637178ac14b">file_acl</a>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno"><a class="code" href="ext2_8h.html#a36cabbc5933f511854826eac24f1e638">  149</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a599a1f3311a3a54454d1cf361aba7e28">dir_acl</a>;</div>
-<div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="ext2_8h.html#a0847e62a40c8bf381c4945fd9c4f8707">  150</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#aff728dd27126df5fcbf2fc7c76b03404">faddr</a>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno"><a class="code" href="ext2_8h.html#ab5c74d09cbdc07961182032d07a9861e">  151</a></span>&#160;        uint8_t  <a class="code" href="structext2__inode.html#a304b641c810b932cd613f268c9a68206">osd2</a>[12];</div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="code" href="ext2_8h.html#ae0ef7a4d58a88644e09b37cc11b16665">  152</a></span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00153"></a><span class="lineno"><a class="code" href="ext2_8h.html#a7fdf125c6cf7da804a32c7548c9f8291">  153</a></span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno"><a class="code" href="ext2_8h.html#a6215b35b46451010a5f7513ba4023aa6">  154</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__dirent.html">ext2_dirent</a> {</div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="code" href="ext2_8h.html#a246b0f1c7e3fc6cf67e5afe79d6eb64d">  155</a></span>&#160;        uint32_t <a class="code" href="structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1">inode</a>;</div>
-<div class="line"><a name="l00156"></a><span class="lineno"><a class="code" href="ext2_8h.html#abd46727ea46a884f4197dd94f58604fb">  156</a></span>&#160;        uint16_t <a class="code" href="structext2__dirent.html#a81da90381f0b62a6b1661b6d98882bcd">rec_len</a>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno"><a class="code" href="ext2_8h.html#a79939f298300d7abdc9ac994362f8cbb">  157</a></span>&#160;        uint8_t  <a class="code" href="structext2__dirent.html#a261eddd5cf8687c7af40b73bfb9fea8e">name_len</a>;</div>
-<div class="line"><a name="l00158"></a><span class="lineno"><a class="code" href="ext2_8h.html#a30a7788eaa5f5507571880aeabc953e1">  158</a></span>&#160;        uint8_t  <a class="code" href="structext2__dirent.html#a31dbf7acbe2ddda941aa4390a281f486">file_type</a>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno"><a class="code" href="ext2_8h.html#ae11401dc244ce2140c681d2fc48e505c">  159</a></span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed)); <span class="comment">//8 long</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="code" href="ext2_8h.html#a84dc3916ea975b79482a6d01f78c3d9f">  160</a></span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno"><a class="code" href="ext2_8h.html#ae186db2aeadfd250f02cd5a4cce4054f">  161</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__vinode.html">ext2_vinode</a> {</div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="code" href="ext2_8h.html#a56d25a144f0be574e7c4e796ccd159ac">  162</a></span>&#160;        <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a>      <a class="code" href="structext2__vinode.html#abba02729a2758ead0ef3de27aad698f6">vfs_ino</a>;</div>
-<div class="line"><a name="l00163"></a><span class="lineno"><a class="code" href="ext2_8h.html#ad56042752bdf1259a1cffc14f7f3c99b">  163</a></span>&#160;        <a class="code" href="structext2__inode.html">ext2_inode_t</a> <a class="code" href="structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba">inode</a>;</div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="code" href="ext2_8h.html#a0526dc4d8db21afb43122b39529cb58c">  164</a></span>&#160;};</div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="code" href="ext2_8h.html#a2f99a4899aee710d68fb1009129f3ce7">  165</a></span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno"><a class="code" href="ext2_8h.html#a859cebee4d5072da34048d34b33c789a">  166</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__device.html">ext2_device</a> {</div>
-<div class="line"><a name="l00167"></a><span class="lineno"><a class="code" href="ext2_8h.html#a805921a66333373e24f6bf0964af10b8">  167</a></span>&#160;        <a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a>             <a class="code" href="structext2__device.html#a35c8c9349192f9226aaa96c85e1b09c5">device</a>;</div>
-<div class="line"><a name="l00168"></a><span class="lineno"><a class="code" href="ext2_8h.html#a8897cbf249906146b5419b0cd9d627a8">  168</a></span>&#160;        <a class="code" href="structext2__superblock.html">ext2_superblock_t</a>       <a class="code" href="structext2__device.html#af8e35715fc8e248ff86e9e5bcb582490">superblock</a>;</div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="code" href="ext2_8h.html#af811ca92a111c570c193b051664419e1">  169</a></span>&#160;        <a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a>                   <a class="code" href="structext2__device.html#ab0480971f44ab7d85175b314adb90f13">dev_id</a>;</div>
-<div class="line"><a name="l00170"></a><span class="lineno"><a class="code" href="ext2_8h.html#ac42542e60a7624074c6e24d99ceba64b">  170</a></span>&#160;        uint32_t                <a class="code" href="structext2__device.html#a3a2e2f417d8f102e1c6c4d061263c1ea">bgdt_block</a>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="code" href="structext2__inode.html#a2aa2b4ad2e2c60a1a54a0637178ac14b">  148</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a2aa2b4ad2e2c60a1a54a0637178ac14b">file_acl</a>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="code" href="structext2__inode.html#a599a1f3311a3a54454d1cf361aba7e28">  149</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#a599a1f3311a3a54454d1cf361aba7e28">dir_acl</a>;</div>
+<div class="line"><a name="l00150"></a><span class="lineno"><a class="code" href="structext2__inode.html#aff728dd27126df5fcbf2fc7c76b03404">  150</a></span>&#160;        uint32_t <a class="code" href="structext2__inode.html#aff728dd27126df5fcbf2fc7c76b03404">faddr</a>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno"><a class="code" href="structext2__inode.html#a304b641c810b932cd613f268c9a68206">  151</a></span>&#160;        uint8_t  <a class="code" href="structext2__inode.html#a304b641c810b932cd613f268c9a68206">osd2</a>[12];</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;}  __attribute__((packed));</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno"><a class="code" href="structext2__dirent.html">  154</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__dirent.html">ext2_dirent</a> {</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="code" href="structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1">  155</a></span>&#160;        uint32_t <a class="code" href="structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1">inode</a>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno"><a class="code" href="structext2__dirent.html#a81da90381f0b62a6b1661b6d98882bcd">  156</a></span>&#160;        uint16_t <a class="code" href="structext2__dirent.html#a81da90381f0b62a6b1661b6d98882bcd">rec_len</a>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="code" href="structext2__dirent.html#a261eddd5cf8687c7af40b73bfb9fea8e">  157</a></span>&#160;        uint8_t  <a class="code" href="structext2__dirent.html#a261eddd5cf8687c7af40b73bfb9fea8e">name_len</a>;</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="code" href="structext2__dirent.html#a31dbf7acbe2ddda941aa4390a281f486">  158</a></span>&#160;        uint8_t  <a class="code" href="structext2__dirent.html#a31dbf7acbe2ddda941aa4390a281f486">file_type</a>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}  __attribute__((packed)); <span class="comment">//8 long</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno"><a class="code" href="structext2__vinode.html">  161</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__vinode.html">ext2_vinode</a> {</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="code" href="structext2__vinode.html#abba02729a2758ead0ef3de27aad698f6">  162</a></span>&#160;        <a class="code" href="structinode.html" title="Describes a file currently cached by the kernel.">inode_t</a>      <a class="code" href="structext2__vinode.html#abba02729a2758ead0ef3de27aad698f6">vfs_ino</a>;</div>
+<div class="line"><a name="l00163"></a><span class="lineno"><a class="code" href="structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba">  163</a></span>&#160;        <a class="code" href="structext2__inode.html">ext2_inode_t</a> <a class="code" href="structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba">inode</a>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;};</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
+<div class="line"><a name="l00166"></a><span class="lineno"><a class="code" href="structext2__device.html">  166</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structext2__device.html">ext2_device</a> {</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="code" href="structext2__device.html#a35c8c9349192f9226aaa96c85e1b09c5">  167</a></span>&#160;        <a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a>             <a class="code" href="structext2__device.html#a35c8c9349192f9226aaa96c85e1b09c5">device</a>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno"><a class="code" href="structext2__device.html#af8e35715fc8e248ff86e9e5bcb582490">  168</a></span>&#160;        <a class="code" href="structext2__superblock.html">ext2_superblock_t</a>       <a class="code" href="structext2__device.html#af8e35715fc8e248ff86e9e5bcb582490">superblock</a>;</div>
+<div class="line"><a name="l00169"></a><span class="lineno"><a class="code" href="structext2__device.html#ab0480971f44ab7d85175b314adb90f13">  169</a></span>&#160;        <a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a>                   <a class="code" href="structext2__device.html#ab0480971f44ab7d85175b314adb90f13">dev_id</a>;</div>
+<div class="line"><a name="l00170"></a><span class="lineno"><a class="code" href="structext2__device.html#a3a2e2f417d8f102e1c6c4d061263c1ea">  170</a></span>&#160;        uint32_t                <a class="code" href="structext2__device.html#a3a2e2f417d8f102e1c6c4d061263c1ea">bgdt_block</a>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;};</div>
-<div class="line"><a name="l00172"></a><span class="lineno"><a class="code" href="ext2_8h.html#a173fed9b0e9fbcec15aa8873f29640f4">  172</a></span>&#160;</div>
-<div class="line"><a name="l00173"></a><span class="lineno"><a class="code" href="ext2_8h.html#aeb4f833b4f8461eaaa085db07b0a8742">  173</a></span>&#160;<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *<a class="code" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>(<a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<a class="code" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device_t</a> *<a class="code" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>(<a class="code" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t flags);</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="code" href="ext2_8h.html#afb7c0f7a8242c8ce92d4b085afc8a313">  175</a></span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_7a0f578204cef42ef22ef2f848a83ddf.html">fs</a></li><li class="navelem"><a class="el" href="ext2_8h.html">ext2.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

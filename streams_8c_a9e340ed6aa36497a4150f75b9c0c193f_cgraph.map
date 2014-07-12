@@ -1,0 +1,10 @@
+<map id="_sys_fchown" name="_sys_fchown">
+<area shape="rect" id="node3" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="152,112,267,141"/>
+<area shape="rect" id="node13" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="155,219,264,248"/>
+<area shape="rect" id="node5" href="$permissions_8c.html#a75516b4d7b040d8c0f690f5e64efb096" title="get_effective_gid" alt="" coords="344,5,464,35"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="344,59,464,88"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a580a03f736c25ed4b13d65d4387c3d08" title="get_gid" alt="" coords="372,112,436,141"/>
+<area shape="rect" id="node11" href="$permissions_8c.html#a523ba40c6f30fd9f84cb7c60b8f80a80" title="kernel/permissions.c" alt="" coords="372,165,436,195"/>
+<area shape="rect" id="node15" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="341,219,467,248"/>
+<area shape="rect" id="node17" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="316,272,492,301"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="get_effective_gid" name="get_effective_gid">
+<area shape="rect" id="node3" href="$permissions_8h.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="176,165,291,195"/>
+<area shape="rect" id="node5" href="$process_8c.html#a45b5eb748b9e8e41b113a72011348e33" title="Iterator function that signals up processes with the given pgid." alt="" coords="339,5,509,35"/>
+<area shape="rect" id="node7" href="$sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686" title="sys_kill" alt="" coords="391,59,457,88"/>
+<area shape="rect" id="node9" href="$sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47" title="_sys_chmod" alt="" coords="376,112,472,141"/>
+<area shape="rect" id="node11" href="$sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0" title="_sys_chown" alt="" coords="377,165,471,195"/>
+<area shape="rect" id="node13" href="$streams_8h.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd" title="_sys_fchmod" alt="" coords="375,219,473,248"/>
+<area shape="rect" id="node15" href="$streams_8h.html#a9e340ed6aa36497a4150f75b9c0c193f" title="_sys_fchown" alt="" coords="375,272,473,301"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="348,325,500,355"/>
+</map>

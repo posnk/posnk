@@ -1,0 +1,6 @@
+<map id="tty_buf_out_char" name="tty_buf_out_char">
+<area shape="rect" id="node3" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="175,59,255,88"/>
+<area shape="rect" id="node5" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="332,5,404,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="305,59,431,88"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="315,112,421,141"/>
+</map>

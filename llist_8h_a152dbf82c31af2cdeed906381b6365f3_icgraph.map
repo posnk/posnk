@@ -1,0 +1,20 @@
+<map id="llist_create" name="llist_create">
+<area shape="rect" id="node3" href="$blkcache_8h.html#aef6bed4eea28a0bc1caa6b8df5462841" title="blkcache_create &#45; Creates a new, empty block cache" alt="" coords="145,5,263,35"/>
+<area shape="rect" id="node7" href="$drivermgr_8c.html#acdc6cfd03979ae0e10aefb2deb074a6a" title="drivermgr_init" alt="" coords="155,344,253,373"/>
+<area shape="rect" id="node11" href="$heapmm_8h.html#a42b4201eaa2b3e98a0e456c42ae2ad94" title="Initializes the heap memory manager." alt="" coords="353,69,449,99"/>
+<area shape="rect" id="node15" href="$interrupt_8h.html#a1c62fca549a4981d6684d4a5c72874b9" title="interrupt_init" alt="" coords="157,397,251,427"/>
+<area shape="rect" id="node18" href="$stacktrc_8h.html#a5a8efcfa83e2202f34400caacacb34e4" title="kdbg/stacktrc.c" alt="" coords="141,133,267,163"/>
+<area shape="rect" id="node23" href="$heapdbg_8h.html#a51b2364f1a31bc6c866efcf9725a6116" title="kdbg_init_memuse" alt="" coords="139,187,269,216"/>
+<area shape="rect" id="node28" href="$kdbgmm_8h.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="156,240,252,269"/>
+<area shape="rect" id="node31" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="360,279,443,308"/>
+<area shape="rect" id="node34" href="$ramfs_8c.html#a20b042c01566d9cf98d5a4bd90bf2e54" title="ramfs_mkdir" alt="" coords="157,451,251,480"/>
+<area shape="rect" id="node36" href="$ramfs_8c.html#affc291a601c4ea34ff9f50bfbe1dc0f8" title="ramfs_mknod" alt="" coords="153,504,255,533"/>
+<area shape="rect" id="node38" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="151,557,257,587"/>
+<area shape="rect" id="node41" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="153,611,255,640"/>
+<area shape="rect" id="node44" href="$vfs_8h.html#ac1913485037320335c4030439d537df8" title="Initialize the VFS layer." alt="" coords="157,664,251,693"/>
+<area shape="rect" id="node5" href="$device_8h.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="328,5,475,35"/>
+<area shape="rect" id="node9" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="357,557,445,587"/>
+<area shape="rect" id="node13" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="533,200,632,229"/>
+<area shape="rect" id="node20" href="$dbgapi_8h.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="319,133,484,163"/>
+<area shape="rect" id="node25" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="349,200,453,229"/>
+</map>

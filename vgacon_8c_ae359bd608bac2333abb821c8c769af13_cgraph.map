@@ -1,0 +1,8 @@
+<map id="vgacon_handle_escape" name="vgacon_handle_escape">
+<area shape="rect" id="node3" href="$earlycon_8c.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="221,32,341,61"/>
+<area shape="rect" id="node9" href="$vgacon_8c.html#a5861ab93fa1cf931519a0def56cf336f" title="vgacon_handle_sgr" alt="" coords="215,85,348,115"/>
+<area shape="rect" id="node11" href="$vgacon_8c.html#af06cd0588cd48a44da608445a8b5abb5" title="vgacon_parse_par" alt="" coords="217,139,345,168"/>
+<area shape="rect" id="node5" href="$earlycon_8c.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="399,5,519,35"/>
+<area shape="rect" id="node7" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="400,59,517,88"/>
+<area shape="rect" id="node13" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="432,139,485,168"/>
+</map>

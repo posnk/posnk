@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('vterm__write_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_6fb8353c3556cfb89579b9aab1882b39.html">driver</a></li><li class="navelem"><a class="el" href="dir_2b046e4e4d3dbce356b2b40d80af79ee.html">console</a></li><li class="navelem"><a class="el" href="dir_e6fedfcc53084c7d812ca8cbb92cb891.html">vterm</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
@@ -101,7 +118,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7e816e2d9a9faa5fa9fe2dea731a5a60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vterm__write_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60">vterm_write_tty</a> (<a class="el" href="vterm_8h.html#a6e07eea4a3f77c546b0dbea053c168c5">vterm_t</a> *vterm, void *buffer, int <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a7e816e2d9a9faa5fa9fe2dea731a5a60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vterm__write_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60">vterm_write_tty</a> (<a class="el" href="vterm_8h.html#a6e07eea4a3f77c546b0dbea053c168c5">vterm_t</a> *vterm, void *buffer, int size)</td></tr>
 <tr class="memitem:a41060bf65f397e1603005ef7eb4c877a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vterm__write_8c.html#a41060bf65f397e1603005ef7eb4c877a">vterm_write_pipe</a> (<a class="el" href="vterm_8h.html#a6e07eea4a3f77c546b0dbea053c168c5">vterm_t</a> *vterm, <a class="el" href="glib_8h.html#a1bc9c34b086710705c000e9e810a7ef3">guint32</a> keycode)</td></tr>
 <tr class="memitem:affb730f3596bf8fdc6f6611ffe84e35c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vterm__write_8c.html#affb730f3596bf8fdc6f6611ffe84e35c">vterm_write_rxvt</a> (<a class="el" href="vterm_8h.html#a6e07eea4a3f77c546b0dbea053c168c5">vterm_t</a> *vterm, <a class="el" href="glib_8h.html#a1bc9c34b086710705c000e9e810a7ef3">guint32</a> keycode)</td></tr>
 <tr class="memitem:a773b8b48952c2094d6825abfc86c64a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vterm__write_8c.html#a773b8b48952c2094d6825abfc86c64a5">vterm_write_vt100</a> (<a class="el" href="vterm_8h.html#a6e07eea4a3f77c546b0dbea053c168c5">vterm_t</a> *vterm, <a class="el" href="glib_8h.html#a1bc9c34b086710705c000e9e810a7ef3">guint32</a> keycode)</td></tr>
@@ -203,7 +220,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="vterm__tty_8c_source.html#l00055">55</a> of file <a class="el" href="vterm__tty_8c_source.html">vterm_tty.c</a>.</p>
 
-<p>References <a class="el" href="vterm__private_8h_source.html#l00074">_vterm_s::device_id</a>, <a class="el" href="ext2_8h_source.html#l00155">size</a>, and <a class="el" href="tty_8c_source.html#l00156">tty_input_char()</a>.</p>
+<p>References <a class="el" href="vterm__private_8h_source.html#l00074">_vterm_s::device_id</a>, and <a class="el" href="tty_8c_source.html#l00156">tty_input_char()</a>.</p>
 
 <p>Referenced by <a class="el" href="vterm__write_8c_source.html#l00044">vterm_write_rxvt()</a>, and <a class="el" href="vterm__write_8c_source.html#l00085">vterm_write_vt100()</a>.</p>
 
@@ -242,11 +259,15 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_6fb8353c3556cfb89579b9aab1882b39.html">driver</a></li><li class="navelem"><a class="el" href="dir_2b046e4e4d3dbce356b2b40d80af79ee.html">console</a></li><li class="navelem"><a class="el" href="dir_e6fedfcc53084c7d812ca8cbb92cb891.html">vterm</a></li><li class="navelem"><a class="el" href="vterm__write_8c.html">vterm_write.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,6 @@
+<map id="vfs_mount" name="vfs_mount">
+<area shape="rect" id="node3" href="$vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="144,5,235,35"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="136,59,243,88"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="435,59,587,88"/>
+<area shape="rect" id="node10" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="291,84,387,113"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="curpid" name="curpid">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="113,5,249,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="123,59,240,88"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="300,32,444,61"/>
+</map>

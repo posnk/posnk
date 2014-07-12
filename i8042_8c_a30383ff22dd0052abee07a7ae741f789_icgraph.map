@@ -1,0 +1,4 @@
+<map id="kbd_send_encoder_command" name="kbd_send_encoder_command">
+<area shape="rect" id="node3" href="$kbd_8h.html#a12f52ccc6f3a0a4c9d0e1a9454f8bc66" title="kb_set_leds" alt="" coords="249,5,340,35"/>
+<area shape="rect" id="node5" href="$kbd_8h.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="389,5,480,35"/>
+</map>

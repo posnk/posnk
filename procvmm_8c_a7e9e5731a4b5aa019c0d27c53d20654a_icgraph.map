@@ -1,0 +1,4 @@
+<map id="procvmm_handle_fault" name="procvmm_handle_fault">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="209,5,345,35"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="396,5,540,35"/>
+</map>

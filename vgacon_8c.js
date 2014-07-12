@@ -1,0 +1,27 @@
+var vgacon_8c =
+[
+    [ "vgacon_vc", "vgacon_8c.html#a515ced60d9dbc0d5a1eae84a34d6ffd6", null ],
+    [ "kb_initialize", "vgacon_8c.html#ae8295f780d7707e5dbbcc77d2e53acfe", null ],
+    [ "vgacon_clear_line", "vgacon_8c.html#ae7df9eed3c957ea1cfcb0b5bdcdcd959", null ],
+    [ "vgacon_clear_video", "vgacon_8c.html#a4280e3e9777dde75781aacdfe2bcf4b3", null ],
+    [ "vgacon_disable_scroll", "vgacon_8c.html#a6c100ddf18869830c7e5c0e6c7492ef8", null ],
+    [ "vgacon_get_text_video_memory", "vgacon_8c.html#aaafa2fce104ec7975d09037f8f2ae924", null ],
+    [ "vgacon_handle_escape", "vgacon_8c.html#ae359bd608bac2333abb821c8c769af13", null ],
+    [ "vgacon_handle_sgr", "vgacon_8c.html#a5861ab93fa1cf931519a0def56cf336f", null ],
+    [ "vgacon_init", "vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5", null ],
+    [ "vgacon_move_cursor", "vgacon_8c.html#a95e8f15681cc88ffa15adb2b181e3df8", null ],
+    [ "vgacon_parse_par", "vgacon_8c.html#af06cd0588cd48a44da608445a8b5abb5", null ],
+    [ "vgacon_position", "vgacon_8c.html#aabc422aed726c924768aab5ea837a3f0", null ],
+    [ "vgacon_putc", "vgacon_8c.html#af2c2ed4b849fef41ceb45917489f1a35", null ],
+    [ "vgacon_putch", "vgacon_8c.html#af7b608892962e06880a354c91ab9ccdf", null ],
+    [ "vgacon_scroll", "vgacon_8c.html#ae8abc4aa2a22a20c879ae358da9dcba7", null ],
+    [ "vgacon_set_attrib", "vgacon_8c.html#a19a7868966205799c25ed9b39869f288", null ],
+    [ "vgacon_write_crtc_register", "vgacon_8c.html#ab979f6af999f6d09c7ae3b9eabe331ab", null ],
+    [ "vgacon_colour_map", "vgacon_8c.html#a263af43dca16f3951ce9f6d6c291f6d2", null ],
+    [ "vgacon_early_vc", "vgacon_8c.html#a362c1eaf85c1d080e8823b05f9adf27c", null ],
+    [ "vgacon_escape_buf", "vgacon_8c.html#a0bb7c49f869ddc1912e23fb713ca13af", null ],
+    [ "vgacon_escape_pars", "vgacon_8c.html#a46ffcf3d795015da4c89959750800420", null ],
+    [ "vgacon_escape_ppt", "vgacon_8c.html#a883e16640f837086da43af2a25117d0f", null ],
+    [ "vgacon_escape_ptr", "vgacon_8c.html#a0f3ed67f0994a84dc42f8f7985a9cfc1", null ],
+    [ "vgacon_escape_spt", "vgacon_8c.html#aa15055a99727ffa13b28550188ca5f1a", null ]
+];

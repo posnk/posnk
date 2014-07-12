@@ -1,0 +1,26 @@
+<map id="stream_get_ptr" name="stream_get_ptr">
+<area shape="rect" id="node3" href="$streams_8h.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="175,84,260,113"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a0349abb01604f6c3a69996aa8905e186" title="_sys_fcntl" alt="" coords="469,57,552,87"/>
+<area shape="rect" id="node12" href="$streams_8h.html#a769dcca95c6f80cd662fc28f0d581aef" title="_sys_fchdir" alt="" coords="173,213,261,243"/>
+<area shape="rect" id="node16" href="$streams_8h.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd" title="_sys_fchmod" alt="" coords="168,267,267,296"/>
+<area shape="rect" id="node20" href="$streams_8h.html#a9e340ed6aa36497a4150f75b9c0c193f" title="_sys_fchown" alt="" coords="168,320,267,349"/>
+<area shape="rect" id="node25" href="$streams_8h.html#a3389d4f570b9ecdd4950666bc4f607fb" title="_sys_fstat" alt="" coords="176,373,259,403"/>
+<area shape="rect" id="node29" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="164,427,271,456"/>
+<area shape="rect" id="node33" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="164,480,271,509"/>
+<area shape="rect" id="node37" href="$streams_8h.html#a7f7816d947b6e32d723c90a8de5e111d" title="_sys_ioctl" alt="" coords="177,533,257,563"/>
+<area shape="rect" id="node41" href="$streams_8h.html#a964f6b4cf457ce4fe771d7a4367f0585" title="_sys_lseek" alt="" coords="173,587,261,616"/>
+<area shape="rect" id="node45" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="176,640,259,669"/>
+<area shape="rect" id="node49" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="175,693,260,723"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a9e29abc7702e850c4fe23dd86fc51139" title="_sys_dup" alt="" coords="332,5,409,35"/>
+<area shape="rect" id="node10" href="$sc__streams_8c.html#a93d9664737ea25e8c92ca304f7986d58" title="sys_dup2" alt="" coords="332,109,409,139"/>
+<area shape="rect" id="node14" href="$sc__streams_8c.html#ad91c6dbfa55c542e8dc742135aed6fbe" title="sys_fchdir" alt="" coords="329,213,412,243"/>
+<area shape="rect" id="node18" href="$sc__streams_8c.html#afcfd63de3881411624bea5aab0fcc8b3" title="sys_fchmod" alt="" coords="324,267,417,296"/>
+<area shape="rect" id="node22" href="$sc__streams_8c.html#a1c67be71e54c3204a71c9405b658880c" title="sys_fchown" alt="" coords="325,320,416,349"/>
+<area shape="rect" id="node27" href="$sc__streams_8c.html#a5125979bb691e68b06787680fc1e6f59" title="sys_fstat" alt="" coords="333,373,408,403"/>
+<area shape="rect" id="node31" href="$syscall_8h.html#ab77d628a44e1167356653e293c7bc357" title="sys_ftruncate" alt="" coords="320,427,421,456"/>
+<area shape="rect" id="node35" href="$syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17" title="sys_getdents" alt="" coords="321,480,420,509"/>
+<area shape="rect" id="node39" href="$syscall_8h.html#a827b4ff2983309209988a2ee675c8aa7" title="sys_ioctl" alt="" coords="333,533,408,563"/>
+<area shape="rect" id="node43" href="$sc__streams_8c.html#a0fd007ab5932f959ea4ac964753574f5" title="sys_lseek" alt="" coords="331,587,411,616"/>
+<area shape="rect" id="node47" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="333,640,408,669"/>
+<area shape="rect" id="node51" href="$sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595" title="sys_write" alt="" coords="332,693,409,723"/>
+</map>

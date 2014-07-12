@@ -1,0 +1,11 @@
+<map id="dbgapi_unreg_memuse" name="dbgapi_unreg_memuse">
+<area shape="rect" id="node3" href="$kdbg_8c.html#a9a04c1ab65a38aee691bae5cee7c8839" title="dbgapi_invoke_kdbg" alt="" coords="233,59,372,88"/>
+<area shape="rect" id="node11" href="$heapdbg_8c.html#ac40bc698916f855a892f31ba8d594d41" title="kdbg_find_memuse_iterator" alt="" coords="212,112,393,141"/>
+<area shape="rect" id="node13" href="$stacktrc_8c.html#a21a9ef63865e93dc30fdd132c2783f8a" title="kdbg_free_calltrace" alt="" coords="236,216,369,245"/>
+<area shape="rect" id="node15" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="452,177,535,207"/>
+<area shape="rect" id="node17" href="$kdbgmm_8c.html#aa9bcfa313457de4f5d44bdb29e48167b" title="Releases a block of memory so it can be reallocated." alt="" coords="443,255,544,284"/>
+<area shape="rect" id="node20" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="240,320,365,349"/>
+<area shape="rect" id="node5" href="$kdbg_8c.html#ad0f345e82788f12250e6f12c5289a36f" title="kdbg_enter" alt="" coords="451,5,536,35"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="452,59,535,88"/>
+<area shape="rect" id="node9" href="$kdbg_8c.html#a14105b86c9f94d4152fed5f2beaad387" title="kdbg_exit" alt="" coords="455,112,532,141"/>
+</map>

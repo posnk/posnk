@@ -1,0 +1,11 @@
+<map id="include/fs/ext2.h" name="include/fs/ext2.h">
+<area shape="rect" id="node5" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="349,83,440,112"/>
+<area shape="rect" id="node7" href="$process_8h.html" title="kernel/process.h" alt="" coords="332,237,449,267"/>
+<area shape="rect" id="node10" href="$types_8h.html" title="sys/types.h" alt="" coords="465,315,556,344"/>
+<area shape="rect" id="node12" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="88,315,195,344"/>
+<area shape="rect" id="node15" href="$time_8h.html" title="kernel/time.h" alt="" coords="219,315,315,344"/>
+<area shape="rect" id="node19" href="$llist_8h.html" title="util/llist.h" alt="" coords="604,315,679,344"/>
+<area shape="rect" id="node22" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="264,160,405,189"/>
+<area shape="rect" id="node25" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="93,160,189,189"/>
+<area shape="rect" id="node31" href="$stat_8h.html" title="sys/stat.h" alt="" coords="548,237,628,267"/>
+</map>

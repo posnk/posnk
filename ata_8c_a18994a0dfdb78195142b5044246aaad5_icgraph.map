@@ -1,0 +1,17 @@
+<map id="ata_write_port" name="ata_write_port">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="993,262,1087,291"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="516,529,625,558"/>
+<area shape="rect" id="node10" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="697,266,769,295"/>
+<area shape="rect" id="node17" href="$ata_8c.html#a70e30cedd3a469033d65e4ecd423d373" title="ata_read_data" alt="" coords="519,149,623,178"/>
+<area shape="rect" id="node21" href="$ata_8h.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="327,555,428,585"/>
+<area shape="rect" id="node27" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="696,659,771,689"/>
+<area shape="rect" id="node33" href="$ata_8h.html#af9b954fe8969622b9a7c82f4eee218d3" title="ata_set_interrupts" alt="" coords="315,43,440,73"/>
+<area shape="rect" id="node36" href="$ata_8c.html#a07edd740f812723cf51bbe5439ccbd06" title="ata_setup_lba_transfer" alt="" coords="493,374,648,403"/>
+<area shape="rect" id="node41" href="$ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089" title="ata_write_data" alt="" coords="324,722,431,751"/>
+<area shape="rect" id="node44" href="$ata_8h.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="157,377,261,406"/>
+<area shape="rect" id="node48" href="$ata_8c.html#a5f7b78dafa71534b24b101521a9b1479" title="ata_write_port_long" alt="" coords="311,97,444,126"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="1137,262,1239,291"/>
+<area shape="rect" id="node12" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="820,253,943,300"/>
+<area shape="rect" id="node15" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="833,201,929,230"/>
+<area shape="rect" id="node23" href="$ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="521,582,620,611"/>
+</map>

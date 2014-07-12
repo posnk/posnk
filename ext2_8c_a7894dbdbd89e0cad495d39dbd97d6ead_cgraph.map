@@ -1,0 +1,11 @@
+<map id="ext2_write_block" name="ext2_write_block">
+<area shape="rect" id="node3" href="$blkdev_8c.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="173,188,307,217"/>
+<area shape="rect" id="node5" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="361,5,484,35"/>
+<area shape="rect" id="node7" href="$blkcache_8c.html#a70e74e7691382d33032fda7f1eed71ab" title="blkcache_find &#45; Get a block from the cache" alt="" coords="744,109,845,139"/>
+<area shape="rect" id="node9" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="356,213,489,243"/>
+<area shape="rect" id="node11" href="$blkcache_8c.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="556,163,655,192"/>
+<area shape="rect" id="node14" href="$blkcache_8c.html#a43be209fbab4c66306a9999cd289f294" title="blkcache_get_discard_candidate &#45; Returns the block to be discarded next" alt="" coords="721,206,868,253"/>
+<area shape="rect" id="node16" href="$blkdev_8c.html#abf2017d0baf1627e496e1d2e14d1d8d0" title="device_block_flush" alt="" coords="539,109,672,139"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="369,317,476,347"/>
+<area shape="rect" id="node25" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="387,371,459,400"/>
+</map>

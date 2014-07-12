@@ -1,0 +1,15 @@
+<map id="arch/i386/paging.c" name="arch/i386/paging.c">
+<area shape="rect" id="node3" href="$arch_2i386_2paging_8h.html" title="arch/i386/paging.h" alt="" coords="949,160,1077,189"/>
+<area shape="rect" id="node11" href="$config_8h.html" title="config.h" alt="" coords="1058,392,1125,421"/>
+<area shape="rect" id="node17" href="$llist_8h.html" title="util/llist.h" alt="" coords="330,315,405,344"/>
+<area shape="rect" id="node20" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="130,237,253,267"/>
+<area shape="rect" id="node25" href="$process_8h.html" title="kernel/process.h" alt="" coords="568,160,685,189"/>
+<area shape="rect" id="node47" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="562,83,690,112"/>
+<area shape="rect" id="node57" href="$string_8h.html" title="string.h" alt="" coords="25,83,89,112"/>
+<area shape="rect" id="node5" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="956,315,1078,344"/>
+<area shape="rect" id="node13" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="898,237,1008,267"/>
+<area shape="rect" id="node29" href="$types_8h.html" title="sys/types.h" alt="" coords="620,315,710,344"/>
+<area shape="rect" id="node32" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="489,315,596,344"/>
+<area shape="rect" id="node36" href="$time_8h.html" title="kernel/time.h" alt="" coords="785,315,881,344"/>
+<area shape="rect" id="node39" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="581,237,672,267"/>
+</map>

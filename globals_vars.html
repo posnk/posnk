@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -76,38 +83,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
-      <li class="current"><a href="globals_vars.html#index__"><span>_</span></a></li>
-      <li><a href="globals_vars_0x61.html#index_a"><span>a</span></a></li>
-      <li><a href="globals_vars_0x62.html#index_b"><span>b</span></a></li>
-      <li><a href="globals_vars_0x63.html#index_c"><span>c</span></a></li>
-      <li><a href="globals_vars_0x64.html#index_d"><span>d</span></a></li>
-      <li><a href="globals_vars_0x65.html#index_e"><span>e</span></a></li>
-      <li><a href="globals_vars_0x66.html#index_f"><span>f</span></a></li>
-      <li><a href="globals_vars_0x67.html#index_g"><span>g</span></a></li>
-      <li><a href="globals_vars_0x68.html#index_h"><span>h</span></a></li>
-      <li><a href="globals_vars_0x69.html#index_i"><span>i</span></a></li>
-      <li><a href="globals_vars_0x6a.html#index_j"><span>j</span></a></li>
-      <li><a href="globals_vars_0x6b.html#index_k"><span>k</span></a></li>
-      <li><a href="globals_vars_0x6c.html#index_l"><span>l</span></a></li>
-      <li><a href="globals_vars_0x6d.html#index_m"><span>m</span></a></li>
-      <li><a href="globals_vars_0x6e.html#index_n"><span>n</span></a></li>
-      <li><a href="globals_vars_0x6f.html#index_o"><span>o</span></a></li>
-      <li><a href="globals_vars_0x70.html#index_p"><span>p</span></a></li>
-      <li><a href="globals_vars_0x72.html#index_r"><span>r</span></a></li>
-      <li><a href="globals_vars_0x73.html#index_s"><span>s</span></a></li>
-      <li><a href="globals_vars_0x74.html#index_t"><span>t</span></a></li>
-      <li><a href="globals_vars_0x75.html#index_u"><span>u</span></a></li>
-      <li><a href="globals_vars_0x76.html#index_v"><span>v</span></a></li>
-      <li><a href="globals_vars_0x77.html#index_w"><span>w</span></a></li>
+      <li><a href="#index__"><span>_</span></a></li>
+      <li><a href="#index_a"><span>a</span></a></li>
+      <li><a href="#index_b"><span>b</span></a></li>
+      <li><a href="#index_c"><span>c</span></a></li>
+      <li><a href="#index_d"><span>d</span></a></li>
+      <li><a href="#index_e"><span>e</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
+      <li><a href="#index_i"><span>i</span></a></li>
+      <li><a href="#index_k"><span>k</span></a></li>
+      <li><a href="#index_m"><span>m</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
+      <li><a href="#index_r"><span>r</span></a></li>
+      <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
+      <li><a href="#index_v"><span>v</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_vars.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -120,22 +133,354 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 &#160;
 
 <h3><a class="anchor" id="index__"></a>- _ -</h3><ul>
-<li>__attribute__
-: <a class="el" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">ioctl.h</a>
-, <a class="el" href="ext2_8h.html#a002bc3ab9ce1df89b1b6f2e43e4ef67f">ext2.h</a>
-, <a class="el" href="vfs_8h.html#ace939626a668375b8199686fa6136e70">vfs.h</a>
-, <a class="el" href="tty_8h.html#a926e8fac77628660c0fe7bee08aefbef">tty.h</a>
-</li>
 <li>_ctype
 : <a class="el" href="ctype_8h.html#a3c34b8dd7b9d27c3ed114d057f8a8b28">ctype.h</a>
 </li>
 </ul>
+
+
+<h3><a class="anchor" id="index_a"></a>- a -</h3><ul>
+<li>ata_block_driver_ops
+: <a class="el" href="ata_8c.html#a896d41b2e82580dc1784d4956728846c">ata.c</a>
+</li>
+<li>ata_bus_number_counter
+: <a class="el" href="ata_8c.html#a3a0d9d2e81b0386052213d4d1edc7f5f">ata.c</a>
+</li>
+<li>ata_buses
+: <a class="el" href="ata_8c.html#a467c90572a46e1f05ddb715a23cbc851">ata.c</a>
+</li>
+<li>ata_global_inited
+: <a class="el" href="ata_8c.html#ad449edbff0e1ef4c9a10a73f9aeaab82">ata.c</a>
+</li>
+<li>ata_interrupt_enabled
+: <a class="el" href="ata_8c.html#a5a999a4b9b4bda17b372cd982a9ee382">ata.c</a>
+</li>
+<li>ata_pci_descriptor
+: <a class="el" href="ata__pci_8c.html#ab1b499dee2f29b6c80de8e5226500ba1">ata_pci.c</a>
+</li>
+<li>ata_prd_list
+: <a class="el" href="ata_8c.html#a8cf5bd71fa679a74e5e0bb5417bfb85b">ata.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
+<li>bchars
+: <a class="el" href="stdlib_8c.html#ab3953c8d4a58fa01a96536ae63eb5e3e">stdlib.c</a>
+</li>
+<li>block_dev_table
+: <a class="el" href="blkdev_8c.html#aebf4864124f3a70e04199e56d9c10a63">blkdev.c</a>
+</li>
+<li>buf
+: <a class="el" href="kdbg_8c.html#a7d55ba6a8fa98e9c0ae7a04f202b67d7">kdbg.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>char_dev_table
+: <a class="el" href="chardev_8c.html#a7533005320d58a97e0342d88fe4360ea">chardev.c</a>
+</li>
+<li>currently_held_key
+: <a class="el" href="i8042_8c.html#ae276592e0537c9ed25ad7445b7379a59">i8042.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
+<li>drivermgr_device_driver_list
+: <a class="el" href="drivermgr_8c.html#a28ea94d7703003b0aa22b988ed7d459d">drivermgr.c</a>
+</li>
+<li>drivermgr_interface_driver_list
+: <a class="el" href="drivermgr_8c.html#ae834185ecdbfc4562e47ec40fea6fd01">drivermgr.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>earlycon_printf_buffer
+: <a class="el" href="earlycon_8c.html#ad7a85aec599897e6dbee61047e164645">earlycon.c</a>
+</li>
+<li>exception_names
+: <a class="el" href="exception_8c.html#a338236ee479e8a650ef413d175c52909">exception.c</a>
+</li>
+<li>exception_signals
+: <a class="el" href="exception_8c.html#a77ef0ea9df48dcdd50ab7fe1eabc8086">exception.c</a>
+</li>
+<li>ext2_ops
+: <a class="el" href="ext2_8c.html#a8794cab3d6d00da238ff907c2d6b5574">ext2.c</a>
+</li>
+<li>extended
+: <a class="el" href="i8042_8c.html#acd53bef429b3afe798b7228806e6e294">i8042.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>heapdbg_up
+: <a class="el" href="heapdbg_8c.html#a573e2a2a8f7f206b3192e7366cf3aede">heapdbg.c</a>
+</li>
+<li>heapmm_free_blocks_list
+: <a class="el" href="heapmm_8c.html#af664c92c45512838506c8106dbe6f6f6">heapmm.c</a>
+</li>
+<li>heapmm_space_left
+: <a class="el" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61">heapmm.c</a>
+</li>
+<li>heapmm_top_of_heap
+: <a class="el" href="heapmm_8c.html#a21815d417f38fb7437b4b47ce47c6ca6">heapmm.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
+<li>i386_exception_table
+: <a class="el" href="isr_8c.html#a32ecea393b6d9b1b87e15961d5244eef">isr.c</a>
+</li>
+<li>i386_force_order
+: <a class="el" href="arch_2i386_2paging_8c.html#ab77ffea30f2d1c83d8622465c49360c8">paging.c</a>
+</li>
+<li>i386_fpu_cs_buf
+: <a class="el" href="fpu_8c.html#a2b34ff5b5ae2331792be4f1d3f0a99d3">fpu.c</a>
+</li>
+<li>i386_fpu_enabled
+: <a class="el" href="fpu_8c.html#a4596c78debdadcf02310830510d9a5d2">fpu.c</a>
+</li>
+<li>i386_fpu_process
+: <a class="el" href="fpu_8c.html#acb8703999c1d06dce73ff24fc9635e09">fpu.c</a>
+</li>
+<li>i386_idt
+: <a class="el" href="idt_8c.html#ad44e0e6999f75634a2ab0a740fc2c51a">idt.c</a>
+</li>
+<li>i386_idt_pointer
+: <a class="el" href="idt_8c.html#a2ee2827a02ab8fea53855f75c89619be">idt.c</a>
+</li>
+<li>i386_page_dir_initial
+: <a class="el" href="arch_2i386_2paging_8c.html#a62cbada5c65b5d1cc61358ab8797368d">paging.c</a>
+</li>
+<li>i386_page_dir_list_initial
+: <a class="el" href="arch_2i386_2paging_8c.html#aac9552a50c2b6abcab4ca8de4eab995d">paging.c</a>
+</li>
+<li>i386_page_directory_list
+: <a class="el" href="arch_2i386_2paging_8c.html#ada098405916e5ac201f1b059d2a51da6">paging.c</a>
+</li>
+<li>i386_pit_data_ports
+: <a class="el" href="pit_8c.html#ad46bca6f8ba7cd13b3f784c66d0923aa">pit.c</a>
+</li>
+<li>i386_pit_ocw_ctrs
+: <a class="el" href="pit_8c.html#ac5eb9d85c691c948114eb101fb8a6440">pit.c</a>
+</li>
+<li>i386_start_kheap
+: <a class="el" href="init_8c.html#ad0ee79ff3731d59c8496873eea3eb8ab">init.c</a>
+</li>
+<li>i386_tss_descriptor
+: <a class="el" href="protection_8c.html#ae59aa692378a8dbb0a33c7de04b9f22d">protection.c</a>
+</li>
+<li>i386_tss_entry
+: <a class="el" href="protection_8c.html#a153fdb41e0477fe8548dfeec72fae63c">protection.c</a>
+</li>
+<li>ino
+: <a class="el" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">vfs.c</a>
+</li>
+<li>inode_cache
+: <a class="el" href="vfs_8c.html#a4ce92837aa1da333980c953e88e1529a">vfs.c</a>
+</li>
+<li>intbuf
+: <a class="el" href="stdlib_8c.html#a0cda3229ce65e872127850ce2698b2b8">stdlib.c</a>
+</li>
+<li>interrupt_handler_lists
+: <a class="el" href="interrupt_8c.html#aa52f9eaa3106d512ac8721eb22f7e8b9">interrupt.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_k"></a>- k -</h3><ul>
+<li>kbdus_caps
+: <a class="el" href="dec_8c.html#a1f0dbd0cff851f6ab4db79f00a2ff520">dec.c</a>
+</li>
+<li>kbdus_ctrl
+: <a class="el" href="dec_8c.html#ab315fb5509397893dbe9ee077152e093">dec.c</a>
+</li>
+<li>kbdus_reg
+: <a class="el" href="dec_8c.html#a1675741a225295c2eefaf51d39911f5f">dec.c</a>
+</li>
+<li>kbdus_shift
+: <a class="el" href="dec_8c.html#a3d174f329443c1e2e17098211fa5d80c">dec.c</a>
+</li>
+<li>kdbg_heap_use_list
+: <a class="el" href="heapdbg_8c.html#a91f68069f672cabd2dce63d86d50156b">heapdbg.c</a>
+</li>
+<li>kdbgmm_free_blocks_list
+: <a class="el" href="kdbgmm_8c.html#a5252b5d4ceaf00f7997f163c7c7d4368">kdbgmm.c</a>
+</li>
+<li>kdbgmm_top_of_heap
+: <a class="el" href="kdbgmm_8c.html#aaafc0fc18565bc41e90d1d70e29b04b7">kdbgmm.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
+<li>mb_info
+: <a class="el" href="init_8c.html#af086ba0dd3dded26268b26e62ad3d4b1">init.c</a>
+</li>
+<li>modifiers
+: <a class="el" href="kbd_8c.html#ab9e79f369128ef7595cb47dfa34abad3">kbd.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>paging_active_dir
+: <a class="el" href="kernel_2paging_8c.html#abe8c84e8918ea2a80898b88f563f3ad7">paging.c</a>
+, <a class="el" href="kernel_2paging_8h.html#abe8c84e8918ea2a80898b88f563f3ad7">paging.h</a>
+</li>
+<li>PciClassCodeTable
+: <a class="el" href="pci__list_8h.html#aec4648724009d1af53aa9b005b1bd17c">pci_list.h</a>
+</li>
+<li>PciCommandFlags
+: <a class="el" href="pci__list_8h.html#a214087e81ecf6e7ba80475925a5f8ced">pci_list.h</a>
+</li>
+<li>PciDevSelFlags
+: <a class="el" href="pci__list_8h.html#aaaa2ee254801dd7b06cd00b6969983d5">pci_list.h</a>
+</li>
+<li>PciDevTable
+: <a class="el" href="pci__list_8h.html#ac00f433400d146963a3dd09b1aebb2da">pci_list.h</a>
+</li>
+<li>PciStatusFlags
+: <a class="el" href="pci__list_8h.html#affe70e077d6f377cc965a57fd38ad5fc">pci_list.h</a>
+</li>
+<li>PciVenTable
+: <a class="el" href="pci__list_8h.html#a0f3207ced174b50192ac00d326911424">pci_list.h</a>
+</li>
+<li>physmm_bitmap
+: <a class="el" href="physmm_8c.html#a31339a849ed95bbf17ad9e1e757613e8">physmm.c</a>
+</li>
+<li>process_signal_pgroup_numdone
+: <a class="el" href="process_8c.html#a3378fc490e187433862e1a9695b1a990">process.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>ramfs_device_ctr
+: <a class="el" href="ramfs_8c.html#aa9ec6a7edc5810536ac40be1cf702486">ramfs.c</a>
+</li>
+<li>ramfs_ops
+: <a class="el" href="ramfs_8c.html#af1b6466c5d0ab8d787131ce05fe8562c">ramfs.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>scheduler_current_task
+: <a class="el" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler.c</a>
+, <a class="el" href="scheduler_8h.html#a433a9249a94952594483f106302080ea">scheduler.h</a>
+</li>
+<li>scheduler_idle_task
+: <a class="el" href="scheduler_8c.html#ad7180593f7ecb39d055e0a388e498375">scheduler.c</a>
+</li>
+<li>scheduler_pid_counter
+: <a class="el" href="scheduler_8c.html#a70af3b67e2835159de6dac233b5dd934">scheduler.c</a>
+</li>
+<li>scheduler_task_list
+: <a class="el" href="process_8c.html#a831c5a390e4db54e19718cf77bb9bd24">process.c</a>
+, <a class="el" href="scheduler_8c.html#a831c5a390e4db54e19718cf77bb9bd24">scheduler.c</a>
+</li>
+<li>sigfile_hndl
+: <a class="el" href="i8042_8c.html#af07f03775111cf5c5b2562ce9b8c705b">i8042.c</a>
+</li>
+<li>signal_default_actions
+: <a class="el" href="process_8c.html#a06ecd10f05ab3f15370766780ae459bf">process.c</a>
+</li>
+<li>syscall_names
+: <a class="el" href="syscall_8c.html#a972f35ebc5ff6560f1b3e1b5ff903ccf">syscall.c</a>
+</li>
+<li>syscall_table
+: <a class="el" href="syscall_8c.html#a668709c267746dcb351b1884ebeb79e1">syscall.c</a>
+</li>
+<li>system_time
+: <a class="el" href="time_8h.html#a377ec3f9a4c9052b2dafd644c92036be">time.h</a>
+, <a class="el" href="time_8c.html#a377ec3f9a4c9052b2dafd644c92036be">time.c</a>
+</li>
+<li>system_time_micros
+: <a class="el" href="time_8h.html#a00543707110d2259a5e9aebb3285a3aa">time.h</a>
+, <a class="el" href="time_8c.html#a00543707110d2259a5e9aebb3285a3aa">time.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>timer_freq
+: <a class="el" href="time_8c.html#aadcb334677c40c4fff4059e4e436fa3e">time.c</a>
+, <a class="el" href="time_8h.html#aadcb334677c40c4fff4059e4e436fa3e">time.h</a>
+</li>
+<li>timer_mfreq
+: <a class="el" href="time_8h.html#accb23e17ae8837b114315c9134ce20ae">time.h</a>
+, <a class="el" href="time_8c.html#accb23e17ae8837b114315c9134ce20ae">time.c</a>
+</li>
+<li>timer_ticks
+: <a class="el" href="time_8c.html#af6ed0955767be26de12e0cdbdc7d480d">time.c</a>
+, <a class="el" href="time_8h.html#af6ed0955767be26de12e0cdbdc7d480d">time.h</a>
+</li>
+<li>timer_ticks_m
+: <a class="el" href="time_8c.html#a6ee1c21e98e9c5784802a4ccd1a5adbe">time.c</a>
+</li>
+<li>timer_ticks_s
+: <a class="el" href="time_8c.html#a9099200f04290c6abe67b668792cf433">time.c</a>
+</li>
+<li>tty_list
+: <a class="el" href="tty_8c.html#ae8d4a378168df61bd18d69f0dac0fc1b">tty.c</a>
+</li>
+<li>tty_operations
+: <a class="el" href="tty_8c.html#a221508ec8f71512d60e1e4fd53e4fe69">tty.c</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
+<li>vga_vterm_colour_map
+: <a class="el" href="vga__vterm_8c.html#a6a0d8f2805ec9cb9df9a6d257ff83e21">vga_vterm.c</a>
+</li>
+<li>vgacon_colour_map
+: <a class="el" href="vgacon_8c.html#a263af43dca16f3951ce9f6d6c291f6d2">vgacon.c</a>
+</li>
+<li>vgacon_early_vc
+: <a class="el" href="vgacon__early_8c.html#a362c1eaf85c1d080e8823b05f9adf27c">vgacon_early.c</a>
+, <a class="el" href="vgacon_8c.html#a362c1eaf85c1d080e8823b05f9adf27c">vgacon.c</a>
+</li>
+<li>vgacon_escape_buf
+: <a class="el" href="vgacon_8c.html#a0bb7c49f869ddc1912e23fb713ca13af">vgacon.c</a>
+</li>
+<li>vgacon_escape_pars
+: <a class="el" href="vgacon_8c.html#a46ffcf3d795015da4c89959750800420">vgacon.c</a>
+</li>
+<li>vgacon_escape_ppt
+: <a class="el" href="vgacon_8c.html#a883e16640f837086da43af2a25117d0f">vgacon.c</a>
+</li>
+<li>vgacon_escape_ptr
+: <a class="el" href="vgacon_8c.html#a0f3ed67f0994a84dc42f8f7985a9cfc1">vgacon.c</a>
+</li>
+<li>vgacon_escape_spt
+: <a class="el" href="vgacon_8c.html#aa15055a99727ffa13b28550188ca5f1a">vgacon.c</a>
+</li>
+<li>vterm_minor_terms
+: <a class="el" href="vterm__tty_8c.html#a61e91b11c41f577a3bdefd3a8ae9872b">vterm_tty.c</a>
+</li>
+<li>vterm_vga_all_vcs
+: <a class="el" href="vga__vterm_8c.html#a8b7ebc0c015821f82210689386910fed">vga_vterm.c</a>
+</li>
+<li>vterm_vga_current_vc
+: <a class="el" href="vga__vterm_8c.html#acf5a42e3e9e5256d2971b2b4af51dea6">vga_vterm.c</a>
+</li>
+</ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

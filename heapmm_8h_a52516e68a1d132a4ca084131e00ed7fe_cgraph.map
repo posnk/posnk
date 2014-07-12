@@ -1,0 +1,13 @@
+<map id="heapmm_request_core" name="heapmm_request_core">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="208,7,325,36"/>
+<area shape="rect" id="node7" href="$vgacon__early_8c.html#ae5fe8578ccf072b088e089b5470361d6" title="earlycon_aputs" alt="" coords="212,60,321,89"/>
+<area shape="rect" id="node11" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="221,173,312,203"/>
+<area shape="rect" id="node13" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="377,112,524,141"/>
+<area shape="rect" id="node23" href="$arch_2i386_2paging_8c.html#ab417afe6f5654cf60f29d89c523f9930" title="paging_tag" alt="" coords="224,227,309,256"/>
+<area shape="rect" id="node5" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="396,5,505,35"/>
+<area shape="rect" id="node9" href="$vgacon__early_8c.html#a4e343464aa2e816a36e210043de25701" title="earlycon_putc" alt="" coords="400,59,501,88"/>
+<area shape="rect" id="node15" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="377,165,524,211"/>
+<area shape="rect" id="node17" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="388,235,513,264"/>
+<area shape="rect" id="node19" href="$arch_2i386_2paging_8c.html#ae126e0164806db2314e492003686d74a" title="paging_set_pd_iterator" alt="" coords="375,288,527,317"/>
+<area shape="rect" id="node21" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="416,341,485,371"/>
+</map>

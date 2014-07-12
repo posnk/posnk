@@ -1,0 +1,32 @@
+<map id="i386_init_mm" name="i386_init_mm">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#af6148ed91df1017bc3309ca13103492c" title="debugcon_init" alt="" coords="189,12,291,41"/>
+<area shape="rect" id="node7" href="$vgacon__early_8c.html#a84f1db1a9c43b55e0c3ec508f05e72f9" title="kernel/earlycon.h" alt="" coords="193,71,287,100"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a7c0a917d74eb74aa01007d83165dbfcb" title="Allocates a new page of heap space to the caller." alt="" coords="781,297,923,327"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a42b4201eaa2b3e98a0e456c42ae2ad94" title="Initializes the heap memory manager." alt="" coords="405,713,501,743"/>
+<area shape="rect" id="node23" href="$kernel_2paging_8c.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="376,609,531,639"/>
+<area shape="rect" id="node25" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="779,401,925,431"/>
+<area shape="rect" id="node27" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="609,504,700,533"/>
+<area shape="rect" id="node31" href="$arch_2i386_2paging_8c.html#ab417afe6f5654cf60f29d89c523f9930" title="paging_tag" alt="" coords="612,659,697,688"/>
+<area shape="rect" id="node33" href="$fpu_8c.html#a71f772e7a1585ad4e7b994ad8fde7aef" title="i386_fpu_initialize" alt="" coords="177,817,303,847"/>
+<area shape="rect" id="node35" href="$init_8c.html#a23eb3e32af195a3401a0dea2234f22e0" title="i386_init_multiboot\l_memprobe" alt="" coords="175,971,305,1018"/>
+<area shape="rect" id="node37" href="$physmm_8c.html#a4dd6186320d1e74c81103006dd45b4e6" title="physmm_free_range" alt="" coords="384,975,523,1004"/>
+<area shape="rect" id="node39" href="$physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again." alt="" coords="584,948,725,977"/>
+<area shape="rect" id="node41" href="$init_8c.html#a6aff5bb175e2847fc6c06dbfcf95d541" title="i386_init_reserve_modules" alt="" coords="152,1092,328,1121"/>
+<area shape="rect" id="node43" href="$physmm_8c.html#a1a03ac73b02ee6b7748256c9db0a4ef4" title="physmm_claim_range" alt="" coords="379,1067,528,1096"/>
+<area shape="rect" id="node45" href="$kdbg_8c.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="188,764,292,793"/>
+<area shape="rect" id="node54" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="585,229,724,275"/>
+<area shape="rect" id="node56" href="$arch_2i386_2paging_8c.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="199,503,281,532"/>
+<area shape="rect" id="node82" href="$physmm_8c.html#ae771e8917a325c5a44270fca8befb8e7" title="Initializes the physical memory manager NOTE: Depends on the heap memory manager!" alt="" coords="192,1145,288,1175"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="415,5,492,35"/>
+<area shape="rect" id="node9" href="$vgacon__early_8c.html#a0832b5a1cd2330637607743cfccdcf07" title="vgacon_early_get_text\l_video_memory" alt="" coords="377,58,529,105"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="973,297,1165,327"/>
+<area shape="rect" id="node17" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="612,792,697,821"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="580,713,729,743"/>
+<area shape="rect" id="node21" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="817,556,887,585"/>
+<area shape="rect" id="node47" href="$heapdbg_8c.html#a51b2364f1a31bc6c866efcf9725a6116" title="kdbg_init_memuse" alt="" coords="388,817,519,847"/>
+<area shape="rect" id="node51" href="$kdbgmm_8c.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="405,871,501,900"/>
+<area shape="rect" id="node58" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="597,349,712,379"/>
+<area shape="rect" id="node63" href="$arch_2i386_2paging_8c.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="392,348,515,377"/>
+<area shape="rect" id="node72" href="$arch_2i386_2paging_8c.html#a0eabbdbbc19cb0a0b9364697af42b5bf" title="i386_paging_enable" alt="" coords="385,556,521,585"/>
+<area shape="rect" id="node74" href="$arch_2i386_2paging_8c.html#a659dc2b28607e07bf4a1b40db2ea158d" title="i386_init_switch_gdt" alt="" coords="384,503,523,532"/>
+</map>

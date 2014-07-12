@@ -1,0 +1,11 @@
+<map id="scheduler_next_task_iterator" name="scheduler_next_task_iterator">
+<area shape="rect" id="node3" href="$scheduler_8h.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="197,192,272,221"/>
+<area shape="rect" id="node5" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="321,5,481,35"/>
+<area shape="rect" id="node7" href="$process_8h.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="329,59,473,88"/>
+<area shape="rect" id="node9" href="$scheduler_8h.html#a2cf17a899a518dda0e53031880f68dd8" title="scheduler_wait_micros" alt="" coords="324,112,479,141"/>
+<area shape="rect" id="node11" href="$scheduler_8h.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="336,165,467,195"/>
+<area shape="rect" id="node13" href="$scheduler_8h.html#a9cc10ded462066e3eeec3710eb8f66ee" title="scheduler_wait_time" alt="" coords="331,219,472,248"/>
+<area shape="rect" id="node15" href="$sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339" title="sys_exit" alt="" coords="367,272,436,301"/>
+<area shape="rect" id="node17" href="$sc__process_8c.html#a54aa47140a66b7972076e5b07cdb1617" title="sys_yield" alt="" coords="363,325,440,355"/>
+<area shape="rect" id="node19" href="$time_8h.html#a7f6b332d188bc3ddc1046d47bfdf32b9" title="timer_interrupt" alt="" coords="349,379,453,408"/>
+</map>

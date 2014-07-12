@@ -1,0 +1,14 @@
+<map id="kdbg_shell" name="kdbg_shell">
+<area shape="rect" id="node3" href="$heapdbg_8c.html#a9bb4115ca0760b14d15a25f417d940d2" title="kdbg_enable_memuse" alt="" coords="147,5,299,35"/>
+<area shape="rect" id="node5" href="$kdbgio_8c.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="181,59,264,88"/>
+<area shape="rect" id="node11" href="$kdbgio_8c.html#addb5788bb9efd8e52fa6722a8c7ce473" title="kdbg_parsehex" alt="" coords="168,112,277,141"/>
+<area shape="rect" id="node15" href="$heapdbg_8c.html#ab97c8b3b4f9f2fa491924b162a0055f3" title="kdbg_print_memuse_brdr" alt="" coords="139,219,307,248"/>
+<area shape="rect" id="node25" href="$string_8c.html#a6666865e6caf66fd05d4b8bd6c074cd2" title="strncmp" alt="" coords="188,165,257,195"/>
+<area shape="rect" id="node7" href="$sercon__debug_8c.html#a1da6b24bfdafa5bacfb659b78910af5f" title="debugcon_getc" alt="" coords="392,5,501,35"/>
+<area shape="rect" id="node9" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="392,59,501,88"/>
+<area shape="rect" id="node13" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="420,112,473,141"/>
+<area shape="rect" id="node17" href="$heapdbg_8c.html#a976b7b1d1449498f6a22c812fe432587" title="kdbg_find_bf_iterator" alt="" coords="376,165,517,195"/>
+<area shape="rect" id="node19" href="$heapdbg_8c.html#ac40bc698916f855a892f31ba8d594d41" title="kdbg_find_memuse_iterator" alt="" coords="356,219,537,248"/>
+<area shape="rect" id="node21" href="$stacktrc_8c.html#a3298b39df155f9cff67cd0c56f3a7f8f" title="kdbg_print_calltrace" alt="" coords="377,272,516,301"/>
+<area shape="rect" id="node23" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="384,325,509,355"/>
+</map>

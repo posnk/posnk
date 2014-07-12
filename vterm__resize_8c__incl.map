@@ -1,0 +1,8 @@
+<map id="driver/console/vterm/vterm_resize.c" name="driver/console/vterm/vterm_resize.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="37,111,101,140"/>
+<area shape="rect" id="node7" href="$vterm_8h.html" title="driver/console/vterm\l/vterm.h" alt="" coords="99,198,237,245"/>
+<area shape="rect" id="node11" href="$vterm__private_8h.html" title="driver/console/vterm\l/vterm_private.h" alt="" coords="261,198,400,245"/>
+<area shape="rect" id="node16" href="$vterm__misc_8h.html" title="driver/console/vterm\l/vterm_misc.h" alt="" coords="260,102,399,149"/>
+<area shape="rect" id="node9" href="$glib_8h.html" title="glib.h" alt="" coords="175,293,228,323"/>
+<area shape="rect" id="node14" href="$types_8h.html" title="sys/types.h" alt="" coords="285,293,376,323"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="tar_extract_mem" name="tar_extract_mem">
+<area shape="rect" id="node3" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="175,297,321,327"/>
+<area shape="rect" id="node5" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="693,88,747,117"/>
+<area shape="rect" id="node7" href="$string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c" title="strcmp" alt="" coords="539,35,600,64"/>
+<area shape="rect" id="node10" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="527,195,612,224"/>
+<area shape="rect" id="node12" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="667,195,773,224"/>
+<area shape="rect" id="node15" href="$tar_8c.html#a2d405ba96a6c6f61802627b21090a506" title="tar_get_mode" alt="" coords="371,349,472,379"/>
+<area shape="rect" id="node17" href="$tar_8c.html#a7c76e2a03ecc19158d11bce2a753f2bf" title="tar_num_dec" alt="" coords="521,403,617,432"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="375,507,468,536"/>
+<area shape="rect" id="node23" href="$vfs_8c.html#a522e8a4f7dfc7d3a6994313d2d746a82" title="Write data to a file." alt="" coords="384,560,459,589"/>
+<area shape="rect" id="node25" href="$tar_8c.html#aa4b23a69283b11dd47c52fe57cc6dda8" title="tar_round_up" alt="" coords="373,613,469,643"/>
+<area shape="rect" id="node27" href="$vfs_8c.html#a619a7ea2e918798f30f69ae91efc8855" title="Create a symbolic link." alt="" coords="524,141,615,171"/>
+<area shape="rect" id="node31" href="$vfs_8c.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="536,88,603,117"/>
+<area shape="rect" id="node35" href="$tar_8c.html#a00a95e1ba276aeec49aa3b57f1f52fd8" title="tar_get_dev" alt="" coords="376,403,467,432"/>
+<area shape="rect" id="node38" href="$vfs_8c.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="383,245,460,275"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="vterm_vga_switch_vc" name="vterm_vga_switch_vc">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#a06b6798ef0a700339c490081eeec0057" title="vga_vterm_get_text\l_video_memory" alt="" coords="208,5,344,51"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#a276f5f62b24f61397437d3af0b23e5cd" title="vterm_tty_invalidate\l_screen" alt="" coords="207,74,345,121"/>
+<area shape="rect" id="node9" href="$vga__vterm_8c.html#aaf09525adc710025d8573c3715020050" title="vterm_vga_write_crtc\l_register" alt="" coords="203,143,349,190"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a24f89f5f7a90d0ee0c1e4d102116805e" title="vterm_invalidate_screen" alt="" coords="397,83,560,112"/>
+</map>

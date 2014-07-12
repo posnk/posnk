@@ -1,0 +1,8 @@
+<map id="pipe_free" name="pipe_free">
+<area shape="rect" id="node3" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="128,59,237,88"/>
+<area shape="rect" id="node9" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="139,112,227,141"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="312,5,400,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="285,59,427,88"/>
+<area shape="rect" id="node11" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="319,112,393,141"/>
+<area shape="rect" id="node13" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="316,165,396,195"/>
+</map>

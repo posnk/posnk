@@ -1,0 +1,7 @@
+<map id="_sys_dup" name="_sys_dup">
+<area shape="rect" id="node3" href="$streams_8c.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="133,85,219,115"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="267,5,376,35"/>
+<area shape="rect" id="node7" href="$streams_8c.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="277,59,365,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="268,112,375,141"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="272,165,371,195"/>
+</map>

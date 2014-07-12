@@ -1,0 +1,5 @@
+<map id="debugcon_aputs" name="debugcon_aputs">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="172,32,281,61"/>
+<area shape="rect" id="node5" href="$sercon__debug_8c.html#a01fe5504f7b8f4eee1545737495bae76" title="is_transmit_empty" alt="" coords="332,5,460,35"/>
+<area shape="rect" id="node7" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="357,59,435,88"/>
+</map>

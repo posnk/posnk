@@ -1,0 +1,5 @@
+<map id="i386_phys_copy_frame" name="i386_phys_copy_frame">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="212,32,335,61"/>
+<area shape="rect" id="node5" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="384,5,509,35"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="405,59,488,88"/>
+</map>

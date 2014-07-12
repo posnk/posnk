@@ -1,0 +1,4 @@
+<map id="scheduler_wait_micros" name="scheduler_wait_micros">
+<area shape="rect" id="node3" href="$syscall_8h.html#a1764141f8114e589479dbecd461e8b55" title="sys_usleep" alt="" coords="208,5,296,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="345,5,431,35"/>
+</map>

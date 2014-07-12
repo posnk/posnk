@@ -1,0 +1,6 @@
+<map id="sys_dbgdrop" name="sys_dbgdrop">
+<area shape="rect" id="node3" href="$kdbg_8c.html#a9a04c1ab65a38aee691bae5cee7c8839" title="dbgapi_invoke_kdbg" alt="" coords="151,59,289,88"/>
+<area shape="rect" id="node5" href="$kdbg_8c.html#ad0f345e82788f12250e6f12c5289a36f" title="kdbg_enter" alt="" coords="340,5,425,35"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html#a14105b86c9f94d4152fed5f2beaad387" title="kdbg_exit" alt="" coords="344,59,421,88"/>
+<area shape="rect" id="node9" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="341,112,424,141"/>
+</map>

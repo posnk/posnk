@@ -1,0 +1,24 @@
+<map id="try_interpret_escape_seq" name="try_interpret_escape_seq">
+<area shape="rect" id="node3" href="$vterm__misc_8c.html#a9525d22583defd4f60ba721524229348" title="validate_escape_suffix" alt="" coords="221,61,376,91"/>
+<area shape="rect" id="node5" href="$vterm__escape_8c.html#aa3b1349da344da63d8afbfd356d0e039" title="vterm_escape_cancel" alt="" coords="224,115,373,144"/>
+<area shape="rect" id="node7" href="$vterm__csi_8c.html#a7ecdab35fc55c574febf07a8205a93ab" title="vterm_interpret_csi" alt="" coords="232,405,365,435"/>
+<area shape="rect" id="node45" href="$vterm__scroll_8c.html#af5e7894e851255700239dd5f8be837b5" title="vterm_scroll_up" alt="" coords="464,5,579,35"/>
+<area shape="rect" id="node9" href="$vterm__csi__CUP_8c.html#a8cd9d06a0ba842a3ff15593c1777f3e4" title="interpret_csi_CUP" alt="" coords="457,165,585,195"/>
+<area shape="rect" id="node11" href="$vterm__csi__CUx_8c.html#ab62feb3f817c05162219356841c06c14" title="interpret_csi_CUx" alt="" coords="459,219,584,248"/>
+<area shape="rect" id="node13" href="$vterm__csi__DCH_8c.html#afbd553817a0686cbabea4ba7c549002b" title="interpret_csi_DCH" alt="" coords="456,272,587,301"/>
+<area shape="rect" id="node15" href="$vterm__csi__DECSTBM_8c.html#a4ad00bdace452a06755d6263c447b53f" title="interpret_csi_DECSTBM" alt="" coords="439,325,604,355"/>
+<area shape="rect" id="node17" href="$vterm__csi__DL_8c.html#a6566357b01686767f074f21717d5d041" title="interpret_csi_DL" alt="" coords="463,379,580,408"/>
+<area shape="rect" id="node21" href="$vterm__csi__ECH_8c.html#a0fcf7e0a1836339f8d5fb3983428ff07" title="interpret_csi_ECH" alt="" coords="457,592,585,621"/>
+<area shape="rect" id="node23" href="$vterm__csi__ED_8c.html#ae9ab6541d0256e174e2529675a0139a7" title="interpret_csi_ED" alt="" coords="463,539,580,568"/>
+<area shape="rect" id="node27" href="$vterm__csi__EL_8c.html#ad1d6acc8d6507a9c4c94bcb34927bb6c" title="interpret_csi_EL" alt="" coords="464,645,579,675"/>
+<area shape="rect" id="node29" href="$vterm__csi__ICH_8c.html#a375d899f7b7efdbefa0ebcc49bf3af13" title="interpret_csi_ICH" alt="" coords="460,699,583,728"/>
+<area shape="rect" id="node31" href="$vterm__csi__IL_8c.html#af69882778bb7005123c302e260666aea" title="interpret_csi_IL" alt="" coords="467,432,576,461"/>
+<area shape="rect" id="node35" href="$vterm__csi__RESTORECUR_8c.html#a8bcf50bfdfb46b023b7b53264533434b" title="interpret_csi_RESTORECUR" alt="" coords="424,752,619,781"/>
+<area shape="rect" id="node37" href="$vterm__csi__SAVECUR_8c.html#abc6c7c05419154e70bb05baade5c6f81" title="interpret_csi_SAVECUR" alt="" coords="439,805,604,835"/>
+<area shape="rect" id="node39" href="$vterm__csi__SGR_8c.html#a1ce7b727b51afcb1217f933482363421" title="interpret_csi_SGR" alt="" coords="457,59,585,88"/>
+<area shape="rect" id="node41" href="$vterm__dec__RM_8c.html#a39807caa46811909a52bda6eb9387945" title="interpret_dec_RM" alt="" coords="459,112,584,141"/>
+<area shape="rect" id="node43" href="$vterm__dec__SM_8c.html#a502db6efe0cfde5301678dac92fc6665" title="interpret_dec_SM" alt="" coords="460,485,583,515"/>
+<area shape="rect" id="node19" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="712,379,784,408"/>
+<area shape="rect" id="node25" href="$vga__vterm_8c.html#a24f89f5f7a90d0ee0c1e4d102116805e" title="vterm_invalidate_screen" alt="" coords="667,432,829,461"/>
+<area shape="rect" id="node48" href="$vterm__erase_8c.html#ac753ad8e4a8791cb35acd81e5fc904a0" title="vterm_erase_row" alt="" coords="687,5,809,35"/>
+</map>

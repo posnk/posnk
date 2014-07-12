@@ -1,0 +1,6 @@
+<map id="kdbg_find_memuse_iterator" name="kdbg_find_memuse_iterator">
+<area shape="rect" id="node3" href="$dbgapi_8h.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="244,5,399,35"/>
+<area shape="rect" id="node7" href="$heapdbg_8h.html#ab97c8b3b4f9f2fa491924b162a0055f3" title="kdbg_print_memuse_brdr" alt="" coords="237,59,405,88"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="455,5,604,35"/>
+<area shape="rect" id="node9" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="488,59,571,88"/>
+</map>

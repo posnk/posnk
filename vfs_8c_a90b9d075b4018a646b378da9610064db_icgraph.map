@@ -1,0 +1,6 @@
+<map id="vfs_int_unlink" name="vfs_int_unlink">
+<area shape="rect" id="node3" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="159,59,239,88"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="289,5,372,35"/>
+<area shape="rect" id="node7" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="292,59,369,88"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="293,112,368,141"/>
+</map>

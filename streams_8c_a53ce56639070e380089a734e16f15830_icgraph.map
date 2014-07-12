@@ -1,0 +1,10 @@
+<map id="_sys_close" name="_sys_close">
+<area shape="rect" id="node3" href="$streams_8h.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="188,83,273,112"/>
+<area shape="rect" id="node14" href="$streams_8h.html#aa17c760186bd4ebee3bd6bc632279154" title="stream_do_close_on_exec" alt="" coords="143,161,319,191"/>
+<area shape="rect" id="node18" href="$sc__streams_8c.html#a719db2838733805862e62a7ef0e8e7f6" title="sys_close" alt="" coords="191,215,271,244"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a9e29abc7702e850c4fe23dd86fc51139" title="_sys_dup" alt="" coords="381,5,459,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a0349abb01604f6c3a69996aa8905e186" title="_sys_fcntl" alt="" coords="523,32,605,61"/>
+<area shape="rect" id="node10" href="$sc__streams_8c.html#a93d9664737ea25e8c92ca304f7986d58" title="sys_dup2" alt="" coords="381,109,459,139"/>
+<area shape="rect" id="node12" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="521,137,607,167"/>
+<area shape="rect" id="node16" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="369,163,471,192"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ramfs_device" name="ramfs_device">
+<area shape="rect" id="node2" href="$structfs__device.html" title="An instance of a filesystem driver." alt="" coords="39,101,116,131"/>
+<area shape="rect" id="node4" href="$structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions." alt="" coords="5,5,149,35"/>
+</map>

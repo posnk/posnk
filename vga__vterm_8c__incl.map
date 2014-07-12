@@ -1,0 +1,13 @@
+<map id="driver/console/vga_vterm.c" name="driver/console/vga_vterm.c">
+<area shape="rect" id="node3" href="$vga__vterm_8h.html" title="driver/console/vgacon\l/vga_vterm.h" alt="" coords="5,102,155,149"/>
+<area shape="rect" id="node9" href="$string_8h.html" title="string.h" alt="" coords="233,111,297,140"/>
+<area shape="rect" id="node14" href="$types_8h.html" title="sys/types.h" alt="" coords="429,275,520,304"/>
+<area shape="rect" id="node16" href="$tty_8h.html" title="kernel/tty.h" alt="" coords="432,111,517,140"/>
+<area shape="rect" id="node27" href="$vterm_8h.html" title="driver/console/vterm\l/vterm.h" alt="" coords="556,102,695,149"/>
+<area shape="rect" id="node31" href="$vterm__private_8h.html" title="driver/console/vterm\l/vterm_private.h" alt="" coords="733,102,872,149"/>
+<area shape="rect" id="node5" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="36,197,145,227"/>
+<area shape="rect" id="node19" href="$termios_8h.html" title="sys/termios.h" alt="" coords="424,197,525,227"/>
+<area shape="rect" id="node22" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="549,197,632,227"/>
+<area shape="rect" id="node25" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="656,197,752,227"/>
+<area shape="rect" id="node29" href="$glib_8h.html" title="glib.h" alt="" coords="776,197,829,227"/>
+</map>

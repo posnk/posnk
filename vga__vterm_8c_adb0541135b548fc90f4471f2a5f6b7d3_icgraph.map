@@ -1,0 +1,20 @@
+<map id="vga_vterm_map_attr" name="vga_vterm_map_attr">
+<area shape="rect" id="node3" href="$vterm__render_8h.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="195,243,339,272"/>
+<area shape="rect" id="node30" href="$vterm__render_8h.html#aa69d89b32d60ff0f954bd6c94abf8ff8" title="vterm_invalidate_cursor" alt="" coords="784,444,944,473"/>
+<area shape="rect" id="node33" href="$vterm__render_8h.html#a24f89f5f7a90d0ee0c1e4d102116805e" title="vterm_invalidate_screen" alt="" coords="387,483,549,512"/>
+<area shape="rect" id="node5" href="$vterm__csi_8h.html#afbd553817a0686cbabea4ba7c549002b" title="interpret_csi_DCH" alt="" coords="403,323,533,352"/>
+<area shape="rect" id="node7" href="$vterm__csi_8h.html#a6566357b01686767f074f21717d5d041" title="interpret_csi_DL" alt="" coords="409,376,527,405"/>
+<area shape="rect" id="node9" href="$vterm__csi_8h.html#a0fcf7e0a1836339f8d5fb3983428ff07" title="interpret_csi_ECH" alt="" coords="404,429,532,459"/>
+<area shape="rect" id="node11" href="$vterm__csi_8h.html#ad1d6acc8d6507a9c4c94bcb34927bb6c" title="interpret_csi_EL" alt="" coords="411,5,525,35"/>
+<area shape="rect" id="node13" href="$vterm__csi_8h.html#a375d899f7b7efdbefa0ebcc49bf3af13" title="interpret_csi_ICH" alt="" coords="407,59,529,88"/>
+<area shape="rect" id="node15" href="$vterm_8h.html#a013eb1159f27d1ad1c7a1735f37d51dc" title="vterm_erase" alt="" coords="421,112,515,141"/>
+<area shape="rect" id="node17" href="$vterm_8h.html#ac753ad8e4a8791cb35acd81e5fc904a0" title="vterm_erase_row" alt="" coords="407,216,529,245"/>
+<area shape="rect" id="node21" href="$vterm__render_8h.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="808,292,920,321"/>
+<area shape="rect" id="node27" href="$vterm_8h.html#aad9b49ba83ad6ecbdb0b7e1cb04d828a" title="vterm_erase_col" alt="" coords="409,269,527,299"/>
+<area shape="rect" id="node19" href="$vterm_8h.html#ab07c6f12ecf530effcba746a607c505b" title="vterm_scroll_down" alt="" coords="601,292,732,321"/>
+<area shape="rect" id="node25" href="$vterm_8h.html#af5e7894e851255700239dd5f8be837b5" title="vterm_scroll_up" alt="" coords="609,227,724,256"/>
+<area shape="rect" id="node23" href="$vterm__render_8h.html#aa651d19abd649574dac5c5e8227926fa" title="vterm_render" alt="" coords="992,368,1091,397"/>
+<area shape="rect" id="node35" href="$vterm__csi_8h.html#ae9ab6541d0256e174e2529675a0139a7" title="interpret_csi_ED" alt="" coords="608,368,725,397"/>
+<area shape="rect" id="node37" href="$vterm__csi_8h.html#af69882778bb7005123c302e260666aea" title="interpret_csi_IL" alt="" coords="612,421,721,451"/>
+<area shape="rect" id="node41" href="$vterm__tty_8c.html#a276f5f62b24f61397437d3af0b23e5cd" title="vterm_tty_invalidate\l_screen" alt="" coords="597,474,736,521"/>
+</map>

@@ -1,0 +1,44 @@
+<map id="memset" name="memset">
+<area shape="rect" id="node3" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="356,9,463,39"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17" title="sys_getdents" alt="" coords="567,61,665,91"/>
+<area shape="rect" id="node7" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="368,113,451,143"/>
+<area shape="rect" id="node9" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="579,161,653,191"/>
+<area shape="rect" id="node11" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="567,265,665,295"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="1164,245,1239,275"/>
+<area shape="rect" id="node20" href="$device_8h.html#a63dd03746663f48d6e13aa0ade5c38ab" title="device_block_init" alt="" coords="555,473,677,503"/>
+<area shape="rect" id="node24" href="$device_8h.html#af361295250340119e08fac9621848e1b" title="device_char_init" alt="" coords="559,527,673,556"/>
+<area shape="rect" id="node27" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="127,691,281,720"/>
+<area shape="rect" id="node29" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="335,637,484,667"/>
+<area shape="rect" id="node33" href="$scheduler_8h.html#a413ca2fd9749f8037c2cd560665a0d20" title="scheduler_invoke_signal\l_handler" alt="" coords="535,731,697,778"/>
+<area shape="rect" id="node35" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="763,820,888,849"/>
+<area shape="rect" id="node37" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="977,725,1084,755"/>
+<area shape="rect" id="node40" href="$ramfs_8c.html#acb9c644b87c960581049f80b18182b8c" title="ramfs_trunc_inode" alt="" coords="552,801,680,831"/>
+<area shape="rect" id="node42" href="$ramfs_8c.html#a3058314579ee457b7bf420a5f41e439c" title="ramfs_load_inode" alt="" coords="555,855,677,884"/>
+<area shape="rect" id="node47" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="555,1116,677,1145"/>
+<area shape="rect" id="node50" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="784,1165,867,1195"/>
+<area shape="rect" id="node56" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="565,1063,667,1092"/>
+<area shape="rect" id="node61" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="573,369,659,399"/>
+<area shape="rect" id="node64" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="571,908,661,937"/>
+<area shape="rect" id="node67" href="$include_2arch_2i386_2idt_8h.html#a5018d8341f8c99f0509448e9c229311e" title="i386_idt_set_descriptor" alt="" coords="748,324,903,353"/>
+<area shape="rect" id="node72" href="$protection_8h.html#a7eb32a88b8c2e0d0ffaa2d5c2c804554" title="i386_protection_init" alt="" coords="343,431,476,460"/>
+<area shape="rect" id="node75" href="$protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780" title="i386_set_tss_descriptor" alt="" coords="124,483,284,512"/>
+<area shape="rect" id="node78" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="127,1265,281,1295"/>
+<area shape="rect" id="node80" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="335,1215,484,1244"/>
+<area shape="rect" id="node88" href="$kernel_2paging_8h.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="364,1321,455,1351"/>
+<area shape="rect" id="node100" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="540,1424,692,1453"/>
+<area shape="rect" id="node103" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="153,1420,255,1449"/>
+<area shape="rect" id="node117" href="$vgacon_8c.html#ae7df9eed3c957ea1cfcb0b5bdcdcd959" title="vgacon_clear_line" alt="" coords="141,1473,267,1503"/>
+<area shape="rect" id="node119" href="$init_8c.html#a4280e3e9777dde75781aacdfe2bcf4b3" title="vgacon_clear_video" alt="" coords="136,1527,272,1556"/>
+<area shape="rect" id="node121" href="$vgacon__early_8c.html#a10d49263dffae9421898c2ddb5c4ff72" title="vgacon_early_clear_line" alt="" coords="124,1580,284,1609"/>
+<area shape="rect" id="node123" href="$vgacon__early_8c.html#ab95893b083e85ec18435e967080a52df" title="vgacon_early_clear\l_video" alt="" coords="137,1633,271,1679"/>
+<area shape="rect" id="node13" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="759,271,892,300"/>
+<area shape="rect" id="node15" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="964,245,1097,275"/>
+<area shape="rect" id="node22" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="1157,503,1245,532"/>
+<area shape="rect" id="node31" href="$heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="356,691,463,720"/>
+<area shape="rect" id="node52" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="981,1269,1080,1299"/>
+<area shape="rect" id="node69" href="$include_2arch_2i386_2idt_8h.html#adf6646601e167235818fd01cdc1c14d6" title="i386_idt_initialize" alt="" coords="971,324,1091,353"/>
+<area shape="rect" id="node83" href="$kdbgmm_8h.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="356,1268,463,1297"/>
+<area shape="rect" id="node90" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="952,1165,1109,1195"/>
+<area shape="rect" id="node94" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="748,1269,903,1299"/>
+<area shape="rect" id="node97" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="757,1399,893,1428"/>
+</map>

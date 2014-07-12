@@ -1,0 +1,10 @@
+<map id="include/kernel/scheduler.h" name="include/kernel/scheduler.h">
+<area shape="rect" id="node7" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="198,160,307,189"/>
+<area shape="rect" id="node14" href="$process_8h.html" title="kernel/process.h" alt="" coords="336,83,454,112"/>
+<area shape="rect" id="node21" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="34,237,140,267"/>
+<area shape="rect" id="node25" href="$time_8h.html" title="kernel/time.h" alt="" coords="626,237,722,267"/>
+<area shape="rect" id="node33" href="$llist_8h.html" title="util/llist.h" alt="" coords="527,237,602,267"/>
+<area shape="rect" id="node9" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="164,237,287,267"/>
+<area shape="rect" id="node18" href="$types_8h.html" title="sys/types.h" alt="" coords="412,237,503,267"/>
+<area shape="rect" id="node28" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="432,160,523,189"/>
+</map>

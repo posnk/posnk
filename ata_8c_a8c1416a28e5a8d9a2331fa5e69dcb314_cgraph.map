@@ -1,0 +1,11 @@
+<map id="ata_blk_read" name="ata_blk_read">
+<area shape="rect" id="node3" href="$ata_8c.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="149,199,221,228"/>
+<area shape="rect" id="node5" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="279,5,401,35"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a07edd740f812723cf51bbe5439ccbd06" title="ata_setup_lba_transfer" alt="" coords="459,56,613,85"/>
+<area shape="rect" id="node9" href="$ata_8c.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="661,168,765,197"/>
+<area shape="rect" id="node13" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="271,159,409,206"/>
+<area shape="rect" id="node15" href="$ata_8c.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="485,228,587,257"/>
+<area shape="rect" id="node18" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="287,280,393,309"/>
+<area shape="rect" id="node20" href="$ata_8c.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="291,333,389,363"/>
+<area shape="rect" id="node23" href="$ata_8c.html#a70e30cedd3a469033d65e4ecd423d373" title="ata_read_data" alt="" coords="484,333,588,363"/>
+</map>

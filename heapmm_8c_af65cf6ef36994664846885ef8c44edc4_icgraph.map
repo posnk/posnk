@@ -1,0 +1,6 @@
+<map id="heapmm_alloc_page_match_iterator" name="heapmm_alloc_page_match_iterator">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="237,59,395,88"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="492,5,585,35"/>
+<area shape="rect" id="node7" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="489,59,588,88"/>
+<area shape="rect" id="node10" href="$heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="443,112,635,141"/>
+</map>

@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('protection_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">protection.c</div>  </div>
@@ -96,14 +113,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
 <div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="protection_8c.html#a153fdb41e0477fe8548dfeec72fae63c">    6</a></span>&#160;<a class="code" href="structi386__tss__entry.html">i386_tss_entry_t</a> <a class="code" href="protection_8c.html#a153fdb41e0477fe8548dfeec72fae63c">i386_tss_entry</a>;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780">    8</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780">i386_set_tss_descriptor</a>(uint32_t base, uint32_t limit, uint8_t <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>,uint8_t granularity){</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780">    8</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780">i386_set_tss_descriptor</a>(uint32_t base, uint32_t limit, uint8_t flags,uint8_t granularity){</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        <a class="code" href="string_8c.html#a4cb469bec7b722064b97a406346acb61">memset</a>(&amp;i386_tss_descriptor,0,<span class="keyword">sizeof</span>(<a class="code" href="structi386__gdt__descriptor.html">i386_gdt_descriptor_t</a>));</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#a4701edaa9a734798d398721f3fff3924">baseLo</a>              = (base &gt;&gt; <a class="code" href="protection_8h.html#ad0ba4a915066878035a6c779b4408d56">I386_GDT_BASE_LOW_SHIFT</a>)     &amp; <a class="code" href="protection_8h.html#a9eacc13a0b01b29cc3a7a7a71d54f1a2">I386_GDT_BASE_LOW_MASK</a>;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#ad3aa202c0cf6954554753fc30383a82c">baseMid</a>             = (base &gt;&gt; <a class="code" href="protection_8h.html#a443bda6f1be39fffd6dc76f193bf8d18">I386_GDT_BASE_MID_SHIFT</a>)     &amp; <a class="code" href="protection_8h.html#afd0f29eaf2e14176882d0dce3fd79ba1">I386_GDT_BASE_MID_MASK</a>;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#adede6e6d6fa8101f3b283ccd7e533c2e">baseHi</a>              = (base &gt;&gt; <a class="code" href="protection_8h.html#a26181ddcbf565812794fbb7482be3aa4">I386_GDT_BASE_HIGH_SHIFT</a>)    &amp; <a class="code" href="protection_8h.html#a80ce50fe376daaa1dd031000b185f28a">I386_GDT_BASE_HIGH_MASK</a>;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#a86922e5827872cb60905bfc41a5997ca">limit</a>               = (limit &gt;&gt; <a class="code" href="protection_8h.html#a415e1b4524629c8649e56bcfc328aefc">I386_GDT_LIMIT_LOW_SHIFT</a>) &amp; <a class="code" href="protection_8h.html#a72f2db7f65c17d0ec5777a1e3c3a0ae9">I386_GDT_LIMIT_LOW_MASK</a>;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#a7ea14635d108097af7388b147fa7a101">granularity</a>         = granularity | ((limit &gt;&gt; <a class="code" href="protection_8h.html#a13f3304f7172ff249569b6e78d56f561">I386_GDT_LIMIT_HIGH_SHIFT</a>) &amp; <a class="code" href="protection_8h.html#ad6227991c85479211b28cdb1f048996b">I386_GDT_LIMIT_HIGH_MASK</a>);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#a2f0808183dfd7efea1d86828cf08596b">flags</a>               = <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        i386_tss_descriptor.<a class="code" href="structi386__gdt__descriptor.html#a2f0808183dfd7efea1d86828cf08596b">flags</a>               = flags;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="protection_8c.html#a06cdf268a360cc55b1e3adcb40c1871e">i386_tss_flush</a>();</div>
@@ -125,11 +142,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="protection_8h.html#ab8fc7ad858baef79699378bb33d4d650">i386_protection_user_call</a>((uint32_t) entry, (uint32_t) stack);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:23 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li><li class="navelem"><a class="el" href="protection_8c.html">protection.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:55 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

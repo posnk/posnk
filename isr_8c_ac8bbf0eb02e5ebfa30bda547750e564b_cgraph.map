@@ -1,0 +1,10 @@
+<map id="sercon_isr" name="sercon_isr">
+<area shape="rect" id="node3" href="$x86_8c.html#abc1d0fce6a713e06d6dc92b6c48fcc09" title="i386_inb" alt="" coords="344,5,413,35"/>
+<area shape="rect" id="node5" href="$sercon_8c.html#a0d20a2e01b41fd1b5314d7dd710ddc3a" title="sserial_received" alt="" coords="137,57,252,87"/>
+<area shape="rect" id="node8" href="$tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="143,139,247,168"/>
+<area shape="rect" id="node10" href="$tty_8c.html#afa30a04526ae58f448f660f32de0e957" title="tty_get" alt="" coords="348,59,409,88"/>
+<area shape="rect" id="node12" href="$tty_8c.html#a0f65fe3e4b95bd87543177d3eb92a1c0" title="tty_buf_line_char" alt="" coords="319,112,439,141"/>
+<area shape="rect" id="node14" href="$tty_8c.html#a890d88589585c3f34e4fdca210087d05" title="tty_flush_line_buffer" alt="" coords="504,139,643,168"/>
+<area shape="rect" id="node17" href="$process_8c.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="301,216,456,245"/>
+<area shape="rect" id="node19" href="$tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74" title="tty_buf_out_char" alt="" coords="320,269,437,299"/>
+</map>

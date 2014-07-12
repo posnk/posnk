@@ -1,0 +1,6 @@
+<map id="kdbgmm_morecore_iterator" name="kdbgmm_morecore_iterator">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="235,59,389,88"/>
+<area shape="rect" id="node10" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="637,85,771,115"/>
+<area shape="rect" id="node5" href="$kdbgmm_8h.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="460,5,567,35"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="439,59,588,88"/>
+</map>

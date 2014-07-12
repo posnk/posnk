@@ -1,0 +1,4 @@
+<map id="vfs_int_read_dir" name="vfs_int_read_dir">
+<area shape="rect" id="node3" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="169,5,265,35"/>
+<area shape="rect" id="node5" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="315,5,421,35"/>
+</map>

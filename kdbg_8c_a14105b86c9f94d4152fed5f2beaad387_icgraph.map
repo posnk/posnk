@@ -1,0 +1,6 @@
+<map id="kdbg_exit" name="kdbg_exit">
+<area shape="rect" id="node3" href="$dbgapi_8h.html#a9a04c1ab65a38aee691bae5cee7c8839" title="dbgapi_invoke_kdbg" alt="" coords="135,59,273,88"/>
+<area shape="rect" id="node5" href="$dbgapi_8h.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="329,5,484,35"/>
+<area shape="rect" id="node7" href="$debug_8h.html#a42be2c67abcbd4ccd5d8d1e08c21e614" title="debug_postmortem_hook" alt="" coords="323,59,491,88"/>
+<area shape="rect" id="node9" href="$syscall_8c.html#a1d1f2159e0a86699f85a5afded688e5e" title="sys_dbgdrop" alt="" coords="359,112,455,141"/>
+</map>

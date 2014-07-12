@@ -1,0 +1,14 @@
+<map id="semaphore_idown" name="semaphore_idown">
+<area shape="rect" id="node3" href="$pipe_8h.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="188,57,265,87"/>
+<area shape="rect" id="node9" href="$pipe_8h.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="187,216,267,245"/>
+<area shape="rect" id="node23" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="181,373,272,403"/>
+<area shape="rect" id="node5" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="509,137,592,167"/>
+<area shape="rect" id="node7" href="$tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1" title="tty_read" alt="" coords="355,5,424,35"/>
+<area shape="rect" id="node11" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="508,296,593,325"/>
+<area shape="rect" id="node13" href="$tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74" title="tty_buf_out_char" alt="" coords="331,109,448,139"/>
+<area shape="rect" id="node15" href="$tty_8c.html#a890d88589585c3f34e4fdca210087d05" title="tty_flush_line_buffer" alt="" coords="320,163,459,192"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="353,216,425,245"/>
+<area shape="rect" id="node20" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="352,269,427,299"/>
+<area shape="rect" id="node25" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="507,400,595,429"/>
+<area shape="rect" id="node27" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="347,373,432,403"/>
+</map>

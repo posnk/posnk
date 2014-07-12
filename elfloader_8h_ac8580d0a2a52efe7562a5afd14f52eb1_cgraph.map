@@ -1,0 +1,27 @@
+<map id="elf_load" name="elf_load">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="733,391,840,421"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="736,306,837,335"/>
+<area shape="rect" id="node17" href="$procvmm_8c.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="489,138,631,167"/>
+<area shape="rect" id="node25" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="757,253,816,282"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="120,369,227,398"/>
+<area shape="rect" id="node48" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="275,523,427,553"/>
+<area shape="rect" id="node54" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="137,629,209,658"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="1131,255,1285,285"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="1335,149,1460,178"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="931,255,1080,285"/>
+<area shape="rect" id="node15" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="1159,150,1257,179"/>
+<area shape="rect" id="node19" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="928,81,1083,128"/>
+<area shape="rect" id="node23" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="979,202,1032,231"/>
+<area shape="rect" id="node29" href="$procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address." alt="" coords="695,47,879,77"/>
+<area shape="rect" id="node36" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="303,369,399,398"/>
+<area shape="rect" id="node40" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="484,317,636,346"/>
+<area shape="rect" id="node44" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="493,471,627,501"/>
+<area shape="rect" id="node50" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="503,525,617,554"/>
+<area shape="rect" id="node52" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="475,578,645,607"/>
+<area shape="rect" id="node57" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="499,655,621,685"/>
+<area shape="rect" id="node60" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="507,733,613,762"/>
+<area shape="rect" id="node62" href="$vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67" title="Read data from a file from backing storage." alt="" coords="304,838,397,867"/>
+<area shape="rect" id="node64" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="311,785,391,814"/>
+<area shape="rect" id="node67" href="$chardev_8c.html#a3468d83984a097533165337248dfe2c6" title="device_char_read" alt="" coords="289,577,412,606"/>
+<area shape="rect" id="node69" href="$blkdev_8c.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="285,681,416,710"/>
+</map>

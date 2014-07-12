@@ -1,0 +1,22 @@
+<map id="kernel/process.c" name="kernel/process.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="5,469,69,499"/>
+<area shape="rect" id="node8" href="$errno_8h.html" title="sys/errno.h" alt="" coords="144,83,229,112"/>
+<area shape="rect" id="node10" href="$process_8h.html" title="kernel/process.h" alt="" coords="699,237,816,267"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="1357,315,1467,344"/>
+<area shape="rect" id="node20" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="624,469,731,499"/>
+<area shape="rect" id="node31" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="253,392,395,421"/>
+<area shape="rect" id="node43" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="1155,160,1283,189"/>
+<area shape="rect" id="node52" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="1459,83,1571,112"/>
+<area shape="rect" id="node62" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="367,83,487,112"/>
+<area shape="rect" id="node67" href="$streams_8h.html" title="kernel/streams.h" alt="" coords="475,237,592,267"/>
+<area shape="rect" id="node73" href="$elfloader_8h.html" title="kernel/elfloader.h" alt="" coords="1109,83,1229,112"/>
+<area shape="rect" id="node75" href="$signals_8h.html" title="kernel/signals.h" alt="" coords="608,160,720,189"/>
+<area shape="rect" id="node78" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="1008,315,1131,344"/>
+<area shape="rect" id="node83" href="$config_8h.html" title="config.h" alt="" coords="1595,83,1661,112"/>
+<area shape="rect" id="node15" href="$types_8h.html" title="sys/types.h" alt="" coords="589,392,680,421"/>
+<area shape="rect" id="node24" href="$time_8h.html" title="kernel/time.h" alt="" coords="805,392,901,421"/>
+<area shape="rect" id="node27" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="488,315,579,344"/>
+<area shape="rect" id="node38" href="$llist_8h.html" title="util/llist.h" alt="" coords="925,392,1000,421"/>
+<area shape="rect" id="node34" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="419,392,515,421"/>
+<area shape="rect" id="node57" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="1592,237,1728,267"/>
+</map>

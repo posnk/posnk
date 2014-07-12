@@ -1,0 +1,12 @@
+<map id="kernel/exception.c" name="kernel/exception.c">
+<area shape="rect" id="node7" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="117,83,237,112"/>
+<area shape="rect" id="node12" href="$system_8h.html" title="kernel/system.h" alt="" coords="1048,83,1163,112"/>
+<area shape="rect" id="node14" href="$signals_8h.html" title="kernel/signals.h" alt="" coords="453,83,565,112"/>
+<area shape="rect" id="node32" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="589,83,717,112"/>
+<area shape="rect" id="node41" href="$debug_8h.html" title="util/debug.h" alt="" coords="5,160,93,189"/>
+<area shape="rect" id="node16" href="$process_8h.html" title="kernel/process.h" alt="" coords="499,160,616,189"/>
+<area shape="rect" id="node20" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="813,237,923,267"/>
+<area shape="rect" id="node23" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="363,237,469,267"/>
+<area shape="rect" id="node27" href="$time_8h.html" title="kernel/time.h" alt="" coords="693,237,789,267"/>
+<area shape="rect" id="node30" href="$llist_8h.html" title="util/llist.h" alt="" coords="595,237,669,267"/>
+</map>

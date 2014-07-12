@@ -1,0 +1,4 @@
+<map id="device_char_ioctl" name="device_char_ioctl">
+<area shape="rect" id="node3" href="$streams_8h.html#a7f7816d947b6e32d723c90a8de5e111d" title="_sys_ioctl" alt="" coords="177,5,257,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a827b4ff2983309209988a2ee675c8aa7" title="sys_ioctl" alt="" coords="307,5,381,35"/>
+</map>

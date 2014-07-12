@@ -1,0 +1,7 @@
+<map id="ata_setup_lba_transfer" name="ata_setup_lba_transfer">
+<area shape="rect" id="node3" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="209,75,281,104"/>
+<area shape="rect" id="node9" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="208,128,283,157"/>
+<area shape="rect" id="node5" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="332,5,455,51"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="345,75,441,104"/>
+<area shape="rect" id="node11" href="$ata_8c.html#a73d0108d85edca1b22f20f2b5ac2859f" title="ata_blk_write" alt="" coords="344,128,443,157"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="vfs_int_mkdir" name="vfs_int_mkdir">
+<area shape="rect" id="node3" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="156,59,233,88"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a8397464d241949d57679d42b28e17c39" title="sys_mkdir" alt="" coords="316,5,399,35"/>
+<area shape="rect" id="node7" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="301,59,413,88"/>
+<area shape="rect" id="node9" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="284,112,431,141"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="sys_write" name="sys_write">
+<area shape="rect" id="node3" href="$streams_8c.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="157,213,243,243"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="516,5,623,35"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="519,369,620,399"/>
+<area shape="rect" id="node27" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="135,421,265,451"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="332,213,441,243"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="508,160,631,189"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="680,264,787,293"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#a522e8a4f7dfc7d3a6994313d2d746a82" title="Write data to a file." alt="" coords="349,267,424,296"/>
+<area shape="rect" id="node19" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="529,316,609,345"/>
+<area shape="rect" id="node25" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="315,160,459,189"/>
+<area shape="rect" id="node21" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="697,395,769,424"/>
+<area shape="rect" id="node29" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="328,421,445,451"/>
+</map>

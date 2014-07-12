@@ -1,0 +1,12 @@
+<map id="pipe_open_write" name="pipe_open_write">
+<area shape="rect" id="node3" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="192,59,277,88"/>
+<area shape="rect" id="node9" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="191,153,279,183"/>
+<area shape="rect" id="node15" href="$tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab" title="tty_register_driver" alt="" coords="172,232,297,261"/>
+<area shape="rect" id="node5" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="355,5,456,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="367,59,444,88"/>
+<area shape="rect" id="node11" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="365,112,445,141"/>
+<area shape="rect" id="node13" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="368,165,443,195"/>
+<area shape="rect" id="node17" href="$sercon_8c.html#af5e57b7a31a51e7e7e43b7b81a3bc6ba" title="sercon_init" alt="" coords="363,219,448,248"/>
+<area shape="rect" id="node19" href="$vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5" title="vgacon_init" alt="" coords="512,245,600,275"/>
+<area shape="rect" id="node22" href="$vterm__tty_8c.html#a896c4181529143634f37754c020f6c81" title="vterm_tty_setup" alt="" coords="348,323,463,352"/>
+</map>

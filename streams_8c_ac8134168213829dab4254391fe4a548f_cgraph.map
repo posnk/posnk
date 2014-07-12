@@ -1,0 +1,24 @@
+<map id="_sys_read" name="_sys_read">
+<area shape="rect" id="node3" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="156,127,225,156"/>
+<area shape="rect" id="node5" href="$pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="152,180,229,209"/>
+<area shape="rect" id="node24" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="531,363,637,392"/>
+<area shape="rect" id="node26" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="696,832,840,861"/>
+<area shape="rect" id="node29" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="523,467,645,496"/>
+<area shape="rect" id="node33" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="136,884,245,913"/>
+<area shape="rect" id="node38" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="155,569,227,599"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="329,153,436,183"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="332,207,433,236"/>
+<area shape="rect" id="node11" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="548,260,620,289"/>
+<area shape="rect" id="node13" href="$string_8c.html#a31c8719f4acb09e5426b436df96c38cb" title="memcpy_o" alt="" coords="340,49,425,79"/>
+<area shape="rect" id="node16" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="521,207,647,236"/>
+<area shape="rect" id="node18" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="703,467,833,496"/>
+<area shape="rect" id="node20" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="888,832,963,861"/>
+<area shape="rect" id="node22" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="1012,859,1137,888"/>
+<area shape="rect" id="node36" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="295,936,471,965"/>
+<area shape="rect" id="node40" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="316,569,449,599"/>
+<area shape="rect" id="node43" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="307,623,459,652"/>
+<area shape="rect" id="node46" href="$vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67" title="Read data from a file from backing storage." alt="" coords="336,727,429,756"/>
+<area shape="rect" id="node48" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="343,260,423,289"/>
+<area shape="rect" id="node53" href="$chardev_8c.html#a3468d83984a097533165337248dfe2c6" title="device_char_read" alt="" coords="321,780,444,809"/>
+<area shape="rect" id="node55" href="$blkdev_8c.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="317,415,448,444"/>
+</map>

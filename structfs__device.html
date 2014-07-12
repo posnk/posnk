@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -66,12 +73,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('structfs__device.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -80,12 +102,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">fs_device Struct Reference</div>  </div>
+<div class="title">fs_device Struct Reference<div class="ingroups"><a class="el" href="group__vfs.html">VFS</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -100,7 +121,7 @@ Data Fields</h2></td></tr>
 <tr class="memdesc:a582c64d7944d6c71d983d86fe7105619"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block device this filesystem resides on.  <a href="#a582c64d7944d6c71d983d86fe7105619"></a><br/></td></tr>
 <tr class="memitem:affaa5cec248689da73d3dfd015211360"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device.html#affaa5cec248689da73d3dfd015211360">root_inode_id</a></td></tr>
 <tr class="memdesc:affaa5cec248689da73d3dfd015211360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Root inode ID.  <a href="#affaa5cec248689da73d3dfd015211360"></a><br/></td></tr>
-<tr class="memitem:adbc4d5914d59db84428c34b06a2e58cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a68b8e1abb7e9c8e49013fb433a657780">fs_device_operations_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device.html#adbc4d5914d59db84428c34b06a2e58cf">ops</a></td></tr>
+<tr class="memitem:adbc4d5914d59db84428c34b06a2e58cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga68b8e1abb7e9c8e49013fb433a657780">fs_device_operations_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device.html#adbc4d5914d59db84428c34b06a2e58cf">ops</a></td></tr>
 <tr class="memdesc:adbc4d5914d59db84428c34b06a2e58cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the callback list.  <a href="#adbc4d5914d59db84428c34b06a2e58cf"></a><br/></td></tr>
 <tr class="memitem:a48b7123c896863bcadc411e6037204c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="synch_8h.html#af1d92288e7a28476c17ed043164b535d">semaphore_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device.html#a48b7123c896863bcadc411e6037204c9">lock</a></td></tr>
 <tr class="memdesc:a48b7123c896863bcadc411e6037204c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filesystem lock.  <a href="#a48b7123c896863bcadc411e6037204c9"></a><br/></td></tr>
@@ -116,7 +137,7 @@ Data Fields</h2></td></tr>
 </ul>
 <p>For more information on the callbacks see the documentation of <a class="el" href="structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions.">fs_device_operations</a> </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00294">294</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00361">361</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 </div><h2>Field Documentation</h2>
 <a class="anchor" id="a582c64d7944d6c71d983d86fe7105619"></a>
 <div class="memitem">
@@ -130,9 +151,9 @@ Data Fields</h2></td></tr>
 
 <p>Block device this filesystem resides on. </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00296">296</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00363">363</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, and <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>.</p>
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, and <a class="el" href="vfs_8c_source.html#l00095">vfs_get_inode()</a>.</p>
 
 </div>
 </div>
@@ -149,9 +170,9 @@ Data Fields</h2></td></tr>
 <p>Inode structure size for this filesystem. </p>
 <p>In memory size of the inode structures returned by the callbacks of this driver. </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00308">308</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00375">375</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="ramfs_8c_source.html#l00223">ramfs_load_inode()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>.</p>
 
 </div>
 </div>
@@ -167,7 +188,7 @@ Data Fields</h2></td></tr>
 
 <p>Filesystem lock. </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00302">302</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00369">369</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, and <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>.</p>
 
@@ -178,16 +199,16 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a68b8e1abb7e9c8e49013fb433a657780">fs_device_operations_t</a>* fs_device::ops</td>
+          <td class="memname"><a class="el" href="group__vfs.html#ga68b8e1abb7e9c8e49013fb433a657780">fs_device_operations_t</a>* fs_device::ops</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Pointer to the callback list. </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00300">300</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00367">367</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00153">vfs_find_dirent()</a>, <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l01508">vfs_initialize()</a>, <a class="el" href="vfs_8c_source.html#l00237">vfs_int_link()</a>, <a class="el" href="vfs_8c_source.html#l00213">vfs_int_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l00169">vfs_int_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00308">vfs_int_read()</a>, <a class="el" href="vfs_8c_source.html#l00287">vfs_int_read_dir()</a>, <a class="el" href="vfs_8c_source.html#l00191">vfs_int_rmnod()</a>, <a class="el" href="vfs_8c_source.html#l00352">vfs_int_truncate()</a>, <a class="el" href="vfs_8c_source.html#l00260">vfs_int_unlink()</a>, <a class="el" href="vfs_8c_source.html#l00329">vfs_int_write()</a>, and <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00166">vfs_find_dirent()</a>, <a class="el" href="vfs_8c_source.html#l00095">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>, <a class="el" href="vfs_8c_source.html#l00255">vfs_int_link()</a>, <a class="el" href="vfs_8c_source.html#l00231">vfs_int_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l00187">vfs_int_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00326">vfs_int_read()</a>, <a class="el" href="vfs_8c_source.html#l00305">vfs_int_read_dir()</a>, <a class="el" href="vfs_8c_source.html#l00209">vfs_int_rmnod()</a>, <a class="el" href="vfs_8c_source.html#l00370">vfs_int_truncate()</a>, <a class="el" href="vfs_8c_source.html#l00278">vfs_int_unlink()</a>, <a class="el" href="vfs_8c_source.html#l00347">vfs_int_write()</a>, and <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -203,9 +224,9 @@ Data Fields</h2></td></tr>
 
 <p>Root inode ID. </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00298">298</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00365">365</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l01508">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -213,11 +234,15 @@ Data Fields</h2></td></tr>
 <li>include/kernel/<a class="el" href="vfs_8h_source.html">vfs.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="structfs__device.html">fs_device</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

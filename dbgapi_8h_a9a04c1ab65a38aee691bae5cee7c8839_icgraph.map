@@ -1,0 +1,8 @@
+<map id="dbgapi_invoke_kdbg" name="dbgapi_invoke_kdbg">
+<area shape="rect" id="node3" href="$dbgapi_8h.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="201,5,356,35"/>
+<area shape="rect" id="node7" href="$debug_8h.html#a42be2c67abcbd4ccd5d8d1e08c21e614" title="debug_postmortem_hook" alt="" coords="195,59,363,88"/>
+<area shape="rect" id="node11" href="$syscall_8c.html#a1d1f2159e0a86699f85a5afded688e5e" title="sys_dbgdrop" alt="" coords="231,112,327,141"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="412,5,561,35"/>
+<area shape="rect" id="node9" href="$exception_8c.html#ad522f158b022291f9fd9ab8748dbd10e" title="exception_panic" alt="" coords="429,59,544,88"/>
+<area shape="rect" id="node13" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="444,112,529,141"/>
+</map>

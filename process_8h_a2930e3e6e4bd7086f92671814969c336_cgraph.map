@@ -1,0 +1,16 @@
+<map id="process_handle_signals" name="process_handle_signals">
+<area shape="rect" id="node3" href="$process_8c.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="228,242,369,272"/>
+<area shape="rect" id="node15" href="$process_8c.html#a4f40a4ef09afab8866e9817b813fd006" title="process_signal_handler\l_default" alt="" coords="220,364,377,411"/>
+<area shape="rect" id="node17" href="$procvmm_8c.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="219,434,379,464"/>
+<area shape="rect" id="node23" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="261,62,336,92"/>
+<area shape="rect" id="node31" href="$task__switch_8c.html#a413ca2fd9749f8037c2cd560665a0d20" title="scheduler_invoke_signal\l_handler" alt="" coords="217,295,380,342"/>
+<area shape="rect" id="node5" href="$process_8c.html#a227af89ee0be090e1efa14ffeae05d76" title="process_get" alt="" coords="460,208,553,237"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="643,260,749,289"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="457,312,556,341"/>
+<area shape="rect" id="node13" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="453,154,560,184"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="633,93,759,122"/>
+<area shape="rect" id="node19" href="$llist_8c.html#a1fe5f4c7b079eb82f11521f5b8d847a6" title="Gets the last entry in a doubly linked list." alt="" coords="460,425,553,454"/>
+<area shape="rect" id="node21" href="$procvmm_8c.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="440,478,573,508"/>
+<area shape="rect" id="node26" href="$scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95" title="Iterator function that tests for running tasks that are not the current." alt="" coords="436,84,577,131"/>
+<area shape="rect" id="node28" href="$task__switch_8c.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="429,32,584,61"/>
+</map>

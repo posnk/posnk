@@ -1,0 +1,6 @@
+<map id="vfs_int_write" name="vfs_int_write">
+<area shape="rect" id="node3" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="149,59,224,88"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="304,5,389,35"/>
+<area shape="rect" id="node7" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="291,59,403,88"/>
+<area shape="rect" id="node9" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="273,112,420,141"/>
+</map>

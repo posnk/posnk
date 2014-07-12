@@ -1,0 +1,5 @@
+<map id="earlycon_putc" name="earlycon_putc">
+<area shape="rect" id="node3" href="$vgacon__early_8c.html#a1df3f6b06a7d95db16b0dc6a1039f179" title="vgacon_early_move_cursor" alt="" coords="157,5,339,35"/>
+<area shape="rect" id="node7" href="$vgacon__early_8c.html#a58a20297e926d9ac5ee326d3b1834a17" title="Write character to text buffer and move cursor." alt="" coords="179,59,317,88"/>
+<area shape="rect" id="node5" href="$vgacon_8c.html#ab979f6af999f6d09c7ae3b9eabe331ab" title="vgacon_write_crtc_register" alt="" coords="387,5,565,35"/>
+</map>

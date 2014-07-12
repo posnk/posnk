@@ -1,0 +1,6 @@
+<map id="include/driver/block/pata/ata.h" name="include/driver/block/pata/ata.h">
+<area shape="rect" id="node5" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="5,101,123,131"/>
+<area shape="rect" id="node10" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="315,101,421,131"/>
+<area shape="rect" id="node15" href="$partition_8h.html" title="fs/partition.h" alt="" coords="197,101,291,131"/>
+<area shape="rect" id="node8" href="$llist_8h.html" title="util/llist.h" alt="" coords="27,179,101,208"/>
+</map>

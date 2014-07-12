@@ -1,0 +1,29 @@
+<map id="include/kernel/earlycon.h" name="include/kernel/earlycon.h">
+<area shape="rect" id="node3" href="$blkdev_8c.html" title="kernel/blkdev.c" alt="" coords="5,92,115,121"/>
+<area shape="rect" id="node5" href="$earlycon_8c.html" title="kernel/earlycon.c" alt="" coords="139,92,259,121"/>
+<area shape="rect" id="node7" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="283,92,403,121"/>
+<area shape="rect" id="node9" href="$exception_8c.html" title="kernel/exception.c" alt="" coords="427,92,555,121"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="579,92,701,121"/>
+<area shape="rect" id="node13" href="$interrupt_8c.html" title="kernel/interrupt.c" alt="" coords="725,92,843,121"/>
+<area shape="rect" id="node15" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="867,92,976,121"/>
+<area shape="rect" id="node17" href="$process_8c.html" title="kernel/process.c" alt="" coords="1000,92,1117,121"/>
+<area shape="rect" id="node19" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="1141,92,1267,121"/>
+<area shape="rect" id="node21" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="1291,92,1403,121"/>
+<area shape="rect" id="node23" href="$tar_8c.html" title="kernel/tar.c" alt="" coords="1427,92,1512,121"/>
+<area shape="rect" id="node25" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="1536,92,1608,121"/>
+<area shape="rect" id="node27" href="$mbr_8c.html" title="fs/mbr.c" alt="" coords="1632,92,1701,121"/>
+<area shape="rect" id="node29" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="1725,92,1875,121"/>
+<area shape="rect" id="node31" href="$ata__pci_8c.html" title="driver/block/pata/ata\l_pci.c" alt="" coords="1899,83,2037,130"/>
+<area shape="rect" id="node33" href="$pci_8c.html" title="driver/bus/pci.c" alt="" coords="2061,92,2171,121"/>
+<area shape="rect" id="node35" href="$pci__intel__host_8c.html" title="driver/bus/pci_intel\l_host.c" alt="" coords="2195,83,2325,130"/>
+<area shape="rect" id="node37" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="2349,92,2456,121"/>
+<area shape="rect" id="node39" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="2480,92,2584,121"/>
+<area shape="rect" id="node41" href="$task__switch_8c.html" title="arch/i386/task_switch.c" alt="" coords="2608,92,2768,121"/>
+<area shape="rect" id="node43" href="$x86_8c.html" title="arch/i386/x86.c" alt="" coords="2792,92,2901,121"/>
+<area shape="rect" id="node45" href="$kdbgio_8h.html" title="include/kdbg/kdbgio.h" alt="" coords="2925,92,3072,121"/>
+<area shape="rect" id="node55" href="$kdbgmm_8c.html" title="kdbg/kdbgmm.c" alt="" coords="3096,92,3211,121"/>
+<area shape="rect" id="node47" href="$heapdbg_8c.html" title="kdbg/heapdbg.c" alt="" coords="2752,179,2867,208"/>
+<area shape="rect" id="node49" href="$kdbg_8c.html" title="kdbg/kdbg.c" alt="" coords="2891,179,2984,208"/>
+<area shape="rect" id="node51" href="$kdbgio_8c.html" title="kdbg/kdbgio.c" alt="" coords="3008,179,3109,208"/>
+<area shape="rect" id="node53" href="$stacktrc_8c.html" title="kdbg/stacktrc.c" alt="" coords="3133,179,3245,208"/>
+</map>

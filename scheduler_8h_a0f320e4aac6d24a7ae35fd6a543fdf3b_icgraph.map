@@ -1,0 +1,5 @@
+<map id="scheduler_fork_to" name="scheduler_fork_to">
+<area shape="rect" id="node3" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="179,32,285,61"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="333,5,421,35"/>
+<area shape="rect" id="node7" href="$sc__process_8c.html#ab91db027b5040c913707c538cda17e16" title="kernel/sc_process.c" alt="" coords="341,59,413,88"/>
+</map>

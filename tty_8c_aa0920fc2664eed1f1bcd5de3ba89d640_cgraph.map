@@ -1,0 +1,12 @@
+<map id="tty_register_driver" name="tty_register_driver">
+<area shape="rect" id="node3" href="$chardev_8c.html#ada19604d825e698cfe2e37c86e1eff5d" title="device_char_register" alt="" coords="183,5,324,35"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="541,108,648,137"/>
+<area shape="rect" id="node9" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="209,135,297,164"/>
+<area shape="rect" id="node20" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="197,188,309,217"/>
+<area shape="rect" id="node22" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="196,241,311,271"/>
+<area shape="rect" id="node24" href="$tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b" title="tty_reset_termios" alt="" coords="192,295,315,324"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="696,108,851,137"/>
+<area shape="rect" id="node12" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="544,239,645,268"/>
+<area shape="rect" id="node14" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="373,160,493,189"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="376,264,491,293"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="heapmm_alloc_page" name="heapmm_alloc_page">
+<area shape="rect" id="node3" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="195,57,309,87"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="359,5,481,35"/>
+<area shape="rect" id="node9" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="664,84,763,113"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="532,57,615,87"/>
+</map>

@@ -1,0 +1,23 @@
+<map id="kernel/tty.c" name="kernel/tty.c">
+<area shape="rect" id="node3" href="$fcntl_8h.html" title="fcntl.h" alt="" coords="5,83,64,112"/>
+<area shape="rect" id="node5" href="$stat_8h.html" title="sys/stat.h" alt="" coords="61,237,141,267"/>
+<area shape="rect" id="node9" href="$errno_8h.html" title="sys/errno.h" alt="" coords="1075,83,1160,112"/>
+<area shape="rect" id="node11" href="$termios_8h.html" title="sys/termios.h" alt="" coords="139,160,240,189"/>
+<area shape="rect" id="node14" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="264,160,347,189"/>
+<area shape="rect" id="node17" href="$tty_8h.html" title="kernel/tty.h" alt="" coords="343,83,428,112"/>
+<area shape="rect" id="node22" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="613,160,709,189"/>
+<area shape="rect" id="node30" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="931,160,1059,189"/>
+<area shape="rect" id="node37" href="$process_8h.html" title="kernel/process.h" alt="" coords="864,237,981,267"/>
+<area shape="rect" id="node54" href="$signals_8h.html" title="kernel/signals.h" alt="" coords="680,83,792,112"/>
+<area shape="rect" id="node57" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="939,83,1051,112"/>
+<area shape="rect" id="node65" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="515,237,637,267"/>
+<area shape="rect" id="node70" href="$device_8h.html" title="kernel/device.h" alt="" coords="425,160,535,189"/>
+<area shape="rect" id="node78" href="$config_8h.html" title="config.h" alt="" coords="1184,83,1251,112"/>
+<area shape="rect" id="node7" href="$types_8h.html" title="sys/types.h" alt="" coords="235,315,325,344"/>
+<area shape="rect" id="node24" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="717,315,824,344"/>
+<area shape="rect" id="node34" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="1000,315,1109,344"/>
+<area shape="rect" id="node44" href="$time_8h.html" title="kernel/time.h" alt="" coords="1133,315,1229,344"/>
+<area shape="rect" id="node47" href="$llist_8h.html" title="util/llist.h" alt="" coords="619,315,693,344"/>
+<area shape="rect" id="node62" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="1405,237,1541,267"/>
+<area shape="rect" id="node73" href="$blkcache_8h.html" title="kernel/blkcache.h" alt="" coords="368,237,491,267"/>
+</map>

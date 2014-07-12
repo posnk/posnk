@@ -1,0 +1,6 @@
+<map id="i386_idle_task" name="i386_idle_task">
+<area shape="rect" id="node3" href="$scheduler_8c.html#acd253084a234cdf5649a9dd0fbc3848e" title="scheduler_set_as_idle" alt="" coords="161,5,311,35"/>
+<area shape="rect" id="node5" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="207,59,265,88"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="360,32,432,61"/>
+<area shape="rect" id="node9" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="369,85,423,115"/>
+</map>

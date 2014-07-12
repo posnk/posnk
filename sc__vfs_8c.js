@@ -1,0 +1,25 @@
+var sc__vfs_8c =
+[
+    [ "_sys_chdir", "sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c", null ],
+    [ "_sys_chmod", "sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47", null ],
+    [ "_sys_chown", "sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0", null ],
+    [ "_sys_lstat", "sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb", null ],
+    [ "_sys_readlink", "sc__vfs_8c.html#ac8eacdc1865661833934e2efa705757b", null ],
+    [ "_sys_stat", "sc__vfs_8c.html#a21a7b7d6519c5654a92b902dc2b1beec", null ],
+    [ "_sys_truncate", "sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a", null ],
+    [ "sys_chdir", "sc__vfs_8c.html#a6445c4088d5d956b36a0c8c1e638af87", null ],
+    [ "sys_chmod", "sc__vfs_8c.html#aa029b9e6ea949765f08203e68e66a7a9", null ],
+    [ "sys_chown", "sc__vfs_8c.html#aabe150ad1d04c50d94110778087b5cc9", null ],
+    [ "sys_link", "sc__vfs_8c.html#a035259bafdc828ac2fe323ee657d6de9", null ],
+    [ "sys_lstat", "sc__vfs_8c.html#ad19e102905b1c2a70bfc27c3313717c9", null ],
+    [ "sys_mkdir", "sc__vfs_8c.html#a8397464d241949d57679d42b28e17c39", null ],
+    [ "sys_mknod", "sc__vfs_8c.html#a444c7e95fb994b95595da2dc2cf6fab2", null ],
+    [ "sys_mount", "sc__vfs_8c.html#a9d19cbcb64ed126b4ea42e53a5ceef52", null ],
+    [ "sys_readlink", "sc__vfs_8c.html#aaac6e22260c6c5958e3bd35e4d6d149f", null ],
+    [ "sys_rmdir", "sc__vfs_8c.html#a7f48b00d2089d7021cc6a62e8c56b331", null ],
+    [ "sys_stat", "sc__vfs_8c.html#a007358ce4b84fdf7a22af6652eab9c4d", null ],
+    [ "sys_symlink", "sc__vfs_8c.html#a697f1d377f7d7ca3cb46949fc7ee3388", null ],
+    [ "sys_truncate", "sc__vfs_8c.html#ac7ac910b524c9ce4a0999cb4fb844e32", null ],
+    [ "sys_umask", "sc__vfs_8c.html#a407d083c211f6d97115c2fb967661734", null ],
+    [ "sys_unlink", "sc__vfs_8c.html#a2ee4369634438d5d553afc4906c19a40", null ]
+];

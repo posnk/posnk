@@ -1,0 +1,21 @@
+<map id="sys_execve" name="sys_execve">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="148,90,279,119"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="763,245,869,274"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="765,298,867,327"/>
+<area shape="rect" id="node21" href="$process_8c.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="163,430,264,459"/>
+<area shape="rect" id="node47" href="$process_8c.html#a9fe4bca83582af75714e98de8a4c7f93" title="strlistlen" alt="" coords="385,714,455,743"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="361,39,479,69"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="957,297,1029,326"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="1117,325,1272,354"/>
+<area shape="rect" id="node13" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="1320,377,1389,406"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="919,350,1068,379"/>
+<area shape="rect" id="node23" href="$procvmm_8c.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="340,509,500,538"/>
+<area shape="rect" id="node26" href="$elfloader_8c.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="604,271,671,301"/>
+<area shape="rect" id="node28" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="787,351,845,381"/>
+<area shape="rect" id="node31" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="967,403,1020,433"/>
+<area shape="rect" id="node35" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="348,245,492,274"/>
+<area shape="rect" id="node37" href="$streams_8c.html#aa17c760186bd4ebee3bd6bc632279154" title="stream_do_close_on_exec" alt="" coords="332,298,508,327"/>
+<area shape="rect" id="node39" href="$procvmm_8c.html#a8de9fd8f1440a9aaf1845711a68fc470" title="procvmm_do_exec_mmaps" alt="" coords="329,351,511,381"/>
+<area shape="rect" id="node41" href="$procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="560,351,715,381"/>
+<area shape="rect" id="node52" href="$protection_8c.html#ae550710d29c59b9382f60c09cf5dc350" title="process_user_call" alt="" coords="357,405,483,434"/>
+</map>

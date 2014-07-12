@@ -1,0 +1,5 @@
+<map id="vgacon_move_cursor" name="vgacon_move_cursor">
+<area shape="rect" id="node3" href="$vgacon_8c.html#aabc422aed726c924768aab5ea837a3f0" title="vgacon_position" alt="" coords="201,5,316,35"/>
+<area shape="rect" id="node5" href="$vgacon_8c.html#af2c2ed4b849fef41ceb45917489f1a35" title="vgacon_putc" alt="" coords="211,59,307,88"/>
+<area shape="rect" id="node7" href="$vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5" title="vgacon_init" alt="" coords="365,59,453,88"/>
+</map>

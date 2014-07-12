@@ -1,0 +1,22 @@
+<map id="include/config.h" name="include/config.h">
+<area shape="rect" id="node3" href="$physmm_8h.html" title="include/kernel/physmm.h" alt="" coords="443,83,608,112"/>
+<area shape="rect" id="node9" href="$process_8c.html" title="kernel/process.c" alt="" coords="967,237,1084,267"/>
+<area shape="rect" id="node17" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="1108,237,1236,267"/>
+<area shape="rect" id="node19" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="1260,237,1372,267"/>
+<area shape="rect" id="node21" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="1396,237,1545,267"/>
+<area shape="rect" id="node28" href="$arch_2i386_2paging_8c.html" title="arch/i386/paging.c" alt="" coords="1164,315,1292,344"/>
+<area shape="rect" id="node44" href="$pipe_8c.html" title="kernel/pipe.c" alt="" coords="1573,83,1669,112"/>
+<area shape="rect" id="node49" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="1693,83,1779,112"/>
+<area shape="rect" id="node51" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="1803,83,1893,112"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html" title="include/kernel/paging.h" alt="" coords="779,160,933,189"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="32,237,141,267"/>
+<area shape="rect" id="node11" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="228,237,353,267"/>
+<area shape="rect" id="node13" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="409,237,532,267"/>
+<area shape="rect" id="node15" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="556,237,695,267"/>
+<area shape="rect" id="node23" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="679,315,785,344"/>
+<area shape="rect" id="node25" href="$arch_2i386_2paging_8h.html" title="include/arch/i386/paging.h" alt="" coords="769,237,943,267"/>
+<area shape="rect" id="node30" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="101,160,221,189"/>
+<area shape="rect" id="node32" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="245,160,368,189"/>
+<area shape="rect" id="node35" href="$physmm_8c.html" title="kernel/physmm.c" alt="" coords="392,160,515,189"/>
+<area shape="rect" id="node42" href="$kdbgmm_8c.html" title="kdbg/kdbgmm.c" alt="" coords="539,160,653,189"/>
+</map>

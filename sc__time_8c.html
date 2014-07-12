@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('sc__time_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
@@ -101,14 +118,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aac567c56881c0ba57c22bc1517836d45"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#aac567c56881c0ba57c22bc1517836d45">sys_time</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memdesc:aac567c56881c0ba57c22bc1517836d45"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__time_8c.html">kernel/sc_time.c</a>  <a href="#aac567c56881c0ba57c22bc1517836d45"></a><br/></td></tr>
-<tr class="memitem:a8ad3ba3efa9c74b1723e8281fff12948"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a8ad3ba3efa9c74b1723e8281fff12948">sys_sleep</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a1764141f8114e589479dbecd461e8b55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a1764141f8114e589479dbecd461e8b55">sys_usleep</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a11b2d10465ed37687753db2d3dd5ff55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a11b2d10465ed37687753db2d3dd5ff55">sys_stime</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
+<tr class="memitem:ade312e577a9e6910eb0bf1e81ebca6b7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#ade312e577a9e6910eb0bf1e81ebca6b7">sys_time</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memdesc:ade312e577a9e6910eb0bf1e81ebca6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__time_8c.html">kernel/sc_time.c</a>  <a href="#ade312e577a9e6910eb0bf1e81ebca6b7"></a><br/></td></tr>
+<tr class="memitem:a0304fafcd62e49f121a6c5aca056149a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a0304fafcd62e49f121a6c5aca056149a">sys_sleep</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a6a4c4affb468b830c89ad5c19f1007be"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a6a4c4affb468b830c89ad5c19f1007be">sys_usleep</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a7ebdf84ff584049f61510f1352710a2e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__time_8c.html#a7ebdf84ff584049f61510f1352710a2e">sys_stime</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 </table>
 <h2>Function Documentation</h2>
-<a class="anchor" id="a8ad3ba3efa9c74b1723e8281fff12948"></a>
+<a class="anchor" id="a0304fafcd62e49f121a6c5aca056149a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -121,7 +138,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -140,7 +157,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a11b2d10465ed37687753db2d3dd5ff55"></a>
+<a class="anchor" id="a7ebdf84ff584049f61510f1352710a2e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -153,7 +170,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -172,20 +189,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aac567c56881c0ba57c22bc1517836d45"></a>
+<a class="anchor" id="ade312e577a9e6910eb0bf1e81ebca6b7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_time </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -210,7 +227,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1764141f8114e589479dbecd461e8b55"></a>
+<a class="anchor" id="a6a4c4affb468b830c89ad5c19f1007be"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -223,7 +240,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -243,11 +260,15 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="sc__time_8c.html">sc_time.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,12 @@
+<map id="kdbgmm_init" name="kdbgmm_init">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="151,192,300,221"/>
+<area shape="rect" id="node29" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="183,245,268,274"/>
+<area shape="rect" id="node5" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="621,48,691,77"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="772,100,897,129"/>
+<area shape="rect" id="node9" href="$kdbgmm_8c.html#a623a969e9e2ea599c5d24895cdfe7e11" title="Iterator function that tests for [our block][FREE] mergeable blocks." alt="" coords="372,306,519,352"/>
+<area shape="rect" id="node11" href="$kdbgmm_8c.html#a4114ffc4b186e541aa888baa7b809a59" title="Iterator function that tests for [FREE][our block] mergeable blocks." alt="" coords="351,376,540,405"/>
+<area shape="rect" id="node13" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="368,128,523,157"/>
+<area shape="rect" id="node16" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="793,202,876,232"/>
+<area shape="rect" id="node18" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="589,202,723,232"/>
+<area shape="rect" id="node25" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="396,429,495,458"/>
+</map>

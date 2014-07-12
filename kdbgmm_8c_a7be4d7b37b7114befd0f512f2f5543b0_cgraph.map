@@ -1,0 +1,11 @@
+<map id="kdbgmm_alloc" name="kdbgmm_alloc">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="160,219,315,248"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="812,180,937,210"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#abc85141e5370246e92d9a84ba064367c" title="Iterator function that tests for blocks equal the size in param." alt="" coords="373,45,523,92"/>
+<area shape="rect" id="node9" href="$kdbgmm_8c.html#ae9397780c5b9b35dcac292a30a73b1bc" title="Iterator function that tests for blocks able to contain the size in param." alt="" coords="363,115,533,144"/>
+<area shape="rect" id="node11" href="$kdbgmm_8c.html#ac66fc31a007c99c00faa0f78bb0b8bd5" title="Iterator function that tests for empty blocks." alt="" coords="583,128,761,158"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="833,283,916,312"/>
+<area shape="rect" id="node15" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="381,219,515,248"/>
+<area shape="rect" id="node17" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="597,283,747,312"/>
+<area shape="rect" id="node19" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="840,366,909,395"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="debug_dump_state" name="debug_dump_state">
+<area shape="rect" id="node3" href="$exception_8h.html#a6144950ba049dd82bec04ca06f81c30e" title="exception_handle" alt="" coords="352,5,475,35"/>
+<area shape="rect" id="node10" href="$exception_8c.html#ad522f158b022291f9fd9ab8748dbd10e" title="exception_panic" alt="" coords="188,31,303,60"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="711,5,855,35"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="524,31,660,60"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="is_transmit_empty" name="is_transmit_empty">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="185,32,295,61"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="344,5,461,35"/>
+<area shape="rect" id="node7" href="$kdbgio_8h.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="361,59,444,88"/>
+</map>

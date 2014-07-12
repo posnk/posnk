@@ -1,0 +1,8 @@
+<map id="_sys_dup" name="_sys_dup">
+<area shape="rect" id="node3" href="$streams_8h.html#a0349abb01604f6c3a69996aa8905e186" title="_sys_fcntl" alt="" coords="133,59,216,88"/>
+<area shape="rect" id="node11" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="265,111,367,140"/>
+<area shape="rect" id="node14" href="$sc__streams_8c.html#a20709d4fab4049cbbc781813756f0c6d" title="sys_dup" alt="" coords="140,5,209,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#ad248f89f4e7a7845326a2db903ec2630" title="sys_fcntl" alt="" coords="279,57,353,87"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="417,57,503,87"/>
+<area shape="rect" id="node9" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="552,84,640,113"/>
+</map>

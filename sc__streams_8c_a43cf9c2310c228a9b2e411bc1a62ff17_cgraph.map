@@ -1,0 +1,13 @@
+<map id="sys_getdents" name="sys_getdents">
+<area shape="rect" id="node3" href="$streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="168,136,275,165"/>
+<area shape="rect" id="node11" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="361,213,431,243"/>
+<area shape="rect" id="node17" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="156,265,287,295"/>
+<area shape="rect" id="node23" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="168,319,275,348"/>
+<area shape="rect" id="node25" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="171,372,272,401"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="341,5,451,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="505,71,628,100"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="513,149,620,179"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="348,109,444,139"/>
+<area shape="rect" id="node19" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="337,267,455,296"/>
+<area shape="rect" id="node21" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="360,320,432,349"/>
+</map>

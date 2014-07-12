@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('mbr_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_5a4132f7e575105e864e0906b1ff49aa.html">fs</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">mbr.c</div>  </div>
@@ -95,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="mbr_8h.html#a1bc8f23f08843df9453a0929ef0091eb">   15</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="mbr_8c.html#a1bc8f23f08843df9453a0929ef0091eb" title="fs/mbr.c">mbr_parse</a>(<a class="code" href="structpartition__info.html" title="fs/partition.h">partition_info_t</a> *partition_list, uint8_t *mbr)</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        uint16_t <a class="code" href="tar_8h.html#a1a36e432446bacea7f1f0b5ab0ac23a9">magic</a> = *((uint16_t *)&amp;mbr[<a class="code" href="mbr_8h.html#ac81197cd539122054de3ddf8b2acacb1">MBR_MAGIC_START</a>]);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        uint16_t magic = *((uint16_t *)&amp;mbr[<a class="code" href="mbr_8h.html#ac81197cd539122054de3ddf8b2acacb1">MBR_MAGIC_START</a>]);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordtype">int</span> part, po;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="mbr_8h.html#aef38f5ab0b65d3e6e29ffa9515e81f1c">MBR_MAGIC</a> != magic) {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                <a class="code" href="earlycon_8h.html#a241271afc3ab8b448ef4f0fd016111bf">debugcon_printf</a>(<span class="stringliteral">&quot;mbr: invalid partition table magic %x!\n&quot;</span>, magic);</div>
@@ -106,17 +123,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                partition_list[part].<a class="code" href="structpartition__info.html#aecd1f6ce112282415be8e0a6d1397b99">type</a> = mbr[po + <a class="code" href="mbr_8h.html#aed89d542bb0bfd849334c1ad7a26653c">MBR_PARTITION_TYPE</a>];</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                partition_list[part].<a class="code" href="structpartition__info.html#a44f72e86d891585924a9755627837fc2">start</a> = *((uint32_t *)&amp;mbr[po + <a class="code" href="mbr_8h.html#a4f8676229590c9c77ff4e0e60f10cc9f">MBR_PARTITION_OFFSET</a>]);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                partition_list[part].<a class="code" href="structpartition__info.html#a155bc1c4c7924b4c99a58c33a8ed4414">size</a> = *((uint32_t *)&amp;mbr[po + <a class="code" href="mbr_8h.html#adec998b289d2ac3673766fecbaf287ba">MBR_PARTITION_SIZE</a>]);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                <a class="code" href="earlycon_8h.html#a241271afc3ab8b448ef4f0fd016111bf">debugcon_printf</a>(<span class="stringliteral">&quot;mbr: partition %i type %i starts at %i, has size %i!\n&quot;</span>, part, partition_list[part].type,partition_list[part].start,partition_list[part].<a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                <a class="code" href="earlycon_8h.html#a241271afc3ab8b448ef4f0fd016111bf">debugcon_printf</a>(<span class="stringliteral">&quot;mbr: partition %i type %i starts at %i, has size %i!\n&quot;</span>, part, partition_list[part].type,partition_list[part].start,partition_list[part].size);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_5a4132f7e575105e864e0906b1ff49aa.html">fs</a></li><li class="navelem"><a class="el" href="mbr_8c.html">mbr.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:55 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

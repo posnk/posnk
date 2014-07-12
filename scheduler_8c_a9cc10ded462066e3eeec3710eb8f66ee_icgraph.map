@@ -1,0 +1,4 @@
+<map id="scheduler_wait_time" name="scheduler_wait_time">
+<area shape="rect" id="node3" href="$syscall_8h.html#a8ad3ba3efa9c74b1723e8281fff12948" title="sys_sleep" alt="" coords="196,5,276,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="327,5,412,35"/>
+</map>

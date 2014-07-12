@@ -1,0 +1,17 @@
+<map id="kb_initialize" name="kb_initialize">
+<area shape="rect" id="node3" href="$interrupt_8c.html#a902a3f129451ac2500394a638dcb051d" title="interrupt_register\l_handler" alt="" coords="145,46,263,93"/>
+<area shape="rect" id="node9" href="$kbd_8c.html#a12f52ccc6f3a0a4c9d0e1a9454f8bc66" title="kb_set_leds" alt="" coords="159,116,249,145"/>
+<area shape="rect" id="node13" href="$i8042_8c.html#a257afd571adf203b1e7bddf97ac3d6c8" title="kbd_controller_status" alt="" coords="555,168,701,197"/>
+<area shape="rect" id="node18" href="$i8042_8c.html#ad2a9a0d80dca67accfc254d012a46827" title="kbd_encoder_read_buffer" alt="" coords="325,220,493,249"/>
+<area shape="rect" id="node21" href="$i8042_8c.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="172,377,236,407"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="356,5,463,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="360,59,459,88"/>
+<area shape="rect" id="node11" href="$i8042_8c.html#a30383ff22dd0052abee07a7ae741f789" title="kbd_send_encoder_command" alt="" coords="312,116,507,145"/>
+<area shape="rect" id="node15" href="$x86_8c.html#abc1d0fce6a713e06d6dc92b6c48fcc09" title="i386_inb" alt="" coords="751,195,820,224"/>
+<area shape="rect" id="node23" href="$kbd_8c.html#a7650a92c75bb207c2cfed84d88095f97" title="kb_clear_modifier" alt="" coords="348,484,471,513"/>
+<area shape="rect" id="node25" href="$kbd_8c.html#aaeb45a2ee0f097eb61563df1a2adf6bb" title="kb_pressed" alt="" coords="365,537,453,567"/>
+<area shape="rect" id="node27" href="$kbd_8c.html#a464a3fc19561c9d616e77ed37bc9800c" title="kb_typed" alt="" coords="591,563,665,592"/>
+<area shape="rect" id="node29" href="$kbd_8c.html#a77ea5c49a4c29ba6042dd60218f208a4" title="kb_released" alt="" coords="364,324,455,353"/>
+<area shape="rect" id="node31" href="$kbd_8c.html#a8286262a1497f0605c38fb1c3f309e52" title="kb_set_modifier" alt="" coords="352,377,467,407"/>
+<area shape="rect" id="node33" href="$kbd_8c.html#af72faab7368a1661309df680bfee54e0" title="kb_toggle_modifier" alt="" coords="344,431,475,460"/>
+</map>

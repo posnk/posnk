@@ -1,0 +1,11 @@
+<map id="heapmm_alloc" name="heapmm_alloc">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="160,196,315,225"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="387,5,520,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="391,59,516,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966" title="Iterator function that tests for empty blocks." alt="" coords="364,112,543,141"/>
+<area shape="rect" id="node11" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="412,165,495,195"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a8cac91b732958dd041cdbd92315ebcba" title="Iterator function that tests for blocks equal the size in param." alt="" coords="379,218,528,265"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a5c32e884c0cd3418e801dfed480d4c45" title="Iterator function that tests for blocks able to contain the size in param." alt="" coords="368,288,539,317"/>
+<area shape="rect" id="node17" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="419,341,488,371"/>
+<area shape="rect" id="node19" href="$heapdbg_8c.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="371,395,536,424"/>
+</map>

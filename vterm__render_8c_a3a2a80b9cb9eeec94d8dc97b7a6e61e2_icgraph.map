@@ -1,0 +1,5 @@
+<map id="vterm_put_char" name="vterm_put_char">
+<area shape="rect" id="node3" href="$vterm__render_8h.html#aa651d19abd649574dac5c5e8227926fa" title="vterm_render" alt="" coords="368,5,467,35"/>
+<area shape="rect" id="node7" href="$vterm__render_8h.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="165,31,320,60"/>
+<area shape="rect" id="node5" href="$vterm__tty_8c.html#ad84ed200435b9101258e8f854e879944" title="vterm_putc" alt="" coords="516,5,601,35"/>
+</map>

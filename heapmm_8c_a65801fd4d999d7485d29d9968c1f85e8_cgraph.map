@@ -1,0 +1,12 @@
+<map id="heapmm_morecore" name="heapmm_morecore">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="189,218,339,248"/>
+<area shape="rect" id="node28" href="$kernel_2paging_8c.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="187,272,341,301"/>
+<area shape="rect" id="node5" href="$heapdbg_8c.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="631,324,796,353"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="845,160,944,189"/>
+<area shape="rect" id="node9" href="$heapdbg_8c.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="408,116,563,145"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="651,168,776,197"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="408,324,563,353"/>
+<area shape="rect" id="node18" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="679,245,748,274"/>
+<area shape="rect" id="node20" href="$heapmm_8c.html#a3f145d1ed15163bfdb371cf37f029f32" title="Iterator function that tests for [FREE][our block] mergeable blocks." alt="" coords="391,270,580,300"/>
+<area shape="rect" id="node22" href="$heapmm_8c.html#a75cf1b0eca3c9e770122f1e6701a40bd" title="Iterator function that tests for [our block][FREE] mergeable blocks." alt="" coords="412,46,559,92"/>
+</map>

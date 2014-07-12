@@ -1,0 +1,5 @@
+<map id="fs_device" name="fs_device">
+<area shape="rect" id="node4" href="$structinode.html" title="Describes a file currently cached by the kernel." alt="" coords="5,101,59,131"/>
+<area shape="rect" id="node2" href="$structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions." alt="" coords="100,197,244,227"/>
+<area shape="rect" id="node8" href="$structdirent.html" title="dirent" alt="" coords="221,101,275,131"/>
+</map>

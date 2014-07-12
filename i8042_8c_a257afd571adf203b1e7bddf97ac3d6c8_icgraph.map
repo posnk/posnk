@@ -1,0 +1,7 @@
+<map id="kbd_controller_status" name="kbd_controller_status">
+<area shape="rect" id="node3" href="$kbd_8h.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="584,27,675,57"/>
+<area shape="rect" id="node5" href="$i8042_8h.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="457,27,521,57"/>
+<area shape="rect" id="node8" href="$i8042_8h.html#abd73f17cfd03e51b9970e74f82413d7d" title="kbd_send_controller\l_command" alt="" coords="228,77,367,124"/>
+<area shape="rect" id="node10" href="$i8042_8h.html#a30383ff22dd0052abee07a7ae741f789" title="kbd_send_encoder_command" alt="" coords="200,147,395,177"/>
+<area shape="rect" id="node12" href="$kbd_8h.html#a12f52ccc6f3a0a4c9d0e1a9454f8bc66" title="kb_set_leds" alt="" coords="444,114,535,143"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="scheduler_switch_task" name="scheduler_switch_task">
+<area shape="rect" id="node3" href="$scheduler_8h.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="208,165,283,195"/>
+<area shape="rect" id="node5" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="332,5,492,35"/>
+<area shape="rect" id="node8" href="$process_8h.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="340,59,484,88"/>
+<area shape="rect" id="node10" href="$scheduler_8h.html#a2cf17a899a518dda0e53031880f68dd8" title="scheduler_wait_micros" alt="" coords="335,112,489,141"/>
+<area shape="rect" id="node12" href="$scheduler_8h.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="347,165,477,195"/>
+<area shape="rect" id="node14" href="$scheduler_8h.html#a9cc10ded462066e3eeec3710eb8f66ee" title="scheduler_wait_time" alt="" coords="341,219,483,248"/>
+<area shape="rect" id="node16" href="$sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339" title="sys_exit" alt="" coords="377,272,447,301"/>
+<area shape="rect" id="node18" href="$sc__process_8c.html#a54aa47140a66b7972076e5b07cdb1617" title="sys_yield" alt="" coords="373,325,451,355"/>
+<area shape="rect" id="node20" href="$time_8h.html#a7f6b332d188bc3ddc1046d47bfdf32b9" title="timer_interrupt" alt="" coords="360,379,464,408"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ata_set_interrupts" name="ata_set_interrupts">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="183,5,276,35"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="327,5,428,35"/>
+</map>

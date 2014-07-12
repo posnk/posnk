@@ -1,0 +1,17 @@
+<map id="kernel/sc_perm.c" name="kernel/sc_perm.c">
+<area shape="rect" id="node3" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="507,315,629,344"/>
+<area shape="rect" id="node11" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="125,392,248,421"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="323,315,432,344"/>
+<area shape="rect" id="node21" href="$process_8h.html" title="kernel/process.h" alt="" coords="852,237,969,267"/>
+<area shape="rect" id="node28" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="1129,392,1236,421"/>
+<area shape="rect" id="node39" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="913,392,1055,421"/>
+<area shape="rect" id="node46" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="501,160,629,189"/>
+<area shape="rect" id="node57" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="117,83,229,112"/>
+<area shape="rect" id="node65" href="$errno_8h.html" title="sys/errno.h" alt="" coords="1376,83,1461,112"/>
+<area shape="rect" id="node5" href="$llist_8h.html" title="util/llist.h" alt="" coords="580,392,655,421"/>
+<area shape="rect" id="node15" href="$config_8h.html" title="config.h" alt="" coords="153,469,220,499"/>
+<area shape="rect" id="node25" href="$types_8h.html" title="sys/types.h" alt="" coords="799,392,889,421"/>
+<area shape="rect" id="node32" href="$time_8h.html" title="kernel/time.h" alt="" coords="679,392,775,421"/>
+<area shape="rect" id="node35" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="907,315,997,344"/>
+<area shape="rect" id="node62" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="43,237,179,267"/>
+</map>

@@ -14,5 +14,5 @@ var searchData=
   ['tty_5foperations',['tty_operations',['../tty_8c.html#a221508ec8f71512d60e1e4fd53e4fe69',1,'tty.c']]],
   ['ttyname',['ttyname',['../struct__vterm__s.html#a27c4b9bb4f6933381e12c532423c7214',1,'_vterm_s']]],
   ['type',['type',['../structmultiboot__memory__map.html#a4690fc7b3740885db47f6c355d40fd1a',1,'multiboot_memory_map::type()'],['../structata__drive.html#a5fa4e0b44241883b61931d52fe95f07a',1,'ata_drive::type()'],['../structpartition__info.html#aecd1f6ce112282415be8e0a6d1397b99',1,'partition_info::type()'],['../structdrivermgr__device__driver.html#af5364d7fa7319f0bd17c65f3fd1904c6',1,'drivermgr_device_driver::type()'],['../structdrivermgr__interface__driver.html#a4f5e0835c881bf72d083e62b340535d3',1,'drivermgr_interface_driver::type()'],['../structstream__info.html#a75f66d019543e76f7977e354c44ef829',1,'stream_info::type()']]],
-  ['typeflag',['typeflag',['../structtar__header.html#a8a9662777f906b3a4289881d49a4602c',1,'tar_header::typeflag()'],['../tar_8h.html#a50efaf1bb13addc723bc7ba7d6988f2e',1,'typeflag():&#160;tar.h']]]
+  ['typeflag',['typeflag',['../structtar__header.html#a8a9662777f906b3a4289881d49a4602c',1,'tar_header']]]
 ];

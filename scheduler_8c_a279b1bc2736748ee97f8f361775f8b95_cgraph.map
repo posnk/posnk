@@ -1,0 +1,4 @@
+<map id="scheduler_next_task_iterator" name="scheduler_next_task_iterator">
+<area shape="rect" id="node3" href="$process_8c.html#a45806df45ae18bed24ee1ecf0fbb3e28" title="process_was_interrupted" alt="" coords="199,5,364,35"/>
+<area shape="rect" id="node5" href="$synch_8c.html#aacc048d35d7b7bbcafffa37d9f396df0" title="semaphore_try_down" alt="" coords="208,59,355,88"/>
+</map>

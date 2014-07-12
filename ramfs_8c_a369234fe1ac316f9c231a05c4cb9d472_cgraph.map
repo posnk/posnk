@@ -1,0 +1,27 @@
+<map id="ramfs_create" name="ramfs_create">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="523,155,629,184"/>
+<area shape="rect" id="node13" href="$ramfs_8c.html#ab9868a81c71f67d4f60f7b6a87b3481b" title="ramfs_find_dirent" alt="" coords="329,472,452,502"/>
+<area shape="rect" id="node18" href="$ramfs_8c.html#ac00e9b7316f12b39e02fb32526be062d" title="ramfs_link" alt="" coords="173,522,256,551"/>
+<area shape="rect" id="node27" href="$ramfs_8c.html#a3058314579ee457b7bf420a5f41e439c" title="ramfs_load_inode" alt="" coords="153,59,276,88"/>
+<area shape="rect" id="node31" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="331,158,451,187"/>
+<area shape="rect" id="node36" href="$ramfs_8c.html#affc291a601c4ea34ff9f50bfbe1dc0f8" title="ramfs_mknod" alt="" coords="340,211,441,240"/>
+<area shape="rect" id="node39" href="$ramfs_8c.html#a20b042c01566d9cf98d5a4bd90bf2e54" title="ramfs_mkdir" alt="" coords="344,104,437,134"/>
+<area shape="rect" id="node44" href="$ramfs_8c.html#a99358c0ecf00775c31ae6752bef5d843" title="ramfs_read_inode" alt="" coords="328,703,453,732"/>
+<area shape="rect" id="node50" href="$ramfs_8c.html#a02625c8b37a0f52ca96581ff886265f1" title="ramfs_readdir" alt="" coords="340,786,441,815"/>
+<area shape="rect" id="node56" href="$ramfs_8c.html#a6f83e2c20ab1c09fe316b383c9f16965" title="ramfs_rmnod" alt="" coords="165,727,264,756"/>
+<area shape="rect" id="node58" href="$ramfs_8c.html#acb9c644b87c960581049f80b18182b8c" title="ramfs_trunc_inode" alt="" coords="327,366,455,395"/>
+<area shape="rect" id="node65" href="$ramfs_8c.html#a2a1e581e5291ffff9a2921e0c6a3e4cf" title="ramfs_unlink" alt="" coords="343,419,439,448"/>
+<area shape="rect" id="node71" href="$ramfs_8c.html#af9a3972feb50efaacfbef6441721196d" title="ramfs_write_inode" alt="" coords="327,584,455,614"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="696,259,851,288"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="900,534,1025,563"/>
+<area shape="rect" id="node9" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="921,286,1004,315"/>
+<area shape="rect" id="node11" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="928,207,997,236"/>
+<area shape="rect" id="node16" href="$ramfs_8c.html#a20926ba3f668bd07c3034f4f8f32bc9b" title="ramfs_dirent_search\l_iterator" alt="" coords="507,413,645,460"/>
+<area shape="rect" id="node21" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="361,643,420,672"/>
+<area shape="rect" id="node25" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="527,534,625,563"/>
+<area shape="rect" id="node23" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="540,707,612,736"/>
+<area shape="rect" id="node34" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="337,51,444,80"/>
+<area shape="rect" id="node47" href="$ramfs_8c.html#a2e5f1372fc44e9a21cd7825bac207161" title="ramfs_block_search\l_iterator" alt="" coords="507,637,645,684"/>
+<area shape="rect" id="node53" href="$ramfs_8c.html#ad9ceb7c38fe00ed91adfb30a556bad1e" title="ramfs_rawdir_search\l_iterator" alt="" coords="505,861,647,908"/>
+<area shape="rect" id="node61" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="525,259,627,288"/>
+</map>

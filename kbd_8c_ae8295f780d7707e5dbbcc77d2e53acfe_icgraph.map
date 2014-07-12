@@ -1,0 +1,5 @@
+<map id="kb_initialize" name="kb_initialize">
+<area shape="rect" id="node3" href="$vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5" title="vgacon_init" alt="" coords="153,5,241,35"/>
+<area shape="rect" id="node5" href="$init_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b" title="vterm_vga_init" alt="" coords="144,59,251,88"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="299,59,387,88"/>
+</map>

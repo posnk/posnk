@@ -1,0 +1,12 @@
+<map id="_sys_ftruncate" name="_sys_ftruncate">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="348,5,471,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="356,59,463,88"/>
+<area shape="rect" id="node9" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="163,272,272,301"/>
+<area shape="rect" id="node15" href="$vfs_8c.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="171,112,264,141"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="547,5,677,35"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="347,325,472,355"/>
+<area shape="rect" id="node13" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="321,272,497,301"/>
+<area shape="rect" id="node17" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="343,112,476,141"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="333,165,485,195"/>
+<area shape="rect" id="node23" href="$vfs_8c.html#a05dea3105778419755db0ce95ff554b1" title="Resize a file on backing storage." alt="" coords="352,219,467,248"/>
+</map>

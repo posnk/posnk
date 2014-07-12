@@ -1,0 +1,4 @@
+<map id="vgacon_early_putch" name="vgacon_early_putch">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a4e343464aa2e816a36e210043de25701" title="earlycon_putc" alt="" coords="193,5,295,35"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#ab2169cb63461fe4a8987918e24878251" title="earlycon_aputs" alt="" coords="345,5,455,35"/>
+</map>

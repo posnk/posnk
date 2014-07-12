@@ -1,0 +1,16 @@
+<map id="pipe_create" name="pipe_create">
+<area shape="rect" id="node3" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="164,59,252,88"/>
+<area shape="rect" id="node9" href="$tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab" title="tty_register_driver" alt="" coords="145,164,271,193"/>
+<area shape="rect" id="node18" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="165,376,251,405"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="339,5,419,35"/>
+<area shape="rect" id="node7" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="341,59,416,88"/>
+<area shape="rect" id="node11" href="$sercon_8c.html#af5e57b7a31a51e7e7e43b7b81a3bc6ba" title="sercon_init" alt="" coords="336,112,421,141"/>
+<area shape="rect" id="node13" href="$vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5" title="vgacon_init" alt="" coords="516,139,604,168"/>
+<area shape="rect" id="node16" href="$vterm__tty_8c.html#a896c4181529143634f37754c020f6c81" title="vterm_tty_setup" alt="" coords="321,216,436,245"/>
+<area shape="rect" id="node20" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="335,269,423,299"/>
+<area shape="rect" id="node22" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="335,323,423,352"/>
+<area shape="rect" id="node24" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="336,376,421,405"/>
+<area shape="rect" id="node26" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="487,453,633,483"/>
+<area shape="rect" id="node28" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="504,519,616,548"/>
+<area shape="rect" id="node30" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="340,480,417,509"/>
+</map>

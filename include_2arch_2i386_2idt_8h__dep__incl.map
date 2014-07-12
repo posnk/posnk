@@ -1,0 +1,4 @@
+<map id="include/arch/i386/idt.h" name="include/arch/i386/idt.h">
+<area shape="rect" id="node3" href="$idt_8c.html" title="arch/i386/idt.c" alt="" coords="5,83,109,112"/>
+<area shape="rect" id="node5" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="133,83,240,112"/>
+</map>

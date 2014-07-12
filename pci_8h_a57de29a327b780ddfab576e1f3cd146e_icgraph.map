@@ -1,0 +1,5 @@
+<map id="pci_enumerate_bus" name="pci_enumerate_bus">
+<area shape="rect" id="node3" href="$pci_8h.html#ae7687154ac864ae0f4043e228f4a0518" title="pci_enumerate_all" alt="" coords="207,5,332,35"/>
+<area shape="rect" id="node7" href="$pci_8h.html#a9f99fffa4ca1e0e6af8b5a567368e83d" title="pci_enumerate_function" alt="" coords="189,59,349,88"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="397,5,485,35"/>
+</map>

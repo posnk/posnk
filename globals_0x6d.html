@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -86,7 +93,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_0x67.html#index_g"><span>g</span></a></li>
       <li><a href="globals_0x68.html#index_h"><span>h</span></a></li>
       <li><a href="globals_0x69.html#index_i"><span>i</span></a></li>
-      <li><a href="globals_0x6a.html#index_j"><span>j</span></a></li>
       <li><a href="globals_0x6b.html#index_k"><span>k</span></a></li>
       <li><a href="globals_0x6c.html#index_l"><span>l</span></a></li>
       <li class="current"><a href="globals_0x6d.html#index_m"><span>m</span></a></li>
@@ -103,12 +109,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_0x6d.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -121,15 +141,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock">Here is a list of all functions, variables, defines, enums, and typedefs with links to the files they belong to:</div>
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
-<li>m_base
-: <a class="el" href="include_2arch_2i386_2idt_8h.html#a292629fee18f797221aacf83501238ec">idt.h</a>
-</li>
-<li>m_limit
-: <a class="el" href="include_2arch_2i386_2idt_8h.html#a806d3bac49de1ce23aaa570070e23c43">idt.h</a>
-</li>
-<li>magic
-: <a class="el" href="tar_8h.html#a1a36e432446bacea7f1f0b5ab0ac23a9">tar.h</a>
-</li>
 <li>MAJOR
 : <a class="el" href="types_8h.html#a71680d925931e7ed2eed7862a7a1540a">types.h</a>
 </li>
@@ -138,9 +149,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>MAX_CSI_ES_PARAMS
 : <a class="el" href="vterm__csi_8h.html#a7544021f10d9fc380927721c5940cab8">vterm_csi.h</a>
-</li>
-<li>max_mounts_before_check
-: <a class="el" href="ext2_8h.html#aa1b35169bd8527191171e33a47f1ac52">ext2.h</a>
 </li>
 <li>mb_info
 : <a class="el" href="init_8c.html#af086ba0dd3dded26268b26e62ad3d4b1">init.c</a>
@@ -152,8 +160,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="mbr_8h.html#ac81197cd539122054de3ddf8b2acacb1">mbr.h</a>
 </li>
 <li>mbr_parse()
-: <a class="el" href="mbr_8c.html#a1bc8f23f08843df9453a0929ef0091eb">mbr.c</a>
-, <a class="el" href="mbr_8h.html#a1bc8f23f08843df9453a0929ef0091eb">mbr.h</a>
+: <a class="el" href="mbr_8h.html#a1bc8f23f08843df9453a0929ef0091eb">mbr.h</a>
+, <a class="el" href="mbr_8c.html#a1bc8f23f08843df9453a0929ef0091eb">mbr.c</a>
 </li>
 <li>MBR_PARTITION_ENTRY_SIZE
 : <a class="el" href="mbr_8h.html#a317a4f2a290df8fe51f178422a1e5895">mbr.h</a>
@@ -185,34 +193,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>MINOR
 : <a class="el" href="types_8h.html#a49270fb31dcdf1ae46de6d6a5a29ae15">types.h</a>
 </li>
-<li>mode
-: <a class="el" href="ext2_8h.html#af294e94ca5176720ef5e5cbedc95ca47">ext2.h</a>
-, <a class="el" href="tar_8h.html#a6b36e8b34706ad58f2e410c191c002af">tar.h</a>
-</li>
 <li>MODE_EXEC
-: <a class="el" href="vfs_8h.html#a2ab5cedebe651b3858703af1d8301993">vfs.h</a>
+: <a class="el" href="group__vfs.html#ga2ab5cedebe651b3858703af1d8301993">vfs.h</a>
 </li>
 <li>MODE_READ
-: <a class="el" href="vfs_8h.html#ac4d1baf108e9ce6414088db508d7c182">vfs.h</a>
+: <a class="el" href="group__vfs.html#gac4d1baf108e9ce6414088db508d7c182">vfs.h</a>
 </li>
 <li>mode_t
 : <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">types.h</a>
 </li>
 <li>MODE_WRITE
-: <a class="el" href="vfs_8h.html#ab8fac4c725bb7d4b05ae138c07ef54af">vfs.h</a>
+: <a class="el" href="group__vfs.html#gab8fac4c725bb7d4b05ae138c07ef54af">vfs.h</a>
 </li>
 <li>modifiers
 : <a class="el" href="kbd_8c.html#ab9e79f369128ef7595cb47dfa34abad3">kbd.c</a>
-</li>
-<li>mount_time
-: <a class="el" href="ext2_8h.html#ada40d17d85d7ea4b13c66bc66a513f1c">ext2.h</a>
-</li>
-<li>mounts_since_check
-: <a class="el" href="ext2_8h.html#ad8ae22aa3364b489899f862b0a8b89a5">ext2.h</a>
-</li>
-<li>mtime
-: <a class="el" href="ext2_8h.html#a30a7788eaa5f5507571880aeabc953e1">ext2.h</a>
-, <a class="el" href="tar_8h.html#a52a5734d6adce1601230eb792a2e0779">tar.h</a>
 </li>
 <li>MULTIBOOT_BOOTLOADER_MAGIC
 : <a class="el" href="multiboot_8h.html#aacd617f4e3daafd6eab95fb6215ccae4">multiboot.h</a>
@@ -237,11 +231,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

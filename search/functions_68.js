@@ -18,6 +18,6 @@ var searchData=
   ['heapmm_5fmerge_5fend_5fiterator',['heapmm_merge_end_iterator',['../heapmm_8c.html#a3f145d1ed15163bfdb371cf37f029f32',1,'heapmm.c']]],
   ['heapmm_5fmerge_5fstart_5fiterator',['heapmm_merge_start_iterator',['../heapmm_8c.html#a75cf1b0eca3c9e770122f1e6701a40bd',1,'heapmm.c']]],
   ['heapmm_5fmorecore',['heapmm_morecore',['../heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8',1,'heapmm.c']]],
-  ['heapmm_5fmorecore_5fiterator',['heapmm_morecore_iterator',['../heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966',1,'heapmm.c']]],
+  ['heapmm_5fmorecore_5fiterator',['heapmm_morecore_iterator',['../heapmm_8c.html#a13ee6bfb5edbffe20269c9fdcf1347f2',1,'heapmm.c']]],
   ['heapmm_5frequest_5fcore',['heapmm_request_core',['../kernel_2paging_8c.html#a52516e68a1d132a4ca084131e00ed7fe',1,'heapmm_request_core(void *address, size_t size):&#160;paging.c'],['../kdbgmm_8c.html#a52516e68a1d132a4ca084131e00ed7fe',1,'heapmm_request_core(void *address, size_t size):&#160;paging.c'],['../heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe',1,'heapmm_request_core(void *address, size_t size):&#160;paging.c']]]
 ];

@@ -1,0 +1,4 @@
+<map id="i386_pit_send_command" name="i386_pit_send_command">
+<area shape="rect" id="node3" href="$pit_8h.html#a9e493055fc8c0801e6cd5f13f1d077ca" title="i386_pit_setup" alt="" coords="221,5,328,35"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="376,5,464,35"/>
+</map>

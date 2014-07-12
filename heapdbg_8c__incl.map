@@ -1,0 +1,8 @@
+<map id="kdbg/heapdbg.c" name="kdbg/heapdbg.c">
+<area shape="rect" id="node7" href="$llist_8h.html" title="util/llist.h" alt="" coords="174,160,249,189"/>
+<area shape="rect" id="node9" href="$stacktrc_8h.html" title="kdbg/stacktrc.h" alt="" coords="219,83,331,112"/>
+<area shape="rect" id="node13" href="$kdbgmm_8h.html" title="kdbg/kdbgmm.h" alt="" coords="30,83,145,112"/>
+<area shape="rect" id="node17" href="$kdbgio_8h.html" title="kdbg/kdbgio.h" alt="" coords="545,83,646,112"/>
+<area shape="rect" id="node23" href="$heapdbg_8h.html" title="kdbg/heapdbg.h" alt="" coords="355,83,470,112"/>
+<area shape="rect" id="node19" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="518,160,638,189"/>
+</map>

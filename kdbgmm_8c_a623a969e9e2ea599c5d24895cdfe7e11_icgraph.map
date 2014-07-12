@@ -1,0 +1,8 @@
+<map id="kdbgmm_merge_start_iterator" name="kdbgmm_merge_start_iterator">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="204,69,353,99"/>
+<area shape="rect" id="node5" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="603,5,757,35"/>
+<area shape="rect" id="node8" href="$kdbgmm_8h.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="584,148,776,177"/>
+<area shape="rect" id="node10" href="$kdbgmm_8h.html#aa9bcfa313457de4f5d44bdb29e48167b" title="Releases a block of memory so it can be reallocated." alt="" coords="419,123,520,152"/>
+<area shape="rect" id="node12" href="$kdbgmm_8h.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="421,176,517,205"/>
+<area shape="rect" id="node14" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="403,69,536,99"/>
+</map>

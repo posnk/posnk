@@ -1,0 +1,9 @@
+<map id="include/kernel/signals.h" name="include/kernel/signals.h">
+<area shape="rect" id="node3" href="$process_8h.html" title="kernel/process.h" alt="" coords="187,83,304,112"/>
+<area shape="rect" id="node9" href="$types_8h.html" title="sys/types.h" alt="" coords="283,237,373,267"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="416,160,525,189"/>
+<area shape="rect" id="node14" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="32,237,139,267"/>
+<area shape="rect" id="node18" href="$time_8h.html" title="kernel/time.h" alt="" coords="163,237,259,267"/>
+<area shape="rect" id="node21" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="200,160,291,189"/>
+<area shape="rect" id="node26" href="$llist_8h.html" title="util/llist.h" alt="" coords="397,237,472,267"/>
+</map>

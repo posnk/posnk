@@ -1,0 +1,13 @@
+<map id="i386_outl" name="i386_outl">
+<area shape="rect" id="node3" href="$ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089" title="ata_write_data" alt="" coords="148,19,255,48"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a5f7b78dafa71534b24b101521a9b1479" title="ata_write_port_long" alt="" coords="135,97,268,127"/>
+<area shape="rect" id="node13" href="$pci_8h.html#a6bf41b3bcf4bf820c4c0e393332ceaad" title="driver/bus/pci_intel_host.c" alt="" coords="129,203,273,232"/>
+<area shape="rect" id="node25" href="$pci_8h.html#a6432262b9b33a5a6870b50cf40b545fd" title="pci_config_write_long" alt="" coords="128,269,275,299"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="361,5,436,35"/>
+<area shape="rect" id="node9" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="352,59,445,88"/>
+<area shape="rect" id="node11" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="524,111,625,140"/>
+<area shape="rect" id="node16" href="$pci_8h.html#a2640b810982f167ccc591b61b1055e5a" title="pci_config_read_short" alt="" coords="324,163,473,192"/>
+<area shape="rect" id="node18" href="$pci_8h.html#a1cbc5de8852d89ca5e22b59ab2d3efc4" title="pci_config_write_short" alt="" coords="323,323,475,352"/>
+<area shape="rect" id="node20" href="$pci_8h.html#a558a46983f9ad5bb6aaaa0e7efdfd268" title="pci_config_read_byte" alt="" coords="327,216,471,245"/>
+<area shape="rect" id="node23" href="$pci_8h.html#a5bf188f68bcb3c247456cb480415cf21" title="pci_config_write_byte" alt="" coords="325,269,472,299"/>
+</map>

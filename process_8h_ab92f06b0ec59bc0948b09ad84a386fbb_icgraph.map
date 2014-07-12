@@ -1,0 +1,6 @@
+<map id="process_child_event" name="process_child_event">
+<area shape="rect" id="node3" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="196,32,356,61"/>
+<area shape="rect" id="node9" href="$sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339" title="sys_exit" alt="" coords="241,85,311,115"/>
+<area shape="rect" id="node5" href="$scheduler_8h.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="405,5,560,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="424,59,541,88"/>
+</map>

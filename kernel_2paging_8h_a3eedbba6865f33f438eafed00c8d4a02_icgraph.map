@@ -1,0 +1,11 @@
+<map id="paging_map" name="paging_map">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="148,80,303,109"/>
+<area shape="rect" id="node5" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="539,26,637,56"/>
+<area shape="rect" id="node14" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="147,237,304,266"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="164,290,287,320"/>
+<area shape="rect" id="node19" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="353,368,489,397"/>
+<area shape="rect" id="node21" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="149,394,301,424"/>
+<area shape="rect" id="node7" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="369,26,473,56"/>
+<area shape="rect" id="node10" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="355,80,488,109"/>
+<area shape="rect" id="node12" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="355,133,488,162"/>
+</map>

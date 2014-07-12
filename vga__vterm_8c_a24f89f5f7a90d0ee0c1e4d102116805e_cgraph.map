@@ -1,0 +1,5 @@
+<map id="vterm_invalidate_screen" name="vterm_invalidate_screen">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#adb0541135b548fc90f4471f2a5f6b7d3" title="vga_vterm_map_attr" alt="" coords="216,5,357,35"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#a2b0c970500b8313bc09b5af307ddd515" title="vterm_vga_position" alt="" coords="220,59,353,88"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a5e0a5415f3ce6cad46883f6d5facdddc" title="vga_vterm_move_cursor" alt="" coords="405,59,571,88"/>
+</map>

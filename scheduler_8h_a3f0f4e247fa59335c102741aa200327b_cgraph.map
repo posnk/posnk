@@ -1,0 +1,15 @@
+<map id="scheduler_switch_task" name="scheduler_switch_task">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="661,227,768,257"/>
+<area shape="rect" id="node7" href="$task__switch_8c.html#a31a3357b9fda6545b9eb122d16df98f5" title="i386_do_context_switch" alt="" coords="208,385,371,414"/>
+<area shape="rect" id="node9" href="$fpu_8c.html#a36cc162794be71646eff33f8b8c88a85" title="i386_fpu_on_cs" alt="" coords="233,438,345,467"/>
+<area shape="rect" id="node13" href="$task__switch_8c.html#ab71bee6f2f63101ac5578b86c8e86f06" title="i386_get_return_address" alt="" coords="633,14,796,43"/>
+<area shape="rect" id="node15" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="220,491,359,537"/>
+<area shape="rect" id="node17" href="$process_8c.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="209,201,369,230"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="845,227,1000,257"/>
+<area shape="rect" id="node11" href="$fpu_8c.html#a4aeac13678754fcd080191d6cbfcb559" title="i386_disable_fpu" alt="" coords="443,438,560,467"/>
+<area shape="rect" id="node19" href="$process_8c.html#a4f40a4ef09afab8866e9817b813fd006" title="process_signal_handler\l_default" alt="" coords="423,104,580,151"/>
+<area shape="rect" id="node21" href="$task__switch_8c.html#a413ca2fd9749f8037c2cd560665a0d20" title="scheduler_invoke_signal\l_handler" alt="" coords="420,35,583,81"/>
+<area shape="rect" id="node25" href="$process_8c.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="431,227,572,257"/>
+<area shape="rect" id="node28" href="$procvmm_8c.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="421,174,581,203"/>
+<area shape="rect" id="node30" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="464,281,539,310"/>
+</map>

@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('signals_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
@@ -128,7 +145,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a71403d2f5240e409e213060ea3301851"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="signals_8h.html#a71403d2f5240e409e213060ea3301851">SIGVTALRM</a>&#160;&#160;&#160;28	/* virtual timer expired */</td></tr>
 <tr class="memitem:ab6bd2a2ff7e58d45965ef257f96dfe65"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="signals_8h.html#ab6bd2a2ff7e58d45965ef257f96dfe65">SIGPROF</a>&#160;&#160;&#160;29	/* profiling timer expired */</td></tr>
 <tr class="memitem:a7265cbba4972503c1c30a2e52a929874"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="signals_8h.html#a7265cbba4972503c1c30a2e52a929874">SIGXCPU</a>&#160;&#160;&#160;30	/* exceeded cpu limit */</td></tr>
-<tr class="memitem:a75440a7aa885a1052dfd3b4393fd9baa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="signals_8h.html#a75440a7aa885a1052dfd3b4393fd9baa">SIGXFSZ</a>&#160;&#160;&#160;31	/* exceeded file <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a> limit */</td></tr>
+<tr class="memitem:a75440a7aa885a1052dfd3b4393fd9baa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="signals_8h.html#a75440a7aa885a1052dfd3b4393fd9baa">SIGXFSZ</a>&#160;&#160;&#160;31	/* exceeded file size limit */</td></tr>
 </table>
 <h2>Macro Definition Documentation</h2>
 <a class="anchor" id="aa86c630133e5b5174ac970227b273446"></a>
@@ -245,7 +262,7 @@ Macros</h2></td></tr>
 <p>Part of P-OS kernel.</p>
 <p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
 <p>Changelog: 07-04-2014 - Created</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000137">Todo:</a></b></dt><dd>: Rewrite signals code to be POSIX compliant ! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000138">Todo:</a></b></dt><dd>: Rewrite signals code to be POSIX compliant ! </dd></dl>
 
 <p>Definition at line <a class="el" href="signals_8h_source.html#l00019">19</a> of file <a class="el" href="signals_8h_source.html">signals.h</a>.</p>
 
@@ -578,7 +595,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SIGXFSZ&#160;&#160;&#160;31	/* exceeded file <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a> limit */</td>
+          <td class="memname">#define SIGXFSZ&#160;&#160;&#160;31	/* exceeded file size limit */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -588,11 +605,15 @@ Macros</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="signals_8h.html">signals.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

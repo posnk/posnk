@@ -1,0 +1,24 @@
+<map id="vfs_find_dirc" name="vfs_find_dirc">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c" title="_sys_chdir" alt="" coords="167,5,252,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="505,56,591,85"/>
+<area shape="rect" id="node13" href="$vfs_8h.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="156,425,263,455"/>
+<area shape="rect" id="node55" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="149,479,269,508"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a6445c4088d5d956b36a0c8c1e638af87" title="sys_chdir" alt="" coords="347,5,424,35"/>
+<area shape="rect" id="node9" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="667,83,768,112"/>
+<area shape="rect" id="node11" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="679,29,756,59"/>
+<area shape="rect" id="node15" href="$sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47" title="_sys_chmod" alt="" coords="337,680,433,709"/>
+<area shape="rect" id="node17" href="$sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0" title="_sys_chown" alt="" coords="339,733,432,763"/>
+<area shape="rect" id="node19" href="$sc__vfs_8c.html#a21a7b7d6519c5654a92b902dc2b1beec" title="_sys_stat" alt="" coords="347,787,424,816"/>
+<area shape="rect" id="node21" href="$sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a" title="_sys_truncate" alt="" coords="333,840,437,869"/>
+<area shape="rect" id="node23" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="352,160,419,189"/>
+<area shape="rect" id="node25" href="$tar_8h.html#a7bdab331782ae375d3b2b7de0d4ed49d" title="tar_extract" alt="" coords="841,524,924,553"/>
+<area shape="rect" id="node27" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="661,419,773,448"/>
+<area shape="rect" id="node30" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="644,472,791,501"/>
+<area shape="rect" id="node32" href="$vfs_8h.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="319,267,452,296"/>
+<area shape="rect" id="node34" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="515,472,581,501"/>
+<area shape="rect" id="node38" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="509,419,587,448"/>
+<area shape="rect" id="node42" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="343,213,428,243"/>
+<area shape="rect" id="node48" href="$vfs_8h.html#a61886b169216dc8c85945584536fbb1d" title="Mount a filesystem." alt="" coords="344,320,427,349"/>
+<area shape="rect" id="node50" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="348,373,423,403"/>
+<area shape="rect" id="node52" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="503,525,593,555"/>
+</map>

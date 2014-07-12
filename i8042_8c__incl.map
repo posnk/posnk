@@ -1,0 +1,6 @@
+<map id="driver/oldkb/i8042.c" name="driver/oldkb/i8042.c">
+<area shape="rect" id="node5" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="5,160,123,189"/>
+<area shape="rect" id="node10" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="197,160,307,189"/>
+<area shape="rect" id="node13" href="$i8042_8h.html" title="driver/oldkb/i8042.h" alt="" coords="97,83,231,112"/>
+<area shape="rect" id="node8" href="$llist_8h.html" title="util/llist.h" alt="" coords="27,237,101,267"/>
+</map>

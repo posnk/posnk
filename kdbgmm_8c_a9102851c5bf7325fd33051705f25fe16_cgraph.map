@@ -1,0 +1,13 @@
+<map id="kdbgmm_free_internal" name="kdbgmm_free_internal">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="224,252,379,282"/>
+<area shape="rect" id="node10" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="464,27,597,56"/>
+<area shape="rect" id="node13" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="692,27,817,56"/>
+<area shape="rect" id="node17" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="713,303,796,332"/>
+<area shape="rect" id="node22" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="496,355,565,384"/>
+<area shape="rect" id="node24" href="$kdbgmm_8c.html#a4114ffc4b186e541aa888baa7b809a59" title="Iterator function that tests for [FREE][our block] mergeable blocks." alt="" coords="207,446,396,475"/>
+<area shape="rect" id="node26" href="$kdbgmm_8c.html#a623a969e9e2ea599c5d24895cdfe7e11" title="Iterator function that tests for [our block][FREE] mergeable blocks." alt="" coords="228,498,375,545"/>
+<area shape="rect" id="node29" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="252,568,351,598"/>
+<area shape="rect" id="node5" href="$kdbgmm_8c.html#ae9397780c5b9b35dcac292a30a73b1bc" title="Iterator function that tests for blocks able to contain the size in param." alt="" coords="445,200,616,230"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#abc85141e5370246e92d9a84ba064367c" title="Iterator function that tests for blocks equal the size in param." alt="" coords="456,130,605,177"/>
+<area shape="rect" id="node15" href="$kdbgmm_8c.html#ac66fc31a007c99c00faa0f78bb0b8bd5" title="Iterator function that tests for empty blocks." alt="" coords="665,164,844,194"/>
+</map>

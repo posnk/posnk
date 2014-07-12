@@ -1,0 +1,25 @@
+var device_8h =
+[
+    [ "char_dev", "structchar__dev.html", "structchar__dev" ],
+    [ "blk_dev", "structblk__dev.html", "structblk__dev" ],
+    [ "tty_ops", "structtty__ops.html", "structtty__ops" ],
+    [ "blk_ops", "structblk__ops.html", "structblk__ops" ],
+    [ "blk_dev_t", "device_8h.html#af6319edaae174113a59f999cf413c6a6", null ],
+    [ "blk_ops_t", "device_8h.html#a952e44423ee1557f67fd57e627517e8c", null ],
+    [ "char_dev_t", "device_8h.html#aff0146aee8f11b067f1b746b8c699839", null ],
+    [ "tty_ops_t", "device_8h.html#a32b53fa16a3ca1b9564063d0e5f0590c", null ],
+    [ "device_block_close", "device_8h.html#a6dbb95e6c08c67610a971fa9c5ba4cbf", null ],
+    [ "device_block_init", "device_8h.html#a63dd03746663f48d6e13aa0ade5c38ab", null ],
+    [ "device_block_ioctl", "device_8h.html#ad56a95ed704d72f35da735dab4982d95", null ],
+    [ "device_block_open", "device_8h.html#a1add1764ec81ec766edd6a99b150e61f", null ],
+    [ "device_block_read", "device_8h.html#ae379902dcb0381b251b2e127a5ac8c24", null ],
+    [ "device_block_register", "device_8h.html#ada98e9022ecee3152f994a9aea756a4e", null ],
+    [ "device_block_write", "device_8h.html#a3ae36cdf2d24dfef700fac160932b75a", null ],
+    [ "device_char_close", "device_8h.html#aaca0c578be4dc636f3164c9f9480a136", null ],
+    [ "device_char_init", "device_8h.html#af361295250340119e08fac9621848e1b", null ],
+    [ "device_char_ioctl", "device_8h.html#a5f2c7ff035c6da87fd03061b2d3c7871", null ],
+    [ "device_char_open", "device_8h.html#a773a2a63f80c7fc8b94daba7c731c0fd", null ],
+    [ "device_char_read", "device_8h.html#a4a093114753683bd5a6c3602c4776e79", null ],
+    [ "device_char_register", "device_8h.html#ada19604d825e698cfe2e37c86e1eff5d", null ],
+    [ "device_char_write", "device_8h.html#ac7765cf0bfc0e7972dfa5fb985d1779b", null ]
+];

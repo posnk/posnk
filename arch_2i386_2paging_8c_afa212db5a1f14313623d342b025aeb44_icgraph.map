@@ -1,0 +1,18 @@
+<map id="paging_get_physical_address" name="paging_get_physical_address">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="611,41,704,71"/>
+<area shape="rect" id="node7" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="236,97,308,127"/>
+<area shape="rect" id="node14" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="235,159,309,188"/>
+<area shape="rect" id="node18" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="608,236,707,265"/>
+<area shape="rect" id="node20" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="211,263,333,292"/>
+<area shape="rect" id="node27" href="$kernel_2paging_8h.html#a7c6609acddab69d9d8be5af73c0c6405" title="paging_switch_dir" alt="" coords="209,316,335,345"/>
+<area shape="rect" id="node29" href="$process_8h.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="205,369,339,399"/>
+<area shape="rect" id="node33" href="$task__switch_8c.html#a846408533d7477fc321bb74b88942129" title="scheduler_exsig" alt="" coords="215,423,329,452"/>
+<area shape="rect" id="node35" href="$scheduler_8h.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="195,476,349,505"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="756,41,857,71"/>
+<area shape="rect" id="node9" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="431,36,527,65"/>
+<area shape="rect" id="node11" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="417,89,540,135"/>
+<area shape="rect" id="node16" href="$ata_8c.html#a73d0108d85edca1b22f20f2b5ac2859f" title="ata_blk_write" alt="" coords="429,159,528,188"/>
+<area shape="rect" id="node22" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="437,263,520,292"/>
+<area shape="rect" id="node25" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="416,316,541,345"/>
+<area shape="rect" id="node31" href="$process_8h.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="399,369,559,399"/>
+</map>

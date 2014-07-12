@@ -1,0 +1,5 @@
+<map id="heapmm_alloc_fit_iterator" name="heapmm_alloc_fit_iterator">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="224,32,379,61"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="428,5,577,35"/>
+<area shape="rect" id="node7" href="$heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="449,59,556,88"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="include/kernel/interrupt.h" name="include/kernel/interrupt.h">
+<area shape="rect" id="node3" href="$interrupt_8c.html" title="kernel/interrupt.c" alt="" coords="40,92,157,121"/>
+<area shape="rect" id="node5" href="$ata_8h.html" title="include/driver/block\l/pata/ata.h" alt="" coords="181,83,315,130"/>
+<area shape="rect" id="node11" href="$i8042_8c.html" title="driver/oldkb/i8042.c" alt="" coords="341,188,475,217"/>
+<area shape="rect" id="node13" href="$i8042_8h.html" title="include/driver/oldkb\l/i8042.h" alt="" coords="389,83,523,130"/>
+<area shape="rect" id="node16" href="$kbd_8c.html" title="driver/oldkb/kbd.c" alt="" coords="499,188,624,217"/>
+<area shape="rect" id="node19" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="597,92,704,121"/>
+<area shape="rect" id="node21" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="728,92,832,121"/>
+<area shape="rect" id="node7" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="5,188,155,217"/>
+<area shape="rect" id="node9" href="$ata__pci_8c.html" title="driver/block/pata/ata\l_pci.c" alt="" coords="179,179,317,226"/>
+</map>

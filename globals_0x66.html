@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -86,7 +93,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals_0x67.html#index_g"><span>g</span></a></li>
       <li><a href="globals_0x68.html#index_h"><span>h</span></a></li>
       <li><a href="globals_0x69.html#index_i"><span>i</span></a></li>
-      <li><a href="globals_0x6a.html#index_j"><span>j</span></a></li>
       <li><a href="globals_0x6b.html#index_k"><span>k</span></a></li>
       <li><a href="globals_0x6c.html#index_l"><span>l</span></a></li>
       <li><a href="globals_0x6d.html#index_m"><span>m</span></a></li>
@@ -103,12 +109,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     </ul>
   </div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('globals_0x66.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -148,9 +168,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>F_SETLKW
 : <a class="el" href="fcntl_8h.html#aabb866cd0cf7ed3544dfc335e0e360fd">fcntl.h</a>
 </li>
-<li>faddr
-: <a class="el" href="ext2_8h.html#a2bc1917724b3d22b7a52c6010790d0f2">ext2.h</a>
-</li>
 <li>FALSE
 : <a class="el" href="heapmm_8c.html#aa93f0eb578d23995850d61f7d61c55c1">heapmm.c</a>
 , <a class="el" href="kdbgmm_8c.html#aa93f0eb578d23995850d61f7d61c55c1">kdbgmm.c</a>
@@ -177,28 +194,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>FIFOTYPE
 : <a class="el" href="tar_8h.html#a31210800d51897e555db2ab0fe3dd877">tar.h</a>
 </li>
-<li>file_acl
-: <a class="el" href="ext2_8h.html#af1dbc47a9bd2110df237d63d53a04539">ext2.h</a>
-</li>
-<li>file_prealloc_block
-: <a class="el" href="ext2_8h.html#ae11401dc244ce2140c681d2fc48e505c">ext2.h</a>
-</li>
-<li>file_type
-: <a class="el" href="ext2_8h.html#a7f36bf2c852e9ca61eacc73c587c7204">ext2.h</a>
-</li>
 <li>find_color_pair()
-: <a class="el" href="vterm__colors_8c.html#a3764e615bb7025d925f5cebb7c7d1cb0">vterm_colors.c</a>
-, <a class="el" href="vterm__colors_8h.html#a3764e615bb7025d925f5cebb7c7d1cb0">vterm_colors.h</a>
-</li>
-<li>first_inode
-: <a class="el" href="ext2_8h.html#a0e1583fdd21f52560c18f9a5646e6c7e">ext2.h</a>
-</li>
-<li>first_meta_bg
-: <a class="el" href="ext2_8h.html#aeb4f833b4f8461eaaa085db07b0a8742">ext2.h</a>
-</li>
-<li>flags
-: <a class="el" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">idt.h</a>
-, <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">ext2.h</a>
+: <a class="el" href="vterm__colors_8h.html#a3764e615bb7025d925f5cebb7c7d1cb0">vterm_colors.h</a>
+, <a class="el" href="vterm__colors_8c.html#a3764e615bb7025d925f5cebb7c7d1cb0">vterm_colors.c</a>
 </li>
 <li>FNBIO
 : <a class="el" href="fcntl_8h.html#a99547c1b1ad7b44e451c8e76c0b31f59">fcntl.h</a>
@@ -209,46 +207,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>FNONBIO
 : <a class="el" href="fcntl_8h.html#ad10be60ad45677967515d16cf301fbcd">fcntl.h</a>
 </li>
-<li>fpu_state
-: <a class="el" href="task__context_8h.html#a14871ec2fa9eea18b2b94e8d04e73ac5">task_context.h</a>
-</li>
-<li>fpu_used
-: <a class="el" href="task__context_8h.html#ae93b8c87633b847fc26eaf0088f45bf7">task_context.h</a>
-</li>
-<li>frag_size_enc
-: <a class="el" href="ext2_8h.html#a1f5a74387edce44d27717b1a23f1d3d7">ext2.h</a>
-</li>
-<li>frags_per_group
-: <a class="el" href="ext2_8h.html#a184b0e38a6f3db3137469dde34cabd63">ext2.h</a>
-</li>
-<li>free_block_count
-: <a class="el" href="ext2_8h.html#ab0bcd364c855b6687fe0e65ed57a7dc9">ext2.h</a>
-</li>
-<li>free_inode_count
-: <a class="el" href="ext2_8h.html#aa6fd98058f12dd9621633f21b9e29bcf">ext2.h</a>
-</li>
 <li>fs_device_operations_t
-: <a class="el" href="vfs_8h.html#a68b8e1abb7e9c8e49013fb433a657780">vfs.h</a>
+: <a class="el" href="group__vfs.html#ga68b8e1abb7e9c8e49013fb433a657780">vfs.h</a>
 </li>
 <li>fs_device_t
-: <a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">vfs.h</a>
-</li>
-<li>fs_id
-: <a class="el" href="ext2_8h.html#a4ea20be45003427146639986b1ba624f">ext2.h</a>
-</li>
-<li>fs_state
-: <a class="el" href="ext2_8h.html#a1c9669c7bf4d924d14385fabf1a4007c">ext2.h</a>
+: <a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">vfs.h</a>
 </li>
 <li>FSYNC
 : <a class="el" href="fcntl_8h.html#ae24d030c1130c9715bd9f130735ab6a9">fcntl.h</a>
 </li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,4 @@
+<map id="pci_vendor_lookup" name="pci_vendor_lookup">
+<area shape="rect" id="node3" href="$pci_8h.html#a9f99fffa4ca1e0e6af8b5a567368e83d" title="pci_enumerate_function" alt="" coords="184,5,344,35"/>
+<area shape="rect" id="node5" href="$pci_8h.html#a57de29a327b780ddfab576e1f3cd146e" title="pci_enumerate_bus" alt="" coords="393,5,527,35"/>
+</map>

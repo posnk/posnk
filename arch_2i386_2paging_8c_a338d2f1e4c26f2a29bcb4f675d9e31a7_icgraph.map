@@ -1,0 +1,8 @@
+<map id="paging_unmap" name="paging_unmap">
+<area shape="rect" id="node3" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="160,5,317,35"/>
+<area shape="rect" id="node7" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="163,59,315,88"/>
+<area shape="rect" id="node11" href="$process_8h.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="172,112,305,141"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="403,5,491,35"/>
+<area shape="rect" id="node9" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="379,59,515,88"/>
+<area shape="rect" id="node13" href="$process_8h.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="367,112,527,141"/>
+</map>

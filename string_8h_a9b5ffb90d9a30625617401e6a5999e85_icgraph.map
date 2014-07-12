@@ -1,0 +1,17 @@
+<map id="strrchr" name="strrchr">
+<area shape="rect" id="node3" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="112,59,232,88"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="292,163,372,192"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="444,84,511,113"/>
+<area shape="rect" id="node23" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="289,241,375,271"/>
+<area shape="rect" id="node34" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="127,451,217,480"/>
+<area shape="rect" id="node5" href="$sc__vfs_8c.html#ac8eacdc1865661833934e2efa705757b" title="_sys_readlink" alt="" coords="281,59,383,88"/>
+<area shape="rect" id="node7" href="$sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb" title="_sys_lstat" alt="" coords="291,5,373,35"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="439,137,516,167"/>
+<area shape="rect" id="node13" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="572,296,719,325"/>
+<area shape="rect" id="node15" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="589,137,701,167"/>
+<area shape="rect" id="node19" href="$syscall_8h.html#a035259bafdc828ac2fe323ee657d6de9" title="sys_link" alt="" coords="611,84,680,113"/>
+<area shape="rect" id="node25" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="433,295,521,324"/>
+<area shape="rect" id="node27" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="433,348,521,377"/>
+<area shape="rect" id="node29" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="435,241,520,271"/>
+<area shape="rect" id="node36" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="285,503,379,532"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="ata_read_data" name="ata_read_data">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="452,5,545,35"/>
+<area shape="rect" id="node7" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="157,35,229,64"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="596,5,697,35"/>
+<area shape="rect" id="node9" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="279,26,401,73"/>
+<area shape="rect" id="node12" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="292,96,388,125"/>
+</map>

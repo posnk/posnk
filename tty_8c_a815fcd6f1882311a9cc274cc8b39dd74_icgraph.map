@@ -1,0 +1,5 @@
+<map id="tty_buf_out_char" name="tty_buf_out_char">
+<area shape="rect" id="node3" href="$tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="173,32,277,61"/>
+<area shape="rect" id="node5" href="$isr_8c.html#ac8bbf0eb02e5ebfa30bda547750e564b" title="Interrupt handler!" alt="" coords="340,5,423,35"/>
+<area shape="rect" id="node7" href="$vterm__write_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60" title="vterm_write_tty" alt="" coords="325,59,437,88"/>
+</map>

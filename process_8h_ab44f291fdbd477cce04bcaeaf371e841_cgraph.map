@@ -1,0 +1,14 @@
+<map id="procvmm_mmap_file" name="procvmm_mmap_file">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="475,145,581,174"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="876,93,1001,122"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="240,198,341,228"/>
+<area shape="rect" id="node15" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="700,250,799,280"/>
+<area shape="rect" id="node19" href="$procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address." alt="" coords="199,302,383,332"/>
+<area shape="rect" id="node21" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="213,78,368,124"/>
+<area shape="rect" id="node26" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="261,356,320,385"/>
+<area shape="rect" id="node30" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="501,408,555,437"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="672,145,827,174"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="453,198,603,228"/>
+<area shape="rect" id="node24" href="$procvmm_8c.html#ab80b641c27611fc112ea7919aec0e89b" title="Iterator function that finds the mmap for the given address." alt="" coords="433,92,623,121"/>
+<area shape="rect" id="node28" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="492,354,564,384"/>
+</map>

@@ -1,0 +1,47 @@
+<map id="include/crt/string.h" name="include/crt/string.h">
+<area shape="rect" id="node3" href="$blkcache_8c.html" title="kernel/blkcache.c" alt="" coords="5,92,128,121"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html" title="kernel/blkdev.c" alt="" coords="152,92,261,121"/>
+<area shape="rect" id="node7" href="$chardev_8c.html" title="kernel/chardev.c" alt="" coords="285,92,403,121"/>
+<area shape="rect" id="node9" href="$earlycon_8c.html" title="kernel/earlycon.c" alt="" coords="427,92,547,121"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="571,92,693,121"/>
+<area shape="rect" id="node13" href="$pipe_8c.html" title="kernel/pipe.c" alt="" coords="717,92,813,121"/>
+<area shape="rect" id="node15" href="$process_8c.html" title="kernel/process.c" alt="" coords="837,92,955,121"/>
+<area shape="rect" id="node17" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="979,92,1104,121"/>
+<area shape="rect" id="node19" href="$sc__streams_8c.html" title="kernel/sc_streams.c" alt="" coords="1128,92,1267,121"/>
+<area shape="rect" id="node21" href="$sc__vfs_8c.html" title="kernel/sc_vfs.c" alt="" coords="1291,92,1400,121"/>
+<area shape="rect" id="node23" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="1424,92,1552,121"/>
+<area shape="rect" id="node25" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="1576,92,1693,121"/>
+<area shape="rect" id="node27" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="1717,92,1829,121"/>
+<area shape="rect" id="node29" href="$tar_8c.html" title="kernel/tar.c" alt="" coords="1853,92,1939,121"/>
+<area shape="rect" id="node31" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="1963,92,2053,121"/>
+<area shape="rect" id="node33" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="2077,92,2149,121"/>
+<area shape="rect" id="node35" href="$ramfs_8c.html" title="fs/ramfs.c" alt="" coords="2173,92,2253,121"/>
+<area shape="rect" id="node37" href="$sercon_8c.html" title="driver/console/sercon.c" alt="" coords="2277,92,2435,121"/>
+<area shape="rect" id="node39" href="$sercon__debug_8c.html" title="driver/console/sercon\l_debug.c" alt="" coords="2459,83,2605,130"/>
+<area shape="rect" id="node41" href="$vga__vterm_8c.html" title="driver/console/vga\l_vterm.c" alt="" coords="2629,83,2757,130"/>
+<area shape="rect" id="node43" href="$vgacon_8c.html" title="driver/console/vgacon.c" alt="" coords="2781,92,2941,121"/>
+<area shape="rect" id="node45" href="$vgacon__early_8c.html" title="driver/console/vgacon\l_early.c" alt="" coords="2965,83,3115,130"/>
+<area shape="rect" id="node47" href="$vterm_8c.html" title="driver/console/vterm\l/vterm.c" alt="" coords="3139,83,3277,130"/>
+<area shape="rect" id="node49" href="$vterm__csi_8c.html" title="driver/console/vterm\l/vterm_csi.c" alt="" coords="3301,83,3440,130"/>
+<area shape="rect" id="node51" href="$vterm__csi__DL_8c.html" title="driver/console/vterm\l/vterm_csi_DL.c" alt="" coords="3464,83,3603,130"/>
+<area shape="rect" id="node53" href="$vterm__csi__IL_8c.html" title="driver/console/vterm\l/vterm_csi_IL.c" alt="" coords="3627,83,3765,130"/>
+<area shape="rect" id="node55" href="$vterm__escape_8c.html" title="driver/console/vterm\l/vterm_escape.c" alt="" coords="3789,83,3928,130"/>
+<area shape="rect" id="node57" href="$vterm__render_8c.html" title="driver/console/vterm\l/vterm_render.c" alt="" coords="3952,83,4091,130"/>
+<area shape="rect" id="node59" href="$vterm__resize_8c.html" title="driver/console/vterm\l/vterm_resize.c" alt="" coords="4115,83,4253,130"/>
+<area shape="rect" id="node61" href="$vterm__scroll_8c.html" title="driver/console/vterm\l/vterm_scroll.c" alt="" coords="4277,83,4416,130"/>
+<area shape="rect" id="node63" href="$vterm__tty_8c.html" title="driver/console/vterm\l/vterm_tty.c" alt="" coords="4440,83,4579,130"/>
+<area shape="rect" id="node65" href="$vterm__write_8c.html" title="driver/console/vterm\l/vterm_write.c" alt="" coords="4603,83,4741,130"/>
+<area shape="rect" id="node67" href="$kbd_8h.html" title="include/driver/oldkb\l/kbd.h" alt="" coords="4765,83,4899,130"/>
+<area shape="rect" id="node71" href="$fpu_8c.html" title="arch/i386/fpu.c" alt="" coords="4923,92,5029,121"/>
+<area shape="rect" id="node73" href="$idt_8c.html" title="arch/i386/idt.c" alt="" coords="5053,92,5157,121"/>
+<area shape="rect" id="node75" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="5181,92,5288,121"/>
+<area shape="rect" id="node77" href="$arch_2i386_2paging_8c.html" title="arch/i386/paging.c" alt="" coords="5312,92,5440,121"/>
+<area shape="rect" id="node79" href="$protection_8c.html" title="arch/i386/protection.c" alt="" coords="5464,92,5611,121"/>
+<area shape="rect" id="node81" href="$task__switch_8c.html" title="arch/i386/task_switch.c" alt="" coords="5635,92,5795,121"/>
+<area shape="rect" id="node83" href="$kdbg_8c.html" title="kdbg/kdbg.c" alt="" coords="5819,92,5912,121"/>
+<area shape="rect" id="node85" href="$kdbgio_8c.html" title="kdbg/kdbgio.c" alt="" coords="5936,92,6037,121"/>
+<area shape="rect" id="node87" href="$kdbgmm_8c.html" title="kdbg/kdbgmm.c" alt="" coords="6061,92,6176,121"/>
+<area shape="rect" id="node89" href="$stdlib_8c.html" title="crt/stdlib.c" alt="" coords="6200,92,6283,121"/>
+<area shape="rect" id="node91" href="$string_8c.html" title="crt/string.c" alt="" coords="6307,92,6389,121"/>
+<area shape="rect" id="node69" href="$kbd_8c.html" title="driver/oldkb/kbd.c" alt="" coords="4769,179,4895,208"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="sys_kill" name="sys_kill">
+<area shape="rect" id="node3" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="556,127,671,157"/>
+<area shape="rect" id="node13" href="$process_8c.html#a227af89ee0be090e1efa14ffeae05d76" title="process_get" alt="" coords="151,206,244,235"/>
+<area shape="rect" id="node19" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="541,23,685,53"/>
+<area shape="rect" id="node24" href="$process_8c.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="120,75,275,105"/>
+<area shape="rect" id="node5" href="$permissions_8c.html#a75516b4d7b040d8c0f690f5e64efb096" title="get_effective_gid" alt="" coords="735,127,855,157"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="735,181,855,210"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a580a03f736c25ed4b13d65d4387c3d08" title="get_gid" alt="" coords="763,234,827,263"/>
+<area shape="rect" id="node11" href="$permissions_8c.html#a523ba40c6f30fd9f84cb7c60b8f80a80" title="kernel/permissions.c" alt="" coords="763,74,827,103"/>
+<area shape="rect" id="node15" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="905,21,1031,50"/>
+<area shape="rect" id="node17" href="$process_8c.html#ae5980a26b4af4ab04dee79f41e5c75e0" title="Iterator function that looks up process with the given pid." alt="" coords="337,206,479,235"/>
+<area shape="rect" id="node21" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="757,21,832,50"/>
+<area shape="rect" id="node27" href="$process_8c.html#a45b5eb748b9e8e41b113a72011348e33" title="Iterator function that signals up processes with the given pgid." alt="" coords="323,75,493,105"/>
+</map>

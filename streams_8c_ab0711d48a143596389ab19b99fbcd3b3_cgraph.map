@@ -1,0 +1,15 @@
+<map id="stream_do_close_all" name="stream_do_close_all">
+<area shape="rect" id="node3" href="$streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="220,269,329,299"/>
+<area shape="rect" id="node28" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="588,505,713,535"/>
+<area shape="rect" id="node31" href="$streams_8c.html#a42fd7b365007ab650d42dca73d759b4f" title="stream_closeall_iterator" alt="" coords="195,584,355,613"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html#a6dbb95e6c08c67610a971fa9c5ba4cbf" title="device_block_close" alt="" coords="403,5,539,35"/>
+<area shape="rect" id="node7" href="$chardev_8c.html#aaca0c578be4dc636f3164c9f9480a136" title="device_char_close" alt="" coords="405,59,536,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="600,164,701,193"/>
+<area shape="rect" id="node11" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="429,163,512,192"/>
+<area shape="rect" id="node13" href="$pipe_8c.html#a4f51f162d223e63b17814bda844ad733" title="pipe_close_read" alt="" coords="413,269,528,299"/>
+<area shape="rect" id="node15" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="597,321,704,351"/>
+<area shape="rect" id="node17" href="$pipe_8c.html#a3835639d5e6d8ba8713eaa5f430b03a8" title="pipe_close_write" alt="" coords="412,373,529,403"/>
+<area shape="rect" id="node20" href="$pipe_8c.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="433,216,508,245"/>
+<area shape="rect" id="node23" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="409,427,532,456"/>
+<area shape="rect" id="node26" href="$streams_8c.html#a3d159f64d97eb54699c85af7255727ca" title="stream_get_ptr_o" alt="" coords="409,480,532,509"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="schedule" name="schedule">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="143,47,268,76"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95" title="Iterator function that tests for running tasks that are not the current." alt="" coords="135,99,276,146"/>
+<area shape="rect" id="node11" href="$task__switch_8c.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="128,219,283,248"/>
+<area shape="rect" id="node7" href="$process_8c.html#a45806df45ae18bed24ee1ecf0fbb3e28" title="process_was_interrupted" alt="" coords="332,5,497,35"/>
+<area shape="rect" id="node9" href="$synch_8c.html#aacc048d35d7b7bbcafffa37d9f396df0" title="semaphore_try_down" alt="" coords="341,59,488,88"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="361,112,468,141"/>
+<area shape="rect" id="node15" href="$task__switch_8c.html#a31a3357b9fda6545b9eb122d16df98f5" title="i386_do_context_switch" alt="" coords="333,165,496,195"/>
+<area shape="rect" id="node17" href="$fpu_8c.html#a36cc162794be71646eff33f8b8c88a85" title="i386_fpu_on_cs" alt="" coords="359,219,471,248"/>
+<area shape="rect" id="node19" href="$task__switch_8c.html#ab71bee6f2f63101ac5578b86c8e86f06" title="i386_get_return_address" alt="" coords="333,272,496,301"/>
+<area shape="rect" id="node21" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="345,325,484,371"/>
+<area shape="rect" id="node23" href="$process_8c.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="335,395,495,424"/>
+</map>

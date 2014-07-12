@@ -1,0 +1,10 @@
+<map id="dbgapi_invoke_kdbg" name="dbgapi_invoke_kdbg">
+<area shape="rect" id="node3" href="$kdbg_8c.html#ad0f345e82788f12250e6f12c5289a36f" title="kdbg_enter" alt="" coords="196,5,281,35"/>
+<area shape="rect" id="node5" href="$kdbg_8c.html#a14105b86c9f94d4152fed5f2beaad387" title="kdbg_exit" alt="" coords="200,59,277,88"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="197,112,280,141"/>
+<area shape="rect" id="node9" href="$kdbgio_8c.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="373,5,456,35"/>
+<area shape="rect" id="node11" href="$string_8c.html#a6666865e6caf66fd05d4b8bd6c074cd2" title="strncmp" alt="" coords="380,59,449,88"/>
+<area shape="rect" id="node13" href="$heapdbg_8c.html#ab97c8b3b4f9f2fa491924b162a0055f3" title="kdbg_print_memuse_brdr" alt="" coords="331,112,499,141"/>
+<area shape="rect" id="node15" href="$kdbgio_8c.html#addb5788bb9efd8e52fa6722a8c7ce473" title="kdbg_parsehex" alt="" coords="360,165,469,195"/>
+<area shape="rect" id="node17" href="$heapdbg_8c.html#a9bb4115ca0760b14d15a25f417d940d2" title="kdbg_enable_memuse" alt="" coords="339,219,491,248"/>
+</map>

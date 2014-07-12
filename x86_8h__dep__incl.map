@@ -1,0 +1,22 @@
+<map id="include/arch/i386/x86.h" name="include/arch/i386/x86.h">
+<area shape="rect" id="node3" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="176,92,325,121"/>
+<area shape="rect" id="node5" href="$pci__intel__host_8c.html" title="driver/bus/pci_intel\l_host.c" alt="" coords="349,83,480,130"/>
+<area shape="rect" id="node7" href="$vgacon_8h.html" title="include/driver/console\l/vgacon/vgacon.h" alt="" coords="504,83,651,130"/>
+<area shape="rect" id="node17" href="$vga__vterm_8h.html" title="include/driver/console\l/vgacon/vga_vterm.h" alt="" coords="675,83,821,130"/>
+<area shape="rect" id="node21" href="$i8042_8c.html" title="driver/oldkb/i8042.c" alt="" coords="867,188,1000,217"/>
+<area shape="rect" id="node23" href="$i8042_8h.html" title="include/driver/oldkb\l/i8042.h" alt="" coords="896,83,1029,130"/>
+<area shape="rect" id="node28" href="$fpu_8c.html" title="arch/i386/fpu.c" alt="" coords="1053,92,1160,121"/>
+<area shape="rect" id="node30" href="$idt_8c.html" title="arch/i386/idt.c" alt="" coords="1184,92,1288,121"/>
+<area shape="rect" id="node32" href="$arch_2i386_2include_2idt_8h.html" title="arch/i386/include/idt.h" alt="" coords="1312,92,1461,121"/>
+<area shape="rect" id="node34" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="1485,92,1592,121"/>
+<area shape="rect" id="node36" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="1616,92,1720,121"/>
+<area shape="rect" id="node38" href="$pic_8c.html" title="arch/i386/pic.c" alt="" coords="1744,92,1851,121"/>
+<area shape="rect" id="node40" href="$pit_8c.html" title="arch/i386/pit.c" alt="" coords="1875,92,1979,121"/>
+<area shape="rect" id="node42" href="$x86_8c.html" title="arch/i386/x86.c" alt="" coords="2003,92,2112,121"/>
+<area shape="rect" id="node9" href="$sercon_8c.html" title="driver/console/sercon.c" alt="" coords="5,188,163,217"/>
+<area shape="rect" id="node11" href="$sercon__debug_8c.html" title="driver/console/sercon\l_debug.c" alt="" coords="187,179,333,226"/>
+<area shape="rect" id="node13" href="$vgacon_8c.html" title="driver/console/vgacon.c" alt="" coords="357,188,517,217"/>
+<area shape="rect" id="node15" href="$vgacon__early_8c.html" title="driver/console/vgacon\l_early.c" alt="" coords="541,179,691,226"/>
+<area shape="rect" id="node19" href="$vga__vterm_8c.html" title="driver/console/vga\l_vterm.c" alt="" coords="715,179,843,226"/>
+<area shape="rect" id="node26" href="$kbd_8c.html" title="driver/oldkb/kbd.c" alt="" coords="1024,188,1149,217"/>
+</map>

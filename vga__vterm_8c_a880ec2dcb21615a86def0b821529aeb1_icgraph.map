@@ -1,0 +1,17 @@
+<map id="vterm_invalidate_cell" name="vterm_invalidate_cell">
+<area shape="rect" id="node3" href="$vterm__csi_8h.html#afbd553817a0686cbabea4ba7c549002b" title="interpret_csi_DCH" alt="" coords="197,5,328,35"/>
+<area shape="rect" id="node7" href="$vterm__csi_8h.html#a6566357b01686767f074f21717d5d041" title="interpret_csi_DL" alt="" coords="204,59,321,88"/>
+<area shape="rect" id="node10" href="$vterm__csi_8h.html#a0fcf7e0a1836339f8d5fb3983428ff07" title="interpret_csi_ECH" alt="" coords="199,112,327,141"/>
+<area shape="rect" id="node13" href="$vterm__csi_8h.html#ad1d6acc8d6507a9c4c94bcb34927bb6c" title="interpret_csi_EL" alt="" coords="205,165,320,195"/>
+<area shape="rect" id="node16" href="$vterm__csi_8h.html#a375d899f7b7efdbefa0ebcc49bf3af13" title="interpret_csi_ICH" alt="" coords="201,219,324,248"/>
+<area shape="rect" id="node19" href="$vterm_8h.html#a013eb1159f27d1ad1c7a1735f37d51dc" title="vterm_erase" alt="" coords="216,272,309,301"/>
+<area shape="rect" id="node23" href="$vterm_8h.html#aad9b49ba83ad6ecbdb0b7e1cb04d828a" title="vterm_erase_col" alt="" coords="204,325,321,355"/>
+<area shape="rect" id="node27" href="$vterm_8h.html#ac753ad8e4a8791cb35acd81e5fc904a0" title="vterm_erase_row" alt="" coords="201,405,324,435"/>
+<area shape="rect" id="node33" href="$vterm__render_8h.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="557,472,669,501"/>
+<area shape="rect" id="node5" href="$vterm__csi_8h.html#a7ecdab35fc55c574febf07a8205a93ab" title="vterm_interpret_csi" alt="" coords="376,112,509,141"/>
+<area shape="rect" id="node21" href="$vterm_8h.html#a46779f50ccfa4eb114381c82918af4fd" title="vterm_init" alt="" coords="404,259,481,288"/>
+<area shape="rect" id="node25" href="$vterm_8h.html#a265fd478be6cdc09bd986765011a0202" title="vterm_erase_cols" alt="" coords="380,312,505,341"/>
+<area shape="rect" id="node29" href="$vterm_8h.html#ae51927ae3458e70141d8ae8ea2b2e518" title="vterm_erase_rows" alt="" coords="379,365,507,395"/>
+<area shape="rect" id="node31" href="$vterm_8h.html#ab07c6f12ecf530effcba746a607c505b" title="vterm_scroll_down" alt="" coords="377,419,508,448"/>
+<area shape="rect" id="node35" href="$vterm_8h.html#af5e7894e851255700239dd5f8be837b5" title="vterm_scroll_up" alt="" coords="385,472,500,501"/>
+</map>

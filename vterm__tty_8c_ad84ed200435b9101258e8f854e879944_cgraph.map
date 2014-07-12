@@ -1,0 +1,7 @@
+<map id="vterm_putc" name="vterm_putc">
+<area shape="rect" id="node3" href="$vterm__render_8c.html#a8de2659a11c0b9928698e673539eeb1a" title="vterm_render" alt="" coords="141,85,240,115"/>
+<area shape="rect" id="node5" href="$vterm__escape_8c.html#aeb267663cdbef3402fccf07a0d3b8ac6" title="try_interpret_escape_seq" alt="" coords="288,5,456,35"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#aa69d89b32d60ff0f954bd6c94abf8ff8" title="vterm_invalidate_cursor" alt="" coords="292,59,452,88"/>
+<area shape="rect" id="node9" href="$vterm__render_8c.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="504,137,616,167"/>
+<area shape="rect" id="node11" href="$vterm__render_8c.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="295,163,449,192"/>
+</map>

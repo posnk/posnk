@@ -1,0 +1,5 @@
+<map id="stream_info" name="stream_info">
+<area shape="rect" id="node2" href="$structdir__cache.html" title="dir_cache" alt="" coords="137,197,215,227"/>
+<area shape="rect" id="node5" href="$structinode.html" title="Describes a file currently cached by the kernel." alt="" coords="53,101,107,131"/>
+<area shape="rect" id="node8" href="$structpipe__info.html" title="pipe_info" alt="" coords="5,5,80,35"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="driver/oldkb/kbd.c" name="driver/oldkb/kbd.c">
+<area shape="rect" id="node3" href="$i8042_8h.html" title="driver/oldkb/i8042.h" alt="" coords="28,83,161,112"/>
+<area shape="rect" id="node10" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="156,160,273,189"/>
+<area shape="rect" id="node13" href="$kbd_8h.html" title="driver/oldkb/kbd.h" alt="" coords="252,83,377,112"/>
+<area shape="rect" id="node18" href="$tty_8h.html" title="kernel/tty.h" alt="" coords="495,83,580,112"/>
+<area shape="rect" id="node7" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="23,160,132,189"/>
+<area shape="rect" id="node15" href="$string_8h.html" title="string.h" alt="" coords="348,160,412,189"/>
+<area shape="rect" id="node20" href="$types_8h.html" title="sys/types.h" alt="" coords="492,237,583,267"/>
+<area shape="rect" id="node22" href="$termios_8h.html" title="sys/termios.h" alt="" coords="487,160,588,189"/>
+<area shape="rect" id="node25" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="612,160,695,189"/>
+<area shape="rect" id="node28" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="719,160,815,189"/>
+</map>

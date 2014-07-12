@@ -1,0 +1,10 @@
+<map id="vfs_find_symlink" name="vfs_find_symlink">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb" title="_sys_lstat" alt="" coords="184,5,267,35"/>
+<area shape="rect" id="node7" href="$sc__vfs_8c.html#ac8eacdc1865661833934e2efa705757b" title="_sys_readlink" alt="" coords="175,59,276,88"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="185,139,265,168"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9" title="sys_lstat" alt="" coords="336,5,411,35"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f" title="sys_readlink" alt="" coords="327,59,420,88"/>
+<area shape="rect" id="node13" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="332,112,415,141"/>
+<area shape="rect" id="node15" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="336,165,411,195"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="335,219,412,248"/>
+</map>

@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('init_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
@@ -127,7 +144,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a23eb3e32af195a3401a0dea2234f22e0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a23eb3e32af195a3401a0dea2234f22e0">i386_init_multiboot_memprobe</a> (<a class="el" href="multiboot_8h.html#abc47d72689f915831784b5bd3f4c2401">multiboot_info_t</a> *mbt)</td></tr>
 <tr class="memitem:a6aff5bb175e2847fc6c06dbfcf95d541"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a6aff5bb175e2847fc6c06dbfcf95d541">i386_init_reserve_modules</a> (<a class="el" href="multiboot_8h.html#abc47d72689f915831784b5bd3f4c2401">multiboot_info_t</a> *mbt)</td></tr>
 <tr class="memitem:a9e263f82ad3fcb8b99d2bb73a5cad236"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236">i386_init_load_modules</a> (<a class="el" href="multiboot_8h.html#abc47d72689f915831784b5bd3f4c2401">multiboot_info_t</a> *mbt)</td></tr>
-<tr class="memitem:a579679dd45f18736bcedbe890a2120ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a> (<a class="el" href="multiboot_8h.html#abc47d72689f915831784b5bd3f4c2401">multiboot_info_t</a> *mbd, unsigned int <a class="el" href="tar_8h.html#a1a36e432446bacea7f1f0b5ab0ac23a9">magic</a>)</td></tr>
+<tr class="memitem:a579679dd45f18736bcedbe890a2120ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a> (<a class="el" href="multiboot_8h.html#abc47d72689f915831784b5bd3f4c2401">multiboot_info_t</a> *mbd, unsigned int magic)</td></tr>
 <tr class="memitem:a4280e3e9777dde75781aacdfe2bcf4b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a4280e3e9777dde75781aacdfe2bcf4b3">vgacon_clear_video</a> ()</td></tr>
 <tr class="memitem:ace69b32e73ebb9d39d3d5b0f4bdaee2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b">vterm_vga_init</a> ()</td></tr>
 <tr class="memitem:a972d5ef6342605b82ad5d1a05fcc44c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1">i386_init_stub</a> ()</td></tr>
@@ -230,7 +247,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000113">Todo:</a></b></dt><dd>: PANIC!!! </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000114">Todo:</a></b></dt><dd>: PANIC!!! </dd></dl>
 
 <p>Definition at line <a class="el" href="init_8c_source.html#l00106">106</a> of file <a class="el" href="init_8c_source.html">init.c</a>.</p>
 
@@ -251,7 +268,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000112">Todo:</a></b></dt><dd>: Verify page alignment of mmap entries </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000113">Todo:</a></b></dt><dd>: Verify page alignment of mmap entries </dd></dl>
 
 <p>Definition at line <a class="el" href="init_8c_source.html#l00044">44</a> of file <a class="el" href="init_8c_source.html">init.c</a>.</p>
 
@@ -321,7 +338,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="init_8c_source.html#l00246">246</a> of file <a class="el" href="init_8c_source.html">init.c</a>.</p>
 
-<p>References <a class="el" href="ata__pci_8c_source.html#l00063">ata_pci_register()</a>, <a class="el" href="blkdev_8c_source.html#l00023">device_block_init()</a>, <a class="el" href="chardev_8c_source.html#l00020">device_char_init()</a>, <a class="el" href="drivermgr_8c_source.html#l00018">drivermgr_init()</a>, <a class="el" href="earlycon_8h_source.html#l00035">earlycon_printf</a>, <a class="el" href="earlycon_8h_source.html#l00036">earlycon_puts</a>, <a class="el" href="x86_8c_source.html#l00042">halt()</a>, <a class="el" href="init_8c_source.html#l00225">i386_idle_task()</a>, <a class="el" href="idt_8c_source.html#l00032">i386_idt_initialize()</a>, <a class="el" href="init_8c_source.html#l00084">i386_init_load_modules()</a>, <a class="el" href="init_8c_source.html#l00198">i386_init_stub()</a>, <a class="el" href="pic_8c_source.html#l00038">i386_pic_initialize()</a>, <a class="el" href="intel__timer_8h_source.html#l00024">I386_PIT_OCW_MODE_RATEGEN</a>, <a class="el" href="pit_8c_source.html#l00029">i386_pit_setup()</a>, <a class="el" href="protection_8c_source.html#l00020">i386_protection_init()</a>, <a class="el" href="interrupt_8c_source.html#l00044">interrupt_init()</a>, <a class="el" href="pci_8c_source.html#l00037">pci_enumerate_all()</a>, <a class="el" href="physmm_8c_source.html#l00067">physmm_count_free()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__process_8c_source.html#l00153">sys_waitpid()</a>, <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>, <a class="el" href="tty_8c_source.html#l00300">tty_init()</a>, <a class="el" href="vfs_8c_source.html#l01508">vfs_initialize()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, and <a class="el" href="vga__vterm_8c_source.html#l00111">vterm_vga_init()</a>.</p>
+<p>References <a class="el" href="ata__pci_8c_source.html#l00063">ata_pci_register()</a>, <a class="el" href="blkdev_8c_source.html#l00023">device_block_init()</a>, <a class="el" href="chardev_8c_source.html#l00020">device_char_init()</a>, <a class="el" href="drivermgr_8c_source.html#l00018">drivermgr_init()</a>, <a class="el" href="earlycon_8h_source.html#l00035">earlycon_printf</a>, <a class="el" href="earlycon_8h_source.html#l00036">earlycon_puts</a>, <a class="el" href="x86_8c_source.html#l00042">halt()</a>, <a class="el" href="init_8c_source.html#l00225">i386_idle_task()</a>, <a class="el" href="idt_8c_source.html#l00032">i386_idt_initialize()</a>, <a class="el" href="init_8c_source.html#l00084">i386_init_load_modules()</a>, <a class="el" href="init_8c_source.html#l00198">i386_init_stub()</a>, <a class="el" href="pic_8c_source.html#l00038">i386_pic_initialize()</a>, <a class="el" href="intel__timer_8h_source.html#l00024">I386_PIT_OCW_MODE_RATEGEN</a>, <a class="el" href="pit_8c_source.html#l00029">i386_pit_setup()</a>, <a class="el" href="protection_8c_source.html#l00020">i386_protection_init()</a>, <a class="el" href="interrupt_8c_source.html#l00044">interrupt_init()</a>, <a class="el" href="pci_8c_source.html#l00037">pci_enumerate_all()</a>, <a class="el" href="physmm_8c_source.html#l00067">physmm_count_free()</a>, <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__process_8c_source.html#l00153">sys_waitpid()</a>, <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>, <a class="el" href="tty_8c_source.html#l00300">tty_init()</a>, <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vga__vterm_8c_source.html#l00111">vterm_vga_init()</a>.</p>
 
 </div>
 </div>
@@ -398,11 +415,15 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li><li class="navelem"><a class="el" href="init_8c.html">init.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

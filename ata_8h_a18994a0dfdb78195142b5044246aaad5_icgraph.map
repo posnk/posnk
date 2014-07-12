@@ -1,0 +1,16 @@
+<map id="ata_write_port" name="ata_write_port">
+<area shape="rect" id="node3" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="876,194,969,224"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="335,226,444,256"/>
+<area shape="rect" id="node10" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="543,329,615,358"/>
+<area shape="rect" id="node17" href="$ata_8c.html#a70e30cedd3a469033d65e4ecd423d373" title="ata_read_data" alt="" coords="337,173,441,202"/>
+<area shape="rect" id="node21" href="$ata_8h.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="160,356,261,385"/>
+<area shape="rect" id="node29" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="541,536,616,565"/>
+<area shape="rect" id="node33" href="$ata_8h.html#af9b954fe8969622b9a7c82f4eee218d3" title="ata_set_interrupts" alt="" coords="516,16,641,45"/>
+<area shape="rect" id="node36" href="$ata_8c.html#a07edd740f812723cf51bbe5439ccbd06" title="ata_setup_lba_transfer" alt="" coords="312,536,467,565"/>
+<area shape="rect" id="node41" href="$ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089" title="ata_write_data" alt="" coords="157,640,264,669"/>
+<area shape="rect" id="node45" href="$ata_8c.html#a5f7b78dafa71534b24b101521a9b1479" title="ata_write_port_long" alt="" coords="692,66,825,96"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="1020,194,1121,224"/>
+<area shape="rect" id="node12" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="711,272,807,301"/>
+<area shape="rect" id="node14" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="697,324,820,371"/>
+<area shape="rect" id="node25" href="$ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="340,381,439,410"/>
+</map>

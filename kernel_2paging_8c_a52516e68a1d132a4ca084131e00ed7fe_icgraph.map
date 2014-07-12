@@ -1,0 +1,12 @@
+<map id="heapmm_request_core" name="heapmm_request_core">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="208,110,341,139"/>
+<area shape="rect" id="node15" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="417,174,516,203"/>
+<area shape="rect" id="node17" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="223,221,327,250"/>
+<area shape="rect" id="node20" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="208,291,341,321"/>
+<area shape="rect" id="node5" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="809,37,967,66"/>
+<area shape="rect" id="node8" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="389,46,544,75"/>
+<area shape="rect" id="node10" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="593,78,743,107"/>
+<area shape="rect" id="node22" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="389,227,544,257"/>
+<area shape="rect" id="node24" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="593,291,743,321"/>
+<area shape="rect" id="node27" href="$kdbgmm_8h.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="792,322,984,351"/>
+</map>

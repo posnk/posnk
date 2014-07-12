@@ -1,0 +1,8 @@
+<map id="vterm_write_tty" name="vterm_write_tty">
+<area shape="rect" id="node3" href="$tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="165,111,269,140"/>
+<area shape="rect" id="node5" href="$tty_8c.html#afa30a04526ae58f448f660f32de0e957" title="tty_get" alt="" coords="364,5,425,35"/>
+<area shape="rect" id="node7" href="$tty_8c.html#a0f65fe3e4b95bd87543177d3eb92a1c0" title="tty_buf_line_char" alt="" coords="335,59,455,88"/>
+<area shape="rect" id="node9" href="$tty_8c.html#a890d88589585c3f34e4fdca210087d05" title="tty_flush_line_buffer" alt="" coords="520,85,659,115"/>
+<area shape="rect" id="node12" href="$process_8c.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="317,163,472,192"/>
+<area shape="rect" id="node14" href="$tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74" title="tty_buf_out_char" alt="" coords="336,216,453,245"/>
+</map>

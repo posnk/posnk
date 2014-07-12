@@ -1,0 +1,12 @@
+<map id="ata_write" name="ata_write">
+<area shape="rect" id="node3" href="$ata_8c.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="149,5,248,35"/>
+<area shape="rect" id="node5" href="$ata_8c.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="344,56,445,85"/>
+<area shape="rect" id="node7" href="$ata_8c.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="520,135,624,164"/>
+<area shape="rect" id="node11" href="$ata_8c.html#a07edd740f812723cf51bbe5439ccbd06" title="ata_setup_lba_transfer" alt="" coords="317,160,472,189"/>
+<area shape="rect" id="node14" href="$ata_8c.html#ad27b9dbcb0150a4f346cc592db80d089" title="ata_write_data" alt="" coords="145,211,252,240"/>
+<area shape="rect" id="node20" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="129,263,268,310"/>
+<area shape="rect" id="node22" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="137,333,260,363"/>
+<area shape="rect" id="node26" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="145,387,252,416"/>
+<area shape="rect" id="node17" href="$x86_8c.html#a09fab996c4782c643b6150806173428f" title="i386_outl" alt="" coords="357,264,432,293"/>
+<area shape="rect" id="node24" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="329,333,460,363"/>
+</map>

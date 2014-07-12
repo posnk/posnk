@@ -1,0 +1,5 @@
+<map id="kdbgmm_free" name="kdbgmm_free">
+<area shape="rect" id="node3" href="$dbgapi_8h.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="340,5,495,35"/>
+<area shape="rect" id="node7" href="$stacktrc_8h.html#a21a9ef63865e93dc30fdd132c2783f8a" title="kdbg_free_calltrace" alt="" coords="156,31,289,60"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="545,5,695,35"/>
+</map>

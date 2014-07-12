@@ -1,0 +1,6 @@
+<map id="kb_typed" name="kb_typed">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#ab325d11088a3b8f776e39c2c5f49aaf6" title="con_handle_key" alt="" coords="135,32,249,61"/>
+<area shape="rect" id="node9" href="$dec_8c.html#a5bfe1da0f0d5bfb9292ea54663de49b7" title="decode_keystroke" alt="" coords="128,85,256,115"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#add2ef06a483a9461de5d1c7cc2143723" title="vterm_post_key_tty" alt="" coords="311,5,447,35"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="304,59,453,88"/>
+</map>

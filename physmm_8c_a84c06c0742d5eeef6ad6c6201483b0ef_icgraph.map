@@ -1,0 +1,12 @@
+<map id="physmm_clear_bit" name="physmm_clear_bit">
+<area shape="rect" id="node3" href="$physmm_8h.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="181,289,328,319"/>
+<area shape="rect" id="node27" href="$physmm_8h.html#a1a03ac73b02ee6b7748256c9db0a4ef4" title="physmm_claim_range" alt="" coords="376,56,525,85"/>
+<area shape="rect" id="node5" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="584,160,739,189"/>
+<area shape="rect" id="node7" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="817,108,916,137"/>
+<area shape="rect" id="node9" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="393,469,508,499"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="600,419,723,448"/>
+<area shape="rect" id="node15" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="799,315,935,344"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8h.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="405,263,496,292"/>
+<area shape="rect" id="node23" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="585,315,737,344"/>
+<area shape="rect" id="node30" href="$init_8c.html#a6aff5bb175e2847fc6c06dbfcf95d541" title="i386_init_reserve_modules" alt="" coords="573,5,749,35"/>
+</map>

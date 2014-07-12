@@ -1,0 +1,5 @@
+<map id="con_handle_key" name="con_handle_key">
+<area shape="rect" id="node3" href="$kbd_8h.html#a464a3fc19561c9d616e77ed37bc9800c" title="kb_typed" alt="" coords="171,5,245,35"/>
+<area shape="rect" id="node5" href="$i8042_8h.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="432,5,496,35"/>
+<area shape="rect" id="node7" href="$kbd_8h.html#aaeb45a2ee0f097eb61563df1a2adf6bb" title="kb_pressed" alt="" coords="295,31,383,60"/>
+</map>

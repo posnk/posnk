@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('x86_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,18 +101,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">x86.h File Reference</div>  </div>
 </div><!--header-->
@@ -127,7 +143,6 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6863d5721057915ec121c9dfba6ca4d6"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structi386__pusha__registers.html">i386_pusha_registers</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a6863d5721057915ec121c9dfba6ca4d6">__attribute__</a> ((packed))</td></tr>
 <tr class="memitem:abc1d0fce6a713e06d6dc92b6c48fcc09"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#abc1d0fce6a713e06d6dc92b6c48fcc09">i386_inb</a> (uint16_t port)</td></tr>
 <tr class="memitem:ade17acc389ad82ec79ce8f2a595669fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#ade17acc389ad82ec79ce8f2a595669fe">i386_outb</a> (uint16_t port, uint8_t data)</td></tr>
 <tr class="memitem:a7d9b71bdcb9417f789a2941c01c45a27"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a7d9b71bdcb9417f789a2941c01c45a27">i386_inw</a> (uint16_t port)</td></tr>
@@ -137,17 +152,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a71f772e7a1585ad4e7b994ad8fde7aef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a71f772e7a1585ad4e7b994ad8fde7aef">i386_fpu_initialize</a> ()</td></tr>
 <tr class="memitem:a36cc162794be71646eff33f8b8c88a85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a36cc162794be71646eff33f8b8c88a85">i386_fpu_on_cs</a> ()</td></tr>
 <tr class="memitem:a4488e22d1d21170759515f2acd80a936"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a4488e22d1d21170759515f2acd80a936">i386_fpu_handle_ill</a> ()</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a36ffab8d34c6c411a7e5205ddb95eaf9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a36ffab8d34c6c411a7e5205ddb95eaf9">edi</a></td></tr>
-<tr class="memitem:ada78e3124de6adf5a5d212f9ebc4bbe0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#ada78e3124de6adf5a5d212f9ebc4bbe0">esi</a></td></tr>
-<tr class="memitem:aaba2ad0ff8ba480934feabfdab02b1e7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#aaba2ad0ff8ba480934feabfdab02b1e7">ebp</a></td></tr>
-<tr class="memitem:a7534a179bc9cc0ef26f0468e0959ee5c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a7534a179bc9cc0ef26f0468e0959ee5c">esp</a></td></tr>
-<tr class="memitem:ae7c1e3339e4dead200cab41010e9127c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#ae7c1e3339e4dead200cab41010e9127c">ebx</a></td></tr>
-<tr class="memitem:ae6db045cebe7b4cf979120dccdee0d01"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#ae6db045cebe7b4cf979120dccdee0d01">edx</a></td></tr>
-<tr class="memitem:af2b16bef95c844028dd145264d1d3875"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#af2b16bef95c844028dd145264d1d3875">ecx</a></td></tr>
-<tr class="memitem:a93d929ad1fc57af9d4f1793c361fb4f2"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="x86_8h.html#a93d929ad1fc57af9d4f1793c361fb4f2">eax</a></td></tr>
 </table>
 <h2>Macro Definition Documentation</h2>
 <a class="anchor" id="ab4225ce545c17bcdd7dc27513379cfeb"></a>
@@ -382,22 +386,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2>Function Documentation</h2>
-<a class="anchor" id="a6863d5721057915ec121c9dfba6ca4d6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structi386__pusha__registers.html">i386_pusha_registers</a> __attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(packed)&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a4488e22d1d21170759515f2acd80a936"></a>
 <div class="memitem">
 <div class="memproto">
@@ -605,125 +593,16 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<h2>Variable Documentation</h2>
-<a class="anchor" id="a93d929ad1fc57af9d4f1793c361fb4f2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t eax</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aaba2ad0ff8ba480934feabfdab02b1e7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t ebp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae7c1e3339e4dead200cab41010e9127c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t ebx</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="af2b16bef95c844028dd145264d1d3875"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t ecx</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a36ffab8d34c6c411a7e5205ddb95eaf9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t edi</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae6db045cebe7b4cf979120dccdee0d01"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t edx</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ada78e3124de6adf5a5d212f9ebc4bbe0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t esi</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7534a179bc9cc0ef26f0468e0959ee5c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t esp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="x86_8h_source.html#l00030">30</a> of file <a class="el" href="x86_8h_source.html">x86.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li><li class="navelem"><a class="el" href="x86_8h.html">x86.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

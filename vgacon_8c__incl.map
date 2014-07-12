@@ -1,0 +1,10 @@
+<map id="driver/console/vgacon.c" name="driver/console/vgacon.c">
+<area shape="rect" id="node3" href="$vgacon_8h.html" title="driver/console/vgacon\l/vgacon.h" alt="" coords="5,83,155,130"/>
+<area shape="rect" id="node9" href="$string_8h.html" title="string.h" alt="" coords="232,92,296,121"/>
+<area shape="rect" id="node14" href="$types_8h.html" title="sys/types.h" alt="" coords="385,256,476,285"/>
+<area shape="rect" id="node16" href="$tty_8h.html" title="kernel/tty.h" alt="" coords="432,92,517,121"/>
+<area shape="rect" id="node5" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="36,179,145,208"/>
+<area shape="rect" id="node19" href="$termios_8h.html" title="sys/termios.h" alt="" coords="424,179,525,208"/>
+<area shape="rect" id="node22" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="549,179,632,208"/>
+<area shape="rect" id="node25" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="656,179,752,208"/>
+</map>

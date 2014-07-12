@@ -1,0 +1,7 @@
+<map id="include/kernel/streams.h" name="include/kernel/streams.h">
+<area shape="rect" id="node3" href="$process_8c.html" title="kernel/process.c" alt="" coords="5,83,123,112"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html" title="kernel/sc_streams.c" alt="" coords="147,83,285,112"/>
+<area shape="rect" id="node7" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="309,83,437,112"/>
+<area shape="rect" id="node9" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="461,83,579,112"/>
+<area shape="rect" id="node11" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="603,83,709,112"/>
+</map>

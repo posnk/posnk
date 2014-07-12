@@ -1,0 +1,15 @@
+<map id="heapmm_alloc_internal" name="heapmm_alloc_internal">
+<area shape="rect" id="node3" href="$heapdbg_8c.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="641,47,807,77"/>
+<area shape="rect" id="node14" href="$heapmm_8c.html#a5c32e884c0cd3418e801dfed480d4c45" title="Iterator function that tests for blocks able to contain the size in param." alt="" coords="213,307,384,337"/>
+<area shape="rect" id="node16" href="$heapmm_8c.html#a8cac91b732958dd041cdbd92315ebcba" title="Iterator function that tests for blocks equal the size in param." alt="" coords="224,360,373,407"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="232,153,365,182"/>
+<area shape="rect" id="node24" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="689,202,759,231"/>
+<area shape="rect" id="node26" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="661,255,787,285"/>
+<area shape="rect" id="node32" href="$heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966" title="Iterator function that tests for empty blocks." alt="" coords="209,430,388,459"/>
+<area shape="rect" id="node35" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="257,483,340,513"/>
+<area shape="rect" id="node5" href="$stacktrc_8c.html#a5a8efcfa83e2202f34400caacacb34e4" title="kdbg/stacktrc.c" alt="" coords="857,47,983,77"/>
+<area shape="rect" id="node8" href="$kdbgmm_8c.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="1032,9,1139,38"/>
+<area shape="rect" id="node10" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="1036,99,1135,129"/>
+<area shape="rect" id="node20" href="$kernel_2paging_8c.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="437,153,592,182"/>
+<area shape="rect" id="node22" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="440,99,589,129"/>
+</map>

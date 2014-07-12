@@ -1,0 +1,5 @@
+<map id="i386_disable_fpu" name="i386_disable_fpu">
+<area shape="rect" id="node3" href="$x86_8h.html#a36cc162794be71646eff33f8b8c88a85" title="i386_fpu_on_cs" alt="" coords="175,32,287,61"/>
+<area shape="rect" id="node5" href="$scheduler_8h.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="336,5,491,35"/>
+<area shape="rect" id="node7" href="$task__switch_8c.html#a846408533d7477fc321bb74b88942129" title="scheduler_exsig" alt="" coords="356,59,471,88"/>
+</map>

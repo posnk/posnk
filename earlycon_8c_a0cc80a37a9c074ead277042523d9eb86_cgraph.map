@@ -1,0 +1,7 @@
+<map id="earlycon_aprintf" name="earlycon_aprintf">
+<area shape="rect" id="node3" href="$vgacon__early_8c.html#ae5fe8578ccf072b088e089b5470361d6" title="earlycon_aputs" alt="" coords="175,5,284,35"/>
+<area shape="rect" id="node7" href="$earlycon_8c.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="169,59,289,88"/>
+<area shape="rect" id="node5" href="$vgacon__early_8c.html#a4e343464aa2e816a36e210043de25701" title="earlycon_putc" alt="" coords="367,5,468,35"/>
+<area shape="rect" id="node9" href="$earlycon_8c.html#abe587789ba3aae2924fbda10dfade470" title="earlycon_ivprintf" alt="" coords="359,59,476,88"/>
+<area shape="rect" id="node11" href="$earlycon_8c.html#adb100bbeff780bb56ea91b8c1debf7b6" title="earlycon_sprintf_helper" alt="" coords="340,112,495,141"/>
+</map>

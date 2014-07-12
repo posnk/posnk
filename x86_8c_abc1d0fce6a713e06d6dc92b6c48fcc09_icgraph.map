@@ -1,0 +1,24 @@
+<map id="i386_inb" name="i386_inb">
+<area shape="rect" id="node3" href="$ata_8h.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="159,136,260,165"/>
+<area shape="rect" id="node19" href="$kdbgio_8c.html#a1da6b24bfdafa5bacfb659b78910af5f" title="debugcon_getc" alt="" coords="384,264,493,293"/>
+<area shape="rect" id="node23" href="$pic_8c.html#aa326f3a8da7d9469976e09fbe7d6ab36" title="i386_pic_read_data" alt="" coords="143,431,276,460"/>
+<area shape="rect" id="node25" href="$sercon__debug_8c.html#a01fe5504f7b8f4eee1545737495bae76" title="is_transmit_empty" alt="" coords="145,376,273,405"/>
+<area shape="rect" id="node30" href="$i8042_8h.html#a257afd571adf203b1e7bddf97ac3d6c8" title="kbd_controller_status" alt="" coords="136,484,283,513"/>
+<area shape="rect" id="node41" href="$i8042_8h.html#ad2a9a0d80dca67accfc254d012a46827" title="kbd_encoder_read_buffer" alt="" coords="125,544,293,573"/>
+<area shape="rect" id="node45" href="$isr_8c.html#ac8bbf0eb02e5ebfa30bda547750e564b" title="Interrupt handler!" alt="" coords="397,648,480,677"/>
+<area shape="rect" id="node47" href="$sercon__debug_8c.html#af10f0e64ba89e8635aa7245ca08297c5" title="serial_received" alt="" coords="155,319,264,348"/>
+<area shape="rect" id="node50" href="$sercon_8c.html#a726fa82f2329d95739dab1ff815911a0" title="sis_transmit_empty" alt="" coords="141,701,277,731"/>
+<area shape="rect" id="node54" href="$sercon_8c.html#a0d20a2e01b41fd1b5314d7dd710ddc3a" title="sserial_received" alt="" coords="152,648,267,677"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="389,109,488,139"/>
+<area shape="rect" id="node7" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="585,57,679,87"/>
+<area shape="rect" id="node9" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="596,135,668,164"/>
+<area shape="rect" id="node11" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="595,200,669,229"/>
+<area shape="rect" id="node13" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="384,5,493,35"/>
+<area shape="rect" id="node21" href="$kdbgio_8h.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="591,291,673,320"/>
+<area shape="rect" id="node27" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="384,317,493,347"/>
+<area shape="rect" id="node32" href="$i8042_8h.html#abd73f17cfd03e51b9970e74f82413d7d" title="kbd_send_controller\l_command" alt="" coords="369,423,508,470"/>
+<area shape="rect" id="node34" href="$i8042_8h.html#a30383ff22dd0052abee07a7ae741f789" title="kbd_send_encoder_command" alt="" coords="341,371,536,400"/>
+<area shape="rect" id="node36" href="$i8042_8h.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="407,544,471,573"/>
+<area shape="rect" id="node38" href="$kbd_8h.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="587,544,677,573"/>
+<area shape="rect" id="node52" href="$sercon_8c.html#a89bf6a3585afdbaa40ab7546d85ad429" title="sercon_putc" alt="" coords="392,701,485,731"/>
+</map>

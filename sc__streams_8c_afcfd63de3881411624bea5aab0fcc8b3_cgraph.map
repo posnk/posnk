@@ -1,0 +1,6 @@
+<map id="sys_fchmod" name="sys_fchmod">
+<area shape="rect" id="node3" href="$streams_8c.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd" title="_sys_fchmod" alt="" coords="148,59,247,88"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="299,5,408,35"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="296,59,411,88"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="460,85,580,115"/>
+</map>

@@ -1,0 +1,24 @@
+<map id="sys_symlink" name="sys_symlink">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="151,57,281,87"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="553,633,660,663"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="356,109,457,139"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#a619a7ea2e918798f30f69ae91efc8855" title="Create a symbolic link." alt="" coords="171,477,261,507"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="348,5,465,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="571,84,643,113"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="731,633,885,663"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="933,740,1016,769"/>
+<area shape="rect" id="node15" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="940,529,1009,559"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="532,163,681,192"/>
+<area shape="rect" id="node23" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="759,215,857,244"/>
+<area shape="rect" id="node27" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="352,739,461,768"/>
+<area shape="rect" id="node30" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="353,792,460,821"/>
+<area shape="rect" id="node33" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="331,845,483,875"/>
+<area shape="rect" id="node36" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="377,424,436,453"/>
+<area shape="rect" id="node38" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="580,372,633,401"/>
+<area shape="rect" id="node41" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="377,163,436,192"/>
+<area shape="rect" id="node45" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="347,581,467,611"/>
+<area shape="rect" id="node48" href="$vfs_8c.html#a5956d43ee65c457df7b078217e1aaadb" title="Push a new inode to backing storage." alt="" coords="353,267,460,296"/>
+<area shape="rect" id="node51" href="$vfs_8c.html#a3430f50453f987084b69ea3a8f71878e" title="Create a directory entry on backing storage." alt="" coords="363,320,451,349"/>
+<area shape="rect" id="node54" href="$vfs_8c.html#a4319ae3d06feb2038802df445ab1489f" title="Remove an inode from backing storage." alt="" coords="355,477,459,507"/>
+<area shape="rect" id="node56" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="353,635,460,664"/>
+</map>

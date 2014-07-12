@@ -1,0 +1,13 @@
+<map id="physmm_alloc_frame" name="physmm_alloc_frame">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="364,137,519,167"/>
+<area shape="rect" id="node7" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="755,189,853,219"/>
+<area shape="rect" id="node14" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="200,475,315,504"/>
+<area shape="rect" id="node16" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="380,475,503,504"/>
+<area shape="rect" id="node20" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="569,421,705,451"/>
+<area shape="rect" id="node22" href="$kernel_2paging_8h.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="212,320,303,349"/>
+<area shape="rect" id="node30" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="365,421,517,451"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="571,112,704,141"/>
+<area shape="rect" id="node9" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="585,5,689,35"/>
+<area shape="rect" id="node12" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="571,59,704,88"/>
+<area shape="rect" id="node25" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="363,267,520,296"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="procvmm_clear_mmaps" name="procvmm_clear_mmaps">
+<area shape="rect" id="node3" href="$llist_8c.html#a1fe5f4c7b079eb82f11521f5b8d847a6" title="Gets the last entry in a doubly linked list." alt="" coords="236,101,329,131"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="216,155,349,184"/>
+<area shape="rect" id="node7" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="427,5,509,35"/>
+<area shape="rect" id="node9" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="399,58,537,105"/>
+<area shape="rect" id="node11" href="$physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again." alt="" coords="397,128,539,157"/>
+<area shape="rect" id="node13" href="$arch_2i386_2paging_8c.html#a338d2f1e4c26f2a29bcb4f675d9e31a7" title="paging_unmap" alt="" coords="415,181,521,211"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="417,235,519,264"/>
+<area shape="rect" id="node17" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="441,288,495,317"/>
+</map>

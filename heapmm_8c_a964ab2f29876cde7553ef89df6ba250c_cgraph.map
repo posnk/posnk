@@ -1,0 +1,18 @@
+<map id="heapmm_alloc_alligned" name="heapmm_alloc_alligned">
+<area shape="rect" id="node3" href="$heapdbg_8c.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="684,191,849,221"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a2a4ed12d5a6197fa232485ec86f7349c" title="Iterator function that tests for page aligned, larger than page sized blocks." alt="" coords="224,48,381,95"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#af65cf6ef36994664846885ef8c44edc4" title="Iterator function that tests for aligned, matching sized blocks." alt="" coords="211,117,395,164"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#a5f68f317bd5662c19b0bf97f79c953cc" title="Iterator function that tests for blocks large enough to contain a whole page." alt="" coords="217,187,388,233"/>
+<area shape="rect" id="node21" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="228,395,377,425"/>
+<area shape="rect" id="node27" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="704,621,829,650"/>
+<area shape="rect" id="node29" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="725,674,808,703"/>
+<area shape="rect" id="node38" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="700,331,833,361"/>
+<area shape="rect" id="node5" href="$stacktrc_8c.html#a5a8efcfa83e2202f34400caacacb34e4" title="kdbg/stacktrc.c" alt="" coords="900,166,1025,195"/>
+<area shape="rect" id="node8" href="$kdbgmm_8c.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="1075,127,1181,157"/>
+<area shape="rect" id="node10" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="1079,218,1177,247"/>
+<area shape="rect" id="node23" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="732,422,801,451"/>
+<area shape="rect" id="node25" href="$heapdbg_8c.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="461,673,616,702"/>
+<area shape="rect" id="node32" href="$heapmm_8c.html#a75cf1b0eca3c9e770122f1e6701a40bd" title="Iterator function that tests for [our block][FREE] mergeable blocks." alt="" coords="465,499,612,545"/>
+<area shape="rect" id="node34" href="$heapmm_8c.html#a3f145d1ed15163bfdb371cf37f029f32" title="Iterator function that tests for [FREE][our block] mergeable blocks." alt="" coords="444,569,633,598"/>
+<area shape="rect" id="node36" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="461,395,616,425"/>
+</map>

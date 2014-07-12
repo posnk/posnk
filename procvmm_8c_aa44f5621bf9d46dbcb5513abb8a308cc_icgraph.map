@@ -1,0 +1,17 @@
+<map id="procvmm_get_memory_region" name="procvmm_get_memory_region">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="224,59,347,88"/>
+<area shape="rect" id="node9" href="$process_8h.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="227,191,344,220"/>
+<area shape="rect" id="node17" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="209,269,361,299"/>
+<area shape="rect" id="node19" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="208,323,363,352"/>
+<area shape="rect" id="node28" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="215,429,356,459"/>
+<area shape="rect" id="node33" href="$process_8h.html#a613a89a06434813f55c2e61e112dcacd" title="procvmm_resize_map" alt="" coords="211,376,360,405"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="461,5,544,35"/>
+<area shape="rect" id="node7" href="$scheduler_8h.html#a0f320e4aac6d24a7ae35fd6a543fdf3b" title="scheduler_fork_to" alt="" coords="440,59,565,88"/>
+<area shape="rect" id="node11" href="$syscall_8h.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="437,112,568,141"/>
+<area shape="rect" id="node13" href="$syscall_8h.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="437,165,568,195"/>
+<area shape="rect" id="node15" href="$process_8h.html#ab000f9cf14048843bb2f2f3c51c20cd6" title="process_push_user_data" alt="" coords="420,219,585,248"/>
+<area shape="rect" id="node21" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="644,323,745,352"/>
+<area shape="rect" id="node23" href="$process_8h.html#a8de9fd8f1440a9aaf1845711a68fc470" title="procvmm_do_exec_mmaps" alt="" coords="412,323,593,352"/>
+<area shape="rect" id="node26" href="$sc__process_8c.html#ab2a6f3c56ff087ee363af4e020ea3461" title="sys_sbrk" alt="" coords="465,376,540,405"/>
+<area shape="rect" id="node30" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="469,429,536,459"/>
+</map>

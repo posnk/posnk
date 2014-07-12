@@ -1,0 +1,6 @@
+<map id="sys_stime" name="sys_stime">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="137,32,268,61"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="143,85,263,115"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="319,5,436,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="341,59,413,88"/>
+</map>

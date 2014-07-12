@@ -1,0 +1,12 @@
+<map id="kdbgmm_free_internal" name="kdbgmm_free_internal">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d" title="Allocates a new block of memory of given size to the caller." alt="" coords="405,5,560,35"/>
+<area shape="rect" id="node8" href="$kdbgmm_8h.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="387,69,579,99"/>
+<area shape="rect" id="node13" href="$kdbgmm_8h.html#aa9bcfa313457de4f5d44bdb29e48167b" title="Releases a block of memory so it can be reallocated." alt="" coords="221,173,323,203"/>
+<area shape="rect" id="node20" href="$kdbgmm_8h.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="224,227,320,256"/>
+<area shape="rect" id="node24" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="205,69,339,99"/>
+<area shape="rect" id="node5" href="$kdbgmm_8h.html#a7be4d7b37b7114befd0f512f2f5543b0" title="Allocates a new block of memory of given size to the caller." alt="" coords="652,5,759,35"/>
+<area shape="rect" id="node10" href="$kdbgmm_8h.html#a7832df3c962e803662e506daedc8f583" title="Allocates a new page of heap space to the caller." alt="" coords="635,69,776,99"/>
+<area shape="rect" id="node15" href="$dbgapi_8h.html#a750537b522279461626df8b76279428d" title="dbgapi_unreg_memuse" alt="" coords="628,148,783,177"/>
+<area shape="rect" id="node17" href="$stacktrc_8h.html#a21a9ef63865e93dc30fdd132c2783f8a" title="kdbg_free_calltrace" alt="" coords="416,173,549,203"/>
+<area shape="rect" id="node22" href="$dbgapi_8h.html#a2f4b7bc9171dc7062dc98c3fd034b5ea" title="kdbg/kdbg.c" alt="" coords="431,227,535,256"/>
+</map>

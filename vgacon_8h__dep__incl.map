@@ -1,0 +1,6 @@
+<map id="include/driver/console/vgacon/vgacon.h" name="include/driver/console/vgacon/vgacon.h">
+<area shape="rect" id="node3" href="$sercon_8c.html" title="driver/console/sercon.c" alt="" coords="5,111,163,140"/>
+<area shape="rect" id="node5" href="$sercon__debug_8c.html" title="driver/console/sercon\l_debug.c" alt="" coords="187,102,333,149"/>
+<area shape="rect" id="node7" href="$vgacon_8c.html" title="driver/console/vgacon.c" alt="" coords="357,111,517,140"/>
+<area shape="rect" id="node9" href="$vgacon__early_8c.html" title="driver/console/vgacon\l_early.c" alt="" coords="541,102,691,149"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="vterm_scroll_down" name="vterm_scroll_down">
+<area shape="rect" id="node3" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="229,5,301,35"/>
+<area shape="rect" id="node5" href="$vterm__erase_8c.html#ac753ad8e4a8791cb35acd81e5fc904a0" title="vterm_erase_row" alt="" coords="204,59,327,88"/>
+<area shape="rect" id="node11" href="$vga__vterm_8c.html#a24f89f5f7a90d0ee0c1e4d102116805e" title="vterm_invalidate_screen" alt="" coords="184,112,347,141"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="395,59,539,88"/>
+<area shape="rect" id="node9" href="$vga__vterm_8c.html#adb0541135b548fc90f4471f2a5f6b7d3" title="vga_vterm_map_attr" alt="" coords="587,85,728,115"/>
+<area shape="rect" id="node14" href="$vga__vterm_8c.html#a2b0c970500b8313bc09b5af307ddd515" title="vterm_vga_position" alt="" coords="400,163,533,192"/>
+</map>

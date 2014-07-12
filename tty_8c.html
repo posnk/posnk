@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('tty_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
@@ -112,18 +129,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a74ef59adca123dbad309bbce57f9ea1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b">tty_reset_termios</a> (<a class="el" href="tty_8h.html#a78a02c8def81a5816f3f50469b53cf9e">tty_info_t</a> *tty)</td></tr>
-<tr class="memitem:aa0920fc2664eed1f1bcd5de3ba89d640"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640">tty_register_driver</a> (char *<a class="el" href="vfs_8h.html#a9b1574fcf713a0776558fdb602b5fbb1">name</a>, <a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> major, int minor_count, <a class="el" href="tty_8h.html#af045377e1be324b395b583429d9976e2">tty_write_out_t</a> write_out)</td></tr>
+<tr class="memitem:aa0920fc2664eed1f1bcd5de3ba89d640"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640">tty_register_driver</a> (char *name, <a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> major, int minor_count, <a class="el" href="tty_8h.html#af045377e1be324b395b583429d9976e2">tty_write_out_t</a> write_out)</td></tr>
 <tr class="memitem:afa30a04526ae58f448f660f32de0e957"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tty_8h.html#a78a02c8def81a5816f3f50469b53cf9e">tty_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#afa30a04526ae58f448f660f32de0e957">tty_get</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device)</td></tr>
-<tr class="memitem:a81c9dc3480ed122aacfe00711228d42b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a81c9dc3480ed122aacfe00711228d42b">tty_open</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int fd, int options)</td></tr>
-<tr class="memitem:af011bf9f6db234c81150f165d8d2a590"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#af011bf9f6db234c81150f165d8d2a590">tty_close</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int fd)</td></tr>
+<tr class="memitem:a1ce865d2795797c6595e97ac7bc373af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a1ce865d2795797c6595e97ac7bc373af">tty_open</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, int fd, int options)</td></tr>
+<tr class="memitem:a3918933914550c157c29424750aeb045"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a3918933914550c157c29424750aeb045">tty_close</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, int fd)</td></tr>
 <tr class="memitem:a815fcd6f1882311a9cc274cc8b39dd74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74">tty_buf_out_char</a> (<a class="el" href="tty_8h.html#a78a02c8def81a5816f3f50469b53cf9e">tty_info_t</a> *tty, char c)</td></tr>
 <tr class="memitem:a890d88589585c3f34e4fdca210087d05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a890d88589585c3f34e4fdca210087d05">tty_flush_line_buffer</a> (<a class="el" href="tty_8h.html#a78a02c8def81a5816f3f50469b53cf9e">tty_info_t</a> *tty)</td></tr>
 <tr class="memitem:a0f65fe3e4b95bd87543177d3eb92a1c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a0f65fe3e4b95bd87543177d3eb92a1c0">tty_buf_line_char</a> (<a class="el" href="tty_8h.html#a78a02c8def81a5816f3f50469b53cf9e">tty_info_t</a> *tty, char c)</td></tr>
 <tr class="memitem:af04629abe6c2dbe5e5089f147877621d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#af04629abe6c2dbe5e5089f147877621d">tty_output_char</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, char c)</td></tr>
 <tr class="memitem:a2a01bfbfacd2694da3bd7fb74f1f65fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty_input_char</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, char c)</td></tr>
-<tr class="memitem:a006a76f172143fdb170deacb1ea2fef3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a006a76f172143fdb170deacb1ea2fef3">tty_write</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, void *<a class="el" href="kdbg_8c.html#a7d55ba6a8fa98e9c0ae7a04f202b67d7">buf</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size, <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int non_block)</td></tr>
+<tr class="memitem:a86f3d48cfb5841cbb0e6bcf4a9f42899"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a86f3d48cfb5841cbb0e6bcf4a9f42899">tty_write</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, void *<a class="el" href="kdbg_8c.html#a7d55ba6a8fa98e9c0ae7a04f202b67d7">buf</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size, int non_block)</td></tr>
 <tr class="memitem:a9c0317d8f63eedd8f095cd9198ff3aa1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1">tty_read</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, void *<a class="el" href="kdbg_8c.html#a7d55ba6a8fa98e9c0ae7a04f202b67d7">buf</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size, int non_block)</td></tr>
-<tr class="memitem:a41c315ed12e65d1a4be58f291d7181de"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a41c315ed12e65d1a4be58f291d7181de">tty_ioctl</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int fd, int func, int arg)</td></tr>
+<tr class="memitem:aeb54be231efa53ed345f67fad6ccfdff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#aeb54be231efa53ed345f67fad6ccfdff">tty_ioctl</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, int fd, int func, int arg)</td></tr>
 <tr class="memitem:a3bf9faf77dd76addc6deac2722b097e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tty_8c.html#a3bf9faf77dd76addc6deac2722b097e2">tty_init</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
@@ -197,7 +214,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af011bf9f6db234c81150f165d8d2a590"></a>
+<a class="anchor" id="a3918933914550c157c29424750aeb045"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -210,7 +227,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>fd</em>&#160;</td>
         </tr>
         <tr>
@@ -328,7 +345,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a41c315ed12e65d1a4be58f291d7181de"></a>
+<a class="anchor" id="aeb54be231efa53ed345f67fad6ccfdff"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -341,7 +358,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>fd</em>, </td>
         </tr>
         <tr>
@@ -375,7 +392,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a81c9dc3480ed122aacfe00711228d42b"></a>
+<a class="anchor" id="a1ce865d2795797c6595e97ac7bc373af"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -388,7 +405,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>fd</em>, </td>
         </tr>
         <tr>
@@ -534,7 +551,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="tty_8c_source.html#l00059">59</a> of file <a class="el" href="tty_8c_source.html">tty.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00016">CONFIG_TTY_BUFFER</a>, <a class="el" href="tty_8h_source.html#l00027">tty_info::ct_pid</a>, <a class="el" href="tty_8h_source.html#l00025">tty_info::device</a>, <a class="el" href="chardev_8c_source.html#l00026">device_char_register()</a>, <a class="el" href="tty_8h_source.html#l00026">tty_info::fg_pgid</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="tty_8h_source.html#l00032">tty_info::line_buffer</a>, <a class="el" href="tty_8h_source.html#l00033">tty_info::line_buffer_pos</a>, <a class="el" href="tty_8h_source.html#l00034">tty_info::line_buffer_size</a>, <a class="el" href="device_8h_source.html#l00025">char_dev::major</a>, <a class="el" href="types_8h_source.html#l00031">MAKEDEV</a>, <a class="el" href="device_8h_source.html#l00024">char_dev::name</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="device_8h_source.html#l00026">char_dev::ops</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="tty_8h_source.html#l00036">tty_info::pipe_in</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="tty_8h_source.html#l00030">tty_info::ref_count</a>, <a class="el" href="tty_8c_source.html#l00027">tty_operations</a>, <a class="el" href="tty_8c_source.html#l00039">tty_reset_termios()</a>, and <a class="el" href="tty_8h_source.html#l00037">tty_info::write_out</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00016">CONFIG_TTY_BUFFER</a>, <a class="el" href="tty_8h_source.html#l00027">tty_info::ct_pid</a>, <a class="el" href="tty_8h_source.html#l00025">tty_info::device</a>, <a class="el" href="chardev_8c_source.html#l00026">device_char_register()</a>, <a class="el" href="tty_8h_source.html#l00026">tty_info::fg_pgid</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="tty_8h_source.html#l00032">tty_info::line_buffer</a>, <a class="el" href="tty_8h_source.html#l00033">tty_info::line_buffer_pos</a>, <a class="el" href="tty_8h_source.html#l00034">tty_info::line_buffer_size</a>, <a class="el" href="device_8h_source.html#l00025">char_dev::major</a>, <a class="el" href="types_8h_source.html#l00031">MAKEDEV</a>, <a class="el" href="device_8h_source.html#l00024">char_dev::name</a>, <a class="el" href="device_8h_source.html#l00026">char_dev::ops</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="tty_8h_source.html#l00036">tty_info::pipe_in</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="tty_8h_source.html#l00030">tty_info::ref_count</a>, <a class="el" href="tty_8c_source.html#l00027">tty_operations</a>, <a class="el" href="tty_8c_source.html#l00039">tty_reset_termios()</a>, and <a class="el" href="tty_8h_source.html#l00037">tty_info::write_out</a>.</p>
 
 <p>Referenced by <a class="el" href="sercon_8c_source.html#l00027">sercon_init()</a>, <a class="el" href="vgacon_8c_source.html#l00253">vgacon_init()</a>, and <a class="el" href="vterm__tty_8c_source.html#l00069">vterm_tty_setup()</a>.</p>
 
@@ -562,7 +579,7 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a006a76f172143fdb170deacb1ea2fef3"></a>
+<a class="anchor" id="a86f3d48cfb5841cbb0e6bcf4a9f42899"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -593,7 +610,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) int&#160;</td>
+          <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>non_block</em>&#160;</td>
         </tr>
         <tr>
@@ -649,11 +666,15 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="tty_8c.html">tty.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

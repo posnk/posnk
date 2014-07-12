@@ -1,0 +1,7 @@
+<map id="pci_config_read_byte" name="pci_config_read_byte">
+<area shape="rect" id="node3" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="217,5,319,35"/>
+<area shape="rect" id="node5" href="$pci_8h.html#ae7687154ac864ae0f4043e228f4a0518" title="pci_enumerate_all" alt="" coords="401,57,527,87"/>
+<area shape="rect" id="node9" href="$pci_8h.html#a57de29a327b780ddfab576e1f3cd146e" title="pci_enumerate_bus" alt="" coords="201,109,335,139"/>
+<area shape="rect" id="node12" href="$pci_8h.html#a9f99fffa4ca1e0e6af8b5a567368e83d" title="pci_enumerate_function" alt="" coords="384,111,544,140"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="592,57,680,87"/>
+</map>

@@ -1,0 +1,25 @@
+<map id="sys_waitpid" name="sys_waitpid">
+<area shape="rect" id="node3" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="156,7,287,36"/>
+<area shape="rect" id="node9" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="156,60,287,89"/>
+<area shape="rect" id="node13" href="$earlycon_8c.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="359,112,479,141"/>
+<area shape="rect" id="node19" href="$llist_8c.html#a1fe5f4c7b079eb82f11521f5b8d847a6" title="Gets the last entry in a doubly linked list." alt="" coords="175,217,268,247"/>
+<area shape="rect" id="node21" href="$process_8c.html#a12de0ee1167ada9c9fc6778a679b1a16" title="process_absorb_event" alt="" coords="145,271,297,300"/>
+<area shape="rect" id="node27" href="$process_8c.html#a227af89ee0be090e1efa14ffeae05d76" title="process_get" alt="" coords="175,479,268,508"/>
+<area shape="rect" id="node33" href="$process_8c.html#a96d3ac727934ff469f0f81d1bb2a1cc3" title="process_get_event" alt="" coords="156,583,287,612"/>
+<area shape="rect" id="node38" href="$process_8c.html#aec8c3d57139877810572ec46d7b5435b" title="process_get_event_pg" alt="" coords="145,703,297,732"/>
+<area shape="rect" id="node43" href="$process_8c.html#a56d94c42949472740bd7d4fba4dcb055" title="process_reap" alt="" coords="172,324,271,353"/>
+<area shape="rect" id="node53" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="159,164,284,193"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="360,59,477,88"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="383,5,455,35"/>
+<area shape="rect" id="node15" href="$earlycon_8c.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="543,85,663,115"/>
+<area shape="rect" id="node17" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="544,139,661,168"/>
+<area shape="rect" id="node23" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="377,269,460,299"/>
+<area shape="rect" id="node25" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="552,321,653,351"/>
+<area shape="rect" id="node29" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="540,531,665,560"/>
+<area shape="rect" id="node31" href="$process_8c.html#ae5980a26b4af4ab04dee79f41e5c75e0" title="Iterator function that looks up process with the given pid." alt="" coords="348,531,489,560"/>
+<area shape="rect" id="node36" href="$process_8c.html#a0a7d37b3f63472e6b46b5c3899eec4b1" title="Iterator function that looks up eventwith the given child pid." alt="" coords="352,634,485,681"/>
+<area shape="rect" id="node41" href="$process_8c.html#aa6af4d0b5c72d3892960e23676250d23" title="Iterator function that looks up eventwith the given child pid." alt="" coords="352,754,485,801"/>
+<area shape="rect" id="node47" href="$streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="348,427,489,456"/>
+<area shape="rect" id="node50" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="361,373,476,403"/>
+<area shape="rect" id="node55" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="353,165,484,195"/>
+</map>

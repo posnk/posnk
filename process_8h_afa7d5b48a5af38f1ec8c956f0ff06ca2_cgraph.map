@@ -1,0 +1,24 @@
+<map id="process_exec" name="process_exec">
+<area shape="rect" id="node3" href="$elfloader_8c.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="216,180,283,209"/>
+<area shape="rect" id="node9" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="655,313,713,343"/>
+<area shape="rect" id="node11" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="809,235,863,264"/>
+<area shape="rect" id="node28" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="215,623,284,652"/>
+<area shape="rect" id="node30" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="177,516,321,545"/>
+<area shape="rect" id="node35" href="$protection_8c.html#ae550710d29c59b9382f60c09cf5dc350" title="process_user_call" alt="" coords="187,676,312,705"/>
+<area shape="rect" id="node39" href="$procvmm_8c.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="169,729,329,759"/>
+<area shape="rect" id="node41" href="$procvmm_8c.html#a8de9fd8f1440a9aaf1845711a68fc470" title="procvmm_do_exec_mmaps" alt="" coords="159,463,340,492"/>
+<area shape="rect" id="node43" href="$procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="397,412,552,441"/>
+<area shape="rect" id="node52" href="$streams_8c.html#aa17c760186bd4ebee3bd6bc632279154" title="stream_do_close_on_exec" alt="" coords="161,569,337,599"/>
+<area shape="rect" id="node60" href="$process_8c.html#a9fe4bca83582af75714e98de8a4c7f93" title="strlistlen" alt="" coords="215,783,284,812"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="421,153,528,183"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="608,24,760,53"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="631,260,737,289"/>
+<area shape="rect" id="node15" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="439,49,511,79"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="633,207,735,236"/>
+<area shape="rect" id="node20" href="$procvmm_8c.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="404,207,545,236"/>
+<area shape="rect" id="node25" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="621,453,747,483"/>
+<area shape="rect" id="node32" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="437,465,512,495"/>
+<area shape="rect" id="node37" href="$protection_8h.html#ab8fc7ad858baef79699378bb33d4d650" title="i386_protection_user_call" alt="" coords="391,676,559,705"/>
+<area shape="rect" id="node55" href="$streams_8c.html#a886117f8be20d554d40ba6b296e9af54" title="stream_exec_iterator" alt="" coords="403,569,547,599"/>
+<area shape="rect" id="node57" href="$streams_8c.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="431,623,519,652"/>
+</map>

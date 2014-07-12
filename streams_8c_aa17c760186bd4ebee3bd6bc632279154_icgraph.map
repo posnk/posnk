@@ -1,0 +1,5 @@
+<map id="stream_do_close_on_exec" name="stream_do_close_on_exec">
+<area shape="rect" id="node3" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="233,32,335,61"/>
+<area shape="rect" id="node5" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="385,5,487,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#acaf5f124566c234a14e7cafa5471bcd0" title="sys_execve" alt="" coords="391,59,481,88"/>
+</map>

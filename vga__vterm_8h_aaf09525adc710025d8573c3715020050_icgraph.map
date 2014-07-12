@@ -1,0 +1,5 @@
+<map id="vterm_vga_write_crtc_register" name="vterm_vga_write_crtc_register">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#a5e0a5415f3ce6cad46883f6d5facdddc" title="vga_vterm_move_cursor" alt="" coords="200,5,365,35"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="208,59,357,88"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#a2b0c970500b8313bc09b5af307ddd515" title="vterm_vga_position" alt="" coords="415,5,548,35"/>
+</map>

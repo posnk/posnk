@@ -1,0 +1,12 @@
+<map id="sys_rmdir" name="sys_rmdir">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="135,59,265,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="483,111,589,140"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="485,164,587,193"/>
+<area shape="rect" id="node18" href="$vfs_8c.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="163,213,237,243"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="316,5,433,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="339,59,411,88"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="837,139,992,168"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="639,164,788,193"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="321,213,428,243"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="335,267,415,296"/>
+</map>

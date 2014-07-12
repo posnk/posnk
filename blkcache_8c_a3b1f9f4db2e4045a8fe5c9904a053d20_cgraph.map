@@ -1,0 +1,5 @@
+<map id="blkcache_free" name="blkcache_free">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="157,5,259,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="167,59,249,88"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="308,5,457,35"/>
+</map>

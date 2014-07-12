@@ -1,0 +1,16 @@
+<map id="tar_extract" name="tar_extract">
+<area shape="rect" id="node3" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="139,324,251,353"/>
+<area shape="rect" id="node19" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="595,349,701,378"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="595,37,701,66"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="313,502,385,532"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="597,90,699,120"/>
+<area shape="rect" id="node11" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="621,221,675,250"/>
+<area shape="rect" id="node13" href="$string_8c.html#a6f3dcb20ff11ff9db5904c3cfb61a38c" title="strcmp" alt="" coords="467,194,528,224"/>
+<area shape="rect" id="node16" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="455,141,540,170"/>
+<area shape="rect" id="node23" href="$tar_8c.html#a2d405ba96a6c6f61802627b21090a506" title="tar_get_mode" alt="" coords="299,556,400,585"/>
+<area shape="rect" id="node25" href="$tar_8c.html#a7c76e2a03ecc19158d11bce2a753f2bf" title="tar_num_dec" alt="" coords="449,556,545,585"/>
+<area shape="rect" id="node29" href="$vfs_8c.html#a522e8a4f7dfc7d3a6994313d2d746a82" title="Write data to a file." alt="" coords="460,37,535,66"/>
+<area shape="rect" id="node33" href="$vfs_8c.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="464,349,531,378"/>
+<area shape="rect" id="node37" href="$tar_8c.html#a00a95e1ba276aeec49aa3b57f1f52fd8" title="tar_get_dev" alt="" coords="304,609,395,638"/>
+<area shape="rect" id="node40" href="$vfs_8c.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="311,297,388,326"/>
+</map>

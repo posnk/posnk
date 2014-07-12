@@ -1,0 +1,15 @@
+<map id="kernel/scheduler.c" name="kernel/scheduler.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="5,392,69,421"/>
+<area shape="rect" id="node8" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="195,237,317,267"/>
+<area shape="rect" id="node10" href="$llist_8h.html" title="util/llist.h" alt="" coords="471,315,545,344"/>
+<area shape="rect" id="node15" href="$process_8h.html" title="kernel/process.h" alt="" coords="816,160,933,189"/>
+<area shape="rect" id="node21" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="1216,237,1325,267"/>
+<area shape="rect" id="node24" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="565,392,672,421"/>
+<area shape="rect" id="node43" href="$streams_8h.html" title="kernel/streams.h" alt="" coords="549,160,667,189"/>
+<area shape="rect" id="node49" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="728,83,856,112"/>
+<area shape="rect" id="node60" href="$config_8h.html" title="config.h" alt="" coords="1312,83,1379,112"/>
+<area shape="rect" id="node19" href="$types_8h.html" title="sys/types.h" alt="" coords="747,315,837,344"/>
+<area shape="rect" id="node28" href="$time_8h.html" title="kernel/time.h" alt="" coords="995,315,1091,344"/>
+<area shape="rect" id="node31" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="747,237,837,267"/>
+<area shape="rect" id="node35" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="571,315,667,344"/>
+</map>

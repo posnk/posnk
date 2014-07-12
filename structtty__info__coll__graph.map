@@ -1,0 +1,5 @@
+<map id="tty_info" name="tty_info">
+<area shape="rect" id="node2" href="$structtermios.html" title="termios" alt="" coords="5,5,69,35"/>
+<area shape="rect" id="node4" href="$structwinsize.html" title="winsize" alt="" coords="93,5,160,35"/>
+<area shape="rect" id="node6" href="$structpipe__info.html" title="pipe_info" alt="" coords="184,5,259,35"/>
+</map>

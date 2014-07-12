@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('init_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">init.c</div>  </div>
@@ -106,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="pci_8h.html">driver/bus/pci.h</a>&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="syscall_8h.html">kernel/syscall.h</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="streams_8h.html">kernel/streams.h</a>&quot;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html">kernel/vfs.h</a>&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="vfs_8h.html" title="Exposes the VFS API.">kernel/vfs.h</a>&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tar_8h.html">kernel/tar.h</a>&quot;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="device_8h.html">kernel/device.h</a>&quot;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="tty_8h.html">kernel/tty.h</a>&quot;</span></div>
@@ -184,7 +201,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="code" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">  106</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a>(<a class="code" href="structmultiboot__info.html">multiboot_info_t</a>* mbd, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="tar_8h.html#a1a36e432446bacea7f1f0b5ab0ac23a9">magic</a>)</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="code" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">  106</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a>(<a class="code" href="structmultiboot__info.html">multiboot_info_t</a>* mbd, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> magic)</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;{</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">size_t</span> initial_heap = 4096;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        uint32_t init_sp = 0;</div>
@@ -357,7 +374,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;        <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;OK\n&quot;</span>);</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;        <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;Initializing VFS and mounting rootfs...&quot;</span>);</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="vfs_8c.html#ac1913485037320335c4030439d537df8" title="Initialize the VFS layer.">vfs_initialize</a>(<a class="code" href="ramfs_8c.html#a369234fe1ac316f9c231a05c4cb9d472">ramfs_create</a>()))</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="group__vfs.html#gac1913485037320335c4030439d537df8" title="Initialize the VFS layer.">vfs_initialize</a>(<a class="code" href="ramfs_8c.html#a369234fe1ac316f9c231a05c4cb9d472">ramfs_create</a>()))</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;                <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;OK\n&quot;</span>);</div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;                <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;FAIL\n&quot;</span>);</div>
@@ -376,7 +393,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <a class="code" href="vga__vterm_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b">vterm_vga_init</a>();</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;Creating tty stub dev..&quot;</span>);</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file.">vfs_mknod</a>(<span class="stringliteral">&quot;/faketty&quot;</span>, <a class="code" href="stat_8h.html#aef3a1d1ba22c83e30b5c834dd343b2a8">S_IFCHR</a> | 0777, 0x0200))</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="group__vfs.html#ga1833cb4e7ef568776472b7d940eccf04" title="Create a file.">vfs_mknod</a>(<span class="stringliteral">&quot;/faketty&quot;</span>, <a class="code" href="stat_8h.html#aef3a1d1ba22c83e30b5c834dd343b2a8">S_IFCHR</a> | 0777, 0x0200))</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;                <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;OK\n&quot;</span>);</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;                <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;FAIL\n&quot;</span>);</div>
@@ -407,7 +424,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        wp_params[0] = (uint32_t) pid_init;</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        wp_params[1] = (uint32_t) &amp;init_status;</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        wp_params[2] = 0;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        rv = <a class="code" href="sc__process_8c.html#ad636cebe991c7b6ff56d4788b069983b">sys_waitpid</a>(wp_params,wp_params);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        rv = <a class="code" href="sc__process_8c.html#a594fa135d60d1edbf409a0c50b530fbe">sys_waitpid</a>(wp_params,wp_params);</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <a class="code" href="earlycon_8h.html#ac56de90a4748ce03e73d95828522eb32">earlycon_printf</a>(<span class="stringliteral">&quot;PANIC! Init exited with status: %i %i\n&quot;</span>,init_status,rv);</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <a class="code" href="earlycon_8h.html#a48e7367051d4edf270ab27b1d5283289">earlycon_puts</a>(<span class="stringliteral">&quot;\n\nkernel main exited... halting!&quot;</span>);</div>
@@ -415,11 +432,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <a class="code" href="x86_8c.html#ade0430439247877006d7df950f94918a" title="kernel/system.h">halt</a>();</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:23 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li><li class="navelem"><a class="el" href="init_8c.html">init.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:55 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

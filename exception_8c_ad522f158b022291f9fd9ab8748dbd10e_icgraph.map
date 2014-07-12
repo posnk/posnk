@@ -1,0 +1,5 @@
+<map id="exception_panic" name="exception_panic">
+<area shape="rect" id="node3" href="$exception_8h.html#a6144950ba049dd82bec04ca06f81c30e" title="exception_handle" alt="" coords="171,5,293,35"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="529,5,673,35"/>
+<area shape="rect" id="node7" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="343,31,479,60"/>
+</map>

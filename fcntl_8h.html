@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('fcntl_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_be07dd95e06613ebd1d3370fdf6b649e.html">crt</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a>  </div>
@@ -135,10 +152,10 @@ Macros</h2></td></tr>
 <tr class="memitem:a71a490d1088a9c5f120f3a59e2a4599f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a71a490d1088a9c5f120f3a59e2a4599f">FNDELAY</a>&#160;&#160;&#160;<a class="el" href="fcntl_8h.html#a63ba256ec18f373817941d5a4d0e2d5e">O_NDELAY</a></td></tr>
 <tr class="memitem:a1c28a43c30721462ad7e40f37051c9ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a1c28a43c30721462ad7e40f37051c9ca">FASYNC</a>&#160;&#160;&#160;<a class="el" href="fcntl_8h.html#a4feb2c0ed6f5d4ca3ea9aad7614b0a21">_FASYNC</a></td></tr>
 <tr class="memitem:ab93a8621587aba90181efd7d3aeea67e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#ab93a8621587aba90181efd7d3aeea67e">F_DUPFD</a>&#160;&#160;&#160;0       /* Duplicate fildes */</td></tr>
-<tr class="memitem:abc11141031604fb22b8e3a201155cbb3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#abc11141031604fb22b8e3a201155cbb3">F_GETFD</a>&#160;&#160;&#160;1       /* Get fildes <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> (close on exec) */</td></tr>
-<tr class="memitem:ad27227e8d87b844648f07d66da38bb3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#ad27227e8d87b844648f07d66da38bb3f">F_SETFD</a>&#160;&#160;&#160;2       /* Set fildes <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> (close on exec) */</td></tr>
-<tr class="memitem:a025fad21a889c79f02ec53abe3526c32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a025fad21a889c79f02ec53abe3526c32">F_GETFL</a>&#160;&#160;&#160;3       /* Get file <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> */</td></tr>
-<tr class="memitem:af2939853c650561d3495ed40f68f6249"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#af2939853c650561d3495ed40f68f6249">F_SETFL</a>&#160;&#160;&#160;4       /* Set file <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> */</td></tr>
+<tr class="memitem:abc11141031604fb22b8e3a201155cbb3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#abc11141031604fb22b8e3a201155cbb3">F_GETFD</a>&#160;&#160;&#160;1       /* Get fildes flags (close on exec) */</td></tr>
+<tr class="memitem:ad27227e8d87b844648f07d66da38bb3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#ad27227e8d87b844648f07d66da38bb3f">F_SETFD</a>&#160;&#160;&#160;2       /* Set fildes flags (close on exec) */</td></tr>
+<tr class="memitem:a025fad21a889c79f02ec53abe3526c32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a025fad21a889c79f02ec53abe3526c32">F_GETFL</a>&#160;&#160;&#160;3       /* Get file flags */</td></tr>
+<tr class="memitem:af2939853c650561d3495ed40f68f6249"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#af2939853c650561d3495ed40f68f6249">F_SETFL</a>&#160;&#160;&#160;4       /* Set file flags */</td></tr>
 <tr class="memitem:a2c3005e07f9aedb5d77856d13c3e40c4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a2c3005e07f9aedb5d77856d13c3e40c4">F_GETLK</a>&#160;&#160;&#160;7       /* Get record-locking information */</td></tr>
 <tr class="memitem:a68a7fc570f2fc271acc5358a6418504e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#a68a7fc570f2fc271acc5358a6418504e">F_SETLK</a>&#160;&#160;&#160;8       /* Set or Clear a record-lock (Non-Blocking) */</td></tr>
 <tr class="memitem:aabb866cd0cf7ed3544dfc335e0e360fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fcntl_8h.html#aabb866cd0cf7ed3544dfc335e0e360fd">F_SETLKW</a>&#160;&#160;&#160;9       /* Set or Clear a record-lock (Blocking) */</td></tr>
@@ -417,7 +434,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define F_GETFD&#160;&#160;&#160;1       /* Get fildes <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> (close on exec) */</td>
+          <td class="memname">#define F_GETFD&#160;&#160;&#160;1       /* Get fildes flags (close on exec) */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -433,7 +450,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define F_GETFL&#160;&#160;&#160;3       /* Get file <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> */</td>
+          <td class="memname">#define F_GETFL&#160;&#160;&#160;3       /* Get file flags */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -463,7 +480,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define F_SETFD&#160;&#160;&#160;2       /* Set fildes <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> (close on exec) */</td>
+          <td class="memname">#define F_SETFD&#160;&#160;&#160;2       /* Set fildes flags (close on exec) */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -479,7 +496,7 @@ Macros</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define F_SETFL&#160;&#160;&#160;4       /* Set file <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a> */</td>
+          <td class="memname">#define F_SETFL&#160;&#160;&#160;4       /* Set file flags */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -827,11 +844,15 @@ Macros</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_be07dd95e06613ebd1d3370fdf6b649e.html">crt</a></li><li class="navelem"><a class="el" href="fcntl_8h.html">fcntl.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

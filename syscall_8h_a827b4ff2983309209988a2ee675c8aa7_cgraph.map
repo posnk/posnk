@@ -1,0 +1,6 @@
+<map id="sys_ioctl" name="sys_ioctl">
+<area shape="rect" id="node3" href="$streams_8c.html#a7f7816d947b6e32d723c90a8de5e111d" title="_sys_ioctl" alt="" coords="129,59,209,88"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="269,5,379,35"/>
+<area shape="rect" id="node7" href="$chardev_8c.html#a5f2c7ff035c6da87fd03061b2d3c7871" title="device_char_ioctl" alt="" coords="263,59,385,88"/>
+<area shape="rect" id="node9" href="$blkdev_8c.html#ad56a95ed704d72f35da735dab4982d95" title="device_block_ioctl" alt="" coords="260,112,388,141"/>
+</map>

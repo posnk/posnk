@@ -1,0 +1,26 @@
+<map id="strcpy" name="strcpy">
+<area shape="rect" id="node3" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="428,290,495,319"/>
+<area shape="rect" id="node5" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="632,158,733,187"/>
+<area shape="rect" id="node7" href="$ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a" title="ext2_e2tovfs_inode" alt="" coords="147,105,280,134"/>
+<area shape="rect" id="node11" href="$init_8c.html#a2a80886e68b6c660514ae204bf594747" title="i386_idle_task" alt="" coords="631,449,735,478"/>
+<area shape="rect" id="node16" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="136,183,291,213"/>
+<area shape="rect" id="node24" href="$procvmm_8c.html#a397f5205b0e71a49ba2feb1f8f39fd9c" title="procvmm_mmap_copy_iterator" alt="" coords="113,497,313,526"/>
+<area shape="rect" id="node28" href="$scheduler_8h.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="629,502,736,531"/>
+<area shape="rect" id="node31" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="143,238,284,267"/>
+<area shape="rect" id="node34" href="$ramfs_8c.html#ac00e9b7316f12b39e02fb32526be062d" title="ramfs_link" alt="" coords="172,342,255,371"/>
+<area shape="rect" id="node40" href="$scheduler_8h.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="632,395,733,425"/>
+<area shape="rect" id="node43" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="171,702,256,731"/>
+<area shape="rect" id="node58" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="168,911,259,941"/>
+<area shape="rect" id="node9" href="$ext2_8c.html#aa113d34f348dc3a68339eed66c5c5362" title="ext2_load_inode" alt="" coords="404,79,519,109"/>
+<area shape="rect" id="node13" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="805,449,893,478"/>
+<area shape="rect" id="node19" href="$process_8h.html#a8de9fd8f1440a9aaf1845711a68fc470" title="procvmm_do_exec_mmaps" alt="" coords="371,183,552,213"/>
+<area shape="rect" id="node22" href="$sc__process_8c.html#ab2a6f3c56ff087ee363af4e020ea3461" title="sys_sbrk" alt="" coords="424,237,499,266"/>
+<area shape="rect" id="node26" href="$process_8h.html#a7843d24c9ea30efc0d88c415cf256388" title="procvmm_copy_memory_map" alt="" coords="363,497,560,526"/>
+<area shape="rect" id="node36" href="$ramfs_8h.html#a369234fe1ac316f9c231a05c4cb9d472" title="ramfs_create" alt="" coords="633,342,732,371"/>
+<area shape="rect" id="node46" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="417,702,505,731"/>
+<area shape="rect" id="node48" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="419,755,504,785"/>
+<area shape="rect" id="node50" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="609,861,756,890"/>
+<area shape="rect" id="node52" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="627,729,739,758"/>
+<area shape="rect" id="node54" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="423,809,500,838"/>
+<area shape="rect" id="node60" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="415,963,508,993"/>
+</map>

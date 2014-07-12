@@ -1,0 +1,5 @@
+<map id="halt" name="halt">
+<area shape="rect" id="node3" href="$exception_8c.html#ad522f158b022291f9fd9ab8748dbd10e" title="exception_panic" alt="" coords="97,5,212,35"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="111,59,199,88"/>
+<area shape="rect" id="node5" href="$exception_8h.html#a6144950ba049dd82bec04ca06f81c30e" title="exception_handle" alt="" coords="261,5,384,35"/>
+</map>

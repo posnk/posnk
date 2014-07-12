@@ -1,0 +1,12 @@
+<map id="tty_get" name="tty_get">
+<area shape="rect" id="node3" href="$tty_8c.html#af011bf9f6db234c81150f165d8d2a590" title="tty_close" alt="" coords="296,5,371,35"/>
+<area shape="rect" id="node7" href="$tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="121,112,225,141"/>
+<area shape="rect" id="node13" href="$tty_8c.html#a41c315ed12e65d1a4be58f291d7181de" title="tty_ioctl" alt="" coords="300,165,367,195"/>
+<area shape="rect" id="node16" href="$tty_8c.html#a81c9dc3480ed122aacfe00711228d42b" title="tty_open" alt="" coords="137,216,209,245"/>
+<area shape="rect" id="node19" href="$tty_8c.html#af04629abe6c2dbe5e5089f147877621d" title="tty_output_char" alt="" coords="117,269,229,299"/>
+<area shape="rect" id="node24" href="$tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1" title="tty_read" alt="" coords="139,323,208,352"/>
+<area shape="rect" id="node5" href="$tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="437,217,499,247"/>
+<area shape="rect" id="node9" href="$isr_8c.html#ac8bbf0eb02e5ebfa30bda547750e564b" title="Interrupt handler!" alt="" coords="292,59,375,88"/>
+<area shape="rect" id="node11" href="$vterm__write_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60" title="vterm_write_tty" alt="" coords="277,112,389,141"/>
+<area shape="rect" id="node21" href="$tty_8c.html#a006a76f172143fdb170deacb1ea2fef3" title="tty_write" alt="" coords="297,269,369,299"/>
+</map>

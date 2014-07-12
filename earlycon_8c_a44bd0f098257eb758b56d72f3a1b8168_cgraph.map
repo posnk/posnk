@@ -1,0 +1,7 @@
+<map id="debugcon_aprintf" name="debugcon_aprintf">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="179,5,296,35"/>
+<area shape="rect" id="node7" href="$earlycon_8c.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="177,59,297,88"/>
+<area shape="rect" id="node5" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="371,5,480,35"/>
+<area shape="rect" id="node9" href="$earlycon_8c.html#abe587789ba3aae2924fbda10dfade470" title="earlycon_ivprintf" alt="" coords="367,59,484,88"/>
+<area shape="rect" id="node11" href="$earlycon_8c.html#adb100bbeff780bb56ea91b8c1debf7b6" title="earlycon_sprintf_helper" alt="" coords="348,112,503,141"/>
+</map>

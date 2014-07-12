@@ -1,0 +1,29 @@
+<map id="copy_user_to_kern" name="copy_user_to_kern">
+<area shape="rect" id="node3" href="$syscall_8c.html#aff9334c02eb1357c9111f2e1a10aa001" title="debug_uputs" alt="" coords="201,5,297,35"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#a6445c4088d5d956b36a0c8c1e638af87" title="sys_chdir" alt="" coords="211,59,288,88"/>
+<area shape="rect" id="node12" href="$syscall_8h.html#aa029b9e6ea949765f08203e68e66a7a9" title="sys_chmod" alt="" coords="205,112,293,141"/>
+<area shape="rect" id="node15" href="$syscall_8h.html#aabe150ad1d04c50d94110778087b5cc9" title="sys_chown" alt="" coords="205,165,293,195"/>
+<area shape="rect" id="node18" href="$syscall_8h.html#acaf5f124566c234a14e7cafa5471bcd0" title="sys_execve" alt="" coords="204,219,295,248"/>
+<area shape="rect" id="node21" href="$syscall_8h.html#a035259bafdc828ac2fe323ee657d6de9" title="sys_link" alt="" coords="215,272,284,301"/>
+<area shape="rect" id="node24" href="$syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9" title="sys_lstat" alt="" coords="212,325,287,355"/>
+<area shape="rect" id="node27" href="$syscall_8h.html#a8397464d241949d57679d42b28e17c39" title="sys_mkdir" alt="" coords="208,379,291,408"/>
+<area shape="rect" id="node30" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="205,432,293,461"/>
+<area shape="rect" id="node33" href="$syscall_8h.html#a9d19cbcb64ed126b4ea42e53a5ceef52" title="sys_mount" alt="" coords="207,485,292,515"/>
+<area shape="rect" id="node36" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="211,539,288,568"/>
+<area shape="rect" id="node39" href="$syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f" title="sys_readlink" alt="" coords="203,592,296,621"/>
+<area shape="rect" id="node42" href="$syscall_8h.html#a7f48b00d2089d7021cc6a62e8c56b331" title="sys_rmdir" alt="" coords="211,645,288,675"/>
+<area shape="rect" id="node45" href="$syscall_8h.html#a924151cc2d5b1aa608201d2706e06305" title="sys_sigprocmask" alt="" coords="188,699,311,728"/>
+<area shape="rect" id="node48" href="$syscall_8h.html#a007358ce4b84fdf7a22af6652eab9c4d" title="sys_stat" alt="" coords="213,752,285,781"/>
+<area shape="rect" id="node51" href="$syscall_8h.html#a11b2d10465ed37687753db2d3dd5ff55" title="sys_stime" alt="" coords="208,805,291,835"/>
+<area shape="rect" id="node54" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="203,859,296,888"/>
+<area shape="rect" id="node57" href="$syscall_8h.html#ac7ac910b524c9ce4a0999cb4fb844e32" title="sys_truncate" alt="" coords="201,912,297,941"/>
+<area shape="rect" id="node60" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="208,965,291,995"/>
+<area shape="rect" id="node63" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="204,1072,295,1101"/>
+<area shape="rect" id="node67" href="$sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595" title="sys_write" alt="" coords="211,1019,288,1048"/>
+<area shape="rect" id="node70" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="191,1125,308,1155"/>
+<area shape="rect" id="node74" href="$tty_8c.html#a41c315ed12e65d1a4be58f291d7181de" title="tty_ioctl" alt="" coords="216,1179,283,1208"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="391,565,476,595"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="555,1072,643,1101"/>
+<area shape="rect" id="node72" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="361,1125,505,1155"/>
+<area shape="rect" id="node76" href="$tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="403,1179,464,1208"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="stream_get_ptr_o" name="stream_get_ptr_o">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="203,5,328,35"/>
+<area shape="rect" id="node5" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="177,59,353,88"/>
+</map>

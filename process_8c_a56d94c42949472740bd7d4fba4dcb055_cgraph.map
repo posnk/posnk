@@ -1,0 +1,10 @@
+<map id="process_reap" name="process_reap">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="552,25,653,54"/>
+<area shape="rect" id="node9" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="561,78,644,108"/>
+<area shape="rect" id="node11" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="168,41,283,70"/>
+<area shape="rect" id="node14" href="$streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="155,118,296,148"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="703,52,852,81"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="903,92,1028,121"/>
+<area shape="rect" id="node17" href="$streams_8c.html#a42fd7b365007ab650d42dca73d759b4f" title="stream_closeall_iterator" alt="" coords="344,182,504,212"/>
+<area shape="rect" id="node19" href="$streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="369,78,479,108"/>
+</map>

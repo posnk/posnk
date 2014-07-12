@@ -1,0 +1,17 @@
+<map id="vfs_find_parent" name="vfs_find_parent">
+<area shape="rect" id="node3" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="321,5,388,35"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="316,320,393,349"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="169,213,255,243"/>
+<area shape="rect" id="node28" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="167,372,257,401"/>
+<area shape="rect" id="node33" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="172,451,252,480"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a035259bafdc828ac2fe323ee657d6de9" title="sys_link" alt="" coords="491,5,560,35"/>
+<area shape="rect" id="node7" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="469,59,581,88"/>
+<area shape="rect" id="node9" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="452,189,599,219"/>
+<area shape="rect" id="node13" href="$syscall_8h.html#a8397464d241949d57679d42b28e17c39" title="sys_mkdir" alt="" coords="484,320,567,349"/>
+<area shape="rect" id="node19" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="312,160,397,189"/>
+<area shape="rect" id="node21" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="311,213,399,243"/>
+<area shape="rect" id="node23" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="311,267,399,296"/>
+<area shape="rect" id="node30" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="308,424,401,453"/>
+<area shape="rect" id="node35" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="313,477,396,507"/>
+<area shape="rect" id="node38" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="317,531,392,560"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="vfs_get_min_permissions" name="vfs_get_min_permissions">
+<area shape="rect" id="node3" href="$vfs_8h.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="224,190,376,219"/>
+<area shape="rect" id="node5" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="571,31,637,61"/>
+<area shape="rect" id="node7" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="436,30,511,59"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="437,83,509,113"/>
+<area shape="rect" id="node12" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="425,137,521,166"/>
+<area shape="rect" id="node14" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="427,190,520,219"/>
+<area shape="rect" id="node16" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="431,243,516,273"/>
+<area shape="rect" id="node18" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="428,297,519,326"/>
+<area shape="rect" id="node20" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="433,350,513,379"/>
+<area shape="rect" id="node22" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="440,403,507,433"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="sys_ftruncate" name="sys_ftruncate">
+<area shape="rect" id="node3" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="156,84,263,113"/>
+<area shape="rect" id="node5" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="312,5,421,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="471,71,593,100"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="479,136,585,165"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="320,109,413,139"/>
+</map>

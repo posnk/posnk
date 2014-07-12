@@ -1,0 +1,4 @@
+<map id="i386_fpu_save" name="i386_fpu_save">
+<area shape="rect" id="node3" href="$x86_8h.html#a4488e22d1d21170759515f2acd80a936" title="i386_fpu_handle_ill" alt="" coords="161,5,292,35"/>
+<area shape="rect" id="node5" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="343,5,487,35"/>
+</map>

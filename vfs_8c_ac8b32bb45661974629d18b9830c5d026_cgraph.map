@@ -1,0 +1,16 @@
+<map id="vfs_link" name="vfs_link">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="135,5,257,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="143,59,249,88"/>
+<area shape="rect" id="node9" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="379,111,432,140"/>
+<area shape="rect" id="node11" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="167,163,225,192"/>
+<area shape="rect" id="node14" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="143,216,249,245"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="141,269,251,299"/>
+<area shape="rect" id="node28" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="120,348,272,377"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a3430f50453f987084b69ea3a8f71878e" title="Create a directory entry on backing storage." alt="" coords="152,401,240,431"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="340,5,471,35"/>
+<area shape="rect" id="node16" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="539,241,691,271"/>
+<area shape="rect" id="node19" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="357,215,453,244"/>
+<area shape="rect" id="node25" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="336,319,475,348"/>
+<area shape="rect" id="node30" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="348,372,463,401"/>
+<area shape="rect" id="node32" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="320,425,491,455"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="kdbgmm_alloc_page" name="kdbgmm_alloc_page">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#a25976b65c9d92a85bc502d5169712943" title="Allocates a page alligned block of RAM." alt="" coords="195,167,387,197"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="868,13,993,42"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#af5439cb670888929c5239b4dedf6167a" title="Iterator function that tests for page aligned, larger than page sized blocks." alt="" coords="448,219,605,265"/>
+<area shape="rect" id="node9" href="$kdbgmm_8c.html#a001ac78ef080799a44b6c712157f0e7f" title="Iterator function that tests for page aligned, page sized blocks." alt="" coords="435,288,619,335"/>
+<area shape="rect" id="node11" href="$kdbgmm_8c.html#a11b923e607b77bbe1246c6861d2c2584" title="Iterator function that tests for blocks large enough to contain a whole page." alt="" coords="441,357,612,404"/>
+<area shape="rect" id="node13" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="460,65,593,94"/>
+<area shape="rect" id="node15" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="668,115,817,145"/>
+<area shape="rect" id="node19" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="889,115,972,145"/>
+</map>

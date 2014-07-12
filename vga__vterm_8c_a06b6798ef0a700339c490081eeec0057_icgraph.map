@@ -1,0 +1,6 @@
+<map id="vga_vterm_get_text_video_memory" name="vga_vterm_get_text_video_memory">
+<area shape="rect" id="node3" href="$init_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b" title="vterm_vga_init" alt="" coords="395,5,501,35"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="192,57,341,87"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="555,5,643,35"/>
+<area shape="rect" id="node9" href="$kbd_8c.html#ab325d11088a3b8f776e39c2c5f49aaf6" title="con_handle_key" alt="" coords="391,59,505,88"/>
+</map>

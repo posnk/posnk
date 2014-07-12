@@ -1,0 +1,51 @@
+<map id="semaphore_up" name="semaphore_up">
+<area shape="rect" id="node3" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="369,57,479,87"/>
+<area shape="rect" id="node9" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="371,175,477,204"/>
+<area shape="rect" id="node13" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="371,291,477,320"/>
+<area shape="rect" id="node17" href="$streams_8h.html#a964f6b4cf457ce4fe771d7a4367f0585" title="_sys_lseek" alt="" coords="187,371,275,400"/>
+<area shape="rect" id="node21" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="381,445,467,475"/>
+<area shape="rect" id="node27" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="187,632,275,661"/>
+<area shape="rect" id="node33" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="576,731,659,760"/>
+<area shape="rect" id="node37" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="575,1045,660,1075"/>
+<area shape="rect" id="node41" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="571,1299,664,1328"/>
+<area shape="rect" id="node45" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="369,1376,479,1405"/>
+<area shape="rect" id="node48" href="$ata_8h.html#ac3498795f5350a738d0515a8bee6aa88" title="ata_read" alt="" coords="195,1149,267,1179"/>
+<area shape="rect" id="node55" href="$ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd" title="ata_write" alt="" coords="193,1355,268,1384"/>
+<area shape="rect" id="node59" href="$device_8h.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="165,837,296,867"/>
+<area shape="rect" id="node66" href="$ext2_8h.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="379,941,469,971"/>
+<area shape="rect" id="node68" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="388,784,460,813"/>
+<area shape="rect" id="node71" href="$device_8h.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="351,1272,497,1301"/>
+<area shape="rect" id="node74" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="164,1045,297,1075"/>
+<area shape="rect" id="node76" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="387,1045,461,1075"/>
+<area shape="rect" id="node79" href="$ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a" title="ext2_e2tovfs_inode" alt="" coords="164,1408,297,1437"/>
+<area shape="rect" id="node82" href="$pipe_8h.html#a4f51f162d223e63b17814bda844ad733" title="pipe_close_read" alt="" coords="173,109,288,139"/>
+<area shape="rect" id="node85" href="$pipe_8h.html#a3835639d5e6d8ba8713eaa5f430b03a8" title="pipe_close_write" alt="" coords="172,5,289,35"/>
+<area shape="rect" id="node88" href="$pipe_8h.html#ac4c8b40fe40f71388c8f77d165ca7258" title="pipe_read" alt="" coords="385,731,463,760"/>
+<area shape="rect" id="node91" href="$pipe_8h.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="191,941,271,971"/>
+<area shape="rect" id="node96" href="$process_8h.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="160,1461,301,1491"/>
+<area shape="rect" id="node98" href="$ramfs_8c.html#a3058314579ee457b7bf420a5f41e439c" title="ramfs_load_inode" alt="" coords="169,1515,292,1544"/>
+<area shape="rect" id="node100" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="183,317,279,347"/>
+<area shape="rect" id="node103" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="197,1568,264,1597"/>
+<area shape="rect" id="node105" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="385,520,463,549"/>
+<area shape="rect" id="node107" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="188,475,273,504"/>
+<area shape="rect" id="node112" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="185,1621,276,1651"/>
+<area shape="rect" id="node114" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="184,213,277,243"/>
+<area shape="rect" id="node117" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="191,579,271,608"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a53ce56639070e380089a734e16f15830" title="_sys_close" alt="" coords="573,44,661,73"/>
+<area shape="rect" id="node7" href="$streams_8h.html#ab0711d48a143596389ab19b99fbcd3b3" title="stream_do_close_all" alt="" coords="547,97,688,127"/>
+<area shape="rect" id="node11" href="$syscall_8h.html#ab77d628a44e1167356653e293c7bc357" title="sys_ftruncate" alt="" coords="567,175,668,204"/>
+<area shape="rect" id="node15" href="$syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17" title="sys_getdents" alt="" coords="568,291,667,320"/>
+<area shape="rect" id="node19" href="$sc__streams_8c.html#a0fd007ab5932f959ea4ac964753574f5" title="sys_lseek" alt="" coords="384,371,464,400"/>
+<area shape="rect" id="node23" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="567,419,668,448"/>
+<area shape="rect" id="node25" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="579,472,656,501"/>
+<area shape="rect" id="node29" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="387,627,461,656"/>
+<area shape="rect" id="node31" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="384,573,464,603"/>
+<area shape="rect" id="node35" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="751,731,825,760"/>
+<area shape="rect" id="node39" href="$sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595" title="sys_write" alt="" coords="749,1045,827,1075"/>
+<area shape="rect" id="node43" href="$ata__pci_8c.html#a15723fbe1c0af7e9378af6b26cc4fb90" title="driver/block/pata/ata_pci.c" alt="" coords="737,1299,839,1328"/>
+<area shape="rect" id="node50" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="376,1219,472,1248"/>
+<area shape="rect" id="node52" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="363,1149,485,1195"/>
+<area shape="rect" id="node57" href="$ata_8c.html#a73d0108d85edca1b22f20f2b5ac2859f" title="ata_blk_write" alt="" coords="375,1429,473,1459"/>
+<area shape="rect" id="node61" href="$ext2_8c.html#a3599ddb5bac9a8256c5d5e1138c3890b" title="ext2_load_bgd" alt="" coords="371,837,477,867"/>
+<area shape="rect" id="node63" href="$ext2_8c.html#ab99f422659ed02df54fabecc6469477c" title="ext2_load_e2inode" alt="" coords="552,864,683,893"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="blkcache_find" name="blkcache_find">
+<area shape="rect" id="node3" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="175,34,273,63"/>
+<area shape="rect" id="node7" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="523,35,656,64"/>
+<area shape="rect" id="node9" href="$device_8h.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="524,112,655,142"/>
+<area shape="rect" id="node12" href="$blkdev_8c.html#abf2017d0baf1627e496e1d2e14d1d8d0" title="device_block_flush" alt="" coords="157,87,291,116"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="340,60,473,90"/>
+</map>

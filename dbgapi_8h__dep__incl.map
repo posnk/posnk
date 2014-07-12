@@ -1,0 +1,5 @@
+<map id="include/kdbg/dbgapi.h" name="include/kdbg/dbgapi.h">
+<area shape="rect" id="node3" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="5,83,128,112"/>
+<area shape="rect" id="node5" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="152,83,264,112"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html" title="kdbg/kdbg.c" alt="" coords="288,83,381,112"/>
+</map>

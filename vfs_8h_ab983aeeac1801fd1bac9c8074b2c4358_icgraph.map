@@ -1,0 +1,9 @@
+<map id="vfs_dir_cache_release" name="vfs_dir_cache_release">
+<area shape="rect" id="node4" href="$vfs_8h.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="227,61,323,91"/>
+<area shape="rect" id="node10" href="$vfs_8h.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="399,112,505,141"/>
+<area shape="rect" id="node12" href="$vfs_8h.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="392,165,512,195"/>
+<area shape="rect" id="node14" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="205,216,344,245"/>
+<area shape="rect" id="node16" href="$vfs_8h.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="397,243,507,272"/>
+<area shape="rect" id="node6" href="$sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c" title="_sys_chdir" alt="" coords="409,59,495,88"/>
+<area shape="rect" id="node8" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="409,5,495,35"/>
+</map>

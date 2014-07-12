@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('sc__signals_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">sc_signals.c</div>  </div>
@@ -104,7 +121,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="code" href="sc__signals_8c.html#a5fcd73313a63dac2cc7eb3b654215250">   25</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define SIG_UNBLOCK 2   </span><span class="comment">/* set of signals to, well, unblock */</span><span class="preprocessor"></span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="syscall_8h.html#afc994136336e82cbc1c62ad1a6b62976">   28</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#afc994136336e82cbc1c62ad1a6b62976">sys_signal</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4])</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="syscall_8h.html#a06a3be94452d165d0faf407a8aedf058">   28</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a06a3be94452d165d0faf407a8aedf058">sys_signal</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">void</span> *oldval;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordtype">int</span> signum = (int) param[0];</div>
@@ -117,19 +134,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">return</span> (uint32_t) oldval;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="syscall_8h.html#aebfa7c72310252fede486217abf0318a">   41</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#aebfa7c72310252fede486217abf0318a">sys_ssigex</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4])</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="syscall_8h.html#a4daf5640aad07da725b9775482851ab1">   41</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a4daf5640aad07da725b9775482851ab1">sys_ssigex</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a57d3203870ecfc15a6a51051c7b2f074">signal_handler_exit_func</a> = (<span class="keywordtype">void</span> *) param[0];</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="syscall_8h.html#a779c6204a1f19dd4088141e1e292d583">   47</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a779c6204a1f19dd4088141e1e292d583">sys_exitsig</a>(<a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4])</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="syscall_8h.html#a11cf3c1f45eeeafe7c04c0cf927450bf">   47</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a11cf3c1f45eeeafe7c04c0cf927450bf">sys_exitsig</a>(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;{</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="task__switch_8c.html#a092451845666cedca8f771f4f6eca414">scheduler_exit_signal_handler</a>();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="syscall_8h.html#a924151cc2d5b1aa608201d2706e06305">   53</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a924151cc2d5b1aa608201d2706e06305">sys_sigprocmask</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4])</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="syscall_8h.html#a8ca0088743437436872eb0393ff55dac">   53</a></span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a8ca0088743437436872eb0393ff55dac">sys_sigprocmask</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;{</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        uint32_t oldval,t;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        oldval = <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a4e9af8c191666f2d599bfc4b1cf5503b">signal_mask_bitmap</a>;</div>
@@ -152,11 +169,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="sc__signals_8c.html">sc_signals.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

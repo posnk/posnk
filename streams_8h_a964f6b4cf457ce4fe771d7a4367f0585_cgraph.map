@@ -1,0 +1,8 @@
+<map id="_sys_lseek" name="_sys_lseek">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="143,5,265,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="151,59,257,88"/>
+<area shape="rect" id="node9" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="149,112,259,141"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="339,5,469,35"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="341,85,467,115"/>
+<area shape="rect" id="node13" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="316,139,492,168"/>
+</map>

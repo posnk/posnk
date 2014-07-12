@@ -1,0 +1,51 @@
+<map id="i386_kmain" name="i386_kmain">
+<area shape="rect" id="node3" href="$ata__pci_8c.html#a21fe5f3d36676f2354b03e07f878e825" title="ata_pci_register" alt="" coords="163,71,277,100"/>
+<area shape="rect" id="node7" href="$blkdev_8c.html#a63dd03746663f48d6e13aa0ade5c38ab" title="device_block_init" alt="" coords="581,653,704,683"/>
+<area shape="rect" id="node13" href="$chardev_8c.html#af361295250340119e08fac9621848e1b" title="device_char_init" alt="" coords="585,813,700,843"/>
+<area shape="rect" id="node17" href="$drivermgr_8c.html#acdc6cfd03979ae0e10aefb2deb074a6a" title="drivermgr_init" alt="" coords="171,1587,269,1616"/>
+<area shape="rect" id="node21" href="$x86_8c.html#ade0430439247877006d7df950f94918a" title="kernel/system.h" alt="" coords="199,548,241,577"/>
+<area shape="rect" id="node23" href="$init_8c.html#a2a80886e68b6c660514ae204bf594747" title="i386_idle_task" alt="" coords="168,601,272,631"/>
+<area shape="rect" id="node29" href="$idt_8c.html#adf6646601e167235818fd01cdc1c14d6" title="i386_idt_initialize" alt="" coords="160,181,280,211"/>
+<area shape="rect" id="node40" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="141,389,299,419"/>
+<area shape="rect" id="node51" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="169,755,271,784"/>
+<area shape="rect" id="node57" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="600,760,685,789"/>
+<area shape="rect" id="node67" href="$arch_2i386_2include_2pic_8h.html#acc109e1a0dc80531844acb9d586e6cbc" title="Initialize pic." alt="" coords="159,937,281,967"/>
+<area shape="rect" id="node69" href="$pit_8c.html#a9e493055fc8c0801e6cd5f13f1d077ca" title="i386_pit_setup" alt="" coords="167,1092,273,1121"/>
+<area shape="rect" id="node75" href="$protection_8c.html#a7eb32a88b8c2e0d0ffaa2d5c2c804554" title="i386_protection_init" alt="" coords="364,496,497,525"/>
+<area shape="rect" id="node83" href="$interrupt_8c.html#a1c62fca549a4981d6684d4a5c72874b9" title="interrupt_init" alt="" coords="173,1533,267,1563"/>
+<area shape="rect" id="node86" href="$pci_8c.html#ae7687154ac864ae0f4043e228f4a0518" title="pci_enumerate_all" alt="" coords="157,1275,283,1304"/>
+<area shape="rect" id="node96" href="$physmm_8c.html#a6a57db3042f2d32308fcd5f115d65f71" title="physmm_count_free" alt="" coords="151,1221,289,1251"/>
+<area shape="rect" id="node98" href="$ramfs_8c.html#a369234fe1ac316f9c231a05c4cb9d472" title="ramfs_create" alt="" coords="381,1013,480,1043"/>
+<area shape="rect" id="node105" href="$scheduler_8c.html#a9dd606cde1c0d884991f84a32833f3c4" title="scheduler_fork" alt="" coords="589,1075,696,1104"/>
+<area shape="rect" id="node111" href="$scheduler_8c.html#a1b51d443323ad636166157b164bdd9d3" title="scheduler_init" alt="" coords="592,971,693,1000"/>
+<area shape="rect" id="node117" href="$sc__process_8c.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="385,1480,476,1509"/>
+<area shape="rect" id="node119" href="$syscall_8c.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="177,1480,263,1509"/>
+<area shape="rect" id="node122" href="$tty_8c.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="612,1348,673,1377"/>
+<area shape="rect" id="node125" href="$vfs_8c.html#ac1913485037320335c4030439d537df8" title="Initialize the VFS layer." alt="" coords="596,1424,689,1453"/>
+<area shape="rect" id="node130" href="$vga__vterm_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b" title="vterm_vga_init" alt="" coords="167,1640,273,1669"/>
+<area shape="rect" id="node5" href="$drivermgr_8c.html#a34e2d9040b765559a41d58ece466ec87" title="drivermgr_register\l_interface_driver" alt="" coords="368,5,493,51"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="771,944,877,973"/>
+<area shape="rect" id="node11" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="789,707,859,736"/>
+<area shape="rect" id="node19" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="781,1424,867,1453"/>
+<area shape="rect" id="node25" href="$scheduler_8c.html#acd253084a234cdf5649a9dd0fbc3848e" title="scheduler_set_as_idle" alt="" coords="356,549,505,579"/>
+<area shape="rect" id="node27" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="795,760,853,789"/>
+<area shape="rect" id="node31" href="$idt_8c.html#a5018d8341f8c99f0509448e9c229311e" title="i386_idt_set_descriptor" alt="" coords="565,260,720,289"/>
+<area shape="rect" id="node34" href="$isr__entry_8h.html#a7c645725440864815c6ee9ecc53c2c86" title="i386_isr_entry_80h" alt="" coords="365,181,496,211"/>
+<area shape="rect" id="node36" href="$idt_8c.html#aae787cdb53ce1d99a9bc850a326dc6bf" title="i386_isr_entry_undefined" alt="" coords="348,75,513,104"/>
+<area shape="rect" id="node38" href="$idt_8c.html#abf973c2ecc36408c9a5f6b593dad7d0a" title="i386_load_idt" alt="" coords="381,128,480,157"/>
+<area shape="rect" id="node42" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="597,340,688,369"/>
+<area shape="rect" id="node45" href="$arch_2i386_2paging_8c.html#a338d2f1e4c26f2a29bcb4f675d9e31a7" title="paging_unmap" alt="" coords="377,336,484,365"/>
+<area shape="rect" id="node47" href="$physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again." alt="" coords="360,389,501,419"/>
+<area shape="rect" id="node49" href="$tar_8c.html#ada2334eab3a4cd42b7ea2a267b2f0848" title="tar_extract_mem" alt="" coords="371,443,491,472"/>
+<area shape="rect" id="node53" href="$streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139" title="_sys_dup" alt="" coords="392,755,469,784"/>
+<area shape="rect" id="node55" href="$streams_8c.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="388,859,473,888"/>
+<area shape="rect" id="node63" href="$process_8c.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="592,707,693,736"/>
+<area shape="rect" id="node71" href="$pit_8c.html#aa54913d53efba9a3300323322df379d1" title="i386_pit_send_command" alt="" coords="348,1120,513,1149"/>
+<area shape="rect" id="node73" href="$pit_8c.html#ab1de2c9adf2175b1a4d3efa2aef5ab60" title="i386_pit_send_data" alt="" coords="364,1067,497,1096"/>
+<area shape="rect" id="node77" href="$protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780" title="i386_set_tss_descriptor" alt="" coords="563,499,723,528"/>
+<area shape="rect" id="node81" href="$protection_8c.html#a06cdf268a360cc55b1e3adcb40c1871e" title="i386_tss_flush" alt="" coords="589,445,696,475"/>
+<area shape="rect" id="node88" href="$pci__intel__host_8c.html#a558a46983f9ad5bb6aaaa0e7efdfd268" title="pci_config_read_byte" alt="" coords="571,1284,715,1313"/>
+<area shape="rect" id="node90" href="$pci__intel__host_8c.html#a2640b810982f167ccc591b61b1055e5a" title="pci_config_read_short" alt="" coords="568,1225,717,1255"/>
+<area shape="rect" id="node92" href="$pci_8c.html#a57de29a327b780ddfab576e1f3cd146e" title="pci_enumerate_bus" alt="" coords="364,1275,497,1304"/>
+<area shape="rect" id="node101" href="$ramfs_8c.html#a3058314579ee457b7bf420a5f41e439c" title="ramfs_load_inode" alt="" coords="581,917,704,947"/>
+</map>

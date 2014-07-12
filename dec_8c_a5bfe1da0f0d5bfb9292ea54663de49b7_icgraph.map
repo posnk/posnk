@@ -1,0 +1,5 @@
+<map id="decode_keystroke" name="decode_keystroke">
+<area shape="rect" id="node3" href="$kbd_8h.html#a464a3fc19561c9d616e77ed37bc9800c" title="kb_typed" alt="" coords="181,5,256,35"/>
+<area shape="rect" id="node5" href="$i8042_8h.html#adc44b608c221601671a8066781059eac" title="kbd_isr" alt="" coords="443,5,507,35"/>
+<area shape="rect" id="node7" href="$kbd_8h.html#aaeb45a2ee0f097eb61563df1a2adf6bb" title="kb_pressed" alt="" coords="305,31,393,60"/>
+</map>

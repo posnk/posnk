@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('syscall_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">syscall.h</div>  </div>
@@ -102,35 +119,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="syscall_8c.html#a581ed37968ead91b6d3a0b3b7a71da9d">syscall_init</a>();</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="syscall_8c.html#a98d180b3b9e42268ac21559a97c2fd62">syscall_register</a>(<span class="keywordtype">int</span> call_id, <a class="code" href="syscall_8h.html#a58351aa41e6601eab9c22352bd650784" title="kernel/syscall.h">syscall_func_t</a> func);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="syscall_8c.html#a4deb14029218fa13e598a9b4a80c6470">syscall_dispatch</a>(<span class="keywordtype">void</span> *user_param_block, <span class="keywordtype">void</span> *instr_ptr);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">int</span> <a class="code" href="syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32">copy_user_to_kern</a>(<span class="keywordtype">void</span> *src, <span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> <a class="code" href="syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2">copy_kern_to_user</a>(<span class="keywordtype">void</span> *src, <span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">int</span> <a class="code" href="syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32">copy_user_to_kern</a>(<span class="keywordtype">void</span> *src, <span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> <a class="code" href="syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2">copy_kern_to_user</a>(<span class="keywordtype">void</span> *src, <span class="keywordtype">void</span> *dest, <span class="keywordtype">size_t</span> size);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ab91db027b5040c913707c538cda17e16" title="kernel/sc_process.c">sys_fork</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a269390f6a63cff7836f64b16c9030d60" title="kernel/sc_process.c">sys_fork</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686">sys_kill</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a9059e3c677a78bbfa5a12368ea6a604a">sys_kill</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a1146d8c8bf8d571e62771db1f2e48083">sys_getpid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ab5a33a78456e3311729e39339698a1cb">sys_getpid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a9c3c7cba42f353246dd0e593242ab7e7">sys_getppid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a4ef8fd154b9533c4c16c9a1b660e1c83">sys_getppid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a9486623db7ecfa9da1720b259268373b">sys_getpgrp</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#aee85f00ca9388d0d40c6eab40fc20056">sys_getpgrp</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ae055081c2dcfcbf2fcc467b50e105480">sys_setsid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#add59498942166cf78f6fb9633219a94d">sys_setsid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339">sys_exit</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a52ab3405f2e1fe86bbab6930af485afc">sys_exit</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a54aa47140a66b7972076e5b07cdb1617">sys_yield</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#aad8d9ec8b2a4a999219de02061cbe615">sys_yield</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ab2a6f3c56ff087ee363af4e020ea3461">sys_sbrk</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a258509c7bd40585df15de8f7182eb19a">sys_sbrk</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a273357c000959642bdeb0f0bc175b915" title="kernel/sc_process.c">sys_getuid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#aba1bce97fb5694ba0fd06e3d73a4bb6b" title="kernel/sc_process.c">sys_getuid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#add3e4300589397ecefcbc5d89453927d">sys_geteuid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a72f742e2740078590240e3a580a170ee">sys_geteuid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a22bb98a6fbb0d51b8a9b9ef702939f35">sys_getgid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a3a39de00e875b884259c381c94bbec25">sys_getgid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a77bd8bf78edc2ece6918067a744e74e3">sys_getegid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a2e91a26c3cff0aaca46441d3094977b8">sys_getegid</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a035259bafdc828ac2fe323ee657d6de9">sys_link</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
@@ -148,41 +165,41 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a007358ce4b84fdf7a22af6652eab9c4d">sys_stat</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ad91c6dbfa55c542e8dc742135aed6fbe">sys_fchdir</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ace72f194cc2a667d92302d547fb03f14">sys_fchdir</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#afcfd63de3881411624bea5aab0fcc8b3">sys_fchmod</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a4e819e7740560993cdb633c9f46632b0">sys_fchmod</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a1c67be71e54c3204a71c9405b658880c">sys_fchown</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#af75de187ded22bdf4fa76d8a070b7765">sys_fchown</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a5125979bb691e68b06787680fc1e6f59">sys_fstat</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a36eb3bc08dafff673a673ca11271b1fc">sys_fstat</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a93d9664737ea25e8c92ca304f7986d58">sys_dup2</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a8f5e5a18dafa11afc840db4b2e5f2d0a">sys_dup2</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a20709d4fab4049cbbc781813756f0c6d">sys_dup</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a7b33e6f3eafe78388b86de693ffdc1ff">sys_dup</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#aa9f0492a1c6d0a69566cf8dc397f249a">sys_open</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a719db2838733805862e62a7ef0e8e7f6">sys_close</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a219e3fdd7ba102f854f60b5a389ad2e1">sys_close</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623">sys_pipe2</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a2e7af86853d0f163e699bc4000d07c5c">sys_pipe2</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf">sys_pipe</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a977b1fa1b3554523a6433c960cef3133">sys_pipe</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb">sys_read</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#acb06c51d877f0e60e20c26e419c8ef20">sys_read</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595">sys_write</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a99071903a04ffd48f35d7434cb75363e">sys_write</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a0fd007ab5932f959ea4ac964753574f5">sys_lseek</a>(uint32_t param[4], uint32_t param_size[4]);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ab37dfc22fd6884d179608096172e0cdc">sys_lseek</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a7f48b00d2089d7021cc6a62e8c56b331">sys_rmdir</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#acaf5f124566c234a14e7cafa5471bcd0">sys_execve</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ad636cebe991c7b6ff56d4788b069983b">sys_waitpid</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a594fa135d60d1edbf409a0c50b530fbe">sys_waitpid</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ad248f89f4e7a7845326a2db903ec2630">sys_fcntl</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a0dffbb5f3c25edf621eca3446b597dbd">sys_fcntl</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a4e3e12ebe07f291dbe3dc38927fb29ce">sys_umask</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a407d083c211f6d97115c2fb967661734">sys_umask</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#aaac6e22260c6c5958e3bd35e4d6d149f">sys_readlink</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
@@ -190,51 +207,55 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a697f1d377f7d7ca3cb46949fc7ee3388">sys_symlink</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a43cf9c2310c228a9b2e411bc1a62ff17">sys_getdents</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a9c3c1bfedf2b28c4fd0152a4b3768007">sys_getdents</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a827b4ff2983309209988a2ee675c8aa7">sys_ioctl</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#aa63dfef0a7934ab84ac2c23dc9e84c91">sys_ioctl</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a483b72e7e4152c714adee54dfc2d818b">sys_getsid</a>(<a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a25d703918f03646823948b7d9d0f177c">sys_getsid</a>(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a16fbb2e48d896e313f25d80b6942a5f1">sys_setpgrp</a>(<a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#ad75761f4f39df2f6a0f2455e3396912e">sys_setpgrp</a>(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a62605ebe8dfb8a0cee443478b053c6ff">sys_setpgid</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;uint32_t <a class="code" href="sc__process_8c.html#a01d9874db7dec827f8e2e7e18a1cce55">sys_setpgid</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#aac567c56881c0ba57c22bc1517836d45" title="kernel/sc_time.c">sys_time</a>(<a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#ade312e577a9e6910eb0bf1e81ebca6b7" title="kernel/sc_time.c">sys_time</a>(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a1764141f8114e589479dbecd461e8b55">sys_usleep</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a6a4c4affb468b830c89ad5c19f1007be">sys_usleep</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a8ad3ba3efa9c74b1723e8281fff12948">sys_sleep</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a0304fafcd62e49f121a6c5aca056149a">sys_sleep</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a11b2d10465ed37687753db2d3dd5ff55">sys_stime</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;uint32_t <a class="code" href="sc__time_8c.html#a7ebdf84ff584049f61510f1352710a2e">sys_stime</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#ad57ce730b081749557dd25428aa882f7">sys_setuid</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a5f62df5832790c369dcd2f923a9edb10">sys_setuid</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#ab4f76581f502ae36936a20e48ade6e1c">sys_setgid</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;uint32_t <a class="code" href="sc__perm_8c.html#a3357b013032ddc8630a41018cb0dc81e">sys_setgid</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#afc994136336e82cbc1c62ad1a6b62976">sys_signal</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a06a3be94452d165d0faf407a8aedf058">sys_signal</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a779c6204a1f19dd4088141e1e292d583">sys_exitsig</a>(<a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a11cf3c1f45eeeafe7c04c0cf927450bf">sys_exitsig</a>(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a924151cc2d5b1aa608201d2706e06305">sys_sigprocmask</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a8ca0088743437436872eb0393ff55dac">sys_sigprocmask</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#aebfa7c72310252fede486217abf0318a">sys_ssigex</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;uint32_t <a class="code" href="sc__signals_8c.html#a4daf5640aad07da725b9775482851ab1">sys_ssigex</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;uint32_t <a class="code" href="syscall_8c.html#a1d1f2159e0a86699f85a5afded688e5e">sys_dbgdrop</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;uint32_t <a class="code" href="syscall_8c.html#a8b2f592d6b143f30b9056937f2eed517">sys_dbgdrop</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#a9d19cbcb64ed126b4ea42e53a5ceef52">sys_mount</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#ab77d628a44e1167356653e293c7bc357">sys_ftruncate</a>(uint32_t param[4], <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) uint32_t param_size[4]);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;uint32_t <a class="code" href="sc__streams_8c.html#a45c06500d174dc083bd4b7405d06a83f">sys_ftruncate</a>(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;uint32_t <a class="code" href="sc__vfs_8c.html#ac7ac910b524c9ce4a0999cb4fb844e32">sys_truncate</a>(uint32_t param[4], uint32_t param_size[4]);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="syscall_8h.html">syscall.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

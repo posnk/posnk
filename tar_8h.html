@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('tar_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,18 +101,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">tar.h File Reference</div>  </div>
 </div><!--header-->
@@ -112,12 +128,12 @@ Macros</h2></td></tr>
 <tr class="memitem:ab281a9968505af6a7fd8e1ab5d644315"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ab281a9968505af6a7fd8e1ab5d644315">REGTYPE</a>&#160;&#160;&#160;'0'            /* regular file */</td></tr>
 <tr class="memitem:ae3da8143ed9aec1cc70676b0cfed43b9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ae3da8143ed9aec1cc70676b0cfed43b9">AREGTYPE</a>&#160;&#160;&#160;'\0'           /* regular file */</td></tr>
 <tr class="memitem:abed033f8c958d678ca08d012280c035b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#abed033f8c958d678ca08d012280c035b">LNKTYPE</a>&#160;&#160;&#160;'1'            /* link */</td></tr>
-<tr class="memitem:acc0fdf064ea6654c0b3d7b3387532b3a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#acc0fdf064ea6654c0b3d7b3387532b3a">SYMTYPE</a>&#160;&#160;&#160;'2'            /* <a class="el" href="ext2_8h.html#a794ea2271db47ed732933125dedaf988">reserved</a> */</td></tr>
+<tr class="memitem:acc0fdf064ea6654c0b3d7b3387532b3a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#acc0fdf064ea6654c0b3d7b3387532b3a">SYMTYPE</a>&#160;&#160;&#160;'2'            /* reserved */</td></tr>
 <tr class="memitem:a28dd96209b4a46bc54a1dcc6c2d7e509"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a28dd96209b4a46bc54a1dcc6c2d7e509">CHRTYPE</a>&#160;&#160;&#160;'3'            /* character special */</td></tr>
-<tr class="memitem:a0e5080c4d2f99d8b450c9641e7a2d782"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a0e5080c4d2f99d8b450c9641e7a2d782">BLKTYPE</a>&#160;&#160;&#160;'4'            /* <a class="el" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> special */</td></tr>
+<tr class="memitem:a0e5080c4d2f99d8b450c9641e7a2d782"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a0e5080c4d2f99d8b450c9641e7a2d782">BLKTYPE</a>&#160;&#160;&#160;'4'            /* block special */</td></tr>
 <tr class="memitem:a0e3302f58f5dc2351bf9652780d67817"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a0e3302f58f5dc2351bf9652780d67817">DIRTYPE</a>&#160;&#160;&#160;'5'            /* directory */</td></tr>
 <tr class="memitem:a31210800d51897e555db2ab0fe3dd877"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a31210800d51897e555db2ab0fe3dd877">FIFOTYPE</a>&#160;&#160;&#160;'6'            /* FIFO special */</td></tr>
-<tr class="memitem:a26cf8d896ecbc3cf464f476f15128bf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a26cf8d896ecbc3cf464f476f15128bf4">CONTTYPE</a>&#160;&#160;&#160;'7'            /* <a class="el" href="ext2_8h.html#a794ea2271db47ed732933125dedaf988">reserved</a> */</td></tr>
+<tr class="memitem:a26cf8d896ecbc3cf464f476f15128bf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a26cf8d896ecbc3cf464f476f15128bf4">CONTTYPE</a>&#160;&#160;&#160;'7'            /* reserved */</td></tr>
 <tr class="memitem:a541ecf082a1ea679d6392e46ecc54855"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a541ecf082a1ea679d6392e46ecc54855">XHDTYPE</a></td></tr>
 <tr class="memitem:af977275dc57aa708be1b49e57ecd530d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#af977275dc57aa708be1b49e57ecd530d">XGLTYPE</a>&#160;&#160;&#160;'g'            /* Global <a class="el" href="i8042_8c.html#acd53bef429b3afe798b7228806e6e294">extended</a> header */</td></tr>
 </table><table class="memberdecls">
@@ -127,28 +143,8 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2e974cbee7f2fe762639b19fa457a050"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structtar__header.html">tar_header</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a2e974cbee7f2fe762639b19fa457a050">__attribute__</a> ((packed))</td></tr>
 <tr class="memitem:a7bdab331782ae375d3b2b7de0d4ed49d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a7bdab331782ae375d3b2b7de0d4ed49d">tar_extract</a> (char *path)</td></tr>
 <tr class="memitem:ada2334eab3a4cd42b7ea2a267b2f0848"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ada2334eab3a4cd42b7ea2a267b2f0848">tar_extract_mem</a> (void *data)</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:aeaf846aa21a7d016a52f0b5b0c2f5544"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#aeaf846aa21a7d016a52f0b5b0c2f5544">name</a> [100]</td></tr>
-<tr class="memitem:a6b36e8b34706ad58f2e410c191c002af"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a6b36e8b34706ad58f2e410c191c002af">mode</a> [8]</td></tr>
-<tr class="memitem:ac3087d42269e924157fba173cdcfa615"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ac3087d42269e924157fba173cdcfa615">uid</a> [8]</td></tr>
-<tr class="memitem:ae468eaa9841efa58e7d6808a6c62e0dc"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ae468eaa9841efa58e7d6808a6c62e0dc">gid</a> [8]</td></tr>
-<tr class="memitem:a7a3c334bd082b9b6b985ca492d053760"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a> [12]</td></tr>
-<tr class="memitem:a52a5734d6adce1601230eb792a2e0779"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a52a5734d6adce1601230eb792a2e0779">mtime</a> [12]</td></tr>
-<tr class="memitem:ae371fcd8ef73a6c8e6af4e1e721d9ec7"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#ae371fcd8ef73a6c8e6af4e1e721d9ec7">chksum</a> [8]</td></tr>
-<tr class="memitem:a50efaf1bb13addc723bc7ba7d6988f2e"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a50efaf1bb13addc723bc7ba7d6988f2e">typeflag</a></td></tr>
-<tr class="memitem:aab9766d73bb8c3f486b081e191302ba8"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#aab9766d73bb8c3f486b081e191302ba8">linkname</a> [100]</td></tr>
-<tr class="memitem:a1a36e432446bacea7f1f0b5ab0ac23a9"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a1a36e432446bacea7f1f0b5ab0ac23a9">magic</a> [6]</td></tr>
-<tr class="memitem:a981934c8bf4be1b7c2f3a93f998ef9c0"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a981934c8bf4be1b7c2f3a93f998ef9c0">version</a> [2]</td></tr>
-<tr class="memitem:a76f22ff4b5f957a39c9193ac9c143d95"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a76f22ff4b5f957a39c9193ac9c143d95">uname</a> [32]</td></tr>
-<tr class="memitem:a7b9308a76c9d07663b7b6096c5176e69"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a7b9308a76c9d07663b7b6096c5176e69">gname</a> [32]</td></tr>
-<tr class="memitem:aa5878423f62a3a211035bc9d0ca9a325"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#aa5878423f62a3a211035bc9d0ca9a325">devmajor</a> [8]</td></tr>
-<tr class="memitem:a5f82ae95a2185b5fad3975da2fedb71c"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a5f82ae95a2185b5fad3975da2fedb71c">devminor</a> [8]</td></tr>
-<tr class="memitem:a974786a01888a505b62e99a72560b0d6"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tar_8h.html#a974786a01888a505b62e99a72560b0d6">prefix</a> [167]</td></tr>
 </table>
 <h2>Macro Definition Documentation</h2>
 <a class="anchor" id="ae3da8143ed9aec1cc70676b0cfed43b9"></a>
@@ -172,7 +168,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define BLKTYPE&#160;&#160;&#160;'4'            /* <a class="el" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> special */</td>
+          <td class="memname">#define BLKTYPE&#160;&#160;&#160;'4'            /* block special */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -204,7 +200,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CONTTYPE&#160;&#160;&#160;'7'            /* <a class="el" href="ext2_8h.html#a794ea2271db47ed732933125dedaf988">reserved</a> */</td>
+          <td class="memname">#define CONTTYPE&#160;&#160;&#160;'7'            /* reserved */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -284,7 +280,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define SYMTYPE&#160;&#160;&#160;'2'            /* <a class="el" href="ext2_8h.html#a794ea2271db47ed732933125dedaf988">reserved</a> */</td>
+          <td class="memname">#define SYMTYPE&#160;&#160;&#160;'2'            /* reserved */</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -399,22 +395,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2>Function Documentation</h2>
-<a class="anchor" id="a2e974cbee7f2fe762639b19fa457a050"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structtar__header.html">tar_header</a> __attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(packed)&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a7bdab331782ae375d3b2b7de0d4ed49d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -431,7 +411,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="tar_8c_source.html#l00026">26</a> of file <a class="el" href="tar_8c_source.html">tar.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00041">S_ISREG</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00041">S_ISREG</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>.</p>
 
 </div>
 </div>
@@ -457,241 +437,16 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<h2>Variable Documentation</h2>
-<a class="anchor" id="ae371fcd8ef73a6c8e6af4e1e721d9ec7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char chksum[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00046">46</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa5878423f62a3a211035bc9d0ca9a325"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char devmajor[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00053">53</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5f82ae95a2185b5fad3975da2fedb71c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char devminor[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00054">54</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae468eaa9841efa58e7d6808a6c62e0dc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char gid[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00043">43</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7b9308a76c9d07663b7b6096c5176e69"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char gname[32]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00052">52</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aab9766d73bb8c3f486b081e191302ba8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char linkname[100]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00048">48</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1a36e432446bacea7f1f0b5ab0ac23a9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char magic[6]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00049">49</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-<p>Referenced by <a class="el" href="mbr_8c_source.html#l00015">mbr_parse()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6b36e8b34706ad58f2e410c191c002af"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char mode[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00041">41</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a52a5734d6adce1601230eb792a2e0779"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char mtime[12]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00045">45</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aeaf846aa21a7d016a52f0b5b0c2f5544"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char name[100]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00040">40</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00202">ramfs_find_dirent()</a>, <a class="el" href="ramfs_8c_source.html#l00265">ramfs_unlink()</a>, <a class="el" href="tty_8c_source.html#l00059">tty_register_driver()</a>, <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a974786a01888a505b62e99a72560b0d6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char prefix[167]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00055">55</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7a3c334bd082b9b6b985ca492d053760"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char size[12]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00044">44</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a50efaf1bb13addc723bc7ba7d6988f2e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char typeflag</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00047">47</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac3087d42269e924157fba173cdcfa615"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char uid[8]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00042">42</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a76f22ff4b5f957a39c9193ac9c143d95"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char uname[32]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00051">51</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a981934c8bf4be1b7c2f3a93f998ef9c0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char version[2]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="tar_8h_source.html#l00050">50</a> of file <a class="el" href="tar_8h_source.html">tar.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="tar_8h.html">tar.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

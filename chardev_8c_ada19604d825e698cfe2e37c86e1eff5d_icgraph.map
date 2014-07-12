@@ -1,0 +1,6 @@
+<map id="device_char_register" name="device_char_register">
+<area shape="rect" id="node3" href="$tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab" title="tty_register_driver" alt="" coords="199,57,324,87"/>
+<area shape="rect" id="node5" href="$sercon_8c.html#af5e57b7a31a51e7e7e43b7b81a3bc6ba" title="sercon_init" alt="" coords="389,5,475,35"/>
+<area shape="rect" id="node7" href="$vgacon_8c.html#aeb5c3aaff300eacd1822af819ed871a5" title="vgacon_init" alt="" coords="539,32,627,61"/>
+<area shape="rect" id="node10" href="$vterm__tty_8c.html#a896c4181529143634f37754c020f6c81" title="vterm_tty_setup" alt="" coords="375,109,489,139"/>
+</map>

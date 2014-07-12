@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('vfs_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
@@ -95,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Part of P-OS kernel.  
+<p>Implements the virtual filesystem layer.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="string_8h_source.html">string.h</a>&gt;</code><br/>
 <code>#include &lt;stddef.h&gt;</code><br/>
@@ -123,75 +140,96 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2631471cb0ce3ac48ae005747a116bf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="permissions_8h.html#a22e726d412d3cf8ca4d1e6c7795c5c0f">perm_class_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9">vfs_get_min_permissions</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> req_mode)</td></tr>
-<tr class="memdesc:a2631471cb0ce3ac48ae005747a116bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum privilege level required for access with mode.  <a href="#a2631471cb0ce3ac48ae005747a116bf9"></a><br/></td></tr>
-<tr class="memitem:a64ad852cc66f2d66221f16ad29c92a04"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04">vfs_have_permissions</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> req_mode)</td></tr>
-<tr class="memdesc:a64ad852cc66f2d66221f16ad29c92a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check permissions for access with mode.  <a href="#a64ad852cc66f2d66221f16ad29c92a04"></a><br/></td></tr>
+<tr class="memitem:a815dafb62570f49d698a5ba01cd8a45b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t flags)</td></tr>
 <tr class="memitem:a72598ce191e8ffb48c1b69bd0ac76b8e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a72598ce191e8ffb48c1b69bd0ac76b8e">vfs_cache_find_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
-<tr class="memitem:a958c0c8e4b441808862e0911fbfc04be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a958c0c8e4b441808862e0911fbfc04be">vfs_get_inode</a> (<a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *device, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> <a class="el" href="vfs_8h.html#a21bed64993bd6f5262d9a0bc53c616a6">inode_id</a>)</td></tr>
-<tr class="memdesc:a958c0c8e4b441808862e0911fbfc04be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an inode by it's ID.  <a href="#a958c0c8e4b441808862e0911fbfc04be"></a><br/></td></tr>
-<tr class="memitem:a830186f7c888aae883bab689de5a287c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a830186f7c888aae883bab689de5a287c">vfs_effective_inode</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
-<tr class="memdesc:a830186f7c888aae883bab689de5a287c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts.  <a href="#a830186f7c888aae883bab689de5a287c"></a><br/></td></tr>
-<tr class="memitem:a489abb04eb8e74a3f11a0a20f32a845c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a489abb04eb8e74a3f11a0a20f32a845c">vfs_find_dirent</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *<a class="el" href="vfs_8h.html#a9b1574fcf713a0776558fdb602b5fbb1">name</a>)</td></tr>
-<tr class="memdesc:a489abb04eb8e74a3f11a0a20f32a845c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a directory entry.  <a href="#a489abb04eb8e74a3f11a0a20f32a845c"></a><br/></td></tr>
-<tr class="memitem:a5956d43ee65c457df7b078217e1aaadb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a5956d43ee65c457df7b078217e1aaadb">vfs_int_mknod</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
+<tr class="memitem:gac1913485037320335c4030439d537df8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#gac1913485037320335c4030439d537df8">vfs_initialize</a> (<a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *root_device)</td></tr>
+<tr class="memdesc:gac1913485037320335c4030439d537df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the VFS layer.  <a href="group__vfs.html#gac1913485037320335c4030439d537df8"></a><br/></td></tr>
+<tr class="memitem:ga9fd0a37c12ffd599dfa7b698180c9a5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga9fd0a37c12ffd599dfa7b698180c9a5f">vfs_dir_cache_mkroot</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *root_inode)</td></tr>
+<tr class="memdesc:ga9fd0a37c12ffd599dfa7b698180c9a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the initial dir cache entry.  <a href="group__vfs.html#ga9fd0a37c12ffd599dfa7b698180c9a5f"></a><br/></td></tr>
+<tr class="memitem:gab983aeeac1801fd1bac9c8074b2c4358"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#gab983aeeac1801fd1bac9c8074b2c4358">vfs_dir_cache_release</a> (<a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *dirc)</td></tr>
+<tr class="memdesc:gab983aeeac1801fd1bac9c8074b2c4358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release a reference to a directory cache entry.  <a href="group__vfs.html#gab983aeeac1801fd1bac9c8074b2c4358"></a><br/></td></tr>
+<tr class="memitem:acf4cb3ecb7c77abf8ae71c18c549865a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a">vfs_find_dirc_parent</a> (char *path)</td></tr>
+<tr class="memdesc:acf4cb3ecb7c77abf8ae71c18c549865a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the parent directory of a file referred to by a path.  <a href="#acf4cb3ecb7c77abf8ae71c18c549865a"></a><br/></td></tr>
+<tr class="memitem:ga90dc951c937e30b96e59f73075bbcd3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga90dc951c937e30b96e59f73075bbcd3a">vfs_find_dirc</a> (char *path)</td></tr>
+<tr class="memdesc:ga90dc951c937e30b96e59f73075bbcd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up a file referred to by a path.  <a href="group__vfs.html#ga90dc951c937e30b96e59f73075bbcd3a"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader">VFS Internal</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Utility functions for use by VFS functions only </p>
+</div></td></tr>
+<tr class="memitem:ga2631471cb0ce3ac48ae005747a116bf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="permissions_8h.html#a22e726d412d3cf8ca4d1e6c7795c5c0f">perm_class_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga2631471cb0ce3ac48ae005747a116bf9">vfs_get_min_permissions</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> req_mode)</td></tr>
+<tr class="memdesc:ga2631471cb0ce3ac48ae005747a116bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the minimum privilege level required for access with mode.  <a href="group__vfs.html#ga2631471cb0ce3ac48ae005747a116bf9"></a><br/></td></tr>
+<tr class="memitem:ga64ad852cc66f2d66221f16ad29c92a04"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga64ad852cc66f2d66221f16ad29c92a04">vfs_have_permissions</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> req_mode)</td></tr>
+<tr class="memdesc:ga64ad852cc66f2d66221f16ad29c92a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check permissions for access with mode.  <a href="group__vfs.html#ga64ad852cc66f2d66221f16ad29c92a04"></a><br/></td></tr>
+<tr class="memitem:ga958c0c8e4b441808862e0911fbfc04be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga958c0c8e4b441808862e0911fbfc04be">vfs_get_inode</a> (<a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *device, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> inode_id)</td></tr>
+<tr class="memdesc:ga958c0c8e4b441808862e0911fbfc04be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an inode by it's ID.  <a href="group__vfs.html#ga958c0c8e4b441808862e0911fbfc04be"></a><br/></td></tr>
+<tr class="memitem:ga830186f7c888aae883bab689de5a287c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga830186f7c888aae883bab689de5a287c">vfs_effective_inode</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
+<tr class="memdesc:ga830186f7c888aae883bab689de5a287c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts.  <a href="group__vfs.html#ga830186f7c888aae883bab689de5a287c"></a><br/></td></tr>
+<tr><td colspan="2"><div class="groupHeader">VFS Backend</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>FS driver call wrappers </p>
+</div></td></tr>
+<tr class="memitem:a5956d43ee65c457df7b078217e1aaadb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a5956d43ee65c457df7b078217e1aaadb">vfs_int_mknod</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
 <tr class="memdesc:a5956d43ee65c457df7b078217e1aaadb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push a new inode to backing storage.  <a href="#a5956d43ee65c457df7b078217e1aaadb"></a><br/></td></tr>
-<tr class="memitem:a4319ae3d06feb2038802df445ab1489f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a4319ae3d06feb2038802df445ab1489f">vfs_int_rmnod</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
+<tr class="memitem:a4319ae3d06feb2038802df445ab1489f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a4319ae3d06feb2038802df445ab1489f">vfs_int_rmnod</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
 <tr class="memdesc:a4319ae3d06feb2038802df445ab1489f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an inode from backing storage.  <a href="#a4319ae3d06feb2038802df445ab1489f"></a><br/></td></tr>
-<tr class="memitem:a84da51813b69ed18851aa4151e982949"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a84da51813b69ed18851aa4151e982949">vfs_int_mkdir</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
+<tr class="memitem:a84da51813b69ed18851aa4151e982949"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a84da51813b69ed18851aa4151e982949">vfs_int_mkdir</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
 <tr class="memdesc:a84da51813b69ed18851aa4151e982949"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create directory structures on backing storage.  <a href="#a84da51813b69ed18851aa4151e982949"></a><br/></td></tr>
-<tr class="memitem:a3430f50453f987084b69ea3a8f71878e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a3430f50453f987084b69ea3a8f71878e">vfs_int_link</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *<a class="el" href="vfs_8h.html#a9b1574fcf713a0776558fdb602b5fbb1">name</a>, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> nod_id)</td></tr>
+<tr class="memitem:a3430f50453f987084b69ea3a8f71878e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a3430f50453f987084b69ea3a8f71878e">vfs_int_link</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *name, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a> nod_id)</td></tr>
 <tr class="memdesc:a3430f50453f987084b69ea3a8f71878e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a directory entry on backing storage.  <a href="#a3430f50453f987084b69ea3a8f71878e"></a><br/></td></tr>
-<tr class="memitem:a90b9d075b4018a646b378da9610064db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a90b9d075b4018a646b378da9610064db">vfs_int_unlink</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *<a class="el" href="vfs_8h.html#a9b1574fcf713a0776558fdb602b5fbb1">name</a>)</td></tr>
+<tr class="memitem:a90b9d075b4018a646b378da9610064db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a90b9d075b4018a646b378da9610064db">vfs_int_unlink</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *name)</td></tr>
 <tr class="memdesc:a90b9d075b4018a646b378da9610064db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a directory entry from backing storage.  <a href="#a90b9d075b4018a646b378da9610064db"></a><br/></td></tr>
-<tr class="memitem:a783b9df3cf72f06ddfee932bf644fcda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a783b9df3cf72f06ddfee932bf644fcda">vfs_int_read_dir</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
+<tr class="memitem:a783b9df3cf72f06ddfee932bf644fcda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a783b9df3cf72f06ddfee932bf644fcda">vfs_int_read_dir</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
 <tr class="memdesc:a783b9df3cf72f06ddfee932bf644fcda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read directory entries from backing storage.  <a href="#a783b9df3cf72f06ddfee932bf644fcda"></a><br/></td></tr>
-<tr class="memitem:af245dedecdf6b4c6c08d23fed31bcb67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67">vfs_int_read</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
+<tr class="memitem:af245dedecdf6b4c6c08d23fed31bcb67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67">vfs_int_read</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
 <tr class="memdesc:af245dedecdf6b4c6c08d23fed31bcb67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from a file from backing storage.  <a href="#af245dedecdf6b4c6c08d23fed31bcb67"></a><br/></td></tr>
-<tr class="memitem:a807b9f2f00baf5e47097fb6b599761b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a807b9f2f00baf5e47097fb6b599761b9">vfs_int_write</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size)</td></tr>
+<tr class="memitem:a807b9f2f00baf5e47097fb6b599761b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a807b9f2f00baf5e47097fb6b599761b9">vfs_int_write</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size)</td></tr>
 <tr class="memdesc:a807b9f2f00baf5e47097fb6b599761b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a file from backing storage.  <a href="#a807b9f2f00baf5e47097fb6b599761b9"></a><br/></td></tr>
-<tr class="memitem:a05dea3105778419755db0ce95ff554b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a05dea3105778419755db0ce95ff554b1">vfs_int_truncate</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a05dea3105778419755db0ce95ff554b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a05dea3105778419755db0ce95ff554b1">vfs_int_truncate</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> size)</td></tr>
 <tr class="memdesc:a05dea3105778419755db0ce95ff554b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize a file on backing storage.  <a href="#a05dea3105778419755db0ce95ff554b1"></a><br/></td></tr>
-<tr class="memitem:a522e8a4f7dfc7d3a6994313d2d746a82"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a522e8a4f7dfc7d3a6994313d2d746a82">vfs_write</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size, int non_block)</td></tr>
-<tr class="memdesc:a522e8a4f7dfc7d3a6994313d2d746a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a file.  <a href="#a522e8a4f7dfc7d3a6994313d2d746a82"></a><br/></td></tr>
-<tr class="memitem:a3b462cea173d8cd38ab8b46b98a159d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7">vfs_read</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size, int non_block)</td></tr>
-<tr class="memdesc:a3b462cea173d8cd38ab8b46b98a159d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from a file.  <a href="#a3b462cea173d8cd38ab8b46b98a159d7"></a><br/></td></tr>
-<tr class="memitem:a94b66b2d752c243c35894d6655626566"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a94b66b2d752c243c35894d6655626566">vfs_getdents</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
-<tr class="memdesc:a94b66b2d752c243c35894d6655626566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read directory entries.  <a href="#a94b66b2d752c243c35894d6655626566"></a><br/></td></tr>
-<tr class="memitem:a9913748fc23c6bfe9d775a2f27d82228"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a9913748fc23c6bfe9d775a2f27d82228">vfs_truncate</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> length)</td></tr>
-<tr class="memdesc:a9913748fc23c6bfe9d775a2f27d82228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize a file.  <a href="#a9913748fc23c6bfe9d775a2f27d82228"></a><br/></td></tr>
-<tr class="memitem:a6187be67e690be6916a385ebde588093"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a6187be67e690be6916a385ebde588093">vfs_rmdir</a> (char *path)</td></tr>
-<tr class="memdesc:a6187be67e690be6916a385ebde588093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a directory.  <a href="#a6187be67e690be6916a385ebde588093"></a><br/></td></tr>
-<tr class="memitem:a22ee4ff0cc661e9246bd6a76702b298e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a22ee4ff0cc661e9246bd6a76702b298e">vfs_mkdir</a> (char *path, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> <a class="el" href="tar_8h.html#a6b36e8b34706ad58f2e410c191c002af">mode</a>)</td></tr>
-<tr class="memdesc:a22ee4ff0cc661e9246bd6a76702b298e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a directory.  <a href="#a22ee4ff0cc661e9246bd6a76702b298e"></a><br/></td></tr>
-<tr class="memitem:a1833cb4e7ef568776472b7d940eccf04"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04">vfs_mknod</a> (char *path, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> <a class="el" href="tar_8h.html#a6b36e8b34706ad58f2e410c191c002af">mode</a>, <a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> dev)</td></tr>
-<tr class="memdesc:a1833cb4e7ef568776472b7d940eccf04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a file.  <a href="#a1833cb4e7ef568776472b7d940eccf04"></a><br/></td></tr>
-<tr class="memitem:a815dafb62570f49d698a5ba01cd8a45b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a> (<a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> device, uint32_t <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a>)</td></tr>
-<tr class="memitem:a61886b169216dc8c85945584536fbb1d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a61886b169216dc8c85945584536fbb1d">vfs_mount</a> (char *device, char *mountpoint, char *fstype, uint32_t <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a>)</td></tr>
-<tr class="memdesc:a61886b169216dc8c85945584536fbb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mount a filesystem.  <a href="#a61886b169216dc8c85945584536fbb1d"></a><br/></td></tr>
-<tr class="memitem:a619a7ea2e918798f30f69ae91efc8855"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a619a7ea2e918798f30f69ae91efc8855">vfs_symlink</a> (char *oldpath, char *path)</td></tr>
-<tr class="memdesc:a619a7ea2e918798f30f69ae91efc8855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a symbolic link.  <a href="#a619a7ea2e918798f30f69ae91efc8855"></a><br/></td></tr>
-<tr class="memitem:a797ee30a843cc96fdb59db73fe97102d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a797ee30a843cc96fdb59db73fe97102d">vfs_unlink</a> (char *path)</td></tr>
-<tr class="memdesc:a797ee30a843cc96fdb59db73fe97102d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a file.  <a href="#a797ee30a843cc96fdb59db73fe97102d"></a><br/></td></tr>
-<tr class="memitem:ac1913485037320335c4030439d537df8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#ac1913485037320335c4030439d537df8">vfs_initialize</a> (<a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *root_device)</td></tr>
-<tr class="memdesc:ac1913485037320335c4030439d537df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the VFS layer.  <a href="#ac1913485037320335c4030439d537df8"></a><br/></td></tr>
-<tr class="memitem:ac8b32bb45661974629d18b9830c5d026"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#ac8b32bb45661974629d18b9830c5d026">vfs_link</a> (char *oldpath, char *newpath)</td></tr>
-<tr class="memdesc:ac8b32bb45661974629d18b9830c5d026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a hard link.  <a href="#ac8b32bb45661974629d18b9830c5d026"></a><br/></td></tr>
-<tr class="memitem:a9fd0a37c12ffd599dfa7b698180c9a5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a9fd0a37c12ffd599dfa7b698180c9a5f">vfs_dir_cache_mkroot</a> (<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *root_inode)</td></tr>
-<tr class="memitem:ab983aeeac1801fd1bac9c8074b2c4358"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358">vfs_dir_cache_release</a> (<a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *dirc)</td></tr>
-<tr class="memitem:acf4cb3ecb7c77abf8ae71c18c549865a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a">vfs_find_dirc_parent</a> (char *path)</td></tr>
-<tr class="memitem:a90dc951c937e30b96e59f73075bbcd3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a">vfs_find_dirc</a> (char *path)</td></tr>
-<tr class="memitem:aa8336c694b79fb0e56847ab2e1b26750"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750">vfs_find_parent</a> (char *path)</td></tr>
-<tr class="memitem:a60e197d9a65de9d15c88f8fa1f6e7c97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97">vfs_find_inode</a> (char *path)</td></tr>
-<tr class="memitem:a5b390b5f69c09ba25d6ecec740c301d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a5b390b5f69c09ba25d6ecec740c301d1">vfs_find_symlink</a> (char *path)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:a4ce92837aa1da333980c953e88e1529a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a4ce92837aa1da333980c953e88e1529a">inode_cache</a></td></tr>
 <tr class="memdesc:a4ce92837aa1da333980c953e88e1529a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The linked list serving as inode cache.  <a href="#a4ce92837aa1da333980c953e88e1529a"></a><br/></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="member-group"></a>
+VFS API</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p><a class="anchor" id="amgrp022827e3f9d752c6886f0eae7da31390"></a>Public VFS functions </p>
+</td></tr>
+<tr class="memitem:a19a005ef12962664653b556b40f84906"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a19a005ef12962664653b556b40f84906">ino</a> = <a class="el" href="group__vfs.html#ga958c0c8e4b441808862e0911fbfc04be">vfs_get_inode</a>(dirc-&gt;parent-&gt;<a class="el" href="structinode.html">inode</a>-&gt;device, <a class="el" href="structdirent.html">dirent</a>-&gt;inode_id)</td></tr>
+<tr class="memitem:ga489abb04eb8e74a3f11a0a20f32a845c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga489abb04eb8e74a3f11a0a20f32a845c">vfs_find_dirent</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, char *name)</td></tr>
+<tr class="memdesc:ga489abb04eb8e74a3f11a0a20f32a845c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a directory entry.  <a href="group__vfs.html#ga489abb04eb8e74a3f11a0a20f32a845c"></a><br/></td></tr>
+<tr class="memitem:gab379ab04ee753835803908fe8e2390ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#gab379ab04ee753835803908fe8e2390ed">vfs_write</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *write_size, int non_block)</td></tr>
+<tr class="memdesc:gab379ab04ee753835803908fe8e2390ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a file.  <a href="group__vfs.html#gab379ab04ee753835803908fe8e2390ed"></a><br/></td></tr>
+<tr class="memitem:ga3b462cea173d8cd38ab8b46b98a159d7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga3b462cea173d8cd38ab8b46b98a159d7">vfs_read</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, void *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size, int non_block)</td></tr>
+<tr class="memdesc:ga3b462cea173d8cd38ab8b46b98a159d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from a file.  <a href="group__vfs.html#ga3b462cea173d8cd38ab8b46b98a159d7"></a><br/></td></tr>
+<tr class="memitem:ga94b66b2d752c243c35894d6655626566"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga94b66b2d752c243c35894d6655626566">vfs_getdents</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> file_offset, <a class="el" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *buffer, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> count, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *read_size)</td></tr>
+<tr class="memdesc:ga94b66b2d752c243c35894d6655626566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read directory entries.  <a href="group__vfs.html#ga94b66b2d752c243c35894d6655626566"></a><br/></td></tr>
+<tr class="memitem:ga9913748fc23c6bfe9d775a2f27d82228"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga9913748fc23c6bfe9d775a2f27d82228">vfs_truncate</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> length)</td></tr>
+<tr class="memdesc:ga9913748fc23c6bfe9d775a2f27d82228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize a file.  <a href="group__vfs.html#ga9913748fc23c6bfe9d775a2f27d82228"></a><br/></td></tr>
+<tr class="memitem:ga6187be67e690be6916a385ebde588093"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga6187be67e690be6916a385ebde588093">vfs_rmdir</a> (char *path)</td></tr>
+<tr class="memdesc:ga6187be67e690be6916a385ebde588093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a directory.  <a href="group__vfs.html#ga6187be67e690be6916a385ebde588093"></a><br/></td></tr>
+<tr class="memitem:ga22ee4ff0cc661e9246bd6a76702b298e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga22ee4ff0cc661e9246bd6a76702b298e">vfs_mkdir</a> (char *path, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> mode)</td></tr>
+<tr class="memdesc:ga22ee4ff0cc661e9246bd6a76702b298e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a directory.  <a href="group__vfs.html#ga22ee4ff0cc661e9246bd6a76702b298e"></a><br/></td></tr>
+<tr class="memitem:ga1833cb4e7ef568776472b7d940eccf04"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga1833cb4e7ef568776472b7d940eccf04">vfs_mknod</a> (char *path, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> mode, <a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a> dev)</td></tr>
+<tr class="memdesc:ga1833cb4e7ef568776472b7d940eccf04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a file.  <a href="group__vfs.html#ga1833cb4e7ef568776472b7d940eccf04"></a><br/></td></tr>
+<tr class="memitem:ga61886b169216dc8c85945584536fbb1d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga61886b169216dc8c85945584536fbb1d">vfs_mount</a> (char *device, char *mountpoint, char *fstype, uint32_t flags)</td></tr>
+<tr class="memdesc:ga61886b169216dc8c85945584536fbb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mount a filesystem.  <a href="group__vfs.html#ga61886b169216dc8c85945584536fbb1d"></a><br/></td></tr>
+<tr class="memitem:ga5525864c8ec0cc591c31faf9e0b7636d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga5525864c8ec0cc591c31faf9e0b7636d">vfs_symlink</a> (char *oldpath, char *path)</td></tr>
+<tr class="memdesc:ga5525864c8ec0cc591c31faf9e0b7636d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a symbolic link.  <a href="group__vfs.html#ga5525864c8ec0cc591c31faf9e0b7636d"></a><br/></td></tr>
+<tr class="memitem:ga797ee30a843cc96fdb59db73fe97102d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga797ee30a843cc96fdb59db73fe97102d">vfs_unlink</a> (char *path)</td></tr>
+<tr class="memdesc:ga797ee30a843cc96fdb59db73fe97102d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a file.  <a href="group__vfs.html#ga797ee30a843cc96fdb59db73fe97102d"></a><br/></td></tr>
+<tr class="memitem:gac8b32bb45661974629d18b9830c5d026"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#gac8b32bb45661974629d18b9830c5d026">vfs_link</a> (char *oldpath, char *newpath)</td></tr>
+<tr class="memdesc:gac8b32bb45661974629d18b9830c5d026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a hard link.  <a href="group__vfs.html#gac8b32bb45661974629d18b9830c5d026"></a><br/></td></tr>
+<tr class="memitem:gaa8336c694b79fb0e56847ab2e1b26750"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#gaa8336c694b79fb0e56847ab2e1b26750">vfs_find_parent</a> (char *path)</td></tr>
+<tr class="memdesc:gaa8336c694b79fb0e56847ab2e1b26750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the inode for the directory containing the file.  <a href="group__vfs.html#gaa8336c694b79fb0e56847ab2e1b26750"></a><br/></td></tr>
+<tr class="memitem:ga60e197d9a65de9d15c88f8fa1f6e7c97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga60e197d9a65de9d15c88f8fa1f6e7c97">vfs_find_inode</a> (char *path)</td></tr>
+<tr class="memdesc:ga60e197d9a65de9d15c88f8fa1f6e7c97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the inode for the file referenced by path.  <a href="group__vfs.html#ga60e197d9a65de9d15c88f8fa1f6e7c97"></a><br/></td></tr>
+<tr class="memitem:ga5b390b5f69c09ba25d6ecec740c301d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga5b390b5f69c09ba25d6ecec740c301d1">vfs_find_symlink</a> (char *path)</td></tr>
+<tr class="memdesc:ga5b390b5f69c09ba25d6ecec740c301d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the inode for the file referenced by path, not dereferencing symlinks or mounts.  <a href="group__vfs.html#ga5b390b5f69c09ba25d6ecec740c301d1"></a><br/></td></tr>
+<tr class="memitem:aa3d1c8a7b5d64979b7b2170de9a7fa26"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#aa3d1c8a7b5d64979b7b2170de9a7fa26">vfs_dir_cache_release</a> (dirc)</td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Part of P-OS kernel. </p>
+<div class="textblock"><p>Implements the virtual filesystem layer. </p>
+<p>Part of P-OS kernel.</p>
 <dl class="section author"><dt>Author</dt><dd>Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></dd></dl>
 <p>Changelog: </p>
 <ul>
@@ -220,7 +258,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a>* ext2_mount </td>
+          <td class="memname"><a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a>* ext2_mount </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a>&#160;</td>
           <td class="paramname"><em>device</em>, </td>
@@ -238,11 +276,11 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000099">Todo:</a></b></dt><dd>: Implement fallback to alternative superblock </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000100">Todo:</a></b></dt><dd>: Implement fallback to alternative superblock </dd></dl>
 
 <p>Definition at line <a class="el" href="ext2_8c_source.html#l00473">473</a> of file <a class="el" href="ext2_8c_source.html">ext2.c</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -270,110 +308,27 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00075">75</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00046">46</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8c_source.html#l00035">vfs_cache_params::device_id</a>, <a class="el" href="vfs_8h_source.html#l00045">inode::device_id</a>, <a class="el" href="vfs_8h_source.html#l00043">inode::id</a>, and <a class="el" href="vfs_8c_source.html#l00036">vfs_cache_params::inode_id</a>.</p>
+<p>References <a class="el" href="vfs_8c_source.html#l00038">vfs_cache_params::device_id</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, and <a class="el" href="vfs_8c_source.html#l00039">vfs_cache_params::inode_id</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00095">vfs_get_inode()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9fd0a37c12ffd599dfa7b698180c9a5f"></a>
+<a class="anchor" id="aa3d1c8a7b5d64979b7b2170de9a7fa26"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a>* vfs_dir_cache_mkroot </td>
+          <td class="memname">vfs_dir_cache_release </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>root_inode</em></td><td>)</td>
+          <td class="paramtype">dirc&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000092">Todo:</a></b></dt><dd>: Comment dir-cache and path lookup functions </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01674">1674</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00090">dir_cache::parent</a>, <a class="el" href="vfs_8h_source.html#l00071">inode::usage_count</a>, and <a class="el" href="vfs_8h_source.html#l00092">dir_cache::usage_count</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01508">vfs_initialize()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab983aeeac1801fd1bac9c8074b2c4358"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void vfs_dir_cache_release </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td>
-          <td class="paramname"><em>dirc</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01684">1684</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00090">dir_cache::parent</a>, <a class="el" href="vfs_8h_source.html#l00071">inode::usage_count</a>, <a class="el" href="vfs_8h_source.html#l00092">dir_cache::usage_count</a>, and <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, and <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a830186f7c888aae883bab689de5a287c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_effective_inode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The inode that is to be checked </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The inode that the parameter points to. </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00126">126</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="ext2_8h_source.html#l00160">inode</a>, <a class="el" href="vfs_8h_source.html#l00063">inode::link_path</a>, <a class="el" href="vfs_8h_source.html#l00067">inode::mount</a>, and <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l00714">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l00570">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l00812">vfs_truncate()</a>, and <a class="el" href="vfs_8c_source.html#l00395">vfs_write()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a90dc951c937e30b96e59f73075bbcd3a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a>* vfs_find_dirc </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01776">1776</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00083">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00090">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8h_source.html#l00071">inode::usage_count</a>, <a class="el" href="vfs_8h_source.html#l00092">dir_cache::usage_count</a>, <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00153">vfs_find_dirent()</a>, and <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>.</p>
 
 </div>
 </div>
@@ -382,7 +337,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#affb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a>* vfs_find_dirc_parent </td>
+          <td class="memname"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a>* vfs_find_dirc_parent </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>
@@ -391,354 +346,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01695">1695</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00083">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00090">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8h_source.html#l00071">inode::usage_count</a>, <a class="el" href="vfs_8h_source.html#l00092">dir_cache::usage_count</a>, <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00153">vfs_find_dirent()</a>, and <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a489abb04eb8e74a3f11a0a20f32a845c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a>* vfs_find_dirent </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Find a directory entry. </p>
+<p>Look up the parent directory of a file referred to by a path. </p>
+<p>This function will also succeed if path does not exist but its parent does </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">inode</td><td>The directory to search </td></tr>
-    <tr><td class="paramname">name</td><td>The filename to match </td></tr>
+    <tr><td class="paramname">path</td><td>The path to resolve </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The directory entry matching name from the directory inode, if none, NULL is returned </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structdir__cache.html" title="An entry in the path element cache The kernel keeps track of these to resolve the ...">dir_cache</a> entry on the parent of the file referred to by path </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000092">Todo:</a></b></dt><dd>: Check for search permission here or in vfs_find_dirent </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>: Check for errors </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00153">153</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l01759">1759</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00221">fs_device_operations::find_dirent</a>, and <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00134">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00153">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>, <a class="el" href="vfs_8h_source.html#l00159">dir_cache::usage_count</a>, <a class="el" href="vfs_8c_source.html#l01729">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l00131">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00166">vfs_find_dirent()</a>, and <a class="el" href="vfs_8c_source.html#l00095">vfs_get_inode()</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>, and <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a60e197d9a65de9d15c88f8fa1f6e7c97"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_find_inode </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000095">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01863">1863</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, and <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00191">_sys_chmod()</a>, <a class="el" href="sc__vfs_8c_source.html#l00231">_sys_chown()</a>, <a class="el" href="sc__vfs_8c_source.html#l00361">_sys_stat()</a>, <a class="el" href="sc__vfs_8c_source.html#l00273">_sys_truncate()</a>, <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, <a class="el" href="tar_8c_source.html#l00026">tar_extract()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>, <a class="el" href="vfs_8c_source.html#l00898">vfs_rmdir()</a>, and <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa8336c694b79fb0e56847ab2e1b26750"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_find_parent </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000094">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01852">1852</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, and <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a5b390b5f69c09ba25d6ecec740c301d1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_find_symlink </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000096">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01916">1916</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00083">dirent::inode_id</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00090">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00017">strrchr()</a>, <a class="el" href="vfs_8c_source.html#l01684">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l00153">vfs_find_dirent()</a>, and <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00472">_sys_lstat()</a>, <a class="el" href="sc__vfs_8c_source.html#l00417">_sys_readlink()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a958c0c8e4b441808862e0911fbfc04be"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_get_inode </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *&#160;</td>
-          <td class="paramname"><em>device</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>&#160;</td>
-          <td class="paramname"><em>inode_id</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get an inode by it's ID. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">device</td><td>The device to get the inode from </td></tr>
-    <tr><td class="paramname">inode_id</td><td>The ID of the inode to look up </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The inode &lt;inode_id&gt; from device. </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00090">90</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8c_source.html#l00035">vfs_cache_params::device_id</a>, <a class="el" href="vfs_8h_source.html#l00296">fs_device::id</a>, <a class="el" href="vfs_8c_source.html#l00036">vfs_cache_params::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00088">inode_id</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00139">llist_iterate_select()</a>, <a class="el" href="vfs_8h_source.html#l00116">fs_device_operations::load_inode</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8c_source.html#l00075">vfs_cache_find_iterator()</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>, and <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2631471cb0ce3ac48ae005747a116bf9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="permissions_8h.html#a22e726d412d3cf8ca4d1e6c7795c5c0f">perm_class_t</a> vfs_get_min_permissions </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a>&#160;</td>
-          <td class="paramname"><em>req_mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the minimum privilege level required for access with mode. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The file to check </td></tr>
-    <tr><td class="paramname">mode</td><td>The requested access mode </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The required privilege class : other, group or owner </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00047">47</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="permissions_8h_source.html#l00020">PERM_CLASS_GROUP</a>, <a class="el" href="permissions_8h_source.html#l00018">PERM_CLASS_NONE</a>, <a class="el" href="permissions_8h_source.html#l00021">PERM_CLASS_OTHER</a>, and <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a94b66b2d752c243c35894d6655626566"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_getdents </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>file_offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>count</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *&#160;</td>
-          <td class="paramname"><em>read_size</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Read directory entries. </p>
-<p>This function will only read whole directory entries, if a directory entry does not fit in count it will return only the amount of bytes read before that entry</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The inode for the directory </td></tr>
-    <tr><td class="paramname">buffer</td><td>The buffer to store the entries in </td></tr>
-    <tr><td class="paramname">file_offset</td><td>The offset in the directory to start reading at </td></tr>
-    <tr><td class="paramname">count</td><td>The number of bytes to read </td></tr>
-    <tr><td class="paramname">read_size</td><td>A pointer to a variable in which the number of bytes read will be stored</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">EBADF</td><td>Tried to read from a directory for which we do not have permission </td></tr>
-    <tr><td class="paramname">ENOTDIR</td><td>Can only read directory entries from a directory </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error was encountered trying to read from the dir </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00714">714</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00075">inode::atime</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00311">MODE_READ</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00073">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, and <a class="el" href="vfs_8c_source.html#l00287">vfs_int_read_dir()</a>.</p>
-
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a64ad852cc66f2d66221f16ad29c92a04"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_have_permissions </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a>&#160;</td>
-          <td class="paramname"><em>req_mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Check permissions for access with mode. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The file to check </td></tr>
-    <tr><td class="paramname">mode</td><td>The requested access mode </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Whether the requested access is allowed </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00065">65</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00056">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00054">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l00047">vfs_get_min_permissions()</a>.</p>
-
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, <a class="el" href="vfs_8c_source.html#l00714">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00570">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l00812">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00395">vfs_write()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac1913485037320335c4030439d537df8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_initialize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *&#160;</td>
-          <td class="paramname"><em>root_device</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize the VFS layer. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">root_device</td><td>The filesystem device to use as root filesystem </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If successful 1, otherwise 0 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000090">Todo:</a></b></dt><dd>: Track mounted devices </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01508">1508</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00105">llist_create()</a>, <a class="el" href="vfs_8h_source.html#l00116">fs_device_operations::load_inode</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="vfs_8h_source.html#l00298">fs_device::root_inode_id</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="vfs_8c_source.html#l01674">vfs_dir_cache_mkroot()</a>.</p>
-
-<p>Referenced by <a class="el" href="init_8c_source.html#l00246">i386_kmain()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l02143">vfs_find_parent()</a>.</p>
 
 </div>
 </div>
@@ -749,7 +373,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_link </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -784,11 +408,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00237">237</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00255">255</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00250">fs_device_operations::link</a>, and <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00317">fs_device_operations::link</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01543">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -799,7 +423,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_mkdir </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em></td><td>)</td>
           <td></td>
         </tr>
@@ -816,11 +440,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00213">213</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00231">231</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00234">fs_device_operations::mkdir</a>, and <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00301">fs_device_operations::mkdir</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00969">vfs_mkdir()</a>.</p>
 
 </div>
 </div>
@@ -831,7 +455,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_mknod </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em></td><td>)</td>
           <td></td>
         </tr>
@@ -848,11 +472,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00169">169</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00187">187</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00139">fs_device_operations::mknod</a>, and <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00206">fs_device_operations::mknod</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -863,7 +487,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_read </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -912,11 +536,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00308">308</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00326">326</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00171">fs_device_operations::read_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00238">fs_device_operations::read_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00570">vfs_read()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00594">vfs_read()</a>.</p>
 
 </div>
 </div>
@@ -927,7 +551,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_read_dir </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -976,11 +600,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00287">287</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00305">305</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00207">fs_device_operations::read_dir</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00274">fs_device_operations::read_dir</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00714">vfs_getdents()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00738">vfs_getdents()</a>.</p>
 
 </div>
 </div>
@@ -991,7 +615,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_rmnod </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1008,11 +632,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00191">191</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00209">209</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00152">fs_device_operations::rmnod</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00219">fs_device_operations::rmnod</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>.</p>
 
 </div>
 </div>
@@ -1023,7 +647,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_truncate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -1051,11 +675,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00352">352</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00370">370</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00276">fs_device_operations::trunc_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00343">fs_device_operations::trunc_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00812">vfs_truncate()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00836">vfs_truncate()</a>.</p>
 
 </div>
 </div>
@@ -1066,7 +690,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_unlink </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -1094,11 +718,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00260">260</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00278">278</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00263">fs_device_operations::unlink</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00330">fs_device_operations::unlink</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +733,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">int vfs_int_write </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
           <td class="paramname"><em>inode</em>, </td>
         </tr>
         <tr>
@@ -1158,625 +782,31 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00329">329</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00347">347</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00188">fs_device_operations::write_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00255">fs_device_operations::write_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00395">vfs_write()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac8b32bb45661974629d18b9830c5d026"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_link </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>oldpath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>newpath</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a hard link. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">oldpath</td><td>The target of the link </td></tr>
-    <tr><td class="paramname">newpath</td><td>The path of the link </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The parent directory or target does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>A file already exists at the given path </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while creating the link </td></tr>
-    <tr><td class="paramname">EACCES</td><td>User does not have write permission for the parent dir </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>Not enough disk space was available </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-    <tr><td class="paramname">EXDEV</td><td>Tried to create a cross-device link </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000091">Todo:</a></b></dt><dd>: Make a copy of path before doing this </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01554">1554</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="vfs_8h_source.html#l00079">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00045">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00020">EEXIST</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00085">ENAMETOOLONG</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00021">EXDEV</a>, <a class="el" href="vfs_8h_source.html#l00051">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00043">inode::id</a>, <a class="el" href="ext2_8h_source.html#l00160">inode</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00017">strrchr()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, and <a class="el" href="vfs_8c_source.html#l00237">vfs_int_link()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00023">sys_link()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a22ee4ff0cc661e9246bd6a76702b298e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_mkdir </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a directory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The path of the directory to create </td></tr>
-    <tr><td class="paramname">mode</td><td>The mode of the directory to create, only access modes are used </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The parent directory does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>A file already exists at the given path </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while creating the directory </td></tr>
-    <tr><td class="paramname">EACCES</td><td>User does not have write permission for the parent dir </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>Not enough disk space was available </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000083">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000084">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00945">945</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l00213">vfs_int_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00338">sys_mkdir()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1833cb4e7ef568776472b7d940eccf04"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_mknod </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a>&#160;</td>
-          <td class="paramname"><em>dev</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The path of the file to create </td></tr>
-    <tr><td class="paramname">mode</td><td>The mode of the file to create </td></tr>
-    <tr><td class="paramname">dev</td><td>The device id to use in case of a special file </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The parent directory does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>A file already exists at the given path </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while creating the file </td></tr>
-    <tr><td class="paramname">EACCES</td><td>User does not have write permission for the parent dir </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>Not enough disk space was available </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000085">Todo:</a></b></dt><dd>: Make a copy of path before doing this </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01023">1023</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00075">inode::atime</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="vfs_8h_source.html#l00079">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00045">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00020">EEXIST</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00085">ENAMETOOLONG</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="vfs_8h_source.html#l00065">inode::fifo</a>, <a class="el" href="vfs_8h_source.html#l00056">inode::gid</a>, <a class="el" href="process_8h_source.html#l00076">process_info::gid</a>, <a class="el" href="vfs_8h_source.html#l00051">inode::hard_link_count</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00043">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00061">inode::if_dev</a>, <a class="el" href="ext2_8h_source.html#l00160">inode</a>, <a class="el" href="vfs_8h_source.html#l00308">fs_device::inode_size</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="vfs_8h_source.html#l00049">inode::name</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00017">strrchr()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00054">inode::uid</a>, <a class="el" href="process_8h_source.html#l00075">process_info::uid</a>, <a class="el" href="process_8h_source.html#l00088">process_info::umask</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00237">vfs_int_link()</a>, <a class="el" href="vfs_8c_source.html#l00169">vfs_int_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l00191">vfs_int_rmnod()</a>.</p>
-
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="init_8c_source.html#l00246">i386_kmain()</a>, <a class="el" href="sc__vfs_8c_source.html#l00314">sys_mknod()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>, and <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a61886b169216dc8c85945584536fbb1d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_mount </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>device</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>mountpoint</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>fstype</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>flags</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Mount a filesystem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">device</td><td>The path of the block special file the fs resides on </td></tr>
-    <tr><td class="paramname">mountpoint</td><td>The directory to mount the fs on </td></tr>
-    <tr><td class="paramname">fstype</td><td>The filesystem driver to use e.g.: ext2, ramfs </td></tr>
-    <tr><td class="paramname">flags</td><td>Options for mounting the fs that are passed to the fs driver </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>A file does not exist </td></tr>
-    <tr><td class="paramname">EINVAL</td><td>An error occurred mounting the filesystem </td></tr>
-    <tr><td class="paramname">ENOTDIR</td><td>The mount point is not a directory </td></tr>
-    <tr><td class="paramname">ENOTBLK</td><td>The special file is not a block special file </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000086">Todo:</a></b></dt><dd>: Support multiple filesystems </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000087">Todo:</a></b></dt><dd>: Unmount </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01173">1173</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00018">ENOTBLK</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="ext2_8c_source.html#l00473">ext2_mount()</a>, <a class="el" href="vfs_8h_source.html#l00061">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00116">fs_device_operations::load_inode</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00067">inode::mount</a>, <a class="el" href="vfs_8h_source.html#l00300">fs_device::ops</a>, <a class="el" href="vfs_8h_source.html#l00298">fs_device::root_inode_id</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, and <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00055">sys_mount()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3b462cea173d8cd38ab8b46b98a159d7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_read </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>file_offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>count</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *&#160;</td>
-          <td class="paramname"><em>read_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>non_block</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Read data from a file. </p>
-<p>If more data is requested than the file contains this function will successfully complete but read_size will be smaller than count</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The inode for the file </td></tr>
-    <tr><td class="paramname">buffer</td><td>The buffer to store the data in </td></tr>
-    <tr><td class="paramname">file_offset</td><td>The offset in the file to start reading at </td></tr>
-    <tr><td class="paramname">count</td><td>The number of bytes to read </td></tr>
-    <tr><td class="paramname">read_size</td><td>A pointer to a variable in which the number of bytes read will be stored </td></tr>
-    <tr><td class="paramname">non_block</td><td>Whether to block the call until data is available in the file, this is only supported on FIFO's and character devices </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">EBADF</td><td>Tried to read from a file for which we do not have permission </td></tr>
-    <tr><td class="paramname">EISDIR</td><td>Direct reads from directories are not allowed </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error was encountered trying to read from the file </td></tr>
-    <tr><td class="paramname">EPIPE</td><td>The FIFO has no data left and there are no (open) write endpoints </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00570">570</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00075">inode::atime</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="chardev_8c_source.html#l00076">device_char_read()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00065">inode::fifo</a>, <a class="el" href="vfs_8h_source.html#l00061">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00311">MODE_READ</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00073">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, and <a class="el" href="vfs_8c_source.html#l00308">vfs_int_read()</a>.</p>
-
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, <a class="el" href="procvmm_8c_source.html#l00224">procvmm_handle_fault()</a>, and <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a6187be67e690be6916a385ebde588093"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_rmdir </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Delete a directory. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The path of the directory to delete </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The directory does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>The directory still has files in it </td></tr>
-    <tr><td class="paramname">EBUSY</td><td>The directory is in use </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while deleting the directory </td></tr>
-    <tr><td class="paramname">EACCES</td><td>Tried to delete a directory from a directory for which we do not have write permission </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000082">Todo:</a></b></dt><dd>: Release the inode </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00898">898</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="errno_8h_source.html#l00019">EBUSY</a>, <a class="el" href="errno_8h_source.html#l00020">EEXIST</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00091">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00067">inode::mount</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="vfs_8h_source.html#l00073">inode::size</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00531">sys_rmdir()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a619a7ea2e918798f30f69ae91efc8855"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_symlink </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>oldpath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a symbolic link. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">oldpath</td><td>The target of the link </td></tr>
-    <tr><td class="paramname">path</td><td>The path of the link </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The parent directory does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>A file already exists at the given path </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while creating the file </td></tr>
-    <tr><td class="paramname">EACCES</td><td>User does not have write permission for the parent dir </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>Not enough disk space was available </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000088">Todo:</a></b></dt><dd>: Make a copy of path before doing this </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01242">1242</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="vfs_8h_source.html#l00075">inode::atime</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="vfs_8h_source.html#l00079">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00045">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00020">EEXIST</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00085">ENAMETOOLONG</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="vfs_8h_source.html#l00056">inode::gid</a>, <a class="el" href="process_8h_source.html#l00076">process_info::gid</a>, <a class="el" href="vfs_8h_source.html#l00051">inode::hard_link_count</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00043">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00061">inode::if_dev</a>, <a class="el" href="ext2_8h_source.html#l00160">inode</a>, <a class="el" href="vfs_8h_source.html#l00308">fs_device::inode_size</a>, <a class="el" href="vfs_8h_source.html#l00063">inode::link_path</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="vfs_8h_source.html#l00049">inode::name</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00017">strrchr()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00054">inode::uid</a>, <a class="el" href="process_8h_source.html#l00075">process_info::uid</a>, <a class="el" href="vfs_8c_source.html#l01863">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00237">vfs_int_link()</a>, <a class="el" href="vfs_8c_source.html#l00169">vfs_int_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l00191">vfs_int_rmnod()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00098">sys_symlink()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9913748fc23c6bfe9d775a2f27d82228"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_truncate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Resize a file. </p>
-<p>If the new size is larger than the file currently is the new room will be filled with zero bytes, if the new size is smaller the data in the truncated part of the file is deleted</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The inode for the file </td></tr>
-    <tr><td class="paramname">size</td><td>The new size of the file </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">EACCES</td><td>Tried to resize a file for which we do not have permission </td></tr>
-    <tr><td class="paramname">EISDIR</td><td>Directories can not be resized </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error was encountered trying to resize the file </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>The disk was full when trying to grow the file </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00812">812</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00073">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, and <a class="el" href="vfs_8c_source.html#l00352">vfs_int_truncate()</a>.</p>
-
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="sc__vfs_8c_source.html#l00273">_sys_truncate()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a797ee30a843cc96fdb59db73fe97102d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_unlink </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Delete a file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The path of the file to delete </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">ENOENT</td><td>The file does not exist </td></tr>
-    <tr><td class="paramname">EEXIST</td><td>A file already exists at the given path </td></tr>
-    <tr><td class="paramname">EBUSY</td><td>The file is in use </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error occurred while deleting the file </td></tr>
-    <tr><td class="paramname">EACCES</td><td>User does not have write permission for the file </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-    <tr><td class="paramname">ENAMETOOLONG</td><td>The name of the file is longer than the maximum allowed number of characters for a file name </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000089">Todo:</a></b></dt><dd>: Make a copy of path before doing this </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l01391">1391</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="vfs_8h_source.html#l00079">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00047">inode::device</a>, <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00019">EBUSY</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00085">ENAMETOOLONG</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00051">inode::hard_link_count</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="ext2_8h_source.html#l00160">inode</a>, <a class="el" href="vfs_8h_source.html#l00308">fs_device::inode_size</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="tar_8h_source.html#l00040">name</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00017">strrchr()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00071">inode::usage_count</a>, <a class="el" href="vfs_8c_source.html#l01852">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00191">vfs_int_rmnod()</a>, and <a class="el" href="vfs_8c_source.html#l00260">vfs_int_unlink()</a>.</p>
-
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00131">sys_unlink()</a>, <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>, and <a class="el" href="vfs_8c_source.html#l00898">vfs_rmdir()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a522e8a4f7dfc7d3a6994313d2d746a82"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int vfs_write </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>file_offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>&#160;</td>
-          <td class="paramname"><em>count</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *&#160;</td>
-          <td class="paramname"><em>write_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>non_block</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Write data to a file. </p>
-<p>If the data to be written would extend past the end of the file, the file will grow. If file_offset lies past the end of the file, the file will grow and the resulting gap will be filled with zero bytes.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">inode</td><td>The inode for the file </td></tr>
-    <tr><td class="paramname">buffer</td><td>The buffer containing the data to write </td></tr>
-    <tr><td class="paramname">file_offset</td><td>The offset in the file to start writing at </td></tr>
-    <tr><td class="paramname">count</td><td>The number of bytes to write </td></tr>
-    <tr><td class="paramname">write_size</td><td>A pointer to a variable in which the number of bytes written will be stored </td></tr>
-    <tr><td class="paramname">non_block</td><td>Whether to block the call until room is available in the file, this is only supported on FIFO's and character devices </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0</dd></dl>
-<dl class="exception"><dt>Exceptions</dt><dd>
-  <table class="exception">
-    <tr><td class="paramname">EFAULT</td><td>Atleast one parameter was a NULL pointer </td></tr>
-    <tr><td class="paramname">EBADF</td><td>Tried to write to a file for which we do not have permission </td></tr>
-    <tr><td class="paramname">EISDIR</td><td>Direct writes to directories are not allowed </td></tr>
-    <tr><td class="paramname">EIO</td><td>An IO error was encountered trying to write to the file </td></tr>
-    <tr><td class="paramname">EPIPE</td><td>The FIFO has no room left and there are no (open) read endpoints </td></tr>
-    <tr><td class="paramname">ENOSPC</td><td>The disk was full when trying to write to the file </td></tr>
-    <tr><td class="paramname">ENOMEM</td><td>Could not allocate kernel heap for a temporary structure </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000081">Todo:</a></b></dt><dd>: Make this more efficient, implement sparse files </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00395">395</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="chardev_8c_source.html#l00066">device_char_write()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00065">inode::fifo</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00061">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00069">inode::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00058">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00312">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00077">inode::mtime</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00073">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00126">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00065">vfs_have_permissions()</a>, and <a class="el" href="vfs_8c_source.html#l00329">vfs_int_write()</a>.</p>
-
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00419">vfs_write()</a>.</p>
 
 </div>
 </div>
 <h2>Variable Documentation</h2>
+<a class="anchor" id="a19a005ef12962664653b556b40f84906"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">return ino = <a class="el" href="group__vfs.html#ga958c0c8e4b441808862e0911fbfc04be">vfs_get_inode</a>(dirc-&gt;parent-&gt;<a class="el" href="structinode.html">inode</a>-&gt;device, <a class="el" href="structdirent.html">dirent</a>-&gt;inode_id)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l02260">2260</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00379">ext2_e2tovfs_inode()</a>, <a class="el" href="ext2_8c_source.html#l00439">ext2_load_inode()</a>, <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l02143">vfs_find_parent()</a>, and <a class="el" href="vfs_8c_source.html#l02198">vfs_find_symlink()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a4ce92837aa1da333980c953e88e1529a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1790,16 +820,20 @@ Variables</h2></td></tr>
 <p>The linked list serving as inode cache. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000080">Todo:</a></b></dt><dd>: Make this an MRU cache </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00032">32</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00035">35</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="vfs_8c.html">vfs.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

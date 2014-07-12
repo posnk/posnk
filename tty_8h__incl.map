@@ -1,0 +1,7 @@
+<map id="include/kernel/tty.h" name="include/kernel/tty.h">
+<area shape="rect" id="node3" href="$types_8h.html" title="sys/types.h" alt="" coords="28,160,118,189"/>
+<area shape="rect" id="node5" href="$termios_8h.html" title="sys/termios.h" alt="" coords="22,83,124,112"/>
+<area shape="rect" id="node8" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="148,83,230,112"/>
+<area shape="rect" id="node11" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="254,83,350,112"/>
+<area shape="rect" id="node13" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="249,160,356,189"/>
+</map>

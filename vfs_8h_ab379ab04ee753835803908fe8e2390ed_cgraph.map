@@ -1,0 +1,23 @@
+<map id="vfs_write" name="vfs_write">
+<area shape="rect" id="node3" href="$blkdev_8c.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="137,212,271,241"/>
+<area shape="rect" id="node5" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="352,5,475,35"/>
+<area shape="rect" id="node16" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="768,304,837,333"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="749,419,856,448"/>
+<area shape="rect" id="node20" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="752,595,853,624"/>
+<area shape="rect" id="node26" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="360,420,467,449"/>
+<area shape="rect" id="node33" href="$chardev_8c.html#a6c83c5a4f3e0c344dfc902ae3e687484" title="device_char_write" alt="" coords="141,575,267,604"/>
+<area shape="rect" id="node38" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="164,471,244,500"/>
+<area shape="rect" id="node46" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="137,679,271,708"/>
+<area shape="rect" id="node50" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="128,732,280,761"/>
+<area shape="rect" id="node56" href="$vfs_8c.html#a807b9f2f00baf5e47097fb6b599761b9" title="Write data to a file from backing storage." alt="" coords="156,785,252,815"/>
+<area shape="rect" id="node7" href="$blkcache_8c.html#a70e74e7691382d33032fda7f1eed71ab" title="blkcache_find &#45; Get a block from the cache" alt="" coords="752,109,853,139"/>
+<area shape="rect" id="node9" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="347,212,480,241"/>
+<area shape="rect" id="node11" href="$blkcache_8c.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="564,264,663,293"/>
+<area shape="rect" id="node14" href="$blkcache_8c.html#a43be209fbab4c66306a9999cd289f294" title="blkcache_get_discard_candidate &#45; Returns the block to be discarded next" alt="" coords="729,203,876,250"/>
+<area shape="rect" id="node22" href="$blkdev_8c.html#abf2017d0baf1627e496e1d2e14d1d8d0" title="device_block_flush" alt="" coords="547,109,680,139"/>
+<area shape="rect" id="node31" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="377,316,449,345"/>
+<area shape="rect" id="node40" href="$synch_8c.html#a11a22d1fc1d8c2622d71841bc9cee82d" title="semaphore_idown" alt="" coords="351,473,476,503"/>
+<area shape="rect" id="node48" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="360,679,467,708"/>
+<area shape="rect" id="node52" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="356,785,471,815"/>
+<area shape="rect" id="node54" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="328,732,499,761"/>
+</map>

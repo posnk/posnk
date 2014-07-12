@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('include_2arch_2i386_2idt_8h_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">idt.h</div>  </div>
@@ -133,28 +150,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="structi386__idt__descriptor.html#ad03b15e2f0e8b15ea4006c8b603bc45a">   42</a></span>&#160;        uint8_t                 <a class="code" href="structi386__idt__descriptor.html#ad03b15e2f0e8b15ea4006c8b603bc45a">reserved</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="code" href="structi386__idt__descriptor.html#afeb5e22ea53f73d062bd6322245e2127">   43</a></span>&#160;        uint8_t                 <a class="code" href="structi386__idt__descriptor.html#afeb5e22ea53f73d062bd6322245e2127">flags</a>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno"><a class="code" href="structi386__idt__descriptor.html#a83da8d4b85272a941b1e249090f484ec">   44</a></span>&#160;        uint16_t                <a class="code" href="structi386__idt__descriptor.html#a83da8d4b85272a941b1e249090f484ec">offsetHi</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#abd4249397aa41ce46b70960eca7b5494">   46</a></span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#a1bcbb958b71a9e105df0b05024659d60">   47</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structi386__idt__descriptor.html">i386_idt_descriptor</a> <a class="code" href="structi386__idt__descriptor.html">i386_idt_descriptor_t</a>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#acb7bc06bed6f6408d719334fc41698c7">   48</a></span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">   49</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structi386__idtr.html">i386_idtr</a> {</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#a640971028dd38529a00178f974043b09">   50</a></span>&#160;        uint16_t                <a class="code" href="structi386__idtr.html#adb416b677691f2fde935c69fa6141ccd">m_limit</a>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}  __attribute__((packed));</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#abf0ea5dfc5b766b4bd580fd2a539da31">   47</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structi386__idt__descriptor.html">i386_idt_descriptor</a> <a class="code" href="structi386__idt__descriptor.html">i386_idt_descriptor_t</a>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="code" href="structi386__idtr.html">   49</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structi386__idtr.html">i386_idtr</a> {</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="code" href="structi386__idtr.html#adb416b677691f2fde935c69fa6141ccd">   50</a></span>&#160;        uint16_t                <a class="code" href="structi386__idtr.html#adb416b677691f2fde935c69fa6141ccd">m_limit</a>;</div>
 <div class="line"><a name="l00051"></a><span class="lineno"><a class="code" href="structi386__idtr.html#aee2926fc968bc4d7512fbdf3879b74da">   51</a></span>&#160;        uint32_t                <a class="code" href="structi386__idtr.html#aee2926fc968bc4d7512fbdf3879b74da">m_base</a>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}  <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((packed));</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#a806d3bac49de1ce23aaa570070e23c43">   53</a></span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#a292629fee18f797221aacf83501238ec">   54</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structi386__idtr.html">i386_idtr</a> <a class="code" href="structi386__idtr.html">i386_idtr_t</a>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}  __attribute__((packed));</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="code" href="include_2arch_2i386_2idt_8h.html#a522a61462feb7cada00fae4c0bb968ca">   54</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structi386__idtr.html">i386_idtr</a> <a class="code" href="structi386__idtr.html">i386_idtr_t</a>;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> <a class="code" href="idt_8c.html#abf973c2ecc36408c9a5f6b593dad7d0a">i386_load_idt</a>();</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">void</span> <a class="code" href="idt_8c.html#adf6646601e167235818fd01cdc1c14d6">i386_idt_initialize</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span> <a class="code" href="idt_8c.html#a5018d8341f8c99f0509448e9c229311e">i386_idt_set_descriptor</a>(uint8_t <span class="keywordtype">id</span>, <span class="keywordtype">void</span> *isr, uint8_t <a class="code" href="include_2arch_2i386_2idt_8h.html#aa2585d779da0ab21273a8d92de9a0ebe">flags</a>, uint32_t segment);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keywordtype">void</span> <a class="code" href="idt_8c.html#a5018d8341f8c99f0509448e9c229311e">i386_idt_set_descriptor</a>(uint8_t <span class="keywordtype">id</span>, <span class="keywordtype">void</span> *isr, uint8_t flags, uint32_t segment);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:23 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li><li class="navelem"><a class="el" href="include_2arch_2i386_2idt_8h.html">idt.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:55 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

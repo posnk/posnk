@@ -1,0 +1,5 @@
+<map id="kb_set_leds" name="kb_set_leds">
+<area shape="rect" id="node3" href="$i8042_8c.html#a30383ff22dd0052abee07a7ae741f789" title="kbd_send_encoder_command" alt="" coords="147,32,341,61"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="424,5,501,35"/>
+<area shape="rect" id="node7" href="$i8042_8c.html#a257afd571adf203b1e7bddf97ac3d6c8" title="kbd_controller_status" alt="" coords="389,59,536,88"/>
+</map>

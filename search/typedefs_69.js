@@ -14,7 +14,7 @@ var searchData=
   ['idt_5fdescriptor',['idt_descriptor',['../arch_2i386_2include_2idt_8h.html#a3874e6747504f21a9e01767e71afa8b8',1,'idt.h']]],
   ['idt_5fpointer',['idt_pointer',['../arch_2i386_2include_2idt_8h.html#afbc877293aba0cccb3d2208aedd8aad3',1,'idt.h']]],
   ['ino_5ft',['ino_t',['../types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9',1,'types.h']]],
-  ['inode_5ft',['inode_t',['../vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2',1,'vfs.h']]],
+  ['inode_5ft',['inode_t',['../group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2',1,'vfs.h']]],
   ['interrupt_5fhandler_5ft',['interrupt_handler_t',['../interrupt_8h.html#afbe74f225e5e67183a2bd431598dedae',1,'interrupt.h']]],
   ['irq_5fhandler_5ft',['irq_handler_t',['../interrupt_8h.html#aa45a2461022ea056cbd907e8e785d4c1',1,'interrupt.h']]],
   ['irq_5fid_5ft',['irq_id_t',['../interrupt_8h.html#ab98edf52518204e91940f3c8eea3742b',1,'interrupt.h']]]

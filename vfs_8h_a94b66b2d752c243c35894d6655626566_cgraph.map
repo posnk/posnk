@@ -1,0 +1,11 @@
+<map id="vfs_getdents" name="vfs_getdents">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="167,5,289,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="175,59,281,88"/>
+<area shape="rect" id="node9" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="161,112,295,141"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="152,165,304,195"/>
+<area shape="rect" id="node19" href="$vfs_8c.html#a783b9df3cf72f06ddfee932bf644fcda" title="Read directory entries from backing storage." alt="" coords="171,219,285,248"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="372,5,503,35"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="384,112,491,141"/>
+<area shape="rect" id="node15" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="380,165,495,195"/>
+<area shape="rect" id="node17" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="352,219,523,248"/>
+</map>

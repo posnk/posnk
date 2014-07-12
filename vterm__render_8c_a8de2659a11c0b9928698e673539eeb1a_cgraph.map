@@ -1,0 +1,17 @@
+<map id="vterm_render" name="vterm_render">
+<area shape="rect" id="node3" href="$vterm__escape_8c.html#aeb267663cdbef3402fccf07a0d3b8ac6" title="try_interpret_escape_seq" alt="" coords="152,112,320,141"/>
+<area shape="rect" id="node13" href="$vga__vterm_8c.html#aa69d89b32d60ff0f954bd6c94abf8ff8" title="vterm_invalidate_cursor" alt="" coords="156,271,316,300"/>
+<area shape="rect" id="node19" href="$vterm__render_8c.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="389,323,501,352"/>
+<area shape="rect" id="node28" href="$vterm__render_8c.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="159,375,313,404"/>
+<area shape="rect" id="node5" href="$vterm__misc_8c.html#a9525d22583defd4f60ba721524229348" title="validate_escape_suffix" alt="" coords="368,5,523,35"/>
+<area shape="rect" id="node7" href="$vterm__escape_8c.html#aa3b1349da344da63d8afbfd356d0e039" title="vterm_escape_cancel" alt="" coords="371,219,520,248"/>
+<area shape="rect" id="node9" href="$vterm__csi_8c.html#a7ecdab35fc55c574febf07a8205a93ab" title="vterm_interpret_csi" alt="" coords="379,59,512,88"/>
+<area shape="rect" id="node11" href="$vterm__scroll_8c.html#af5e7894e851255700239dd5f8be837b5" title="vterm_scroll_up" alt="" coords="388,112,503,141"/>
+<area shape="rect" id="node15" href="$vga__vterm_8c.html#adb0541135b548fc90f4471f2a5f6b7d3" title="vga_vterm_map_attr" alt="" coords="763,324,904,353"/>
+<area shape="rect" id="node17" href="$vga__vterm_8c.html#a2b0c970500b8313bc09b5af307ddd515" title="vterm_vga_position" alt="" coords="379,165,512,195"/>
+<area shape="rect" id="node21" href="$string_8c.html#afcd97f487174f9092b0f23c7ac78a55a" title="strchr" alt="" coords="616,323,669,352"/>
+<area shape="rect" id="node23" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="571,376,715,405"/>
+<area shape="rect" id="node26" href="$vterm__scroll_8c.html#ab07c6f12ecf530effcba746a607c505b" title="vterm_scroll_down" alt="" coords="577,429,708,459"/>
+<area shape="rect" id="node32" href="$vterm__escape_8c.html#a7c23f18f24a199457200cf483fa887c1" title="vterm_escape_start" alt="" coords="377,427,513,456"/>
+<area shape="rect" id="node35" href="$vga__vterm_8c.html#a271bdefb4b6a8e260cf72c9b3aaf9584" title="vterm_handle_bell" alt="" coords="383,480,508,509"/>
+</map>

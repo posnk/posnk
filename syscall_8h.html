@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('syscall_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#typedef-members">Typedefs</a> &#124;
@@ -109,9 +126,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a581ed37968ead91b6d3a0b3b7a71da9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d">syscall_init</a> ()</td></tr>
 <tr class="memitem:a98d180b3b9e42268ac21559a97c2fd62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a98d180b3b9e42268ac21559a97c2fd62">syscall_register</a> (int call_id, <a class="el" href="syscall_8h.html#a58351aa41e6601eab9c22352bd650784">syscall_func_t</a> func)</td></tr>
 <tr class="memitem:a4deb14029218fa13e598a9b4a80c6470"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470">syscall_dispatch</a> (void *user_param_block, void *instr_ptr)</td></tr>
-<tr class="memitem:ad67cb3aec103435cc4b2a1db7b3f2f32"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad67cb3aec103435cc4b2a1db7b3f2f32">copy_user_to_kern</a> (void *src, void *dest, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
-<tr class="memitem:adfd74f44e7ab11ebf4f305edc0259ef2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#adfd74f44e7ab11ebf4f305edc0259ef2">copy_kern_to_user</a> (void *src, void *dest, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:ad67cb3aec103435cc4b2a1db7b3f2f32"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad67cb3aec103435cc4b2a1db7b3f2f32">copy_user_to_kern</a> (void *src, void *dest, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
+<tr class="memitem:adfd74f44e7ab11ebf4f305edc0259ef2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#adfd74f44e7ab11ebf4f305edc0259ef2">copy_kern_to_user</a> (void *src, void *dest, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memitem:a269390f6a63cff7836f64b16c9030d60"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a269390f6a63cff7836f64b16c9030d60">sys_fork</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memdesc:a269390f6a63cff7836f64b16c9030d60"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a>  <a href="#a269390f6a63cff7836f64b16c9030d60"></a><br/></td></tr>
 <tr class="memitem:a9059e3c677a78bbfa5a12368ea6a604a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a9059e3c677a78bbfa5a12368ea6a604a">sys_kill</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:ab5a33a78456e3311729e39339698a1cb"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ab5a33a78456e3311729e39339698a1cb">sys_getpid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a4ef8fd154b9533c4c16c9a1b660e1c83"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a4ef8fd154b9533c4c16c9a1b660e1c83">sys_getppid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
@@ -121,6 +139,7 @@ Functions</h2></td></tr>
 <tr class="memitem:aad8d9ec8b2a4a999219de02061cbe615"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aad8d9ec8b2a4a999219de02061cbe615">sys_yield</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a258509c7bd40585df15de8f7182eb19a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a258509c7bd40585df15de8f7182eb19a">sys_sbrk</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:aba1bce97fb5694ba0fd06e3d73a4bb6b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aba1bce97fb5694ba0fd06e3d73a4bb6b">sys_getuid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memdesc:aba1bce97fb5694ba0fd06e3d73a4bb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a>  <a href="#aba1bce97fb5694ba0fd06e3d73a4bb6b"></a><br/></td></tr>
 <tr class="memitem:a72f742e2740078590240e3a580a170ee"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a72f742e2740078590240e3a580a170ee">sys_geteuid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a3a39de00e875b884259c381c94bbec25"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a3a39de00e875b884259c381c94bbec25">sys_getgid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a2e91a26c3cff0aaca46441d3094977b8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a2e91a26c3cff0aaca46441d3094977b8">sys_getegid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
@@ -147,31 +166,31 @@ Functions</h2></td></tr>
 <tr class="memitem:ab37dfc22fd6884d179608096172e0cdc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ab37dfc22fd6884d179608096172e0cdc">sys_lseek</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a7f48b00d2089d7021cc6a62e8c56b331"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a7f48b00d2089d7021cc6a62e8c56b331">sys_rmdir</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:acaf5f124566c234a14e7cafa5471bcd0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#acaf5f124566c234a14e7cafa5471bcd0">sys_execve</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
-<tr class="memitem:ad636cebe991c7b6ff56d4788b069983b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b">sys_waitpid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ad248f89f4e7a7845326a2db903ec2630"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad248f89f4e7a7845326a2db903ec2630">sys_fcntl</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a4e3e12ebe07f291dbe3dc38927fb29ce"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a4e3e12ebe07f291dbe3dc38927fb29ce">sys_umask</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
+<tr class="memitem:a594fa135d60d1edbf409a0c50b530fbe"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a594fa135d60d1edbf409a0c50b530fbe">sys_waitpid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a0dffbb5f3c25edf621eca3446b597dbd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a0dffbb5f3c25edf621eca3446b597dbd">sys_fcntl</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a407d083c211f6d97115c2fb967661734"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a407d083c211f6d97115c2fb967661734">sys_umask</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:aaac6e22260c6c5958e3bd35e4d6d149f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f">sys_readlink</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:ad19e102905b1c2a70bfc27c3313717c9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9">sys_lstat</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a697f1d377f7d7ca3cb46949fc7ee3388"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388">sys_symlink</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
-<tr class="memitem:a43cf9c2310c228a9b2e411bc1a62ff17"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17">sys_getdents</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a827b4ff2983309209988a2ee675c8aa7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a827b4ff2983309209988a2ee675c8aa7">sys_ioctl</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a483b72e7e4152c714adee54dfc2d818b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a483b72e7e4152c714adee54dfc2d818b">sys_getsid</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a16fbb2e48d896e313f25d80b6942a5f1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a16fbb2e48d896e313f25d80b6942a5f1">sys_setpgrp</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a62605ebe8dfb8a0cee443478b053c6ff"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a62605ebe8dfb8a0cee443478b053c6ff">sys_setpgid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:aac567c56881c0ba57c22bc1517836d45"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aac567c56881c0ba57c22bc1517836d45">sys_time</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memdesc:aac567c56881c0ba57c22bc1517836d45"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__time_8c.html">kernel/sc_time.c</a>  <a href="#aac567c56881c0ba57c22bc1517836d45"></a><br/></td></tr>
-<tr class="memitem:a1764141f8114e589479dbecd461e8b55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a1764141f8114e589479dbecd461e8b55">sys_usleep</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a8ad3ba3efa9c74b1723e8281fff12948"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a8ad3ba3efa9c74b1723e8281fff12948">sys_sleep</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a11b2d10465ed37687753db2d3dd5ff55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a11b2d10465ed37687753db2d3dd5ff55">sys_stime</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ad57ce730b081749557dd25428aa882f7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad57ce730b081749557dd25428aa882f7">sys_setuid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:ab4f76581f502ae36936a20e48ade6e1c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ab4f76581f502ae36936a20e48ade6e1c">sys_setgid</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:afc994136336e82cbc1c62ad1a6b62976"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#afc994136336e82cbc1c62ad1a6b62976">sys_signal</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a779c6204a1f19dd4088141e1e292d583"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a779c6204a1f19dd4088141e1e292d583">sys_exitsig</a> (<a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a924151cc2d5b1aa608201d2706e06305"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a924151cc2d5b1aa608201d2706e06305">sys_sigprocmask</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:aebfa7c72310252fede486217abf0318a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aebfa7c72310252fede486217abf0318a">sys_ssigex</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
-<tr class="memitem:a7c7fb08d33d4d09de7719a25728f6c6b"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a7c7fb08d33d4d09de7719a25728f6c6b">sys_dbgdrop</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
+<tr class="memitem:a9c3c1bfedf2b28c4fd0152a4b3768007"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a9c3c1bfedf2b28c4fd0152a4b3768007">sys_getdents</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:aa63dfef0a7934ab84ac2c23dc9e84c91"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aa63dfef0a7934ab84ac2c23dc9e84c91">sys_ioctl</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a25d703918f03646823948b7d9d0f177c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a25d703918f03646823948b7d9d0f177c">sys_getsid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:ad75761f4f39df2f6a0f2455e3396912e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ad75761f4f39df2f6a0f2455e3396912e">sys_setpgrp</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a01d9874db7dec827f8e2e7e18a1cce55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a01d9874db7dec827f8e2e7e18a1cce55">sys_setpgid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:ade312e577a9e6910eb0bf1e81ebca6b7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ade312e577a9e6910eb0bf1e81ebca6b7">sys_time</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memdesc:ade312e577a9e6910eb0bf1e81ebca6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sc__time_8c.html">kernel/sc_time.c</a>  <a href="#ade312e577a9e6910eb0bf1e81ebca6b7"></a><br/></td></tr>
+<tr class="memitem:a6a4c4affb468b830c89ad5c19f1007be"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a6a4c4affb468b830c89ad5c19f1007be">sys_usleep</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a0304fafcd62e49f121a6c5aca056149a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a0304fafcd62e49f121a6c5aca056149a">sys_sleep</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a7ebdf84ff584049f61510f1352710a2e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a7ebdf84ff584049f61510f1352710a2e">sys_stime</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a5f62df5832790c369dcd2f923a9edb10"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a5f62df5832790c369dcd2f923a9edb10">sys_setuid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a3357b013032ddc8630a41018cb0dc81e"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a3357b013032ddc8630a41018cb0dc81e">sys_setgid</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a06a3be94452d165d0faf407a8aedf058"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a06a3be94452d165d0faf407a8aedf058">sys_signal</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a11cf3c1f45eeeafe7c04c0cf927450bf"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a11cf3c1f45eeeafe7c04c0cf927450bf">sys_exitsig</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a8ca0088743437436872eb0393ff55dac"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a8ca0088743437436872eb0393ff55dac">sys_sigprocmask</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a4daf5640aad07da725b9775482851ab1"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a4daf5640aad07da725b9775482851ab1">sys_ssigex</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
+<tr class="memitem:a8b2f592d6b143f30b9056937f2eed517"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a8b2f592d6b143f30b9056937f2eed517">sys_dbgdrop</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a9d19cbcb64ed126b4ea42e53a5ceef52"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a9d19cbcb64ed126b4ea42e53a5ceef52">sys_mount</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
-<tr class="memitem:ab77d628a44e1167356653e293c7bc357"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ab77d628a44e1167356653e293c7bc357">sys_ftruncate</a> (uint32_t param[4], <a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t param_size[4])</td></tr>
+<tr class="memitem:a45c06500d174dc083bd4b7405d06a83f"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a45c06500d174dc083bd4b7405d06a83f">sys_ftruncate</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:ac7ac910b524c9ce4a0999cb4fb844e32"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ac7ac910b524c9ce4a0999cb4fb844e32">sys_truncate</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 </table>
 <h2>Typedef Documentation</h2>
@@ -391,9 +410,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00106">106</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00676">_sys_close()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a7c7fb08d33d4d09de7719a25728f6c6b"></a>
+<a class="anchor" id="a8b2f592d6b143f30b9056937f2eed517"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -406,7 +431,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -416,6 +441,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="syscall_8c_source.html#l00130">130</a> of file <a class="el" href="syscall_8c_source.html">syscall.c</a>.</p>
+
+<p>References <a class="el" href="kdbg_8c_source.html#l00044">dbgapi_invoke_kdbg()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -443,6 +474,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00080">80</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00491">_sys_dup()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a8f5e5a18dafa11afc840db4b2e5f2d0a"></a>
@@ -468,6 +505,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00074">74</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00461">_sys_dup2()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -527,22 +570,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00134">134</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="process_8c_source.html#l00137">process_child_event()</a>, <a class="el" href="process_8h_source.html#l00041">PROCESS_CHILD_KILLED</a>, <a class="el" href="process_8h_source.html#l00029">PROCESS_KILLED</a>, <a class="el" href="procvmm_8c_source.html#l00021">procvmm_clear_mmaps()</a>, <a class="el" href="scheduler_8c_source.html#l00150">schedule()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="process_8h_source.html#l00123">process_info::state</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a779c6204a1f19dd4088141e1e292d583"></a>
+<a class="anchor" id="a11cf3c1f45eeeafe7c04c0cf927450bf"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_exitsig </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -585,6 +634,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00023">23</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00321">_sys_fchdir()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4e819e7740560993cdb633c9f46632b0"></a>
@@ -610,6 +665,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00030">30</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00365">_sys_fchmod()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -637,9 +698,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00036">36</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00387">_sys_fchown()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ad248f89f4e7a7845326a2db903ec2630"></a>
+<a class="anchor" id="a0dffbb5f3c25edf621eca3446b597dbd"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -652,7 +719,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -695,6 +762,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a> </p>
+<p>Part of P-OS kernel.</p>
+<p>Contains process related syscalls</p>
+<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
+<p>Changelog: 07-04-2014 - Created </p>
+
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00023">23</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a36eb3bc08dafff673a673ca11271b1fc"></a>
@@ -721,9 +800,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00054">54</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00338">_sys_fstat()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ab77d628a44e1167356653e293c7bc357"></a>
+<a class="anchor" id="a45c06500d174dc083bd4b7405d06a83f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -736,7 +821,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -755,7 +840,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a43cf9c2310c228a9b2e411bc1a62ff17"></a>
+<a class="anchor" id="a9c3c1bfedf2b28c4fd0152a4b3768007"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -768,7 +853,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -811,6 +896,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__perm_8c_source.html#l00039">39</a> of file <a class="el" href="sc__perm_8c_source.html">sc_perm.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00078">process_info::effective_gid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a72f742e2740078590240e3a580a170ee"></a>
@@ -836,6 +927,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__perm_8c_source.html#l00029">29</a> of file <a class="el" href="sc__perm_8c_source.html">sc_perm.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00077">process_info::effective_uid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -863,6 +960,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__perm_8c_source.html#l00034">34</a> of file <a class="el" href="sc__perm_8c_source.html">sc_perm.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00076">process_info::gid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aee85f00ca9388d0d40c6eab40fc20056"></a>
@@ -888,6 +991,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00080">80</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00079">process_info::pgid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -915,6 +1024,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00070">70</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00074">process_info::pid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a4ef8fd154b9533c4c16c9a1b660e1c83"></a>
@@ -941,22 +1056,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00075">75</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00073">process_info::parent_pid</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a483b72e7e4152c714adee54dfc2d818b"></a>
+<a class="anchor" id="a25d703918f03646823948b7d9d0f177c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_getsid </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -999,9 +1120,21 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p><a class="el" href="sc__process_8c.html">kernel/sc_process.c</a> </p>
+<p>Part of P-OS kernel.</p>
+<p>Contains process related syscalls</p>
+<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
+<p>Changelog: 07-04-2014 - Created </p>
+
+<p>Definition at line <a class="el" href="sc__perm_8c_source.html#l00024">24</a> of file <a class="el" href="sc__perm_8c_source.html">sc_perm.c</a>.</p>
+
+<p>References <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="process_8h_source.html#l00075">process_info::uid</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a827b4ff2983309209988a2ee675c8aa7"></a>
+<a class="anchor" id="aa63dfef0a7934ab84ac2c23dc9e84c91"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1014,7 +1147,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1056,6 +1189,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>: Implement kill all system processes </dd></dl>
+
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00028">28</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="errno_8h_source.html#l00006">ESRCH</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="process_8h_source.html#l00076">process_info::gid</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="process_8h_source.html#l00079">process_info::pgid</a>, <a class="el" href="process_8c_source.html#l00218">process_get()</a>, <a class="el" href="process_8c_source.html#l00063">process_send_signal()</a>, <a class="el" href="process_8c_source.html#l00249">process_signal_pgroup()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="process_8h_source.html#l00075">process_info::uid</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -1085,7 +1225,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00023">23</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01554">vfs_link()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01543">vfs_link()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -1114,6 +1254,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00200">200</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1321,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00338">338</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00945">vfs_mkdir()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00969">vfs_mkdir()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -1207,7 +1353,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00314">314</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01023">vfs_mknod()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -1239,7 +1385,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00055">55</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -1301,6 +1447,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00125">125</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a2e7af86853d0f163e699bc4000d07c5c"></a>
@@ -1327,6 +1479,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00112">112</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="acb06c51d877f0e60e20c26e419c8ef20"></a>
@@ -1352,6 +1510,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00159">159</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +1577,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00531">531</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00898">vfs_rmdir()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00922">vfs_rmdir()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -1442,10 +1606,17 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000049">Todo:</a></b></dt><dd>: Handle decreasing heap size </dd></dl>
+
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00287">287</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00112">process_info::heap_end</a>, <a class="el" href="process_8h_source.html#l00113">process_info::heap_max</a>, <a class="el" href="process_8h_source.html#l00111">process_info::heap_start</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="process_8h_source.html#l00049">PROCESS_MMAP_FLAG_HEAP</a>, <a class="el" href="process_8h_source.html#l00045">PROCESS_MMAP_FLAG_WRITE</a>, <a class="el" href="procvmm_8c_source.html#l00134">procvmm_mmap_anon()</a>, <a class="el" href="procvmm_8c_source.html#l00119">procvmm_resize_map()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab4f76581f502ae36936a20e48ade6e1c"></a>
+<a class="anchor" id="a3357b013032ddc8630a41018cb0dc81e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1458,7 +1629,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1477,7 +1648,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a62605ebe8dfb8a0cee443478b053c6ff"></a>
+<a class="anchor" id="a01d9874db7dec827f8e2e7e18a1cce55"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1490,7 +1661,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1510,20 +1681,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a16fbb2e48d896e313f25d80b6942a5f1"></a>
+<a class="anchor" id="ad75761f4f39df2f6a0f2455e3396912e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_setpgrp </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1566,9 +1737,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00090">90</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00081">process_info::ctty</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="process_8h_source.html#l00079">process_info::pgid</a>, <a class="el" href="process_8h_source.html#l00074">process_info::pid</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="process_8h_source.html#l00080">process_info::sid</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="ad57ce730b081749557dd25428aa882f7"></a>
+<a class="anchor" id="a5f62df5832790c369dcd2f923a9edb10"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1581,7 +1758,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1600,7 +1777,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afc994136336e82cbc1c62ad1a6b62976"></a>
+<a class="anchor" id="a06a3be94452d165d0faf407a8aedf058"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1613,7 +1790,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1632,7 +1809,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a924151cc2d5b1aa608201d2706e06305"></a>
+<a class="anchor" id="a8ca0088743437436872eb0393ff55dac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1645,7 +1822,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1664,7 +1841,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8ad3ba3efa9c74b1723e8281fff12948"></a>
+<a class="anchor" id="a0304fafcd62e49f121a6c5aca056149a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1677,7 +1854,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1696,7 +1873,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aebfa7c72310252fede486217abf0318a"></a>
+<a class="anchor" id="a4daf5640aad07da725b9775482851ab1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1709,7 +1886,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1760,7 +1937,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a11b2d10465ed37687753db2d3dd5ff55"></a>
+<a class="anchor" id="a7ebdf84ff584049f61510f1352710a2e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1773,7 +1950,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1818,26 +1995,26 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00098">98</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01242">vfs_symlink()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aac567c56881c0ba57c22bc1517836d45"></a>
+<a class="anchor" id="ade312e577a9e6910eb0bf1e81ebca6b7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t sys_time </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param</em>[4], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1894,7 +2071,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4e3e12ebe07f291dbe3dc38927fb29ce"></a>
+<a class="anchor" id="a407d083c211f6d97115c2fb967661734"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1907,7 +2084,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1952,13 +2129,13 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00131">131</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01391">vfs_unlink()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a1764141f8114e589479dbecd461e8b55"></a>
+<a class="anchor" id="a6a4c4affb468b830c89ad5c19f1007be"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1971,7 +2148,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -1990,7 +2167,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad636cebe991c7b6ff56d4788b069983b"></a>
+<a class="anchor" id="a594fa135d60d1edbf409a0c50b530fbe"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -2003,7 +2180,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="vfs_8h.html#ad3792acda3d1061b043ff9e83594ff0d">__attribute__</a>((__unused__)) uint32_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>param_size</em>[4]&#160;</td>
         </tr>
         <tr>
@@ -2048,6 +2225,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Definition at line <a class="el" href="sc__streams_8c_source.html#l00180">180</a> of file <a class="el" href="sc__streams_8c_source.html">sc_streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aad8d9ec8b2a4a999219de02061cbe615"></a>
@@ -2073,6 +2256,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="sc__process_8c_source.html#l00143">143</a> of file <a class="el" href="sc__process_8c_source.html">sc_process.c</a>.</p>
+
+<p>References <a class="el" href="scheduler_8c_source.html#l00150">schedule()</a>.</p>
+
+<p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
 </div>
 </div>
@@ -2163,11 +2352,15 @@ Functions</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="syscall_8h.html">syscall.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

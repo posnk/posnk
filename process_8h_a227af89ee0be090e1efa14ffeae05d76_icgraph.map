@@ -1,0 +1,9 @@
+<map id="process_get" name="process_get">
+<area shape="rect" id="node3" href="$process_8h.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="147,59,288,88"/>
+<area shape="rect" id="node11" href="$sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686" title="sys_kill" alt="" coords="384,112,451,141"/>
+<area shape="rect" id="node14" href="$syscall_8h.html#a62605ebe8dfb8a0cee443478b053c6ff" title="sys_setpgid" alt="" coords="172,163,263,192"/>
+<area shape="rect" id="node17" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="172,216,263,245"/>
+<area shape="rect" id="node5" href="$process_8h.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="337,5,497,35"/>
+<area shape="rect" id="node7" href="$sc__process_8c.html#a63105adc898e3057d2df2bf9b8ab6339" title="sys_exit" alt="" coords="383,59,452,88"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="548,139,633,168"/>
+</map>

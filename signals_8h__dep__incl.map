@@ -1,0 +1,7 @@
+<map id="include/kernel/signals.h" name="include/kernel/signals.h">
+<area shape="rect" id="node3" href="$exception_8c.html" title="kernel/exception.c" alt="" coords="5,83,133,112"/>
+<area shape="rect" id="node5" href="$process_8c.html" title="kernel/process.c" alt="" coords="157,83,275,112"/>
+<area shape="rect" id="node7" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="299,83,416,112"/>
+<area shape="rect" id="node9" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="440,83,552,112"/>
+<area shape="rect" id="node11" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="576,83,661,112"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="process_send_signal" name="process_send_signal">
+<area shape="rect" id="node3" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="241,19,324,48"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="240,85,325,115"/>
+<area shape="rect" id="node11" href="$exception_8h.html#a6144950ba049dd82bec04ca06f81c30e" title="exception_handle" alt="" coords="221,164,344,193"/>
+<area shape="rect" id="node18" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="232,224,333,253"/>
+<area shape="rect" id="node24" href="$process_8c.html#a45b5eb748b9e8e41b113a72011348e33" title="Iterator function that signals up processes with the given pgid." alt="" coords="197,367,368,396"/>
+<area shape="rect" id="node28" href="$sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686" title="sys_kill" alt="" coords="659,399,725,428"/>
+<area shape="rect" id="node31" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="224,289,341,319"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="456,5,531,35"/>
+<area shape="rect" id="node9" href="$sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595" title="sys_write" alt="" coords="455,59,532,88"/>
+<area shape="rect" id="node13" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="620,164,764,193"/>
+<area shape="rect" id="node15" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="425,112,561,141"/>
+<area shape="rect" id="node20" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="443,269,544,299"/>
+<area shape="rect" id="node22" href="$syscall_8h.html#acaf5f124566c234a14e7cafa5471bcd0" title="sys_execve" alt="" coords="448,216,539,245"/>
+<area shape="rect" id="node26" href="$process_8h.html#a1e87e5736764e2b539592f1dfda00085" title="process_signal_pgroup" alt="" coords="416,373,571,403"/>
+</map>

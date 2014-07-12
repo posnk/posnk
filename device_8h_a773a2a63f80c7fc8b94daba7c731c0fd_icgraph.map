@@ -1,0 +1,5 @@
+<map id="device_char_open" name="device_char_open">
+<area shape="rect" id="node3" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="181,32,267,61"/>
+<area shape="rect" id="node5" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="316,5,417,35"/>
+<area shape="rect" id="node7" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="328,59,405,88"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="kb_pressed" name="kb_pressed">
+<area shape="rect" id="node3" href="$kbd_8c.html#a464a3fc19561c9d616e77ed37bc9800c" title="kb_typed" alt="" coords="144,32,219,61"/>
+<area shape="rect" id="node5" href="$dec_8c.html#a5bfe1da0f0d5bfb9292ea54663de49b7" title="decode_keystroke" alt="" coords="267,5,395,35"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#ab325d11088a3b8f776e39c2c5f49aaf6" title="con_handle_key" alt="" coords="273,59,388,88"/>
+</map>

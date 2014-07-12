@@ -1,0 +1,17 @@
+<map id="scheduler_fork_to" name="scheduler_fork_to">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="417,5,524,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="800,215,869,244"/>
+<area shape="rect" id="node9" href="$task__switch_8c.html#ab71bee6f2f63101ac5578b86c8e86f06" title="i386_get_return_address" alt="" coords="180,347,343,376"/>
+<area shape="rect" id="node12" href="$arch_2i386_2paging_8c.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="200,293,323,323"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="597,5,752,35"/>
+<area shape="rect" id="node14" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="413,267,528,296"/>
+<area shape="rect" id="node16" href="$heapmm_8c.html#a7c0a917d74eb74aa01007d83165dbfcb" title="Allocates a new page of heap space to the caller." alt="" coords="604,240,745,269"/>
+<area shape="rect" id="node18" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="601,319,748,348"/>
+<area shape="rect" id="node23" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="401,423,540,470"/>
+<area shape="rect" id="node26" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="601,453,748,499"/>
+<area shape="rect" id="node28" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="425,371,516,400"/>
+<area shape="rect" id="node33" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="393,543,548,590"/>
+<area shape="rect" id="node35" href="$arch_2i386_2paging_8h.html#ac596c3cfa12ef6060abbf092f066a5a0" title="i386_phys_copy_frame" alt="" coords="393,613,548,643"/>
+<area shape="rect" id="node37" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="420,109,521,139"/>
+<area shape="rect" id="node39" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="421,163,520,192"/>
+</map>

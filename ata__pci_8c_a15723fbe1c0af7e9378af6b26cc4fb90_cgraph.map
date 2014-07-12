@@ -1,0 +1,22 @@
+<map id="ata_pci_probe" name="ata_pci_probe">
+<area shape="rect" id="node3" href="$ata_8c.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="184,535,277,564"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="741,185,848,215"/>
+<area shape="rect" id="node38" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="575,55,676,84"/>
+<area shape="rect" id="node57" href="$pci__intel__host_8c.html#a558a46983f9ad5bb6aaaa0e7efdfd268" title="pci_config_read_byte" alt="" coords="159,669,303,699"/>
+<area shape="rect" id="node59" href="$pci__intel__host_8c.html#a6bf41b3bcf4bf820c4c0e393332ceaad" title="driver/bus/pci_intel_host.c" alt="" coords="359,1009,503,1039"/>
+<area shape="rect" id="node5" href="$ata_8c.html#a1e761367c05962274c1fc56b30ac7314" title="ata_global_initialize" alt="" coords="559,159,692,188"/>
+<area shape="rect" id="node9" href="$ata_8c.html#a5ba79805c4cae7840cc60cb73617ae73" title="ata_irq_handler" alt="" coords="376,700,485,729"/>
+<area shape="rect" id="node11" href="$ata_8c.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="575,765,676,795"/>
+<area shape="rect" id="node13" href="$ata_8c.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="743,804,847,833"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="572,435,679,464"/>
+<area shape="rect" id="node19" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="369,483,492,530"/>
+<area shape="rect" id="node21" href="$ata_8c.html#a2b222e2f61e5f4f90cd8ba4f16470ab3" title="ata_poll_wait" alt="" coords="381,804,480,833"/>
+<area shape="rect" id="node24" href="$ata_8c.html#a70e30cedd3a469033d65e4ecd423d373" title="ata_read_data" alt="" coords="573,843,677,872"/>
+<area shape="rect" id="node28" href="$ata_8c.html#af9b954fe8969622b9a7c82f4eee218d3" title="ata_set_interrupts" alt="" coords="563,381,688,411"/>
+<area shape="rect" id="node32" href="$ata_8c.html#a5f7b78dafa71534b24b101521a9b1479" title="ata_write_port_long" alt="" coords="559,959,692,988"/>
+<area shape="rect" id="node35" href="$blkdev_8c.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="357,260,504,289"/>
+<area shape="rect" id="node40" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="565,212,685,241"/>
+<area shape="rect" id="node45" href="$heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="352,577,509,607"/>
+<area shape="rect" id="node48" href="$interrupt_8c.html#a902a3f129451ac2500394a638dcb051d" title="interrupt_register\l_handler" alt="" coords="372,313,489,359"/>
+<area shape="rect" id="node51" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="361,630,500,677"/>
+</map>

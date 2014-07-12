@@ -1,0 +1,5 @@
+<map id="vgacon_early_move_cursor" name="vgacon_early_move_cursor">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a4e343464aa2e816a36e210043de25701" title="earlycon_putc" alt="" coords="260,5,361,35"/>
+<area shape="rect" id="node7" href="$vgacon__early_8c.html#a522cbd4d08950250f66fa66528a1a46e" title="vgacon_early_position" alt="" coords="236,59,385,88"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#ab2169cb63461fe4a8987918e24878251" title="earlycon_aputs" alt="" coords="436,5,545,35"/>
+</map>

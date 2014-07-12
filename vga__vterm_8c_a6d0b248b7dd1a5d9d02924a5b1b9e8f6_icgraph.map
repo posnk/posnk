@@ -1,0 +1,6 @@
+<map id="vterm_vga_switch_vc" name="vterm_vga_switch_vc">
+<area shape="rect" id="node3" href="$kbd_8c.html#ab325d11088a3b8f776e39c2c5f49aaf6" title="con_handle_key" alt="" coords="204,5,319,35"/>
+<area shape="rect" id="node7" href="$init_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b" title="vterm_vga_init" alt="" coords="208,59,315,88"/>
+<area shape="rect" id="node5" href="$kbd_8h.html#a464a3fc19561c9d616e77ed37bc9800c" title="kb_typed" alt="" coords="375,5,449,35"/>
+<area shape="rect" id="node9" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="368,59,456,88"/>
+</map>

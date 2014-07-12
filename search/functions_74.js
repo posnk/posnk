@@ -19,16 +19,16 @@ var searchData=
   ['try_5finterpret_5fescape_5fseq',['try_interpret_escape_seq',['../vterm__escape_8c.html#aeb267663cdbef3402fccf07a0d3b8ac6',1,'try_interpret_escape_seq(vterm_t *vterm):&#160;vterm_escape.c'],['../vterm__escape_8h.html#aeb267663cdbef3402fccf07a0d3b8ac6',1,'try_interpret_escape_seq(vterm_t *vterm):&#160;vterm_escape.c'],['../vterm__render_8h.html#aeb267663cdbef3402fccf07a0d3b8ac6',1,'try_interpret_escape_seq(vterm_t *vterm):&#160;vterm_escape.c']]],
   ['tty_5fbuf_5fline_5fchar',['tty_buf_line_char',['../tty_8c.html#a0f65fe3e4b95bd87543177d3eb92a1c0',1,'tty.c']]],
   ['tty_5fbuf_5fout_5fchar',['tty_buf_out_char',['../tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74',1,'tty.c']]],
-  ['tty_5fclose',['tty_close',['../tty_8c.html#af011bf9f6db234c81150f165d8d2a590',1,'tty.c']]],
+  ['tty_5fclose',['tty_close',['../tty_8c.html#a3918933914550c157c29424750aeb045',1,'tty.c']]],
   ['tty_5fflush_5fline_5fbuffer',['tty_flush_line_buffer',['../tty_8c.html#a890d88589585c3f34e4fdca210087d05',1,'tty.c']]],
   ['tty_5fget',['tty_get',['../tty_8c.html#afa30a04526ae58f448f660f32de0e957',1,'tty.c']]],
   ['tty_5finit',['tty_init',['../tty_8c.html#a3bf9faf77dd76addc6deac2722b097e2',1,'tty_init():&#160;tty.c'],['../tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2',1,'tty_init():&#160;tty.c']]],
   ['tty_5finput_5fchar',['tty_input_char',['../tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe',1,'tty_input_char(dev_t device, char c):&#160;tty.c'],['../tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe',1,'tty_input_char(dev_t device, char c):&#160;tty.c']]],
-  ['tty_5fioctl',['tty_ioctl',['../tty_8c.html#a41c315ed12e65d1a4be58f291d7181de',1,'tty.c']]],
-  ['tty_5fopen',['tty_open',['../tty_8c.html#a81c9dc3480ed122aacfe00711228d42b',1,'tty.c']]],
+  ['tty_5fioctl',['tty_ioctl',['../tty_8c.html#aeb54be231efa53ed345f67fad6ccfdff',1,'tty.c']]],
+  ['tty_5fopen',['tty_open',['../tty_8c.html#a1ce865d2795797c6595e97ac7bc373af',1,'tty.c']]],
   ['tty_5foutput_5fchar',['tty_output_char',['../tty_8c.html#af04629abe6c2dbe5e5089f147877621d',1,'tty.c']]],
   ['tty_5fread',['tty_read',['../tty_8c.html#a9c0317d8f63eedd8f095cd9198ff3aa1',1,'tty.c']]],
   ['tty_5fregister_5fdriver',['tty_register_driver',['../tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640',1,'tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out_t write_out):&#160;tty.c'],['../tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab',1,'tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out_t):&#160;tty.c']]],
   ['tty_5freset_5ftermios',['tty_reset_termios',['../tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b',1,'tty.c']]],
-  ['tty_5fwrite',['tty_write',['../tty_8c.html#a006a76f172143fdb170deacb1ea2fef3',1,'tty.c']]]
+  ['tty_5fwrite',['tty_write',['../tty_8c.html#a86f3d48cfb5841cbb0e6bcf4a9f42899',1,'tty.c']]]
 ];

@@ -1,0 +1,11 @@
+<map id="vfs_truncate" name="vfs_truncate">
+<area shape="rect" id="node3" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="164,5,287,35"/>
+<area shape="rect" id="node7" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="172,59,279,88"/>
+<area shape="rect" id="node9" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="159,112,292,141"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="149,165,301,195"/>
+<area shape="rect" id="node19" href="$vfs_8c.html#a05dea3105778419755db0ce95ff554b1" title="Resize a file on backing storage." alt="" coords="168,219,283,248"/>
+<area shape="rect" id="node5" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="369,5,500,35"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="381,112,488,141"/>
+<area shape="rect" id="node15" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="377,165,492,195"/>
+<area shape="rect" id="node17" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="349,219,520,248"/>
+</map>

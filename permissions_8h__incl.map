@@ -1,0 +1,9 @@
+<map id="include/kernel/permissions.h" name="include/kernel/permissions.h">
+<area shape="rect" id="node3" href="$process_8h.html" title="kernel/process.h" alt="" coords="373,83,491,112"/>
+<area shape="rect" id="node9" href="$types_8h.html" title="sys/types.h" alt="" coords="491,237,581,267"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="5,160,115,189"/>
+<area shape="rect" id="node14" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="309,237,416,267"/>
+<area shape="rect" id="node18" href="$time_8h.html" title="kernel/time.h" alt="" coords="189,237,285,267"/>
+<area shape="rect" id="node21" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="511,160,601,189"/>
+<area shape="rect" id="node27" href="$llist_8h.html" title="util/llist.h" alt="" coords="605,237,680,267"/>
+</map>

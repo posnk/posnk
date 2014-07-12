@@ -1,0 +1,6 @@
+<map id="include/arch/i386/paging.h" name="include/arch/i386/paging.h">
+<area shape="rect" id="node3" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="68,160,191,189"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="167,83,276,112"/>
+<area shape="rect" id="node15" href="$llist_8h.html" title="util/llist.h" alt="" coords="300,83,375,112"/>
+<area shape="rect" id="node9" href="$config_8h.html" title="config.h" alt="" coords="99,237,165,267"/>
+</map>

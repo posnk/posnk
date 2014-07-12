@@ -1,0 +1,28 @@
+<map id="vfs_mknod" name="vfs_mknod">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="583,149,689,178"/>
+<area shape="rect" id="node7" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="1312,250,1395,280"/>
+<area shape="rect" id="node9" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="1319,348,1388,377"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="760,348,861,377"/>
+<area shape="rect" id="node17" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="1137,462,1236,492"/>
+<area shape="rect" id="node22" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="173,201,261,230"/>
+<area shape="rect" id="node25" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="367,98,487,128"/>
+<area shape="rect" id="node33" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="164,664,271,693"/>
+<area shape="rect" id="node35" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="188,717,247,746"/>
+<area shape="rect" id="node39" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="400,770,453,800"/>
+<area shape="rect" id="node42" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="188,770,247,800"/>
+<area shape="rect" id="node45" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="164,458,271,488"/>
+<area shape="rect" id="node56" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="163,356,272,385"/>
+<area shape="rect" id="node64" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="141,874,293,904"/>
+<area shape="rect" id="node70" href="$vfs_8c.html#a3430f50453f987084b69ea3a8f71878e" title="Create a directory entry on backing storage." alt="" coords="173,928,261,957"/>
+<area shape="rect" id="node72" href="$vfs_8c.html#a5956d43ee65c457df7b078217e1aaadb" title="Push a new inode to backing storage." alt="" coords="164,981,271,1010"/>
+<area shape="rect" id="node74" href="$vfs_8c.html#a4319ae3d06feb2038802df445ab1489f" title="Remove an inode from backing storage." alt="" coords="165,1034,269,1064"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="1109,273,1264,302"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="911,348,1060,377"/>
+<area shape="rect" id="node29" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="579,253,693,282"/>
+<area shape="rect" id="node37" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="391,717,463,746"/>
+<area shape="rect" id="node47" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="379,408,475,437"/>
+<area shape="rect" id="node51" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="560,381,712,410"/>
+<area shape="rect" id="node58" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="357,304,496,333"/>
+<area shape="rect" id="node66" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="369,902,484,932"/>
+<area shape="rect" id="node68" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="341,849,512,878"/>
+</map>

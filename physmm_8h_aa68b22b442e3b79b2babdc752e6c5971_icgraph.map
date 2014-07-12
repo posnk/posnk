@@ -1,0 +1,11 @@
+<map id="physmm_free_frame" name="physmm_free_frame">
+<area shape="rect" id="node3" href="$init_8c.html#a9e263f82ad3fcb8b99d2bb73a5cad236" title="i386_init_load_modules" alt="" coords="195,5,352,35"/>
+<area shape="rect" id="node7" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="611,108,709,137"/>
+<area shape="rect" id="node9" href="$physmm_8h.html#a4dd6186320d1e74c81103006dd45b4e6" title="physmm_free_range" alt="" coords="204,139,343,168"/>
+<area shape="rect" id="node15" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="197,193,349,223"/>
+<area shape="rect" id="node19" href="$process_8h.html#ade35a1ceb3e2fdc6bf4018d4716993cd" title="procvmm_unmmap" alt="" coords="207,251,340,280"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="437,5,525,35"/>
+<area shape="rect" id="node11" href="$init_8c.html#a23eb3e32af195a3401a0dea2234f22e0" title="i386_init_multiboot\l_memprobe" alt="" coords="416,159,547,206"/>
+<area shape="rect" id="node17" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="413,229,549,259"/>
+<area shape="rect" id="node21" href="$process_8h.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="401,283,561,312"/>
+</map>

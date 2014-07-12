@@ -1,0 +1,5 @@
+<map id="include/kernel/system.h" name="include/kernel/system.h">
+<area shape="rect" id="node3" href="$exception_8c.html" title="kernel/exception.c" alt="" coords="5,83,133,112"/>
+<area shape="rect" id="node5" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="157,83,264,112"/>
+<area shape="rect" id="node7" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="288,83,392,112"/>
+</map>

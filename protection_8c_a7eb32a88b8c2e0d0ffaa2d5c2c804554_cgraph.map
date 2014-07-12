@@ -1,0 +1,5 @@
+<map id="i386_protection_init" name="i386_protection_init">
+<area shape="rect" id="node3" href="$protection_8c.html#a6314794ad6eb848a8b3d2f5824bba780" title="i386_set_tss_descriptor" alt="" coords="189,5,349,35"/>
+<area shape="rect" id="node5" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="397,32,467,61"/>
+<area shape="rect" id="node7" href="$protection_8c.html#a06cdf268a360cc55b1e3adcb40c1871e" title="i386_tss_flush" alt="" coords="216,109,323,139"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="include/fs/ramfs.h" name="include/fs/ramfs.h">
+<area shape="rect" id="node3" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="155,83,246,112"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="kernel/process.h" alt="" coords="175,237,293,267"/>
+<area shape="rect" id="node7" href="$types_8h.html" title="sys/types.h" alt="" coords="15,315,106,344"/>
+<area shape="rect" id="node9" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="461,315,567,344"/>
+<area shape="rect" id="node11" href="$time_8h.html" title="kernel/time.h" alt="" coords="158,315,254,344"/>
+<area shape="rect" id="node14" href="$llist_8h.html" title="util/llist.h" alt="" coords="321,315,395,344"/>
+<area shape="rect" id="node17" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="250,160,391,189"/>
+<area shape="rect" id="node20" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="466,160,562,189"/>
+<area shape="rect" id="node26" href="$stat_8h.html" title="sys/stat.h" alt="" coords="21,237,101,267"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="vfs_find_symlink" name="vfs_find_symlink">
+<area shape="rect" id="node3" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="541,20,595,49"/>
+<area shape="rect" id="node5" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="192,72,251,101"/>
+<area shape="rect" id="node8" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="317,96,469,125"/>
+<area shape="rect" id="node13" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="173,309,269,338"/>
+<area shape="rect" id="node27" href="$vfs_8c.html#a489abb04eb8e74a3f11a0a20f32a845c" title="Find a directory entry." alt="" coords="340,520,447,549"/>
+<area shape="rect" id="node32" href="$vfs_8c.html#a958c0c8e4b441808862e0911fbfc04be" title="Get an inode by it&#39;s ID." alt="" coords="343,573,444,602"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="517,228,619,257"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="340,413,447,442"/>
+<area shape="rect" id="node17" href="$string_8c.html#afcd97f487174f9092b0f23c7ac78a55a" title="strchr" alt="" coords="367,466,420,496"/>
+<area shape="rect" id="node19" href="$string_8c.html#a5fdc439a5a6dd1801a86701d54552a63" title="strchrnul" alt="" coords="357,149,429,178"/>
+<area shape="rect" id="node21" href="$string_8c.html#a6666865e6caf66fd05d4b8bd6c074cd2" title="strncmp" alt="" coords="359,256,428,285"/>
+<area shape="rect" id="node25" href="$string_8c.html#a47d54f24198df56da51078a6c540b9ed" title="strncpy" alt="" coords="361,202,425,232"/>
+<area shape="rect" id="node30" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="327,309,460,338"/>
+</map>

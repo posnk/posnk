@@ -1,0 +1,17 @@
+<map id="_sys_close_int" name="_sys_close_int">
+<area shape="rect" id="node3" href="$blkdev_8c.html#a6dbb95e6c08c67610a971fa9c5ba4cbf" title="device_block_close" alt="" coords="163,5,299,35"/>
+<area shape="rect" id="node5" href="$chardev_8c.html#aaca0c578be4dc636f3164c9f9480a136" title="device_char_close" alt="" coords="165,59,296,88"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="573,348,675,377"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="189,163,272,192"/>
+<area shape="rect" id="node15" href="$pipe_8c.html#a4f51f162d223e63b17814bda844ad733" title="pipe_close_read" alt="" coords="173,216,288,245"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="383,268,489,297"/>
+<area shape="rect" id="node19" href="$pipe_8c.html#a3835639d5e6d8ba8713eaa5f430b03a8" title="pipe_close_write" alt="" coords="172,320,289,349"/>
+<area shape="rect" id="node22" href="$pipe_8c.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="193,373,268,403"/>
+<area shape="rect" id="node28" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="169,427,292,456"/>
+<area shape="rect" id="node33" href="$streams_8c.html#a3d159f64d97eb54699c85af7255727ca" title="stream_get_ptr_o" alt="" coords="169,480,292,509"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="724,400,873,429"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="924,440,1049,469"/>
+<area shape="rect" id="node25" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="379,373,493,403"/>
+<area shape="rect" id="node30" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="371,427,501,456"/>
+<area shape="rect" id="node36" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="348,531,524,560"/>
+</map>

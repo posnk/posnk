@@ -1,0 +1,34 @@
+<map id="include/kernel/paging.h" name="include/kernel/paging.h">
+<area shape="rect" id="node3" href="$scheduler_8h.html" title="include/kernel/scheduler.h" alt="" coords="2064,160,2238,189"/>
+<area shape="rect" id="node7" href="$process_8c.html" title="kernel/process.c" alt="" coords="1086,315,1203,344"/>
+<area shape="rect" id="node9" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="2832,315,2955,344"/>
+<area shape="rect" id="node11" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="526,315,664,344"/>
+<area shape="rect" id="node19" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="2696,315,2808,344"/>
+<area shape="rect" id="node23" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="395,315,502,344"/>
+<area shape="rect" id="node25" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="2979,315,3083,344"/>
+<area shape="rect" id="node36" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="3083,237,3208,267"/>
+<area shape="rect" id="node42" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="3232,237,3360,267"/>
+<area shape="rect" id="node59" href="$task__switch_8c.html" title="arch/i386/task_switch.c" alt="" coords="3384,237,3544,267"/>
+<area shape="rect" id="node63" href="$process_8h.html" title="include/kernel/process.h" alt="" coords="1220,83,1383,112"/>
+<area shape="rect" id="node92" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="3226,160,3335,189"/>
+<area shape="rect" id="node113" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="3720,83,3870,112"/>
+<area shape="rect" id="node116" href="$arch_2i386_2paging_8h.html" title="include/arch/i386/paging.h" alt="" coords="36,160,210,189"/>
+<area shape="rect" id="node5" href="$syscall_8h.html" title="include/kernel/syscall.h" alt="" coords="1990,237,2147,267"/>
+<area shape="rect" id="node13" href="$sc__signals_8c.html" title="kernel/sc_signals.c" alt="" coords="2151,315,2284,344"/>
+<area shape="rect" id="node15" href="$sc__time_8c.html" title="kernel/sc_time.c" alt="" coords="2010,315,2127,344"/>
+<area shape="rect" id="node17" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="1504,315,1622,344"/>
+<area shape="rect" id="node21" href="$tty_8c.html" title="kernel/tty.c" alt="" coords="1744,315,1830,344"/>
+<area shape="rect" id="node27" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="688,315,808,344"/>
+<area shape="rect" id="node29" href="$exception_8c.html" title="kernel/exception.c" alt="" coords="1855,315,1983,344"/>
+<area shape="rect" id="node31" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="2424,237,2547,267"/>
+<area shape="rect" id="node33" href="$permissions_8c.html" title="kernel/permissions.c" alt="" coords="976,237,1118,267"/>
+<area shape="rect" id="node45" href="$synch_8c.html" title="kernel/synch.c" alt="" coords="1192,237,1299,267"/>
+<area shape="rect" id="node48" href="$time_8c.html" title="kernel/time.c" alt="" coords="2571,237,2667,267"/>
+<area shape="rect" id="node51" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="832,315,923,344"/>
+<area shape="rect" id="node53" href="$fpu_8c.html" title="arch/i386/fpu.c" alt="" coords="1323,237,1430,267"/>
+<area shape="rect" id="node57" href="$arch_2i386_2paging_8c.html" title="arch/i386/paging.c" alt="" coords="262,237,390,267"/>
+<area shape="rect" id="node61" href="$kdbgmm_8c.html" title="kdbg/kdbgmm.c" alt="" coords="2691,237,2806,267"/>
+<area shape="rect" id="node66" href="$vfs_8h.html" title="include/kernel/vfs.h" alt="" coords="464,237,598,267"/>
+<area shape="rect" id="node73" href="$permissions_8h.html" title="include/kernel/permissions.h" alt="" coords="888,160,1075,189"/>
+<area shape="rect" id="node85" href="$signals_8h.html" title="include/kernel/signals.h" alt="" coords="1707,237,1864,267"/>
+</map>

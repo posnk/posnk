@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -66,12 +73,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('structfs__device__operations.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -80,12 +102,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">fs_device_operations Struct Reference</div>  </div>
+<div class="title">fs_device_operations Struct Reference<div class="ingroups"><a class="el" href="group__vfs.html">VFS</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -96,43 +117,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a859e0dca40c89da73ff42b6dcd2590e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a859e0dca40c89da73ff42b6dcd2590e8">load_inode</a> )(<a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td></tr>
+<tr class="memitem:a859e0dca40c89da73ff42b6dcd2590e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a859e0dca40c89da73ff42b6dcd2590e8">load_inode</a> )(<a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td></tr>
 <tr class="memdesc:a859e0dca40c89da73ff42b6dcd2590e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an inode from storage.  <a href="#a859e0dca40c89da73ff42b6dcd2590e8"></a><br/></td></tr>
-<tr class="memitem:aa921fa21d60b142dfa5aabc9c33f2a55"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#aa921fa21d60b142dfa5aabc9c33f2a55">store_inode</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
+<tr class="memitem:aa921fa21d60b142dfa5aabc9c33f2a55"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#aa921fa21d60b142dfa5aabc9c33f2a55">store_inode</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
 <tr class="memdesc:aa921fa21d60b142dfa5aabc9c33f2a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write an inode to storage.  <a href="#aa921fa21d60b142dfa5aabc9c33f2a55"></a><br/></td></tr>
-<tr class="memitem:a8c7f28d85d5ac54f635113967e71f067"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a8c7f28d85d5ac54f635113967e71f067">mknod</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
+<tr class="memitem:a8c7f28d85d5ac54f635113967e71f067"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a8c7f28d85d5ac54f635113967e71f067">mknod</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
 <tr class="memdesc:a8c7f28d85d5ac54f635113967e71f067"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an inode.  <a href="#a8c7f28d85d5ac54f635113967e71f067"></a><br/></td></tr>
-<tr class="memitem:a9cbd5e2a0db28dcf339086e1566374e5"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a9cbd5e2a0db28dcf339086e1566374e5">rmnod</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
+<tr class="memitem:a9cbd5e2a0db28dcf339086e1566374e5"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a9cbd5e2a0db28dcf339086e1566374e5">rmnod</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
 <tr class="memdesc:a9cbd5e2a0db28dcf339086e1566374e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an inode.  <a href="#a9cbd5e2a0db28dcf339086e1566374e5"></a><br/></td></tr>
-<tr class="memitem:a4dd80b922d605172b8623ac84f569553"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a4dd80b922d605172b8623ac84f569553">read_inode</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
+<tr class="memitem:a4dd80b922d605172b8623ac84f569553"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a4dd80b922d605172b8623ac84f569553">read_inode</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
 <tr class="memdesc:a4dd80b922d605172b8623ac84f569553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read data from a file.  <a href="#a4dd80b922d605172b8623ac84f569553"></a><br/></td></tr>
-<tr class="memitem:adfcac011fedb648f3b5c4381158d3d1a"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#adfcac011fedb648f3b5c4381158d3d1a">write_inode</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
+<tr class="memitem:adfcac011fedb648f3b5c4381158d3d1a"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#adfcac011fedb648f3b5c4381158d3d1a">write_inode</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
 <tr class="memdesc:adfcac011fedb648f3b5c4381158d3d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a file.  <a href="#adfcac011fedb648f3b5c4381158d3d1a"></a><br/></td></tr>
-<tr class="memitem:a8504a31b472b314e7faae832cc2e9aa8"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a8504a31b472b314e7faae832cc2e9aa8">read_dir</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
+<tr class="memitem:a8504a31b472b314e7faae832cc2e9aa8"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a8504a31b472b314e7faae832cc2e9aa8">read_dir</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td></tr>
 <tr class="memdesc:a8504a31b472b314e7faae832cc2e9aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read directory entries from backing storage.  <a href="#a8504a31b472b314e7faae832cc2e9aa8"></a><br/></td></tr>
-<tr class="memitem:a602f09647f044cf9b5cb910aa5fbfc23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a602f09647f044cf9b5cb910aa5fbfc23">find_dirent</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td></tr>
+<tr class="memitem:a602f09647f044cf9b5cb910aa5fbfc23"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a> *(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a602f09647f044cf9b5cb910aa5fbfc23">find_dirent</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td></tr>
 <tr class="memdesc:a602f09647f044cf9b5cb910aa5fbfc23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a directory entry.  <a href="#a602f09647f044cf9b5cb910aa5fbfc23"></a><br/></td></tr>
-<tr class="memitem:a2129be966222186020c9538dd12df607"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a2129be966222186020c9538dd12df607">mkdir</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
+<tr class="memitem:a2129be966222186020c9538dd12df607"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a2129be966222186020c9538dd12df607">mkdir</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td></tr>
 <tr class="memdesc:a2129be966222186020c9538dd12df607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create directory structures.  <a href="#a2129be966222186020c9538dd12df607"></a><br/></td></tr>
-<tr class="memitem:a063d2ae50d3a2e8c9b18222dab4a9266"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a063d2ae50d3a2e8c9b18222dab4a9266">link</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td></tr>
+<tr class="memitem:a063d2ae50d3a2e8c9b18222dab4a9266"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a063d2ae50d3a2e8c9b18222dab4a9266">link</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td></tr>
 <tr class="memdesc:a063d2ae50d3a2e8c9b18222dab4a9266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a directory entry.  <a href="#a063d2ae50d3a2e8c9b18222dab4a9266"></a><br/></td></tr>
-<tr class="memitem:a5d071dd0da44141d13773ffd640a01f2"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a5d071dd0da44141d13773ffd640a01f2">unlink</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td></tr>
+<tr class="memitem:a5d071dd0da44141d13773ffd640a01f2"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a5d071dd0da44141d13773ffd640a01f2">unlink</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td></tr>
 <tr class="memdesc:a5d071dd0da44141d13773ffd640a01f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a directory entry.  <a href="#a5d071dd0da44141d13773ffd640a01f2"></a><br/></td></tr>
-<tr class="memitem:a4a8dbf701e3a36ebfab70418e222d974"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a4a8dbf701e3a36ebfab70418e222d974">trunc_inode</a> )(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>)</td></tr>
+<tr class="memitem:a4a8dbf701e3a36ebfab70418e222d974"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structfs__device__operations.html#a4a8dbf701e3a36ebfab70418e222d974">trunc_inode</a> )(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>)</td></tr>
 <tr class="memdesc:a4a8dbf701e3a36ebfab70418e222d974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resize a file.  <a href="#a4a8dbf701e3a36ebfab70418e222d974"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains callbacks for all filesystem driver functions. </p>
 <p>This is the structure used to pass the callbacks for a filesystem driver to the kernel, it is referenced by <a class="el" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device</a>, which describes an instance of a filesystem driver, implementation hints and requirements are given in the description of each callback, for more info on FS driver implementation see <a class="el" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device</a> </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00104">104</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00171">171</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 </div><h2>Field Documentation</h2>
 <a class="anchor" id="a602f09647f044cf9b5cb910aa5fbfc23"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a>*(* fs_device_operations::find_dirent)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td>
+          <td class="memname"><a class="el" href="group__vfs.html#ga6673e8f64ca9ebd7e26e6289dca06e87">dirent_t</a>*(* fs_device_operations::find_dirent)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -149,9 +170,9 @@ Data Fields</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The directory entry matching name from the directory inode, if none, NULL is returned </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00221">221</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00288">288</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00153">vfs_find_dirent()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00166">vfs_find_dirent()</a>.</p>
 
 </div>
 </div>
@@ -160,7 +181,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::link)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td>
+          <td class="memname">int(* fs_device_operations::link)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -179,9 +200,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00250">250</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00317">317</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00237">vfs_int_link()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00255">vfs_int_link()</a>.</p>
 
 </div>
 </div>
@@ -190,7 +211,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a>*(* fs_device_operations::load_inode)(<a class="el" href="vfs_8h.html#a616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td>
+          <td class="memname"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a>*(* fs_device_operations::load_inode)(<a class="el" href="group__vfs.html#ga616bc6ee0262218ac3507c48556a1e6f">fs_device_t</a> *, <a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -206,9 +227,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The loaded inode </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00116">116</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00183">183</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00090">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l01508">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01173">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00095">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -217,7 +238,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::mkdir)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::mkdir)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,9 +254,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00234">234</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00301">301</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00213">vfs_int_mkdir()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00231">vfs_int_mkdir()</a>.</p>
 
 </div>
 </div>
@@ -244,7 +265,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::mknod)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::mknod)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -260,9 +281,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00139">139</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00206">206</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00169">vfs_int_mknod()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00187">vfs_int_mknod()</a>.</p>
 
 </div>
 </div>
@@ -271,7 +292,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::read_dir)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::read_dir)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -293,9 +314,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00207">207</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00274">274</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00287">vfs_int_read_dir()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00305">vfs_int_read_dir()</a>.</p>
 
 </div>
 </div>
@@ -304,7 +325,7 @@ Implementations must only return whole directory entries</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::read_inode)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::read_inode)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -325,9 +346,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00171">171</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00238">238</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00308">vfs_int_read()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00326">vfs_int_read()</a>.</p>
 
 </div>
 </div>
@@ -336,7 +357,7 @@ Implementations must only return whole directory entries</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::rmnod)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::rmnod)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -352,9 +373,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00152">152</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00219">219</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00191">vfs_int_rmnod()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00209">vfs_int_rmnod()</a>.</p>
 
 </div>
 </div>
@@ -363,7 +384,7 @@ Implementations must only return whole directory entries</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::store_inode)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::store_inode)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -378,7 +399,7 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00127">127</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00194">194</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 </div>
 </div>
@@ -387,7 +408,7 @@ Implementations must only return whole directory entries</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::trunc_inode)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>)</td>
+          <td class="memname">int(* fs_device_operations::trunc_inode)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -403,9 +424,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00276">276</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00343">343</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00352">vfs_int_truncate()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00370">vfs_int_truncate()</a>.</p>
 
 </div>
 </div>
@@ -414,7 +435,7 @@ Implementations must only return whole directory entries</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::unlink)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td>
+          <td class="memname">int(* fs_device_operations::unlink)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, char *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -432,9 +453,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00263">263</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00330">330</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00260">vfs_int_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00278">vfs_int_unlink()</a>.</p>
 
 </div>
 </div>
@@ -443,7 +464,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* fs_device_operations::write_inode)(<a class="el" href="vfs_8h.html#a2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
+          <td class="memname">int(* fs_device_operations::write_inode)(<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *, void *, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a>, <a class="el" href="types_8h.html#a2ecffc95171f097e4c966c8a29fbe038">aoff_t</a> *)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -464,9 +485,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00188">188</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00255">255</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00329">vfs_int_write()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00347">vfs_int_write()</a>.</p>
 
 </div>
 </div>
@@ -474,11 +495,15 @@ Implementations are required to update the directory size field</dd></dl>
 <li>include/kernel/<a class="el" href="vfs_8h_source.html">vfs.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="structfs__device__operations.html">fs_device_operations</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,7 @@
+<map id="debugcon_putc" name="debugcon_putc">
+<area shape="rect" id="node3" href="$earlycon_8h.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="165,59,283,88"/>
+<area shape="rect" id="node9" href="$kdbgio_8h.html#a0b855cf3ff56f82541430c576b2923c4" title="kdbg_gets" alt="" coords="183,112,265,141"/>
+<area shape="rect" id="node5" href="$earlycon_8h.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="348,5,468,35"/>
+<area shape="rect" id="node7" href="$heapmm_8h.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="331,59,485,88"/>
+<area shape="rect" id="node11" href="$kdbg_8c.html#a995155c91f986a042688d0615aacf004" title="kdbg_shell" alt="" coords="367,112,449,141"/>
+</map>

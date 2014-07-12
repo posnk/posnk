@@ -1,0 +1,11 @@
+<map id="device_block_register" name="device_block_register">
+<area shape="rect" id="node3" href="$blkcache_8c.html#aef6bed4eea28a0bc1caa6b8df5462841" title="kernel/blkcache.c" alt="" coords="204,84,321,113"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="371,31,477,60"/>
+<area shape="rect" id="node9" href="$blkcache_8c.html#a3b1f9f4db2e4045a8fe5c9904a053d20" title="blkcache_free &#45; Destroys a cache and releases all memory associated with it" alt="" coords="212,137,313,167"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="373,191,475,220"/>
+<area shape="rect" id="node17" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="203,31,323,60"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="205,241,320,271"/>
+<area shape="rect" id="node23" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="209,295,316,324"/>
+<area shape="rect" id="node7" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="381,84,467,113"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="383,137,465,167"/>
+</map>

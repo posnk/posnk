@@ -1,0 +1,12 @@
+<map id="vterm_vga_init" name="vterm_vga_init">
+<area shape="rect" id="node3" href="$vgacon_8c.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="189,85,280,115"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#a06b6798ef0a700339c490081eeec0057" title="vga_vterm_get_text\l_video_memory" alt="" coords="363,215,499,262"/>
+<area shape="rect" id="node7" href="$vga__vterm_8c.html#a896c4181529143634f37754c020f6c81" title="vterm_tty_setup" alt="" coords="177,139,292,168"/>
+<area shape="rect" id="node19" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="160,268,309,297"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="552,112,659,141"/>
+<area shape="rect" id="node11" href="$vterm_8c.html#a46779f50ccfa4eb114381c82918af4fd" title="vterm_init" alt="" coords="392,5,469,35"/>
+<area shape="rect" id="node14" href="$tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640" title="tty_register_driver" alt="" coords="368,112,493,141"/>
+<area shape="rect" id="node17" href="$vterm__tty_8c.html#ad84ed200435b9101258e8f854e879944" title="vterm_putc" alt="" coords="388,59,473,88"/>
+<area shape="rect" id="node22" href="$vga__vterm_8c.html#a276f5f62b24f61397437d3af0b23e5cd" title="vterm_tty_invalidate\l_screen" alt="" coords="361,354,500,401"/>
+<area shape="rect" id="node24" href="$vga__vterm_8c.html#aaf09525adc710025d8573c3715020050" title="vterm_vga_write_crtc\l_register" alt="" coords="357,285,504,331"/>
+</map>

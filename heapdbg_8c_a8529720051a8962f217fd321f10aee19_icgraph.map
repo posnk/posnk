@@ -1,0 +1,9 @@
+<map id="dbgapi_register_memuse" name="dbgapi_register_memuse">
+<area shape="rect" id="node3" href="$heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="624,59,781,88"/>
+<area shape="rect" id="node12" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="221,111,376,140"/>
+<area shape="rect" id="node14" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="425,60,575,89"/>
+<area shape="rect" id="node5" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="879,112,972,141"/>
+<area shape="rect" id="node7" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="876,59,975,88"/>
+<area shape="rect" id="node10" href="$heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM." alt="" coords="829,5,1021,35"/>
+<area shape="rect" id="node17" href="$heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="649,112,756,141"/>
+</map>

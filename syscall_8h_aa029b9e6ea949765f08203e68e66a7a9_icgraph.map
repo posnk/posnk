@@ -1,0 +1,4 @@
+<map id="sys_chmod" name="sys_chmod">
+<area shape="rect" id="node3" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="145,5,231,35"/>
+<area shape="rect" id="node5" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="280,5,368,35"/>
+</map>

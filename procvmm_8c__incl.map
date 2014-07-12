@@ -1,0 +1,15 @@
+<map id="kernel/procvmm.c" name="kernel/procvmm.c">
+<area shape="rect" id="node3" href="$process_8h.html" title="kernel/process.h" alt="" coords="385,160,502,189"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="62,237,171,267"/>
+<area shape="rect" id="node13" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="42,315,165,344"/>
+<area shape="rect" id="node34" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="581,83,709,112"/>
+<area shape="rect" id="node44" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="766,237,889,267"/>
+<area shape="rect" id="node50" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="926,83,1046,112"/>
+<area shape="rect" id="node55" href="$string_8h.html" title="string.h" alt="" coords="867,160,931,189"/>
+<area shape="rect" id="node58" href="$errno_8h.html" title="sys/errno.h" alt="" coords="1070,83,1155,112"/>
+<area shape="rect" id="node9" href="$types_8h.html" title="sys/types.h" alt="" coords="359,315,450,344"/>
+<area shape="rect" id="node18" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="474,315,581,344"/>
+<area shape="rect" id="node22" href="$time_8h.html" title="kernel/time.h" alt="" coords="189,315,285,344"/>
+<area shape="rect" id="node25" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="398,237,489,267"/>
+<area shape="rect" id="node30" href="$llist_8h.html" title="util/llist.h" alt="" coords="661,315,735,344"/>
+</map>

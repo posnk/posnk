@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('scheduler_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">scheduler.c</div>  </div>
@@ -173,8 +190,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a> = scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a>;</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a> = scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8">usage_count</a>++;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8">usage_count</a>++;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8" title="The number of times this dir_cache is referenced This is used for a basic form of garbage collection...">usage_count</a>++;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8" title="The number of times this dir_cache is referenced This is used for a basic form of garbage collection...">usage_count</a>++;</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <span class="comment">/* Initialize proces signal handling */</span></div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="string_8c.html#a756c9204a58aa6f5c4923377c89f7088">memcpy</a>(new_task-&gt;<a class="code" href="structprocess__info.html#aab3f7508669eed99136d4576b122cd4b">signal_handler_table</a>, scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#aab3f7508669eed99136d4576b122cd4b">signal_handler_table</a>, <span class="keyword">sizeof</span>(<span class="keywordtype">void</span> *[32]));</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a4e9af8c191666f2d599bfc4b1cf5503b">signal_mask_bitmap</a> = scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a4e9af8c191666f2d599bfc4b1cf5503b">signal_mask_bitmap</a>;</div>
@@ -198,7 +215,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95">  122</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95" title="Iterator function that tests for running tasks that are not the current.">scheduler_next_task_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) <span class="keywordtype">void</span> *param)</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="code" href="scheduler_8c.html#a948805aff6bd1a6534f6385041afc2ef">  122</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="scheduler_8c.html#a948805aff6bd1a6534f6385041afc2ef" title="Iterator function that tests for running tasks that are not the current.">scheduler_next_task_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, __attribute__((__unused__)) <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="structprocess__info.html">scheduler_task_t</a> *task = (<a class="code" href="structprocess__info.html">scheduler_task_t</a> *) node;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        <span class="keywordflow">if</span> (task == scheduler_current_task)</div>
@@ -230,7 +247,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="comment">//TODO: Increment ticks only on preemptive scheduler calls</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a32f384f429bd644c2645452214b9f5d2">cpu_ticks</a>++;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="structprocess__info.html">scheduler_task_t</a> *next_task = (<a class="code" href="structprocess__info.html">scheduler_task_t</a> *) <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(scheduler_task_list, &amp;<a class="code" href="scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95" title="Iterator function that tests for running tasks that are not the current.">scheduler_next_task_iterator</a>, <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="structprocess__info.html">scheduler_task_t</a> *next_task = (<a class="code" href="structprocess__info.html">scheduler_task_t</a> *) <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(scheduler_task_list, &amp;<a class="code" href="scheduler_8c.html#a948805aff6bd1a6534f6385041afc2ef" title="Iterator function that tests for running tasks that are not the current.">scheduler_next_task_iterator</a>, <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keywordflow">if</span> (scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a38b2295078737eee6515b0c3a96a90ca">state</a> == <a class="code" href="process_8h.html#a961f52ebd3b29cba5104e67a037752b5" title="kernel/process.h">PROCESS_RUNNING</a>)</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a38b2295078737eee6515b0c3a96a90ca">state</a> = <a class="code" href="process_8h.html#a4b59c50687ef3c939adf459f51f2b56e">PROCESS_READY</a>;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">if</span> (next_task != 0) {</div>
@@ -295,11 +312,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="comment">//earlycon_printf(&quot;pid %i came out of wait %x\n&quot;,scheduler_current_task-&gt;pid, semaphore);</span></div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="scheduler_8c.html">scheduler.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,19 @@
+<map id="blkcache_get" name="blkcache_get">
+<area shape="rect" id="node3" href="$blkcache_8c.html#a70e74e7691382d33032fda7f1eed71ab" title="blkcache_find &#45; Get a block from the cache" alt="" coords="176,95,277,125"/>
+<area shape="rect" id="node9" href="$blkcache_8c.html#a43be209fbab4c66306a9999cd289f294" title="blkcache_get_discard_candidate &#45; Returns the block to be discarded next" alt="" coords="153,917,300,964"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="173,363,280,393"/>
+<area shape="rect" id="node19" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="1036,146,1105,175"/>
+<area shape="rect" id="node25" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="1203,427,1301,457"/>
+<area shape="rect" id="node30" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="605,454,688,483"/>
+<area shape="rect" id="node34" href="$heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="349,557,507,586"/>
+<area shape="rect" id="node48" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="377,222,479,251"/>
+<area shape="rect" id="node5" href="$blkcache_8c.html#a843c7bc6e8af90b4eac0774110063b64" title="blkcache_get_iterator &#45; INTERNAL function that selects the block to be returned by llist_iterate_sele..." alt="" coords="355,43,501,73"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="1008,273,1133,302"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="351,350,505,379"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="580,350,713,379"/>
+<area shape="rect" id="node23" href="$heapdbg_8c.html#a8529720051a8962f217fd321f10aee19" title="dbgapi_register_memuse" alt="" coords="988,427,1153,457"/>
+<area shape="rect" id="node17" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="788,325,937,354"/>
+<area shape="rect" id="node38" href="$heapmm_8c.html#a2a4ed12d5a6197fa232485ec86f7349c" title="Iterator function that tests for page aligned, larger than page sized blocks." alt="" coords="568,608,725,655"/>
+<area shape="rect" id="node40" href="$heapmm_8c.html#af65cf6ef36994664846885ef8c44edc4" title="Iterator function that tests for aligned, matching sized blocks." alt="" coords="555,677,739,724"/>
+<area shape="rect" id="node42" href="$heapmm_8c.html#a5f68f317bd5662c19b0bf97f79c953cc" title="Iterator function that tests for blocks large enough to contain a whole page." alt="" coords="561,747,732,793"/>
+</map>

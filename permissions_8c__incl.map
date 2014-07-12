@@ -1,0 +1,9 @@
+<map id="kernel/permissions.c" name="kernel/permissions.c">
+<area shape="rect" id="node3" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="124,83,266,112"/>
+<area shape="rect" id="node23" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="290,83,418,112"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="kernel/process.h" alt="" coords="163,160,280,189"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="352,237,462,267"/>
+<area shape="rect" id="node14" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="22,237,128,267"/>
+<area shape="rect" id="node18" href="$time_8h.html" title="kernel/time.h" alt="" coords="486,237,582,267"/>
+<area shape="rect" id="node21" href="$llist_8h.html" title="util/llist.h" alt="" coords="254,237,328,267"/>
+</map>

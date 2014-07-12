@@ -1,0 +1,5 @@
+<map id="_sys_fstat" name="_sys_fstat">
+<area shape="rect" id="node3" href="$streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="136,32,245,61"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="320,5,445,35"/>
+<area shape="rect" id="node7" href="$streams_8c.html#aeeee7624410f1f022ad880a74489c6b8" title="kernel/streams.c" alt="" coords="295,59,471,88"/>
+</map>

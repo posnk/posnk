@@ -1,0 +1,5 @@
+<map id="ata_read" name="ata_read">
+<area shape="rect" id="node3" href="$ata_8c.html#a8c1416a28e5a8d9a2331fa5e69dcb314" title="ata_blk_read" alt="" coords="140,5,236,35"/>
+<area shape="rect" id="node5" href="$ata_8c.html#a512f31cc70311e607569459a02a596f3" title="ata_load_partition\l_table" alt="" coords="127,58,249,105"/>
+<area shape="rect" id="node7" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="300,67,393,96"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="pci_config_read_short" name="pci_config_read_short">
+<area shape="rect" id="node3" href="$pci__intel__host_8c.html#a6bf41b3bcf4bf820c4c0e393332ceaad" title="driver/bus/pci_intel_host.c" alt="" coords="203,32,347,61"/>
+<area shape="rect" id="node5" href="$x86_8c.html#ae107ab8668a9feecc513260b6d38d9e3" title="i386_inl" alt="" coords="399,5,465,35"/>
+<area shape="rect" id="node7" href="$x86_8c.html#a09fab996c4782c643b6150806173428f" title="i386_outl" alt="" coords="395,59,469,88"/>
+</map>

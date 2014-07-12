@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('fpu_8c.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#func-members">Functions</a> &#124;
@@ -104,8 +121,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a4e5b0a697013bc2daef7d9689e690416"><td class="memItemLeft" align="right" valign="top">uint8_t i386_fpu_cs_buf[512]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a4e5b0a697013bc2daef7d9689e690416">__attribute__</a> ((aligned(16)))</td></tr>
-<tr class="memdesc:a4e5b0a697013bc2daef7d9689e690416"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="fpu_8c.html">arch/i386/fpu.c</a>  <a href="#a4e5b0a697013bc2daef7d9689e690416"></a><br/></td></tr>
 <tr class="memitem:a71f772e7a1585ad4e7b994ad8fde7aef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a71f772e7a1585ad4e7b994ad8fde7aef">i386_fpu_initialize</a> ()</td></tr>
 <tr class="memitem:a886d7ed7910c6f2645163d12493418a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a886d7ed7910c6f2645163d12493418a3">i386_enable_fpu</a> ()</td></tr>
 <tr class="memitem:a4aeac13678754fcd080191d6cbfcb559"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a4aeac13678754fcd080191d6cbfcb559">i386_disable_fpu</a> ()</td></tr>
@@ -117,31 +132,12 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a2b34ff5b5ae2331792be4f1d3f0a99d3"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a2b34ff5b5ae2331792be4f1d3f0a99d3">i386_fpu_cs_buf</a> [512]</td></tr>
+<tr class="memdesc:a2b34ff5b5ae2331792be4f1d3f0a99d3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="fpu_8c.html">arch/i386/fpu.c</a>  <a href="#a2b34ff5b5ae2331792be4f1d3f0a99d3"></a><br/></td></tr>
 <tr class="memitem:acb8703999c1d06dce73ff24fc9635e09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="process_8h.html#aba6f35930ecff1efae67096dfaa95185">process_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#acb8703999c1d06dce73ff24fc9635e09">i386_fpu_process</a> = <a class="el" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a></td></tr>
 <tr class="memitem:a4596c78debdadcf02310830510d9a5d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fpu_8c.html#a4596c78debdadcf02310830510d9a5d2">i386_fpu_enabled</a> = 0</td></tr>
 </table>
 <h2>Function Documentation</h2>
-<a class="anchor" id="a4e5b0a697013bc2daef7d9689e690416"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t i386_fpu_cs_buf [512] __attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(aligned(16))&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><a class="el" href="fpu_8c.html">arch/i386/fpu.c</a> </p>
-<p>Part of P-OS kernel.</p>
-<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
-<p>Changelog: 01-04-2014 - Created </p>
-
-</div>
-</div>
 <a class="anchor" id="a4aeac13678754fcd080191d6cbfcb559"></a>
 <div class="memitem">
 <div class="memproto">
@@ -236,7 +232,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="fpu_8c_source.html#l00059">59</a> of file <a class="el" href="fpu_8c_source.html">fpu.c</a>.</p>
 
-<p>References <a class="el" href="task__context_8h_source.html#l00023">i386_task_context::fpu_state</a>, and <a class="el" href="string_8c_source.html#l00055">memcpy()</a>.</p>
+<p>References <a class="el" href="task__context_8h_source.html#l00023">i386_task_context::fpu_state</a>, <a class="el" href="fpu_8c_source.html#l00020">i386_fpu_cs_buf</a>, and <a class="el" href="string_8c_source.html#l00055">memcpy()</a>.</p>
 
 <p>Referenced by <a class="el" href="fpu_8c_source.html#l00071">i386_fpu_handle_ill()</a>.</p>
 
@@ -279,7 +275,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="fpu_8c_source.html#l00053">53</a> of file <a class="el" href="fpu_8c_source.html">fpu.c</a>.</p>
 
-<p>References <a class="el" href="task__context_8h_source.html#l00023">i386_task_context::fpu_state</a>, and <a class="el" href="string_8c_source.html#l00055">memcpy()</a>.</p>
+<p>References <a class="el" href="task__context_8h_source.html#l00023">i386_task_context::fpu_state</a>, <a class="el" href="fpu_8c_source.html#l00020">i386_fpu_cs_buf</a>, and <a class="el" href="string_8c_source.html#l00055">memcpy()</a>.</p>
 
 <p>Referenced by <a class="el" href="fpu_8c_source.html#l00071">i386_fpu_handle_ill()</a>.</p>
 
@@ -305,6 +301,27 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2>Variable Documentation</h2>
+<a class="anchor" id="a2b34ff5b5ae2331792be4f1d3f0a99d3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t i386_fpu_cs_buf[512]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="fpu_8c.html">arch/i386/fpu.c</a> </p>
+<p>Part of P-OS kernel.</p>
+<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
+<p>Changelog: 01-04-2014 - Created </p>
+
+<p>Definition at line <a class="el" href="fpu_8c_source.html#l00020">20</a> of file <a class="el" href="fpu_8c_source.html">fpu.c</a>.</p>
+
+<p>Referenced by <a class="el" href="fpu_8c_source.html#l00059">i386_fpu_load()</a>, and <a class="el" href="fpu_8c_source.html#l00053">i386_fpu_save()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a4596c78debdadcf02310830510d9a5d2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -334,11 +351,15 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li><li class="navelem"><a class="el" href="fpu_8c.html">fpu.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

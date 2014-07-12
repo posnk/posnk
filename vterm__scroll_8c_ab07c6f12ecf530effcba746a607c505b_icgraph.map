@@ -1,0 +1,5 @@
+<map id="vterm_scroll_down" name="vterm_scroll_down">
+<area shape="rect" id="node3" href="$vterm__render_8h.html#a3a2a80b9cb9eeec94d8dc97b7a6e61e2" title="vterm_put_char" alt="" coords="184,57,296,87"/>
+<area shape="rect" id="node5" href="$vterm__render_8h.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="344,5,499,35"/>
+<area shape="rect" id="node7" href="$vterm__render_8h.html#aa651d19abd649574dac5c5e8227926fa" title="vterm_render" alt="" coords="547,32,645,61"/>
+</map>

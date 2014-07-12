@@ -1,0 +1,22 @@
+<map id="procvmm_handle_fault" name="procvmm_handle_fault">
+<area shape="rect" id="node3" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="472,112,541,141"/>
+<area shape="rect" id="node5" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="240,175,331,204"/>
+<area shape="rect" id="node14" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="433,288,580,317"/>
+<area shape="rect" id="node16" href="$arch_2i386_2paging_8c.html#a338d2f1e4c26f2a29bcb4f675d9e31a7" title="paging_unmap" alt="" coords="232,285,339,315"/>
+<area shape="rect" id="node19" href="$physmm_8c.html#aa68b22b442e3b79b2babdc752e6c5971" title="Releases a frame to be used again." alt="" coords="215,340,356,369"/>
+<area shape="rect" id="node23" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="208,50,363,97"/>
+<area shape="rect" id="node28" href="$vfs_8c.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="249,552,321,581"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="444,59,569,88"/>
+<area shape="rect" id="node10" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="433,218,580,265"/>
+<area shape="rect" id="node12" href="$arch_2i386_2paging_8c.html#ae126e0164806db2314e492003686d74a" title="paging_set_pd_iterator" alt="" coords="431,165,583,195"/>
+<area shape="rect" id="node21" href="$physmm_8c.html#a1ec9ba9902179e6e6d877c58006d81c8" title="physmm_set_bit" alt="" coords="448,341,565,371"/>
+<area shape="rect" id="node26" href="$procvmm_8c.html#ab80b641c27611fc112ea7919aec0e89b" title="Iterator function that finds the mmap for the given address." alt="" coords="412,5,601,35"/>
+<area shape="rect" id="node30" href="$vfs_8c.html#a830186f7c888aae883bab689de5a287c" title="Get the effective inode for an inode, in other words : Dereference possible symlinks and mounts..." alt="" coords="440,659,573,688"/>
+<area shape="rect" id="node32" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="652,739,775,768"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="431,499,583,528"/>
+<area shape="rect" id="node36" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="660,445,767,475"/>
+<area shape="rect" id="node38" href="$vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67" title="Read data from a file from backing storage." alt="" coords="460,552,553,581"/>
+<area shape="rect" id="node40" href="$pipe_8c.html#af3def0b347db947156a5684d8973f8fc" title="pipe_write" alt="" coords="467,445,547,475"/>
+<area shape="rect" id="node43" href="$chardev_8c.html#a3468d83984a097533165337248dfe2c6" title="device_char_read" alt="" coords="445,605,568,635"/>
+<area shape="rect" id="node45" href="$blkdev_8c.html#ae379902dcb0381b251b2e127a5ac8c24" title="device_block_read" alt="" coords="441,712,572,741"/>
+</map>

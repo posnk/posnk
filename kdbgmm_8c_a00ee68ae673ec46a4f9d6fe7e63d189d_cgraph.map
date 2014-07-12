@@ -1,0 +1,13 @@
+<map id="kdbgmm_alloc_internal" name="kdbgmm_alloc_internal">
+<area shape="rect" id="node3" href="$kdbgmm_8c.html#ae9397780c5b9b35dcac292a30a73b1bc" title="Iterator function that tests for blocks able to contain the size in param." alt="" coords="208,5,379,35"/>
+<area shape="rect" id="node5" href="$kdbgmm_8c.html#abc85141e5370246e92d9a84ba064367c" title="Iterator function that tests for blocks equal the size in param." alt="" coords="219,58,368,105"/>
+<area shape="rect" id="node7" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="219,364,368,393"/>
+<area shape="rect" id="node9" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="488,229,557,259"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="695,281,820,311"/>
+<area shape="rect" id="node20" href="$kdbgmm_8c.html#a4938c517363d3a719521900d6df4e98e" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ..." alt="" coords="456,509,589,539"/>
+<area shape="rect" id="node24" href="$kdbgmm_8c.html#ac66fc31a007c99c00faa0f78bb0b8bd5" title="Iterator function that tests for empty blocks." alt="" coords="668,421,847,451"/>
+<area shape="rect" id="node26" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="716,561,799,591"/>
+<area shape="rect" id="node13" href="$kdbgmm_8c.html#a623a969e9e2ea599c5d24895cdfe7e11" title="Iterator function that tests for [our block][FREE] mergeable blocks." alt="" coords="449,386,596,433"/>
+<area shape="rect" id="node15" href="$kdbgmm_8c.html#a4114ffc4b186e541aa888baa7b809a59" title="Iterator function that tests for [FREE][our block] mergeable blocks." alt="" coords="428,456,617,485"/>
+<area shape="rect" id="node18" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="473,333,572,363"/>
+</map>

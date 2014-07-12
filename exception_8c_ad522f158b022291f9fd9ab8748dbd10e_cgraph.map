@@ -1,0 +1,6 @@
+<map id="exception_panic" name="exception_panic">
+<area shape="rect" id="node3" href="$x86_8c.html#a5fe7ff17916fb9cb6d5a2a9f1f923b7c" title="util/debug.h" alt="" coords="189,5,320,35"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a42be2c67abcbd4ccd5d8d1e08c21e614" title="debug_postmortem_hook" alt="" coords="171,59,339,88"/>
+<area shape="rect" id="node9" href="$x86_8c.html#ade0430439247877006d7df950f94918a" title="kernel/system.h" alt="" coords="233,112,276,141"/>
+<area shape="rect" id="node7" href="$kdbg_8c.html#a9a04c1ab65a38aee691bae5cee7c8839" title="dbgapi_invoke_kdbg" alt="" coords="388,59,527,88"/>
+</map>

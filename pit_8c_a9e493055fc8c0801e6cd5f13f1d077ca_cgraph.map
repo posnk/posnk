@@ -1,0 +1,5 @@
+<map id="i386_pit_setup" name="i386_pit_setup">
+<area shape="rect" id="node3" href="$pit_8c.html#aa54913d53efba9a3300323322df379d1" title="i386_pit_send_command" alt="" coords="161,5,327,35"/>
+<area shape="rect" id="node7" href="$pit_8c.html#ab1de2c9adf2175b1a4d3efa2aef5ab60" title="i386_pit_send_data" alt="" coords="177,59,311,88"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="377,32,455,61"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="kernel/tar.c" name="kernel/tar.c">
+<area shape="rect" id="node3" href="$errno_8h.html" title="sys/errno.h" alt="" coords="5,83,91,112"/>
+<area shape="rect" id="node5" href="$types_8h.html" title="sys/types.h" alt="" coords="193,315,284,344"/>
+<area shape="rect" id="node7" href="$stat_8h.html" title="sys/stat.h" alt="" coords="165,160,245,189"/>
+<area shape="rect" id="node10" href="$string_8h.html" title="string.h" alt="" coords="960,237,1024,267"/>
+<area shape="rect" id="node14" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="813,83,933,112"/>
+<area shape="rect" id="node19" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="516,83,607,112"/>
+<area shape="rect" id="node48" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="763,237,885,267"/>
+<area shape="rect" id="node53" href="$tar_8h.html" title="kernel/tar.h" alt="" coords="1011,83,1096,112"/>
+<area shape="rect" id="node21" href="$process_8h.html" title="kernel/process.h" alt="" coords="400,237,517,267"/>
+<area shape="rect" id="node27" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="549,315,656,344"/>
+<area shape="rect" id="node31" href="$time_8h.html" title="kernel/time.h" alt="" coords="328,315,424,344"/>
+<area shape="rect" id="node35" href="$llist_8h.html" title="util/llist.h" alt="" coords="685,315,760,344"/>
+<area shape="rect" id="node38" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="371,160,512,189"/>
+<area shape="rect" id="node41" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="541,237,637,267"/>
+</map>

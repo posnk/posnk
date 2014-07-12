@@ -1,0 +1,17 @@
+<map id="sys_open" name="sys_open">
+<area shape="rect" id="node3" href="$streams_8c.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="157,345,243,375"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="664,501,771,531"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="505,213,607,243"/>
+<area shape="rect" id="node35" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="135,680,265,709"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="333,5,429,35"/>
+<area shape="rect" id="node11" href="$vfs_8c.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="339,371,424,400"/>
+<area shape="rect" id="node15" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="496,501,616,531"/>
+<area shape="rect" id="node18" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="507,319,605,348"/>
+<area shape="rect" id="node20" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="503,423,609,452"/>
+<area shape="rect" id="node26" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="325,475,437,504"/>
+<area shape="rect" id="node28" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="324,109,439,139"/>
+<area shape="rect" id="node31" href="$chardev_8c.html#a773a2a63f80c7fc8b94daba7c731c0fd" title="device_char_open" alt="" coords="319,163,444,192"/>
+<area shape="rect" id="node33" href="$blkdev_8c.html#a1add1764ec81ec766edd6a99b150e61f" title="device_block_open" alt="" coords="315,216,448,245"/>
+<area shape="rect" id="node37" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="323,733,440,763"/>
+<area shape="rect" id="node39" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="345,680,417,709"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="vterm_tty_invalidate_screen" name="vterm_tty_invalidate_screen">
+<area shape="rect" id="node3" href="$vga__vterm_8c.html#a6d0b248b7dd1a5d9d02924a5b1b9e8f6" title="vterm_vga_switch_vc" alt="" coords="192,32,341,61"/>
+<area shape="rect" id="node5" href="$kbd_8c.html#ab325d11088a3b8f776e39c2c5f49aaf6" title="con_handle_key" alt="" coords="391,5,505,35"/>
+<area shape="rect" id="node7" href="$init_8c.html#ace69b32e73ebb9d39d3d5b0f4bdaee2b" title="vterm_vga_init" alt="" coords="395,59,501,88"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="i386_init_switch_gdt" name="i386_init_switch_gdt">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712" title="paging_init" alt="" coords="196,5,279,35"/>
+<area shape="rect" id="node5" href="$init_8c.html#a579679dd45f18736bcedbe890a2120ea" title="i386_init_mm" alt="" coords="328,5,427,35"/>
+</map>

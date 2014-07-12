@@ -1,0 +1,6 @@
+<map id="procvmm_resize_map" name="procvmm_resize_map">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="473,5,599,35"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address." alt="" coords="207,27,391,56"/>
+<area shape="rect" id="node7" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="221,79,376,126"/>
+<area shape="rect" id="node10" href="$procvmm_8c.html#ab80b641c27611fc112ea7919aec0e89b" title="Iterator function that finds the mmap for the given address." alt="" coords="441,88,631,117"/>
+</map>

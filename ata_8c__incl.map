@@ -1,0 +1,18 @@
+<map id="driver/block/pata/ata.c" name="driver/block/pata/ata.c">
+<area shape="rect" id="node3" href="$config_8h.html" title="config.h" alt="" coords="60,237,127,267"/>
+<area shape="rect" id="node5" href="$errno_8h.html" title="sys/errno.h" alt="" coords="1005,83,1091,112"/>
+<area shape="rect" id="node7" href="$x86_8h.html" title="arch/i386/x86.h" alt="" coords="31,83,140,112"/>
+<area shape="rect" id="node11" href="$ata_8h.html" title="driver/block/pata/ata.h" alt="" coords="455,83,604,112"/>
+<area shape="rect" id="node27" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="861,83,981,112"/>
+<area shape="rect" id="node32" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="164,83,273,112"/>
+<area shape="rect" id="node40" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="769,160,892,189"/>
+<area shape="rect" id="node45" href="$device_8h.html" title="kernel/device.h" alt="" coords="721,83,831,112"/>
+<area shape="rect" id="node54" href="$mbr_8h.html" title="fs/mbr.h" alt="" coords="341,83,411,112"/>
+<area shape="rect" id="node14" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="628,160,745,189"/>
+<area shape="rect" id="node19" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="497,160,604,189"/>
+<area shape="rect" id="node24" href="$partition_8h.html" title="fs/partition.h" alt="" coords="329,160,423,189"/>
+<area shape="rect" id="node17" href="$llist_8h.html" title="util/llist.h" alt="" coords="793,237,868,267"/>
+<area shape="rect" id="node34" href="$physmm_8h.html" title="kernel/physmm.h" alt="" coords="132,160,255,189"/>
+<area shape="rect" id="node47" href="$types_8h.html" title="sys/types.h" alt="" coords="1032,237,1123,267"/>
+<area shape="rect" id="node49" href="$blkcache_8h.html" title="kernel/blkcache.h" alt="" coords="967,160,1089,189"/>
+</map>

@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('task__context_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,17 +101,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
 <div class="title">task_context.h File Reference</div>  </div>
 </div><!--header-->
@@ -105,19 +120,6 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a32a2c9eb1c310d1b54d7b03eaff2d641"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structi386__task__context.html">i386_task_context</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#a32a2c9eb1c310d1b54d7b03eaff2d641">i386_task_context_t</a></td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a26ce59a9fdb3dca4a07e280cd7d727d4"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structi386__task__context.html">i386_task_context</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#a26ce59a9fdb3dca4a07e280cd7d727d4">__attribute__</a> ((packed))</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a1588906901fc3015e0865574669a56a6"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#a1588906901fc3015e0865574669a56a6">eip</a></td></tr>
-<tr class="memitem:a7534a179bc9cc0ef26f0468e0959ee5c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#a7534a179bc9cc0ef26f0468e0959ee5c">esp</a></td></tr>
-<tr class="memitem:aaba2ad0ff8ba480934feabfdab02b1e7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#aaba2ad0ff8ba480934feabfdab02b1e7">ebp</a></td></tr>
-<tr class="memitem:aeedfc39703ec8e0a1f052a832e74acd3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#aeedfc39703ec8e0a1f052a832e74acd3">eflags</a></td></tr>
-<tr class="memitem:a14871ec2fa9eea18b2b94e8d04e73ac5"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#a14871ec2fa9eea18b2b94e8d04e73ac5">fpu_state</a> [512]</td></tr>
-<tr class="memitem:ae93b8c87633b847fc26eaf0088f45bf7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="task__context_8h.html#ae93b8c87633b847fc26eaf0088f45bf7">fpu_used</a></td></tr>
 </table>
 <h2>Typedef Documentation</h2>
 <a class="anchor" id="a32a2c9eb1c310d1b54d7b03eaff2d641"></a>
@@ -134,120 +136,16 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<h2>Function Documentation</h2>
-<a class="anchor" id="a26ce59a9fdb3dca4a07e280cd7d727d4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="structi386__task__context.html">i386_task_context</a> __attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(packed)&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<h2>Variable Documentation</h2>
-<a class="anchor" id="aaba2ad0ff8ba480934feabfdab02b1e7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t ebp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00029">29</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-<p>Referenced by <a class="el" href="task__switch_8c_source.html#l00135">scheduler_fork_to()</a>, <a class="el" href="task__switch_8c_source.html#l00066">scheduler_invoke_signal_handler()</a>, and <a class="el" href="task__switch_8c_source.html#l00025">scheduler_switch_task()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aeedfc39703ec8e0a1f052a832e74acd3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t eflags</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00030">30</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1588906901fc3015e0865574669a56a6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t eip</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00027">27</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-<p>Referenced by <a class="el" href="x86_8c_source.html#l00061">debug_postmortem_hook()</a>, <a class="el" href="task__switch_8c_source.html#l00135">scheduler_fork_to()</a>, <a class="el" href="task__switch_8c_source.html#l00066">scheduler_invoke_signal_handler()</a>, and <a class="el" href="task__switch_8c_source.html#l00025">scheduler_switch_task()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7534a179bc9cc0ef26f0468e0959ee5c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t esp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00028">28</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-<p>Referenced by <a class="el" href="task__switch_8c_source.html#l00135">scheduler_fork_to()</a>, <a class="el" href="task__switch_8c_source.html#l00066">scheduler_invoke_signal_handler()</a>, and <a class="el" href="task__switch_8c_source.html#l00025">scheduler_switch_task()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a14871ec2fa9eea18b2b94e8d04e73ac5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t fpu_state[512]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00031">31</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae93b8c87633b847fc26eaf0088f45bf7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int fpu_used</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="task__context_8h_source.html#l00032">32</a> of file <a class="el" href="task__context_8h_source.html">task_context.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_112327f40afd54369b358f91725da556.html">arch</a></li><li class="navelem"><a class="el" href="dir_15b8bc4134b620ac2b453053f15f8fa4.html">i386</a></li><li class="navelem"><a class="el" href="task__context_8h.html">task_context.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

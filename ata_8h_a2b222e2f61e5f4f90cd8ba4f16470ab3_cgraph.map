@@ -1,0 +1,5 @@
+<map id="ata_poll_wait" name="ata_poll_wait">
+<area shape="rect" id="node3" href="$ata_8c.html#a0c186a626e9c907ec76bd9ee8bee9a7e" title="ata_read_port" alt="" coords="152,56,253,85"/>
+<area shape="rect" id="node5" href="$ata_8c.html#a18994a0dfdb78195142b5044246aaad5" title="ata_write_port" alt="" coords="301,29,405,59"/>
+<area shape="rect" id="node8" href="$x86_8c.html#abc1d0fce6a713e06d6dc92b6c48fcc09" title="i386_inb" alt="" coords="319,83,388,112"/>
+</map>

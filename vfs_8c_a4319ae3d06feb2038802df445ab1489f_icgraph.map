@@ -1,0 +1,14 @@
+<map id="vfs_int_rmnod" name="vfs_int_rmnod">
+<area shape="rect" id="node3" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="161,164,247,193"/>
+<area shape="rect" id="node19" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="159,332,249,361"/>
+<area shape="rect" id="node24" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="164,411,244,440"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="304,5,389,35"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="303,59,391,88"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="303,112,391,141"/>
+<area shape="rect" id="node11" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="461,189,573,219"/>
+<area shape="rect" id="node13" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="444,267,591,296"/>
+<area shape="rect" id="node15" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="308,267,385,296"/>
+<area shape="rect" id="node21" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="300,371,393,400"/>
+<area shape="rect" id="node26" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="305,424,388,453"/>
+<area shape="rect" id="node29" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="309,477,384,507"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="include/kernel/syscall.h" name="include/kernel/syscall.h">
+<area shape="rect" id="node7" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="425,83,553,112"/>
+<area shape="rect" id="node31" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="5,160,141,189"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="387,237,496,267"/>
+<area shape="rect" id="node14" href="$process_8h.html" title="kernel/process.h" alt="" coords="479,160,596,189"/>
+<area shape="rect" id="node19" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="621,237,728,267"/>
+<area shape="rect" id="node23" href="$time_8h.html" title="kernel/time.h" alt="" coords="267,237,363,267"/>
+<area shape="rect" id="node26" href="$llist_8h.html" title="util/llist.h" alt="" coords="752,237,827,267"/>
+</map>

@@ -1,0 +1,22 @@
+<map id="vfs_unlink" name="vfs_unlink">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="755,134,856,163"/>
+<area shape="rect" id="node7" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="171,521,253,550"/>
+<area shape="rect" id="node9" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="151,574,273,603"/>
+<area shape="rect" id="node13" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="159,627,265,657"/>
+<area shape="rect" id="node15" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="604,418,657,447"/>
+<area shape="rect" id="node17" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="392,418,451,447"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="157,159,267,189"/>
+<area shape="rect" id="node34" href="$vfs_8c.html#a5b390b5f69c09ba25d6ecec740c301d1" title="vfs_find_symlink" alt="" coords="152,315,272,345"/>
+<area shape="rect" id="node47" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="136,681,288,710"/>
+<area shape="rect" id="node53" href="$vfs_8c.html#a4319ae3d06feb2038802df445ab1489f" title="Remove an inode from backing storage." alt="" coords="160,734,264,763"/>
+<area shape="rect" id="node55" href="$vfs_8c.html#a90b9d075b4018a646b378da9610064db" title="Delete a directory entry from backing storage." alt="" coords="161,787,263,817"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="905,134,1055,163"/>
+<area shape="rect" id="node11" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="356,574,487,603"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="555,107,707,137"/>
+<area shape="rect" id="node26" href="$vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a" title="vfs_find_dirc_parent" alt="" coords="352,159,491,189"/>
+<area shape="rect" id="node30" href="$vfs_8c.html#a489abb04eb8e74a3f11a0a20f32a845c" title="Find a directory entry." alt="" coords="577,211,684,241"/>
+<area shape="rect" id="node32" href="$vfs_8c.html#a958c0c8e4b441808862e0911fbfc04be" title="Get an inode by it&#39;s ID." alt="" coords="580,315,681,345"/>
+<area shape="rect" id="node39" href="$vfs_8c.html#a90dc951c937e30b96e59f73075bbcd3a" title="vfs_find_dirc" alt="" coords="373,263,469,293"/>
+<area shape="rect" id="node49" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="364,707,479,737"/>
+<area shape="rect" id="node51" href="$vfs_8c.html#a2631471cb0ce3ac48ae005747a116bf9" title="Returns the minimum privilege level required for access with mode." alt="" coords="336,654,507,683"/>
+</map>

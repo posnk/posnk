@@ -1,0 +1,8 @@
+<map id="ramfs_write_inode" name="ramfs_write_inode">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="197,5,304,35"/>
+<area shape="rect" id="node7" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="572,32,697,61"/>
+<area shape="rect" id="node9" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="201,109,300,139"/>
+<area shape="rect" id="node12" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="215,163,287,192"/>
+<area shape="rect" id="node14" href="$ramfs_8c.html#a2e5f1372fc44e9a21cd7825bac207161" title="ramfs_block_search\l_iterator" alt="" coords="181,215,320,262"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="368,5,523,35"/>
+</map>

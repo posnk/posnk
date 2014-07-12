@@ -1,0 +1,21 @@
+<map id="include/kernel/permissions.h" name="include/kernel/permissions.h">
+<area shape="rect" id="node3" href="$vfs_8h.html" title="include/kernel/vfs.h" alt="" coords="564,83,697,112"/>
+<area shape="rect" id="node11" href="$process_8c.html" title="kernel/process.c" alt="" coords="1001,237,1119,267"/>
+<area shape="rect" id="node13" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="1237,237,1360,267"/>
+<area shape="rect" id="node15" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="1612,237,1751,267"/>
+<area shape="rect" id="node17" href="$streams_8c.html" title="kernel/streams.c" alt="" coords="804,237,921,267"/>
+<area shape="rect" id="node31" href="$vfs_8c.html" title="Part of P&#45;OS kernel." alt="" coords="1165,160,1256,189"/>
+<area shape="rect" id="node45" href="$permissions_8c.html" title="kernel/permissions.c" alt="" coords="1432,83,1573,112"/>
+<area shape="rect" id="node50" href="$sc__signals_8c.html" title="kernel/sc_signals.c" alt="" coords="1597,83,1731,112"/>
+<area shape="rect" id="node52" href="$sc__time_8c.html" title="kernel/sc_time.c" alt="" coords="1755,83,1872,112"/>
+<area shape="rect" id="node5" href="$process_8h.html" title="include/kernel/process.h" alt="" coords="979,160,1141,189"/>
+<area shape="rect" id="node9" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="656,237,776,267"/>
+<area shape="rect" id="node20" href="$streams_8h.html" title="include/kernel/streams.h" alt="" coords="608,160,771,189"/>
+<area shape="rect" id="node24" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="467,237,573,267"/>
+<area shape="rect" id="node26" href="$sc__vfs_8c.html" title="kernel/sc_vfs.c" alt="" coords="845,160,955,189"/>
+<area shape="rect" id="node29" href="$tar_8c.html" title="kernel/tar.c" alt="" coords="5,160,91,189"/>
+<area shape="rect" id="node33" href="$ext2_8h.html" title="include/fs/ext2.h" alt="" coords="115,160,232,189"/>
+<area shape="rect" id="node35" href="$ext2_8c.html" title="fs/ext2.c" alt="" coords="181,237,253,267"/>
+<area shape="rect" id="node38" href="$ramfs_8c.html" title="fs/ramfs.c" alt="" coords="321,237,401,267"/>
+<area shape="rect" id="node40" href="$ramfs_8h.html" title="include/fs/ramfs.h" alt="" coords="357,160,483,189"/>
+</map>

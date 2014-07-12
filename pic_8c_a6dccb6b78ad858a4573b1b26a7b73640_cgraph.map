@@ -1,0 +1,4 @@
+<map id="i386_send_end_of_interrupt" name="i386_send_end_of_interrupt">
+<area shape="rect" id="node3" href="$pic_8c.html#a8b442733bb70ed866bec4f01c02b46b9" title="i386_pic_send_command" alt="" coords="236,5,404,35"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="455,5,532,35"/>
+</map>

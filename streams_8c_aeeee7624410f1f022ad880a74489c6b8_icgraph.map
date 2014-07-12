@@ -1,0 +1,17 @@
+<map id="stream_ptr_search_iterator" name="stream_ptr_search_iterator">
+<area shape="rect" id="node3" href="$streams_8h.html#af7737838e38167fe9a767f8e232b4fd7" title="stream_get_ptr" alt="" coords="239,323,348,352"/>
+<area shape="rect" id="node30" href="$streams_8c.html#a3d159f64d97eb54699c85af7255727ca" title="stream_get_ptr_o" alt="" coords="232,509,355,539"/>
+<area shape="rect" id="node5" href="$streams_8h.html#a1bc4122ebd851bb3ecdaf46f34fb2566" title="_sys_dup2" alt="" coords="415,5,500,35"/>
+<area shape="rect" id="node7" href="$streams_8h.html#a0349abb01604f6c3a69996aa8905e186" title="_sys_fcntl" alt="" coords="560,32,643,61"/>
+<area shape="rect" id="node9" href="$streams_8h.html#a769dcca95c6f80cd662fc28f0d581aef" title="_sys_fchdir" alt="" coords="413,109,501,139"/>
+<area shape="rect" id="node11" href="$streams_8h.html#a7ebd0ed5350ccd5ebcd88abc74ab14dd" title="_sys_fchmod" alt="" coords="408,163,507,192"/>
+<area shape="rect" id="node13" href="$streams_8h.html#a9e340ed6aa36497a4150f75b9c0c193f" title="_sys_fchown" alt="" coords="408,216,507,245"/>
+<area shape="rect" id="node16" href="$streams_8h.html#a3389d4f570b9ecdd4950666bc4f607fb" title="_sys_fstat" alt="" coords="416,269,499,299"/>
+<area shape="rect" id="node18" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="404,323,511,352"/>
+<area shape="rect" id="node20" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="404,376,511,405"/>
+<area shape="rect" id="node22" href="$streams_8h.html#a7f7816d947b6e32d723c90a8de5e111d" title="_sys_ioctl" alt="" coords="417,429,497,459"/>
+<area shape="rect" id="node24" href="$streams_8h.html#a964f6b4cf457ce4fe771d7a4367f0585" title="_sys_lseek" alt="" coords="413,483,501,512"/>
+<area shape="rect" id="node26" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="416,536,499,565"/>
+<area shape="rect" id="node28" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="415,589,500,619"/>
+<area shape="rect" id="node32" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="403,643,512,672"/>
+</map>

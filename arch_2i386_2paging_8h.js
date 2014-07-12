@@ -1,0 +1,26 @@
+var arch_2i386_2paging_8h =
+[
+    [ "i386_page_dir", "structi386__page__dir.html", "structi386__page__dir" ],
+    [ "i386_page_table", "structi386__page__table.html", "structi386__page__table" ],
+    [ "i386_page_dir_list", "structi386__page__dir__list.html", "structi386__page__dir__list" ],
+    [ "I386_ADDR_TO_PD_IDX", "arch_2i386_2paging_8h.html#ae0a3359d403e86f85600537ba490032e", null ],
+    [ "I386_ADDR_TO_PT_IDX", "arch_2i386_2paging_8h.html#a79a2bc5067702522f16910d42ffff8e4", null ],
+    [ "I386_ADDR_TO_PTEPTR", "arch_2i386_2paging_8h.html#afef036741ab1e46c54fc0bc891530cba", null ],
+    [ "I386_PAGE_DIRECTORY_SIZE", "arch_2i386_2paging_8h.html#ae87d9d4be5839080bca6ace4a4f051e1", null ],
+    [ "I386_PAGE_FLAG_ACCESSED", "arch_2i386_2paging_8h.html#a32d9ce05b237c5106b523284a77c11d2", null ],
+    [ "I386_PAGE_FLAG_DIRTY", "arch_2i386_2paging_8h.html#ace8f86a786306e124e1bceac5db9edc9", null ],
+    [ "I386_PAGE_FLAG_GLOBAL", "arch_2i386_2paging_8h.html#a2f932ac4dcd294835815ba87c0c8ed34", null ],
+    [ "I386_PAGE_FLAG_NOCACHE", "arch_2i386_2paging_8h.html#a784c10b115b4db3dbda80dd890b0c20c", null ],
+    [ "I386_PAGE_FLAG_PAGE_SIZE", "arch_2i386_2paging_8h.html#ab485cf031aa1b82675162ea3b265750c", null ],
+    [ "I386_PAGE_FLAG_PRESENT", "arch_2i386_2paging_8h.html#a07c87bb84411a86db3596f96564f148e", null ],
+    [ "I386_PAGE_FLAG_RW", "arch_2i386_2paging_8h.html#a97d4a9711c16a88f7fe75cc9faaa5eb3", null ],
+    [ "I386_PAGE_FLAG_USER", "arch_2i386_2paging_8h.html#a6d6f95d6e6d7f0841e20e313f2d3c0af", null ],
+    [ "I386_PAGE_FLAG_WRITETHROUGH", "arch_2i386_2paging_8h.html#a1f00a839e39791e15aebb9ba7fec560c", null ],
+    [ "I386_PAGE_TABLE_SIZE", "arch_2i386_2paging_8h.html#ab1933caa77ccd76f3368c057c3600bbe", null ],
+    [ "I386_PTADDR", "arch_2i386_2paging_8h.html#a8649bc2ab063754ab7dbd1f2cda8fa30", null ],
+    [ "I386_TABLE_TAG_RESERVED", "arch_2i386_2paging_8h.html#a44d3249a7fb3f682b7bda6974f35df38", null ],
+    [ "i386_page_dir_list_t", "arch_2i386_2paging_8h.html#a3fa921af8ce9eaf118d1d709d6bea6ac", null ],
+    [ "i386_page_dir_t", "arch_2i386_2paging_8h.html#a81b564d72c1fac4acdbd03e9c9ff1349", null ],
+    [ "i386_page_table_t", "arch_2i386_2paging_8h.html#acab0d36a016796325473057bc9905412", null ],
+    [ "i386_phys_copy_frame", "arch_2i386_2paging_8h.html#ac596c3cfa12ef6060abbf092f066a5a0", null ]
+];

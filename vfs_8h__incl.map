@@ -1,0 +1,11 @@
+<map id="include/kernel/vfs.h" name="include/kernel/vfs.h">
+<area shape="rect" id="node3" href="$process_8h.html" title="kernel/process.h" alt="" coords="331,160,448,189"/>
+<area shape="rect" id="node9" href="$types_8h.html" title="sys/types.h" alt="" coords="56,237,147,267"/>
+<area shape="rect" id="node14" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="171,237,277,267"/>
+<area shape="rect" id="node18" href="$time_8h.html" title="kernel/time.h" alt="" coords="536,237,632,267"/>
+<area shape="rect" id="node22" href="$llist_8h.html" title="util/llist.h" alt="" coords="656,237,731,267"/>
+<area shape="rect" id="node25" href="$permissions_8h.html" title="kernel/permissions.h" alt="" coords="405,83,547,112"/>
+<area shape="rect" id="node28" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="160,160,256,189"/>
+<area shape="rect" id="node34" href="$stat_8h.html" title="sys/stat.h" alt="" coords="5,83,85,112"/>
+<area shape="rect" id="node11" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="403,237,512,267"/>
+</map>

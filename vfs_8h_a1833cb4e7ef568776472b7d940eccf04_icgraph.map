@@ -1,0 +1,14 @@
+<map id="vfs_mknod" name="vfs_mknod">
+<area shape="rect" id="node3" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="144,92,229,121"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="645,42,733,72"/>
+<area shape="rect" id="node15" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="143,145,231,174"/>
+<area shape="rect" id="node18" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="299,250,411,280"/>
+<area shape="rect" id="node22" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="281,304,428,333"/>
+<area shape="rect" id="node26" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="148,198,225,228"/>
+<area shape="rect" id="node5" href="$init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1" title="i386_init_stub" alt="" coords="487,42,588,72"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#aa9f0492a1c6d0a69566cf8dc397f249a" title="sys_open" alt="" coords="316,93,393,122"/>
+<area shape="rect" id="node11" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="495,120,580,149"/>
+<area shape="rect" id="node20" href="$tar_8h.html#a7bdab331782ae375d3b2b7de0d4ed49d" title="tar_extract" alt="" coords="496,250,579,280"/>
+<area shape="rect" id="node24" href="$tar_8h.html#ada2334eab3a4cd42b7ea2a267b2f0848" title="tar_extract_mem" alt="" coords="477,304,597,333"/>
+<area shape="rect" id="node28" href="$syscall_8h.html#a8397464d241949d57679d42b28e17c39" title="sys_mkdir" alt="" coords="313,197,396,226"/>
+</map>

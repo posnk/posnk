@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('heapmm_8c_source.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">heapmm.c</div>  </div>
@@ -108,17 +125,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61">   37</a></span>&#160;<span class="keywordtype">size_t</span>           <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a> = 0;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated.">heapmm_free_internal</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated.">heapmm_free_internal</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> size);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc_internal</a>(<span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>, <span class="keywordtype">int</span> morecore);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc_internal</a>(<span class="keywordtype">size_t</span> size, <span class="keywordtype">int</span> morecore);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966">   46</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <a class="code" href="ioctl_8h.html#acf4f5aa73f2824b4776e10e811044cf6">__attribute__</a>((__unused__)) <span class="keywordtype">void</span> *param)</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a13ee6bfb5edbffe20269c9fdcf1347f2">   46</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a13ee6bfb5edbffe20269c9fdcf1347f2" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, __attribute__((__unused__)) <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> == 0;</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8">   57</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ...">heapmm_morecore</a> ( <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a> )</div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8">   57</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ...">heapmm_morecore</a> ( <span class="keywordtype">size_t</span> size )</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *found_block;</div>
@@ -168,13 +185,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
 <div class="line"><a name="l00108"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a75cf1b0eca3c9e770122f1e6701a40bd">  108</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a75cf1b0eca3c9e770122f1e6701a40bd" title="Iterator function that tests for [our block][FREE] mergeable blocks.">heapmm_merge_start_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">return</span> (block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> == param) &amp;&amp; !(block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> == 0);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
 <div class="line"><a name="l00117"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a3f145d1ed15163bfdb371cf37f029f32">  117</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a3f145d1ed15163bfdb371cf37f029f32" title="Iterator function that tests for [FREE][our block] mergeable blocks.">heapmm_merge_end_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordtype">void</span>               *end_address;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        end_address = (<span class="keywordtype">void</span> *) ( ((uintptr_t)block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a>) );</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">return</span> (end_address == param) &amp;&amp; !(block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> == 0);</div>
@@ -186,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a4085c39065aff93896306515a2dbd8ed">pid</a>;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;}</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0">  134</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated.">heapmm_free_internal</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>)</div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0">  134</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated.">heapmm_free_internal</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a>  *found_block;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a>  *merge_block;</div>
@@ -212,7 +229,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordflow">if</span> (found_block != <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) {</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;                <span class="comment">/* Found it! */</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                <span class="comment">/* Proceed and merge! */</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> += <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> += size;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="comment">/* No fitting free block was found */</span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="comment">/* Now, try to find block [our block][FREE] */</span></div>
@@ -223,7 +240,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                <span class="keywordflow">if</span> (found_block != <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) {</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                        <span class="comment">/* Found it! */</span></div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                        <span class="comment">/* Proceed and merge! */</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> += <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> += size;</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = address;</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;                        <span class="comment">/* Well then, no mergeable blocks? */</span></div>
@@ -267,7 +284,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                                }</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                                found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = address;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a>  = <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a>  = size;</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                                <span class="comment">//TODO: Get a lock on the free block table</span></div>
 <div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
@@ -313,28 +330,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;                <span class="comment">//heapmm_free_internal( (void *) found_block, sizeof(heapmm_block_t) );</span></div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        }</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>+=<a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>+=size;</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;}</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
 <div class="line"><a name="l00268"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a8cac91b732958dd041cdbd92315ebcba">  268</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a8cac91b732958dd041cdbd92315ebcba" title="Iterator function that tests for blocks equal the size in param.">heapmm_alloc_match_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;{</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordtype">size_t</span>                  <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>  = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) param;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordtype">size_t</span>                  size  = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) param;</div>
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;        <span class="keywordflow">if</span> ((((uintptr_t)block)+<span class="keyword">sizeof</span>(<a class="code" href="heapmm_8h.html#af92797a9a820ebc268c1499d16305f9c" title="kernel/heapmm.h">heapmm_block_t</a>)) &gt; (uintptr_t)<a class="code" href="heapmm_8c.html#a21815d417f38fb7437b4b47ce47c6ca6" title="Pointer to the top of the heap.">heapmm_top_of_heap</a>)</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <span class="keywordflow">for</span>(;;);</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">return</span> block-&gt;size == <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">return</span> block-&gt;size == size;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;}</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
 <div class="line"><a name="l00281"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a5c32e884c0cd3418e801dfed480d4c45">  281</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a5c32e884c0cd3418e801dfed480d4c45" title="Iterator function that tests for blocks able to contain the size in param.">heapmm_alloc_fit_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;{</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a> = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordtype">size_t</span>                  <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>  = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) param;</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">return</span> block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> &gt;= <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordtype">size_t</span>                  size  = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) param;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">return</span> block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> &gt;= size;</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
-<div class="line"><a name="l00291"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f">  291</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc_internal</a>(<span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>, <span class="keywordtype">int</span> morecore)</div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f">  291</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc_internal</a>(<span class="keywordtype">size_t</span> size, <span class="keywordtype">int</span> morecore)</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;{</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *found_block = <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>;</div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="keywordtype">void</span>               *address;</div>
@@ -347,7 +364,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordflow">if</span> (size == <span class="keyword">sizeof</span>(<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a>)) {           </div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;                found_block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *)</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;                        <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(&amp;heapmm_free_blocks_list,</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                                                                 &amp;<a class="code" href="heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a>,</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;                                                                 &amp;<a class="code" href="heapmm_8c.html#a13ee6bfb5edbffe20269c9fdcf1347f2" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a>,</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;                                                                 <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);</div>
 <div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;                <span class="keywordflow">if</span> (found_block) {</div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;                        <a class="code" href="llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in.">llist_unlink</a>((<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *) found_block);</div>
@@ -359,13 +376,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;        found_block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *)</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;                <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(&amp;heapmm_free_blocks_list,</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;                                                         &amp;<a class="code" href="heapmm_8c.html#a8cac91b732958dd041cdbd92315ebcba" title="Iterator function that tests for blocks equal the size in param.">heapmm_alloc_match_iterator</a>,</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                                                         (<span class="keywordtype">void</span> *) <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;                                                         (<span class="keywordtype">void</span> *) size);</div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keywordflow">if</span> (found_block == <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) {</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;                <span class="comment">/* No fitting free block was found */</span></div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;                found_block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *)</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;                        <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(&amp;heapmm_free_blocks_list,</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;                                                                 &amp;<a class="code" href="heapmm_8c.html#a5c32e884c0cd3418e801dfed480d4c45" title="Iterator function that tests for blocks able to contain the size in param.">heapmm_alloc_fit_iterator</a>,</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                                                                 (<span class="keywordtype">void</span> *) <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;                                                                 (<span class="keywordtype">void</span> *) size);</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        }</div>
 <div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">if</span> (found_block == <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) {</div>
 <div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;                <span class="comment">/* No large enough free block was found */</span></div>
@@ -387,7 +404,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                        found_block = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *)</div>
 <div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                                <a class="code" href="llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati...">llist_iterate_select</a>(&amp;heapmm_free_blocks_list,</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                                                                         &amp;<a class="code" href="heapmm_8c.html#a4a7e64240e28eca7ed3930d5990cd966" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a>,</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                                                                         &amp;<a class="code" href="heapmm_8c.html#a13ee6bfb5edbffe20269c9fdcf1347f2" title="Iterator function that tests for empty blocks.">heapmm_morecore_iterator</a>,</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                                                                         <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>);</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;</div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                        <span class="keywordflow">if</span> (found_block != <a class="code" href="types_8h.html#a070d2ce7b6bb7e5c05602aa8c308d0c4">NULL</a>) {</div>
@@ -413,7 +430,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keywordflow">if</span> (found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> &gt; size) {</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                <span class="comment">/* Block is larger than requested size */</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;                <span class="comment">/* Proceed to shrink block */</span></div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> -= <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> -= size;</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = (<span class="keywordtype">void</span> *) ( ((uintptr_t)found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) size) );</div>
 <div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;                <span class="comment">//TODO: Release a lock on the free block table</span></div>
@@ -434,7 +451,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        </div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;        <a class="code" href="string_8c.html#a4cb469bec7b722064b97a406346acb61">memset</a>(address, 0x23, size);</div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;        <a class="code" href="heapdbg_8c.html#a8529720051a8962f217fd321f10aee19">dbgapi_register_memuse</a>(address,size);</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>-=<a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>-=size;</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="comment">//if (heapmm_space_left &lt; 512)</span></div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        <span class="comment">//      heapmm_morecore(PHYSMM_PAGE_SIZE);</span></div>
 <div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        <span class="keywordflow">return</span> address;</div>
@@ -447,7 +464,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;</div>
 <div class="line"><a name="l00405"></a><span class="lineno"><a class="code" href="heapmm_8c.html#af65cf6ef36994664846885ef8c44edc4">  405</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#af65cf6ef36994664846885ef8c44edc4" title="Iterator function that tests for aligned, matching sized blocks.">heapmm_alloc_page_match_iterator</a>     (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;{</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a>  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *req = (<a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *) param;</div>
 <div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        uintptr_t               inpage = (uintptr_t) block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>;</div>
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        inpage &amp;= req-&gt;<a class="code" href="structheapmm__alignreq.html#af632ae1d346bad9559d91af85a2d8521">align</a> - 1;                       </div>
@@ -456,7 +473,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
 <div class="line"><a name="l00418"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a5f68f317bd5662c19b0bf97f79c953cc">  418</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a5f68f317bd5662c19b0bf97f79c953cc" title="Iterator function that tests for blocks large enough to contain a whole page.">heapmm_alloc_page_split_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;{</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a>  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *req = (<a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *) param;</div>
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        uintptr_t               inpage = (uintptr_t) block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>;</div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        <span class="keywordtype">size_t</span>                  reqsize;</div>
@@ -467,20 +484,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;</div>
 <div class="line"><a name="l00432"></a><span class="lineno"><a class="code" href="heapmm_8c.html#a2a4ed12d5a6197fa232485ec86f7349c">  432</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="heapmm_8c.html#a2a4ed12d5a6197fa232485ec86f7349c" title="Iterator function that tests for page aligned, larger than page sized blocks.">heapmm_alloc_page_fit_iterator</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *node, <span class="keywordtype">void</span> *param)</div>
 <div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;{</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *<a class="code" href="ext2_8h.html#a5ff1274335f5dfb8c0de502c6516d553">block</a>  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *block  = (<a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *) node;</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *req = (<a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> *) param;</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        uintptr_t               inpage = (uintptr_t) block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>;</div>
 <div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;        inpage &amp;= req-&gt;<a class="code" href="structheapmm__alignreq.html#af632ae1d346bad9559d91af85a2d8521">align</a> - 1;                       </div>
 <div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;        return (inpage == 0) &amp;&amp; (block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> &gt;= req-&gt;<a class="code" href="structheapmm__alignreq.html#a8844bc3ee57af8030f1b011446259961">size</a>);</div>
 <div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;}</div>
 <div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;</div>
-<div class="line"><a name="l00444"></a><span class="lineno"><a class="code" href="heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58">  444</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM.">heapmm_alloc_page_alligned</a>(<span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>)</div>
+<div class="line"><a name="l00444"></a><span class="lineno"><a class="code" href="heapmm_8h.html#af41b0b1555349034bfd4bf39bc496c58">  444</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM.">heapmm_alloc_page_alligned</a>(<span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;{</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM.">heapmm_alloc_alligned</a>(size, <a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>);</div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;}</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;</div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
-<div class="line"><a name="l00453"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c">  453</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM.">heapmm_alloc_alligned</a>(<span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>, uintptr_t alignment)</div>
+<div class="line"><a name="l00453"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a964ab2f29876cde7553ef89df6ba250c">  453</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM.">heapmm_alloc_alligned</a>(<span class="keywordtype">size_t</span> size, uintptr_t alignment)</div>
 <div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;{</div>
 <div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <a class="code" href="structheapmm__block.html" title="Heap memory manager free block descriptor typedef: heapmm_block_t.">heapmm_block_t</a> *found_block;</div>
 <div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        <a class="code" href="structheapmm__alignreq.html">heapmm_alignreq_t</a> alignreq;</div>
@@ -490,7 +507,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;        <span class="keywordflow">if</span> (((<a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a> - size) &lt; 1024))</div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;                <a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ...">heapmm_morecore</a>(<a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>);</div>
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;        alignmask = alignment - 1;</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        alignreq.<a class="code" href="structheapmm__alignreq.html#a8844bc3ee57af8030f1b011446259961">size</a> = <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;        alignreq.<a class="code" href="structheapmm__alignreq.html#a8844bc3ee57af8030f1b011446259961">size</a> = size;</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;        alignreq.<a class="code" href="structheapmm__alignreq.html#af632ae1d346bad9559d91af85a2d8521">align</a> = alignment;</div>
 <div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;</div>
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;        <span class="comment">//TODO: Get a lock on the free block table</span></div>
@@ -535,8 +552,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;                <span class="keywordflow">if</span> (found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> &gt; size) {</div>
 <div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;                        <span class="comment">/* Block is larger than requested size */</span></div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;                        <span class="comment">/* Proceed to shrink block */</span></div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> -= <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = (<span class="keywordtype">void</span> *) ( ((uintptr_t)found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>) );</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> -= size;</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;                        found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = (<span class="keywordtype">void</span> *) ( ((uintptr_t)found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) size) );</div>
 <div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;</div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;                        <span class="comment">//TODO: Release a lock on the free block table</span></div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;</div>
@@ -553,8 +570,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;                <span class="comment">/* Block is not aligned */</span></div>
 <div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;</div>
 <div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;                <span class="comment">/* Proceed to shrink block */</span></div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ac42542e60a7624074c6e24d99ceba64b">padding</a> = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) (alignment - in_page);</div>
-<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = (<span class="keywordtype">void</span> *) ( ((uintptr_t)found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) <a class="code" href="ext2_8h.html#ac42542e60a7624074c6e24d99ceba64b">padding</a>) + ((uintptr_t) <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>));</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;                <span class="keywordtype">size_t</span> padding = (<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) (alignment - in_page);</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a> = (<span class="keywordtype">void</span> *) ( ((uintptr_t)found_block-&gt;<a class="code" href="structheapmm__block.html#a51453344331bb88523c0f4428e9a84ba">start</a>) + ((uintptr_t) padding) + ((uintptr_t) size));</div>
 <div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;                found_block-&gt;<a class="code" href="structheapmm__block.html#a6cb116f2a8636ab993590d3558cb4746">size</a> -= padding + ((<a class="code" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a>) size);</div>
 <div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;                </div>
 <div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;                address = (<span class="keywordtype">void</span> *) ( ((uintptr_t)address) + ((uintptr_t) padding));</div>
@@ -568,7 +585,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;        }</div>
 <div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;</div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;        <a class="code" href="heapdbg_8c.html#a8529720051a8962f217fd321f10aee19">dbgapi_register_memuse</a>(address,size);</div>
-<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>-=<a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>;</div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;        <a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a>-=size;</div>
 <div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="heapmm_8c.html#ab8a6b55af64acb8e6e5904ee0d659f61" title="Keep track of.">heapmm_space_left</a> &lt; 512)</div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;                <a class="code" href="heapmm_8c.html#a65801fd4d999d7485d29d9968c1f85e8" title="Internal function Requests more memory and adds it to the free block table, then cleans up low space ...">heapmm_morecore</a>(<a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>);</div>
 <div class="line"><a name="l00544"></a><span class="lineno">  544</span>&#160;        <span class="keywordflow">return</span> address;</div>
@@ -576,7 +593,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;</div>
 <div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;</div>
 <div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;</div>
-<div class="line"><a name="l00552"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a">  552</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>) </div>
+<div class="line"><a name="l00552"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a">  552</a></span>&#160;<span class="keywordtype">void</span> *<a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keywordtype">size_t</span> size) </div>
 <div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;{</div>
 <div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160;        <span class="keywordtype">void</span> *addr =  <a class="code" href="heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc_internal</a>(size, <a class="code" href="heapmm_8c.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>);</div>
 <div class="line"><a name="l00555"></a><span class="lineno">  555</span>&#160;        <span class="keywordflow">if</span> (((uintptr_t)addr) &lt; 0xD0000000)</div>
@@ -592,12 +609,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="heapmm_8c.html#af41b0b1555349034bfd4bf39bc496c58" title="Allocates a page alligned block of RAM.">heapmm_alloc_page_alligned</a>(<a class="code" href="physmm_8h.html#a827283045b5664300cfe1daa22b2150c">PHYSMM_PAGE_SIZE</a>);</div>
 <div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;}</div>
 <div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;</div>
-<div class="line"><a name="l00574"></a><span class="lineno"><a class="code" href="heapmm_8h.html#ab71d98d365d8823e5254e34848fae10b">  574</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>) </div>
+<div class="line"><a name="l00574"></a><span class="lineno"><a class="code" href="heapmm_8h.html#ab71d98d365d8823e5254e34848fae10b">  574</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(<span class="keywordtype">void</span> *address, <span class="keywordtype">size_t</span> size) </div>
 <div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;{</div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;        <a class="code" href="heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated.">heapmm_free_internal</a>(address, size);</div>
 <div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;}</div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;</div>
-<div class="line"><a name="l00583"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a42b4201eaa2b3e98a0e456c42ae2ad94">  583</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="heapmm_8c.html#a42b4201eaa2b3e98a0e456c42ae2ad94" title="Initializes the heap memory manager.">heapmm_init</a>(<span class="keywordtype">void</span> *heap_start, <span class="keywordtype">size_t</span> <a class="code" href="ext2_8h.html#ab2c6b258f02add8fdf4cfc7c371dd772">size</a>)</div>
+<div class="line"><a name="l00583"></a><span class="lineno"><a class="code" href="heapmm_8h.html#a42b4201eaa2b3e98a0e456c42ae2ad94">  583</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="heapmm_8c.html#a42b4201eaa2b3e98a0e456c42ae2ad94" title="Initializes the heap memory manager.">heapmm_init</a>(<span class="keywordtype">void</span> *heap_start, <span class="keywordtype">size_t</span> size)</div>
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;{</div>
 <div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160;        <a class="code" href="llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)">llist_create</a>(&amp;heapmm_free_blocks_list);</div>
 <div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;        <a class="code" href="heapmm_8c.html#a21815d417f38fb7437b4b47ce47c6ca6" title="Pointer to the top of the heap.">heapmm_top_of_heap</a> = heap_start;</div>
@@ -606,11 +623,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;}</div>
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="heapmm_8c.html">heapmm.c</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

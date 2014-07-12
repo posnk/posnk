@@ -1,0 +1,8 @@
+<map id="vfs_find_dirc_parent" name="vfs_find_dirc_parent">
+<area shape="rect" id="node3" href="$vfs_8h.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="193,109,303,139"/>
+<area shape="rect" id="node5" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="365,5,432,35"/>
+<area shape="rect" id="node7" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="495,109,572,139"/>
+<area shape="rect" id="node9" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="356,109,441,139"/>
+<area shape="rect" id="node12" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="353,163,444,192"/>
+<area shape="rect" id="node14" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="359,216,439,245"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="device_block_fetch" name="device_block_fetch">
+<area shape="rect" id="node3" href="$blkcache_8c.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="207,180,305,209"/>
+<area shape="rect" id="node7" href="$blkcache_8c.html#a43be209fbab4c66306a9999cd289f294" title="blkcache_get_discard_candidate &#45; Returns the block to be discarded next" alt="" coords="376,58,523,105"/>
+<area shape="rect" id="node24" href="$blkdev_8c.html#abf2017d0baf1627e496e1d2e14d1d8d0" title="device_block_flush" alt="" coords="189,11,323,40"/>
+<area shape="rect" id="node5" href="$blkcache_8c.html#a70e74e7691382d33032fda7f1eed71ab" title="blkcache_find &#45; Get a block from the cache" alt="" coords="399,5,500,35"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="396,128,503,157"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c" title="Allocates an alligned block of RAM." alt="" coords="371,256,528,285"/>
+<area shape="rect" id="node14" href="$llist_8c.html#a47bddcc8199bab03f2b15dd840568db5" title="Unlinks a node from the list it is in." alt="" coords="576,219,659,248"/>
+<area shape="rect" id="node16" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="399,309,500,339"/>
+<area shape="rect" id="node18" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="400,363,499,392"/>
+<area shape="rect" id="node21" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="415,416,484,445"/>
+</map>

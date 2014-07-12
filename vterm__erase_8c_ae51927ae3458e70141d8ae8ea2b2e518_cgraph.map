@@ -1,0 +1,4 @@
+<map id="vterm_erase_rows" name="vterm_erase_rows">
+<area shape="rect" id="node3" href="$vterm__erase_8c.html#ac753ad8e4a8791cb35acd81e5fc904a0" title="vterm_erase_row" alt="" coords="184,5,307,35"/>
+<area shape="rect" id="node5" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="355,5,499,35"/>
+</map>

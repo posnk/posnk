@@ -1,0 +1,7 @@
+<map id="include/fs/partition.h" name="include/fs/partition.h">
+<area shape="rect" id="node3" href="$mbr_8h.html" title="include/fs/mbr.h" alt="" coords="49,92,164,121"/>
+<area shape="rect" id="node9" href="$ata_8h.html" title="include/driver/block\l/pata/ata.h" alt="" coords="188,83,321,130"/>
+<area shape="rect" id="node5" href="$mbr_8c.html" title="fs/mbr.c" alt="" coords="5,188,75,217"/>
+<area shape="rect" id="node7" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="99,188,248,217"/>
+<area shape="rect" id="node12" href="$ata__pci_8c.html" title="driver/block/pata/ata\l_pci.c" alt="" coords="272,179,411,226"/>
+</map>

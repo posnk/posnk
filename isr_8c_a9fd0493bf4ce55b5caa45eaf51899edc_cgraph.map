@@ -1,0 +1,31 @@
+<map id="i386_handle_interrupt" name="i386_handle_interrupt">
+<area shape="rect" id="node3" href="$exception_8c.html#a6144950ba049dd82bec04ca06f81c30e" title="exception_handle" alt="" coords="435,56,557,85"/>
+<area shape="rect" id="node14" href="$fpu_8c.html#a4488e22d1d21170759515f2acd80a936" title="i386_fpu_handle_ill" alt="" coords="220,680,351,709"/>
+<area shape="rect" id="node24" href="$isr_8c.html#af36b7da75a38bbabb4f915533bce5638" title="i386_get_page_fault_addr" alt="" coords="200,733,371,763"/>
+<area shape="rect" id="node26" href="$arch_2i386_2include_2pic_8h.html#ad61ad39fe3de5d150621d000af554308" title="i386_interrupt_done" alt="" coords="219,787,352,816"/>
+<area shape="rect" id="node28" href="$interrupt_8c.html#aeea16afe8607e6e0bca3d46e8fa64f61" title="interrupt_dispatch" alt="" coords="223,840,348,869"/>
+<area shape="rect" id="node30" href="$kernel_2paging_8c.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="217,239,353,268"/>
+<area shape="rect" id="node49" href="$sercon_8c.html#ac8bbf0eb02e5ebfa30bda547750e564b" title="Interrupt handler!" alt="" coords="244,920,327,949"/>
+<area shape="rect" id="node58" href="$syscall_8c.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="227,497,344,527"/>
+<area shape="rect" id="node69" href="$time_8c.html#a7f6b332d188bc3ddc1046d47bfdf32b9" title="timer_interrupt" alt="" coords="651,577,755,607"/>
+<area shape="rect" id="node5" href="$exception_8c.html#ad522f158b022291f9fd9ab8748dbd10e" title="exception_panic" alt="" coords="645,5,760,35"/>
+<area shape="rect" id="node7" href="$x86_8c.html#a5fe7ff17916fb9cb6d5a2a9f1f923b7c" title="util/debug.h" alt="" coords="841,32,972,61"/>
+<area shape="rect" id="node10" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="631,419,775,448"/>
+<area shape="rect" id="node12" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="869,472,944,501"/>
+<area shape="rect" id="node16" href="$fpu_8c.html#a886d7ed7910c6f2645163d12493418a3" title="i386_enable_fpu" alt="" coords="439,787,553,816"/>
+<area shape="rect" id="node18" href="$fpu_8c.html#a6b3f3936f350cce60c49327bb927a336" title="i386_fpu_load" alt="" coords="445,840,547,869"/>
+<area shape="rect" id="node20" href="$fpu_8c.html#a9d16803cc1802dcacc90a2c7ec651e99" title="i386_fpu_save" alt="" coords="443,680,549,709"/>
+<area shape="rect" id="node22" href="$fpu_8c.html#a3d89b52201ec7cb20f7b87c330265899" title="i386_init_fpu" alt="" coords="449,733,543,763"/>
+<area shape="rect" id="node32" href="$heapmm_8c.html#ac14266788c60d7047ab36dd2f415aa45" title="curpid" alt="" coords="468,368,524,397"/>
+<area shape="rect" id="node35" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="833,160,980,189"/>
+<area shape="rect" id="node37" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="833,261,980,307"/>
+<area shape="rect" id="node39" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="657,212,748,241"/>
+<area shape="rect" id="node43" href="$arch_2i386_2paging_8c.html#ab417afe6f5654cf60f29d89c523f9930" title="paging_tag" alt="" coords="453,264,539,293"/>
+<area shape="rect" id="node45" href="$procvmm_8c.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="420,160,572,189"/>
+<area shape="rect" id="node51" href="$sercon_8c.html#a0d20a2e01b41fd1b5314d7dd710ddc3a" title="sserial_received" alt="" coords="439,893,553,923"/>
+<area shape="rect" id="node53" href="$x86_8c.html#abc1d0fce6a713e06d6dc92b6c48fcc09" title="i386_inb" alt="" coords="668,945,737,975"/>
+<area shape="rect" id="node55" href="$tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="444,947,548,976"/>
+<area shape="rect" id="node60" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="431,576,561,605"/>
+<area shape="rect" id="node64" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="431,523,561,552"/>
+<area shape="rect" id="node66" href="$process_8c.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="623,472,783,501"/>
+</map>

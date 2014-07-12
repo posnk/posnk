@@ -1,0 +1,6 @@
+<map id="vfs_int_truncate" name="vfs_int_truncate">
+<area shape="rect" id="node3" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="169,59,263,88"/>
+<area shape="rect" id="node5" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="333,5,440,35"/>
+<area shape="rect" id="node7" href="$sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a" title="_sys_truncate" alt="" coords="335,59,439,88"/>
+<area shape="rect" id="node9" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="313,112,460,141"/>
+</map>

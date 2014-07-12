@@ -1,0 +1,11 @@
+<map id="kernel/sc_vfs.c" name="kernel/sc_vfs.c">
+<area shape="rect" id="node5" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="192,83,304,112"/>
+<area shape="rect" id="node19" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="603,83,694,112"/>
+<area shape="rect" id="node22" href="$stat_8h.html" title="sys/stat.h" alt="" coords="688,160,768,189"/>
+<area shape="rect" id="node24" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="438,160,560,189"/>
+<area shape="rect" id="node29" href="$errno_8h.html" title="sys/errno.h" alt="" coords="768,83,854,112"/>
+<area shape="rect" id="node32" href="$string_8h.html" title="string.h" alt="" coords="515,83,579,112"/>
+<area shape="rect" id="node10" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="286,160,414,189"/>
+<area shape="rect" id="node16" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="24,160,160,189"/>
+<area shape="rect" id="node14" href="$llist_8h.html" title="util/llist.h" alt="" coords="462,237,536,267"/>
+</map>

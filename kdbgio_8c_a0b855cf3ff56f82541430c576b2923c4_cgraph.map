@@ -1,0 +1,8 @@
+<map id="kdbg_gets" name="kdbg_gets">
+<area shape="rect" id="node3" href="$sercon__debug_8c.html#a1da6b24bfdafa5bacfb659b78910af5f" title="debugcon_getc" alt="" coords="137,24,247,53"/>
+<area shape="rect" id="node10" href="$sercon__debug_8c.html#abfb47648a510c905a2ac7211c2e2623a" title="debugcon_putc" alt="" coords="137,77,247,106"/>
+<area shape="rect" id="node5" href="$x86_8c.html#abc1d0fce6a713e06d6dc92b6c48fcc09" title="i386_inb" alt="" coords="476,24,545,53"/>
+<area shape="rect" id="node7" href="$sercon__debug_8c.html#af10f0e64ba89e8635aa7245ca08297c5" title="serial_received" alt="" coords="307,24,416,53"/>
+<area shape="rect" id="node12" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="323,77,400,106"/>
+<area shape="rect" id="node14" href="$sercon__debug_8c.html#a01fe5504f7b8f4eee1545737495bae76" title="is_transmit_empty" alt="" coords="297,130,425,160"/>
+</map>

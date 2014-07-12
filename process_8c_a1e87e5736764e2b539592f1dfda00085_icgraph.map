@@ -1,0 +1,9 @@
+<map id="process_signal_pgroup" name="process_signal_pgroup">
+<area shape="rect" id="node3" href="$sc__process_8c.html#a1f41c01a2a4422d630e77dac46da7686" title="sys_kill" alt="" coords="227,12,293,41"/>
+<area shape="rect" id="node7" href="$tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="208,72,312,101"/>
+<area shape="rect" id="node13" href="$tty_8c.html#a41c315ed12e65d1a4be58f291d7181de" title="tty_ioctl" alt="" coords="227,139,293,168"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="373,5,459,35"/>
+<area shape="rect" id="node9" href="$isr_8c.html#ac8bbf0eb02e5ebfa30bda547750e564b" title="Interrupt handler!" alt="" coords="375,59,457,88"/>
+<area shape="rect" id="node11" href="$vterm__write_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60" title="vterm_write_tty" alt="" coords="360,112,472,141"/>
+<area shape="rect" id="node15" href="$tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="385,165,447,195"/>
+</map>

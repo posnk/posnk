@@ -1,0 +1,28 @@
+<map id="vfs_have_permissions" name="vfs_have_permissions">
+<area shape="rect" id="node3" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="396,5,463,35"/>
+<area shape="rect" id="node7" href="$vfs_8h.html#a94b66b2d752c243c35894d6655626566" title="Read directory entries." alt="" coords="207,977,303,1007"/>
+<area shape="rect" id="node11" href="$vfs_8h.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="396,59,463,88"/>
+<area shape="rect" id="node19" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="212,453,297,483"/>
+<area shape="rect" id="node33" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="219,163,291,192"/>
+<area shape="rect" id="node41" href="$vfs_8h.html#a5525864c8ec0cc591c31faf9e0b7636d" title="Create a symbolic link." alt="" coords="209,743,300,772"/>
+<area shape="rect" id="node46" href="$vfs_8h.html#a9913748fc23c6bfe9d775a2f27d82228" title="Resize a file." alt="" coords="208,872,301,901"/>
+<area shape="rect" id="node53" href="$vfs_8h.html#a797ee30a843cc96fdb59db73fe97102d" title="Delete a file." alt="" coords="215,611,295,640"/>
+<area shape="rect" id="node60" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="392,320,467,349"/>
+<area shape="rect" id="node5" href="$process_8h.html#afa7d5b48a5af38f1ec8c956f0ff06ca2" title="process_exec" alt="" coords="579,5,680,35"/>
+<area shape="rect" id="node9" href="$streams_8h.html#afa8fdc21fe4e1a47a3be2c913d080808" title="_sys_getdents" alt="" coords="376,1005,483,1035"/>
+<area shape="rect" id="node13" href="$syscall_8h.html#a035259bafdc828ac2fe323ee657d6de9" title="sys_link" alt="" coords="595,59,664,88"/>
+<area shape="rect" id="node15" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="573,268,685,297"/>
+<area shape="rect" id="node17" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="556,559,703,588"/>
+<area shape="rect" id="node21" href="$streams_8h.html#a5f58feff0214b638bff817867024ca19" title="_sys_open" alt="" coords="387,427,472,456"/>
+<area shape="rect" id="node23" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="385,480,473,509"/>
+<area shape="rect" id="node25" href="$syscall_8h.html#a444c7e95fb994b95595da2dc2cf6fab2" title="sys_mknod" alt="" coords="385,373,473,403"/>
+<area shape="rect" id="node29" href="$vfs_8h.html#a22ee4ff0cc661e9246bd6a76702b298e" title="Create a directory." alt="" coords="391,584,468,613"/>
+<area shape="rect" id="node35" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="388,163,471,192"/>
+<area shape="rect" id="node38" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="353,216,505,245"/>
+<area shape="rect" id="node43" href="$syscall_8h.html#a697f1d377f7d7ca3cb46949fc7ee3388" title="sys_symlink" alt="" coords="383,795,476,824"/>
+<area shape="rect" id="node48" href="$streams_8c.html#acd4a9d7be01e07112dcec50116bcc482" title="_sys_ftruncate" alt="" coords="376,899,483,928"/>
+<area shape="rect" id="node50" href="$sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a" title="_sys_truncate" alt="" coords="377,952,481,981"/>
+<area shape="rect" id="node55" href="$syscall_8h.html#a2ee4369634438d5d553afc4906c19a40" title="sys_unlink" alt="" coords="388,637,471,667"/>
+<area shape="rect" id="node58" href="$vfs_8h.html#a6187be67e690be6916a385ebde588093" title="Delete a directory." alt="" coords="392,691,467,720"/>
+<area shape="rect" id="node62" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="587,321,672,351"/>
+</map>

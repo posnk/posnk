@@ -1,0 +1,7 @@
+<map id="stream_ptr" name="stream_ptr">
+<area shape="rect" id="node2" href="$structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a..." alt="" coords="53,8,96,37"/>
+<area shape="rect" id="node10" href="$structinode.html" title="Describes a file currently cached by the kernel." alt="" coords="147,107,200,136"/>
+<area shape="rect" id="node5" href="$structstream__info.html" title="stream_info" alt="" coords="79,299,169,328"/>
+<area shape="rect" id="node7" href="$structdir__cache.html" title="dir_cache" alt="" coords="148,203,225,232"/>
+<area shape="rect" id="node14" href="$structpipe__info.html" title="pipe_info" alt="" coords="241,8,316,37"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="blkcache_get_discard_candidate" name="blkcache_get_discard_candidate">
+<area shape="rect" id="node3" href="$blkcache_8h.html#a4cdd35d4bca7959f22789261e3d91305" title="blkcache_get &#45; Get a block from the cache or create it if it does not exist yet." alt="" coords="203,56,301,85"/>
+<area shape="rect" id="node5" href="$blkdev_8c.html#a1b3f34aac4a24dd2dd3b5645d4f7c22f" title="device_block_fetch" alt="" coords="351,5,484,35"/>
+<area shape="rect" id="node7" href="$device_8h.html#a3ae36cdf2d24dfef700fac160932b75a" title="device_block_write" alt="" coords="533,57,667,87"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="procvmm_copy_memory_map" name="procvmm_copy_memory_map">
+<area shape="rect" id="node3" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="289,31,415,60"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a397f5205b0e71a49ba2feb1f8f39fd9c" title="procvmm_mmap_copy_iterator" alt="" coords="252,84,452,113"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="501,5,608,35"/>
+<area shape="rect" id="node9" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="657,84,711,113"/>
+<area shape="rect" id="node11" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="525,109,584,139"/>
+<area shape="rect" id="node14" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="505,163,604,192"/>
+</map>

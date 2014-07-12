@@ -1,0 +1,14 @@
+<map id="syscall_dispatch" name="syscall_dispatch">
+<area shape="rect" id="node3" href="$syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2" title="copy_kern_to_user" alt="" coords="189,34,320,64"/>
+<area shape="rect" id="node9" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="189,88,320,117"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ac14266788c60d7047ab36dd2f415aa45" title="curpid" alt="" coords="227,162,283,192"/>
+<area shape="rect" id="node15" href="$process_8c.html#a2930e3e6e4bd7086f92671814969c336" title="process_handle_signals" alt="" coords="175,257,335,286"/>
+<area shape="rect" id="node28" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="183,337,327,366"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="408,34,525,64"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="597,86,669,116"/>
+<area shape="rect" id="node17" href="$process_8c.html#a4f40a4ef09afab8866e9817b813fd006" title="process_signal_handler\l_default" alt="" coords="388,138,545,184"/>
+<area shape="rect" id="node19" href="$task__switch_8c.html#a413ca2fd9749f8037c2cd560665a0d20" title="scheduler_invoke_signal\l_handler" alt="" coords="385,207,548,254"/>
+<area shape="rect" id="node22" href="$process_8c.html#ab92f06b0ec59bc0948b09ad84a386fbb" title="process_child_event" alt="" coords="396,277,537,306"/>
+<area shape="rect" id="node24" href="$procvmm_8c.html#a0b2db70f477798695a5ccb9056fbd811" title="kernel/procvmm.c" alt="" coords="387,330,547,360"/>
+<area shape="rect" id="node26" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="429,384,504,413"/>
+</map>

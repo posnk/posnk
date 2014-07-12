@@ -1,0 +1,9 @@
+<map id="procvmm_get_mmap_iterator" name="procvmm_get_mmap_iterator">
+<area shape="rect" id="node3" href="$process_8h.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="245,130,400,177"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="464,5,587,35"/>
+<area shape="rect" id="node7" href="$process_8h.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="467,59,584,88"/>
+<area shape="rect" id="node9" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="449,112,601,141"/>
+<area shape="rect" id="node11" href="$process_8h.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="448,165,603,195"/>
+<area shape="rect" id="node13" href="$process_8h.html#ab44f291fdbd477cce04bcaeaf371e841" title="procvmm_mmap_file" alt="" coords="455,219,596,248"/>
+<area shape="rect" id="node15" href="$process_8h.html#a613a89a06434813f55c2e61e112dcacd" title="procvmm_resize_map" alt="" coords="451,272,600,301"/>
+</map>

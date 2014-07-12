@@ -1,0 +1,5 @@
+<map id="ext2_device" name="ext2_device">
+<area shape="rect" id="node2" href="$structfs__device.html" title="An instance of a filesystem driver." alt="" coords="39,101,116,131"/>
+<area shape="rect" id="node4" href="$structfs__device__operations.html" title="Contains callbacks for all filesystem driver functions." alt="" coords="5,5,149,35"/>
+<area shape="rect" id="node6" href="$structext2__superblock.html" title="ext2_superblock" alt="" coords="140,101,257,131"/>
+</map>

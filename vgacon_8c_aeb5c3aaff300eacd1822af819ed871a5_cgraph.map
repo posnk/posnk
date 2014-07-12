@@ -1,0 +1,11 @@
+<map id="vgacon_init" name="vgacon_init">
+<area shape="rect" id="node3" href="$vgacon_8c.html#ae8295f780d7707e5dbbcc77d2e53acfe" title="kb_initialize" alt="" coords="144,5,235,35"/>
+<area shape="rect" id="node5" href="$sercon_8c.html#af5e57b7a31a51e7e7e43b7b81a3bc6ba" title="sercon_init" alt="" coords="147,59,232,88"/>
+<area shape="rect" id="node12" href="$tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640" title="tty_register_driver" alt="" coords="303,111,428,140"/>
+<area shape="rect" id="node15" href="$vgacon_8c.html#af2c2ed4b849fef41ceb45917489f1a35" title="vgacon_putc" alt="" coords="141,191,237,220"/>
+<area shape="rect" id="node7" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="495,32,572,61"/>
+<area shape="rect" id="node9" href="$sercon_8c.html#a89bf6a3585afdbaa40ab7546d85ad429" title="sercon_putc" alt="" coords="319,57,412,87"/>
+<area shape="rect" id="node17" href="$vgacon_8c.html#ae359bd608bac2333abb821c8c769af13" title="vgacon_handle_escape" alt="" coords="287,164,444,193"/>
+<area shape="rect" id="node19" href="$vgacon_8c.html#af7b608892962e06880a354c91ab9ccdf" title="Write character to text buffer and move cursor." alt="" coords="315,217,416,247"/>
+<area shape="rect" id="node21" href="$vgacon_8c.html#a95e8f15681cc88ffa15adb2b181e3df8" title="vgacon_move_cursor" alt="" coords="292,271,439,300"/>
+</map>

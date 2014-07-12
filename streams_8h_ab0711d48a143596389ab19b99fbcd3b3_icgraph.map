@@ -1,0 +1,4 @@
+<map id="stream_do_close_all" name="stream_do_close_all">
+<area shape="rect" id="node3" href="$process_8h.html#a5f9014eb9739f05a53c41265055292dc" title="process_reap" alt="" coords="196,5,295,35"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="344,5,435,35"/>
+</map>

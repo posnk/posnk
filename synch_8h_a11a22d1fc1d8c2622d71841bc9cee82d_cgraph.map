@@ -1,0 +1,7 @@
+<map id="semaphore_idown" name="semaphore_idown">
+<area shape="rect" id="node3" href="$earlycon_8c.html#a44bd0f098257eb758b56d72f3a1b8168" title="debugcon_aprintf" alt="" coords="187,59,307,88"/>
+<area shape="rect" id="node9" href="$scheduler_8c.html#a8de93dfeab7ebe6a7f813eedbc35f837" title="scheduler_wait_on" alt="" coords="181,112,312,141"/>
+<area shape="rect" id="node5" href="$earlycon_8c.html#a518704f8bfafcbaee7f4c2b5dce78298" title="earlycon_vsprintf" alt="" coords="361,5,481,35"/>
+<area shape="rect" id="node7" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="363,59,480,88"/>
+<area shape="rect" id="node11" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="384,112,459,141"/>
+</map>

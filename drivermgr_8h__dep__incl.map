@@ -1,0 +1,6 @@
+<map id="include/kernel/drivermgr.h" name="include/kernel/drivermgr.h">
+<area shape="rect" id="node3" href="$drivermgr_8c.html" title="kernel/drivermgr.c" alt="" coords="5,92,131,121"/>
+<area shape="rect" id="node5" href="$ata__pci_8c.html" title="driver/block/pata/ata\l_pci.c" alt="" coords="155,83,293,130"/>
+<area shape="rect" id="node7" href="$pci_8c.html" title="driver/bus/pci.c" alt="" coords="317,92,427,121"/>
+<area shape="rect" id="node9" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="451,92,557,121"/>
+</map>

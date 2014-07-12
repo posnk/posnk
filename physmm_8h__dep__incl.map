@@ -1,0 +1,21 @@
+<map id="include/kernel/physmm.h" name="include/kernel/physmm.h">
+<area shape="rect" id="node3" href="$kernel_2paging_8h.html" title="include/kernel/paging.h" alt="" coords="696,83,851,112"/>
+<area shape="rect" id="node7" href="$elfloader_8c.html" title="kernel/elfloader.c" alt="" coords="464,315,584,344"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html" title="kernel/heapmm.c" alt="" coords="1480,315,1603,344"/>
+<area shape="rect" id="node13" href="$procvmm_8c.html" title="kernel/procvmm.c" alt="" coords="5,315,131,344"/>
+<area shape="rect" id="node15" href="$sc__perm_8c.html" title="kernel/sc_perm.c" alt="" coords="155,315,277,344"/>
+<area shape="rect" id="node17" href="$sc__process_8c.html" title="kernel/sc_process.c" alt="" coords="301,315,440,344"/>
+<area shape="rect" id="node23" href="$init_8c.html" title="arch/i386/init.c" alt="" coords="1349,315,1456,344"/>
+<area shape="rect" id="node29" href="$kdbgmm_8c.html" title="kdbg/kdbgmm.c" alt="" coords="1627,315,1741,344"/>
+<area shape="rect" id="node35" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="383,237,492,267"/>
+<area shape="rect" id="node54" href="$arch_2i386_2paging_8h.html" title="include/arch/i386/paging.h" alt="" coords="1423,160,1596,189"/>
+<area shape="rect" id="node62" href="$physmm_8c.html" title="kernel/physmm.c" alt="" coords="1721,83,1844,112"/>
+<area shape="rect" id="node5" href="$scheduler_8h.html" title="include/kernel/scheduler.h" alt="" coords="921,237,1095,267"/>
+<area shape="rect" id="node11" href="$process_8c.html" title="kernel/process.c" alt="" coords="944,315,1061,344"/>
+<area shape="rect" id="node19" href="$scheduler_8c.html" title="kernel/scheduler.c" alt="" coords="608,315,736,344"/>
+<area shape="rect" id="node21" href="$syscall_8c.html" title="kernel/syscall.c" alt="" coords="1085,315,1197,344"/>
+<area shape="rect" id="node25" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="1221,315,1325,344"/>
+<area shape="rect" id="node27" href="$task__switch_8c.html" title="arch/i386/task_switch.c" alt="" coords="760,315,920,344"/>
+<area shape="rect" id="node31" href="$process_8h.html" title="include/kernel/process.h" alt="" coords="633,160,796,189"/>
+<area shape="rect" id="node51" href="$ata_8c.html" title="driver/block/pata/ata.c" alt="" coords="359,160,508,189"/>
+</map>

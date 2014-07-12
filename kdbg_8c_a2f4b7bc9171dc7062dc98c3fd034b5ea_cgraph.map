@@ -1,0 +1,12 @@
+<map id="kdbg_initialize" name="kdbg_initialize">
+<area shape="rect" id="node3" href="$kernel_2paging_8c.html#a52516e68a1d132a4ca084131e00ed7fe" title="heapmm_request_core" alt="" coords="157,126,312,155"/>
+<area shape="rect" id="node16" href="$heapdbg_8c.html#a51b2364f1a31bc6c866efcf9725a6116" title="kdbg_init_memuse" alt="" coords="169,206,300,235"/>
+<area shape="rect" id="node20" href="$kdbgmm_8c.html#a196c42a754592f3cc9e777eba5ed4d07" title="Initializes the heap memory manager." alt="" coords="187,259,283,289"/>
+<area shape="rect" id="node5" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="560,61,707,90"/>
+<area shape="rect" id="node7" href="$sercon__debug_8c.html#a021929031da9eb1740a0c9fdc78f448e" title="debugcon_aputs" alt="" coords="377,33,495,62"/>
+<area shape="rect" id="node9" href="$vgacon__early_8c.html#ae5fe8578ccf072b088e089b5470361d6" title="earlycon_aputs" alt="" coords="381,86,491,115"/>
+<area shape="rect" id="node11" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="391,139,481,169"/>
+<area shape="rect" id="node14" href="$arch_2i386_2paging_8c.html#ab417afe6f5654cf60f29d89c523f9930" title="paging_tag" alt="" coords="393,193,479,222"/>
+<area shape="rect" id="node18" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="393,246,479,275"/>
+<area shape="rect" id="node23" href="$kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16" title="Releases a block of memory so it can be reallocated." alt="" coords="361,299,511,329"/>
+</map>

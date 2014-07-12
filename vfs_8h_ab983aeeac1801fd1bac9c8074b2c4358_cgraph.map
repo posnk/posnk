@@ -1,0 +1,5 @@
+<map id="vfs_dir_cache_release" name="vfs_dir_cache_release">
+<area shape="rect" id="node3" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="405,7,507,37"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#ab983aeeac1801fd1bac9c8074b2c4358" title="vfs_dir_cache_release" alt="" coords="205,45,357,74"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="556,7,705,37"/>
+</map>

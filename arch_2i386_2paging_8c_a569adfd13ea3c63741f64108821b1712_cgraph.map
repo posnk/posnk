@@ -1,0 +1,18 @@
+<map id="paging_init" name="paging_init">
+<area shape="rect" id="node3" href="$arch_2i386_2paging_8c.html#ae298d4d7d306c8edb4e6ce2f305b7d9a" title="i386_alloc_page" alt="" coords="349,5,464,35"/>
+<area shape="rect" id="node9" href="$arch_2i386_2paging_8c.html#a659dc2b28607e07bf4a1b40db2ea158d" title="i386_init_switch_gdt" alt="" coords="140,717,279,747"/>
+<area shape="rect" id="node11" href="$arch_2i386_2paging_8c.html#a0eabbdbbc19cb0a0b9364697af42b5bf" title="i386_paging_enable" alt="" coords="141,771,277,800"/>
+<area shape="rect" id="node13" href="$llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)" alt="" coords="167,824,252,853"/>
+<area shape="rect" id="node15" href="$string_8c.html#a4cb469bec7b722064b97a406346acb61" title="memset" alt="" coords="573,561,643,591"/>
+<area shape="rect" id="node17" href="$arch_2i386_2paging_8c.html#ac76f34e9886b57481e72369c6ea57d79" title="paging_create_dir" alt="" coords="148,328,271,357"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a7c0a917d74eb74aa01007d83165dbfcb" title="Allocates a new page of heap space to the caller." alt="" coords="537,32,679,61"/>
+<area shape="rect" id="node7" href="$physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca" title="Allocates a physical frame." alt="" coords="535,161,681,191"/>
+<area shape="rect" id="node19" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="353,613,460,643"/>
+<area shape="rect" id="node22" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="356,109,457,139"/>
+<area shape="rect" id="node25" href="$arch_2i386_2paging_8h.html#ac596c3cfa12ef6060abbf092f066a5a0" title="i386_phys_copy_frame" alt="" coords="329,213,484,243"/>
+<area shape="rect" id="node27" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="357,267,456,296"/>
+<area shape="rect" id="node30" href="$arch_2i386_2paging_8c.html#afa212db5a1f14313623d342b025aeb44" title="paging_get_physical\l_address" alt="" coords="337,319,476,366"/>
+<area shape="rect" id="node32" href="$kernel_2paging_8c.html#a07afb594ee7854f28252cc9f71ebdd4f" title="paging_handle_out_of\l_memory" alt="" coords="535,406,681,453"/>
+<area shape="rect" id="node34" href="$arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02" title="paging_map" alt="" coords="361,389,452,419"/>
+<area shape="rect" id="node40" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="329,493,484,539"/>
+</map>

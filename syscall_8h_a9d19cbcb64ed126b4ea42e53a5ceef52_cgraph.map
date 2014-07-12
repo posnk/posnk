@@ -1,0 +1,12 @@
+<map id="sys_mount" name="sys_mount">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="143,57,273,87"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="155,111,261,140"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="157,164,259,193"/>
+<area shape="rect" id="node18" href="$vfs_8c.html#a61886b169216dc8c85945584536fbb1d" title="Mount a filesystem." alt="" coords="167,217,249,247"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="340,5,457,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="363,59,435,88"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="523,137,677,167"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="324,163,473,192"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="345,216,452,245"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b" title="ext2_mount" alt="" coords="353,269,444,299"/>
+</map>

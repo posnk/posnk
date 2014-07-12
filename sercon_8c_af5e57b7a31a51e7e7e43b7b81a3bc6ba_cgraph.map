@@ -1,0 +1,12 @@
+<map id="sercon_init" name="sercon_init">
+<area shape="rect" id="node3" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="348,5,425,35"/>
+<area shape="rect" id="node5" href="$sercon_8c.html#a89bf6a3585afdbaa40ab7546d85ad429" title="sercon_putc" alt="" coords="156,59,249,88"/>
+<area shape="rect" id="node10" href="$tty_8c.html#aa0920fc2664eed1f1bcd5de3ba89d640" title="tty_register_driver" alt="" coords="140,216,265,245"/>
+<area shape="rect" id="node7" href="$sercon_8c.html#a726fa82f2329d95739dab1ff815911a0" title="sis_transmit_empty" alt="" coords="319,59,455,88"/>
+<area shape="rect" id="node12" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="507,137,613,167"/>
+<area shape="rect" id="node14" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="343,163,431,192"/>
+<area shape="rect" id="node17" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="331,216,443,245"/>
+<area shape="rect" id="node19" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="329,269,444,299"/>
+<area shape="rect" id="node21" href="$tty_8c.html#a74ef59adca123dbad309bbce57f9ea1b" title="tty_reset_termios" alt="" coords="325,323,448,352"/>
+<area shape="rect" id="node23" href="$chardev_8c.html#ada19604d825e698cfe2e37c86e1eff5d" title="device_char_register" alt="" coords="316,376,457,405"/>
+</map>

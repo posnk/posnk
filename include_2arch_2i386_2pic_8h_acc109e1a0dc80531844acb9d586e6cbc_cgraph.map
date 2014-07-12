@@ -1,0 +1,5 @@
+<map id="i386_pic_initialize" name="i386_pic_initialize">
+<area shape="rect" id="node3" href="$pic_8c.html#a8b442733bb70ed866bec4f01c02b46b9" title="i386_pic_send_command" alt="" coords="180,5,348,35"/>
+<area shape="rect" id="node7" href="$pic_8c.html#a42f19c474bb931268023055b109725c4" title="i386_pic_send_data" alt="" coords="196,59,332,88"/>
+<area shape="rect" id="node5" href="$x86_8c.html#a4cefa20acf91a122f40228af18330456" title="i386_outb" alt="" coords="399,32,476,61"/>
+</map>

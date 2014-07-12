@@ -1,0 +1,5 @@
+<map id="vfs_get_inode" name="vfs_get_inode">
+<area shape="rect" id="node3" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="187,5,285,35"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="173,59,299,88"/>
+<area shape="rect" id="node7" href="$vfs_8c.html#a72598ce191e8ffb48c1b69bd0ac76b8e" title="vfs_cache_find_iterator" alt="" coords="157,112,315,141"/>
+</map>

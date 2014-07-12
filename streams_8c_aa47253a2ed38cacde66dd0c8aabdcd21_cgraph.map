@@ -1,0 +1,14 @@
+<map id="_sys_pipe2" name="_sys_pipe2">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="475,63,581,92"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="477,216,579,245"/>
+<area shape="rect" id="node12" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="857,280,956,309"/>
+<area shape="rect" id="node15" href="$pipe_8c.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="156,137,244,167"/>
+<area shape="rect" id="node19" href="$synch_8c.html#a4ce1e22d73f268f7e949a340bceb8b22" title="semaphore_alloc" alt="" coords="307,36,427,65"/>
+<area shape="rect" id="node22" href="$synch_8c.html#a71fb894454abc9d577dc05380e068dc6" title="semaphore_free" alt="" coords="309,241,424,271"/>
+<area shape="rect" id="node25" href="$pipe_8c.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="163,292,237,321"/>
+<area shape="rect" id="node29" href="$pipe_8c.html#af34051148020decb620abe3e19c392d3" title="pipe_open_read" alt="" coords="144,396,256,425"/>
+<area shape="rect" id="node31" href="$pipe_8c.html#aba51721f44574e55705f5e1df243cea3" title="pipe_open_write" alt="" coords="143,449,257,479"/>
+<area shape="rect" id="node35" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="147,503,253,532"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="829,189,984,219"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="631,216,780,245"/>
+</map>

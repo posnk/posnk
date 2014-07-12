@@ -1,0 +1,4 @@
+<map id="exception_handle" name="exception_handle">
+<area shape="rect" id="node3" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="364,5,508,35"/>
+<area shape="rect" id="node5" href="$kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340" title="paging_handle_fault" alt="" coords="177,31,313,60"/>
+</map>

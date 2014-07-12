@@ -1,0 +1,12 @@
+<map id="sys_sbrk" name="sys_sbrk">
+<area shape="rect" id="node3" href="$procvmm_8c.html#a47d6f9ab4f4992a1dc97fc2fec629bcf" title="procvmm_mmap_anon" alt="" coords="128,213,283,243"/>
+<area shape="rect" id="node23" href="$procvmm_8c.html#a613a89a06434813f55c2e61e112dcacd" title="procvmm_resize_map" alt="" coords="131,351,280,380"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="371,160,477,189"/>
+<area shape="rect" id="node7" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="373,213,475,243"/>
+<area shape="rect" id="node9" href="$llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list." alt="" coords="375,267,473,296"/>
+<area shape="rect" id="node11" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="567,381,692,411"/>
+<area shape="rect" id="node13" href="$procvmm_8c.html#a1ca3ffb13d8e53bc0d3b08182e612a98" title="Iterator function that finds the mmap for the given address." alt="" coords="332,320,516,349"/>
+<area shape="rect" id="node15" href="$procvmm_8c.html#aa44f5621bf9d46dbcb5513abb8a308cc" title="procvmm_get_memory\l_region" alt="" coords="347,373,501,419"/>
+<area shape="rect" id="node18" href="$string_8c.html#ac137d536ff0037b3856083cb8a1c19a7" title="strcpy" alt="" coords="395,5,453,35"/>
+<area shape="rect" id="node20" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="603,32,656,61"/>
+</map>

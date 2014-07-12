@@ -1,0 +1,13 @@
+<map id="semaphore_free" name="semaphore_free">
+<area shape="rect" id="node3" href="$streams_8h.html#aa47253a2ed38cacde66dd0c8aabdcd21" title="_sys_pipe2" alt="" coords="385,165,473,195"/>
+<area shape="rect" id="node9" href="$device_8h.html#ada98e9022ecee3152f994a9aea756a4e" title="device_block_register" alt="" coords="169,32,316,61"/>
+<area shape="rect" id="node13" href="$pipe_8h.html#a4fdd8e65939c3b4d53b5fd2c2d76bb33" title="kernel/pipe.c" alt="" coords="199,112,287,141"/>
+<area shape="rect" id="node20" href="$pipe_8h.html#abc194e5c475630687a91e9bc54d920b3" title="pipe_free" alt="" coords="205,216,280,245"/>
+<area shape="rect" id="node25" href="$process_8h.html#a5f9014eb9739f05a53c41265055292dc" title="process_reap" alt="" coords="193,269,292,299"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="545,139,620,168"/>
+<area shape="rect" id="node7" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="543,192,623,221"/>
+<area shape="rect" id="node11" href="$ata_8h.html#a21f42065f261f12cfc4e20e38505bf92" title="ata_initialize" alt="" coords="383,5,476,35"/>
+<area shape="rect" id="node16" href="$tty_8h.html#a71d66d4568e53f781d2c1c204e6b1fab" title="tty_register_driver" alt="" coords="367,59,492,88"/>
+<area shape="rect" id="node18" href="$vfs_8h.html#a1833cb4e7ef568776472b7d940eccf04" title="Create a file." alt="" coords="387,112,472,141"/>
+<area shape="rect" id="node22" href="$streams_8h.html#a700324ff2a13ba0eabe1b0a8dd6acc49" title="_sys_close_int" alt="" coords="375,219,484,248"/>
+</map>

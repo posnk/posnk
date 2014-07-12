@@ -1,0 +1,6 @@
+<map id="get_perm_class" name="get_perm_class">
+<area shape="rect" id="node3" href="$permissions_8c.html#a75516b4d7b040d8c0f690f5e64efb096" title="get_effective_gid" alt="" coords="169,5,289,35"/>
+<area shape="rect" id="node5" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="169,59,289,88"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a580a03f736c25ed4b13d65d4387c3d08" title="get_gid" alt="" coords="197,112,261,141"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a523ba40c6f30fd9f84cb7c60b8f80a80" title="kernel/permissions.c" alt="" coords="197,165,261,195"/>
+</map>

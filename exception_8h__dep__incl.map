@@ -1,0 +1,4 @@
+<map id="include/kernel/exception.h" name="include/kernel/exception.h">
+<area shape="rect" id="node3" href="$kernel_2paging_8c.html" title="kernel/paging.c" alt="" coords="5,83,115,112"/>
+<area shape="rect" id="node5" href="$isr_8c.html" title="arch/i386/isr.c" alt="" coords="139,83,243,112"/>
+</map>

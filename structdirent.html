@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -66,12 +73,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('structdirent.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -80,27 +102,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">dirent Struct Reference</div>  </div>
+<div class="title">dirent Struct Reference<div class="ingroups"><a class="el" href="group__vfs.html">VFS</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Describes a directory entry in a portable FS independent format.  
+ <a href="structdirent.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="vfs_8h_source.html">vfs.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:ae0f981dec06778a49ac1aa526a10ce12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9">ino_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdirent.html#ae0f981dec06778a49ac1aa526a10ce12">inode_id</a></td></tr>
+<tr class="memdesc:ae0f981dec06778a49ac1aa526a10ce12"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inode this entry points to.  <a href="#ae0f981dec06778a49ac1aa526a10ce12"></a><br/></td></tr>
 <tr class="memitem:a9d8680b2254cfb264a9959e54c2d47a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#a31acaaf3092d869de3b5e34d11695520">dev_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdirent.html#a9d8680b2254cfb264a9959e54c2d47a6">device_id</a></td></tr>
+<tr class="memdesc:a9d8680b2254cfb264a9959e54c2d47a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The filesystem device this entry points to.  <a href="#a9d8680b2254cfb264a9959e54c2d47a6"></a><br/></td></tr>
 <tr class="memitem:aae7cb194c62aaa2ee8d6f996fef268dd"><td class="memItemLeft" align="right" valign="top">unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdirent.html#aae7cb194c62aaa2ee8d6f996fef268dd">d_reclen</a></td></tr>
+<tr class="memdesc:aae7cb194c62aaa2ee8d6f996fef268dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they are smaller, this field indicates the actual size of the structure but do not use it to calculate name length as padding after the name is allowed.  <a href="#aae7cb194c62aaa2ee8d6f996fef268dd"></a><br/></td></tr>
 <tr class="memitem:a670ff727693d9eecffab475affc26116"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdirent.html#a670ff727693d9eecffab475affc26116">name</a> [257]</td></tr>
+<tr class="memdesc:a670ff727693d9eecffab475affc26116"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the file described by this entry.  <a href="#a670ff727693d9eecffab475affc26116"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00082">82</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<div class="textblock"><p>Describes a directory entry in a portable FS independent format. </p>
+
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00132">132</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 </div><h2>Field Documentation</h2>
 <a class="anchor" id="aae7cb194c62aaa2ee8d6f996fef268dd"></a>
 <div class="memitem">
@@ -112,7 +141,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00085">85</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>The length of this dirent dirent structures are not always sizeof(dirent) long, most of the time they are smaller, this field indicates the actual size of the structure but do not use it to calculate name length as padding after the name is allowed. </p>
+
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00142">142</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ext2_8c_source.html#l00280">ext2_finddir()</a>, <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00246">ramfs_link()</a>, and <a class="el" href="ramfs_8c_source.html#l00054">ramfs_readdir()</a>.</p>
 
@@ -128,7 +159,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00084">84</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>The filesystem device this entry points to. </p>
+
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00136">136</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00246">ramfs_link()</a>, and <a class="el" href="ramfs_8c_source.html#l00054">ramfs_readdir()</a>.</p>
 
@@ -144,9 +177,11 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00083">83</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>The inode this entry points to. </p>
 
-<p>Referenced by <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00246">ramfs_link()</a>, <a class="el" href="ramfs_8c_source.html#l00054">ramfs_readdir()</a>, <a class="el" href="vfs_8c_source.html#l01776">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01695">vfs_find_dirc_parent()</a>, and <a class="el" href="vfs_8c_source.html#l01916">vfs_find_symlink()</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00134">134</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+
+<p>Referenced by <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00246">ramfs_link()</a>, <a class="el" href="ramfs_8c_source.html#l00054">ramfs_readdir()</a>, <a class="el" href="vfs_8c_source.html#l01959">vfs_find_dirc()</a>, and <a class="el" href="vfs_8c_source.html#l01759">vfs_find_dirc_parent()</a>.</p>
 
 </div>
 </div>
@@ -160,7 +195,9 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00086">86</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>The name of the file described by this entry. </p>
+
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00144">144</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 <p>Referenced by <a class="el" href="ext2_8c_source.html#l00280">ext2_finddir()</a>, <a class="el" href="ext2_8c_source.html#l00157">ext2_readdir()</a>, <a class="el" href="ramfs_8c_source.html#l00196">ramfs_dirent_search_iterator()</a>, <a class="el" href="ramfs_8c_source.html#l00246">ramfs_link()</a>, and <a class="el" href="ramfs_8c_source.html#l00054">ramfs_readdir()</a>.</p>
 
@@ -170,11 +207,15 @@ Data Fields</h2></td></tr>
 <li>include/kernel/<a class="el" href="vfs_8h_source.html">vfs.h</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:25 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="structdirent.html">dirent</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

@@ -1,0 +1,6 @@
+<map id="scheduler_wait_micros" name="scheduler_wait_micros">
+<area shape="rect" id="node3" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="208,67,283,96"/>
+<area shape="rect" id="node5" href="$llist_8c.html#ad16ba9521cf77d07e4dce47a3da1ec19" title="Iterates over the list and calls iterator for each node, if iterator returns a true condition iterati..." alt="" coords="345,5,471,35"/>
+<area shape="rect" id="node7" href="$scheduler_8c.html#a279b1bc2736748ee97f8f361775f8b95" title="Iterator function that tests for running tasks that are not the current." alt="" coords="337,58,479,105"/>
+<area shape="rect" id="node9" href="$task__switch_8c.html#a3f0f4e247fa59335c102741aa200327b" title="scheduler_switch_task" alt="" coords="331,128,485,157"/>
+</map>

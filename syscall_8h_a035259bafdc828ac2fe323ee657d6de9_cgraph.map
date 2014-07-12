@@ -1,0 +1,18 @@
+<map id="sys_link" name="sys_link">
+<area shape="rect" id="node3" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="127,59,257,88"/>
+<area shape="rect" id="node9" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="139,112,245,141"/>
+<area shape="rect" id="node13" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="141,165,243,195"/>
+<area shape="rect" id="node18" href="$vfs_8c.html#ac8b32bb45661974629d18b9830c5d026" title="Create a hard link." alt="" coords="159,377,225,407"/>
+<area shape="rect" id="node5" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="324,5,441,35"/>
+<area shape="rect" id="node7" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="347,59,419,88"/>
+<area shape="rect" id="node11" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="507,139,661,168"/>
+<area shape="rect" id="node15" href="$heapmm_8c.html#a342bf73893331c0c856b5aecfda564c0" title="Releases a block of memory so it can be reallocated." alt="" coords="308,164,457,193"/>
+<area shape="rect" id="node20" href="$vfs_8c.html#aa8336c694b79fb0e56847ab2e1b26750" title="vfs_find_parent" alt="" coords="328,217,437,247"/>
+<area shape="rect" id="node22" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="329,271,436,300"/>
+<area shape="rect" id="node24" href="$synch_8c.html#a12ea92c807fb336d8a26eefbf1412782" title="semaphore_down" alt="" coords="321,324,444,353"/>
+<area shape="rect" id="node26" href="$synch_8c.html#a0edbb259c13ca02fcbb93cf146bf2fa3" title="kernel/synch.c" alt="" coords="329,377,436,407"/>
+<area shape="rect" id="node28" href="$vfs_8c.html#a64ad852cc66f2d66221f16ad29c92a04" title="Check permissions for access with mode." alt="" coords="307,431,459,460"/>
+<area shape="rect" id="node30" href="$string_8c.html#a9b5ffb90d9a30625617401e6a5999e85" title="strrchr" alt="" coords="353,484,412,513"/>
+<area shape="rect" id="node32" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="557,509,611,539"/>
+<area shape="rect" id="node35" href="$vfs_8c.html#a3430f50453f987084b69ea3a8f71878e" title="Create a directory entry on backing storage." alt="" coords="339,588,427,617"/>
+</map>

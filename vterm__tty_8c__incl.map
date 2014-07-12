@@ -1,0 +1,14 @@
+<map id="driver/console/vterm/vterm_tty.c" name="driver/console/vterm/vterm_tty.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="339,111,403,140"/>
+<area shape="rect" id="node7" href="$glib_8h.html" title="glib.h" alt="" coords="71,293,124,323"/>
+<area shape="rect" id="node9" href="$types_8h.html" title="sys/types.h" alt="" coords="680,293,771,323"/>
+<area shape="rect" id="node11" href="$vterm_8h.html" title="driver/console/vterm\l/vterm.h" alt="" coords="28,198,167,245"/>
+<area shape="rect" id="node14" href="$vterm__private_8h.html" title="driver/console/vterm\l/vterm_private.h" alt="" coords="191,198,329,245"/>
+<area shape="rect" id="node18" href="$vterm__render_8h.html" title="driver/console/vterm\l/vterm_render.h" alt="" coords="125,102,264,149"/>
+<area shape="rect" id="node21" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="427,111,549,140"/>
+<area shape="rect" id="node28" href="$tty_8h.html" title="kernel/tty.h" alt="" coords="796,111,881,140"/>
+<area shape="rect" id="node23" href="$llist_8h.html" title="util/llist.h" alt="" coords="535,207,609,236"/>
+<area shape="rect" id="node31" href="$termios_8h.html" title="sys/termios.h" alt="" coords="961,207,1063,236"/>
+<area shape="rect" id="node34" href="$ioctl_8h.html" title="sys/ioctl.h" alt="" coords="684,207,767,236"/>
+<area shape="rect" id="node37" href="$pipe_8h.html" title="kernel/pipe.h" alt="" coords="791,207,887,236"/>
+</map>

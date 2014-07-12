@@ -1,0 +1,18 @@
+<map id="kernel/syscall.c" name="kernel/syscall.c">
+<area shape="rect" id="node3" href="$string_8h.html" title="string.h" alt="" coords="6,237,70,267"/>
+<area shape="rect" id="node8" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="335,315,458,344"/>
+<area shape="rect" id="node15" href="$process_8h.html" title="kernel/process.h" alt="" coords="740,237,858,267"/>
+<area shape="rect" id="node21" href="$kernel_2paging_8h.html" title="kernel/paging.h" alt="" coords="1172,315,1282,344"/>
+<area shape="rect" id="node39" href="$scheduler_8h.html" title="kernel/scheduler.h" alt="" coords="919,160,1047,189"/>
+<area shape="rect" id="node48" href="$signals_8h.html" title="kernel/signals.h" alt="" coords="532,160,644,189"/>
+<area shape="rect" id="node52" href="$syscall_8h.html" title="kernel/syscall.h" alt="" coords="1263,83,1375,112"/>
+<area shape="rect" id="node60" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="38,83,158,112"/>
+<area shape="rect" id="node65" href="$dbgapi_8h.html" title="kdbg/dbgapi.h" alt="" coords="435,392,536,421"/>
+<area shape="rect" id="node69" href="$config_8h.html" title="config.h" alt="" coords="1399,83,1466,112"/>
+<area shape="rect" id="node10" href="$llist_8h.html" title="util/llist.h" alt="" coords="560,392,635,421"/>
+<area shape="rect" id="node19" href="$types_8h.html" title="sys/types.h" alt="" coords="710,392,800,421"/>
+<area shape="rect" id="node24" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="824,392,931,421"/>
+<area shape="rect" id="node28" href="$time_8h.html" title="kernel/time.h" alt="" coords="1006,392,1102,421"/>
+<area shape="rect" id="node31" href="$vfs_8h.html" title="kernel/vfs.h" alt="" coords="754,315,844,344"/>
+<area shape="rect" id="node57" href="$syscall__ids_8h.html" title="kernel/syscall_ids.h" alt="" coords="1356,237,1492,267"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="scheduler_exit_signal_handler" name="scheduler_exit_signal_handler">
+<area shape="rect" id="node3" href="$syscall_8h.html#a779c6204a1f19dd4088141e1e292d583" title="sys_exitsig" alt="" coords="200,13,288,43"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="337,13,423,43"/>
+</map>

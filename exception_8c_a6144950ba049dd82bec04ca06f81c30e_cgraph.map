@@ -1,0 +1,8 @@
+<map id="exception_handle" name="exception_handle">
+<area shape="rect" id="node3" href="$x86_8c.html#a5fe7ff17916fb9cb6d5a2a9f1f923b7c" title="util/debug.h" alt="" coords="387,5,517,35"/>
+<area shape="rect" id="node5" href="$exception_8c.html#ad522f158b022291f9fd9ab8748dbd10e" title="exception_panic" alt="" coords="191,59,305,88"/>
+<area shape="rect" id="node12" href="$process_8c.html#ab32343562e28de7a027822cf554ff8f6" title="process_send_signal" alt="" coords="176,139,320,168"/>
+<area shape="rect" id="node8" href="$x86_8c.html#a42be2c67abcbd4ccd5d8d1e08c21e614" title="debug_postmortem_hook" alt="" coords="368,59,536,88"/>
+<area shape="rect" id="node10" href="$x86_8c.html#ade0430439247877006d7df950f94918a" title="kernel/system.h" alt="" coords="431,112,473,141"/>
+<area shape="rect" id="node14" href="$scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce" title="schedule" alt="" coords="415,165,489,195"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="driver/block/pata/ata_pci.c" name="driver/block/pata/ata_pci.c">
+<area shape="rect" id="node3" href="$earlycon_8h.html" title="kernel/earlycon.h" alt="" coords="52,101,172,131"/>
+<area shape="rect" id="node9" href="$heapmm_8h.html" title="kernel/heapmm.h" alt="" coords="149,179,272,208"/>
+<area shape="rect" id="node16" href="$drivermgr_8h.html" title="kernel/drivermgr.h" alt="" coords="296,179,421,208"/>
+<area shape="rect" id="node20" href="$pci_8h.html" title="driver/bus/pci.h" alt="" coords="788,101,897,131"/>
+<area shape="rect" id="node23" href="$ata_8h.html" title="driver/block/pata/ata.h" alt="" coords="560,101,709,131"/>
+<area shape="rect" id="node11" href="$llist_8h.html" title="util/llist.h" alt="" coords="321,256,396,285"/>
+<area shape="rect" id="node26" href="$interrupt_8h.html" title="kernel/interrupt.h" alt="" coords="576,179,693,208"/>
+<area shape="rect" id="node30" href="$synch_8h.html" title="kernel/synch.h" alt="" coords="445,179,552,208"/>
+<area shape="rect" id="node34" href="$partition_8h.html" title="fs/partition.h" alt="" coords="768,179,861,208"/>
+</map>

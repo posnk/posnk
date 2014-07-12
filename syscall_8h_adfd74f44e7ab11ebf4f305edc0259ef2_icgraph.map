@@ -1,0 +1,18 @@
+<map id="copy_kern_to_user" name="copy_kern_to_user">
+<area shape="rect" id="node3" href="$sc__streams_8c.html#a5125979bb691e68b06787680fc1e6f59" title="sys_fstat" alt="" coords="212,5,287,35"/>
+<area shape="rect" id="node9" href="$syscall_8h.html#a43cf9c2310c228a9b2e411bc1a62ff17" title="sys_getdents" alt="" coords="200,59,299,88"/>
+<area shape="rect" id="node12" href="$syscall_8h.html#ad19e102905b1c2a70bfc27c3313717c9" title="sys_lstat" alt="" coords="212,112,287,141"/>
+<area shape="rect" id="node15" href="$sc__streams_8c.html#a585f21ef1ae9e2fc85c6d10c8e7c37cf" title="sys_pipe" alt="" coords="212,165,287,195"/>
+<area shape="rect" id="node18" href="$sc__streams_8c.html#af81cd5c24fc2849de66a41c703923623" title="sys_pipe2" alt="" coords="209,219,289,248"/>
+<area shape="rect" id="node21" href="$sc__streams_8c.html#aaf7eb7d479bca76e264717f21e747bfb" title="sys_read" alt="" coords="212,272,287,301"/>
+<area shape="rect" id="node24" href="$syscall_8h.html#aaac6e22260c6c5958e3bd35e4d6d149f" title="sys_readlink" alt="" coords="203,325,296,355"/>
+<area shape="rect" id="node27" href="$syscall_8h.html#a924151cc2d5b1aa608201d2706e06305" title="sys_sigprocmask" alt="" coords="188,379,311,408"/>
+<area shape="rect" id="node30" href="$syscall_8h.html#a007358ce4b84fdf7a22af6652eab9c4d" title="sys_stat" alt="" coords="213,432,285,461"/>
+<area shape="rect" id="node33" href="$syscall_8h.html#ad636cebe991c7b6ff56d4788b069983b" title="sys_waitpid" alt="" coords="204,485,295,515"/>
+<area shape="rect" id="node37" href="$syscall_8h.html#a4deb14029218fa13e598a9b4a80c6470" title="syscall_dispatch" alt="" coords="191,539,308,568"/>
+<area shape="rect" id="node41" href="$tty_8c.html#a41c315ed12e65d1a4be58f291d7181de" title="tty_ioctl" alt="" coords="216,592,283,621"/>
+<area shape="rect" id="node5" href="$syscall_8h.html#a581ed37968ead91b6d3a0b3b7a71da9d" title="syscall_init" alt="" coords="391,272,476,301"/>
+<area shape="rect" id="node7" href="$init_8c.html#a7ab60a54ada3d2c83db17fd6ad45d0cf" title="Once we are here everything is set up properly First 4 MB are both at 0xC000 0000 and 0x0000 0000 to ..." alt="" coords="555,485,643,515"/>
+<area shape="rect" id="node39" href="$isr_8c.html#a9fd0493bf4ce55b5caa45eaf51899edc" title="i386_handle_interrupt" alt="" coords="361,539,505,568"/>
+<area shape="rect" id="node43" href="$tty_8h.html#a3bf9faf77dd76addc6deac2722b097e2" title="tty_init" alt="" coords="403,592,464,621"/>
+</map>

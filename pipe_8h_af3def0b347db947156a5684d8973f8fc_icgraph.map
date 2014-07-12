@@ -1,0 +1,15 @@
+<map id="pipe_write" name="pipe_write">
+<area shape="rect" id="node3" href="$streams_8h.html#a3f81816bbc345cfe6320c92a67e48627" title="_sys_write" alt="" coords="357,5,443,35"/>
+<area shape="rect" id="node7" href="$tty_8c.html#a815fcd6f1882311a9cc274cc8b39dd74" title="tty_buf_out_char" alt="" coords="147,269,264,299"/>
+<area shape="rect" id="node11" href="$tty_8c.html#a890d88589585c3f34e4fdca210087d05" title="tty_flush_line_buffer" alt="" coords="136,375,275,404"/>
+<area shape="rect" id="node17" href="$vfs_8h.html#a3b462cea173d8cd38ab8b46b98a159d7" title="Read data from a file." alt="" coords="169,192,241,221"/>
+<area shape="rect" id="node27" href="$vfs_8h.html#ab379ab04ee753835803908fe8e2390ed" title="Write data to a file." alt="" coords="168,99,243,128"/>
+<area shape="rect" id="node5" href="$sc__streams_8c.html#ad9f60c750f41431f6732959c046ac595" title="sys_write" alt="" coords="539,5,616,35"/>
+<area shape="rect" id="node9" href="$tty_8h.html#a2a01bfbfacd2694da3bd7fb74f1f65fe" title="tty_input_char" alt="" coords="525,375,629,404"/>
+<area shape="rect" id="node13" href="$tty_8c.html#a0f65fe3e4b95bd87543177d3eb92a1c0" title="tty_buf_line_char" alt="" coords="340,427,460,456"/>
+<area shape="rect" id="node19" href="$elfloader_8h.html#ac8580d0a2a52efe7562a5afd14f52eb1" title="elf_load" alt="" coords="367,165,433,195"/>
+<area shape="rect" id="node21" href="$process_8h.html#a7e9e5731a4b5aa019c0d27c53d20654a" title="procvmm_handle_fault" alt="" coords="324,219,476,248"/>
+<area shape="rect" id="node23" href="$streams_8h.html#ac8134168213829dab4254391fe4a548f" title="_sys_read" alt="" coords="359,272,441,301"/>
+<area shape="rect" id="node25" href="$tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b" title="tar_read_record" alt="" coords="344,112,456,141"/>
+<area shape="rect" id="node30" href="$tar_8c.html#a0257364b4421a84722534015f9e21279" title="tar_read_record_mem" alt="" coords="327,59,473,88"/>
+</map>

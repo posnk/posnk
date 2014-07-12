@@ -7,6 +7,12 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
@@ -39,6 +45,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -65,12 +72,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="globals.html"><span>Globals</span></a></li>
     </ul>
   </div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('kernel_2paging_8h.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Macros</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -79,11 +101,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
@@ -129,14 +146,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a7c6609acddab69d9d8be5af73c0c6405"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a7c6609acddab69d9d8be5af73c0c6405">paging_switch_dir</a> (<a class="el" href="kernel_2paging_8h.html#aa130537144376c248177e9e65d9e7d0a">page_dir_t</a> *new_dir)</td></tr>
 <tr class="memitem:ac76f34e9886b57481e72369c6ea57d79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="kernel_2paging_8h.html#aa130537144376c248177e9e65d9e7d0a">page_dir_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#ac76f34e9886b57481e72369c6ea57d79">paging_create_dir</a> ()</td></tr>
 <tr class="memitem:aa2d3da9f98d73933b6d8ffda2f0af479"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#aa2d3da9f98d73933b6d8ffda2f0af479">paging_free_dir</a> (<a class="el" href="kernel_2paging_8h.html#aa130537144376c248177e9e65d9e7d0a">page_dir_t</a> *dir)</td></tr>
-<tr class="memitem:a3eedbba6865f33f438eafed00c8d4a02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a3eedbba6865f33f438eafed00c8d4a02">paging_map</a> (void *virt_addr, <a class="el" href="physmm_8h.html#a352786d1b241729e28a1a8e6ab39384d">physaddr_t</a> phys_addr, <a class="el" href="kernel_2paging_8h.html#a65b63a13c7c3240b83384b0fac2141c0">page_flags_t</a> <a class="el" href="ext2_8h.html#a773b39d480759f67926cb18ae2219281">flags</a>)</td></tr>
+<tr class="memitem:a3eedbba6865f33f438eafed00c8d4a02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a3eedbba6865f33f438eafed00c8d4a02">paging_map</a> (void *virt_addr, <a class="el" href="physmm_8h.html#a352786d1b241729e28a1a8e6ab39384d">physaddr_t</a> phys_addr, <a class="el" href="kernel_2paging_8h.html#a65b63a13c7c3240b83384b0fac2141c0">page_flags_t</a> flags)</td></tr>
 <tr class="memitem:a338d2f1e4c26f2a29bcb4f675d9e31a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a338d2f1e4c26f2a29bcb4f675d9e31a7">paging_unmap</a> (void *virt_addr)</td></tr>
 <tr class="memitem:a2eee1e6f07474d22f07c662d169057f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="kernel_2paging_8h.html#ae70238d01c99de5ad9bc5389d1cded9e">page_tag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a2eee1e6f07474d22f07c662d169057f8">paging_get_tag</a> (void *virt_addr)</td></tr>
 <tr class="memitem:ab417afe6f5654cf60f29d89c523f9930"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#ab417afe6f5654cf60f29d89c523f9930">paging_tag</a> (void *virt_addr, <a class="el" href="kernel_2paging_8h.html#ae70238d01c99de5ad9bc5389d1cded9e">page_tag_t</a> tag)</td></tr>
 <tr class="memitem:a569adfd13ea3c63741f64108821b1712"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a569adfd13ea3c63741f64108821b1712">paging_init</a> ()</td></tr>
 <tr class="memitem:a07afb594ee7854f28252cc9f71ebdd4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a07afb594ee7854f28252cc9f71ebdd4f">paging_handle_out_of_memory</a> ()</td></tr>
 <tr class="memitem:a50c93659e1da8c77ece658e76e8b2340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a50c93659e1da8c77ece658e76e8b2340">paging_handle_fault</a> (void *virt_addr, void *instr_ptr, void *state, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> state_size, int present, int write, int user)</td></tr>
-<tr class="memitem:a2c2187b20b4cc4ad5e71890f229d5003"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a2c2187b20b4cc4ad5e71890f229d5003">paging_soft_check</a> (void *virt_addr, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> <a class="el" href="tar_8h.html#a7a3c334bd082b9b6b985ca492d053760">size</a>)</td></tr>
+<tr class="memitem:a2c2187b20b4cc4ad5e71890f229d5003"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#a2c2187b20b4cc4ad5e71890f229d5003">paging_soft_check</a> (void *virt_addr, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> size)</td></tr>
 <tr class="memitem:afa212db5a1f14313623d342b025aeb44"><td class="memItemLeft" align="right" valign="top">uintptr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kernel_2paging_8h.html#afa212db5a1f14313623d342b025aeb44">paging_get_physical_address</a> (void *virt_addr)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="var-members"></a>
@@ -563,7 +580,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000115">Todo:</a></b></dt><dd>: Determine whether we have to free previously mapped frame </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000116">Todo:</a></b></dt><dd>: Determine whether we have to free previously mapped frame </dd></dl>
 
 <p>Definition at line <a class="el" href="arch_2i386_2paging_8c_source.html#l00142">142</a> of file <a class="el" href="arch_2i386_2paging_8c_source.html">paging.c</a>.</p>
 
@@ -696,11 +713,15 @@ Variables</h2></td></tr>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 12 2014 05:53:24 for posnk kernel by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.1.2
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="kernel_2paging_8h.html">paging.h</a></li>
+    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
+  </ul>
+</div>
 </body>
 </html>

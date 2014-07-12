@@ -1,0 +1,11 @@
+<map id="sys_chmod" name="sys_chmod">
+<area shape="rect" id="node3" href="$sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47" title="_sys_chmod" alt="" coords="163,84,259,113"/>
+<area shape="rect" id="node12" href="$syscall_8c.html#ad67cb3aec103435cc4b2a1db7b3f2f32" title="copy_user_to_kern" alt="" coords="145,163,276,192"/>
+<area shape="rect" id="node18" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="157,216,264,245"/>
+<area shape="rect" id="node20" href="$heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated." alt="" coords="160,269,261,299"/>
+<area shape="rect" id="node5" href="$vfs_8c.html#a60e197d9a65de9d15c88f8fa1f6e7c97" title="vfs_find_inode" alt="" coords="332,5,439,35"/>
+<area shape="rect" id="node7" href="$permissions_8c.html#a591cd124c5f2c71915d322cffbcbcdf3" title="get_perm_class" alt="" coords="328,59,443,88"/>
+<area shape="rect" id="node9" href="$permissions_8c.html#a1d172cfbf20122ad6556b4fab6f872d8" title="get_effective_uid" alt="" coords="495,85,615,115"/>
+<area shape="rect" id="node14" href="$procvmm_8c.html#a4b9b5c430a1ac8999454d045b38997ed" title="procvmm_check" alt="" coords="327,163,444,192"/>
+<area shape="rect" id="node16" href="$string_8c.html#a756c9204a58aa6f5c4923377c89f7088" title="memcpy" alt="" coords="349,216,421,245"/>
+</map>

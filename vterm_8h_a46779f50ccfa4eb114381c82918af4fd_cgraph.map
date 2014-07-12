@@ -1,0 +1,10 @@
+<map id="vterm_init" name="vterm_init">
+<area shape="rect" id="node3" href="$heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller." alt="" coords="145,5,252,35"/>
+<area shape="rect" id="node7" href="$vterm__erase_8c.html#a013eb1159f27d1ad1c7a1735f37d51dc" title="vterm_erase" alt="" coords="152,59,245,88"/>
+<area shape="rect" id="node11" href="$vterm__write_8c.html#affb730f3596bf8fdc6f6611ffe84e35c" title="vterm_write_rxvt" alt="" coords="140,112,257,141"/>
+<area shape="rect" id="node17" href="$vterm__write_8c.html#a773b8b48952c2094d6825abfc86c64a5" title="vterm_write_vt100" alt="" coords="135,165,263,195"/>
+<area shape="rect" id="node5" href="$heapmm_8c.html#a3b059259e3bda1a24cdf57adb3ed303f" title="Allocates a new block of memory of given size to the caller." alt="" coords="312,5,467,35"/>
+<area shape="rect" id="node9" href="$vga__vterm_8c.html#a880ec2dcb21615a86def0b821529aeb1" title="vterm_invalidate_cell" alt="" coords="317,59,461,88"/>
+<area shape="rect" id="node13" href="$string_8c.html#a008e171a518fe0e0352f31b245e03875" title="strlen" alt="" coords="363,112,416,141"/>
+<area shape="rect" id="node15" href="$vterm__tty_8c.html#a7e816e2d9a9faa5fa9fe2dea731a5a60" title="vterm_write_tty" alt="" coords="333,165,445,195"/>
+</map>

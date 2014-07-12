@@ -1,0 +1,5 @@
+<map id="vterm_escape_cancel" name="vterm_escape_cancel">
+<area shape="rect" id="node3" href="$vterm__render_8h.html#aeb267663cdbef3402fccf07a0d3b8ac6" title="try_interpret_escape_seq" alt="" coords="203,5,371,35"/>
+<area shape="rect" id="node7" href="$vterm__render_8h.html#af0474ca84cbef4fea3d06e2121f02476" title="vterm_render_ctrl_char" alt="" coords="209,59,364,88"/>
+<area shape="rect" id="node5" href="$vterm__render_8h.html#aa651d19abd649574dac5c5e8227926fa" title="vterm_render" alt="" coords="419,32,517,61"/>
+</map>
