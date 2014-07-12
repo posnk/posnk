@@ -1081,11 +1081,19 @@ int vfs_rmdir(char *path)
 
 	/*If the inode does not exist, return error "No such file or directory"*/
 	if (!inode)
-		return ENOENT;
+		return ENOENT;	
+
+	/* Acquire a lock on the inode */
+	semaphore_down(inode->lock);
 
 	/* If directory still has entries, return error "File exists" */
-	if (inode->size)
+	if (inode->size) {
+
+		/* Release the lock */
+		semaphore_up(inode->lock);
+
 		return EEXIST;
+	}
 
 	/* If a file system is currently mounted on this directory or if it */
 	/* is the root directory for the current process, return error : */
@@ -1094,7 +1102,10 @@ int vfs_rmdir(char *path)
 		return EBUSY;
 
 	/* Release the inode */
-	vfs_inode_release(inode);		
+	vfs_inode_release(inode);	
+
+	/* Release the lock */
+	semaphore_up(inode->lock);	
 
 	/* Remove directory */
 	return vfs_unlink(path);
@@ -1244,10 +1255,16 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		return ENOMEM;
 	}
 
+	/* Acquire a lock on the parent inode */
+	semaphore_down(parent->lock);
+
 	/* Check whether the file already exists */
 	if ((_inode = vfs_find_inode(path))) {
 		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1262,6 +1279,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1303,6 +1323,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		/* Length is too long, clean up and return error */
 		heapmm_free(inode, parent->device->inode_size);	
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 	
@@ -1337,6 +1360,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1355,6 +1381,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1367,6 +1396,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 
 	/* Release the lock on the inode */
 	semaphore_up(inode->lock);
+
+	/* Release the lock on the parent inode*/
+	semaphore_up(parent->lock);
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
@@ -1524,8 +1556,14 @@ int vfs_symlink(char *oldpath, char *path)
 	/* Allocate memory for new inode */
 	inode = heapmm_alloc(parent->device->inode_size);
 
+	/* Acquire a lock on the parent inode*/
+	semaphore_down(parent->lock);
+
 	/* Check if the allocation succeded, if not, return error */
 	if (!inode) {
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1538,6 +1576,9 @@ int vfs_symlink(char *oldpath, char *path)
 		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1548,6 +1589,9 @@ int vfs_symlink(char *oldpath, char *path)
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1587,7 +1631,11 @@ int vfs_symlink(char *oldpath, char *path)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
-		heapmm_free(inode, parent->device->inode_size);		
+		heapmm_free(inode, parent->device->inode_size);	
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+	
 		return ENAMETOOLONG;
 	}
 
@@ -1617,6 +1665,9 @@ int vfs_symlink(char *oldpath, char *path)
 		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1638,6 +1689,9 @@ int vfs_symlink(char *oldpath, char *path)
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
 
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1653,6 +1707,9 @@ int vfs_symlink(char *oldpath, char *path)
 
 	/* Add inode to cache */
 	vfs_inode_cache(inode);
+
+	/* Release the lock on the parent inode*/
+	semaphore_up(parent->lock);
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
