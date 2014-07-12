@@ -32,32 +32,50 @@ typedef struct fs_device fs_device_t;
 
 typedef struct fs_device_operations fs_device_operations_t;
 
+/**
+ * Describes a file currently cached by the kernel
+ */
 struct inode {	
+	/** Linked list node */
 	llist_t		 node;
 	/* Inode */
-	uint32_t	 device_id;
+	/** Inode ID */
 	ino_t		 id;
+	/** Block device this inode resides on */
+	uint32_t	 device_id;
+	/** Filesystem device this inode resides on */
 	fs_device_t	*device;
+	/** Filename @deprecated */
 	char	 	 name[CONFIG_FILE_MAX_NAME_LENGTH];
+	/** Number of hard links to this file */
 	nlink_t 	 hard_link_count;
 	/* Permissions */
+	/** Owner UID */
 	uid_t	 	 uid;
+	/** Owner GID */
 	gid_t	 	 gid;
+	/** File mode, see stat.h */
 	umode_t	 	 mode;
 	/* Special file */
+	/** Device id for special files */
 	dev_t	 	 if_dev;
+	/** Symbolic link target */
 	char 	 	 link_path[CONFIG_FILE_MAX_NAME_LENGTH];
+	/** FIFO pipe back end */
 	pipe_info_t 	*fifo;
-	/* Mounting */
+	/** Mounted filesystem root inode */
 	inode_t	 	*mount;
-	/* Synchronization */
+	/** Lock */
 	semaphore_t 	*lock;
+	/** Usage count */
 	uint32_t 	 usage_count;
-	/* Content */
+	/** File size */
 	aoff_t	 	 size;	
-	/* Access times */
-	ktime_t		 atime;
+	/** Access time */
+	ktime_t		 atime; 
+	/** Modification time */
 	ktime_t		 mtime;
+	/** Metadata modification time */
 	ktime_t		 ctime;
 };
 
@@ -74,30 +92,219 @@ struct dir_cache {
 	uint32_t	 usage_count;
 };
 
+/** 
+ * @brief Contains callbacks for all filesystem driver functions 
+ *
+ * This is the structure used to pass the callbacks for a filesystem driver to
+ * the kernel, it is referenced by fs_device, which describes an instance of a
+ * filesystem driver, implementation hints and requirements are given in the 
+ * description of each callback, for more info on FS driver implementation see
+ * fs_device
+ */
 struct fs_device_operations {
 
+	/**
+	 * @brief Load an inode from storage
+	 * 
+         * REQUIRED
+         *
+	 * Implementations of this function must fill ALL inode fields relevant
+         * to the file type, this includes instance fields such as lock
+	 * @param inode The inode id to load
+         * @return The loaded inode
+	 */
 	inode_t *	(*load_inode)	(fs_device_t *, ino_t);//inode id -> inode
+
+	/**
+	 * @brief Write an inode to storage
+         *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+         *
+	 * @param inode The inode to write 
+         * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*store_inode)	(inode_t *);//inode -> status
+
+	/**
+	 * @brief Create an inode
+         *
+         * @warning Implementations must not depend on any fields in inode
+         * being valid
+         *
+	 * Implementations must fill inode->id
+	 * @param inode The inode to create
+         * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*mknod)	(inode_t *);	//inode -> status
+
+	/**
+	 * @brief Delete an inode
+         *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+         *
+         * Implementations are recommended to free any data associated with 
+         * the inode
+	 * @param inode The inode to delete
+         * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*rmnod)	(inode_t *);	//inode -> status
 
+	/**
+	 * @brief Read data from a file
+	 * 
+         * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+         * @note The VFS will adjust count so that the whole requested area is 
+	 * in the file
+	 * @param inode       The inode for the file
+	 * @param buffer      The buffer to store the data in
+	 * @param file_offset The offset in the file to start reading at
+	 * @param count       The number of bytes to read
+	 * @param nread       A pointer to a variable in which the number of 
+	 *			bytes read will be stored
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
+
 	int		(*read_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread
+
+	/**
+	 * @brief Write data to a file
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+         *
+         * @note The VFS layer will automatically adjust file size\n
+	 * @param inode       The inode for the file
+	 * @param buffer      The buffer containing the data to write
+	 * @param file_offset The offset in the file to start writing at
+	 * @param count       The number of bytes to write
+	 * @param nwritten    A pointer to a variable in which the number of 
+	 *			 bytes written will be stored
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*write_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nwritten
 
+	/**
+	 * @brief Read directory entries from backing storage
+	 * 
+         * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * @warning Implementations must only return whole directory entries
+	 * 
+	 * @param inode       The inode for the directory
+	 * @param buffer      The buffer to store the entries in
+	 * @param file_offset The offset in the directory to start reading at
+	 * @param count       The number of bytes to read
+	 * @param nread	      A pointer to a variable in which the number of 
+	 *			bytes read will be stored
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
+
 	int		(*read_dir)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread 
+
+	/** 
+	 * @brief Find a directory entry
+	 * 
+         * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * 
+	 * @param inode The directory to search
+	 * @param name  The filename to match
+	 * @return The directory entry matching name from the directory inode, 
+	 *          if none, NULL is returned
+	 */
 	dirent_t *	(*find_dirent)	(inode_t *, char *);	//dir_inode_id, filename -> dirent_t  
+
+	/**
+	 * @brief Create directory structures
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * 
+         * Implementations are not required to implement this function but must
+         * provide a stub to allow directories to be created
+	 * @param inode The inode for the new directory
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*mkdir)	(inode_t *);		//dir_inode_id -> status
+
+	/**
+	 * @brief Create a directory entry
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function, except for the size field
+	 * @warning Implementations are required to update the directory size 
+         * field
+	 * 
+	 * @param inode  The inode for the directory
+	 * @param name   The file name for the directory entry
+	 * @param nod_id The inode id that the directory entry will point to
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
+
 	int		(*link)		(inode_t *, char *, ino_t);	//dir_inode_id, filename, inode_id -> status
+
+	/**
+	 * @brief Delete a directory entry
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function, except for the size field
+	 * @warning Implementations are required to update the directory size 
+         * field
+	 * 
+	 * @param inode - The inode for the directory
+	 * @param name  - The file name of the directory entry to delete
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*unlink)	(inode_t *, char *);	//dir_inode_id, filename
 
+	/**
+	 * @brief Resize a file
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+         * Implementations must fill the newly created space with zeroes and
+         * free any truncated space
+	 * 
+	 * @param inode       The inode for the file
+	 * @param size	      The new size of the file
+	 * @return In case of error: a valid error code, Otherwise 0
+	 */
 	int		(*trunc_inode)	(inode_t *, aoff_t);
 };
 
+/** 
+ * @brief An instance of a filesystem driver 
+ * 
+ * This structure describes an instance of a filesystem driver, it is returned 
+ * by a filesystem's mount function and contains information on the interface
+ * provided by the driver aswell as the mounted device.
+ * In order to implement a filesystem driver you must provide two things:
+ * \li A mount function of the form 
+ *         fs_device_t fs_mount( dev_t device, uin32_t flags);
+ * \li Implementations of the callbacks in fs_device_operations
+ * 
+ * For more information on the callbacks see the documentation of 
+ * fs_device_operations
+ *
+ */
 struct fs_device {
+	/** Block device this filesystem resides on */
 	uint32_t		id;
+	/** Root inode ID */
 	ino_t			root_inode_id;
+	/** Pointer to the callback list */
 	fs_device_operations_t *ops;
+	/** Filesystem lock */
 	semaphore_t	       *lock;	
+	/** @brief Inode structure size for this filesystem
+          *
+          * In memory size of the inode structures returned by the callbacks
+          * of this driver.
+          */
 	size_t 			inode_size;
 };
 
