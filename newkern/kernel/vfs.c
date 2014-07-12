@@ -1747,6 +1747,57 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 	heapmm_free(dirc, sizeof(dir_cache_t));	
 }
 
+/**
+ * @brief Create a new reference to a directory cache entry
+ * @param dirc The entry to refer to
+ * @return The new reference
+ */
+
+dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc)
+{
+	dirc->usage_count++;
+	return dirc;
+}
+
+/**
+ * @brief Create a new directory cache entry
+ * @param parent Directory cache entry to use as parent
+ * @return The new entry
+ */
+
+dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
+{
+	/* Check for null pointers */
+	if (!par)
+		return NULL;
+
+	/* Allocate memory for the cache entry */
+	dir_cache_t *dirc = heapmm_alloc(sizeof(dir_cache_t));
+	
+	/* Check if the allocation succeeded */
+	if (!dirc)
+		return NULL;
+
+	/* Set its parent to itself because it is the root of the graph */
+	dirc->parent = vfs_dir_cache_ref(par);
+
+	/* Set the inode */
+	dirc->inode = vfs_effective_inode(vfs_get_inode(par->inode->device, inode_id));
+
+	if (!dirc->inode) {
+		heapmm_free(dirc, sizeof(dir_cache_t));
+		vfs_dir_cache_release(par);
+		return NULL;
+	}
+
+	/* Initialize the reference count to 1 */
+	dirc->usage_count = 1;
+	
+	/* Bump the inode reference count */
+	dirc->inode->usage_count++;
+
+	return dirc;	
+}
 
 /** 
  * @brief Look up the parent directory of a file referred to by a path
@@ -1758,7 +1809,7 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 
 dir_cache_t *vfs_find_dirc_parent(char * path)
 {
-	dir_cache_t *dirc = scheduler_current_task->current_directory;
+	dir_cache_t *dirc = vfs_dir_cache_ref(scheduler_current_task->current_directory);
 	dir_cache_t *newc;
 	inode_t * parent = dirc->inode;
 	char * separator;
@@ -1770,8 +1821,13 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	int element_count = 0;	
 
 	/* Check for NULL or empty path */
-	if ((path == NULL) || ((*path) == '\0'))
+	if ((path == NULL) || ((*path) == '\0')) {
+
+		/* Release current dirc */
+		vfs_dir_cache_release(dirc);
+
 		return NULL;
+	}
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
@@ -1792,8 +1848,11 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 		if ((element_count == 0) && (element_size == 0)){ // First character is / 
 			/* Path is absolute */
 
+			/* Release current dirc */
+			vfs_dir_cache_release(dirc);
+
 			/* Update current element */
-			dirc = scheduler_current_task->root_directory;
+			dirc = vfs_dir_cache_ref(scheduler_current_task->root_directory);
 			parent = dirc->inode;
 
 		} else if (element_size == 0) {
@@ -1804,13 +1863,10 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 				/* If so, we have detected a trailing slash */
 				/* and reached the end of the path */
 				
-				/* Bump the reference counters and return */
-				dirc->usage_count++;
-				dirc->inode->usage_count++;
-
 				/* Clean up */
 				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
+				/* Return dirc */
 				return dirc;
 			}
 
@@ -1819,21 +1875,21 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 
 			/* Set next current path element to the parent of
 			 * the current element */
-			newc = dirc->parent;
+			newc = vfs_dir_cache_ref(dirc->parent);
 
 			/* If the new current element differs from the current 
 			 * element, free the old current path element */
 			if (newc != dirc) {		
 
-				/* Current element is not in use elsewhere? */	
-				if ((!dirc->usage_count))	
-					/* Free it */ 
-					heapmm_free(dirc, sizeof(dir_cache_t));
+				/* Release old element */	
+				vfs_dir_cache_release(dirc);
 
 				/* Update current element */
 				parent = newc->inode;
 				dirc = newc;
-			}						
+			} else 
+				vfs_dir_cache_release(newc);	
+					
 		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {			
 			/* Element is . */
 			/* Ignore this */			
@@ -1861,45 +1917,25 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 					 * parent so even though the entry does
 					 * not exist, return its parent */
 				
-					/* Bump the reference counters and return */
-					dirc->usage_count++;
-					dirc->inode->usage_count++;
-
+					/* Return dirc */
 					return dirc;
-				} else if (dirc && dirc->usage_count == 0){
-					/* Free the current dirc if it is not referenced 
-		                 	 * somewhere else */
 
-					/* Release its reference on its parent */
-					vfs_dir_cache_release(dirc->parent);
+				} else {
+					/* Release dirc */
+					vfs_dir_cache_release(dirc);
 
-					/* Free its memory */
-					heapmm_free(dirc, sizeof(dir_cache_t));
+					/* Return NULL */
+					return NULL;
 				}
-
-				/* An element in the path is nonexistent*/ 
-
-				/* Return NULL */
-				return NULL;
 			}
-
-			/* Bump reference counters on old path element as it 
-			 * will be referenced by the new dirc entry */
-			dirc->inode->usage_count++;
-			dirc->usage_count++;
 			
 			/* Create new dirc entry for this element */
-			newc = heapmm_alloc(sizeof(dir_cache_t));
+			newc = vfs_dir_cache_new(dirc, dirent->inode_id);
 
-			/* Set it's parent pointer to the previous element */
-			newc->parent = dirc;
-
-			/* Look up the inode for the path element */
-			newc->inode = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));
 			//TODO: Check for errors
 
-			/* Initialize the new dirc reference counter to 0 */
-			newc->usage_count = 0;
+			/* Release old element */
+			vfs_dir_cache_release(dirc);
 
 			/* Update current element */
 			dirc = newc;		
@@ -1916,13 +1952,9 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 			/* If so, clean up and return the previous element */
 
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-				
-			/* Bump the reference counters and return */
-			dirc->parent->usage_count++;
-			dirc->parent->inode->usage_count++;
 
 			/* Reuse the newc var to temporarily store parent */
-			newc = dirc->parent;
+			newc = vfs_dir_cache_ref(dirc->parent);
 			
 			/* Release the current dir cache entry */
 			vfs_dir_cache_release(dirc);
@@ -1939,14 +1971,9 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 			/* Clean up */	
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
-			/* Free the current dirc if it is not referenced 
-                         * somewhere else */
-			if (dirc && dirc->usage_count == 0){
-				/* Release its reference on its parent */
-				vfs_dir_cache_release(dirc->parent);
-				/* Free its memory */
-				heapmm_free(dirc, sizeof(dir_cache_t));
-			}
+			/* Release dirc  */
+			vfs_dir_cache_release(dirc);
+
 			return NULL;
 		}
 	}
@@ -1961,7 +1988,7 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 
 dir_cache_t *vfs_find_dirc(char * path)
 { 
-	dir_cache_t *dirc = scheduler_current_task->current_directory;
+	dir_cache_t *dirc = vfs_dir_cache_ref(scheduler_current_task->current_directory);
 	dir_cache_t *newc;
 	inode_t * parent = dirc->inode;
 	char * separator;
@@ -1973,8 +2000,13 @@ dir_cache_t *vfs_find_dirc(char * path)
 	int element_count = 0;	
 
 	/* Check for NULL or empty path */
-	if ((path == NULL) || ((*path) == '\0'))
+	if ((path == NULL) || ((*path) == '\0')){
+
+		/* Release current dirc */
+		vfs_dir_cache_release(dirc);
+
 		return NULL;
+	}
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
@@ -1995,8 +2027,11 @@ dir_cache_t *vfs_find_dirc(char * path)
 		if ((element_count == 0) && (element_size == 0)){ 
 			/* Path is absolute */
 
+			/* Release current dirc */
+			vfs_dir_cache_release(dirc);
+
 			/* Update current element */
-			dirc = scheduler_current_task->root_directory;
+			dirc = vfs_dir_cache_ref(scheduler_current_task->root_directory);
 			parent = dirc->inode;
 
 		} else if (element_size == 0) {
@@ -2007,13 +2042,10 @@ dir_cache_t *vfs_find_dirc(char * path)
 				/* If so, we have detected a trailing slash */
 				/* and reached the end of the path */
 				
-				/* Bump the reference counters and return */
-				dirc->usage_count++;
-				dirc->inode->usage_count++;
-
 				/* Clean up */
 				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
+				/* Return dirc */
 				return dirc;
 			}
 
@@ -2022,20 +2054,21 @@ dir_cache_t *vfs_find_dirc(char * path)
 
 			/* Set next current path element to the parent of
 			 * the current element */
-			newc = dirc->parent;
+			newc = vfs_dir_cache_ref(dirc->parent);
 
 			/* If the new current element differs from the current 
 			 * element, free the old current path element */
 			if (newc != dirc) {	
-				/* Current element is not in use elsewhere? */	
-				if ((!dirc->usage_count))	
-					/* Free it */
-					heapmm_free(dirc, sizeof(dir_cache_t));
+
+				/* Release old dirc */
+				vfs_dir_cache_release(dirc);
 
 				/* Update current element */
 				parent = newc->inode;
 				dirc = newc;
-			}						
+
+			} else 
+				vfs_dir_cache_release(newc);		
 		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
 			/* Element is . */
 			/* Ignore this */
@@ -2069,24 +2102,14 @@ dir_cache_t *vfs_find_dirc(char * path)
 				 * not found */
 				return NULL;
 			}
-
-			/* Bump reference counters on old path element as it 
-			 * will be referenced by the new dirc entry */
-			dirc->inode->usage_count++;
-			dirc->usage_count++;
 			
 			/* Create new dirc entry for this element */
-			newc = heapmm_alloc(sizeof(dir_cache_t));
+			newc = vfs_dir_cache_new(dirc, dirent->inode_id);
 
-			/* Set it's parent pointer to the previous element */
-			newc->parent = dirc;
-
-			/* Look up the inode for the path element */
-			newc->inode = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));
 			//TODO: Check for errors
 
-			/* Initialize the new dirc reference counter to 0 */
-			newc->usage_count = 0;
+			/* Release old element */
+			vfs_dir_cache_release(dirc);
 
 			/* Update current element */
 			dirc = newc;		
@@ -2102,9 +2125,7 @@ dir_cache_t *vfs_find_dirc(char * path)
 			/* If so, return the current element */
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 				
-			/* Bump the reference counters and return */
-			dirc->usage_count++;
-			dirc->inode->usage_count++;
+			/* Return dirc */
 			return dirc;
 		}
 
@@ -2118,14 +2139,9 @@ dir_cache_t *vfs_find_dirc(char * path)
 			/* Clean up */	
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
-			/* Free the current dirc if it is not referenced 
-                         * somewhere else */
-			if (dirc && dirc->usage_count == 0){
-				/* Release its reference on its parent */
-				vfs_dir_cache_release(dirc->parent);
-				/* Free its memory */
-				heapmm_free(dirc, sizeof(dir_cache_t));
-			}
+			/* Release old element */
+			vfs_dir_cache_release(dirc);
+
 			return NULL;
 		}
 
