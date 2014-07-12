@@ -92,8 +92,10 @@ void llist_add_end(llist_t *list,llist_t *entry)
  */
 void llist_unlink(llist_t *entry)
 {
-	entry->prev->next = entry->next;
-	entry->next->prev = entry->prev;
+	if (entry->prev)
+		entry->prev->next = entry->next;
+	if (entry->next)
+		entry->next->prev = entry->prev;
 	entry->next = 0;
 	entry->prev = 0;
 }

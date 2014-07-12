@@ -383,7 +383,8 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 
 	ino = &(_ino->inode);
 	vfs_ino = &(_ino->vfs_ino);
-
+	vfs_ino->node.next = NULL;
+	vfs_ino->node.prev = NULL;
 	vfs_ino->device_id = device->device.id;
 	vfs_ino->id = ino_id;
 	vfs_ino->device = (fs_device_t *) device;
