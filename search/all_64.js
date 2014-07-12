@@ -65,6 +65,8 @@ var searchData=
   ['dirent_5ft',['dirent_t',['../vfs_8h.html#a6673e8f64ca9ebd7e26e6289dca06e87',1,'vfs.h']]],
   ['dirtype',['DIRTYPE',['../tar_8h.html#a0e3302f58f5dc2351bf9652780d67817',1,'tar.h']]],
   ['div_5ft',['div_t',['../structdiv__t.html',1,'']]],
+  ['downloads',['Downloads',['../downloads.html',1,'']]],
+  ['doxymain_2ec',['doxymain.c',['../doxymain_8c.html',1,'']]],
   ['drivermgr_2ec',['drivermgr.c',['../drivermgr_8c.html',1,'']]],
   ['drivermgr_2eh',['drivermgr.h',['../drivermgr_8h.html',1,'']]],
   ['drivermgr_5fdevice_5fdriver',['drivermgr_device_driver',['../structdrivermgr__device__driver.html',1,'']]],
