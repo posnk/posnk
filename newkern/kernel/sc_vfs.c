@@ -239,7 +239,7 @@ int _sys_chown(char *path, uid_t owner, gid_t group)
 		syscall_errno = EPERM;
 		return -1;
 	}
-	if (get_perm_class(-1, group) != PERM_CLASS_GROUP)
+	if (get_perm_class(-1, group) > PERM_CLASS_GROUP)
 		group = 65535;
 	if (group != 65535)
 		inode->gid = group;
