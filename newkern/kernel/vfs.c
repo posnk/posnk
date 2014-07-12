@@ -232,7 +232,7 @@ dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 	/* This function is implemented by the FS driver */
 
 	/* Check permissions on parent dir */
-	if (!vfs_have_permissions(parent, MODE_EXEC) {
+	if (!vfs_have_permissions(inode, MODE_EXEC)) {
 		return NULL; //TODO: Find a way to pass an error from here
 	}
 
