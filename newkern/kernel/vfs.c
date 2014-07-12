@@ -1687,15 +1687,14 @@ int vfs_initialize(fs_device_t * root_device)
 
 	/* Fill VFS fields in the proces info */
 	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
-	//TODO: Bump reference counter
+
 	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
+
+	scheduler_current_task->current_directory->usage_count++;
 
 	/* Return success */
 	return 1;
 }
-
-
-//TODO: Comment dir-cache and path lookup functions
 
 /**
  * @brief Create the initial dir cache entry
@@ -1730,7 +1729,8 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 void vfs_dir_cache_release(dir_cache_t *dirc)
 {
 	/* Decrease the reference count for this dir cache entry */
-	//TODO: Prevent wraparound
+	if (dirc->usage_count)
+		dirc->usage_count--;
 
 	/* If the entry has no more references, destroy it */
 	if (dirc->usage_count)
@@ -1807,7 +1807,10 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 				/* Bump the reference counters and return */
 				dirc->usage_count++;
 				dirc->inode->usage_count++;
-				//TODO: Free path_element
+
+				/* Clean up */
+				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
 				return dirc;
 			}
 
@@ -1861,7 +1864,7 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 					/* Bump the reference counters and return */
 					dirc->usage_count++;
 					dirc->inode->usage_count++;
-					//TODO: Free path_element
+
 					return dirc;
 				} else if (dirc && dirc->usage_count == 0){
 					/* Free the current dirc if it is not referenced 
@@ -2004,7 +2007,10 @@ dir_cache_t *vfs_find_dirc(char * path)
 				/* Bump the reference counters and return */
 				dirc->usage_count++;
 				dirc->inode->usage_count++;
-				//TODO: Free path_element
+
+				/* Clean up */
+				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
 				return dirc;
 			}
 
