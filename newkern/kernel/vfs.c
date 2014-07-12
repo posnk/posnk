@@ -1687,6 +1687,7 @@ int vfs_initialize(fs_device_t * root_device)
 
 	/* Fill VFS fields in the proces info */
 	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
+	//TODO: Bump reference counter
 	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
 
 	/* Return success */
@@ -1694,28 +1695,55 @@ int vfs_initialize(fs_device_t * root_device)
 }
 
 
-
-
 //TODO: Comment dir-cache and path lookup functions
+
+/**
+ * @brief Create the initial dir cache entry
+ * @param root_inode The root inode of the initial root filesystem
+ * @return The dir cache entry for the root inode
+ */
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 {
+	/* Allocate memory for the cache entry */
 	dir_cache_t *dirc = heapmm_alloc(sizeof(dir_cache_t));
+	
+	/* Set its parent to itself because it is the root of the graph */
 	dirc->parent = dirc;
+
+	/* Set the inode */
 	dirc->inode = root_inode;
+
+	/* Initialize the reference count to 1 */
 	dirc->usage_count = 1;
+	
+	/* Bump the inode reference count */
 	dirc->inode->usage_count++;
 	return dirc;	
 }
 
+/**
+ * @brief Release a reference to a directory cache entry
+ * @param dirc The reference to release
+ */
+
 void vfs_dir_cache_release(dir_cache_t *dirc)
 {
+	/* Decrease the reference count for this dir cache entry */
 	//TODO: Prevent wraparound
+
+	/* If the entry has no more references, destroy it */
 	if (dirc->usage_count)
 		return;
+
+	/* If this is not the graph root, release the parent ref */
 	if (dirc->parent != dirc)
 		vfs_dir_cache_release(dirc->parent);
+
+	/* Decrease the inode reference count */
 	dirc->inode->usage_count--;
+
+	/* Release it's memory */
 	heapmm_free(dirc, sizeof(dir_cache_t));	
 }
 
