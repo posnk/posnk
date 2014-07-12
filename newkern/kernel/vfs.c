@@ -58,7 +58,7 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
 /**
  * @brief Returns the minimum privilege level required for access with mode
  * @param inode The file to check
- * @param mode The requested access mode
+ * @param req_mode The requested access mode
  * @return The required privilege class : other, group or owner
  */
 
@@ -76,7 +76,7 @@ perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 /**
  * @brief Check permissions for access with mode
  * @param inode The file to check
- * @param mode The requested access mode
+ * @param req_mode The requested access mode
  * @return Whether the requested access is allowed
  */
 
@@ -89,7 +89,7 @@ int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
  * 
  * @param device   The device to get the inode from
  * @param inode_id The ID of the inode to look up
- * @return The inode <inode_id> from device.
+ * @return The inode with id inode_id from device.
  */
 
 inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
@@ -822,7 +822,7 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
  * part of the file is deleted
  * 
  * @param inode       The inode for the file
- * @param size	      The new size of the file
+ * @param length      The new size of the file
  * @return In case of error: a valid error code, Otherwise 0
  *
  * @exception EFAULT  Atleast one parameter was a NULL pointer
@@ -1921,11 +1921,14 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 			dirc->parent->usage_count++;
 			dirc->parent->inode->usage_count++;
 
+			/* Reuse the newc var to temporarily store parent */
+			newc = dirc->parent;
+			
 			/* Release the current dir cache entry */
 			vfs_dir_cache_release(dirc);
 
 			/* Return the previous element */
-			return dirc->parent;
+			return newc;
 		}
 		
 		/* Check whether this element is a directory */
@@ -2247,7 +2250,7 @@ inode_t *vfs_find_symlink(char * path)
 	dirent = vfs_find_dirent(dirc->parent->inode, name);
 
 	/* If it is not found, return NULL. Should never happen... */
-	if (dirent == NULL) 
+	if (dirent == NULL) {
 
 		/* Release the dirc entry from the cache */		
 		vfs_dir_cache_release(dirc);
