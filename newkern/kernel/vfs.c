@@ -1,12 +1,14 @@
 /**
- * kernel/vfs.c
+ * @file kernel/vfs.c
  *
  * Part of P-OS kernel.
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
- * 12-04-2014 - Created
+ * \li 12-04-2014 - Created
+ * \li 11-07-2014 - Rewrite 1
+ * \li 12-07-2014 - Commented
  */
 
 #include <string.h>
@@ -25,12 +27,22 @@
 
 #include "config.h"
 //TODO: Make this an MRU cache
+
+/** The linked list serving as inode cache */
 llist_t *inode_cache;
 
 typedef struct vfs_cache_params {
 	uint32_t device_id;
 	ino_t inode_id;
 } vfs_cache_params_t;
+
+
+/**
+ * @brief Returns the minimum privilege level required for access with mode
+ * @param inode The file to check
+ * @param mode The requested access mode
+ * @return The required privilege class : other, group or owner
+ */
 
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 {
@@ -43,13 +55,23 @@ perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 	return PERM_CLASS_NONE;
 }
 
+/**
+ * @brief Check permissions for access with mode
+ * @param inode The file to check
+ * @param mode The requested access mode
+ * @return Whether the requested access is allowed
+ */
+
 int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
 	return get_perm_class(inode->uid, inode->gid) <= vfs_get_min_permissions(inode, req_mode);
 }
 
 /** 
+ * @internal
  * Iterator function that looks up the requested inode
+ * @endinternal
  */
+
 int vfs_cache_find_iterator (llist_t *node, void *param)
 {
 	inode_t *inode = (inode_t *) node;
@@ -57,646 +79,1597 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
 	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
 }
 
+/**
+ * @brief Get an inode by it's ID
+ * 
+ * @param device   The device to get the inode from
+ * @param inode_id The ID of the inode to look up
+ * @return The inode <inode_id> from device.
+ */
+
 inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 {
 	inode_t *result;
 	vfs_cache_params_t search_params;
+
 	/* Search inode cache */
 	search_params.device_id = device->id;
 	search_params.inode_id = inode_id;
 	result = (inode_t *) llist_iterate_select(inode_cache, &vfs_cache_find_iterator, (void *) &search_params);
+
 	if (result) {
 		/* Cache hit, return inode */
 		return result;
 	}
+
 	/* Cache miss, fetch it from disk */
 	//NOTE : Schedule may happen below!
 	result = device->ops->load_inode(device, inode_id);
 	//NOTE : Schedule may have happened
+
 	if (result) {
 		/* File exists, add it to cache */
 		llist_add_end(inode_cache, (llist_t *) result);
 	}
+
 	return result;
 }
 
+/**
+ * @brief Get the effective inode for an inode,
+ * in other words : Dereference possible symlinks and mounts
+ *
+ * @param inode The inode that is to be checked
+ * @return The inode that the parameter points to.
+ */
+
 inode_t *vfs_effective_inode(inode_t * inode)
 {
-	if (inode->mount)
+	/* Is a filesystem mounted on this inode? */
+	if (inode->mount) {
+		/* If so: return it's root inode */
 		return inode->mount;
-	if (inode->link_path[0])
+	}
+	
+	/* Is this inode a symlink? */
+	if (inode->link_path[0]) {
+		/* If so: look up the inode it points to */
 		return vfs_find_inode(inode->link_path);
+	}
+
+	/* This is a regular inode, return it. */
 	return inode;
 }
 
+/** 
+ * @brief Find a directory entry
+ * 
+ * @param inode The directory to search
+ * @param name  The filename to match
+ * @return The directory entry matching name from the directory inode, 
+ *          if none, NULL is returned
+ */
+ 
 dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 {
+	/* This function is implemented by the FS driver */
+
+	/* Call the driver */
 	return inode->device->ops->find_dirent(inode, name);
 }
 
+/**
+ * @brief Push a new inode to backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode The inode that was created
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_mknod(inode_t * inode)
 {
-	if (!inode->device->ops->mknod)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports mknod */
+	if (!inode->device->ops->mknod) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->mknod(inode);
 }
 
+/**
+ * @brief Remove an inode from backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode The inode that was deleted
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_rmnod(inode_t * inode)
 {
-	if (!inode->device->ops->rmnod)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports rmnod */
+	if (!inode->device->ops->rmnod) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->rmnod(inode);
 }
 
+/**
+ * @brief Create directory structures on backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode The inode for the new directory
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_mkdir(inode_t * inode)
 {
-	if (!inode->device->ops->mkdir)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports mkdir */
+	if (!inode->device->ops->mkdir) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->mkdir(inode);
 }
 
+/**
+ * @brief Create a directory entry on backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode  The inode for the directory
+ * @param name   The file name for the directory entry
+ * @param nod_id The inode id that the directory entry will point to
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_link(inode_t * inode , char * name , ino_t nod_id)
 {
-	if (!inode->device->ops->link)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports link */
+	if (!inode->device->ops->link) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->link(inode, name, nod_id);
 }
 
+/**
+ * @brief Delete a directory entry from backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode - The inode for the directory
+ * @param name  - The file name of the directory entry to delete
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_unlink(inode_t * inode , char * name)
 {	
-	if (!inode->device->ops->unlink)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports unlink */
+	if (!inode->device->ops->unlink) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->unlink(inode, name);
 }
 
+/**
+ * @brief Read directory entries from backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode       The inode for the directory
+ * @param buffer      The buffer to store the entries in
+ * @param file_offset The offset in the directory to start reading at
+ * @param count       The number of bytes to read
+ * @param read_size   A pointer to a variable in which the number of bytes 
+ *			 read will be stored
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_read_dir(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
+	/* This function is implemented by the FS driver */
+
+	/* Call the driver */
 	return inode->device->ops->read_dir(inode, buffer, file_offset, count, read_size);
 }
 
+/**
+ * @brief Read data from a file from backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode       The inode for the file
+ * @param buffer      The buffer to store the data in
+ * @param file_offset The offset in the file to start reading at
+ * @param count       The number of bytes to read
+ * @param read_size   A pointer to a variable in which the number of bytes 
+ *			 read will be stored
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_read(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
+	/* This function is implemented by the FS driver */
+
+	/* Call the driver */
 	return inode->device->ops->read_inode(inode, buffer, file_offset, count, read_size);
 }
 
+/**
+ * @brief Write data to a file from backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode       The inode for the file
+ * @param buffer      The buffer containing the data to write
+ * @param file_offset The offset in the file to start writing at
+ * @param count       The number of bytes to write
+ * @param write_size  A pointer to a variable in which the number of bytes 
+ *			 written will be stored
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_write(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
 {
-	if (!inode->device->ops->write_inode)
-		return ENOTSUP;//TODO: Maybe return EROFS here?
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports write */
+	if (!inode->device->ops->write_inode) {
+		/* If not: return the error "Operation not supported" */
+		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->write_inode(inode, buffer, file_offset, count, write_size);
 }
 
+/**
+ * @brief Resize a file on backing storage
+ * @warning INTERNAL FUNCTION
+ * 
+ * @param inode       The inode for the file
+ * @param size	      The new size of the file
+ * @return In case of error: a valid error code, Otherwise 0
+ */
+
 int vfs_int_truncate(inode_t * inode, aoff_t size)
 {
-	if (!inode->device->ops->trunc_inode)
+	/* This function is implemented by the FS driver */
+
+	/* Check if the driver supports truncate */
+	if (!inode->device->ops->trunc_inode) {
+		/* If not: return the error "Operation not supported" */
 		return ENOTSUP;
+	}
+
+	/* Call the driver */
 	return inode->device->ops->trunc_inode(inode, size);
 }
 
-int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
+/**
+ * @brief Write data to a file
+ * 
+ * If the data to be written would extend past the end of the file, the file 
+ * will grow. If file_offset lies past the end of the file, the file will 
+ * grow and the resulting gap will be filled with zero bytes.
+ * 
+ * @param inode       The inode for the file
+ * @param buffer      The buffer containing the data to write
+ * @param file_offset The offset in the file to start writing at
+ * @param count       The number of bytes to write
+ * @param write_size  A pointer to a variable in which the number of bytes 
+ *			 written will be stored
+ * @param non_block   Whether to block the call until room is available in 
+ *			 the file, this is only supported on FIFO's and 
+ *                       character devices
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception EBADF  Tried to write to a file for which we do not have 
+ *                    permission
+ * @exception EISDIR Direct writes to directories are not allowed
+ * @exception EIO    An IO error was encountered trying to write to the file
+ * @exception EPIPE  The FIFO has no room left and there are no (open) read 
+ *                  endpoints
+ * @exception ENOSPC The disk was full when trying to write to the file
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure
+ */
+
+int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block)
 {
 	int status;
 	aoff_t pad_size = 0;
 	void *zbuffer;
-	if (!inode)
-		return EINVAL;
+
+	/* Check for null pointers */
+	if ((!inode) || (!buffer) || (!write_size))
+		return EFAULT;
+
+	/* Resolve the effective inode */
 	inode = vfs_effective_inode(inode);
+
+	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
+
+	/* Verify write permission */
 	if (!vfs_have_permissions(inode, MODE_WRITE)) {
+		
+		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+		
+		/* Return the error "Bad file descriptor" */
+		/* because the stream API should already  */
+		/* have checked permissions */		
 		return EBADF;
+
 	}
+
+	/* Handle write for each file type */
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFREG:
+			/* The file is a regular file */
+
+			/* Check whether the write extends past EOF */
 			if ((file_offset + count) > inode->size) {
 				/* Writing past EOF */
+
+				/* Check whether the write starts past EOF */
 				if (file_offset > inode->size) {
 					/* Writing starts past EOF */
+
+					/* Allocate a buffer for the zero pad */
+					//TODO: Make this more efficient, implement sparse files
 					zbuffer = heapmm_alloc(file_offset - inode->size);
 
+					/* Fill the buffer with zeroes */
 					memset(zbuffer, 0, file_offset - inode->size);
 
+					/* Write the zeroes to the file */
 					status = vfs_int_write(inode, zbuffer, inode->size, file_offset - inode->size, &pad_size);
 
+					/* Free the zero pad buffer */
 					heapmm_free(zbuffer,file_offset - inode->size);		
 
+					/* Increase the file size to include the padding */
 					inode->size += pad_size;
+	
+					/* If padding was actually written, update mtime */
 					if (pad_size)
 						inode->mtime = system_time;
 
+					/* Check for errors writing the padding */
 					if (status) {
-						*read_size = 0;
+						/* An error occurred */
+
+						/* Set write_size to 0, we have not yet written anything */
+						*write_size = 0;
+			
+						/* Pass the error to the caller */
 						return status;	
 					}
 				}
 			}		
-		
-			status = vfs_int_write(inode, buffer, file_offset, count, read_size);
+			
+			/* Call on the FS driver to write the data */
+			status = vfs_int_write(inode, buffer, file_offset, count, write_size);
 
-			if (*read_size)
+			/* If data was actually written, update mtime */
+			if (*write_size)
 				inode->mtime = system_time;
 
-			if ((file_offset + *read_size) > inode->size)
-				inode->size = file_offset + *read_size;
+			/* If the file grew, update file size */
+			if ((file_offset + *write_size) > inode->size)
+				inode->size = file_offset + *write_size;
 
+			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Pass any errors on the the caller */
 			return status;
+
 		case S_IFDIR:
-			semaphore_up(inode->lock);			
-			return EISDIR;
-		case S_IFIFO:
+			/* File is a directory */
+
+			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
-			return pipe_write(inode->fifo, buffer, count, read_size, non_block);		
-		case S_IFCHR:				
-			semaphore_up(inode->lock);		
-			status = device_char_write(inode->if_dev, file_offset, buffer, count, read_size, non_block);	
-			return status;	
-		case S_IFBLK:	
-			status = device_block_write(inode->if_dev, file_offset, buffer, count, read_size);			
-			semaphore_up(inode->lock);			
-			return status;	
-		default:			
+
+			/* Return error "Is a directory" */
+			return EISDIR;
+
+		case S_IFIFO:
+			/* File is a FIFO */
+
+			/* Release the lock on this inode so write accesses */
+			/* can take place now */
+			semaphore_up(inode->lock);
+
+			/* Call on the pipe driver to write the data */
+			return pipe_write(inode->fifo, buffer, count, write_size, non_block);		
+
+		case S_IFCHR:			
+			/* File is a character special file */
+
+			/* Release the lock on this inode */	
 			semaphore_up(inode->lock);	
-			return EISDIR;		
+			
+			/* Call on the driver to write the data */			
+			status = device_char_write(inode->if_dev, file_offset, buffer, count, write_size, non_block);	
 
-	}
-	
-}
+			/* Pass any errors on the the caller */
+			return status;	
 
-int vfs_truncate(inode_t * inode, aoff_t length)
-{
-	int status;
-	if (!inode)
-		return EINVAL;
-	inode = vfs_effective_inode(inode);
-
-	semaphore_down(inode->lock);
-
-	if (!vfs_have_permissions(inode, MODE_WRITE)) {
-		semaphore_up(inode->lock);
-		return EBADF;
-	}
-	switch ((inode->mode) & S_IFMT) {
-		case S_IFREG:			
-			status = vfs_int_truncate(inode, length);
-
-			if (!status) {
-				inode->mtime = system_time;
-				inode->size = length;
-			}
-
-			semaphore_up(inode->lock);
-
-			return status;
-		case S_IFDIR:
-			semaphore_up(inode->lock);			
-			return EISDIR;
 		case S_IFBLK:	
-		case S_IFCHR:	
-		case S_IFIFO:
-		default:		
+			/* File is a block special file */
+			
+			/* Call on the driver to write the data */	
+			status = device_block_write(inode->if_dev, file_offset, buffer, count, write_size);
+
+			/* Release the lock on this inode */			
 			semaphore_up(inode->lock);
+
+			/* Pass any errors on the the caller */			
+			return status;	
+
+		default:		
+			/* Unknown file type */
+
+			/* Release the lock on this inode */		
+			semaphore_up(inode->lock);	
+
+			/* Return error "Invalid argument" */
 			return EINVAL;		
 
 	}
 	
 }
 
+/**
+ * @brief Read data from a file
+ *
+ * If more data is requested than the file contains this function will 
+ * successfully complete but read_size will be smaller than count
+ *  
+ * @param inode        The inode for the file
+ * @param buffer       The buffer to store the data in
+ * @param file_offset  The offset in the file to start reading at
+ * @param count        The number of bytes to read
+ * @param read_size    A pointer to a variable in which the number of bytes 
+ *			 read will be stored
+ * @param non_block    Whether to block the call until data is available in 
+ *			 the file, this is only supported on FIFO's and 
+ *                       character devices
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception  EFAULT Atleast one parameter was a NULL pointer
+ * @exception  EBADF  Tried to read from a file for which we do not have
+ *                    permission
+ * @exception  EISDIR Direct reads from directories are not allowed
+ * @exception  EIO    An IO error was encountered trying to read from the file
+ * @exception  EPIPE  The FIFO has no data left and there are no (open) write
+ *                    endpoints
+ * @exception  ENOMEM Could not allocate kernel heap for a temporary structure
+ */
+
 int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
 {
 	int status;
-	if (!inode)
-		return EINVAL;
+
+	/* Check for null pointers */
+	if ((!inode) || (!buffer) || (!read_size))
+		return EFAULT;
+
+	/* Resolve the effective inode */
 	inode = vfs_effective_inode(inode);
+
+	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
+
+	/* Verify read permission */
 	if (!vfs_have_permissions(inode, MODE_READ)) {
+		
+		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+		
+		/* Return the error "Bad file descriptor" */
+		/* because the stream API should already  */
+		/* have checked permissions */		
 		return EBADF;
+
 	}
+
+	/* Handle read for each file type */
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFREG:
+			/* The file is a regular file */
+
+			/* Check whether the read extends past EOF */
 			if ((file_offset + count) > inode->size) {
 				/* Reading past EOF */
+
+				/* Check whether the read starts past EOF */
 				if (file_offset >= inode->size) {
 					/* Read starts past EOF */
+
+					/* Release the lock on this inode */
 					semaphore_up(inode->lock);
+
+					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
+					
+					/* This is not an error condition, return 0 */
 					return 0;					
 				}
+
+				/* Reduce count so we read until EOF */
 				count = inode->size - file_offset;	
 			}				
+
+			/* Call on the FS driver to read the data */
 			status = vfs_int_read(inode, buffer, file_offset, count, read_size);
 
+			/* If data was actually read, update atime */
 			if (*read_size)
 				inode->atime = system_time;
 
+			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Pass any errors on the the caller */
 			return status;
 		case S_IFDIR:
-			semaphore_up(inode->lock);			
+			/* File is a directory */
+
+			/* Release the lock on this inode */
+			semaphore_up(inode->lock);
+
+			/* Return error "Is a directory" */
 			return EISDIR;
+
 		case S_IFIFO:
+			/* File is a FIFO */
+
+			/* Release the lock on this inode so read accesses */
+			/* can take place now */
 			semaphore_up(inode->lock);
 			return pipe_write(inode->fifo, buffer, count, read_size, non_block);	
+
 		case S_IFCHR:	
-			status = device_char_read(inode->if_dev, file_offset, buffer, count, read_size, non_block);			
-			semaphore_up(inode->lock);			
-			return status;	
-		case S_IFBLK:	
-			status = device_block_read(inode->if_dev, file_offset, buffer, count, read_size);			
-			semaphore_up(inode->lock);			
-			return status;	
-		default:			
+			/* File is a character special file */
+			
+			/* Call on the driver to read the data */	
+			status = device_char_read(inode->if_dev, file_offset, buffer, count, read_size, non_block);	
+
+			/* Release the lock on this inode */			
 			semaphore_up(inode->lock);	
-			return EISDIR;		
+
+			/* Pass any errors on the the caller */			
+			return status;	
+
+		case S_IFBLK:	
+			/* File is a block special file */
+			
+			/* Call on the driver to read the data */	
+			status = device_block_read(inode->if_dev, file_offset, buffer, count, read_size);	
+
+			/* Release the lock on this inode */			
+			semaphore_up(inode->lock);
+
+			/* Pass any errors on the the caller */			
+			return status;	
+
+		default:	
+			/* Unknown file type */
+
+			/* Release the lock on this inode */		
+			semaphore_up(inode->lock);	
+
+			/* Return error "Invalid argument" */
+			return EINVAL;			
 
 	}
 	
 }
+
+/**
+ * @brief Read directory entries
+ * 
+ * This function will only read whole directory entries, if a directory entry
+ * does not fit in count it will return only the amount of bytes read before 
+ * that entry
+ *
+ * @param inode       The inode for the directory
+ * @param buffer      The buffer to store the entries in
+ * @param file_offset The offset in the directory to start reading at
+ * @param count       The number of bytes to read
+ * @param read_size   A pointer to a variable in which the number of bytes 
+ *			 read will be stored
+ *
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT  Atleast one parameter was a NULL pointer
+ * @exception EBADF   Tried to read from a directory for which we do not have
+ *                  	permission
+ * @exception ENOTDIR Can only read directory entries from a directory
+ * @exception EIO     An IO error was encountered trying to read from the dir
+ * @exception ENOMEM  Could not allocate kernel heap for a temporary structure
+ */
 
 int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size)
 {
 	int status;
 
-	if (!inode)
-		return EINVAL;
+	/* Check for null pointers */
+	if ((!inode) || (!buffer) || (!read_size))
+		return EFAULT;
 
+	/* Resolve the effective inode */
 	inode = vfs_effective_inode(inode);
 
+	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
 
+	/* Verify read permission */
 	if (!vfs_have_permissions(inode, MODE_READ)) {
+		
+		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+		
+		/* Return the error "Bad file descriptor" */
+		/* because the stream API should already  */
+		/* have checked permissions */		
 		return EBADF;
+
 	}
 
+	/* Handle read for each file type */
 	switch ((inode->mode) & S_IFMT) {
 		case S_IFDIR:
+			/* File is a directory */
+
+			/* Check whether the read extends past EOF */
 			if ((file_offset + count) > inode->size) {
 				/* Reading past EOF */
+
+				/* Check whether the read starts past EOF */
 				if (file_offset >= inode->size) {
 					/* Read starts past EOF */
+
+					/* Release the lock on this inode */
 					semaphore_up(inode->lock);
+
+					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
+					
+					/* This is not an error condition, return 0 */
 					return 0;					
 				}
+
+				/* Reduce count so we read until EOF */
 				count = inode->size - file_offset;	
-			}	
-			
+			}				
+
+			/* Call on the FS driver to read the entries */			
 			status = vfs_int_read_dir(inode, buffer, file_offset, count, read_size);
 
+			/* If entries were actually read, update atime */
 			if (*read_size)
 				inode->atime = system_time;
 
+			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Pass any errors on the the caller */
 			return status;
-		default:			
+		default:		
+			/* Other file type */
+
+			/* Release the lock on this inode */		
 			semaphore_up(inode->lock);	
-			return ENOTDIR;		
+
+			/* Return error "Not a directory" */
+			return ENOTDIR;			
 
 	}
 	
 }
 
+/**
+ * @brief Resize a file
+ * 
+ * If the new size is larger than the file currently is the new room will be
+ * filled with zero bytes, if the new size is smaller the data in the truncated
+ * part of the file is deleted
+ * 
+ * @param inode       The inode for the file
+ * @param size	      The new size of the file
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT  Atleast one parameter was a NULL pointer
+ * @exception EACCES Tried to resize a file for which we do not have permission
+ * @exception EISDIR Directories can not be resized
+ * @exception EIO    An IO error was encountered trying to resize the file
+ * @exception ENOSPC The disk was full when trying to grow the file
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure
+ */
+
+int vfs_truncate(inode_t * inode, aoff_t length)
+{
+	int status;
+
+	/* Check for null pointers */
+	if (!inode)
+		return EFAULT;
+
+	/* Resolve the effective inode */
+	inode = vfs_effective_inode(inode);
+
+	/* Accuire a lock on the inode */
+	semaphore_down(inode->lock);
+
+	/* Verify write permission */
+	if (!vfs_have_permissions(inode, MODE_WRITE)) {
+		
+		/* Release the lock on this inode */
+		semaphore_up(inode->lock);
+		
+		/* Return the error "Permission denied" */	
+		return EACCES;
+
+	}
+
+	/* Handle truncate for each file type */
+	switch ((inode->mode) & S_IFMT) {
+		case S_IFREG:		
+			/* The file is a regular file */
+
+			/* Call on FS driver to resize file */	
+			status = vfs_int_truncate(inode, length);
+
+			/* If resize succeeded, update metadata */
+			if (!status) {
+				inode->mtime = system_time;
+				inode->size = length;
+			}
+
+			/* Release the lock on this inode */
+			semaphore_up(inode->lock);
+
+			/* Pass any errors on the the caller */
+			return status;
+
+		case S_IFDIR:
+			/* File is a directory */
+
+			/* Release the lock on this inode */
+			semaphore_up(inode->lock);
+
+			/* Return error "Is a directory" */
+			return EISDIR;
+
+		case S_IFBLK:	
+		case S_IFCHR:	
+		case S_IFIFO:
+		default:		
+			/* Other file type */
+
+			/* Release the lock on this inode */		
+			semaphore_up(inode->lock);	
+
+			/* Return error "Invalid argument" */
+			return EINVAL;		
+
+	}
+	
+}
+
+/** 
+ * @brief Delete a directory
+ * @param path The path of the directory to delete
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The directory does not exist
+ * @exception EEXIST The directory still has files in it
+ * @exception EBUSY  The directory is in use
+ * @exception EIO    An IO error occurred while deleting the directory
+ * @exception EACCES Tried to delete a directory from a directory for which we
+ *                   do not have write permission
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
+
 int vfs_rmdir(char *path)
 {
+
+	/* Check for null pointers */
+	if (!path)
+		return EFAULT;
+
+	/* Lookup the inode for the directory*/
 	inode_t *inode = vfs_find_inode(path);
+
+	/*If the inode does not exist, return error "No such file or directory"*/
 	if (!inode)
 		return ENOENT;
+
+	/* If directory still has entries, return error "File exists" */
 	if (inode->size)
 		return EEXIST;
+
+	/* If a file system is currently mounted on this directory or if it */
+	/* is the root directory for the current process, return error : */
+	/* "Resource busy" */
 	if (inode->mount || (scheduler_current_task->root_directory->inode == inode))
 		return EBUSY;
+		
+	//TODO: Release the inode		
+
+	/* Remove directory */
 	return vfs_unlink(path);
 }
+
+/**
+ * @brief Create a directory
+ * @param path The path of the directory to create
+ * @param mode The mode of the directory to create, only access modes are used
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The parent directory does not exist
+ * @exception EEXIST A file already exists at the given path
+ * @exception EIO    An IO error occurred while creating the directory
+ * @exception EACCES User does not have write permission for the parent dir
+ * @exception ENOSPC Not enough disk space was available
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
 
 int vfs_mkdir(char *path, mode_t mode)
 {
 	inode_t *dir;
 	inode_t *parent;
+	int err;
+	
+	/* Check for null pointers */
+	if (!path)
+		return EFAULT;
 
-	int err = vfs_mknod(path, S_IFDIR | (mode & 0777), 0);
+	/* Create the directory inode */
+	err = vfs_mknod(path, S_IFDIR | (mode & 0777), 0);
 
+	/* If there was an error, pass it to the caller */
 	if (err)
 		return err;
 
+	/* Look up the inode for the parent directory */
 	parent = vfs_find_parent(path);
-	dir = vfs_find_inode(path);
-	if ((!parent) || !dir)
-		return EFAULT;//TODO: Find more appropriate ERRNO
 
+	/* Check if it really exists */
+	if (!parent)
+		return EFAULT;//TODO: Make this an assertion
+
+	/* Look up the inode for the new directory */
+	dir = vfs_find_inode(path);
+
+	/* Check if it really exists */
+	if (!dir)
+		return EFAULT;//TODO: Make this an assertion
+
+	/* Accuire a lock on the inode */
 	semaphore_down(dir->lock);
 
+	/* Create directory internal structure */
 	err = vfs_int_mkdir(dir);
 
+	/* If there was an error, remove the directory */
 	if (err) {
+
+		/* Release the lock on this inode */
 		semaphore_up(dir->lock);
+
+		/* Delete the directory */
 		vfs_unlink(path);
+
+		/* Pass the error to the caller */
 		return err;
 	}
-
+	
+	/* Update mtime of the parent dir */
 	parent->mtime = system_time;
+
+	/* Release the lock on this inode */
 	semaphore_up(dir->lock);
+
+	/* Return success */
 	return 0;
 }
+
+/**
+ * @brief Create a file
+ * @param path The path of the file to create
+ * @param mode The mode of the file to create
+ * @param dev  The device id to use in case of a special file
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The parent directory does not exist
+ * @exception EEXIST A file already exists at the given path
+ * @exception EIO    An IO error occurred while creating the file
+ * @exception EACCES User does not have write permission for the parent dir
+ * @exception ENOSPC Not enough disk space was available
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
 
 int vfs_mknod(char *path, mode_t mode, dev_t dev)
 {
 	int status;
 	char * separator;
 	char * name;
-	inode_t *parent = vfs_find_parent(path);
-	if (!parent) {
+	inode_t *parent;
+	inode_t *inode;
+
+	/* Check for null pointers */
+	if (!path)
+		return EFAULT;
+	
+	/* Look up the inode for the parent directory */
+	parent = vfs_find_parent(path);
+
+	/* Check if it exists, if not, return error */
+	if (!parent) 
 		return ENOENT;
-	}
-	inode_t *inode = heapmm_alloc(parent->device->inode_size);
+
+	/* Allocate memory for new inode */
+	inode = heapmm_alloc(parent->device->inode_size);
+
+	/* Check if the allocation succeded, if not, return error */
 	if (!inode)
 		return ENOMEM;
+
+	/* Check whether the file already exists */
 	if (vfs_find_inode(path)) {
+		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
 		return EEXIST;
 	}
+
+	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
-		return EPERM;
+		return EACCES;
 	}
+
+	/* Clear the newly allocated inode */
 	memset(inode, 0, parent->device->inode_size);
+
+	/* Fill it's device fields */
 	inode->device_id = parent->device_id;
 	inode->device = parent->device;
+
 	/* INODE ID is filled by fs driver */
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
 	separator = strrchr(path, '/');
+	
+	/* Check for trailing / */
 	if (separator == (path + strlen(path) - 1)){
+		/* Trailing / found, remove it */
+		//TODO: Make a copy of path before doing this		
 		path[strlen(path) - 1] = '\0';
+		/* Search for the real last / */
 		separator = strrchr(path, '/');
 	}
-	if (separator)
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
 		name = separator + 1;
-	else
+	else /* If not, the path IS the name */
 		name = path;
+
+	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
+		/* Length is too long, clean up and return error */
 		heapmm_free(inode, parent->device->inode_size);		
 		return ENAMETOOLONG;
 	}
+
+	/* Set inode name field */
 	strcpy(inode->name, name);
+
+	/* Fill other inode fields */
 	inode->mode = mode & ~(scheduler_current_task->umask);
 	inode->if_dev = dev;
 	inode->uid = scheduler_current_task->uid;
 	inode->gid = scheduler_current_task->gid;
+
+	/* Allocate inode lock */
 	inode->lock = semaphore_alloc();
+
+	/* Set atime, mtime, ctime */
 	inode->atime = inode->mtime = inode->ctime = system_time;
+
+	/* If needed, allocate pipe for FIFO */
 	if (S_ISFIFO(inode->mode)) {
 		inode->fifo = pipe_create();
 	}
-	status = vfs_int_mknod(inode);//Push inode to storage
+	
+	/* Push inode to storage */
+	status = vfs_int_mknod(inode);
+
+	/* Check for errors */
 	if (status) { 
+		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
+		/* Pass the error to the caller */
 		return status;
 	}	
+
+	/* Add inode to cache */
 	llist_add_end(inode_cache, (llist_t *) inode);
+
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
 	status = vfs_int_link(parent, name, inode->id);
+
+	/* Check for errors */
 	if (status) {
+		/* If an error occurred, clean up */	
 		llist_unlink((llist_t *) inode);
-		vfs_int_rmnod(inode);//TODO: Check result?
+		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
+		/* Pass the error to the caller */
 		return status;
 	}
+
+	/* Set link count to 1 */
 	inode->hard_link_count++;
+
+	/* Release the lock on the inode */
 	semaphore_up(inode->lock);
+
+	/* Return success */
 	return 0;	
 }
 fs_device_t *ext2_mount(dev_t device, uint32_t flags);
+
+/**
+ * @brief Mount a filesystem
+ * @param device The path of the block special file the fs resides on
+ * @param mountpoint The directory to mount the fs on
+ * @param fstype The filesystem driver to use e.g.: ext2, ramfs
+ * @param flags  Options for mounting the fs that are passed to the fs driver
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT A file does not exist
+ * @exception EINVAL An error occurred mounting the filesystem
+ * @exception ENOTDIR The mount point is not a directory
+ * @exception ENOTBLK The special file is not a block special file
+ */
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 {
 	fs_device_t *fsdevice;
 	inode_t	    *mp_inode;
 	inode_t	    *dev_inode;
+
+	/* Check for null pointers */
+	if ((!device) || (!mountpoint) || (!fstype))
+		return EFAULT;
+
+	/* Look up the inode for the mountpoint */
 	mp_inode = vfs_find_inode(mountpoint);
+
+	/* Check if it exists */
 	if (!mp_inode)
 		return ENOENT;
+
+	/* Check if it is a directory */
 	if (!S_ISDIR(mp_inode->mode))
 		return ENOTDIR;
 
+	/* Look up the inode for the special file */
 	dev_inode = vfs_find_inode(device);
+	
+	/* Check if it exists */
 	if (!dev_inode)
 		return ENOENT;
+
+	/* Check if it is a block special file */
 	if (!S_ISBLK(dev_inode->mode))
 		return ENOTBLK;
 		
+	/* Mount the filesystem */
+	//TODO: Support multiple filesystems
 	fsdevice = ext2_mount(dev_inode->if_dev, flags);
 	
+	/* Check for errors */
 	if (!fsdevice)
 		return EINVAL;
 		
+	/* Attach the filesystems root inode to the mountpoint */
 	mp_inode->mount = fsdevice->ops->load_inode(fsdevice, fsdevice->root_inode_id);	
 	
+	/* Check for errors */	
 	if (!mp_inode->mount)
-		return EINVAL;
+		return EINVAL; //TODO: Unmount
 
+	/* Return success */
 	return 0;
 }
+
+
+/**
+ * @brief Create a symbolic link
+ * @param oldpath The target of the link
+ * @param path The path of the link
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The parent directory does not exist
+ * @exception EEXIST A file already exists at the given path
+ * @exception EIO    An IO error occurred while creating the file
+ * @exception EACCES User does not have write permission for the parent dir
+ * @exception ENOSPC Not enough disk space was available
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
 
 int vfs_symlink(char *oldpath, char *path)
 {
 	int status;
 	char * separator;
 	char * name;
-	inode_t *parent = vfs_find_parent(path);
-	if (!parent) {
+	inode_t *parent;
+	inode_t *inode;
+
+	/* Check for null pointers */
+	if ((!path) || (!oldpath))
+		return EFAULT;
+	
+	/* Look up the inode for the parent directory */
+	parent = vfs_find_parent(path);
+
+	/* Check if it exists, if not, return error */
+	if (!parent) 
 		return ENOENT;
-	}
-	inode_t *inode = heapmm_alloc(parent->device->inode_size);
+
+	/* Allocate memory for new inode */
+	inode = heapmm_alloc(parent->device->inode_size);
+
+	/* Check if the allocation succeded, if not, return error */
 	if (!inode)
 		return ENOMEM;
+
+	/* Check whether the file already exists */
 	if (vfs_find_inode(path)) {
+		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
 		return EEXIST;
 	}
+
+	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
-		return EPERM;
+		return EACCES;
 	}
+
+	/* Clear the newly allocated inode */
 	memset(inode, 0, parent->device->inode_size);
+
+	/* Fill it's device fields */
 	inode->device_id = parent->device_id;
 	inode->device = parent->device;
+
 	/* INODE ID is filled by fs driver */
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
 	separator = strrchr(path, '/');
+	
+	/* Check for trailing / */
 	if (separator == (path + strlen(path) - 1)){
+		/* Trailing / found, remove it */
+		//TODO: Make a copy of path before doing this		
 		path[strlen(path) - 1] = '\0';
+		/* Search for the real last / */
 		separator = strrchr(path, '/');
 	}
-	if (separator)
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
 		name = separator + 1;
-	else
+	else /* If not, the path IS the name */
 		name = path;
+
+	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
+		/* Length is too long, clean up and return error */
 		heapmm_free(inode, parent->device->inode_size);		
 		return ENAMETOOLONG;
 	}
+
+	/* Set inode name field */
 	strcpy(inode->name, name);
+
+	/* Fill other inode fields */
 	inode->mode = 0;
 	inode->if_dev = 0;
 	inode->uid = scheduler_current_task->uid; 
 	inode->gid = scheduler_current_task->gid; 
-	inode->atime = inode->mtime = inode->ctime = system_time;
+
+	/* Allocate inode lock */
 	inode->lock = semaphore_alloc();
+
+	/* Set atime, mtime, ctime */
+	inode->atime = inode->mtime = inode->ctime = system_time;
+
+	/* Set link target */
 	strcpy(inode->link_path, oldpath);
 
+	/* Push inode to storage */
 	status = vfs_int_mknod(inode);
 
-	if (status) { //Push inode to storage
+	/* Check for errors */
+	if (status) { 
+		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
+		/* Pass the error to the caller */
 		return status;
 	}	
+
+	/* Add inode to cache */
 	llist_add_end(inode_cache, (llist_t *) inode);
+
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
 	status = vfs_int_link(parent, name, inode->id);
 
+	/* Check for errors */
 	if (status) {
+		/* If an error occurred, clean up */	
 		llist_unlink((llist_t *) inode);
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
+		/* Pass the error to the caller */
 		return status;
 	}
+
+	/* Set link count to 1 */
 	inode->hard_link_count++;
+
+	/* Release the lock on the inode */
 	semaphore_up(inode->lock);
+
+	/* Return success */
 	return 0;	
 }
+
+/**
+ * @brief Delete a file
+ * @param path The path of the file to delete
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The file does not exist
+ * @exception EEXIST A file already exists at the given path
+ * @exception EBUSY  The file is in use
+ * @exception EIO    An IO error occurred while deleting the file
+ * @exception EACCES User does not have write permission for the file
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
+
 
 int vfs_unlink(char *path)
 {
 	int status;
-	inode_t *inode = vfs_find_symlink(path);
-	inode_t *parent = vfs_find_parent(path);
+	inode_t *inode;
+	inode_t *parent;
 	char * separator;
 	char * name;
+
+	/* Check for null pointers */
+	if (!path)
+		return EFAULT;
+	
+	/* Look up the inode for the file */
+
+	inode = vfs_find_symlink(path);
+
+	/* Check if it exists, if not, return error */
 	if (!inode)
 		return ENOENT;
+	
+	/* Look up the inode for the parent directory */
+	parent = vfs_find_parent(path);
+
+	/* Check if it exists, if not, return error */
 	if (!parent) 
 		return ENOENT;
+
+	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		return EACCES;
 	}
+
+	/* Aqquire lock on inode */
 	semaphore_down(inode->lock);
+
+	/* Check if file is in use */
 	if (inode->usage_count != 0) {
 		semaphore_up(inode->lock);
 		return EBUSY;
 	}
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
 	separator = strrchr(path, '/');
+	
+	/* Check for trailing / */
 	if (separator == (path + strlen(path) - 1)){
+		/* Trailing / found, remove it */
+		//TODO: Make a copy of path before doing this		
 		path[strlen(path) - 1] = '\0';
+		/* Search for the real last / */
 		separator = strrchr(path, '/');
 	}
-	if (separator)
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
 		name = separator + 1;
-	else
+	else /* If not, the path IS the name */
 		name = path;
+
+	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
+		/* Length is too long, clean up and return error */
 		heapmm_free(inode, parent->device->inode_size);		
 		return ENAMETOOLONG;
 	}
+
+	/* Aqquire lock on the parent dir */
 	semaphore_down(parent->lock);
 
+	/* Delete directory entry */
 	status = vfs_int_unlink(parent, name);
-
+	
+	/* Check for errors */
 	if (status) {
+		/* Release the lock on the inode */
 		semaphore_up(inode->lock);
+		/* Release the lock on the parent dir */
 		semaphore_up(parent->lock);
+		/* Pass error to the caller */
 		return status;
 	}
+
+	/* Release the lock on the parent dir */
 	semaphore_up(parent->lock);
+
+	/* Decrease hardlink count */
 	inode->hard_link_count--;
+	
+	/* Update ctime */
 	inode->ctime = system_time;
+
+	/* Check for orphaned files */
 	if (inode->hard_link_count == 0) {
 		/* File is orphaned */
+		/* Delete the file itself */
 		vfs_int_rmnod(inode); //This might error but there is little we can do about that anyway
+		/* Remove its inode from the cache */
 		llist_unlink((llist_t *) inode);
+		/* Free its inode */
 		heapmm_free(inode, inode->device->inode_size);		
 	} else {
+		/* Release the lock on the inode */
 		semaphore_up(inode->lock);
 	}
+
+	/* Return success */
 	return 0;
 }
+
+/** 
+ * @brief Initialize the VFS layer 
+ * @param root_device The filesystem device to use as root filesystem
+ * @return If successful 1, otherwise 0
+ */
 
 int vfs_initialize(fs_device_t * root_device)
 {
 	//TODO: Track mounted devices
+	/* Allocate inode cache */
 	inode_cache = heapmm_alloc(sizeof(llist_t));
+
+	/* Look up root inode */
 	inode_t *root_inode = root_device->ops->load_inode(root_device, root_device->root_inode_id);
+
+	/* Check for errors */
 	if (!root_inode)
 		return 0;
+
+	/* Create the inode cache */
 	llist_create(inode_cache);
+
+	/* Add the root inode to it */
 	llist_add_end(inode_cache, (llist_t *) root_inode);
+
+	/* Fill VFS fields in the proces info */
 	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
 	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
+
+	/* Return success */
 	return 1;
 }
+
+
+/**
+ * @brief Create a hard link
+ * @param oldpath The target of the link
+ * @param newpath The path of the link
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT The parent directory or target does not exist
+ * @exception EEXIST A file already exists at the given path
+ * @exception EIO    An IO error occurred while creating the link
+ * @exception EACCES User does not have write permission for the parent dir
+ * @exception ENOSPC Not enough disk space was available
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ * @exception EXDEV  Tried to create a cross-device link 
+ * @exception ENAMETOOLONG The name of the file is longer than the maximum 
+ *                   allowed number of characters for a file name
+ */
 
 int vfs_link(char *oldpath, char *newpath)
 {
 	int status;
 	char * separator;
 	char * name;
-	inode_t *parent = vfs_find_parent(newpath);
-	inode_t *inode = vfs_find_inode(oldpath);
-	if (!inode) {
+	inode_t *inode;
+	inode_t *parent;
+
+	/* Check for null pointers */
+	if ((!newpath) || (!oldpath))
+		return EFAULT;
+	
+	/* Look up the inode for the parent directory */
+	parent = vfs_find_parent(newpath);
+
+	/* Check if it exists, if not, return error */
+	if (!parent) 
 		return ENOENT;
-	}
+	
+	/* Look up the inode for the target */
+	inode = vfs_find_inode(oldpath);
+
+	/* Check if it exists, if not, return error */
+	if (!inode) 
+		return ENOENT;
+	
+	/* Aqquire a lock on the target */
 	semaphore_down(inode->lock);
-	if (!parent) {
-		semaphore_up(inode->lock);
-		return ENOENT;
-	}
+	
+	/* Aqquire a lock on the parent directory */
 	semaphore_down(parent->lock);
+
+	/* Check whether the file already exists */
 	if (vfs_find_inode(newpath)) {
+		/* If so, clean up and return an error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);
 		return EEXIST;
 	}
+
+	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+		/* If not, clean up and return an error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);
 		return EACCES;
 	}
+
+	/* Check for cross-device links */
 	if (parent->device_id != inode->device_id) {
+		/* If so, clean up and return an error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);		
 		return EXDEV;
 	}
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
 	separator = strrchr(newpath, '/');
+	
+	/* Check for trailing / */
 	if (separator == (newpath + strlen(newpath) - 1)){
+		/* Trailing / found, remove it */
+		//TODO: Make a copy of path before doing this		
 		newpath[strlen(newpath) - 1] = '\0';
+		/* Search for the real last / */
 		separator = strrchr(newpath, '/');
 	}
-	if (separator)
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
 		name = separator + 1;
-	else
+	else /* If not, the path IS the name */
 		name = newpath;
+
+	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
+		/* Length is too long, clean up and return error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);	
 		return ENAMETOOLONG;
 	}
+
+	/* Call on FS driver to create directory entry */
 	status = vfs_int_link(parent, name, inode->id);
 	
+	/* Check for errors */
 	if (status) {
+		/* An error occurred */
+
+		/* Clean up */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);	
+
+		/* Pass error to caller */
 		return status;
 	}
+
+	/* Update mtime on parent */
 	parent->mtime = system_time;
+
+	/* Release lock on parent inode */
 	semaphore_up(parent->lock);
+	
+	/* Update hardlink count */
 	inode->hard_link_count++;
+
+	/* Update ctime */
 	inode->ctime = system_time;
+
+	/* Release inode lock */
 	semaphore_up(inode->lock);
+
+	/* Return success */
 	return 0;	
 }
+
+//TODO: Comment dir-cache and path lookup functions
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 {

@@ -10,6 +10,10 @@
  */
 
 #include "kernel/process.h"
+
+#ifndef __KERNEL_VFS_H__
+#define __KERNEL_VFS_H__
+
 #include "kernel/synch.h"
 #include "kernel/permissions.h"
 #include "kernel/pipe.h"
@@ -17,9 +21,6 @@
 #include "util/llist.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-
-#ifndef __KERNEL_VFS_H__
-#define __KERNEL_VFS_H__
 
 typedef struct inode inode_t;
 
