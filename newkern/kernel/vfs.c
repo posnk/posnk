@@ -42,6 +42,71 @@ typedef struct vfs_cache_params {
 	ino_t inode_id;
 } vfs_cache_params_t;
 
+
+/**
+ * @brief Extract the filename part of a path
+ * @warning This allocates heap for the return value, free with
+ *	    heapmm_free(r, strlen(r) + 1);
+ * @param path The path to analyze
+ * @return The file name, see warning!
+ */
+char *vfs_get_filename(const char *path)
+{	
+	char *separator;
+	char *name;
+	char *pathcopy;
+	size_t pathlen;
+	ptrdiff_t pd;
+
+	/* Check for null pointers */
+	if (!path)
+		return NULL;
+	
+	/* Make a working copy of path */
+	pathlen = strlen(path);
+	
+	/* Check path length */
+	if (pathlen > 1023)
+		return NULL;
+
+	/* Allocate room for copy */
+	pathcopy = heapmm_alloc(pathlen + 1);
+
+	/* Copy path */
+	strcpy(pathcopy, path);
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
+	separator = strrchr(pathcopy, '/');
+	
+	/* Check for trailing / */
+	if (separator == (pathcopy + strlen(pathcopy) - 1)){
+
+		/* Trailing / found, remove it */		
+		pathcopy[strlen(path) - 1] = '\0';
+
+		/* Search for the real last / */
+		separator = strrchr(pathcopy, '/');
+	}
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
+		name = separator + 1;
+	else /* If not, the path IS the name */
+		name = pathcopy;
+
+	pd = name - pathcopy;
+
+	if (pd > 0)
+		heapmm_free(pathcopy, pd);
+
+	//TODO: Come up with a way to do this without tripping heap alloc error
+
+	return name;
+}
+
+
 /**
  * @brief Release a reference to an inode
  * @param inode The reference to release
@@ -1231,7 +1296,6 @@ int vfs_mkdir(char *path, mode_t mode)
 int vfs_mknod(char *path, mode_t mode, dev_t dev)
 {
 	int status;
-	char * separator;
 	char * name;
 	inode_t *parent;
 	inode_t *inode;
@@ -1304,24 +1368,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	/* INODE ID is filled by fs driver */
 
 	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(path, '/');
-	
-	/* Check for trailing / */
-	if (separator == (path + strlen(path) - 1)){
-		/* Trailing / found, remove it */
-		//TODO: Make a copy of path before doing this		
-		path[strlen(path) - 1] = '\0';
-		/* Search for the real last / */
-		separator = strrchr(path, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = path;
+	name = vfs_get_filename(path);
 
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
@@ -1331,6 +1378,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		/* Release the lock on the parent inode*/
 		semaphore_up(parent->lock);
 
+		/* Free filename */
+		heapmm_free(name, strlen(name) + 1);		
+	
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 	
@@ -1368,6 +1418,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		/* Release the lock on the parent inode*/
 		semaphore_up(parent->lock);
 
+		/* Free filename */
+		heapmm_free(name, strlen(name) + 1);			
+
 		/* Release the parent inode */
 		vfs_inode_release(parent);
 
@@ -1378,6 +1431,9 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
 	status = vfs_int_link(parent, name, inode->id);
+
+	/* Free filename */
+	heapmm_free(name, strlen(name) + 1);
 
 	/* Check for errors */
 	if (status) {
@@ -1522,6 +1578,7 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 }
 
 
+
 /**
  * @brief Create a symbolic link
  * @param oldpath The target of the link
@@ -1542,7 +1599,6 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 int vfs_symlink(char *oldpath, char *path)
 {
 	int status;
-	char * separator;
 	char * name;
 	inode_t *parent;
 	inode_t *inode;
@@ -1614,24 +1670,8 @@ int vfs_symlink(char *oldpath, char *path)
 	/* INODE ID is filled by fs driver */
 
 	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(path, '/');
 	
-	/* Check for trailing / */
-	if (separator == (path + strlen(path) - 1)){
-		/* Trailing / found, remove it */
-		//TODO: Make a copy of path before doing this		
-		path[strlen(path) - 1] = '\0';
-		/* Search for the real last / */
-		separator = strrchr(path, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = path;
+	name = vfs_get_filename(path);
 
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
@@ -1640,6 +1680,9 @@ int vfs_symlink(char *oldpath, char *path)
 
 		/* Release the lock on the parent inode*/
 		semaphore_up(parent->lock);
+
+		/* Free filename */
+		heapmm_free(name, strlen(name) + 1);
 	
 		return ENAMETOOLONG;
 	}
@@ -1686,6 +1729,9 @@ int vfs_symlink(char *oldpath, char *path)
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
 	status = vfs_int_link(parent, name, inode->id);
+
+	/* Free filename */
+	heapmm_free(name, strlen(name) + 1);
 
 	/* Check for errors */
 	if (status) {
@@ -1745,7 +1791,6 @@ int vfs_unlink(char *path)
 	int status;
 	inode_t *inode;
 	inode_t *parent;
-	char * separator;
 	char * name;
 
 	/* Check for null pointers */
@@ -1801,24 +1846,8 @@ int vfs_unlink(char *path)
 	}
 
 	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(path, '/');
 	
-	/* Check for trailing / */
-	if (separator == (path + strlen(path) - 1)){
-		/* Trailing / found, remove it */
-		//TODO: Make a copy of path before doing this		
-		path[strlen(path) - 1] = '\0';
-		/* Search for the real last / */
-		separator = strrchr(path, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = path;
+	name = vfs_get_filename(path);
 
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
@@ -1831,6 +1860,9 @@ int vfs_unlink(char *path)
 		/* Release the inode */
 		vfs_inode_release(inode);
 
+		/* Free filename */
+		heapmm_free(name, strlen(name) + 1);
+
 		return ENAMETOOLONG;
 	}
 
@@ -1839,6 +1871,9 @@ int vfs_unlink(char *path)
 
 	/* Delete directory entry */
 	status = vfs_int_unlink(parent, name);
+
+	/* Free filename */
+	heapmm_free(name, strlen(name) + 1);
 	
 	/* Check for errors */
 	if (status) {
@@ -1915,7 +1950,6 @@ int vfs_unlink(char *path)
 int vfs_link(char *oldpath, char *newpath)
 {
 	int status;
-	char * separator;
 	char * name;
 	inode_t *inode;
 	inode_t *parent;
@@ -1995,24 +2029,8 @@ int vfs_link(char *oldpath, char *newpath)
 	}
 
 	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(newpath, '/');
 	
-	/* Check for trailing / */
-	if (separator == (newpath + strlen(newpath) - 1)){
-		/* Trailing / found, remove it */
-		//TODO: Make a copy of path before doing this		
-		newpath[strlen(newpath) - 1] = '\0';
-		/* Search for the real last / */
-		separator = strrchr(newpath, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = newpath;
+	name = vfs_get_filename(newpath);
 
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
@@ -2026,11 +2044,17 @@ int vfs_link(char *oldpath, char *newpath)
 		/* Release the target inode */
 		vfs_inode_release(inode);
 
+		/* Free filename */
+		heapmm_free(name, strlen(name) + 1);
+		
 		return ENAMETOOLONG;
 	}
 
 	/* Call on FS driver to create directory entry */
 	status = vfs_int_link(parent, name, inode->id);
+
+	/* Free filename */
+	heapmm_free(name, strlen(name) + 1);
 	
 	/* Check for errors */
 	if (status) {
@@ -2636,7 +2660,6 @@ inode_t *vfs_find_inode(char * path)
 inode_t *vfs_find_symlink(char * path)
 { 
 	dirent_t *dirent;
-	char * separator;
 	char * name;
 	inode_t *ino;
 
@@ -2662,27 +2685,14 @@ inode_t *vfs_find_symlink(char * path)
 	}
 	
 	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(path, '/');
 	
-	/* Check for trailing / */
-	if (separator == (path + strlen(path) - 1)){
-		/* Trailing / found, remove it */
-		//TODO: Make a copy of path before doing this		
-		path[strlen(path) - 1] = '\0';
-		/* Search for the real last / */
-		separator = strrchr(path, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = path;
+	name = vfs_get_filename(path);
 
 	/* Look up the directory entry for this file */
 	dirent = vfs_find_dirent(dirc->parent->inode, name);
+
+	/* Free filename */
+	heapmm_free(name, strlen(name) + 1);
 
 	/* If it is not found, return NULL. Should never happen... */
 	if (dirent == NULL) {
