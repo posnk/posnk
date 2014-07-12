@@ -1719,6 +1719,15 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 	heapmm_free(dirc, sizeof(dir_cache_t));	
 }
 
+
+/** 
+ * @brief Look up the parent directory of a file referred to by a path
+ * 
+ * This function will also succeed if path does not exist but its parent does
+ * @param path The path to resolve
+ * @return A dir_cache entry on the parent of the file referred to by path
+ */
+
 dir_cache_t *vfs_find_dirc_parent(char * path)
 {
 	dir_cache_t *dirc = scheduler_current_task->current_directory;
@@ -1731,68 +1740,177 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	size_t element_size;
 	dirent_t *dirent;
 	int element_count = 0;	
+
+	/* Check for NULL or empty path */
 	if ((path == NULL) || ((*path) == '\0'))
 		return NULL;
+
+	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
+
+	/* Aqquire a pointer to the terminator */
 	end_of_path = strchr(remaining_path, 0);
+
+	/* Iterate over the path */
 	for (;;) {
+		/* Find the next / in the path */
 		separator = strchrnul(remaining_path, (int) '/');
+
+		/* Calculate the size of this path element */
 		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
+	
+		/* If the first element has size 0, this path has a leading */
+		/* / so it is to be considered an absolute path */
 		if ((element_count == 0) && (element_size == 0)){ // First character is / 
+			/* Path is absolute */
+
+			/* Update current element */
 			dirc = scheduler_current_task->root_directory;
 			parent = dirc->inode;
+
 		} else if (element_size == 0) {
+			/* Element size is 0 but not first element */
+
+			/* Check whether this is the last element */
 			if ((separator + 2) >= end_of_path) {
+				/* If so, we have detected a trailing slash */
+				/* and reached the end of the path */
+				
+				/* Bump the reference counters and return */
 				dirc->usage_count++;
 				dirc->inode->usage_count++;
+				//TODO: Free path_element
 				return dirc;
 			}
+
 		} else if ((element_size == 2) && !strncmp(remaining_path, "..", 2)) {
+			/* Element is ".." */
+
+			/* Set next current path element to the parent of
+			 * the current element */
 			newc = dirc->parent;
+
+			/* If the new current element differs from the current 
+			 * element, free the old current path element */
 			if (newc != dirc) {		
+
+				/* Current element is not in use elsewhere? */	
 				if ((!dirc->usage_count))	
+					/* Free it */ 
 					heapmm_free(dirc, sizeof(dir_cache_t));
+
+				/* Update current element */
 				parent = newc->inode;
 				dirc = newc;
 			}						
-		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
+		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {			
+			/* Element is . */
+			/* Ignore this */			
 		} else {
+			/* Element is a normal path element */
+	
+			/* Isolate it */
 			strncpy(path_element, remaining_path, element_size);
 			path_element[element_size] = '\0';
+
+			//TODO: Check for search permission here or in vfs_find_dirent
+
+			/* Find the directory entry for it */
 			dirent = vfs_find_dirent(parent, path_element);
+
+			/* Check if it exists */
 			if (dirent == NULL) {
+
+				/* If not, clean up and return */
 				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
+				/* Check if this is the last path element */					
 				if ((separator + 1) >= end_of_path) {
+					/* We have already determined the 
+					 * parent so even though the entry does
+					 * not exist, return its parent */
+				
+					/* Bump the reference counters and return */
 					dirc->usage_count++;
 					dirc->inode->usage_count++;
+					//TODO: Free path_element
 					return dirc;
 				} else if (dirc && dirc->usage_count == 0){
+					/* Free the current dirc if it is not referenced 
+		                 	 * somewhere else */
+
+					/* Release its reference on its parent */
 					vfs_dir_cache_release(dirc->parent);
+
+					/* Free its memory */
 					heapmm_free(dirc, sizeof(dir_cache_t));
 				}
+
+				/* An element in the path is nonexistent*/ 
+
+				/* Return NULL */
 				return NULL;
 			}
+
+			/* Bump reference counters on old path element as it 
+			 * will be referenced by the new dirc entry */
 			dirc->inode->usage_count++;
 			dirc->usage_count++;
+			
+			/* Create new dirc entry for this element */
 			newc = heapmm_alloc(sizeof(dir_cache_t));
+
+			/* Set it's parent pointer to the previous element */
 			newc->parent = dirc;
+
+			/* Look up the inode for the path element */
 			newc->inode = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));
+			//TODO: Check for errors
+
+			/* Initialize the new dirc reference counter to 0 */
 			newc->usage_count = 0;
+
+			/* Update current element */
 			dirc = newc;		
 			parent = dirc->inode;
+
 		}
+
+		/* Update remaining path to point to the start of the next
+		 * element */
 		remaining_path = separator + 1;
+
+		/* Check whether we have reached the end of the path */
 		if (remaining_path >= end_of_path) {
+			/* If so, clean up and return the previous element */
+
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+				
+			/* Bump the reference counters and return */
 			dirc->parent->usage_count++;
 			dirc->parent->inode->usage_count++;
+
+			/* Release the current dir cache entry */
 			vfs_dir_cache_release(dirc);
+
+			/* Return the previous element */
 			return dirc->parent;
 		}
+		
+		/* Check whether this element is a directory */
 		if (!S_ISDIR(parent->mode)) {
+			/* If not, return NULL because we can't search inside 
+                         * other kinds of files */	
+
+			/* Clean up */	
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
+			/* Free the current dirc if it is not referenced 
+                         * somewhere else */
 			if (dirc && dirc->usage_count == 0){
+				/* Release its reference on its parent */
 				vfs_dir_cache_release(dirc->parent);
+				/* Free its memory */
 				heapmm_free(dirc, sizeof(dir_cache_t));
 			}
 			return NULL;
@@ -1819,7 +1937,6 @@ dir_cache_t *vfs_find_dirc(char * path)
 	size_t element_size;
 	dirent_t *dirent;
 	int element_count = 0;	
-
 
 	/* Check for NULL or empty path */
 	if ((path == NULL) || ((*path) == '\0'))
