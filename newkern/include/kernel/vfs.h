@@ -432,6 +432,12 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id);
 
 inode_t *vfs_effective_inode(inode_t * inode);
 
+void vfs_dir_cache_release(dir_cache_t *dirc);
+
+dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc);
+
+dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id);
+
 ///@}
 
 int vfs_initialize(fs_device_t * root_device);

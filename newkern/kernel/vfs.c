@@ -31,6 +31,9 @@
 fs_device_t *ext2_mount(dev_t device, uint32_t flags);
 //TODO: Make this an MRU cache
 
+/** The linked list serving as open inode list */
+llist_t *open_inodes;
+
 /** The linked list serving as inode cache */
 llist_t *inode_cache;
 
@@ -38,6 +41,58 @@ typedef struct vfs_cache_params {
 	uint32_t device_id;
 	ino_t inode_id;
 } vfs_cache_params_t;
+
+/**
+ * @brief Release a reference to an inode
+ * @param inode The reference to release
+ */
+
+void vfs_inode_release(inode_t *inode)
+{
+	/* Decrease the reference count for this inode */
+	if (inode->usage_count)
+		inode->usage_count--;
+
+	/* If the inode has no more references, destroy it */
+	if (inode->usage_count)
+		return;
+
+	/* If the inode has a mount on it, don't destroy it */
+	if (inode->mount)
+		return;
+
+	llist_unlink((llist_t *) inode);
+	llist_add_end(inode_cache, (llist_t *) inode);
+}
+
+/**
+ * @brief Create a new reference to an inode
+ * @param dirc The entry to refer to
+ * @return The new reference
+ */
+
+inode_t *vfs_inode_ref(inode_t *inode)
+{
+	if ((!inode->mount) && (!inode->usage_count)) {
+		llist_unlink((llist_t *) inode);
+		llist_add_end(open_inodes, (llist_t *) inode);
+	}
+
+	inode->usage_count++;
+
+	return inode;
+}
+
+/**
+ * @brief Add an inode to the cache
+ * @param dirc The entry to refer to
+ * @return The new reference
+ */
+
+void vfs_inode_cache(inode_t *inode)
+{
+	llist_add_end(inode_cache, (llist_t *) inode);
+}
 
 /*
  * Iterator function that looks up the requested inode
@@ -97,6 +152,16 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 	inode_t *result;
 	vfs_cache_params_t search_params;
 
+	/* Search open inode list */
+	search_params.device_id = device->id;
+	search_params.inode_id = inode_id;
+	result = (inode_t *) llist_iterate_select(open_inodes, &vfs_cache_find_iterator, (void *) &search_params);
+
+	if (result) {
+		/* Cache hit, return inode */
+		return vfs_inode_ref(result);
+	}
+
 	/* Search inode cache */
 	search_params.device_id = device->id;
 	search_params.inode_id = inode_id;
@@ -104,7 +169,7 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 
 	if (result) {
 		/* Cache hit, return inode */
-		return result;
+		return vfs_inode_ref(result);
 	}
 
 	/* Cache miss, fetch it from disk */
@@ -112,12 +177,7 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 	result = device->ops->load_inode(device, inode_id);
 	//NOTE : Schedule may have happened
 
-	if (result) {
-		/* File exists, add it to cache */
-		llist_add_end(inode_cache, (llist_t *) result);
-	}
-
-	return result;
+	return vfs_inode_ref(result);
 }
 
 /**
@@ -130,10 +190,14 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 
 inode_t *vfs_effective_inode(inode_t * inode)
 {
+	/* Check for null pointers */
+	if (!inode)
+		return NULL;
+
 	/* Is a filesystem mounted on this inode? */
 	if (inode->mount) {
 		/* If so: return it's root inode */
-		return inode->mount;
+		return vfs_inode_ref(inode->mount);
 	}
 	
 	/* Is this inode a symlink? */
@@ -143,7 +207,7 @@ inode_t *vfs_effective_inode(inode_t * inode)
 	}
 
 	/* This is a regular inode, return it. */
-	return inode;
+	return vfs_inode_ref(inode);
 }
 
 ///@}
@@ -394,7 +458,7 @@ int vfs_int_truncate(inode_t * inode, aoff_t size)
  * will grow. If file_offset lies past the end of the file, the file will 
  * grow and the resulting gap will be filled with zero bytes.
  * 
- * @param inode       The inode for the file
+ * @param _inode      The inode for the file
  * @param buffer      The buffer containing the data to write
  * @param file_offset The offset in the file to start writing at
  * @param count       The number of bytes to write
@@ -416,18 +480,19 @@ int vfs_int_truncate(inode_t * inode, aoff_t size)
  * @exception ENOMEM Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block)
+int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block)
 {
+	inode_t *inode;
 	int status;
 	aoff_t pad_size = 0;
 	void *zbuffer;
 
 	/* Check for null pointers */
-	if ((!inode) || (!buffer) || (!write_size))
+	if ((!_inode) || (!buffer) || (!write_size))
 		return EFAULT;
 
 	/* Resolve the effective inode */
-	inode = vfs_effective_inode(inode);
+	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
@@ -437,6 +502,9 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 		
 		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
 		
 		/* Return the error "Bad file descriptor" */
 		/* because the stream API should already  */
@@ -484,6 +552,12 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 
 						/* Set write_size to 0, we have not yet written anything */
 						*write_size = 0;
+
+						/* Release the lock on this inode */
+						semaphore_up(inode->lock);
+
+						/* Release the dereferenced inode */
+						vfs_inode_release(inode);
 			
 						/* Pass the error to the caller */
 						return status;	
@@ -505,6 +579,10 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+
 			/* Pass any errors on the the caller */
 			return status;
 
@@ -513,6 +591,9 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Is a directory" */
 			return EISDIR;
@@ -525,7 +606,13 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 			semaphore_up(inode->lock);
 
 			/* Call on the pipe driver to write the data */
-			return pipe_write(inode->fifo, buffer, count, write_size, non_block);		
+			status = pipe_write(inode->fifo, buffer, count, write_size, non_block);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			/* Pass any errors on the the caller */
+			return status;
 
 		case S_IFCHR:			
 			/* File is a character special file */
@@ -534,7 +621,10 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 			semaphore_up(inode->lock);	
 			
 			/* Call on the driver to write the data */			
-			status = device_char_write(inode->if_dev, file_offset, buffer, count, write_size, non_block);	
+			status = device_char_write(inode->if_dev, file_offset, buffer, count, write_size, non_block);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Pass any errors on the the caller */
 			return status;	
@@ -548,6 +638,9 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 			/* Release the lock on this inode */			
 			semaphore_up(inode->lock);
 
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
 			/* Pass any errors on the the caller */			
 			return status;	
 
@@ -556,6 +649,9 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
 
 			/* Release the lock on this inode */		
 			semaphore_up(inode->lock);	
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Invalid argument" */
 			return EINVAL;		
@@ -570,7 +666,7 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
  * If more data is requested than the file contains this function will 
  * successfully complete but read_size will be smaller than count
  *  
- * @param inode        The inode for the file
+ * @param _inode       The inode for the file
  * @param buffer       The buffer to store the data in
  * @param file_offset  The offset in the file to start reading at
  * @param count        The number of bytes to read
@@ -591,16 +687,17 @@ int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count,
  * @exception  ENOMEM Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
+int vfs_read(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
 {
 	int status;
+	inode_t *inode;
 
 	/* Check for null pointers */
-	if ((!inode) || (!buffer) || (!read_size))
+	if ((!_inode) || (!buffer) || (!read_size))
 		return EFAULT;
 
 	/* Resolve the effective inode */
-	inode = vfs_effective_inode(inode);
+	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
@@ -609,7 +706,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 	if (!vfs_have_permissions(inode, MODE_READ)) {
 		
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(inode->lock);	
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
 		
 		/* Return the error "Bad file descriptor" */
 		/* because the stream API should already  */
@@ -637,6 +737,9 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
 					
+					/* Release the dereferenced inode */
+					vfs_inode_release(inode);
+			
 					/* This is not an error condition, return 0 */
 					return 0;					
 				}
@@ -653,7 +756,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 				inode->atime = system_time;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(inode->lock);	
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Pass any errors on the the caller */
 			return status;
@@ -662,6 +768,9 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Is a directory" */
 			return EISDIR;
@@ -672,7 +781,13 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 			/* Release the lock on this inode so read accesses */
 			/* can take place now */
 			semaphore_up(inode->lock);
-			return pipe_write(inode->fifo, buffer, count, read_size, non_block);	
+
+			status = pipe_write(inode->fifo, buffer, count, read_size, non_block);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			return status;
 
 		case S_IFCHR:	
 			/* File is a character special file */
@@ -681,7 +796,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 			status = device_char_read(inode->if_dev, file_offset, buffer, count, read_size, non_block);	
 
 			/* Release the lock on this inode */			
-			semaphore_up(inode->lock);	
+			semaphore_up(inode->lock);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Pass any errors on the the caller */			
 			return status;	
@@ -693,7 +811,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 			status = device_block_read(inode->if_dev, file_offset, buffer, count, read_size);	
 
 			/* Release the lock on this inode */			
-			semaphore_up(inode->lock);
+			semaphore_up(inode->lock);	
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Pass any errors on the the caller */			
 			return status;	
@@ -702,7 +823,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 			/* Unknown file type */
 
 			/* Release the lock on this inode */		
-			semaphore_up(inode->lock);	
+			semaphore_up(inode->lock);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Invalid argument" */
 			return EINVAL;			
@@ -718,7 +842,7 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
  * does not fit in count it will return only the amount of bytes read before 
  * that entry
  *
- * @param inode       The inode for the directory
+ * @param _inode      The inode for the directory
  * @param buffer      The buffer to store the entries in
  * @param file_offset The offset in the directory to start reading at
  * @param count       The number of bytes to read
@@ -735,16 +859,17 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
  * @exception ENOMEM  Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size)
+int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size)
 {
 	int status;
+	inode_t *inode;
 
 	/* Check for null pointers */
-	if ((!inode) || (!buffer) || (!read_size))
+	if ((!_inode) || (!buffer) || (!read_size))
 		return EFAULT;
 
 	/* Resolve the effective inode */
-	inode = vfs_effective_inode(inode);
+	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
@@ -754,6 +879,9 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
 		
 		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
 		
 		/* Return the error "Bad file descriptor" */
 		/* because the stream API should already  */
@@ -780,6 +908,9 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
 
 					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
+
+					/* Release the dereferenced inode */
+					vfs_inode_release(inode);
 					
 					/* This is not an error condition, return 0 */
 					return 0;					
@@ -799,13 +930,19 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
 			/* Pass any errors on the the caller */
 			return status;
 		default:		
 			/* Other file type */
 
 			/* Release the lock on this inode */		
-			semaphore_up(inode->lock);	
+			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);	
 
 			/* Return error "Not a directory" */
 			return ENOTDIR;			
@@ -821,7 +958,7 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
  * filled with zero bytes, if the new size is smaller the data in the truncated
  * part of the file is deleted
  * 
- * @param inode       The inode for the file
+ * @param _inode      The inode for the file
  * @param length      The new size of the file
  * @return In case of error: a valid error code, Otherwise 0
  *
@@ -833,16 +970,17 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
  * @exception ENOMEM Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_truncate(inode_t * inode, aoff_t length)
+int vfs_truncate(inode_t * _inode, aoff_t length)
 {
 	int status;
+	inode_t *inode;
 
 	/* Check for null pointers */
-	if (!inode)
+	if (!_inode)
 		return EFAULT;
 
 	/* Resolve the effective inode */
-	inode = vfs_effective_inode(inode);
+	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
 	semaphore_down(inode->lock);
@@ -852,6 +990,9 @@ int vfs_truncate(inode_t * inode, aoff_t length)
 		
 		/* Release the lock on this inode */
 		semaphore_up(inode->lock);
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
 		
 		/* Return the error "Permission denied" */	
 		return EACCES;
@@ -875,6 +1016,9 @@ int vfs_truncate(inode_t * inode, aoff_t length)
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
 
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
 			/* Pass any errors on the the caller */
 			return status;
 
@@ -883,6 +1027,9 @@ int vfs_truncate(inode_t * inode, aoff_t length)
 
 			/* Release the lock on this inode */
 			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Is a directory" */
 			return EISDIR;
@@ -895,6 +1042,9 @@ int vfs_truncate(inode_t * inode, aoff_t length)
 
 			/* Release the lock on this inode */		
 			semaphore_up(inode->lock);	
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
 
 			/* Return error "Invalid argument" */
 			return EINVAL;		
@@ -942,8 +1092,9 @@ int vfs_rmdir(char *path)
 	/* "Resource busy" */
 	if (inode->mount || (scheduler_current_task->root_directory->inode == inode))
 		return EBUSY;
-		
-	//TODO: Release the inode		
+
+	/* Release the inode */
+	vfs_inode_release(inode);		
 
 	/* Remove directory */
 	return vfs_unlink(path);
@@ -994,8 +1145,13 @@ int vfs_mkdir(char *path, mode_t mode)
 	dir = vfs_find_inode(path);
 
 	/* Check if it really exists */
-	if (!dir)
+	if (!dir) {
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return EFAULT;//TODO: Make this an assertion
+	}
 
 	/* Accuire a lock on the inode */
 	semaphore_down(dir->lock);
@@ -1009,6 +1165,12 @@ int vfs_mkdir(char *path, mode_t mode)
 		/* Release the lock on this inode */
 		semaphore_up(dir->lock);
 
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(dir);
+
 		/* Delete the directory */
 		vfs_unlink(path);
 
@@ -1021,6 +1183,12 @@ int vfs_mkdir(char *path, mode_t mode)
 
 	/* Release the lock on this inode */
 	semaphore_up(dir->lock);
+
+	/* Release the parent inode */
+	vfs_inode_release(parent);
+
+	/* Release the inode */
+	vfs_inode_release(dir);
 
 	/* Return success */
 	return 0;
@@ -1051,6 +1219,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	char * name;
 	inode_t *parent;
 	inode_t *inode;
+	inode_t *_inode;
 
 	/* Check for null pointers */
 	if (!path)
@@ -1067,13 +1236,25 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	inode = heapmm_alloc(parent->device->inode_size);
 
 	/* Check if the allocation succeded, if not, return error */
-	if (!inode)
+	if (!inode) {
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return ENOMEM;
+	}
 
 	/* Check whether the file already exists */
-	if (vfs_find_inode(path)) {
+	if ((_inode = vfs_find_inode(path))) {
 		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(_inode);
+
 		return EEXIST;
 	}
 
@@ -1081,6 +1262,10 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return EACCES;
 	}
 
@@ -1116,7 +1301,11 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
-		heapmm_free(inode, parent->device->inode_size);		
+		heapmm_free(inode, parent->device->inode_size);	
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+	
 		return ENAMETOOLONG;
 	}
 
@@ -1147,12 +1336,13 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	if (status) { 
 		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		/* Pass the error to the caller */
 		return status;
 	}	
-
-	/* Add inode to cache */
-	llist_add_end(inode_cache, (llist_t *) inode);
 
 	/* Inode is now on storage and in the cache */
 	/* Proceed to make initial link */
@@ -1164,6 +1354,10 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		llist_unlink((llist_t *) inode);
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		/* Pass the error to the caller */
 		return status;
 	}
@@ -1173,6 +1367,12 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 
 	/* Release the lock on the inode */
 	semaphore_up(inode->lock);
+
+	/* Release the parent inode */
+	vfs_inode_release(parent);
+
+	/* Add inode to cache */
+	vfs_inode_cache(inode);
 
 	/* Return success */
 	return 0;	
@@ -1207,38 +1407,78 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 	mp_inode = vfs_find_inode(mountpoint);
 
 	/* Check if it exists */
-	if (!mp_inode)
+	if (!mp_inode) 
 		return ENOENT;
 
 	/* Check if it is a directory */
-	if (!S_ISDIR(mp_inode->mode))
+	if (!S_ISDIR(mp_inode->mode)) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
 		return ENOTDIR;
+	}
 
 	/* Look up the inode for the special file */
 	dev_inode = vfs_find_inode(device);
 	
 	/* Check if it exists */
-	if (!dev_inode)
+	if (!dev_inode) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
 		return ENOENT;
+	}
 
 	/* Check if it is a block special file */
-	if (!S_ISBLK(dev_inode->mode))
+	if (!S_ISBLK(dev_inode->mode)) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
 		return ENOTBLK;
+	}
 		
 	/* Mount the filesystem */
 	//TODO: Support multiple filesystems
 	fsdevice = ext2_mount(dev_inode->if_dev, flags);
 	
 	/* Check for errors */
-	if (!fsdevice)
+	if (!fsdevice) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
 		return EINVAL;
+	}
 		
 	/* Attach the filesystems root inode to the mountpoint */
 	mp_inode->mount = fsdevice->ops->load_inode(fsdevice, fsdevice->root_inode_id);	
 	
 	/* Check for errors */	
-	if (!mp_inode->mount)
+	if (!mp_inode->mount) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
 		return EINVAL; //TODO: Unmount
+	}
+
+	/* Release the mountpoint inode */
+	vfs_inode_release(mp_inode);
+
+	/* Release the special file inode */
+	vfs_inode_release(dev_inode);
 
 	/* Return success */
 	return 0;
@@ -1285,13 +1525,22 @@ int vfs_symlink(char *oldpath, char *path)
 	inode = heapmm_alloc(parent->device->inode_size);
 
 	/* Check if the allocation succeded, if not, return error */
-	if (!inode)
+	if (!inode) {
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return ENOMEM;
+	}
 
 	/* Check whether the file already exists */
 	if (vfs_find_inode(path)) {
 		/* If so, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return EEXIST;
 	}
 
@@ -1299,6 +1548,10 @@ int vfs_symlink(char *oldpath, char *path)
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		/* If not, clean up and return an error */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		return EACCES;
 	}
 
@@ -1363,6 +1616,10 @@ int vfs_symlink(char *oldpath, char *path)
 	if (status) { 
 		/* If an error occurred, clean up */
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		/* Pass the error to the caller */
 		return status;
 	}	
@@ -1380,6 +1637,10 @@ int vfs_symlink(char *oldpath, char *path)
 		llist_unlink((llist_t *) inode);
 		vfs_int_rmnod(inode);
 		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
 		/* Pass the error to the caller */
 		return status;
 	}
@@ -1389,6 +1650,12 @@ int vfs_symlink(char *oldpath, char *path)
 
 	/* Release the lock on the inode */
 	semaphore_up(inode->lock);
+
+	/* Add inode to cache */
+	vfs_inode_cache(inode);
+
+	/* Release the parent inode */
+	vfs_inode_release(parent);
 
 	/* Return success */
 	return 0;	
@@ -1435,11 +1702,23 @@ int vfs_unlink(char *path)
 	parent = vfs_find_parent(path);
 
 	/* Check if it exists, if not, return error */
-	if (!parent) 
+	if (!parent) {
+
+		/* Release the inode */
+		vfs_inode_release(inode);
+
 		return ENOENT;
+	}
 
 	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(inode);
+
 		return EACCES;
 	}
 
@@ -1449,6 +1728,13 @@ int vfs_unlink(char *path)
 	/* Check if file is in use */
 	if (inode->usage_count != 0) {
 		semaphore_up(inode->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(inode);
+
 		return EBUSY;
 	}
 
@@ -1476,6 +1762,13 @@ int vfs_unlink(char *path)
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
 		heapmm_free(inode, parent->device->inode_size);		
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(inode);
+
 		return ENAMETOOLONG;
 	}
 
@@ -1491,6 +1784,13 @@ int vfs_unlink(char *path)
 		semaphore_up(inode->lock);
 		/* Release the lock on the parent dir */
 		semaphore_up(parent->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(inode);
+
 		/* Pass error to the caller */
 		return status;
 	}
@@ -1512,10 +1812,20 @@ int vfs_unlink(char *path)
 		/* Remove its inode from the cache */
 		llist_unlink((llist_t *) inode);
 		/* Free its inode */
-		heapmm_free(inode, inode->device->inode_size);		
+		heapmm_free(inode, inode->device->inode_size);	
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+	
 	} else {
 		/* Release the lock on the inode */
 		semaphore_up(inode->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(inode);
 	}
 
 	/* Return success */
@@ -1563,9 +1873,14 @@ int vfs_link(char *oldpath, char *newpath)
 	inode = vfs_find_inode(oldpath);
 
 	/* Check if it exists, if not, return error */
-	if (!inode) 
+	if (!inode) {
 		return ENOENT;
-	
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+	}
+
 	/* Aqquire a lock on the target */
 	semaphore_down(inode->lock);
 	
@@ -1577,6 +1892,13 @@ int vfs_link(char *oldpath, char *newpath)
 		/* If so, clean up and return an error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the target inode */
+		vfs_inode_release(inode);
+
 		return EEXIST;
 	}
 
@@ -1585,6 +1907,13 @@ int vfs_link(char *oldpath, char *newpath)
 		/* If not, clean up and return an error */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the target inode */
+		vfs_inode_release(inode);
+
 		return EACCES;
 	}
 
@@ -1592,7 +1921,14 @@ int vfs_link(char *oldpath, char *newpath)
 	if (parent->device_id != inode->device_id) {
 		/* If so, clean up and return an error */
 		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);		
+		semaphore_up(parent->lock);	
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);	
+
+		/* Release the target inode */
+		vfs_inode_release(inode);
+
 		return EXDEV;
 	}
 
@@ -1620,7 +1956,14 @@ int vfs_link(char *oldpath, char *newpath)
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
 		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);	
+		semaphore_up(parent->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);	
+
+		/* Release the target inode */
+		vfs_inode_release(inode);
+
 		return ENAMETOOLONG;
 	}
 
@@ -1634,6 +1977,12 @@ int vfs_link(char *oldpath, char *newpath)
 		/* Clean up */
 		semaphore_up(inode->lock);
 		semaphore_up(parent->lock);	
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the target inode */
+		vfs_inode_release(inode);
 
 		/* Pass error to caller */
 		return status;
@@ -1654,6 +2003,12 @@ int vfs_link(char *oldpath, char *newpath)
 	/* Release inode lock */
 	semaphore_up(inode->lock);
 
+	/* Release the parent inode */
+	vfs_inode_release(parent);
+
+	/* Release the target inode */
+	vfs_inode_release(inode);
+
 	/* Return success */
 	return 0;	
 }
@@ -1672,6 +2027,9 @@ int vfs_initialize(fs_device_t * root_device)
 	/* Allocate inode cache */
 	inode_cache = heapmm_alloc(sizeof(llist_t));
 
+	/* Allocate open inode list */
+	open_inodes = heapmm_alloc(sizeof(llist_t));
+
 	/* Look up root inode */
 	inode_t *root_inode = root_device->ops->load_inode(root_device, root_device->root_inode_id);
 
@@ -1682,15 +2040,16 @@ int vfs_initialize(fs_device_t * root_device)
 	/* Create the inode cache */
 	llist_create(inode_cache);
 
+	/* Create the open inode list */
+	llist_create(open_inodes);
+
 	/* Add the root inode to it */
 	llist_add_end(inode_cache, (llist_t *) root_inode);
 
 	/* Fill VFS fields in the proces info */
 	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
 
-	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
-
-	scheduler_current_task->current_directory->usage_count++;
+	scheduler_current_task->current_directory = vfs_dir_cache_ref(scheduler_current_task->root_directory);
 
 	/* Return success */
 	return 1;
@@ -1711,13 +2070,10 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 	dirc->parent = dirc;
 
 	/* Set the inode */
-	dirc->inode = root_inode;
+	dirc->inode = vfs_inode_ref(root_inode);
 
 	/* Initialize the reference count to 1 */
 	dirc->usage_count = 1;
-	
-	/* Bump the inode reference count */
-	dirc->inode->usage_count++;
 	return dirc;	
 }
 
@@ -1741,7 +2097,7 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 		vfs_dir_cache_release(dirc->parent);
 
 	/* Decrease the inode reference count */
-	dirc->inode->usage_count--;
+	vfs_inode_release(dirc->inode);
 
 	/* Release it's memory */
 	heapmm_free(dirc, sizeof(dir_cache_t));	
@@ -1767,6 +2123,8 @@ dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc)
 
 dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 {
+	inode_t *oi;
+
 	/* Check for null pointers */
 	if (!par)
 		return NULL;
@@ -1781,8 +2139,14 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 	/* Set its parent to itself because it is the root of the graph */
 	dirc->parent = vfs_dir_cache_ref(par);
 
+	oi = vfs_get_inode(par->inode->device, inode_id);
+	
 	/* Set the inode */
-	dirc->inode = vfs_effective_inode(vfs_get_inode(par->inode->device, inode_id));
+	dirc->inode = vfs_effective_inode( oi );
+
+	/* Release the outer inode */
+	if (oi)
+		vfs_inode_release( oi );
 
 	if (!dirc->inode) {
 		heapmm_free(dirc, sizeof(dir_cache_t));
@@ -1792,9 +2156,6 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 
 	/* Initialize the reference count to 1 */
 	dirc->usage_count = 1;
-	
-	/* Bump the inode reference count */
-	dirc->inode->usage_count++;
 
 	return dirc;	
 }
@@ -2171,7 +2532,7 @@ inode_t *vfs_find_parent(char * path)
 		return NULL;
 
 	/* Store it's inode */
-	ino = dirc->inode;
+	ino = vfs_inode_ref(dirc->inode);
 
 	/* Release the dirc entry from the cache */
 	vfs_dir_cache_release(dirc);
@@ -2198,7 +2559,7 @@ inode_t *vfs_find_inode(char * path)
 		return NULL;
 
 	/* Store it's inode */
-	ino = dirc->inode;
+	ino = vfs_inode_ref(dirc->inode);
 
 	/* Release the dirc entry from the cache */
 	vfs_dir_cache_release(dirc);
@@ -2233,7 +2594,7 @@ inode_t *vfs_find_symlink(char * path)
 	if ((dirc == scheduler_current_task->root_directory) || (dirc == scheduler_current_task->current_directory)) {
 
 		/* Store the inode */
-		ino = dirc->inode;
+		ino = vfs_inode_ref(dirc->inode);
 
 		/* Release the dirc entry from the cache */
 		vfs_dir_cache_release(dirc);
