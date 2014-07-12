@@ -231,6 +231,11 @@ dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 {
 	/* This function is implemented by the FS driver */
 
+	/* Check permissions on parent dir */
+	if (!vfs_have_permissions(parent, MODE_EXEC) {
+		return NULL; //TODO: Find a way to pass an error from here
+	}
+
 	/* Call the driver */
 	return inode->device->ops->find_dirent(inode, name);
 }
@@ -2318,8 +2323,6 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 			strncpy(path_element, remaining_path, element_size);
 			path_element[element_size] = '\0';
 
-			//TODO: Check for search permission here or in vfs_find_dirent
-
 			/* Find the directory entry for it */
 			dirent = vfs_find_dirent(parent, path_element);
 
@@ -2496,8 +2499,6 @@ dir_cache_t *vfs_find_dirc(char * path)
 			/* Isolate it */
 			strncpy(path_element, remaining_path, element_size);
 			path_element[element_size] = '\0';
-
-			//TODO: Check for search permission here or in vfs_find_dirent
 
 			/* Find the directory entry for it */
 			dirent = vfs_find_dirent(parent, path_element);
