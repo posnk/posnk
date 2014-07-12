@@ -1,6 +1,8 @@
 /**
  * @file kernel/vfs.c
  *
+ * Implements the virtual filesystem layer
+ *
  * Part of P-OS kernel.
  *
  * @author Peter Bosch <peterbosc@gmail.com>
@@ -26,6 +28,7 @@
 #include "kernel/pipe.h"
 
 #include "config.h"
+fs_device_t *ext2_mount(dev_t device, uint32_t flags);
 //TODO: Make this an MRU cache
 
 /** The linked list serving as inode cache */
@@ -36,6 +39,21 @@ typedef struct vfs_cache_params {
 	ino_t inode_id;
 } vfs_cache_params_t;
 
+/*
+ * Iterator function that looks up the requested inode
+ */
+
+int vfs_cache_find_iterator (llist_t *node, void *param)
+{
+	inode_t *inode = (inode_t *) node;
+	vfs_cache_params_t *p = (vfs_cache_params_t *) param;
+	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
+}
+
+/** @name VFS Internal
+ *  Utility functions for use by VFS functions only
+ */
+///@{
 
 /**
  * @brief Returns the minimum privilege level required for access with mode
@@ -64,19 +82,6 @@ perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
 	return get_perm_class(inode->uid, inode->gid) <= vfs_get_min_permissions(inode, req_mode);
-}
-
-/** 
- * @internal
- * Iterator function that looks up the requested inode
- * @endinternal
- */
-
-int vfs_cache_find_iterator (llist_t *node, void *param)
-{
-	inode_t *inode = (inode_t *) node;
-	vfs_cache_params_t *p = (vfs_cache_params_t *) param;
-	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
 }
 
 /**
@@ -141,6 +146,14 @@ inode_t *vfs_effective_inode(inode_t * inode)
 	return inode;
 }
 
+///@}
+
+
+/** @name VFS API
+ *  Public VFS functions
+ */
+///@{
+
 /** 
  * @brief Find a directory entry
  * 
@@ -157,7 +170,12 @@ dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 	/* Call the driver */
 	return inode->device->ops->find_dirent(inode, name);
 }
+///@}
 
+/** @name VFS Backend
+ *  FS driver call wrappers
+ */
+///@{
 /**
  * @brief Push a new inode to backing storage
  * @warning INTERNAL FUNCTION
@@ -362,6 +380,12 @@ int vfs_int_truncate(inode_t * inode, aoff_t size)
 	/* Call the driver */
 	return inode->device->ops->trunc_inode(inode, size);
 }
+///@}
+
+/** @name VFS API
+ *  Public VFS functions
+ */
+///@{
 
 /**
  * @brief Write data to a file
@@ -1153,7 +1177,6 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	/* Return success */
 	return 0;	
 }
-fs_device_t *ext2_mount(dev_t device, uint32_t flags);
 
 /**
  * @brief Mount a filesystem
@@ -1499,40 +1522,6 @@ int vfs_unlink(char *path)
 	return 0;
 }
 
-/** 
- * @brief Initialize the VFS layer 
- * @param root_device The filesystem device to use as root filesystem
- * @return If successful 1, otherwise 0
- */
-
-int vfs_initialize(fs_device_t * root_device)
-{
-	//TODO: Track mounted devices
-	/* Allocate inode cache */
-	inode_cache = heapmm_alloc(sizeof(llist_t));
-
-	/* Look up root inode */
-	inode_t *root_inode = root_device->ops->load_inode(root_device, root_device->root_inode_id);
-
-	/* Check for errors */
-	if (!root_inode)
-		return 0;
-
-	/* Create the inode cache */
-	llist_create(inode_cache);
-
-	/* Add the root inode to it */
-	llist_add_end(inode_cache, (llist_t *) root_inode);
-
-	/* Fill VFS fields in the proces info */
-	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
-	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
-
-	/* Return success */
-	return 1;
-}
-
-
 /**
  * @brief Create a hard link
  * @param oldpath The target of the link
@@ -1669,6 +1658,44 @@ int vfs_link(char *oldpath, char *newpath)
 	return 0;	
 }
 
+///@}
+
+/** 
+ * @brief Initialize the VFS layer 
+ * @param root_device The filesystem device to use as root filesystem
+ * @return If successful 1, otherwise 0
+ */
+
+int vfs_initialize(fs_device_t * root_device)
+{
+	//TODO: Track mounted devices
+	/* Allocate inode cache */
+	inode_cache = heapmm_alloc(sizeof(llist_t));
+
+	/* Look up root inode */
+	inode_t *root_inode = root_device->ops->load_inode(root_device, root_device->root_inode_id);
+
+	/* Check for errors */
+	if (!root_inode)
+		return 0;
+
+	/* Create the inode cache */
+	llist_create(inode_cache);
+
+	/* Add the root inode to it */
+	llist_add_end(inode_cache, (llist_t *) root_inode);
+
+	/* Fill VFS fields in the proces info */
+	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
+	scheduler_current_task->current_directory = scheduler_current_task->root_directory;
+
+	/* Return success */
+	return 1;
+}
+
+
+
+
 //TODO: Comment dir-cache and path lookup functions
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
@@ -1683,7 +1710,7 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 
 void vfs_dir_cache_release(dir_cache_t *dirc)
 {
-	dirc->usage_count--;
+	//TODO: Prevent wraparound
 	if (dirc->usage_count)
 		return;
 	if (dirc->parent != dirc)
@@ -1773,8 +1800,15 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	}
 }
 
+
+/** 
+ * @brief Look up a file referred to by a path
+ * @param path The path to resolve
+ * @return A dir_cache entry on the file referred to by path
+ */
+
 dir_cache_t *vfs_find_dirc(char * path)
-{ //TODO: Check for search permission
+{ 
 	dir_cache_t *dirc = scheduler_current_task->current_directory;
 	dir_cache_t *newc;
 	inode_t * parent = dirc->inode;
@@ -1785,210 +1819,301 @@ dir_cache_t *vfs_find_dirc(char * path)
 	size_t element_size;
 	dirent_t *dirent;
 	int element_count = 0;	
+
+
+	/* Check for NULL or empty path */
 	if ((path == NULL) || ((*path) == '\0'))
 		return NULL;
+
+	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
+
+	/* Aqquire a pointer to the terminator */
 	end_of_path = strchr(remaining_path, 0);
+
+	/* Iterate over the path */
 	for (;;) {
+		/* Find the next / in the path */
 		separator = strchrnul(remaining_path, (int) '/');
+
+		/* Calculate the size of this path element */
 		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
-		if ((element_count == 0) && (element_size == 0)){ // First character is / 
+	
+		/* If the first element has size 0, this path has a leading */
+		/* / so it is to be considered an absolute path */
+		if ((element_count == 0) && (element_size == 0)){ 
+			/* Path is absolute */
+
+			/* Update current element */
 			dirc = scheduler_current_task->root_directory;
 			parent = dirc->inode;
+
 		} else if (element_size == 0) {
+			/* Element size is 0 but not first element */
+
+			/* Check whether this is the last element */
 			if ((separator + 2) >= end_of_path) {
+				/* If so, we have detected a trailing slash */
+				/* and reached the end of the path */
+				
+				/* Bump the reference counters and return */
 				dirc->usage_count++;
 				dirc->inode->usage_count++;
+				//TODO: Free path_element
 				return dirc;
 			}
+
 		} else if ((element_size == 2) && !strncmp(remaining_path, "..", 2)) {
+			/* Element is ".." */
+
+			/* Set next current path element to the parent of
+			 * the current element */
 			newc = dirc->parent;
-			if (newc != dirc) {		
+
+			/* If the new current element differs from the current 
+			 * element, free the old current path element */
+			if (newc != dirc) {	
+				/* Current element is not in use elsewhere? */	
 				if ((!dirc->usage_count))	
+					/* Free it */
 					heapmm_free(dirc, sizeof(dir_cache_t));
+
+				/* Update current element */
 				parent = newc->inode;
 				dirc = newc;
 			}						
 		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
+			/* Element is . */
+			/* Ignore this */
 		} else {
+			/* Element is a normal path element */
+	
+			/* Isolate it */
 			strncpy(path_element, remaining_path, element_size);
 			path_element[element_size] = '\0';
+
+			//TODO: Check for search permission here or in vfs_find_dirent
+
+			/* Find the directory entry for it */
 			dirent = vfs_find_dirent(parent, path_element);
+
+			/* Check if it exists */
 			if (dirent == NULL) {
+
+				/* If not, clean up and return */
 				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
+				/* Free the current dirc if it is not referenced 
+                         	 * somewhere else */
 				if (dirc && dirc->usage_count == 0){
+					/* Release its reference on its parent */
 					vfs_dir_cache_release(dirc->parent);
+					/* Free its memory */
 					heapmm_free(dirc, sizeof(dir_cache_t));
 				}
+				/* Return NULL as an element in the path was 
+				 * not found */
 				return NULL;
 			}
+
+			/* Bump reference counters on old path element as it 
+			 * will be referenced by the new dirc entry */
 			dirc->inode->usage_count++;
 			dirc->usage_count++;
+			
+			/* Create new dirc entry for this element */
 			newc = heapmm_alloc(sizeof(dir_cache_t));
+
+			/* Set it's parent pointer to the previous element */
 			newc->parent = dirc;
+
+			/* Look up the inode for the path element */
 			newc->inode = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));
+			//TODO: Check for errors
+
+			/* Initialize the new dirc reference counter to 0 */
 			newc->usage_count = 0;
+
+			/* Update current element */
 			dirc = newc;		
 			parent = dirc->inode;
 		}
+
+		/* Update remaining path to point to the start of the next
+		 * element */
 		remaining_path = separator + 1;
+
+		/* Check whether we have reached the end of the path */
 		if (remaining_path >= end_of_path) {
+			/* If so, return the current element */
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+				
+			/* Bump the reference counters and return */
 			dirc->usage_count++;
 			dirc->inode->usage_count++;
 			return dirc;
 		}
+
+		/* There are still elements after this one */
+
+		/* Check if the current element is a directory */
 		if (!S_ISDIR(parent->mode)) {
+			/* If not, return NULL because we can't search inside 
+                         * other kinds of files */	
+
+			/* Clean up */	
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+
+			/* Free the current dirc if it is not referenced 
+                         * somewhere else */
 			if (dirc && dirc->usage_count == 0){
+				/* Release its reference on its parent */
 				vfs_dir_cache_release(dirc->parent);
+				/* Free its memory */
 				heapmm_free(dirc, sizeof(dir_cache_t));
 			}
 			return NULL;
 		}
+
 	}
 } 
+
+/** @name VFS API
+ *  Public VFS functions
+ */
+///@{
+
+/** 
+ * @brief Look up the inode for the directory containing the file
+ * @param path The path of the file to resolve
+ * @return The file's parent directory 
+ */
 
 inode_t *vfs_find_parent(char * path)
 { //TODO: Check for search permission
 	inode_t *ino;
+
+	/* Request the parent dir cache entry for this path */
 	dir_cache_t *dirc = vfs_find_dirc_parent(path);
+
+	/* If it was not found, return NULL */
 	if (!dirc)
 		return NULL;
+
+	/* Store it's inode */
 	ino = dirc->inode;
+
+	/* Release the dirc entry from the cache */
 	vfs_dir_cache_release(dirc);
+
+	/* Return the inode */
 	return ino;
 } 
+
+/** 
+ * @brief Look up the inode for the file referenced by path
+ * @param path The path of the file to resolve
+ * @return The file's inode
+ */
 
 inode_t *vfs_find_inode(char * path)
-{ //TODO: Check for search permission
-/*
-	inode_t * parent = scheduler_current_task->current_directory;
-	char * separator;
-	char * path_element;
-	char * remaining_path = path;
-	char * end_of_path;
-	size_t element_size;
-	dirent_t *dirent;
-	int element_count = 0;	
-	if ((path == NULL) || ((*path) == '\0'))
-		return NULL;
-	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
-	end_of_path = strchr(remaining_path, 0);
-	for (;;) {
-		separator = strchrnul(remaining_path, (int) '/');
-		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
-		if ((element_count == 0) && (element_size == 0)) // First character is /
-			parent = vfs_effective_inode(scheduler_current_task->root_directory);
-		else if (element_size == 0) {
-			if ((separator + 2) >= end_of_path) {
-				return parent;
-			}
-		} else {
-			strncpy(path_element, remaining_path, element_size);
-			path_element[element_size] = '\0';
-			dirent = vfs_find_dirent(parent, path_element);
-			if (dirent == NULL) {
-				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-				return NULL;
-			}
-			parent = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));			
-		}
-		remaining_path = separator + 1;
-		if (remaining_path >= end_of_path) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			return parent;
-		}
-		if (!S_ISDIR(parent->mode)) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			return NULL;
-		}
-	}*/
+{ 
 	inode_t *ino;
+
+	/* Request the dir cache entry for this path */
 	dir_cache_t *dirc = vfs_find_dirc(path);
+
+	/* If it was not found, return NULL */
 	if (!dirc)
 		return NULL;
+
+	/* Store it's inode */
 	ino = dirc->inode;
+
+	/* Release the dirc entry from the cache */
 	vfs_dir_cache_release(dirc);
+
+	/* Return the inode */
 	return ino;
 } 
 
+/** 
+ * @brief Look up the inode for the file referenced by path, not dereferencing
+ * symlinks or mounts
+ * @param path The path of the file to resolve
+ * @return The file's inode
+ */
+
 inode_t *vfs_find_symlink(char * path)
-{ //TODO: Check for search permission
-	/*inode_t * parent = scheduler_current_task->current_directory;
-	* /
-	char * path_element;
-	char * remaining_path = path;
-	char * end_of_path;
-	size_t element_size;
-	dirent_t *dirent;
-	int element_count = 0;	
-	if ((path == NULL) || ((*path) == '\0'))
-		return NULL;
-	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
-	end_of_path = strchr(remaining_path, 0);
-	for (;;) {
-		separator = strchrnul(remaining_path, (int) '/');
-		element_size = ((uintptr_t) separator) - ((uintptr_t) remaining_path);
-		if ((element_count == 0) && (element_size == 0)) // First character is /
-			parent = vfs_effective_inode(scheduler_current_task->root_directory);
-		else if (element_size == 0) {
-			if ((separator + 2) >= end_of_path) {
-				if (dirent)
-					return vfs_get_inode(parent->device, dirent->inode_id);
-				return parent;
-			}
-		} else {
-			strncpy(path_element, remaining_path, element_size);
-			path_element[element_size] = '\0';
-			dirent = vfs_find_dirent(parent, path_element);
-			if (dirent == NULL) {
-				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-				return NULL;
-			}
-			parent = vfs_effective_inode(vfs_get_inode(parent->device, dirent->inode_id));			
-		}
-		remaining_path = separator + 1;
-		if (remaining_path >= end_of_path) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			if (dirent)
-				return vfs_get_inode(parent->device, dirent->inode_id);
-			return parent;
-		}
-		if (!S_ISDIR(parent->mode)) {
-			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			return NULL;
-		}
-	}*/
+{ 
 	dirent_t *dirent;
 	char * separator;
 	char * name;
 	inode_t *ino;
+
+	/* Request the dir cache entry for this path */
 	dir_cache_t *dirc = vfs_find_dirc(path);
+
+	/* If it was not found, return NULL */
 	if (!dirc)
 		return NULL;
+
+	/* If the entry is the current root directory, return the */
+	/* dereferenced inode, otherwise we would be able to escape a chroot */
 	if ((dirc == scheduler_current_task->root_directory) || (dirc == scheduler_current_task->current_directory)) {
+
+		/* Store the inode */
 		ino = dirc->inode;
+
+		/* Release the dirc entry from the cache */
 		vfs_dir_cache_release(dirc);
+
+		/* Return the inode */
 		return ino;		
 	}
+	
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
 	separator = strrchr(path, '/');
+	
+	/* Check for trailing / */
 	if (separator == (path + strlen(path) - 1)){
+		/* Trailing / found, remove it */
+		//TODO: Make a copy of path before doing this		
 		path[strlen(path) - 1] = '\0';
+		/* Search for the real last / */
 		separator = strrchr(path, '/');
 	}
-	if (separator)
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
 		name = separator + 1;
-	else
+	else /* If not, the path IS the name */
 		name = path;
+
+	/* Look up the directory entry for this file */
 	dirent = vfs_find_dirent(dirc->parent->inode, name);
-	if (dirent == NULL) {
+
+	/* If it is not found, return NULL. Should never happen... */
+	if (dirent == NULL) 
+
+		/* Release the dirc entry from the cache */		
 		vfs_dir_cache_release(dirc);
+
+		/* Return the inode */
 		return NULL;
 	}
+
+	/* Get the inode pointed to by the dirent */
 	ino = vfs_get_inode(dirc->parent->inode->device, dirent->inode_id);
+
+	/* Release the dirc entry from the cache */	
 	vfs_dir_cache_release(dirc);
+
+	/* Return the inode */
 	return ino;
 } 
 
+///@}
 

@@ -487,7 +487,7 @@ SORT_MEMBERS_CTORS_1ST = NO
 # hierarchy of group names into alphabetical order. If set to NO (the default)
 # the group names will appear in their defined order.
 
-SORT_GROUP_NAMES       = NO
+SORT_GROUP_NAMES       = YES
 
 # If the SORT_BY_SCOPE_NAME tag is set to YES, the class list will be
 # sorted by fully-qualified names, including namespaces. If set to
@@ -1127,7 +1127,7 @@ DISABLE_INDEX          = NO
 # Since the tree basically has the same information as the tab index you
 # could consider to set DISABLE_INDEX to NO when enabling this option.
 
-GENERATE_TREEVIEW      = NO
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values
 # (range [0,1..20]) that doxygen will group on one line in the generated HTML
@@ -1475,13 +1475,13 @@ ENABLE_PREPROCESSING   = YES
 # compilation will be performed. Macro expansion can be done in a controlled
 # way by setting EXPAND_ONLY_PREDEF to YES.
 
-MACRO_EXPANSION        = NO
+MACRO_EXPANSION        = YES
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES
 # then the macro expansion is limited to the macros specified with the
 # PREDEFINED and EXPAND_AS_DEFINED tags.
 
-EXPAND_ONLY_PREDEF     = NO
+EXPAND_ONLY_PREDEF     = YES
 
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files
 # pointed to by INCLUDE_PATH will be searched when a #include is found.
@@ -1509,7 +1509,7 @@ INCLUDE_FILE_PATTERNS  = *.h
 # undefined via #undef or recursively expanded use the := operator
 # instead of the = operator.
 
-PREDEFINED             =
+PREDEFINED             = __attribute__(x)=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then
 # this tag can be used to specify a list of macro names that should be expanded.
@@ -1517,7 +1517,7 @@ PREDEFINED             =
 # Use the PREDEFINED tag if you want to use a different macro definition that
 # overrules the definition found in the source code.
 
-EXPAND_AS_DEFINED      =
+EXPAND_AS_DEFINED      = 
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES (the default) then
 # doxygen's preprocessor will remove all references to function-like macros

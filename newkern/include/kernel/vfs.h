@@ -1,12 +1,16 @@
 /**
- * kernel/vfs.h
+ * @file kernel/vfs.h
+ *
+ * Exposes the VFS API
  *
  * Part of P-OS kernel.
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
- * 09-04-2014 - Created
+ * \li 09-04-2014 - Created
+ * \li 12-07-2014 - Documented
+ *
  */
 
 #include "kernel/process.h"
@@ -22,14 +26,57 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+/**
+ * @defgroup vfs VFS
+ * The Virtual File System layer provides abstraction between the rest of the
+ * kernel and the FS drivers, it handles path resolution, filesystem mounts and
+ * all special file types.
+ * @{
+ */
+
+/**
+ * Bit definition for inode->mode, this file is readable
+ */
+#define MODE_READ  4
+
+/**
+ * Bit definition for inode->mode, this file is writable
+ */
+#define MODE_WRITE 2
+
+/**
+ * Bit definition for inode->mode, this file is executable/searchable
+ */
+#define MODE_EXEC  1
+
+/**
+ * @brief Describes a file currently cached by the kernel
+ * @see inode
+ */
 typedef struct inode inode_t;
 
+/**
+ * @brief An entry in the path element cache
+ * @see dirent
+ */
 typedef struct dirent dirent_t;
 
+/**
+ * @brief An entry in the path element cache
+ * @see dir_cache
+ */
 typedef struct dir_cache dir_cache_t;
 
+/** 
+ * @brief An instance of a filesystem driver 
+ * @see fs_device
+ */
 typedef struct fs_device fs_device_t;
 
+/** 
+ * @brief Contains callbacks for all filesystem driver functions 
+ * @see fs_device_operations
+ */
 typedef struct fs_device_operations fs_device_operations_t;
 
 /**
@@ -45,7 +92,7 @@ struct inode {
 	uint32_t	 device_id;
 	/** Filesystem device this inode resides on */
 	fs_device_t	*device;
-	/** Filename @deprecated */
+	/** Filename @deprecated This should not be here, Inodes can have multiple filenames!*/
 	char	 	 name[CONFIG_FILE_MAX_NAME_LENGTH];
 	/** Number of hard links to this file */
 	nlink_t 	 hard_link_count;
@@ -79,16 +126,36 @@ struct inode {
 	ktime_t		 ctime;
 };
 
+/**
+ * Describes a directory entry in a portable FS independent format
+ */
 struct dirent {
+	/** The inode this entry points to */
 	ino_t	 inode_id;
+	/** The filesystem device this entry points to */
 	dev_t	device_id;
+	/** @brief The length of this dirent 
+          * dirent structures are not always sizeof(dirent) long, most of the 
+          * time they are smaller, this field indicates the actual size of the
+          * structure but do not use it to calculate name length as padding 
+          * after the name is allowed */
 	unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
+	/** The name of the file described by this entry */
 	char	 name[257];
 }  __attribute__((packed));
 
+/**
+ * @brief An entry in the path element cache
+ * The kernel keeps track of these to resolve the . and .. special directories
+ */
 struct dir_cache {
+	/** The parent directory of this entry */
 	dir_cache_t	*parent;
+	/** The inode for this entry */
 	inode_t		*inode;
+	/** @brief The number of times this dir_cache is referenced
+          * This is used for a basic form of garbage collection, when this 
+          * hits 0 the dir_cache will be free'd */
 	uint32_t	 usage_count;
 };
 
@@ -308,17 +375,16 @@ struct fs_device {
 	size_t 			inode_size;
 };
 
-#define MODE_READ  4
-#define MODE_WRITE 2
-#define MODE_EXEC  1
+/** @name VFS API
+ *  Public VFS functions
+ */
+///@{
 
-perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
+inode_t *vfs_find_parent(char * path);
 
-int vfs_have_permissions(inode_t *inode, mode_t req_mode);
+inode_t *vfs_find_inode(char * path);
 
-inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id);
-
-inode_t *vfs_effective_inode(inode_t * inode);
+inode_t *vfs_find_symlink(char * path);
 
 dirent_t *vfs_find_dirent(inode_t * inode, char * name);
 
@@ -336,20 +402,6 @@ int vfs_symlink(char *oldpath, char *newpath);
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
 
-inode_t *vfs_find_parent(char * path);
-
-inode_t *vfs_find_inode(char * path);
-
-inode_t *vfs_find_symlink(char * path);
-
-dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
-
-void vfs_dir_cache_release(dir_cache_t *dirc);
-
-dir_cache_t *vfs_find_dirc(char * path);
-
-int vfs_initialize(fs_device_t * root_device);
-
 int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
 int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
@@ -357,6 +409,34 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size);
 
 int vfs_truncate(inode_t * inode, aoff_t length);
+
+///@}
+
+
+/** @name VFS Internal
+ *  Utility functions for use by VFS functions only
+ */
+///@{
+
+dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
+
+void vfs_dir_cache_release(dir_cache_t *dirc);
+
+dir_cache_t *vfs_find_dirc(char * path);
+
+perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
+
+int vfs_have_permissions(inode_t *inode, mode_t req_mode);
+
+inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id);
+
+inode_t *vfs_effective_inode(inode_t * inode);
+
+///@}
+
+int vfs_initialize(fs_device_t * root_device);
+
+///@}
 
 #endif
 
