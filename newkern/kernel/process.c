@@ -197,8 +197,8 @@ void process_reap(process_info_t *process)
 	heapmm_free(process->name, CONFIG_PROCESS_MAX_NAME_LENGTH);
 	//TODO: Free arch-state
 	//TODO: Free page-dir
-	process->root_directory->usage_count--;
-	process->current_directory->usage_count--;
+	vfs_dir_cache_release(process->root_directory);
+	vfs_dir_cache_release(process->current_directory);
 	stream_do_close_all (process);
 	semaphore_free(process->child_sema);
 	

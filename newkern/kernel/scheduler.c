@@ -89,8 +89,8 @@ int scheduler_fork()
 	llist_create(new_task->memory_map);
 	procvmm_copy_memory_map (new_task->memory_map);
 
-	new_task->current_directory = scheduler_current_task->current_directory;
-	new_task->root_directory = scheduler_current_task->root_directory;
+	new_task->current_directory = vfs_dir_cache_ref(scheduler_current_task->current_directory);
+	new_task->root_directory = vfs_dir_cache_ref(scheduler_current_task->root_directory);
 	new_task->root_directory->usage_count++;
 	new_task->current_directory->usage_count++;
 	/* Initialize proces signal handling */
