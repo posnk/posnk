@@ -29,12 +29,13 @@
 
 #include "config.h"
 fs_device_t *ext2_mount(dev_t device, uint32_t flags);
-//TODO: Make this an MRU cache
+
 
 /** The linked list serving as open inode list */
 llist_t *open_inodes;
 
 /** The linked list serving as inode cache */
+//TODO: Implement a proper inode cache
 llist_t *inode_cache;
 
 typedef struct vfs_cache_params {
@@ -1832,19 +1833,6 @@ int vfs_unlink(char *path)
 	/* Aqquire lock on inode */
 	semaphore_down(inode->lock);
 
-	/* Check if file is in use */
-	if (inode->usage_count != 0) {
-		semaphore_up(inode->lock);
-
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		/* Release the inode */
-		vfs_inode_release(inode);
-
-		return EBUSY;
-	}
-
 	/* Resolve the filename */
 	
 	name = vfs_get_filename(path);
@@ -1904,6 +1892,20 @@ int vfs_unlink(char *path)
 	/* Check for orphaned files */
 	if (inode->hard_link_count == 0) {
 		/* File is orphaned */
+
+		/* Check if file is in use */
+		if (inode->open_count != 0) {
+			semaphore_up(inode->lock);
+
+			/* Release the parent inode */
+			vfs_inode_release(parent);
+
+			/* Release the inode */
+			vfs_inode_release(inode);
+
+			return EBUSY;
+		}
+
 		/* Delete the file itself */
 		vfs_int_rmnod(inode); //This might error but there is little we can do about that anyway
 		/* Remove its inode from the cache */

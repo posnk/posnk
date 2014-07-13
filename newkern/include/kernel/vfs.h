@@ -114,8 +114,10 @@ struct inode {
 	inode_t	 	*mount;
 	/** Lock */
 	semaphore_t 	*lock;
-	/** Usage count */
+	/** Reference count (for GC)*/
 	uint32_t 	 usage_count;
+	/** Open stream count */
+	uint32_t	 open_count;
 	/** File size */
 	aoff_t	 	 size;	
 	/** Access time */

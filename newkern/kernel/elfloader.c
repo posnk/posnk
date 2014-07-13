@@ -101,7 +101,7 @@ int elf_load(char * path)
 	}
 
 	for (ph_ptr = 0; ph_ptr < elf_header->e_phnum; ph_ptr++) {
-		status = vfs_read(inode, (off_t)(elf_header->e_phoff+(elf_header->e_phentsize * ph_ptr)), elf_pheader, elf_header->e_phentsize, &rd_count, 0);
+		status = vfs_read(inode, (aoff_t)(elf_header->e_phoff+(elf_header->e_phentsize * ph_ptr)), elf_pheader, elf_header->e_phentsize, &rd_count, 0);
 		if (status) {
 			heapmm_free(elf_pheader, elf_header->e_phentsize);
 			heapmm_free(elf_header, sizeof(Elf32_Ehdr));
