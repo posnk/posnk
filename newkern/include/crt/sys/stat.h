@@ -15,7 +15,7 @@ off_t	st_size;
 time_t	st_atime;
 time_t	st_mtime;
 time_t	st_ctime;
-};
+} ;
 
 #define S_IFMT 00170000
 /* Regular file */
