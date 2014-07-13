@@ -23,6 +23,7 @@
 
 int elf_load(char * path)
 {	
+	char * name;
 	size_t rd_count;
 	int status;	
 	int flags;
@@ -37,31 +38,46 @@ int elf_load(char * path)
 		return ENOENT;
 	}
 	if (!S_ISREG(inode->mode)) {
+		vfs_inode_release(inode);
 		return EACCES;
 	} 
 	if (!vfs_have_permissions(inode, MODE_EXEC)) {
+		vfs_inode_release(inode);
 		return EACCES;
 	}
 
-	strcpy(scheduler_current_task->name, inode->name);
+	name = vfs_get_filename( path );
+
+	if (!name) {
+		vfs_inode_release(inode);
+		return EFAULT;
+	}
+
+	strcpy(scheduler_current_task->name, name);
+
+	heapmm_free(name, strlen(name) + 1);
 
 	elf_header = (Elf32_Ehdr *) heapmm_alloc(sizeof(Elf32_Ehdr));
 	if (!elf_header) {
+		vfs_inode_release(inode);
 		return ENOMEM;
 	}
 
 	status = vfs_read(inode, 0, elf_header, sizeof(Elf32_Ehdr), &rd_count, 0);
 	if (status) {
 		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+		vfs_inode_release(inode);
 		return status;
 	}
 	if (rd_count != sizeof(Elf32_Ehdr)) {
 		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+		vfs_inode_release(inode);
 		return EIO;
 	}
 
 	if (elf_header->e_type != ET_EXEC) {
 		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+		vfs_inode_release(inode);
 		return ENOEXEC;
 	}
 	if (elf_header->e_machine != EM_386) {
@@ -79,6 +95,7 @@ int elf_load(char * path)
 	elf_pheader = (Elf32_Phdr *) heapmm_alloc(elf_header->e_phentsize);
 	if (!elf_pheader) {
 		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+		vfs_inode_release(inode);
 		return ENOMEM;
 	}
 
@@ -87,11 +104,13 @@ int elf_load(char * path)
 		if (status) {
 			heapmm_free(elf_pheader, elf_header->e_phentsize);
 			heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+			vfs_inode_release(inode);
 			return status;
 		}
 		if (rd_count != elf_header->e_phentsize) {
 			heapmm_free(elf_pheader, elf_header->e_phentsize);
 			heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+			vfs_inode_release(inode);
 			return EIO;
 		}
 		//debugcon_printf("Loading program section off:%x va:%x pa:%x sz:%x fsz:%x...\n", elf_pheader->p_offset, elf_pheader->p_vaddr, elf_pheader->p_paddr, elf_pheader->p_memsz, elf_pheader->p_filesz);
@@ -102,6 +121,7 @@ int elf_load(char * path)
 					//earlycon_printf("ERROR: tried to map kernel memory: %x\n", elf_pheader->p_vaddr);
 					heapmm_free(elf_pheader, elf_header->e_phentsize);
 					heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+					vfs_inode_release(inode);
 					return ENOEXEC;
 				}
 				flags = 0;
@@ -114,6 +134,7 @@ int elf_load(char * path)
 					//earlycon_printf("ERROR: could not map PH_LOAD: %x\n", status);
 					heapmm_free(elf_pheader, elf_header->e_phentsize);
 					heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+					vfs_inode_release(inode);
 					return status;
 				}
 				if ((elf_pheader->p_vaddr + elf_pheader->p_memsz) > image_top)
@@ -125,6 +146,7 @@ int elf_load(char * path)
 				//earlycon_printf("ERROR: unknown program header type: %x\n", elf_pheader->p_type);
 				heapmm_free(elf_pheader, elf_header->e_phentsize);
 				heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+				vfs_inode_release(inode);
 				return ENOEXEC;
 		}
 	}
@@ -137,6 +159,7 @@ int elf_load(char * path)
 
 	heapmm_free(elf_pheader, elf_header->e_phentsize);
 	heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+	vfs_inode_release(inode);
 	return 0;	
 }
 
