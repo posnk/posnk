@@ -380,7 +380,7 @@ struct fs_device {
  */
 ///@{
 
-void vfs_inode_release(inode_t *inode)
+void vfs_inode_release(inode_t *inode);
 
 inode_t *vfs_find_parent(char * path);
 
@@ -416,7 +416,7 @@ int vfs_chroot(dir_cache_t *dirc);
 
 int vfs_chdir(dir_cache_t *dirc);
 
-char *vfs_get_filename(const char *path)
+char *vfs_get_filename(const char *path);
 
 ///@}
 

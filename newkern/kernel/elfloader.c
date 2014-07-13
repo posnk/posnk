@@ -13,6 +13,7 @@
 
 #include <sys/errno.h>
 #include <sys/stat.h>
+#include <string.h>
 #include "kernel/earlycon.h"
 #include "kernel/vfs.h"
 #include "kernel/physmm.h"
@@ -24,7 +25,7 @@
 int elf_load(char * path)
 {	
 	char * name;
-	size_t rd_count;
+	aoff_t rd_count;
 	int status;	
 	int flags;
 	int ph_ptr = 0;
