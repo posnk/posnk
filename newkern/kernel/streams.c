@@ -329,9 +329,7 @@ int _sys_fchdir(int fd)
 		syscall_errno = ENOTDIR;
 		return -1;
 	}
-	scheduler_current_task->current_directory->usage_count--;
-	ptr->info->dirc->usage_count++;
-	scheduler_current_task->current_directory = ptr->info->dirc;
+	vfs_chdir(ptr->info->dirc);
 	return 0;
 }
 

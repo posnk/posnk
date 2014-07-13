@@ -410,6 +410,10 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
 
 int vfs_truncate(inode_t * inode, aoff_t length);
 
+int vfs_chroot(dir_cache_t *dirc);
+
+int vfs_chdir(dir_cache_t *dirc);
+
 ///@}
 
 

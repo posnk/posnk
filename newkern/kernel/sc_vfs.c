@@ -153,18 +153,20 @@ uint32_t sys_unlink(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_chdir(char *path)
 {
+	int status;
 	dir_cache_t *dirc = vfs_find_dirc(path);
 	if (!dirc) {
 		syscall_errno = ENOENT;
 		return -1;
 	}
-	if (!S_ISDIR(dirc->inode->mode)) {
-		syscall_errno = ENOTDIR;
+
+	status = vfs_chdir(dirc);
+
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
-	scheduler_current_task->current_directory->usage_count--;
-	dirc->usage_count++;
-	scheduler_current_task->current_directory = dirc;
+
 	return 0;
 }
 

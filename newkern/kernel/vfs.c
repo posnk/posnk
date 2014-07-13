@@ -2246,6 +2246,54 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 	return dirc;	
 }
 
+/**
+ * @brief Changes the working directory for this process
+ * @param dirc The new working directory
+ * @return An error code or 0 for success
+ */
+int vfs_chdir(dir_cache_t *dirc)
+{
+	/* Check for null pointers */
+	if (!dirc) 
+		return EFAULT;
+
+	/* Check if it really is a directory */
+	if (!S_ISDIR(dirc->inode->mode)) 
+		return ENOTDIR;
+
+	/* Release the old directory */
+	vfs_dir_cache_release(scheduler_current_task->current_directory);
+
+	/* Update current directory */
+	scheduler_current_task->current_directory = vfs_dir_cache_ref(dirc);
+
+	return 0;
+}
+
+/**
+ * @brief Changes the root directory for this process
+ * @param dirc The new root directory
+ * @return An error code or 0 for success
+ */
+int vfs_chroot(dir_cache_t *dirc)
+{
+	/* Check for null pointers */
+	if (!dirc) 
+		return EFAULT;
+
+	/* Check if it really is a directory */
+	if (!S_ISDIR(dirc->inode->mode)) 
+		return ENOTDIR;
+
+	/* Release the old directory */
+	vfs_dir_cache_release(scheduler_current_task->root_directory);
+
+	/* Update current directory */
+	scheduler_current_task->root_directory = vfs_dir_cache_ref(dirc);
+
+	return 0;
+}
+
 /** 
  * @brief Look up the parent directory of a file referred to by a path
  * 
