@@ -4,6 +4,7 @@
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="user" url="https://github.com/peterbjornx/posnk" title="GitHub Project"/>
     <tab type="user" url="downloads.html" title="Downloads"/>
+    <tab type="user" url="features.html" title="Features"/>
     <tab type="pages" visible="yes" title="" intro=""/>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
