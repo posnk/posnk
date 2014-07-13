@@ -126,7 +126,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a2ee4369634438d5d553afc4906c19a40"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#a2ee4369634438d5d553afc4906c19a40">sys_unlink</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:ac688c84c07442044d6c71fe746b9fd3c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#ac688c84c07442044d6c71fe746b9fd3c">_sys_chdir</a> (char *path)</td></tr>
 <tr class="memitem:a6445c4088d5d956b36a0c8c1e638af87"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#a6445c4088d5d956b36a0c8c1e638af87">sys_chdir</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
-<tr class="memitem:a727d507a62e428551d0a233196e85f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47">_sys_chmod</a> (char *path, <a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a> mode)</td></tr>
+<tr class="memitem:a727d507a62e428551d0a233196e85f47"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#a727d507a62e428551d0a233196e85f47">_sys_chmod</a> (char *path, <a class="el" href="types_8h.html#a161c505f18322d8ce974064784be272a">mode_t</a> mode)</td></tr>
 <tr class="memitem:aa029b9e6ea949765f08203e68e66a7a9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#aa029b9e6ea949765f08203e68e66a7a9">sys_chmod</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
 <tr class="memitem:a04f0fe0abc642c8b9963bbe7579d3cb0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#a04f0fe0abc642c8b9963bbe7579d3cb0">_sys_chown</a> (char *path, <a class="el" href="types_8h.html#a75bb141dc55bc89a8ddc565fd374e3d9">uid_t</a> owner, <a class="el" href="types_8h.html#a3a7834be1a79bb0c5a65d3546c2e3bd8">gid_t</a> group)</td></tr>
 <tr class="memitem:aabe150ad1d04c50d94110778087b5cc9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sc__vfs_8c.html#aabe150ad1d04c50d94110778087b5cc9">sys_chown</a> (uint32_t param[4], uint32_t param_size[4])</td></tr>
@@ -160,9 +160,9 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00154">154</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8h_source.html#l00159">dir_cache::usage_count</a>, and <a class="el" href="vfs_8c_source.html#l01959">vfs_find_dirc()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8c_source.html#l02254">vfs_chdir()</a>, and <a class="el" href="vfs_8c_source.html#l02482">vfs_find_dirc()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00172">sys_chdir()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00174">sys_chdir()</a>.</p>
 
 </div>
 </div>
@@ -179,7 +179,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#a51b5bca3280ca743227e9b07c4f839a1">mode_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="types_8h.html#a161c505f18322d8ce974064784be272a">mode_t</a>&#160;</td>
           <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
@@ -190,11 +190,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00191">191</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00193">193</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00020">get_effective_uid()</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00020">get_effective_uid()</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02680">vfs_find_inode()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00211">sys_chmod()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00213">sys_chmod()</a>.</p>
 
 </div>
 </div>
@@ -228,11 +228,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00231">231</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00233">233</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="permissions_8h_source.html#l00020">PERM_CLASS_GROUP</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="permissions_8h_source.html#l00020">PERM_CLASS_GROUP</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02680">vfs_find_inode()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00253">sys_chown()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00255">sys_chown()</a>.</p>
 
 </div>
 </div>
@@ -263,11 +263,11 @@ Functions</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000055">Todo:</a></b></dt><dd>: Implement sparse files </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000056">Todo:</a></b></dt><dd>: Ask FS about block size </dd></dl>
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00472">472</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00474">474</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00122">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00110">inode::link_path</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00124">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02198">vfs_find_symlink()</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00122">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00110">inode::link_path</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00124">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02708">vfs_find_symlink()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00499">sys_lstat()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00501">sys_lstat()</a>.</p>
 
 </div>
 </div>
@@ -301,11 +301,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00417">417</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00419">419</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00110">inode::link_path</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l02198">vfs_find_symlink()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00110">inode::link_path</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l02708">vfs_find_symlink()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00436">sys_readlink()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00438">sys_readlink()</a>.</p>
 
 </div>
 </div>
@@ -336,11 +336,11 @@ Functions</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000052">Todo:</a></b></dt><dd>: Implement sparse files </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000053">Todo:</a></b></dt><dd>: Ask FS about block size </dd></dl>
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00361">361</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00363">363</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00122">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00124">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00122">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00124">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l02680">vfs_find_inode()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00385">sys_stat()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00387">sys_stat()</a>.</p>
 
 </div>
 </div>
@@ -369,11 +369,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000050">Todo:</a></b></dt><dd>: Add permission check </dd></dl>
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00273">273</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00275">275</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l02170">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l00836">vfs_truncate()</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l02680">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l01043">vfs_truncate()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00287">sys_truncate()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00289">sys_truncate()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +401,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00172">172</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00174">174</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
 <p>References <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
@@ -433,9 +433,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00211">211</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00213">213</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00191">_sys_chmod()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00193">_sys_chmod()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -465,9 +465,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00253">253</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00255">255</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00231">_sys_chown()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00233">_sys_chown()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -499,7 +499,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00023">23</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01543">vfs_link()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01950">vfs_link()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -529,9 +529,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00499">499</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00501">501</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00472">_sys_lstat()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00474">_sys_lstat()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -561,9 +561,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00338">338</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00340">340</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00969">vfs_mkdir()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01201">vfs_mkdir()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -593,9 +593,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00314">314</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00316">316</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -627,7 +627,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00055">55</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01196">vfs_mount()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01489">vfs_mount()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -657,9 +657,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00436">436</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00438">438</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00417">_sys_readlink()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00419">_sys_readlink()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -689,9 +689,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00531">531</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00533">533</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l00922">vfs_rmdir()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01142">vfs_rmdir()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -721,9 +721,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00385">385</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00387">387</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00361">_sys_stat()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00363">_sys_stat()</a>, <a class="el" href="kdbg_8c_source.html#l00051">buf</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00107">copy_kern_to_user()</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -755,7 +755,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00098">98</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -785,9 +785,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00287">287</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00289">289</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="sc__vfs_8c_source.html#l00273">_sys_truncate()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="sc__vfs_8c_source.html#l00275">_sys_truncate()</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -817,7 +817,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00306">306</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00308">308</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
 <p>References <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="process_8h_source.html#l00088">process_info::umask</a>.</p>
 
@@ -851,7 +851,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="sc__vfs_8c_source.html#l00131">131</a> of file <a class="el" href="sc__vfs_8c_source.html">sc_vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01414">vfs_unlink()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="syscall_8c_source.html#l00099">copy_user_to_kern()</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="vfs_8c_source.html#l01789">vfs_unlink()</a>.</p>
 
 <p>Referenced by <a class="el" href="syscall_8c_source.html#l00170">syscall_init()</a>.</p>
 
@@ -863,7 +863,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="sc__vfs_8c.html">sc_vfs.c</a></li>
-    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

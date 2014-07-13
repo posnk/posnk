@@ -128,7 +128,7 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a23445907194fa5990d8ea795dc72a022"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a23445907194fa5990d8ea795dc72a022">entry_point</a></td></tr>
 <tr class="memitem:a1aae59bc9cedbc4db868b75441002d33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a></td></tr>
 <tr class="memitem:a3948daa1c00d2cbdbf66f0bc15969b64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#gaffb8ec888adfc4b5369e4c175d9903e5">dir_cache_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a></td></tr>
-<tr class="memitem:a0e2169d345f0f769350df74431f74c3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#a9c3f71387fbe692469eeb314009d370d">umode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a0e2169d345f0f769350df74431f74c3c">umask</a></td></tr>
+<tr class="memitem:a0e2169d345f0f769350df74431f74c3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types_8h.html#ae4587bcd75daf26533f8c83b430dc071">umode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a0e2169d345f0f769350df74431f74c3c">umask</a></td></tr>
 <tr class="memitem:a1c3869060cf2b3a1d828676f973cf0af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af">fd_table</a></td></tr>
 <tr class="memitem:a796f737258cc7ebe9f7006d115059ffd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a796f737258cc7ebe9f7006d115059ffd">fd_ctr</a></td></tr>
 <tr class="memitem:a57d3203870ecfc15a6a51051c7b2f074"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structprocess__info.html#a57d3203870ecfc15a6a51051c7b2f074">signal_handler_exit_func</a></td></tr>
@@ -272,7 +272,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00087">87</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, <a class="el" href="streams_8c_source.html#l00321">_sys_fchdir()</a>, <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="vfs_8c_source.html#l01959">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01759">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l02198">vfs_find_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="vfs_8c_source.html#l02254">vfs_chdir()</a>, <a class="el" href="vfs_8c_source.html#l02482">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l02305">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l02708">vfs_find_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l02110">vfs_initialize()</a>.</p>
 
 </div>
 </div>
@@ -320,7 +320,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00083">83</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, and <a class="el" href="process_8c_source.html#l00268">process_exec()</a>.</p>
+<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, and <a class="el" href="process_8c_source.html#l00268">process_exec()</a>.</p>
 
 </div>
 </div>
@@ -352,7 +352,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00092">92</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00491">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00461">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, and <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00489">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00585">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00494">_sys_pipe2()</a>, and <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>.</p>
 
 </div>
 </div>
@@ -368,7 +368,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00091">91</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00461">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00587">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_pipe2()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="streams_8c_source.html#l00062">stream_copy_fd_table()</a>, <a class="el" href="streams_8c_source.html#l00086">stream_do_close_all()</a>, <a class="el" href="streams_8c_source.html#l00073">stream_do_close_on_exec()</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_get_ptr_o()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00585">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l00494">_sys_pipe2()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="streams_8c_source.html#l00062">stream_copy_fd_table()</a>, <a class="el" href="streams_8c_source.html#l00086">stream_do_close_all()</a>, <a class="el" href="streams_8c_source.html#l00073">stream_do_close_on_exec()</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_get_ptr_o()</a>.</p>
 
 </div>
 </div>
@@ -384,7 +384,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00076">76</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__perm_8c_source.html#l00034">sys_getgid()</a>, <a class="el" href="sc__process_8c_source.html#l00028">sys_kill()</a>, <a class="el" href="sc__perm_8c_source.html#l00055">sys_setgid()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__perm_8c_source.html#l00034">sys_getgid()</a>, <a class="el" href="sc__process_8c_source.html#l00028">sys_kill()</a>, <a class="el" href="sc__perm_8c_source.html#l00055">sys_setgid()</a>, <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -448,7 +448,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00110">110</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, and <a class="el" href="procvmm_8c_source.html#l00030">procvmm_do_exec_mmaps()</a>.</p>
+<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, and <a class="el" href="procvmm_8c_source.html#l00030">procvmm_do_exec_mmaps()</a>.</p>
 
 </div>
 </div>
@@ -464,7 +464,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00109">109</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>.</p>
+<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>.</p>
 
 </div>
 </div>
@@ -525,7 +525,7 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000137">Todo:</a></b></dt><dd>: Add dynamic linker memory info here </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000131">Todo:</a></b></dt><dd>: Add dynamic linker memory info here </dd></dl>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00108">108</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
@@ -545,7 +545,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00082">82</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00024">elf_load()</a>, <a class="el" href="init_8c_source.html#l00225">i386_idle_task()</a>, <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, and <a class="el" href="syscall_8c_source.html#l00137">syscall_dispatch()</a>.</p>
+<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="init_8c_source.html#l00225">i386_idle_task()</a>, <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, and <a class="el" href="syscall_8c_source.html#l00137">syscall_dispatch()</a>.</p>
 
 </div>
 </div>
@@ -639,7 +639,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00086">86</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="vfs_8c_source.html#l01959">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l01759">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l02198">vfs_find_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01669">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l00922">vfs_rmdir()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="vfs_8c_source.html#l02278">vfs_chroot()</a>, <a class="el" href="vfs_8c_source.html#l02482">vfs_find_dirc()</a>, <a class="el" href="vfs_8c_source.html#l02305">vfs_find_dirc_parent()</a>, <a class="el" href="vfs_8c_source.html#l02708">vfs_find_symlink()</a>, <a class="el" href="vfs_8c_source.html#l02110">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01142">vfs_rmdir()</a>.</p>
 
 </div>
 </div>
@@ -797,7 +797,7 @@ Data Fields</h2></td></tr>
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00075">75</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="permissions_8c_source.html#l00025">get_gid()</a>, <a class="el" href="permissions_8c_source.html#l00015">get_uid()</a>, <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__perm_8c_source.html#l00024">sys_getuid()</a>, <a class="el" href="sc__process_8c_source.html#l00028">sys_kill()</a>, <a class="el" href="sc__perm_8c_source.html#l00044">sys_setuid()</a>, <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01265">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="permissions_8c_source.html#l00025">get_gid()</a>, <a class="el" href="permissions_8c_source.html#l00015">get_uid()</a>, <a class="el" href="process_8c_source.html#l00233">process_sig_pgrp_iterator()</a>, <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>, <a class="el" href="scheduler_8c_source.html#l00027">scheduler_init()</a>, <a class="el" href="sc__perm_8c_source.html#l00024">sys_getuid()</a>, <a class="el" href="sc__process_8c_source.html#l00028">sys_kill()</a>, <a class="el" href="sc__perm_8c_source.html#l00044">sys_setuid()</a>, <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -806,14 +806,14 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="types_8h.html#a9c3f71387fbe692469eeb314009d370d">umode_t</a> process_info::umask</td>
+          <td class="memname"><a class="el" href="types_8h.html#ae4587bcd75daf26533f8c83b430dc071">umode_t</a> process_info::umask</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="process_8h_source.html#l00088">88</a> of file <a class="el" href="process_8h_source.html">process.h</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00306">sys_umask()</a>, and <a class="el" href="vfs_8c_source.html#l01047">vfs_mknod()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00308">sys_umask()</a>, and <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>.</p>
 
 </div>
 </div>
@@ -890,7 +890,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structprocess__info.html">process_info</a></li>
-    <li class="footer">Generated on Sat Jul 12 2014 17:20:57 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 03:25:30 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

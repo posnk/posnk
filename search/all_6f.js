@@ -23,6 +23,7 @@ var searchData=
   ['onlcr',['ONLCR',['../termios_8h.html#a957436bc6db0a0d49b081dc9b4c98ef2',1,'termios.h']]],
   ['onlret',['ONLRET',['../termios_8h.html#a8fd17e0aa25ab2abd07477442ba1928e',1,'termios.h']]],
   ['open',['open',['../structtty__ops.html#a807323a5c5ee73cb3a862ad34da2286c',1,'tty_ops::open()'],['../structblk__ops.html#a19531c906184b5578ee5f46121b6e1f5',1,'blk_ops::open()']]],
+  ['open_5finodes',['open_inodes',['../vfs_8c.html#aa7af811e08e8e0cce05b3550cba5cfc3',1,'vfs.c']]],
   ['opost',['OPOST',['../termios_8h.html#a0aad4afe9e202fff8ced3485bc835bb1',1,'termios.h']]],
   ['ops',['ops',['../structchar__dev.html#af6b3c682c1f1a50bd31402c26e2dbe80',1,'char_dev::ops()'],['../structblk__dev.html#a98b3d7c2beead81666e7cc9d33582b75',1,'blk_dev::ops()'],['../structfs__device.html#adbc4d5914d59db84428c34b06a2e58cf',1,'fs_device::ops()']]],
   ['optional_5ffeatures',['optional_features',['../structext2__superblock.html#a6c2a787c6b105898d0882f5cc9ee1e3e',1,'ext2_superblock']]],

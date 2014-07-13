@@ -290,8 +290,8 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(process-&gt;<a class="code" href="structprocess__info.html#ab854c27b02b868f6836b6af3e502a7db">name</a>, <a class="code" href="config_8h.html#ad2246bce29a129c17db9f55140423deb">CONFIG_PROCESS_MAX_NAME_LENGTH</a>);</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="comment">//TODO: Free arch-state</span></div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="comment">//TODO: Free page-dir</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        process-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8" title="The number of times this dir_cache is referenced This is used for a basic form of garbage collection...">usage_count</a>--;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        process-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a>-&gt;<a class="code" href="structdir__cache.html#afc7d9daeb39adc90179cdfd2cc685ed8" title="The number of times this dir_cache is referenced This is used for a basic form of garbage collection...">usage_count</a>--;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="group__vfs.html#gab983aeeac1801fd1bac9c8074b2c4358" title="Release a reference to a directory cache entry.">vfs_dir_cache_release</a>(process-&gt;<a class="code" href="structprocess__info.html#a1aae59bc9cedbc4db868b75441002d33">root_directory</a>);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <a class="code" href="group__vfs.html#gab983aeeac1801fd1bac9c8074b2c4358" title="Release a reference to a directory cache entry.">vfs_dir_cache_release</a>(process-&gt;<a class="code" href="structprocess__info.html#a3948daa1c00d2cbdbf66f0bc15969b64">current_directory</a>);</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <a class="code" href="streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3">stream_do_close_all</a> (process);</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <a class="code" href="synch_8c.html#a71fb894454abc9d577dc05380e068dc6">semaphore_free</a>(process-&gt;<a class="code" href="structprocess__info.html#ab25abaa7dd2201c3df38acff5f4196aa">child_sema</a>);</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        </div>
@@ -437,7 +437,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Sat Jul 12 2014 17:20:56 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

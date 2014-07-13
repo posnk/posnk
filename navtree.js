@@ -36,17 +36,17 @@ var NAVTREEINDEX =
 "dirent_8h_source.html",
 "errno_8h.html#ae4d80808cd12a64d14a3da0d39cad443",
 "glib_8h.html#a62efb7c0c64a142a8a7e261cb5265c43",
-"i8042_8c.html",
-"isr__entry_8h.html#aaed5d171c5c09039f64ea39ac9c95577",
-"pci__list_8h.html#a09cfaf8246964380436bf1495ccb066b",
-"protection_8h.html#ab8fc7ad858baef79699378bb33d4d650",
-"stdlib_8c.html#a8d76f4c10a9a9158ffcb46c23656ab9d",
-"structdrivermgr__interface__driver.html#aa9af9ee5285a30e5ab4ecc2478d3124d",
-"structmultiboot__header.html#a53eb04681217e6c771486b8adb4c8265",
-"synch_8h.html#a12ea92c807fb336d8a26eefbf1412782",
-"termios_8h.html#a7696d3f5131e13fba7751bc568edb7a2",
-"vfs_8c.html#ga797ee30a843cc96fdb59db73fe97102d",
-"vterm__private_8h.html#a60e4d4633f95739d75a1954a80f56756"
+"heapmm_8h.html#a7c0a917d74eb74aa01007d83165dbfcb",
+"isr__entry_8h.html#a8e9689c78382dc4a00914de0a3047d85",
+"pci__intel__host_8h.html#a07e390a2fa8a016344cfed1848e3be01",
+"protection_8h.html#a992934ae9de777facacdc3fb3ae6d7f1",
+"stat_8h_source.html",
+"structdrivermgr__device__driver.html#ae55e68af63e7b064312d10b9c5a88de5",
+"structllist.html",
+"synch_8c.html#a71fb894454abc9d577dc05380e068dc6",
+"termios_8h.html#a6730af7a4424b34b8c495cea64004632",
+"vfs_8c.html#ga3b462cea173d8cd38ab8b46b98a159d7",
+"vterm__escape_8h.html#aa3b1349da344da63d8afbfd356d0e039"
 ];
 
 var navTreeSubIndices = new Array();

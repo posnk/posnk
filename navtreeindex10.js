@@ -1,5 +1,11 @@
 var NAVTREEINDEX10 =
 {
+"structdrivermgr__device__driver.html#ae55e68af63e7b064312d10b9c5a88de5":[7,0,17,4],
+"structdrivermgr__device__driver.html#af5364d7fa7319f0bd17c65f3fd1904c6":[7,0,17,3],
+"structdrivermgr__interface__driver.html":[7,0,18],
+"structdrivermgr__interface__driver.html#a01cb6ce2309d7406ae885413ec4ada2c":[7,0,18,0],
+"structdrivermgr__interface__driver.html#a4f5e0835c881bf72d083e62b340535d3":[7,0,18,4],
+"structdrivermgr__interface__driver.html#aa5189e3982a7444c01ebf881c01e3552":[7,0,18,1],
 "structdrivermgr__interface__driver.html#aa9af9ee5285a30e5ab4ecc2478d3124d":[7,0,18,3],
 "structdrivermgr__interface__driver.html#acd7c12ec4ecdf3b04530aa62d0787ffc":[7,0,18,2],
 "structelf__section__header__table.html":[7,0,22],
@@ -243,11 +249,5 @@ var NAVTREEINDEX10 =
 "structkdbgmm__block.html#a88658f0a0463ea4a654f9c55358c704a":[7,0,50,2],
 "structldiv__t.html":[7,0,51],
 "structldiv__t.html#a0f217ff62b8640aa945ec84d6d0bd000":[7,0,51,1],
-"structldiv__t.html#a73efd59c176304c327cb4214d0e5e5c9":[7,0,51,0],
-"structllist.html":[7,0,52],
-"structllist.html#a7cdde859dff5e26086dac3ed50b71d54":[7,0,52,1],
-"structllist.html#ab1d7b53af331a29defed621aa8f76507":[7,0,52,0],
-"structmultiboot__header.html":[7,0,53],
-"structmultiboot__header.html#a323f1b9b81159e684a851402f0c75381":[7,0,53,3],
-"structmultiboot__header.html#a3581a47c4ab86b54fb9f051ed1ed4bb0":[7,0,53,2]
+"structldiv__t.html#a73efd59c176304c327cb4214d0e5e5c9":[7,0,51,0]
 };

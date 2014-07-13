@@ -327,7 +327,6 @@ var searchData=
   ['info',['info',['../structstream__ptr.html#a599d48e5ab08f254e84ef49dd513629a',1,'stream_ptr']]],
   ['init_2ec',['init.c',['../init_8c.html',1,'']]],
   ['inlcr',['INLCR',['../termios_8h.html#acc6dc46be5104b67ffde1df93549472a',1,'termios.h']]],
-  ['ino',['ino',['../vfs_8c.html#a19a005ef12962664653b556b40f84906',1,'vfs.c']]],
   ['ino_5ft',['ino_t',['../types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9',1,'types.h']]],
   ['inode',['inode',['../structinode.html',1,'inode'],['../structext2__dirent.html#aae1f38e3cd1b7394cafe80b9bb6d02f1',1,'ext2_dirent::inode()'],['../structext2__vinode.html#a1a46dc8515ab3563f6ef44b2ea66a8ba',1,'ext2_vinode::inode()'],['../structramfs__inode.html#a33532fc6d0ec5e66b6f09a9adfc91cfc',1,'ramfs_inode::inode()'],['../structramfs__block.html#a1376ac61b0e680203fc511a8b1a4161b',1,'ramfs_block::inode()'],['../structstream__info.html#a5decda0a8d0fc9d61740d0fd08b08519',1,'stream_info::inode()'],['../structdir__cache.html#ae99f6d96eeb40ed8ed3b92aed7684d8b',1,'dir_cache::inode()']]],
   ['inode_5fbitmap',['inode_bitmap',['../structext2__block__group__desc.html#af4c50377af98f5f9d93c7f412315303d',1,'ext2_block_group_desc']]],

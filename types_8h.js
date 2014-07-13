@@ -16,7 +16,7 @@ var types_8h =
     [ "dev_t", "types_8h.html#a31acaaf3092d869de3b5e34d11695520", null ],
     [ "gid_t", "types_8h.html#a3a7834be1a79bb0c5a65d3546c2e3bd8", null ],
     [ "ino_t", "types_8h.html#ab61b14ba26feb6e4f530bd8ae521e2c9", null ],
-    [ "mode_t", "types_8h.html#a51b5bca3280ca743227e9b07c4f839a1", null ],
+    [ "mode_t", "types_8h.html#a161c505f18322d8ce974064784be272a", null ],
     [ "nlink_t", "types_8h.html#a952c84a825bb4f319cf55c9afb99ee0e", null ],
     [ "off_t", "types_8h.html#af83497edef361523a95b06deda0b4c2d", null ],
     [ "pid_t", "types_8h.html#a288e13e815d43b06e75819f8939524df", null ],
@@ -26,6 +26,6 @@ var types_8h =
     [ "time_t", "types_8h.html#a824afaa48b313f905546cf45822800fc", null ],
     [ "u_char", "types_8h.html#ae2b02ed168fc99cff3851603910b1fb6", null ],
     [ "uid_t", "types_8h.html#a75bb141dc55bc89a8ddc565fd374e3d9", null ],
-    [ "umode_t", "types_8h.html#a9c3f71387fbe692469eeb314009d370d", null ],
+    [ "umode_t", "types_8h.html#ae4587bcd75daf26533f8c83b430dc071", null ],
     [ "ushort", "types_8h.html#ab95f123a6c9bcfee6a343170ef8c5f69", null ]
 ];
