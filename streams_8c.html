@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -108,6 +109,9 @@ $(document).ready(function(){initNavTree('streams_8c.html','');});
 <div class="title">streams.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Implements the UNIX file API ( fd streams )  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="syscall_8h_source.html">kernel/syscall.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="streams_8h_source.html">kernel/streams.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="scheduler_8h_source.html">kernel/scheduler.h</a>&quot;</code><br/>
@@ -130,16 +134,25 @@ $(document).ready(function(){initNavTree('streams_8c.html','');});
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aeeee7624410f1f022ad880a74489c6b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#aeeee7624410f1f022ad880a74489c6b8">stream_ptr_search_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
-<tr class="memdesc:aeeee7624410f1f022ad880a74489c6b8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="streams_8c.html">kernel/streams.c</a>  <a href="#aeeee7624410f1f022ad880a74489c6b8"></a><br/></td></tr>
+<tr class="memdesc:aeeee7624410f1f022ad880a74489c6b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator to test if stream pointer matches the fd.  <a href="#aeeee7624410f1f022ad880a74489c6b8"></a><br/></td></tr>
 <tr class="memitem:af7737838e38167fe9a767f8e232b4fd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="streams_8h.html#a00b145c81011f4c4048f717a61aa6cc1">stream_ptr_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#af7737838e38167fe9a767f8e232b4fd7">stream_get_ptr</a> (int fd)</td></tr>
+<tr class="memdesc:af7737838e38167fe9a767f8e232b4fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stream pointer object for a file number.  <a href="#af7737838e38167fe9a767f8e232b4fd7"></a><br/></td></tr>
 <tr class="memitem:a3d159f64d97eb54699c85af7255727ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="streams_8h.html#a00b145c81011f4c4048f717a61aa6cc1">stream_ptr_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a3d159f64d97eb54699c85af7255727ca">stream_get_ptr_o</a> (<a class="el" href="process_8h.html#aba6f35930ecff1efae67096dfaa95185">process_info_t</a> *process, int fd)</td></tr>
+<tr class="memdesc:a3d159f64d97eb54699c85af7255727ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the stream pointer object for a file number on a different process.  <a href="#a3d159f64d97eb54699c85af7255727ca"></a><br/></td></tr>
 <tr class="memitem:aa3106e5fbaa22fcc1be4d34082210937"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#aa3106e5fbaa22fcc1be4d34082210937">stream_ptr_copy_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
+<tr class="memdesc:aa3106e5fbaa22fcc1be4d34082210937"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list iterator that copies a process's open fds.  <a href="#aa3106e5fbaa22fcc1be4d34082210937"></a><br/></td></tr>
 <tr class="memitem:a93aae19238feb7665dd30c2dccf2e8ba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba">stream_copy_fd_table</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *target)</td></tr>
+<tr class="memdesc:a93aae19238feb7665dd30c2dccf2e8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the current process's stream ptr table to target.  <a href="#a93aae19238feb7665dd30c2dccf2e8ba"></a><br/></td></tr>
 <tr class="memitem:ab264f86ce9b3c8adb5eb3ec55b4e643d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#ab264f86ce9b3c8adb5eb3ec55b4e643d">stream_exec_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
+<tr class="memdesc:ab264f86ce9b3c8adb5eb3ec55b4e643d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linked list iterator that finds stream ptrs that are to be closed on execution of a new image.  <a href="#ab264f86ce9b3c8adb5eb3ec55b4e643d"></a><br/></td></tr>
 <tr class="memitem:aa17c760186bd4ebee3bd6bc632279154"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#aa17c760186bd4ebee3bd6bc632279154">stream_do_close_on_exec</a> ()</td></tr>
+<tr class="memdesc:aa17c760186bd4ebee3bd6bc632279154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the stream ptrs that are to be closed on execute.  <a href="#aa17c760186bd4ebee3bd6bc632279154"></a><br/></td></tr>
 <tr class="memitem:a7f7163659cc3ed18fb77ba36481fd6c5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a7f7163659cc3ed18fb77ba36481fd6c5">stream_closeall_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
+<tr class="memdesc:a7f7163659cc3ed18fb77ba36481fd6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator that will select all closeable stream pointers.  <a href="#a7f7163659cc3ed18fb77ba36481fd6c5"></a><br/></td></tr>
 <tr class="memitem:ab0711d48a143596389ab19b99fbcd3b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3">stream_do_close_all</a> (<a class="el" href="process_8h.html#aba6f35930ecff1efae67096dfaa95185">process_info_t</a> *process)</td></tr>
+<tr class="memdesc:ab0711d48a143596389ab19b99fbcd3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close all stream pointers for a process.  <a href="#ab0711d48a143596389ab19b99fbcd3b3"></a><br/></td></tr>
 <tr class="memitem:afa8fdc21fe4e1a47a3be2c913d080808"><td class="memItemLeft" align="right" valign="top"><a class="el" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808">_sys_getdents</a> (int fd, void *buffer, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> count)</td></tr>
+<tr class="memdesc:afa8fdc21fe4e1a47a3be2c913d080808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get directory entries.  <a href="#afa8fdc21fe4e1a47a3be2c913d080808"></a><br/></td></tr>
 <tr class="memitem:ac8134168213829dab4254391fe4a548f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#ac8134168213829dab4254391fe4a548f">_sys_read</a> (int fd, void *buffer, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> count)</td></tr>
 <tr class="memitem:a3f81816bbc345cfe6320c92a67e48627"><td class="memItemLeft" align="right" valign="top"><a class="el" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a3f81816bbc345cfe6320c92a67e48627">_sys_write</a> (int fd, void *buffer, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> count)</td></tr>
 <tr class="memitem:acd4a9d7be01e07112dcec50116bcc482"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#acd4a9d7be01e07112dcec50116bcc482">_sys_ftruncate</a> (int fd, <a class="el" href="types_8h.html#af83497edef361523a95b06deda0b4c2d">off_t</a> size)</td></tr>
@@ -157,7 +170,21 @@ Functions</h2></td></tr>
 <tr class="memitem:a53ce56639070e380089a734e16f15830"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a53ce56639070e380089a734e16f15830">_sys_close</a> (int fd)</td></tr>
 <tr class="memitem:a700324ff2a13ba0eabe1b0a8dd6acc49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a> (<a class="el" href="process_8h.html#aba6f35930ecff1efae67096dfaa95185">process_info_t</a> *process, int fd)</td></tr>
 </table>
-<h2>Function Documentation</h2>
+<a name="details" id="details"></a><h2>Detailed Description</h2>
+<div class="textblock"><p>Implements the UNIX file API ( fd streams ) </p>
+<p>Slightly different terminology is used here:</p>
+<p>UNIX - POSNK </p>
+<ul>
+<li>File description - stream info </li>
+<li>File descriptor - stream pointer </li>
+<li>File (opened) - stream</li>
+</ul>
+<p>Part of P-OS kernel.</p>
+<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
+<p>Changelog: 20-04-2014 - Created </p>
+
+<p>Definition in file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+</div><h2>Function Documentation</h2>
 <a class="anchor" id="a53ce56639070e380089a734e16f15830"></a>
 <div class="memitem">
 <div class="memproto">
@@ -172,11 +199,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00674">674</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00807">807</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="streams_8c_source.html#l00679">_sys_close_int()</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+<p>References <a class="el" href="streams_8c_source.html#l00812">_sys_close_int()</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00073">stream_do_close_on_exec()</a>, and <a class="el" href="sc__streams_8c_source.html#l00106">sys_close()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00592">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00150">stream_do_close_on_exec()</a>, and <a class="el" href="sc__streams_8c_source.html#l00106">sys_close()</a>.</p>
 
 </div>
 </div>
@@ -206,11 +233,11 @@ Functions</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000067">Todo:</a></b></dt><dd>: Handle result </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000068">Todo:</a></b></dt><dd>: Handle result </dd></dl>
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00679">679</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00812">812</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="blkdev_8c_source.html#l00169">device_block_close()</a>, <a class="el" href="chardev_8c_source.html#l00056">device_char_close()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00069">pipe_close_read()</a>, <a class="el" href="pipe_8c_source.html#l00077">pipe_close_write()</a>, <a class="el" href="pipe_8c_source.html#l00048">pipe_free()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8c_source.html#l00040">stream_get_ptr_o()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
+<p>References <a class="el" href="blkdev_8c_source.html#l00169">device_block_close()</a>, <a class="el" href="chardev_8c_source.html#l00056">device_char_close()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00069">pipe_close_read()</a>, <a class="el" href="pipe_8c_source.html#l00077">pipe_close_write()</a>, <a class="el" href="pipe_8c_source.html#l00048">pipe_free()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8c_source.html#l00066">stream_get_ptr_o()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00674">_sys_close()</a>, and <a class="el" href="streams_8c_source.html#l00086">stream_do_close_all()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00807">_sys_close()</a>, and <a class="el" href="streams_8c_source.html#l00173">stream_do_close_all()</a>.</p>
 
 </div>
 </div>
@@ -228,11 +255,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00489">489</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00622">622</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_ctr</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+<p>References <a class="el" href="streams_8c_source.html#l00592">_sys_dup2()</a>, <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00409">_sys_fcntl()</a>, <a class="el" href="init_8c_source.html#l00198">i386_init_stub()</a>, and <a class="el" href="sc__streams_8c_source.html#l00080">sys_dup()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00542">_sys_fcntl()</a>, <a class="el" href="init_8c_source.html#l00198">i386_init_stub()</a>, and <a class="el" href="sc__streams_8c_source.html#l00080">sys_dup()</a>.</p>
 
 </div>
 </div>
@@ -260,11 +287,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00459">459</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00592">592</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="streams_8c_source.html#l00674">_sys_close()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00027">EMFILE</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="streams_8c_source.html#l00807">_sys_close()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00027">EMFILE</a>, <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00489">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00409">_sys_fcntl()</a>, and <a class="el" href="sc__streams_8c_source.html#l00074">sys_dup2()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00622">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00542">_sys_fcntl()</a>, and <a class="el" href="sc__streams_8c_source.html#l00074">sys_dup2()</a>.</p>
 
 </div>
 </div>
@@ -282,9 +309,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00321">321</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00454">454</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="streams_8h_source.html#l00040">stream_info::dirc</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l02254">vfs_chdir()</a>.</p>
+<p>References <a class="el" href="streams_8h_source.html#l00040">stream_info::dirc</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l02256">vfs_chdir()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00023">sys_fchdir()</a>.</p>
 
@@ -314,9 +341,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00363">363</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00496">496</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00020">get_effective_uid()</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00020">get_effective_uid()</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00030">sys_fchmod()</a>.</p>
 
@@ -352,9 +379,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00385">385</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00518">518</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="permissions_8h_source.html#l00020">PERM_CLASS_GROUP</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00004">EPERM</a>, <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="permissions_8h_source.html#l00020">PERM_CLASS_GROUP</a>, <a class="el" href="permissions_8h_source.html#l00019">PERM_CLASS_OWNER</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00036">sys_fchown()</a>.</p>
 
@@ -390,9 +417,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00409">409</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00542">542</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="streams_8c_source.html#l00489">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="fcntl_8h_source.html#l00050">F_DUPFD</a>, <a class="el" href="fcntl_8h_source.html#l00051">F_GETFD</a>, <a class="el" href="fcntl_8h_source.html#l00053">F_GETFL</a>, <a class="el" href="fcntl_8h_source.html#l00052">F_SETFD</a>, <a class="el" href="fcntl_8h_source.html#l00054">F_SETFL</a>, <a class="el" href="fcntl_8h_source.html#l00048">FASYNC</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="fcntl_8h_source.html#l00026">O_APPEND</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+<p>References <a class="el" href="streams_8c_source.html#l00622">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l00592">_sys_dup2()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="fcntl_8h_source.html#l00050">F_DUPFD</a>, <a class="el" href="fcntl_8h_source.html#l00051">F_GETFD</a>, <a class="el" href="fcntl_8h_source.html#l00053">F_GETFL</a>, <a class="el" href="fcntl_8h_source.html#l00052">F_SETFD</a>, <a class="el" href="fcntl_8h_source.html#l00054">F_SETFL</a>, <a class="el" href="fcntl_8h_source.html#l00048">FASYNC</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="fcntl_8h_source.html#l00026">O_APPEND</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00042">sys_fcntl()</a>.</p>
 
@@ -425,9 +452,9 @@ Functions</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000061">Todo:</a></b></dt><dd>: Implement sparse files </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000062">Todo:</a></b></dt><dd>: Ask FS about block size </dd></dl>
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00336">336</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00469">469</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00122">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00124">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00124">inode::atime</a>, <a class="el" href="vfs_8h_source.html#l00128">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="stat_8h_source.html#l00015">stat::st_atime</a>, <a class="el" href="stat_8h_source.html#l00017">stat::st_ctime</a>, <a class="el" href="stat_8h_source.html#l00007">stat::st_dev</a>, <a class="el" href="stat_8h_source.html#l00012">stat::st_gid</a>, <a class="el" href="stat_8h_source.html#l00008">stat::st_ino</a>, <a class="el" href="stat_8h_source.html#l00009">stat::st_mode</a>, <a class="el" href="stat_8h_source.html#l00016">stat::st_mtime</a>, <a class="el" href="stat_8h_source.html#l00010">stat::st_nlink</a>, <a class="el" href="stat_8h_source.html#l00013">stat::st_rdev</a>, <a class="el" href="stat_8h_source.html#l00014">stat::st_size</a>, <a class="el" href="stat_8h_source.html#l00011">stat::st_uid</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00054">sys_fstat()</a>.</p>
 
@@ -457,9 +484,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00237">237</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00370">370</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l01043">vfs_truncate()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00206">sys_ftruncate()</a>.</p>
 
@@ -495,9 +522,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00098">98</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Get directory entries. </p>
+<p>This function implements the getdents(2) system call It will read as many <em>whole</em> dirent's as will fit in count, no partial dirents will be read. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fd</td><td>The directory stream to read from </td></tr>
+    <tr><td class="paramname">buffer</td><td>The buffer to store the dirents in </td></tr>
+    <tr><td class="paramname">count</td><td>The number of bytes to read </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of bytes actually read or -1 in case of error  EBADF fd does not refer to an open file stream  EINVAL fd was not opened with READ access mode  ENOTDIR fd does not refer to a directory stream  EFAULT At least one of the parameters was a null pointer </dd></dl>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="group__vfs.html#ga94b66b2d752c243c35894d6655626566" title="Read directory entries.">vfs_getdents</a> for other errors that might occur </dd></dl>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00932">vfs_getdents()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00203">203</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00138">sys_getdents()</a>.</p>
 
@@ -533,9 +573,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00438">438</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00571">571</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="blkdev_8c_source.html#l00143">device_block_ioctl()</a>, <a class="el" href="chardev_8c_source.html#l00036">device_char_ioctl()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00028">ENOTTY</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
+<p>References <a class="el" href="blkdev_8c_source.html#l00143">device_block_ioctl()</a>, <a class="el" href="chardev_8c_source.html#l00036">device_char_ioctl()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00028">ENOTTY</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00048">sys_ioctl()</a>.</p>
 
@@ -571,9 +611,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00270">270</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00403">403</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00032">ESPIPE</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="unistd_8h_source.html#l00009">SEEK_CUR</a>, <a class="el" href="unistd_8h_source.html#l00010">SEEK_END</a>, <a class="el" href="unistd_8h_source.html#l00008">SEEK_SET</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00032">ESPIPE</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="unistd_8h_source.html#l00009">SEEK_CUR</a>, <a class="el" href="unistd_8h_source.html#l00010">SEEK_END</a>, <a class="el" href="unistd_8h_source.html#l00008">SEEK_SET</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00200">sys_lseek()</a>.</p>
 
@@ -613,9 +653,9 @@ Functions</h2></td></tr>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000065">Todo:</a></b></dt><dd>: Handle result </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000066">Todo:</a></b></dt><dd>: Handle result </dd></dl>
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00585">585</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00718">718</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="blkdev_8c_source.html#l00156">device_block_open()</a>, <a class="el" href="chardev_8c_source.html#l00046">device_char_open()</a>, <a class="el" href="streams_8h_source.html#l00040">stream_info::dirc</a>, <a class="el" href="errno_8h_source.html#l00019">EBUSY</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="fcntl_8h_source.html#l00039">FD_CLOEXEC</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::inode</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00026">O_APPEND</a>, <a class="el" href="fcntl_8h_source.html#l00036">O_CLOEXEC</a>, <a class="el" href="fcntl_8h_source.html#l00027">O_CREAT</a>, <a class="el" href="fcntl_8h_source.html#l00029">O_EXCL</a>, <a class="el" href="fcntl_8h_source.html#l00031">O_NDELAY</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00028">O_TRUNC</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>, <a class="el" href="vfs_8c_source.html#l02482">vfs_find_dirc()</a>, and <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>.</p>
+<p>References <a class="el" href="blkdev_8c_source.html#l00156">device_block_open()</a>, <a class="el" href="chardev_8c_source.html#l00046">device_char_open()</a>, <a class="el" href="streams_8h_source.html#l00040">stream_info::dirc</a>, <a class="el" href="errno_8h_source.html#l00019">EBUSY</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="fcntl_8h_source.html#l00039">FD_CLOEXEC</a>, <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="vfs_8h_source.html#l00157">dir_cache::inode</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00026">O_APPEND</a>, <a class="el" href="fcntl_8h_source.html#l00036">O_CLOEXEC</a>, <a class="el" href="fcntl_8h_source.html#l00027">O_CREAT</a>, <a class="el" href="fcntl_8h_source.html#l00029">O_EXCL</a>, <a class="el" href="fcntl_8h_source.html#l00031">O_NDELAY</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00028">O_TRUNC</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="stat_8h_source.html#l00044">S_ISBLK</a>, <a class="el" href="stat_8h_source.html#l00043">S_ISCHR</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>, <a class="el" href="vfs_8c_source.html#l02484">vfs_find_dirc()</a>, and <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>.</p>
 
 <p>Referenced by <a class="el" href="init_8c_source.html#l00198">i386_init_stub()</a>, and <a class="el" href="sc__streams_8c_source.html#l00086">sys_open()</a>.</p>
 
@@ -645,9 +685,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00494">494</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00627">627</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="pipe_8c_source.html#l00048">pipe_free()</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00075">semaphore_free()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="pipe_8c_source.html#l00048">pipe_free()</a>, <a class="el" href="pipe_8c_source.html#l00059">pipe_open_read()</a>, <a class="el" href="pipe_8c_source.html#l00064">pipe_open_write()</a>, <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00075">semaphore_free()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, and <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00125">sys_pipe()</a>, and <a class="el" href="sc__streams_8c_source.html#l00112">sys_pipe2()</a>.</p>
 
@@ -683,9 +723,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00142">142</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00275">275</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00035">EPIPE</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00121">pipe_read()</a>, <a class="el" href="process_8c_source.html#l00063">process_send_signal()</a>, <a class="el" href="stat_8h_source.html#l00041">S_ISREG</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="signals_8h_source.html#l00031">SIGPIPE</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00760">vfs_read()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00035">EPIPE</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00024">O_WRONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00121">pipe_read()</a>, <a class="el" href="process_8c_source.html#l00063">process_send_signal()</a>, <a class="el" href="stat_8h_source.html#l00041">S_ISREG</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="signals_8h_source.html#l00031">SIGPIPE</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00159">sys_read()</a>.</p>
 
@@ -721,9 +761,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00192">192</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00325">325</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00035">EPIPE</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="process_8c_source.html#l00063">process_send_signal()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="signals_8h_source.html#l00031">SIGPIPE</a>, <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00553">vfs_write()</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00035">EPIPE</a>, <a class="el" href="streams_8h_source.html#l00037">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00039">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00041">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00033">O_NONBLOCK</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="streams_8h_source.html#l00038">stream_info::offset</a>, <a class="el" href="streams_8h_source.html#l00042">stream_info::pipe</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="process_8c_source.html#l00063">process_send_signal()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="signals_8h_source.html#l00031">SIGPIPE</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00019">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00020">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00035">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00180">sys_write()</a>.</p>
 
@@ -753,9 +793,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00081">81</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Iterator that will select all closeable stream pointers. </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether the stream is closeable </dd></dl>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00086">stream_do_close_all()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00164">164</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00173">stream_do_close_all()</a>.</p>
 
 </div>
 </div>
@@ -773,9 +816,19 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00062">62</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Copy the current process's stream ptr table to target. </p>
+<p>The copied stream ptrs will point to the same stream info and the pointer flags will not be copied. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The head of the linked list to store the copies in </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if successful </dd></dl>
 
-<p>References <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00045">stream_ptr_copy_iterator()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00121">121</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00082">stream_ptr_copy_iterator()</a>.</p>
 
 <p>Referenced by <a class="el" href="scheduler_8c_source.html#l00066">scheduler_fork()</a>.</p>
 
@@ -795,9 +848,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00086">86</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Close all stream pointers for a process. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process to close the pointers for </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>References <a class="el" href="streams_8c_source.html#l00679">_sys_close_int()</a>, <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, and <a class="el" href="streams_8c_source.html#l00081">stream_closeall_iterator()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00173">173</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>References <a class="el" href="streams_8c_source.html#l00812">_sys_close_int()</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, and <a class="el" href="streams_8c_source.html#l00164">stream_closeall_iterator()</a>.</p>
 
 <p>Referenced by <a class="el" href="process_8c_source.html#l00193">process_reap()</a>.</p>
 
@@ -816,11 +877,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00073">73</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Close the stream ptrs that are to be closed on execute. </p>
+<dl class="section see"><dt>See Also</dt><dd><a class="el" href="streams_8c.html#ab264f86ce9b3c8adb5eb3ec55b4e643d" title="Linked list iterator that finds stream ptrs that are to be closed on execution of a new image...">stream_exec_iterator</a> </dd></dl>
 
-<p>References <a class="el" href="streams_8c_source.html#l00674">_sys_close()</a>, <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00067">stream_exec_iterator()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00150">150</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00268">process_exec()</a>.</p>
+<p>References <a class="el" href="streams_8c_source.html#l00807">_sys_close()</a>, <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00138">stream_exec_iterator()</a>.</p>
+
+<p>Referenced by <a class="el" href="process_8c_source.html#l00274">process_exec()</a>.</p>
 
 </div>
 </div>
@@ -848,11 +912,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00067">67</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Linked list iterator that finds stream ptrs that are to be closed on execution of a new image. </p>
+<p>Whether or not this is the case is determined by the pointer flag FD_CLOEXEC</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>The pointer to test </td></tr>
+    <tr><td class="paramname">param</td><td>UNUSED </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether this ptr is to be closed on exec </dd></dl>
+
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00138">138</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
 <p>References <a class="el" href="fcntl_8h_source.html#l00039">FD_CLOEXEC</a>, and <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00073">stream_do_close_on_exec()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00150">stream_do_close_on_exec()</a>.</p>
 
 </div>
 </div>
@@ -870,11 +945,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00035">35</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Get the stream pointer object for a file number. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fd</td><td>The open file number to look up </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The stream pointer or NULL if fd is invalid </dd></dl>
 
-<p>References <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00028">stream_ptr_search_iterator()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00052">52</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00459">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00321">_sys_fchdir()</a>, <a class="el" href="streams_8c_source.html#l00363">_sys_fchmod()</a>, <a class="el" href="streams_8c_source.html#l00385">_sys_fchown()</a>, <a class="el" href="streams_8c_source.html#l00409">_sys_fcntl()</a>, <a class="el" href="streams_8c_source.html#l00336">_sys_fstat()</a>, <a class="el" href="streams_8c_source.html#l00237">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00098">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00438">_sys_ioctl()</a>, <a class="el" href="streams_8c_source.html#l00270">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00142">_sys_read()</a>, and <a class="el" href="streams_8c_source.html#l00192">_sys_write()</a>.</p>
+<p>References <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_ptr_search_iterator()</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00592">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00454">_sys_fchdir()</a>, <a class="el" href="streams_8c_source.html#l00496">_sys_fchmod()</a>, <a class="el" href="streams_8c_source.html#l00518">_sys_fchown()</a>, <a class="el" href="streams_8c_source.html#l00542">_sys_fcntl()</a>, <a class="el" href="streams_8c_source.html#l00469">_sys_fstat()</a>, <a class="el" href="streams_8c_source.html#l00370">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00203">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l00571">_sys_ioctl()</a>, <a class="el" href="streams_8c_source.html#l00403">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l00275">_sys_read()</a>, and <a class="el" href="streams_8c_source.html#l00325">_sys_write()</a>.</p>
 
 </div>
 </div>
@@ -902,11 +986,21 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00040">40</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Get the stream pointer object for a file number on a different process. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">process</td><td>The process context to use when looking up the stream pointer </td></tr>
+    <tr><td class="paramname">fd</td><td>The open file number to look up </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The stream pointer or NULL if fd is invalid </dd></dl>
 
-<p>References <a class="el" href="process_8h_source.html#l00091">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, and <a class="el" href="streams_8c_source.html#l00028">stream_ptr_search_iterator()</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00066">66</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00679">_sys_close_int()</a>.</p>
+<p>References <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_ptr_search_iterator()</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00812">_sys_close_int()</a>.</p>
 
 </div>
 </div>
@@ -934,11 +1028,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00045">45</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Linked list iterator that copies a process's open fds. </p>
+<p>This iterator will create a new stream pointer for each fd it is called on that refers to the same stream info </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">node</td><td>The linked list node we are called on (must be a stream_ptr_t *) </td></tr>
+    <tr><td class="paramname">param</td><td>The parameter for this iterator (must be a llist_t *head) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether to select this item, will always be 0 incase of success </dd></dl>
+
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00082">82</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
 <p>References <a class="el" href="streams_8h_source.html#l00029">stream_ptr::fd_flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>, <a class="el" href="streams_8h_source.html#l00031">stream_ptr::info</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, and <a class="el" href="streams_8h_source.html#l00036">stream_info::ref_count</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00062">stream_copy_fd_table()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00121">stream_copy_fd_table()</a>.</p>
 
 </div>
 </div>
@@ -966,16 +1071,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="streams_8c.html">kernel/streams.c</a> </p>
-<p>Part of P-OS kernel.</p>
-<p>Written by Peter Bosch <a href="#" onclick="location.href='mai'+'lto:'+'pet'+'er'+'bos'+'c@'+'gma'+'il'+'.co'+'m'; return false;">peter<span style="display: none;">.nosp@m.</span>bosc<span style="display: none;">.nosp@m.</span>@gmai<span style="display: none;">.nosp@m.</span>l.co<span style="display: none;">.nosp@m.</span>m</a></p>
-<p>Changelog: 20-04-2014 - Created </p>
+<p>Iterator to test if stream pointer matches the fd. </p>
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00028">28</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00040">40</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
 <p>References <a class="el" href="streams_8h_source.html#l00028">stream_ptr::id</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00035">stream_get_ptr()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_get_ptr_o()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, and <a class="el" href="streams_8c_source.html#l00066">stream_get_ptr_o()</a>.</p>
 
 </div>
 </div>
@@ -985,7 +1087,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="streams_8c.html">streams.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -192,6 +193,8 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>: Implement  </dd>
 <dt><a class="anchor" id="_todo000109"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a04a5e66c956ee3c8635a0f89794c3bdd">i386_set_pd_param_t</a>  </dt>
 <dd>: Implement  </dd>
+<dt><a class="anchor" id="_todo000080"></a>Global <a class="el" href="vfs_8c.html#a4ce92837aa1da333980c953e88e1529a">inode_cache</a>  </dt>
+<dd>: Implement a proper inode cache  </dd>
 <dt><a class="anchor" id="_todo000112"></a>Global <a class="el" href="kdbg_8c.html#a2f4b7bc9171dc7062dc98c3fd034b5ea">kdbg_initialize</a>  ()</dt>
 <dd>: PANIC!!!  </dd>
 <dt><a class="anchor" id="_todo000120"></a>Global <a class="el" href="kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d">kdbgmm_alloc_internal</a>  (size_t size, int morecore)</dt>
@@ -218,8 +221,6 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dd>
 <dt><a class="anchor" id="_todo000129"></a>Global <a class="el" href="llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3">llist_add_end</a>  (llist_t *list, llist_t *entry)</dt>
 <dd>: Maybe add some checks here  </dd>
-<dt><a class="anchor" id="_todo000080"></a>Global <a class="el" href="vfs_8c.html#aa7af811e08e8e0cce05b3550cba5cfc3">open_inodes</a>  </dt>
-<dd>: Make this an MRU cache  </dd>
 <dt><a class="anchor" id="_todo000130"></a>Global <a class="el" href="structpage__dir.html#a3c27bca311f44ca8d2cde53ba5be72b1">page_dir::content</a>  </dt>
 <dd>: Determine what else to add here  </dd>
 <dt><a class="anchor" id="_todo000026"></a>Global <a class="el" href="kernel_2paging_8c.html#a50c93659e1da8c77ece658e76e8b2340">paging_handle_fault</a>  (void *virt_addr, void *instr_ptr, void *state, size_t state_size, int present, int write, int user)</dt>
@@ -246,8 +247,6 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>: Handle this shit...  </dd>
 <dt><a class="anchor" id="_todo000042"></a>Global <a class="el" href="process_8c.html#afa7d5b48a5af38f1ec8c956f0ff06ca2">process_exec</a>  (char *path, char **args, char **envs)</dt>
 <dd>: Verify arg and env list sizes  </dd>
-<dt><a class="anchor" id="_todo000131"></a>Global <a class="el" href="structprocess__info.html#a729d1c545dcca0ff2cc6fab1d5450175">process_info::memory_map</a>  </dt>
-<dd>: Add dynamic linker memory info here  </dd>
 <dt><a class="anchor" id="_todo000039"></a>Global <a class="el" href="process_8c.html#a56d94c42949472740bd7d4fba4dcb055">process_reap</a>  (process_info_t *process)</dt>
 <dd><p class="startdd">: Implement </p>
 <p>: Free arch-state </p>
@@ -272,7 +271,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd><p class="startdd">: Signal timeout </p>
 <p class="enddd">: Signal timeout  </p>
 </dd>
-<dt><a class="anchor" id="_todo000132"></a>Global <a class="el" href="signals_8h.html#a136c64ec2d1306de745e39d6aee362ca">SIGHUP</a>  </dt>
+<dt><a class="anchor" id="_todo000131"></a>Global <a class="el" href="signals_8h.html#a136c64ec2d1306de745e39d6aee362ca">SIGHUP</a>  </dt>
 <dd>: Rewrite signals code to be POSIX compliant !  </dd>
 <dt><a class="anchor" id="_todo000045"></a>Global <a class="el" href="sc__process_8c.html#a9059e3c677a78bbfa5a12368ea6a604a">sys_kill</a>  (uint32_t param[4], uint32_t param_size[4])</dt>
 <dd>: Implement kill all system processes  </dd>
@@ -335,7 +334,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:30 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

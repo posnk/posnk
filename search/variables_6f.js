@@ -4,6 +4,7 @@ var searchData=
   ['offsethi',['offsetHi',['../structidt__descriptor__s.html#a907ba7c9b137046558e372c3c0d64374',1,'idt_descriptor_s::offsetHi()'],['../structi386__idt__descriptor.html#a83da8d4b85272a941b1e249090f484ec',1,'i386_idt_descriptor::offsetHi()']]],
   ['offsetlo',['offsetLo',['../structidt__descriptor__s.html#a4490c85dde426fa0ec0e2110cfd45369',1,'idt_descriptor_s::offsetLo()'],['../structi386__idt__descriptor.html#a6c1a773ac28afe1320cf61f24de6803a',1,'i386_idt_descriptor::offsetLo()']]],
   ['open',['open',['../structtty__ops.html#a807323a5c5ee73cb3a862ad34da2286c',1,'tty_ops::open()'],['../structblk__ops.html#a19531c906184b5578ee5f46121b6e1f5',1,'blk_ops::open()']]],
+  ['open_5fcount',['open_count',['../structinode.html#a4887e57edc2d19fe1dc38f49d78224ef',1,'inode']]],
   ['open_5finodes',['open_inodes',['../vfs_8c.html#aa7af811e08e8e0cce05b3550cba5cfc3',1,'vfs.c']]],
   ['ops',['ops',['../structchar__dev.html#af6b3c682c1f1a50bd31402c26e2dbe80',1,'char_dev::ops()'],['../structblk__dev.html#a98b3d7c2beead81666e7cc9d33582b75',1,'blk_dev::ops()'],['../structfs__device.html#adbc4d5914d59db84428c34b06a2e58cf',1,'fs_device::ops()']]],
   ['optional_5ffeatures',['optional_features',['../structext2__superblock.html#a6c2a787c6b105898d0882f5cc9ee1e3e',1,'ext2_superblock']]],

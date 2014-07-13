@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -253,7 +254,7 @@ $(document).ready(function(){initNavTree('sc__streams_8c_source.html','');});
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                <span class="keywordflow">return</span> (uint32_t) -1;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        }</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <a class="code" href="string_8c.html#a4cb469bec7b722064b97a406346acb61">memset</a>(buf, 0, param[2]);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        status = <a class="code" href="streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808">_sys_getdents</a>((<span class="keywordtype">int</span>) param[0], buf, (<span class="keywordtype">size_t</span>) param[2]);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        status = <a class="code" href="streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808" title="Get directory entries.">_sys_getdents</a>((<span class="keywordtype">int</span>) param[0], buf, (<span class="keywordtype">size_t</span>) param[2]);</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="syscall_8c.html#adfd74f44e7ab11ebf4f305edc0259ef2">copy_kern_to_user</a>(buf, (<span class="keywordtype">void</span> *)param[1], param[2])) {</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                <a class="code" href="syscall__ids_8h.html#ae97b0601fc4ec7499567cd39480a3c98">syscall_errno</a> = <a class="code" href="errno_8h.html#a3f317946e043623f9d6b93dbf60e6316">EFAULT</a>;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(buf, param[2]);</div>
@@ -321,7 +322,7 @@ $(document).ready(function(){initNavTree('sc__streams_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="sc__streams_8c.html">sc_streams.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

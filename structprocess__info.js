@@ -18,6 +18,7 @@ var structprocess__info =
     [ "heap_max", "structprocess__info.html#a85eca6c4849f1044e743ffd6ce3428a8", null ],
     [ "heap_start", "structprocess__info.html#aad08968964b00ebbdebba7bacdd467eb", null ],
     [ "image_end", "structprocess__info.html#adf36ab34ada6e2a124ed5644c2931bda", null ],
+    [ "image_inode", "structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4", null ],
     [ "image_start", "structprocess__info.html#afe61576733b438ccf5e95dc3c9098806", null ],
     [ "isr_stack_pre_signal", "structprocess__info.html#a0cc4caa062e3d5d4499ed2a021001056", null ],
     [ "isr_stack_pre_signal_size", "structprocess__info.html#a637b05fe17f6d822c8ba517796398d28", null ],

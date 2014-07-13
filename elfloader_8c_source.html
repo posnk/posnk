@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -265,20 +266,21 @@ $(document).ready(function(){initNavTree('elfloader_8c_source.html','');});
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#afe61576733b438ccf5e95dc3c9098806">image_start</a> = (<span class="keywordtype">void</span> *) image_base;</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#adf36ab34ada6e2a124ed5644c2931bda">image_end</a>   = (<span class="keywordtype">void</span> *) image_top;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a23445907194fa5990d8ea795dc72a022">entry_point</a> = (<span class="keywordtype">void</span> *) elf_header-&gt;<a class="code" href="structElf32__Ehdr.html#ab8a982696048d807017919b7d0145482">e_entry</a>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(elf_pheader, elf_header-&gt;<a class="code" href="structElf32__Ehdr.html#afa2289f96d86fcc568a3b1f40cc8953e">e_phentsize</a>);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(elf_header, <span class="keyword">sizeof</span>(<a class="code" href="structElf32__Ehdr.html">Elf32_Ehdr</a>));</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <a class="code" href="group__vfs.html#ga3494d0da607504093448c9fbc5d2623e" title="Release a reference to an inode.">vfs_inode_release</a>(inode);</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">return</span> 0;       </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4">image_inode</a> = <a class="code" href="group__vfs.html#ga4d558b9661b7392bfdfea46e60bead43" title="Create a new reference to an inode.">vfs_inode_ref</a>(inode);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4">image_inode</a>-&gt;<a class="code" href="structinode.html#a4887e57edc2d19fe1dc38f49d78224ef" title="Open stream count.">open_count</a>++;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(elf_pheader, elf_header-&gt;<a class="code" href="structElf32__Ehdr.html#afa2289f96d86fcc568a3b1f40cc8953e">e_phentsize</a>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(elf_header, <span class="keyword">sizeof</span>(<a class="code" href="structElf32__Ehdr.html">Elf32_Ehdr</a>));</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="group__vfs.html#ga3494d0da607504093448c9fbc5d2623e" title="Release a reference to an inode.">vfs_inode_release</a>(inode);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">return</span> 0;       </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="elfloader_8c.html">elfloader.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

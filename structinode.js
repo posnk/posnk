@@ -16,6 +16,7 @@ var structinode =
     [ "mtime", "structinode.html#a9034e2a2afb532b0025d4a62963f5d60", null ],
     [ "name", "structinode.html#a2c825bdd2ff7fe60ca73701ccc923d5a", null ],
     [ "node", "structinode.html#a3414093479e03c14f11897b82707dfef", null ],
+    [ "open_count", "structinode.html#a4887e57edc2d19fe1dc38f49d78224ef", null ],
     [ "size", "structinode.html#aa8eaddd71c0cb19857525f7c3923fe94", null ],
     [ "uid", "structinode.html#a0eac94e96ded19029e871d5cce815bcb", null ],
     [ "usage_count", "structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc", null ]

@@ -22,7 +22,7 @@ var searchData=
   ['vfs_5fhave_5fpermissions',['vfs_have_permissions',['../group__vfs.html#ga64ad852cc66f2d66221f16ad29c92a04',1,'vfs_have_permissions(inode_t *inode, mode_t req_mode):&#160;vfs.c'],['../group__vfs.html#ga64ad852cc66f2d66221f16ad29c92a04',1,'vfs_have_permissions(inode_t *inode, mode_t req_mode):&#160;vfs.c']]],
   ['vfs_5finitialize',['vfs_initialize',['../group__vfs.html#gac1913485037320335c4030439d537df8',1,'vfs_initialize(fs_device_t *root_device):&#160;vfs.c'],['../group__vfs.html#gac1913485037320335c4030439d537df8',1,'vfs_initialize(fs_device_t *root_device):&#160;vfs.c']]],
   ['vfs_5finode_5fcache',['vfs_inode_cache',['../vfs_8c.html#a9c7c95c34aaeb12e4888dbc7d6fdf69e',1,'vfs.c']]],
-  ['vfs_5finode_5fref',['vfs_inode_ref',['../vfs_8c.html#a4d558b9661b7392bfdfea46e60bead43',1,'vfs.c']]],
+  ['vfs_5finode_5fref',['vfs_inode_ref',['../group__vfs.html#ga4d558b9661b7392bfdfea46e60bead43',1,'vfs_inode_ref(inode_t *inode):&#160;vfs.c'],['../group__vfs.html#ga4d558b9661b7392bfdfea46e60bead43',1,'vfs_inode_ref(inode_t *inode):&#160;vfs.c']]],
   ['vfs_5finode_5frelease',['vfs_inode_release',['../group__vfs.html#ga3494d0da607504093448c9fbc5d2623e',1,'vfs_inode_release(inode_t *inode):&#160;vfs.c'],['../group__vfs.html#ga3494d0da607504093448c9fbc5d2623e',1,'vfs_inode_release(inode_t *inode):&#160;vfs.c']]],
   ['vfs_5fint_5flink',['vfs_int_link',['../vfs_8c.html#a3430f50453f987084b69ea3a8f71878e',1,'vfs.c']]],
   ['vfs_5fint_5fmkdir',['vfs_int_mkdir',['../vfs_8c.html#a84da51813b69ed18851aa4151e982949',1,'vfs.c']]],

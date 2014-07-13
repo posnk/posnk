@@ -24,7 +24,7 @@ var vfs_8c =
     [ "vfs_have_permissions", "vfs_8c.html#ga64ad852cc66f2d66221f16ad29c92a04", null ],
     [ "vfs_initialize", "vfs_8c.html#gac1913485037320335c4030439d537df8", null ],
     [ "vfs_inode_cache", "vfs_8c.html#a9c7c95c34aaeb12e4888dbc7d6fdf69e", null ],
-    [ "vfs_inode_ref", "vfs_8c.html#a4d558b9661b7392bfdfea46e60bead43", null ],
+    [ "vfs_inode_ref", "vfs_8c.html#ga4d558b9661b7392bfdfea46e60bead43", null ],
     [ "vfs_inode_release", "vfs_8c.html#ga3494d0da607504093448c9fbc5d2623e", null ],
     [ "vfs_int_link", "vfs_8c.html#a3430f50453f987084b69ea3a8f71878e", null ],
     [ "vfs_int_mkdir", "vfs_8c.html#a84da51813b69ed18851aa4151e982949", null ],

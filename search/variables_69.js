@@ -19,6 +19,7 @@ var searchData=
   ['ident_5fdata',['ident_data',['../structata__drive.html#a9058e40e68ee89da0afe031d79667805',1,'ata_drive']]],
   ['if_5fdev',['if_dev',['../structinode.html#a20ec39f993e64bb188f6e867f0774923',1,'inode']]],
   ['image_5fend',['image_end',['../structprocess__info.html#adf36ab34ada6e2a124ed5644c2931bda',1,'process_info']]],
+  ['image_5finode',['image_inode',['../structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4',1,'process_info']]],
   ['image_5fstart',['image_start',['../structprocess__info.html#afe61576733b438ccf5e95dc3c9098806',1,'process_info']]],
   ['index',['index',['../structi386__set__pd__param.html#ac2ddd878f80014ebb64de97083f040a2',1,'i386_set_pd_param']]],
   ['info',['info',['../structstream__ptr.html#a599d48e5ab08f254e84ef49dd513629a',1,'stream_ptr']]],

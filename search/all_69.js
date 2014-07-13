@@ -322,6 +322,7 @@ var searchData=
   ['igncr',['IGNCR',['../termios_8h.html#ab114b7d41f2ff7562a85ec83b62544b0',1,'termios.h']]],
   ['ignpar',['IGNPAR',['../termios_8h.html#a4fed5823391b245f7024acc621e4131f',1,'termios.h']]],
   ['image_5fend',['image_end',['../structprocess__info.html#adf36ab34ada6e2a124ed5644c2931bda',1,'process_info']]],
+  ['image_5finode',['image_inode',['../structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4',1,'process_info']]],
   ['image_5fstart',['image_start',['../structprocess__info.html#afe61576733b438ccf5e95dc3c9098806',1,'process_info']]],
   ['index',['index',['../structi386__set__pd__param.html#ac2ddd878f80014ebb64de97083f040a2',1,'i386_set_pd_param']]],
   ['info',['info',['../structstream__ptr.html#a599d48e5ab08f254e84ef49dd513629a',1,'stream_ptr']]],

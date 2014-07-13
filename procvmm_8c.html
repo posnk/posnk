@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -193,7 +194,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="llist_8c_source.html#l00034">llist_get_last()</a>, <a class="el" href="process_8h_source.html#l00108">process_info::memory_map</a>, <a class="el" href="procvmm_8c_source.html#l00204">procvmm_unmmap()</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00268">process_exec()</a>, <a class="el" href="process_8c_source.html#l00161">process_handle_signals()</a>, and <a class="el" href="sc__process_8c_source.html#l00134">sys_exit()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00274">process_exec()</a>, <a class="el" href="process_8c_source.html#l00161">process_handle_signals()</a>, and <a class="el" href="sc__process_8c_source.html#l00134">sys_exit()</a>.</p>
 
 </div>
 </div>
@@ -271,7 +272,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="process_8h_source.html#l00112">process_info::heap_end</a>, <a class="el" href="process_8h_source.html#l00113">process_info::heap_max</a>, <a class="el" href="process_8h_source.html#l00111">process_info::heap_start</a>, <a class="el" href="process_8h_source.html#l00110">process_info::image_end</a>, <a class="el" href="process_8h_source.html#l00048">PROCESS_MMAP_FLAG_STACK</a>, <a class="el" href="process_8h_source.html#l00045">PROCESS_MMAP_FLAG_WRITE</a>, <a class="el" href="procvmm_8c_source.html#l00134">procvmm_mmap_anon()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="process_8h_source.html#l00114">process_info::stack_bottom</a>, and <a class="el" href="process_8h_source.html#l00115">process_info::stack_top</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00268">process_exec()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00274">process_exec()</a>.</p>
 
 </div>
 </div>
@@ -348,7 +349,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="procvmm_8c_source.html#l00224">224</a> of file <a class="el" href="procvmm_8c_source.html">procvmm.c</a>.</p>
 
-<p>References <a class="el" href="process_8h_source.html#l00057">process_mmap::file</a>, <a class="el" href="process_8h_source.html#l00059">process_mmap::file_sz</a>, <a class="el" href="process_8h_source.html#l00056">process_mmap::flags</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="process_8h_source.html#l00058">process_mmap::offset</a>, <a class="el" href="arch_2i386_2paging_8c_source.html#l00142">paging_map()</a>, <a class="el" href="kernel_2paging_8h_source.html#l00028">PAGING_PAGE_FLAG_RW</a>, <a class="el" href="kernel_2paging_8h_source.html#l00027">PAGING_PAGE_FLAG_USER</a>, <a class="el" href="arch_2i386_2paging_8c_source.html#l00200">paging_unmap()</a>, <a class="el" href="physmm_8c_source.html#l00045">physmm_alloc_frame()</a>, <a class="el" href="physmm_8c_source.html#l00084">physmm_free_frame()</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="process_8h_source.html#l00046">PROCESS_MMAP_FLAG_FILE</a>, <a class="el" href="process_8h_source.html#l00045">PROCESS_MMAP_FLAG_WRITE</a>, <a class="el" href="procvmm_8c_source.html#l00063">procvmm_get_memory_region()</a>, <a class="el" href="process_8h_source.html#l00054">process_mmap::start</a>, and <a class="el" href="vfs_8c_source.html#l00760">vfs_read()</a>.</p>
+<p>References <a class="el" href="process_8h_source.html#l00057">process_mmap::file</a>, <a class="el" href="process_8h_source.html#l00059">process_mmap::file_sz</a>, <a class="el" href="process_8h_source.html#l00056">process_mmap::flags</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="process_8h_source.html#l00058">process_mmap::offset</a>, <a class="el" href="arch_2i386_2paging_8c_source.html#l00142">paging_map()</a>, <a class="el" href="kernel_2paging_8h_source.html#l00028">PAGING_PAGE_FLAG_RW</a>, <a class="el" href="kernel_2paging_8h_source.html#l00027">PAGING_PAGE_FLAG_USER</a>, <a class="el" href="arch_2i386_2paging_8c_source.html#l00200">paging_unmap()</a>, <a class="el" href="physmm_8c_source.html#l00045">physmm_alloc_frame()</a>, <a class="el" href="physmm_8c_source.html#l00084">physmm_free_frame()</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="physmm_8h_source.html#l00023">PHYSMM_PAGE_SIZE</a>, <a class="el" href="process_8h_source.html#l00046">PROCESS_MMAP_FLAG_FILE</a>, <a class="el" href="process_8h_source.html#l00045">PROCESS_MMAP_FLAG_WRITE</a>, <a class="el" href="procvmm_8c_source.html#l00063">procvmm_get_memory_region()</a>, <a class="el" href="process_8h_source.html#l00054">process_mmap::start</a>, and <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>.</p>
 
 <p>Referenced by <a class="el" href="kernel_2paging_8c_source.html#l00049">paging_handle_fault()</a>.</p>
 
@@ -394,7 +395,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00056">process_mmap::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="process_8h_source.html#l00108">process_info::memory_map</a>, <a class="el" href="process_8h_source.html#l00053">process_mmap::name</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="process_8h_source.html#l00046">PROCESS_MMAP_FLAG_FILE</a>, <a class="el" href="procvmm_8c_source.html#l00105">procvmm_collcheck_iterator()</a>, <a class="el" href="procvmm_8c_source.html#l00063">procvmm_get_memory_region()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="process_8h_source.html#l00055">process_mmap::size</a>, <a class="el" href="process_8h_source.html#l00054">process_mmap::start</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, and <a class="el" href="string_8c_source.html#l00038">strlen()</a>.</p>
 
-<p>Referenced by <a class="el" href="process_8c_source.html#l00268">process_exec()</a>, <a class="el" href="procvmm_8c_source.html#l00030">procvmm_do_exec_mmaps()</a>, and <a class="el" href="sc__process_8c_source.html#l00287">sys_sbrk()</a>.</p>
+<p>Referenced by <a class="el" href="process_8c_source.html#l00274">process_exec()</a>, <a class="el" href="procvmm_8c_source.html#l00030">procvmm_do_exec_mmaps()</a>, and <a class="el" href="sc__process_8c_source.html#l00287">sys_sbrk()</a>.</p>
 
 </div>
 </div>
@@ -486,7 +487,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="procvmm_8c_source.html#l00164">164</a> of file <a class="el" href="procvmm_8c_source.html">procvmm.c</a>.</p>
 
-<p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00057">process_mmap::file</a>, <a class="el" href="process_8h_source.html#l00059">process_mmap::file_sz</a>, <a class="el" href="process_8h_source.html#l00056">process_mmap::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="process_8h_source.html#l00108">process_info::memory_map</a>, <a class="el" href="process_8h_source.html#l00053">process_mmap::name</a>, <a class="el" href="vfs_8h_source.html#l00096">inode::name</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="process_8h_source.html#l00058">process_mmap::offset</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="process_8h_source.html#l00046">PROCESS_MMAP_FLAG_FILE</a>, <a class="el" href="procvmm_8c_source.html#l00105">procvmm_collcheck_iterator()</a>, <a class="el" href="procvmm_8c_source.html#l00063">procvmm_get_memory_region()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="process_8h_source.html#l00055">process_mmap::size</a>, <a class="el" href="vfs_8h_source.html#l00120">inode::size</a>, <a class="el" href="process_8h_source.html#l00054">process_mmap::start</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
+<p>References <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="process_8h_source.html#l00057">process_mmap::file</a>, <a class="el" href="process_8h_source.html#l00059">process_mmap::file_sz</a>, <a class="el" href="process_8h_source.html#l00056">process_mmap::flags</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, <a class="el" href="process_8h_source.html#l00108">process_info::memory_map</a>, <a class="el" href="process_8h_source.html#l00053">process_mmap::name</a>, <a class="el" href="vfs_8h_source.html#l00096">inode::name</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="process_8h_source.html#l00058">process_mmap::offset</a>, <a class="el" href="physmm_8h_source.html#l00022">PHYSMM_PAGE_ADDRESS_MASK</a>, <a class="el" href="process_8h_source.html#l00046">PROCESS_MMAP_FLAG_FILE</a>, <a class="el" href="procvmm_8c_source.html#l00105">procvmm_collcheck_iterator()</a>, <a class="el" href="procvmm_8c_source.html#l00063">procvmm_get_memory_region()</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="process_8h_source.html#l00055">process_mmap::size</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="process_8h_source.html#l00054">process_mmap::start</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
 
 <p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>.</p>
 
@@ -552,7 +553,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="procvmm_8c.html">procvmm.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

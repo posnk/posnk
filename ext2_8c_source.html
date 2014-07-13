@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -528,7 +529,7 @@ $(document).ready(function(){initNavTree('ext2_8c_source.html','');});
 <div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;                        <a class="code" href="earlycon_8h.html#a241271afc3ab8b448ef4f0fd016111bf">debugcon_printf</a>(<span class="stringliteral">&quot;ext2: inode %i has invalid mode: %i&quot;</span>, (uint32_t)ino_id, (uint32_t)ino-&gt;<a class="code" href="structext2__inode.html#a7c9aa32e98e47be843508c1b36a89028">mode</a>);</div>
 <div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;                        <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;        }</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        vfs_ino-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Usage count.">usage_count</a> = 0;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;        vfs_ino-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Reference count (for GC)">usage_count</a> = 0;</div>
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        vfs_ino-&gt;<a class="code" href="structinode.html#aa8eaddd71c0cb19857525f7c3923fe94" title="File size.">size</a> = ino-&gt;<a class="code" href="structext2__inode.html#a585589f70a22ab82661ef52ca0771aa7">blocks</a> * 512;</div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        vfs_ino-&gt;<a class="code" href="structinode.html#a5f5ad74887646b6c08e3ac7f858e8dd5" title="Access time.">atime</a> = (<a class="code" href="time_8h.html#abc9fcb3454c43da4726e8a2057b20f9c">ktime_t</a>) ino-&gt;<a class="code" href="structext2__inode.html#a9ae71198adb22db852140bfcb320a6a2">atime</a>;</div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;        vfs_ino-&gt;<a class="code" href="structinode.html#aef57738b7899cfdfd54f509b80f2106a" title="Metadata modification time.">ctime</a> = (<a class="code" href="time_8h.html#abc9fcb3454c43da4726e8a2057b20f9c">ktime_t</a>) ino-&gt;<a class="code" href="structext2__inode.html#a07291898eeecca0ca2601bd33f4f37b7">ctime</a>;</div>
@@ -637,7 +638,7 @@ $(document).ready(function(){initNavTree('ext2_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_5a4132f7e575105e864e0906b1ff49aa.html">fs</a></li><li class="navelem"><a class="el" href="ext2_8c.html">ext2.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:28 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:52 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

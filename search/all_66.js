@@ -23,6 +23,7 @@ var searchData=
   ['fd_5fctr',['fd_ctr',['../structprocess__info.html#a796f737258cc7ebe9f7006d115059ffd',1,'process_info']]],
   ['fd_5fflags',['fd_flags',['../structstream__ptr.html#a626f66cdbb5dd5a264c8e6af67f24a48',1,'stream_ptr']]],
   ['fd_5ftable',['fd_table',['../structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af',1,'process_info']]],
+  ['features',['Features',['../features.html',1,'']]],
   ['ff0',['FF0',['../termios_8h.html#a4cc7d2ef3eeff7639d68f2efa84cc340',1,'termios.h']]],
   ['ff1',['FF1',['../termios_8h.html#af3dec0c0f6d91de3808e913a74eba147',1,'termios.h']]],
   ['ffdly',['FFDLY',['../termios_8h.html#a4f4f517d3c44ba209da81c15ab4e56d8',1,'termios.h']]],

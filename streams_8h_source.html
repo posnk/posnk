@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -141,13 +142,13 @@ $(document).ready(function(){initNavTree('streams_8h_source.html','');});
 <div class="line"><a name="l00042"></a><span class="lineno"><a class="code" href="structstream__info.html#a01d64bb9d42cb9b372d77de10d468d4f">   42</a></span>&#160;        <a class="code" href="structpipe__info.html">pipe_info_t</a>     *<a class="code" href="structstream__info.html#a01d64bb9d42cb9b372d77de10d468d4f">pipe</a>;</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structstream__ptr.html">stream_ptr_t</a> *<a class="code" href="streams_8c.html#af7737838e38167fe9a767f8e232b4fd7">stream_get_ptr</a> (<span class="keywordtype">int</span> fd);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="structstream__ptr.html">stream_ptr_t</a> *<a class="code" href="streams_8c.html#af7737838e38167fe9a767f8e232b4fd7" title="Get the stream pointer object for a file number.">stream_get_ptr</a> (<span class="keywordtype">int</span> fd);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba">stream_copy_fd_table</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *target);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba" title="Copy the current process&#39;s stream ptr table to target.">stream_copy_fd_table</a> (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *target);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span> <a class="code" href="streams_8c.html#aa17c760186bd4ebee3bd6bc632279154">stream_do_close_on_exec</a> ();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span> <a class="code" href="streams_8c.html#aa17c760186bd4ebee3bd6bc632279154" title="Close the stream ptrs that are to be closed on execute.">stream_do_close_on_exec</a> ();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3">stream_do_close_all</a> (<a class="code" href="structprocess__info.html">process_info_t</a> *process);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3" title="Close all stream pointers for a process.">stream_do_close_all</a> (<a class="code" href="structprocess__info.html">process_info_t</a> *process);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<a class="code" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a> <a class="code" href="streams_8c.html#ac8134168213829dab4254391fe4a548f">_sys_read</a>(<span class="keywordtype">int</span> fd, <span class="keywordtype">void</span> * buffer, <span class="keywordtype">size_t</span> count);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
@@ -177,7 +178,7 @@ $(document).ready(function(){initNavTree('streams_8h_source.html','');});
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a3389d4f570b9ecdd4950666bc4f607fb">_sys_fstat</a>(<span class="keywordtype">int</span> fd, <span class="keyword">struct</span> <a class="code" href="structstat.html">stat</a>* <a class="code" href="kdbg_8c.html#a7d55ba6a8fa98e9c0ae7a04f202b67d7">buf</a>);</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<a class="code" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a> <a class="code" href="streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808">_sys_getdents</a>(<span class="keywordtype">int</span> fd, <span class="keywordtype">void</span> * buffer, <span class="keywordtype">size_t</span> count);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<a class="code" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a> <a class="code" href="streams_8c.html#afa8fdc21fe4e1a47a3be2c913d080808" title="Get directory entries.">_sys_getdents</a>(<span class="keywordtype">int</span> fd, <span class="keywordtype">void</span> * buffer, <span class="keywordtype">size_t</span> count);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keywordtype">int</span> <a class="code" href="streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>(<a class="code" href="structprocess__info.html">process_info_t</a> *process, <span class="keywordtype">int</span> fd);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
@@ -190,7 +191,7 @@ $(document).ready(function(){initNavTree('streams_8h_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_94ae08fb2ffd97dfc1c50804b45c1353.html">include</a></li><li class="navelem"><a class="el" href="dir_f641b9ad53d8d191242bcadc0d20fb84.html">kernel</a></li><li class="navelem"><a class="el" href="streams_8h.html">streams.h</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

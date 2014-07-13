@@ -4,7 +4,12 @@ var NAVTREE =
     [ "posnk project site", "index.html", null ],
     [ "GitHub Project", "^https://github.com/peterbjornx/posnk", null ],
     [ "Downloads", "downloads.html", null ],
+    [ "Features", "features.html", null ],
     [ "Downloads", "downloads.html", "downloads" ],
+    [ "Features", "features.html", [
+      [ "Current features:", "features.html#now", null ],
+      [ "Planned features:", "features.html#future", null ]
+    ] ],
     [ "Todo List", "todo.html", null ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -35,18 +40,18 @@ var NAVTREEINDEX =
 "ata_8h.html#a496bb4c7c9c7a93de619b99cead37f4c",
 "dirent_8h_source.html",
 "errno_8h.html#ae4d80808cd12a64d14a3da0d39cad443",
-"glib_8h.html#a62efb7c0c64a142a8a7e261cb5265c43",
-"heapmm_8h.html#a7c0a917d74eb74aa01007d83165dbfcb",
-"isr__entry_8h.html#a8e9689c78382dc4a00914de0a3047d85",
-"pci__intel__host_8h.html#a07e390a2fa8a016344cfed1848e3be01",
-"protection_8h.html#a992934ae9de777facacdc3fb3ae6d7f1",
-"stat_8h_source.html",
-"structdrivermgr__device__driver.html#ae55e68af63e7b064312d10b9c5a88de5",
-"structllist.html",
-"synch_8c.html#a71fb894454abc9d577dc05380e068dc6",
-"termios_8h.html#a6730af7a4424b34b8c495cea64004632",
-"vfs_8c.html#ga3b462cea173d8cd38ab8b46b98a159d7",
-"vterm__escape_8h.html#aa3b1349da344da63d8afbfd356d0e039"
+"glib_8h.html#a5c4319bf55c08ab49437ffe2a474048d",
+"heapmm_8h.html#a3d94834cb7dc9b6d9d4c74b72a3d032a",
+"isr__entry_8h.html#a7f8fc38c997ab6de376d6b5cf602bedf",
+"pci__intel__host_8c.html#a6432262b9b33a5a6870b50cf40b545fd",
+"protection_8h.html#a867ed6ab5d066ce41a8ca8aad8e2cb81",
+"stat_8h.html#ae6774871a90d9442f00abe18b87fee6e",
+"structdrivermgr__device__driver.html",
+"structkdbgmm__block.html#a4145367a44ca84d534d36aaeeaffd21f",
+"structwinsize.html#a80bedf71a49fd324e0d92d0702cc7005",
+"termios_8h.html#a58265a371303d00a4a3b1f128d72c21e",
+"vfs_8c.html#af245dedecdf6b4c6c08d23fed31bcb67",
+"vterm__escape_8c.html"
 ];
 
 var navTreeSubIndices = new Array();

@@ -31,6 +31,7 @@ var vfs_8h =
     [ "vfs_getdents", "vfs_8h.html#ga94b66b2d752c243c35894d6655626566", null ],
     [ "vfs_have_permissions", "vfs_8h.html#ga64ad852cc66f2d66221f16ad29c92a04", null ],
     [ "vfs_initialize", "vfs_8h.html#gac1913485037320335c4030439d537df8", null ],
+    [ "vfs_inode_ref", "vfs_8h.html#ga4d558b9661b7392bfdfea46e60bead43", null ],
     [ "vfs_inode_release", "vfs_8h.html#ga3494d0da607504093448c9fbc5d2623e", null ],
     [ "vfs_link", "vfs_8h.html#gac8b32bb45661974629d18b9830c5d026", null ],
     [ "vfs_mkdir", "vfs_8h.html#ga22ee4ff0cc661e9246bd6a76702b298e", null ],

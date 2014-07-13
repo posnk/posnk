@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -145,8 +146,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:gaf09508470980cccac2b4a2b86cd0c716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the filename part of a path.  <a href="group__vfs.html#gaf09508470980cccac2b4a2b86cd0c716"></a><br/></td></tr>
 <tr class="memitem:ga3494d0da607504093448c9fbc5d2623e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga3494d0da607504093448c9fbc5d2623e">vfs_inode_release</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
 <tr class="memdesc:ga3494d0da607504093448c9fbc5d2623e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release a reference to an inode.  <a href="group__vfs.html#ga3494d0da607504093448c9fbc5d2623e"></a><br/></td></tr>
-<tr class="memitem:a4d558b9661b7392bfdfea46e60bead43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a4d558b9661b7392bfdfea46e60bead43">vfs_inode_ref</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
-<tr class="memdesc:a4d558b9661b7392bfdfea46e60bead43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new reference to an inode.  <a href="#a4d558b9661b7392bfdfea46e60bead43"></a><br/></td></tr>
+<tr class="memitem:ga4d558b9661b7392bfdfea46e60bead43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__vfs.html#ga4d558b9661b7392bfdfea46e60bead43">vfs_inode_ref</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
+<tr class="memdesc:ga4d558b9661b7392bfdfea46e60bead43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new reference to an inode.  <a href="group__vfs.html#ga4d558b9661b7392bfdfea46e60bead43"></a><br/></td></tr>
 <tr class="memitem:a9c7c95c34aaeb12e4888dbc7d6fdf69e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a9c7c95c34aaeb12e4888dbc7d6fdf69e">vfs_inode_cache</a> (<a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *<a class="el" href="structinode.html">inode</a>)</td></tr>
 <tr class="memdesc:a9c7c95c34aaeb12e4888dbc7d6fdf69e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add an inode to the cache.  <a href="#a9c7c95c34aaeb12e4888dbc7d6fdf69e"></a><br/></td></tr>
 <tr class="memitem:a72598ce191e8ffb48c1b69bd0ac76b8e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="vfs_8c.html#a72598ce191e8ffb48c1b69bd0ac76b8e">vfs_cache_find_iterator</a> (<a class="el" href="llist_8h.html#af16880c584a87d791e9296153cf56bbc">llist_t</a> *node, void *param)</td></tr>
@@ -297,7 +298,7 @@ Variables</h2></td></tr>
 
 <p>Definition at line <a class="el" href="ext2_8c_source.html#l00474">474</a> of file <a class="el" href="ext2_8c_source.html">ext2.c</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01489">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01490">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -325,11 +326,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00166">166</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00167">167</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8c_source.html#l00041">vfs_cache_params::device_id</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, and <a class="el" href="vfs_8c_source.html#l00042">vfs_cache_params::inode_id</a>.</p>
+<p>References <a class="el" href="vfs_8c_source.html#l00042">vfs_cache_params::device_id</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, and <a class="el" href="vfs_8c_source.html#l00043">vfs_cache_params::inode_id</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00215">vfs_get_inode()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00216">vfs_get_inode()</a>.</p>
 
 </div>
 </div>
@@ -358,11 +359,11 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structdir__cache.html" title="An entry in the path element cache The kernel keeps track of these to resolve the ...">dir_cache</a> entry on the parent of the file referred to by path </dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000089">Todo:</a></b></dt><dd>: Check for errors </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l02305">2305</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l02307">2307</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00134">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00153">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8c_source.html#l02210">vfs_dir_cache_new()</a>, <a class="el" href="vfs_8c_source.html#l02198">vfs_dir_cache_ref()</a>, <a class="el" href="vfs_8c_source.html#l02171">vfs_dir_cache_release()</a>, and <a class="el" href="vfs_8c_source.html#l00295">vfs_find_dirent()</a>.</p>
+<p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00157">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00136">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8c_source.html#l02212">vfs_dir_cache_new()</a>, <a class="el" href="vfs_8c_source.html#l02200">vfs_dir_cache_ref()</a>, <a class="el" href="vfs_8c_source.html#l02173">vfs_dir_cache_release()</a>, and <a class="el" href="vfs_8c_source.html#l00296">vfs_find_dirent()</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l02653">vfs_find_parent()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l02655">vfs_find_parent()</a>.</p>
 
 </div>
 </div>
@@ -389,42 +390,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new reference </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00157">157</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00158">158</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
 <p>References <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a4d558b9661b7392bfdfea46e60bead43"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a>* vfs_inode_ref </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__vfs.html#ga2dd256afc91a2d7a99e2082e096664b2">inode_t</a> *&#160;</td>
-          <td class="paramname"><em>inode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Create a new reference to an inode. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dirc</td><td>The entry to refer to </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new reference </dd></dl>
-
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00139">139</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
-
-<p>References <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00114">inode::mount</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
-
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l02150">vfs_dir_cache_mkroot()</a>, <a class="el" href="vfs_8c_source.html#l00256">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l02680">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l02653">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l02708">vfs_find_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l00215">vfs_get_inode()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -470,11 +440,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00389">389</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00390">390</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00317">fs_device_operations::link</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00319">fs_device_operations::link</a>, and <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01950">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -502,11 +472,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00365">365</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00366">366</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00301">fs_device_operations::mkdir</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00303">fs_device_operations::mkdir</a>, and <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01201">vfs_mkdir()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01202">vfs_mkdir()</a>.</p>
 
 </div>
 </div>
@@ -534,11 +504,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00321">321</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00322">322</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00206">fs_device_operations::mknod</a>, and <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00208">fs_device_operations::mknod</a>, and <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>.</p>
 
 </div>
 </div>
@@ -598,11 +568,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00460">460</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00461">461</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00238">fs_device_operations::read_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00240">fs_device_operations::read_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00760">vfs_read()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>.</p>
 
 </div>
 </div>
@@ -662,11 +632,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00439">439</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00440">440</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00274">fs_device_operations::read_dir</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00276">fs_device_operations::read_dir</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00932">vfs_getdents()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>.</p>
 
 </div>
 </div>
@@ -694,11 +664,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00343">343</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00344">344</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00219">fs_device_operations::rmnod</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00221">fs_device_operations::rmnod</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01296">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01599">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01789">vfs_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>.</p>
 
 </div>
 </div>
@@ -737,11 +707,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00504">504</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00505">505</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00343">fs_device_operations::trunc_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00345">fs_device_operations::trunc_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01043">vfs_truncate()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>.</p>
 
 </div>
 </div>
@@ -780,11 +750,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00412">412</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00413">413</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00330">fs_device_operations::unlink</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00332">fs_device_operations::unlink</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01789">vfs_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>.</p>
 
 </div>
 </div>
@@ -844,11 +814,11 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00481">481</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00482">482</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
-<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00367">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00255">fs_device_operations::write_inode</a>.</p>
+<p>References <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="errno_8h_source.html#l00119">ENOTSUP</a>, <a class="el" href="vfs_8h_source.html#l00369">fs_device::ops</a>, and <a class="el" href="vfs_8h_source.html#l00257">fs_device_operations::write_inode</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00553">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
 
 </div>
 </div>
@@ -864,8 +834,9 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The linked list serving as inode cache. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000080">Todo:</a></b></dt><dd>: Implement a proper inode cache </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8c_source.html#l00038">38</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8c_source.html#l00039">39</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
 </div>
 </div>
@@ -880,7 +851,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The linked list serving as open inode list. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000080">Todo:</a></b></dt><dd>: Make this an MRU cache </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l00035">35</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -892,7 +862,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="vfs_8c.html">vfs.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:30 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

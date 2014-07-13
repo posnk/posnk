@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -172,7 +173,7 @@ $(document).ready(function(){initNavTree('procvmm_8c_source.html','');});
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="keywordflow">return</span> 1;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">if</span> ((m-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a> &amp; <a class="code" href="process_8h.html#ad89c4d335e1fd745c0d750fbcbe1ed40">PROCESS_MMAP_FLAG_FILE</a>) &amp;&amp; m-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>)             </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                m-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Usage count.">usage_count</a>++;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                m-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Reference count (for GC)">usage_count</a>++;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        n-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a> = m-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a>;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        n-&gt;<a class="code" href="structprocess__mmap.html#aff5e2bd0765d4eccc9496b9973001c84">start</a> = m-&gt;<a class="code" href="structprocess__mmap.html#aff5e2bd0765d4eccc9496b9973001c84">start</a>;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        n-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a> = m-&gt;<a class="code" href="structprocess__mmap.html#aab6d9180a2d529489497a6e610838466">size</a>;</div>
@@ -288,7 +289,7 @@ $(document).ready(function(){initNavTree('procvmm_8c_source.html','');});
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(region, <span class="keyword">sizeof</span>(<a class="code" href="structprocess__mmap.html">process_mmap_t</a>));</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="errno_8h.html#a2d1678d5a7cc8ce499643f3b8957def4">EINVAL</a>;</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        }</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        file-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Usage count.">usage_count</a>++;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        file-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Reference count (for GC)">usage_count</a>++;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <a class="code" href="llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3" title="Adds a node to the end of the linked list.">llist_add_end</a>(<a class="code" href="scheduler_8c.html#a433a9249a94952594483f106302080ea">scheduler_current_task</a>-&gt;<a class="code" href="structprocess__info.html#a729d1c545dcca0ff2cc6fab1d5450175">memory_map</a>, (<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a> *)region);</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;}</div>
@@ -307,7 +308,7 @@ $(document).ready(function(){initNavTree('procvmm_8c_source.html','');});
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                }</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        <span class="keywordflow">if</span> (region-&gt;<a class="code" href="structprocess__mmap.html#a6d74d71aa510b184d0131c6d8fcf3a5b">flags</a> &amp; <a class="code" href="process_8h.html#ad89c4d335e1fd745c0d750fbcbe1ed40">PROCESS_MMAP_FLAG_FILE</a>) {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                region-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Usage count.">usage_count</a>--;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                region-&gt;<a class="code" href="structprocess__mmap.html#a8b61a0a6841d0a7d4c6948abdbca0387">file</a>-&gt;<a class="code" href="structinode.html#ac6b9fdf23d78501e43bd2433c80ef8cc" title="Reference count (for GC)">usage_count</a>--;</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a>, <a class="code" href="string_8c.html#a008e171a518fe0e0352f31b245e03875">strlen</a>(region-&gt;<a class="code" href="structprocess__mmap.html#ad4b5228d6aa5715c52b0479cf1fb1515">name</a>) + 1);</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <a class="code" href="heapmm_8c.html#ab71d98d365d8823e5254e34848fae10b" title="Releases a block of memory so it can be reallocated.">heapmm_free</a>(region, <span class="keyword">sizeof</span>(<a class="code" href="structprocess__mmap.html">process_mmap_t</a>));            </div>
@@ -366,7 +367,7 @@ $(document).ready(function(){initNavTree('procvmm_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="procvmm_8c.html">procvmm.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:29 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -44,6 +44,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="https://github.com/peterbjornx/posnk"><span>GitHub&#160;Project</span></a></li>
       <li><a href="downloads.html"><span>Downloads</span></a></li>
+      <li><a href="features.html"><span>Features</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
@@ -146,7 +147,7 @@ Data Fields</h2></td></tr>
 <div class="textblock"><p>Contains callbacks for all filesystem driver functions. </p>
 <p>This is the structure used to pass the callbacks for a filesystem driver to the kernel, it is referenced by <a class="el" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device</a>, which describes an instance of a filesystem driver, implementation hints and requirements are given in the description of each callback, for more info on FS driver implementation see <a class="el" href="structfs__device.html" title="An instance of a filesystem driver.">fs_device</a> </p>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00171">171</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00173">173</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 </div><h2>Field Documentation</h2>
 <a class="anchor" id="a602f09647f044cf9b5cb910aa5fbfc23"></a>
 <div class="memitem">
@@ -170,9 +171,9 @@ Data Fields</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The directory entry matching name from the directory inode, if none, NULL is returned </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00288">288</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00290">290</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00295">vfs_find_dirent()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00296">vfs_find_dirent()</a>.</p>
 
 </div>
 </div>
@@ -200,9 +201,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00317">317</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00319">319</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00389">vfs_int_link()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00390">vfs_int_link()</a>.</p>
 
 </div>
 </div>
@@ -227,9 +228,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The loaded inode </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00183">183</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00185">185</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00215">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l02110">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01489">vfs_mount()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, <a class="el" href="vfs_8c_source.html#l00216">vfs_get_inode()</a>, <a class="el" href="vfs_8c_source.html#l02112">vfs_initialize()</a>, and <a class="el" href="vfs_8c_source.html#l01490">vfs_mount()</a>.</p>
 
 </div>
 </div>
@@ -254,9 +255,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00301">301</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00303">303</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00365">vfs_int_mkdir()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00366">vfs_int_mkdir()</a>.</p>
 
 </div>
 </div>
@@ -281,9 +282,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00206">206</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00208">208</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00321">vfs_int_mknod()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00322">vfs_int_mknod()</a>.</p>
 
 </div>
 </div>
@@ -314,9 +315,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00274">274</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00276">276</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00439">vfs_int_read_dir()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00440">vfs_int_read_dir()</a>.</p>
 
 </div>
 </div>
@@ -346,9 +347,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00238">238</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00240">240</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00460">vfs_int_read()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00461">vfs_int_read()</a>.</p>
 
 </div>
 </div>
@@ -373,9 +374,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00219">219</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00221">221</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00343">vfs_int_rmnod()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00344">vfs_int_rmnod()</a>.</p>
 
 </div>
 </div>
@@ -399,7 +400,7 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00194">194</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00196">196</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
 </div>
 </div>
@@ -424,9 +425,9 @@ Implementations must only return whole directory entries</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00343">343</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00345">345</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00504">vfs_int_truncate()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00505">vfs_int_truncate()</a>.</p>
 
 </div>
 </div>
@@ -453,9 +454,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00330">330</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00332">332</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00412">vfs_int_unlink()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00413">vfs_int_unlink()</a>.</p>
 
 </div>
 </div>
@@ -485,9 +486,9 @@ Implementations are required to update the directory size field</dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>In case of error: a valid error code, Otherwise 0 </dd></dl>
 
-<p>Definition at line <a class="el" href="vfs_8h_source.html#l00255">255</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
+<p>Definition at line <a class="el" href="vfs_8h_source.html#l00257">257</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00481">vfs_int_write()</a>.</p>
+<p>Referenced by <a class="el" href="ramfs_8c_source.html#l00280">ramfs_create()</a>, and <a class="el" href="vfs_8c_source.html#l00482">vfs_int_write()</a>.</p>
 
 </div>
 </div>
@@ -500,7 +501,7 @@ Implementations are required to update the directory size field</dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structfs__device__operations.html">fs_device_operations</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 03:25:30 for posnk kernel by
+    <li class="footer">Generated on Sun Jul 13 2014 20:21:53 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
