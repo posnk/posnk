@@ -199,6 +199,12 @@ void process_reap(process_info_t *process)
 	//TODO: Free page-dir
 	vfs_dir_cache_release(process->root_directory);
 	vfs_dir_cache_release(process->current_directory);
+
+	if (process->image_inode) {
+		process->image_inode->open_count--;
+		vfs_inode_release(process->image_inode);
+	}
+
 	stream_do_close_all (process);
 	semaphore_free(process->child_sema);
 	
@@ -272,6 +278,11 @@ int process_exec(char *path, char **args, char **envs)
 	uintptr_t ptr;
 	char **n_args;
 	char **n_envs;
+
+	if (scheduler_current_task->image_inode) {
+		scheduler_current_task->image_inode->open_count--;
+		vfs_inode_release(scheduler_current_task->image_inode);
+	}
 
 	procvmm_clear_mmaps();
 

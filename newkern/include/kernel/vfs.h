@@ -382,6 +382,8 @@ struct fs_device {
  */
 ///@{
 
+inode_t *vfs_inode_ref(inode_t *inode);
+
 void vfs_inode_release(inode_t *inode);
 
 inode_t *vfs_find_parent(char * path);

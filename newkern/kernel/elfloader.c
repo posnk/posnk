@@ -157,7 +157,8 @@ int elf_load(char * path)
 	scheduler_current_task->image_start = (void *) image_base;
 	scheduler_current_task->image_end   = (void *) image_top;
 	scheduler_current_task->entry_point = (void *) elf_header->e_entry;
-
+	scheduler_current_task->image_inode = vfs_inode_ref(inode);
+	scheduler_current_task->image_inode->open_count++;
 	heapmm_free(elf_pheader, elf_header->e_phentsize);
 	heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 	vfs_inode_release(inode);

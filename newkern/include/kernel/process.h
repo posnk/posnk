@@ -86,6 +86,7 @@ struct process_info {
 	dir_cache_t	*root_directory;
 	dir_cache_t	*current_directory;
 	umode_t		 umask;
+	inode_t		*image_inode;
 
 	/* Streams */
 	llist_t		*fd_table;
@@ -104,7 +105,6 @@ struct process_info {
 	int		 exit_status;
 
 	/* Process memory */
-	//TODO: Add dynamic linker memory info here
 	llist_t		*memory_map;
 	void		*image_start;
 	void		*image_end;
