@@ -57,6 +57,7 @@ char *vfs_get_filename(const char *path)
 	char *name;
 	char *pathcopy;
 	size_t pathlen;
+	char *newname;
 	ptrdiff_t pd;
 
 	/* Check for null pointers */
@@ -97,14 +98,12 @@ char *vfs_get_filename(const char *path)
 	else /* If not, the path IS the name */
 		name = pathcopy;
 
-	pd = name - pathcopy;
+	newname = heapmm_alloc(strlen(name) + 1);
+	strcpy(newname, name);
+	
+	heapmm_free(pathcopy, pathlen + 1);
 
-	if (pd > 0)
-		heapmm_free(pathcopy, pd);
-
-	//TODO: Come up with a way to do this without tripping heap alloc error
-
-	return name;
+	return newname;
 }
 
 
