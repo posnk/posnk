@@ -834,10 +834,9 @@ int _sys_fstat(int fd, struct stat* buf)
 	}
 
 	/* Copy inode fields to the status struct */
-	buf->st_dev  = (dev_t) ptr->info->inode->device_id;//TODO: FIX
+	buf->st_dev  = (dev_t) ptr->info->inode->device_id;
 	buf->st_ino  = ptr->info->inode->id;
 	buf->st_rdev = ptr->info->inode->if_dev;
-	buf->st_size = ptr->info->inode->size;
 	buf->st_mode = ptr->info->inode->mode;
 	//buf->st_blocks = buf->st_size * 512;//TODO: Implement sparse files
 	//buf->st_blksize = 512;//TODO: Ask FS about block size
@@ -1535,6 +1534,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	if (flags & O_TRUNC) {
 		st = vfs_truncate(inode, 0);
 		if (st) {
+			semaphore_free(info->lock);
 			heapmm_free(ptr, sizeof(stream_ptr_t));
 			heapmm_free(info, sizeof(stream_info_t));
 			vfs_inode_release(inode);
@@ -1579,9 +1579,23 @@ int _sys_open(char *path, int flags, mode_t mode)
 
 	/* If the file opened is a special file, signal open to the driers */
 	if (S_ISCHR(inode->mode))
-		device_char_open(inode->if_dev, fd, flags);//TODO: Handle result
+		st = device_char_open(inode->if_dev, fd, flags);
 	else if (S_ISBLK(inode->mode))
-		device_block_open(inode->if_dev, fd, flags);//TODO: Handle result
+		st = device_block_open(inode->if_dev, fd, flags);
+	else
+		st = 0;
+
+	/* Check for errors */
+	if (st) {
+		llist_unlink((llist_t *) ptr);
+		semaphore_free(info->lock);
+		heapmm_free(ptr, sizeof(stream_ptr_t));
+		heapmm_free(info, sizeof(stream_info_t));
+		vfs_inode_release(inode);
+		stream_free_fd(fd);
+		syscall_errno = st;
+		return -1;
+	}
 
 	/* Return new fd */
 	return fd;
@@ -1626,13 +1640,6 @@ int _sys_close_int(process_info_t *process, int fd)
 		syscall_errno = EBADF;
 		return -1;
 	}
-	
-	/* If the pointer refers to a device stream, signal the device driver */
-	//TODO: Move to stream close
-	if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process == scheduler_current_task))
-		device_char_close(ptr->info->inode->if_dev, fd);//TODO: Handle result
-	else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISBLK(ptr->info->inode->mode) && (process == scheduler_current_task))
-		device_block_close(ptr->info->inode->if_dev, fd);//TODO: Handle result
 
 	/* Remove the pointer from the fd table */
 	llist_unlink((llist_t *) ptr);
@@ -1667,6 +1674,12 @@ int _sys_close_int(process_info_t *process, int fd)
 						pipe_close_write(ptr->info->inode->fifo);
 					}
 				}
+	
+				/* If the pointer refers to a device stream, signal the device driver */
+				else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process == scheduler_current_task))
+					device_char_close(ptr->info->inode->if_dev, fd);
+				else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISBLK(ptr->info->inode->mode) && (process == scheduler_current_task))
+					device_block_close(ptr->info->inode->if_dev, fd);
 				ptr->info->inode->open_count--;
 				/* Release the inode */
 				vfs_inode_release(ptr->info->inode);
