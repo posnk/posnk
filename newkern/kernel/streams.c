@@ -385,9 +385,8 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				if (st == EPIPE)
 					process_send_signal(scheduler_current_task, SIGPIPE);
 
-				/* Return an error condition only when NO bytes were read */
-				//TODO: Fix behaviour here
-				return (read_count == 0) ? ((ssize_t)-1) : (ssize_t) read_count; 
+				/* Return error */
+				return -1; 
 			}
 
 			/* Return the amount of bytes read */
@@ -507,9 +506,8 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 				/* Pass error code to userland */
 				syscall_errno = st;
 
-				/* Return an error condition only when NO bytes were read */
-				//TODO: Fix behaviour here
-				return (read_count == 0) ? -1 : (ssize_t) read_count; 
+				/* Return error */
+				return -1; 
 			}
 			return (ssize_t) read_count;
 		default:
