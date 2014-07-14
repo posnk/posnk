@@ -296,15 +296,15 @@ $(document).ready(function(){initNavTree('init_8c_source.html','');});
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
 <div class="line"><a name="l00198"></a><span class="lineno"><a class="code" href="init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1">  198</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="init_8c.html#a972d5ef6342605b82ad5d1a05fcc44c1">i386_init_stub</a>()</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordtype">int</span> fd = <a class="code" href="streams_8c.html#a5f58feff0214b638bff817867024ca19">_sys_open</a>(<span class="stringliteral">&quot;/faketty&quot;</span>, <a class="code" href="fcntl_8h.html#abb0586253488ee61072b73557eeb873b">O_RDWR</a>, 0);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordtype">int</span> fd = <a class="code" href="streams_8c.html#a5f58feff0214b638bff817867024ca19" title="Open a file stream.">_sys_open</a>(<span class="stringliteral">&quot;/faketty&quot;</span>, <a class="code" href="fcntl_8h.html#abb0586253488ee61072b73557eeb873b">O_RDWR</a>, 0);</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        <span class="keywordflow">if</span> (fd &lt; 0) {</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;                <a class="code" href="earlycon_8h.html#ac56de90a4748ce03e73d95828522eb32">earlycon_printf</a>(<span class="stringliteral">&quot;Error opening tty : %i\n&quot;</span>,<a class="code" href="syscall__ids_8h.html#ae97b0601fc4ec7499567cd39480a3c98">syscall_errno</a>);</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                fd = <a class="code" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>(fd);</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;                fd = <a class="code" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139" title="Duplicate stream pointer.">_sys_dup</a>(fd);</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                <span class="keywordflow">if</span> (fd &lt; 0) {</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;                        <a class="code" href="earlycon_8h.html#ac56de90a4748ce03e73d95828522eb32">earlycon_printf</a>(<span class="stringliteral">&quot;Error dupping stdin : %i\n&quot;</span>,<a class="code" href="syscall__ids_8h.html#ae97b0601fc4ec7499567cd39480a3c98">syscall_errno</a>);</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;                } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                        fd = <a class="code" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>(fd);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;                        fd = <a class="code" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139" title="Duplicate stream pointer.">_sys_dup</a>(fd);</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;                        <span class="keywordflow">if</span> (fd &lt; 0) {</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                                <a class="code" href="earlycon_8h.html#ac56de90a4748ce03e73d95828522eb32">earlycon_printf</a>(<span class="stringliteral">&quot;Error dupping stderr : %i\n&quot;</span>,<a class="code" href="syscall__ids_8h.html#ae97b0601fc4ec7499567cd39480a3c98">syscall_errno</a>);</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;                        }</div>
@@ -438,7 +438,7 @@ $(document).ready(function(){initNavTree('init_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_18c7684827270c4a54a6a225d7214193.html">arch</a></li><li class="navelem"><a class="el" href="dir_584c6cc5ac28beacb54867d1d53f0aac.html">i386</a></li><li class="navelem"><a class="el" href="init_8c.html">init.c</a></li>
-    <li class="footer">Generated on Sun Jul 13 2014 20:21:52 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 03:49:25 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
