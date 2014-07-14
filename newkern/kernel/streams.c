@@ -368,12 +368,11 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 		case STREAM_TYPE_PIPE:
 			/* Stream is a pipe endpoint */
 
-			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
-			//TODO: Move this past pipe_read(); call
-
 			/* Call the pipe driver */
 			st = pipe_read(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
+
+			/* Release the lock on the stream  */
+			semaphore_up(ptr->info->lock);
 
 			/* Check for errors */
 			if (st) {
@@ -483,12 +482,11 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 		case STREAM_TYPE_PIPE:
 			/* Stream is a pipe endpoint */
 
-			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
-			//TODO: Move this past pipe_write(); call
-
 			/* Call the pipe driver */
 			st = pipe_write(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
+
+			/* Release the lock on the stream  */
+			semaphore_up(ptr->info->lock);
 
 			/* Check for errors */
 			if (st) {
