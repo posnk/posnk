@@ -80,5 +80,5 @@
  * \li Ext2 write support
  * \li Shared memory
  * \li VGA Framebuffer driver  
- */
+ * \li 64 bit file offset support, which will also mean large disk support
  */
