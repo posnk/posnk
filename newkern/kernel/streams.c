@@ -495,7 +495,7 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 			/* Check for O_APPEND */
 			if (ptr->info->flags & O_APPEND) {
 				/* It is set, seek to EOF */
-				ptr->info->offset = ptr->inode->size;
+				ptr->info->offset = ptr->info->inode->size;
 	
 			}
 
@@ -1533,7 +1533,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 
 	/* Is the truncate flag set? */
 	if (flags & O_TRUNC) {
-		st = vfs_truncate(inode, 0)
+		st = vfs_truncate(inode, 0);
 		if (st) {
 			heapmm_free(ptr, sizeof(stream_ptr_t));
 			heapmm_free(info, sizeof(stream_info_t));
@@ -1667,7 +1667,7 @@ int _sys_close_int(process_info_t *process, int fd)
 						pipe_close_write(ptr->info->inode->fifo);
 					}
 				}
-				inode->open_count--;
+				ptr->info->inode->open_count--;
 				/* Release the inode */
 				vfs_inode_release(ptr->info->inode);
 
