@@ -379,11 +379,6 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			if (st) {
 				/* Pass error code to userland */
 				syscall_errno = st;
-	
-				/* In case of EPIPE the process should also be
-				 * sent SIGPIPE */
-				if (st == EPIPE)
-					process_send_signal(scheduler_current_task, SIGPIPE);
 
 				/* Return error */
 				return -1; 

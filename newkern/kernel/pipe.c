@@ -140,7 +140,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, size_t count, size_t *read_count
 				if (pipe->write_usage_count != 0)
 					return EAGAIN;
 				else
-					return EPIPE;
+					return 0;
 			} else {
 				if (semaphore_idown(pipe->read_lock))
 					return EINTR;
@@ -148,7 +148,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, size_t count, size_t *read_count
 				if ((turn_size != 0) || (pipe->write_usage_count != 0))
 					continue;
 				else
-					return EPIPE;
+					return 0;
 			}
 		}
 		memcpy((void *)(rbuf + (uintptr_t) current_pos), (void *)(pbuf + (uintptr_t) pipe->read_ptr), turn_size);
