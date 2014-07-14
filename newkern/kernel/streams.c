@@ -492,6 +492,13 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 		case STREAM_TYPE_FILE:
 			/* Stream is a file or directory stream */
 
+			/* Check for O_APPEND */
+			if (ptr->info->flags & O_APPEND) {
+				/* It is set, seek to EOF */
+				ptr->info->offset = ptr->inode->size;
+	
+			}
+
 			/* Call the VFS */
 			st = vfs_write(ptr->info->inode, ptr->info->offset, buffer, (aoff_t) count, &read_count, ptr->info->flags & O_NONBLOCK);
 
@@ -1532,9 +1539,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	
 	/* Is the append flag set? */
 	if (flags & O_APPEND) {
-		/* Set offset to end of file */
-		//TODO: Check if this behaviour is correct
-		info->offset = inode->size;
+	
 	}
 	
 	/* Check if file is a FIFO */
