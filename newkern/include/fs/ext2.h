@@ -13,6 +13,7 @@
 #define __FS_EXT2_H__
 
 #include <stdint.h>
+#include <sys/types.h>
 #include "kernel/vfs.h"
 
 #define EXT2_FS_STATE_CLEAN		(1)
@@ -48,6 +49,8 @@
 #define EXT2_IFDIR			(0x4000)
 #define EXT2_IFCHR			(0x2000)
 #define EXT2_IFIFO			(0x1000)
+
+#define EXT2_DEV_DECODE(dIn)		MAKEDEV( ((dIn >> 8) & 0xFF), (dIn & 0xFF) ) 
 
 //We currently only support filetype in dirent
 #define EXT2_SUPPORTED_REQ_FEATURES	(2)

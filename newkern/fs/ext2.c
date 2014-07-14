@@ -220,68 +220,12 @@ int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length,
 
 	return 0;
 }
-/*
-dirent_t *ext2_finddir(inode_t *_inode, char *file)
-{
-	ext2_device_t *device;
-	ext2_vinode_t *inode;
-
-	ext2_dirent_t *dirent;
-
-	dirent_t *vfs_dir;
-	int pos;
-	uint8_t *name;
-	if (!_inode)
-		return 0;
-	device = (ext2_device_t *) _inode->device;
-	inode = (ext2_vinode_t *) _inode;
-
-	dirent = heapmm_alloc(sizeof(ext2_dirent_t));
-	
-	if (!dirent)
-		return NULL;
-
-	vfs_dir = heapmm_alloc(sizeof(dirent_t));
-	if (!vfs_dir){
-		heapmm_free(dirent, sizeof(ext2_dirent_t));
-		return NULL;
-	}
-
-	for (pos = 0; pos < _inode->size; pos += dirent->rec_len) {
-		if (ext2_read_inode(_inode, dirent, pos, sizeof(ext2_dirent_t)) != sizeof(ext2_dirent_t)) {
-			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return NULL;
-		}
-
-		if ((dirent->rec_len + pos) > _inode->size){
-			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return NULL;
-		}
-
-		name = (uint8_t *) vfs_dir->name;
-
-		if (ext2_read_inode(_inode, name, pos + sizeof(ext2_dirent_t), dirent->name_len + 1) != (dirent->name_len+1)) {
-			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return NULL;
-		}
-		if (strcmp (file, name) == 0) {
-			vfs_dir->inode_id = dirent->inode;
-			vfs_dir->device_id = _inode->device_id;
-			vfs_dir->d_reclen = sizeof(dirent_t);
-			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return vfs_dir;
-		}
-		
-	}
-	heapmm_free(dirent, sizeof(ext2_dirent_t));
-	return NULL;
-}*/
 
 dirent_t *ext2_finddir(inode_t *_inode, char * name)
 {
 	uint8_t *buffer = heapmm_alloc(1024);
 	int status;
-	aoff_t nread;
+	aoff_t nread = 1;
 	aoff_t fpos = 0;
 	aoff_t pos;
 	dirent_t *dirent;
@@ -403,11 +347,11 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 	switch (EXT2_MODE_FMT(ino->mode)) {
 		case EXT2_IFBLK:
 			vfs_ino->mode |= S_IFBLK;
-			vfs_ino->if_dev = (dev_t) ino->block[0];
+			vfs_ino->if_dev = EXT2_DEV_DECODE(ino->block[0]);
 			break;
 		case EXT2_IFCHR:
 			vfs_ino->mode |= S_IFCHR;
-			vfs_ino->if_dev = (dev_t) ino->block[0];
+			vfs_ino->if_dev = EXT2_DEV_DECODE(ino->block[0]);
 			break;
 		case EXT2_IFDIR:
 			vfs_ino->mode |= S_IFDIR;

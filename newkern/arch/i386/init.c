@@ -280,10 +280,11 @@ void i386_kmain()
 	ata_pci_register();
 	earlycon_puts("OK\n");
 
-
+#ifndef CONFIG_i386_NO_PCI
 	earlycon_puts("Enumerating PCI buses...");
 	pci_enumerate_all();
 	earlycon_puts("OK\n");
+#endif
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
 	if (vfs_initialize(ramfs_create()))
