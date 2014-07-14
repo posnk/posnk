@@ -1,17 +1,6 @@
 #include <string.h>
 
-/* POSIX PASS */
-char * strchr( const char * str , int c )
-{
-	size_t pos = 0;
-	while ( str[ pos ] )
-		if ( str[ pos++ ] == ((char) c) )
-			return (char *) &(str[ pos - 1 ]);
-	if ( c == 0 )
-		return (char *) &(str[ pos ]);
-	else
-		return NULL;
-}
+#include "config.h"
 
 /* POSIX PASS */
 char * strrchr( const char * str , int c )
@@ -33,6 +22,21 @@ char * strchrnul( const char * str , int c )
 		if ( str[ pos++ ] == ((char) c) )
 			return (char *) &(str[ pos - 1 ]);
 	return (char *) &(str[ pos ]);
+}
+ 
+#ifndef CONFIG_FASTCRT
+
+/* POSIX PASS */
+char * strchr( const char * str , int c )
+{
+	size_t pos = 0;
+	while ( str[ pos ] )
+		if ( str[ pos++ ] == ((char) c) )
+			return (char *) &(str[ pos - 1 ]);
+	if ( c == 0 )
+		return (char *) &(str[ pos ]);
+	else
+		return NULL;
 }
 
 size_t strlen ( const char* str )
@@ -61,7 +65,7 @@ void * memcpy ( void * destination, const void * source, size_t num )
 		*p++ = *s++;
 	return destination;
 }
-
+#endif
 char * strcpy ( char * destination, const char * source )
 {
 	return (char *) memcpy(destination, source, strlen(source) + 1);

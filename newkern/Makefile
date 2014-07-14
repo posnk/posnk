@@ -8,13 +8,15 @@
 # define the C compiler to use
 CC = @echo " [  CC  ]	" $< ; /opt/standalone/bin/i586-elf-gcc
 LD = @echo " [  LD  ]	" $@ ; /opt/standalone/bin/i586-elf-gcc
-
+GAS = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
 NASM = @echo " [ NASM ]	" $< ; nasm
 
 # define any compile-time flags
 CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer
 
 NASMFLAGS = -w+orphan-labels -felf -g
+
+GASFLAGS = -g -ffreestanding
 
 # define any directories containing header files other than /usr/include
 #
@@ -126,7 +128,13 @@ driver/oldkb/dec.c \
 driver/oldkb/i8042.c \
 driver/oldkb/kbd.c \
 driver/bus/pci.c \
-driver/bus/pci_intel_host.c 
+driver/bus/pci_intel_host.c \
+arch/i386/fastcrt/memcpy.S \
+arch/i386/fastcrt/memchr.S \
+arch/i386/fastcrt/memmove.S \
+arch/i386/fastcrt/memset.S \
+arch/i386/fastcrt/strchr.S \
+arch/i386/fastcrt/strlen.S 
 
 ASMS_I386 = arch/i386/start.s \
 arch/i386/isr_entry.s \

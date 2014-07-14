@@ -18,3 +18,5 @@
 #define CONFIG_ATA_DEBUG		DEFINED
 
 #undef	HAVE_LIBGCC			
+
+#define CONFIG_FASTCRT
