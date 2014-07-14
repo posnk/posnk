@@ -1,13 +1,16 @@
 /**
- * kernel/streams.h
+ * @file kernel/streams.h
+ *
+ * @brief Implements the UNIX file API ( fd streams )
  *
  * Part of P-OS kernel.
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
- * Changelog:
- * 20-04-2014 - Created
+ * Changelog:\n
+ * @li 20-04-2014 - Created
  */
+
 #include "kernel/vfs.h"
 #include "kernel/pipe.h"
 #include "util/llist.h"
@@ -16,7 +19,7 @@
 #ifndef __KERNEL_STREAMS_H__
 #define __KERNEL_STREAMS_H__
 
-/*
+/**
  * @defgroup stream Stream API
  * @brief Implements the UNIX file API ( fd streams )
  *
