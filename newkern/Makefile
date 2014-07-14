@@ -35,9 +35,13 @@ driver/block/pata/ata_pci.c
 
 SRCS_EXT2 = fs/ext2.c
 
+SRCS_PHEAPMM = kernel/heapmm.c
+
+SRCS_DLHEAPMM = kernel/dlmalloc.c \
+		kernel/dlheapmm.c
+
 # define the C source files
-SRCS = kernel/heapmm.c \
-kernel/physmm.c \
+SRCS = kernel/physmm.c \
 kernel/paging.c \
 kernel/blkcache.c \
 kernel/earlycon.c \
@@ -140,7 +144,7 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o)
+OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o) $(SRCS_DRV_ATA_PCI:.c=.o)
 OBJS_EXT2 = $(SRCS_EXT2:.c=.o)
 all:	cdrom_i386 install_h

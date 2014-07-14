@@ -45,6 +45,7 @@ int exception_signals[] = {
 	SIGSEGV,
 	SIGFPE
 };
+
 void exception_panic(int exception, void *instr_pointer, void *state, size_t state_size)
 {
 	earlycon_printf("PANIC! Unhandled kernelmode exception: %s(%i)\n",exception_names[exception],exception);
