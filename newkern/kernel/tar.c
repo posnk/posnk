@@ -104,7 +104,8 @@ int tar_round_up(int num, int factor)
 int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 {
 	inode_t *file;
-	size_t wd_count;
+	aoff_t file_size;
+	aoff_t wd_count;
 	int status;	
 	tar_header_t *header = (tar_header_t *) (tar_data + (uintptr_t)*pos);
 	(*pos) += sizeof(tar_header_t);
@@ -134,16 +135,19 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 				debugcon_printf("WARNING: error opening file while extracting %s, errno: %i\n",header->name, status);
 				return ENOSPC;
 			}
-			vfs_truncate(file, (off_t) tar_num_dec(header->size,12));
+			file_size = tar_num_dec(header->size,12);
+			#ifdef CONFIG_TAR_TRUNCATE
+			vfs_truncate(file, (off_t) file_size);
+			#endif
 			file->mtime = file->atime = file->ctime = (time_t) tar_num_dec(header->mtime, 12);
-			if (file->size != 0) {
-				status = vfs_write(file, 0, (void*)(tar_data + (uintptr_t)*pos), file->size, &wd_count, 0);
-				(*pos) += tar_round_up(file->size,512);
+			if (file_size != 0) {
+				status = vfs_write(file, 0, (void*)(tar_data + (uintptr_t)*pos), file_size, &wd_count, 0);
+				(*pos) += tar_round_up(file_size,512);
 				if (status) {
 					debugcon_printf("WARNING: write error while extracting %s\n",header->name);
 					return status;
 				}
-				if (wd_count !=  (size_t) file->size) {
+				if (wd_count !=  (size_t) file_size) {
 					debugcon_printf("WARNING: out of space while extracting %s\n",header->name);
 					return ENOSPC;
 				}
@@ -197,12 +201,12 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 {
 	void *buf;
 	inode_t *file;
-	size_t rd_count;
-	size_t wd_count;
-	off_t wr_count = 0;
-	off_t wr_size  = 0;
-	off_t block_size = 512*2*512;
-	off_t e_block_size = block_size;
+	aoff_t rd_count;
+	aoff_t wd_count;
+	aoff_t wr_count = 0;
+	aoff_t wr_size  = 0;
+	aoff_t block_size = 512*2*512;
+	aoff_t e_block_size = block_size;
 	int status;	
 	tar_header_t *header = heapmm_alloc(sizeof(tar_header_t)); 
 	if (!header) {

@@ -20,3 +20,5 @@
 #undef	HAVE_LIBGCC			
 
 #define CONFIG_FASTCRT
+
+#define CONFIG_SYSCALL_DEBUG

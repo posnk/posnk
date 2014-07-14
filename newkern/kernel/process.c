@@ -329,7 +329,7 @@ int process_exec(char *path, char **args, char **envs)
 	}
 	n_args[argl_size] = (char *) 0;
 
-	envl_size = strlistlen(envs) + 1;
+	envl_size = strlistlen(envs);
 	
 	envs_size = 0;
 
@@ -348,7 +348,7 @@ int process_exec(char *path, char **args, char **envs)
 		n_envs[c] = (char *) ptr;		
 		ptr += strlen(envs[c]) + 1;
 	}
-	n_envs[argl_size] = (char *) 0;
+	n_envs[envl_size] = (char *) 0;
 	//debugcon_printf("calling program\n");
 
 	process_user_call(scheduler_current_task->entry_point, scheduler_current_task->stack_bottom);

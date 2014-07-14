@@ -12,7 +12,7 @@ GAS = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
 NASM = @echo " [ NASM ]	" $< ; nasm
 
 # define any compile-time flags
-CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer
+CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer -finline-functions -finline-functions-called-once -fauto-inc-dec
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
