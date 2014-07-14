@@ -106,8 +106,6 @@ var searchData=
   ['state_5fescape_5fmode',['STATE_ESCAPE_MODE',['../vterm__private_8h.html#a59c46f2cd2d8728ed3b24ce11dbe0ffb',1,'vterm_private.h']]],
   ['state_5fpipe_5ferr',['STATE_PIPE_ERR',['../vterm__private_8h.html#a7e83c77846758f48360e776f3269a318',1,'vterm_private.h']]],
   ['state_5fscroll_5fshort',['STATE_SCROLL_SHORT',['../vterm__private_8h.html#a559ae16624c1fa7cd37c79edf1e7a184',1,'vterm_private.h']]],
-  ['stream_5ftype_5ffile',['STREAM_TYPE_FILE',['../streams_8h.html#a00beb11b7be23a7bd1662f54f2786eb5',1,'streams.h']]],
-  ['stream_5ftype_5fpipe',['STREAM_TYPE_PIPE',['../streams_8h.html#a05083737188b4ec0dc2100a841e8f1c6',1,'streams.h']]],
   ['symtype',['SYMTYPE',['../tar_8h.html#acc0fdf064ea6654c0b3d7b3387532b3a',1,'tar.h']]],
   ['sys_5fchdir',['SYS_CHDIR',['../syscall__ids_8h.html#a212310df0529f18d76ce3701658ed72f',1,'syscall_ids.h']]],
   ['sys_5fchmod',['SYS_CHMOD',['../syscall__ids_8h.html#a303b29485cbdf1038f660b8239f71ac2',1,'syscall_ids.h']]],

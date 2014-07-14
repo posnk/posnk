@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('scheduler_8c_source.html','');});
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="heapmm_8h.html">kernel/heapmm.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="process_8h.html">kernel/process.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="synch_8h.html">kernel/synch.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="streams_8h.html">kernel/streams.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="streams_8h.html" title="Implements the UNIX file API ( fd streams )">kernel/streams.h</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="scheduler_8h.html">kernel/scheduler.h</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2paging_8h.html">kernel/paging.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="llist_8h.html">util/llist.h</a>&quot;</span></div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('scheduler_8c_source.html','');});
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af">fd_table</a> = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keyword">sizeof</span>(<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a>));</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <a class="code" href="llist_8c.html#a152dbf82c31af2cdeed906381b6365f3" title="Initializes a new head node (list)">llist_create</a>(new_task-&gt;<a class="code" href="structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af">fd_table</a>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="streams_8c.html#a93aae19238feb7665dd30c2dccf2e8ba" title="Copy the current process&#39;s stream ptr table to target.">stream_copy_fd_table</a> (new_task-&gt;<a class="code" href="structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af">fd_table</a>);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="group__stream.html#ga93aae19238feb7665dd30c2dccf2e8ba" title="Copy the current process&#39;s stream ptr table to target.">stream_copy_fd_table</a> (new_task-&gt;<a class="code" href="structprocess__info.html#a1c3869060cf2b3a1d828676f973cf0af">fd_table</a>);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a796f737258cc7ebe9f7006d115059ffd">fd_ctr</a> = scheduler_current_task-&gt;<a class="code" href="structprocess__info.html#a796f737258cc7ebe9f7006d115059ffd">fd_ctr</a>;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        new_task-&gt;<a class="code" href="structprocess__info.html#a729d1c545dcca0ff2cc6fab1d5450175">memory_map</a> = <a class="code" href="heapmm_8c.html#a3d94834cb7dc9b6d9d4c74b72a3d032a" title="Allocates a new block of memory of given size to the caller.">heapmm_alloc</a>(<span class="keyword">sizeof</span>(<a class="code" href="structllist.html" title="Linked list header structure prototype To use linked lists, create a structure containing a llist_t a...">llist_t</a>));</div>
@@ -318,7 +318,7 @@ $(document).ready(function(){initNavTree('scheduler_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="scheduler_8c.html">scheduler.c</a></li>
-    <li class="footer">Generated on Mon Jul 14 2014 03:49:25 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

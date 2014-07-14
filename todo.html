@@ -102,41 +102,23 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000078"></a>Global <a class="el" href="streams_8c.html#a700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>  (process_info_t *process, int fd)</dt>
-<dd><p class="startdd">: Move to stream close </p>
-<p>: Handle result </p>
-<p class="enddd">: Handle result  </p>
-</dd>
-<dt><a class="anchor" id="_todo000067"></a>Global <a class="el" href="streams_8c.html#a9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>  (int oldfd)</dt>
+<dt><a class="anchor" id="_todo000078"></a>Global <a class="el" href="group__stream.html#ga700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>  (process_info_t *process, int fd)</dt>
+<dd>: Move to stream close  </dd>
+<dt><a class="anchor" id="_todo000067"></a>Global <a class="el" href="group__stream.html#ga9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>  (int oldfd)</dt>
 <dd>: Check for fd_ctr overflow  </dd>
-<dt><a class="anchor" id="_todo000064"></a>Global <a class="el" href="streams_8c.html#a3389d4f570b9ecdd4950666bc4f607fb">_sys_fstat</a>  (int fd, struct stat *buf)</dt>
-<dd><p class="startdd">: FIX </p>
-<p>: Implement sparse files </p>
-<p class="enddd">: Ask FS about block size  </p>
-</dd>
+<dt><a class="anchor" id="_todo000064"></a>Global <a class="el" href="group__stream.html#ga3389d4f570b9ecdd4950666bc4f607fb">_sys_fstat</a>  (int fd, struct stat *buf)</dt>
+<dd>: FIX  </dd>
 <dt><a class="anchor" id="_todo000054"></a>Global <a class="el" href="sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb">_sys_lstat</a>  (char *path, struct stat *buf)</dt>
 <dd><p class="startdd">: FIX </p>
 <p>: Implement sparse files </p>
 <p class="enddd">: Ask FS about block size  </p>
 </dd>
-<dt><a class="anchor" id="_todo000070"></a>Global <a class="el" href="streams_8c.html#a5f58feff0214b638bff817867024ca19">_sys_open</a>  (char *path, int flags, mode_t mode)</dt>
-<dd><p class="startdd">: Make this an assertion </p>
-<p>: Permission checks </p>
-<p>: Call on VFS to actually truncate file </p>
-<p>: Check if this behaviour is correct </p>
-<p>: Implement non-blocking IO </p>
-<p>: Fix this </p>
-<p>: Handle result </p>
-<p class="enddd">: Handle result  </p>
-</dd>
-<dt><a class="anchor" id="_todo000068"></a>Global <a class="el" href="streams_8c.html#aa47253a2ed38cacde66dd0c8aabdcd21">_sys_pipe2</a>  (int pipefd[2], int flags)</dt>
-<dd><p class="startdd">: Check for fd_ctr overflow </p>
-<p class="enddd">: Handle FD_CLOEXEC, verify flags field  </p>
-</dd>
-<dt><a class="anchor" id="_todo000060"></a>Global <a class="el" href="streams_8c.html#ac8134168213829dab4254391fe4a548f">_sys_read</a>  (int fd, void *buffer, size_t count)</dt>
-<dd><p class="startdd">: Move this past <a class="el" href="pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258">pipe_read()</a>; call </p>
-<p class="enddd">: Fix behaviour here  </p>
-</dd>
+<dt><a class="anchor" id="_todo000070"></a>Global <a class="el" href="group__stream.html#ga5f58feff0214b638bff817867024ca19">_sys_open</a>  (char *path, int flags, mode_t mode)</dt>
+<dd>: Make this an assertion  </dd>
+<dt><a class="anchor" id="_todo000068"></a>Global <a class="el" href="group__stream.html#gaa47253a2ed38cacde66dd0c8aabdcd21">_sys_pipe2</a>  (int pipefd[2], int flags)</dt>
+<dd>: Check for fd_ctr overflow  </dd>
+<dt><a class="anchor" id="_todo000060"></a>Global <a class="el" href="group__stream.html#gac8134168213829dab4254391fe4a548f">_sys_read</a>  (int fd, void *buffer, size_t count)</dt>
+<dd>: Move this past <a class="el" href="pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258">pipe_read()</a>; call  </dd>
 <dt><a class="anchor" id="_todo000051"></a>Global <a class="el" href="sc__vfs_8c.html#a21a7b7d6519c5654a92b902dc2b1beec">_sys_stat</a>  (char *path, struct stat *buf)</dt>
 <dd><p class="startdd">: FIX </p>
 <p>: Implement sparse files </p>
@@ -144,10 +126,8 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dd>
 <dt><a class="anchor" id="_todo000050"></a>Global <a class="el" href="sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a">_sys_truncate</a>  (char *path, off_t length)</dt>
 <dd>: Add permission check  </dd>
-<dt><a class="anchor" id="_todo000062"></a>Global <a class="el" href="streams_8c.html#a3f81816bbc345cfe6320c92a67e48627">_sys_write</a>  (int fd, void *buffer, size_t count)</dt>
-<dd><p class="startdd">: Move this past <a class="el" href="pipe_8c.html#af3def0b347db947156a5684d8973f8fc">pipe_write()</a>; call </p>
-<p class="enddd">: Fix behaviour here  </p>
-</dd>
+<dt><a class="anchor" id="_todo000062"></a>Global <a class="el" href="group__stream.html#ga3f81816bbc345cfe6320c92a67e48627">_sys_write</a>  (int fd, void *buffer, size_t count)</dt>
+<dd>: Move this past <a class="el" href="pipe_8c.html#af3def0b347db947156a5684d8973f8fc">pipe_write()</a>; call  </dd>
 <dt><a class="anchor" id="_todo000109"></a>Global <a class="el" href="ata_8h.html#a21f42065f261f12cfc4e20e38505bf92">ata_initialize</a>  (ata_device_t *device)</dt>
 <dd><p class="startdd">: Wait here ? osdev wiki says so but does not specify why.(no support for kernel-land sleeps yet) </p>
 <p>: ^^^^ </p>
@@ -353,7 +333,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 14 2014 03:49:26 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

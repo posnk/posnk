@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="kernel_2paging_8h.html">kernel/paging.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="permissions_8h.html">kernel/permissions.h</a>&quot;</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="earlycon_8h.html">kernel/earlycon.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="streams_8h.html">kernel/streams.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="streams_8h.html" title="Implements the UNIX file API ( fd streams )">kernel/streams.h</a>&quot;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="elfloader_8h.html">kernel/elfloader.h</a>&quot;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="signals_8h.html">kernel/signals.h</a>&quot;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="heapmm_8h.html">kernel/heapmm.h</a>&quot;</span></div>
@@ -299,7 +299,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                <a class="code" href="group__vfs.html#ga3494d0da607504093448c9fbc5d2623e" title="Release a reference to an inode.">vfs_inode_release</a>(process-&gt;<a class="code" href="structprocess__info.html#a5186af2b26c458e4eb71aa1bf3f194b4">image_inode</a>);</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="streams_8c.html#ab0711d48a143596389ab19b99fbcd3b3" title="Close all stream pointers for a process.">stream_do_close_all</a> (process);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <a class="code" href="group__stream.html#gab0711d48a143596389ab19b99fbcd3b3" title="Close all stream pointers for a process.">stream_do_close_all</a> (process);</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <a class="code" href="synch_8c.html#a71fb894454abc9d577dc05380e068dc6">semaphore_free</a>(process-&gt;<a class="code" href="structprocess__info.html#ab25abaa7dd2201c3df38acff5f4196aa">child_sema</a>);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        </div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;}</div>
@@ -385,7 +385,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="comment">/* Pre exec bookkeeping */</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="streams_8c.html#aa17c760186bd4ebee3bd6bc632279154" title="Close the stream ptrs that are to be closed on execute.">stream_do_close_on_exec</a>();</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <a class="code" href="group__stream.html#gaa17c760186bd4ebee3bd6bc632279154" title="Close the stream ptrs that are to be closed on execute.">stream_do_close_on_exec</a>();</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="comment">/* Prepare environment */</span></div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        status = <a class="code" href="procvmm_8c.html#a8de9fd8f1440a9aaf1845711a68fc470">procvmm_do_exec_mmaps</a>();</div>
@@ -449,7 +449,7 @@ $(document).ready(function(){initNavTree('process_8c_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="process_8c.html">process.c</a></li>
-    <li class="footer">Generated on Mon Jul 14 2014 03:49:25 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

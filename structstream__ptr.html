@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('structstream__ptr.html','');});
   <div class="summary">
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
-<div class="title">stream_ptr Struct Reference</div>  </div>
+<div class="title">stream_ptr Struct Reference<div class="ingroups"><a class="el" href="group__stream.html">Stream API</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -124,14 +124,14 @@ Data Fields</h2></td></tr>
 <tr class="memdesc:aad62fd5d6ba602708f0b3f98943ffca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The handle for this stream pointer.  <a href="#aad62fd5d6ba602708f0b3f98943ffca2"></a><br/></td></tr>
 <tr class="memitem:a626f66cdbb5dd5a264c8e6af67f24a48"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstream__ptr.html#a626f66cdbb5dd5a264c8e6af67f24a48">fd_flags</a></td></tr>
 <tr class="memdesc:a626f66cdbb5dd5a264c8e6af67f24a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags for this stream pointer.  <a href="#a626f66cdbb5dd5a264c8e6af67f24a48"></a><br/></td></tr>
-<tr class="memitem:a599d48e5ab08f254e84ef49dd513629a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="streams_8h.html#ae43def877144a86640e3e28e24e25a40">stream_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstream__ptr.html#a599d48e5ab08f254e84ef49dd513629a">info</a></td></tr>
+<tr class="memitem:a599d48e5ab08f254e84ef49dd513629a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__stream.html#gae43def877144a86640e3e28e24e25a40">stream_info_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstream__ptr.html#a599d48e5ab08f254e84ef49dd513629a">info</a></td></tr>
 <tr class="memdesc:a599d48e5ab08f254e84ef49dd513629a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to the stream info object this <a class="el" href="structstream__ptr.html" title="Describes a pointer to a stream.">stream_ptr</a> refers to.  <a href="#a599d48e5ab08f254e84ef49dd513629a"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Describes a pointer to a stream. </p>
 <p>A stream pointer is what is handled by most programs, it is referred to by a unique handle (fd) and refers to a stream. The actual state of a stream is stored in the stream info object, the stream pointer contains only flags affecting its behaviour on process events </p>
 
-<p>Definition at line <a class="el" href="streams_8h_source.html#l00065">65</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
+<p>Definition at line <a class="el" href="streams_8h_source.html#l00068">68</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
 </div><h2>Field Documentation</h2>
 <a class="anchor" id="a626f66cdbb5dd5a264c8e6af67f24a48"></a>
 <div class="memitem">
@@ -146,7 +146,7 @@ Data Fields</h2></td></tr>
 <p>The flags for this stream pointer. </p>
 <dl class="section warning"><dt>Warning</dt><dd>These are distinct from the stream flags </dd></dl>
 
-<p>Definition at line <a class="el" href="streams_8h_source.html#l00077">77</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
+<p>Definition at line <a class="el" href="streams_8h_source.html#l00080">80</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
 
 <p>Referenced by <a class="el" href="streams_8c_source.html#l01053">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00958">_sys_fcntl()</a>, <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l01131">_sys_pipe2()</a>, <a class="el" href="streams_8c_source.html#l00138">stream_exec_iterator()</a>, and <a class="el" href="streams_8c_source.html#l00082">stream_ptr_copy_iterator()</a>.</p>
 
@@ -164,7 +164,7 @@ Data Fields</h2></td></tr>
 
 <p>The handle for this stream pointer. </p>
 
-<p>Definition at line <a class="el" href="streams_8h_source.html#l00071">71</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
+<p>Definition at line <a class="el" href="streams_8h_source.html#l00074">74</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
 
 <p>Referenced by <a class="el" href="streams_8c_source.html#l01053">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l01131">_sys_pipe2()</a>, <a class="el" href="streams_8c_source.html#l00173">stream_do_close_all()</a>, <a class="el" href="streams_8c_source.html#l00150">stream_do_close_on_exec()</a>, <a class="el" href="streams_8c_source.html#l00082">stream_ptr_copy_iterator()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_ptr_search_iterator()</a>.</p>
 
@@ -175,14 +175,14 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="streams_8h.html#ae43def877144a86640e3e28e24e25a40">stream_info_t</a>* stream_ptr::info</td>
+          <td class="memname"><a class="el" href="group__stream.html#gae43def877144a86640e3e28e24e25a40">stream_info_t</a>* stream_ptr::info</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>A pointer to the stream info object this <a class="el" href="structstream__ptr.html" title="Describes a pointer to a stream.">stream_ptr</a> refers to. </p>
 
-<p>Definition at line <a class="el" href="streams_8h_source.html#l00080">80</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
+<p>Definition at line <a class="el" href="streams_8h_source.html#l00083">83</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
 
 <p>Referenced by <a class="el" href="streams_8c_source.html#l01515">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l01053">_sys_dup2()</a>, <a class="el" href="streams_8c_source.html#l00742">_sys_fchdir()</a>, <a class="el" href="streams_8c_source.html#l00832">_sys_fchmod()</a>, <a class="el" href="streams_8c_source.html#l00884">_sys_fchown()</a>, <a class="el" href="streams_8c_source.html#l00958">_sys_fcntl()</a>, <a class="el" href="streams_8c_source.html#l00783">_sys_fstat()</a>, <a class="el" href="streams_8c_source.html#l00544">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l00203">_sys_getdents()</a>, <a class="el" href="streams_8c_source.html#l01008">_sys_ioctl()</a>, <a class="el" href="streams_8c_source.html#l00630">_sys_lseek()</a>, <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="streams_8c_source.html#l01131">_sys_pipe2()</a>, <a class="el" href="streams_8c_source.html#l00305">_sys_read()</a>, <a class="el" href="streams_8c_source.html#l00427">_sys_write()</a>, and <a class="el" href="streams_8c_source.html#l00082">stream_ptr_copy_iterator()</a>.</p>
 
@@ -200,7 +200,7 @@ Data Fields</h2></td></tr>
 
 <p>The linked list node. </p>
 
-<p>Definition at line <a class="el" href="streams_8h_source.html#l00068">68</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
+<p>Definition at line <a class="el" href="streams_8h_source.html#l00071">71</a> of file <a class="el" href="streams_8h_source.html">streams.h</a>.</p>
 
 </div>
 </div>
@@ -213,7 +213,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structstream__ptr.html">stream_ptr</a></li>
-    <li class="footer">Generated on Mon Jul 14 2014 03:49:26 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>
