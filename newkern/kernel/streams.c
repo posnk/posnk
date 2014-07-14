@@ -1533,8 +1533,15 @@ int _sys_open(char *path, int flags, mode_t mode)
 
 	/* Is the truncate flag set? */
 	if (flags & O_TRUNC) {
-		//TODO: Call on VFS to actually truncate file
-		inode->size = 0;
+		st = vfs_truncate(inode, 0)
+		if (st) {
+			heapmm_free(ptr, sizeof(stream_ptr_t));
+			heapmm_free(info, sizeof(stream_info_t));
+			vfs_inode_release(inode);
+			stream_free_fd(fd);
+			syscall_errno = st;
+			return -1;
+		}
 	}
 	
 	/* Is the append flag set? */
