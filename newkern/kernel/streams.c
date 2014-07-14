@@ -181,6 +181,42 @@ void stream_do_close_all (process_info_t *process)
 }
 
 /**
+ * @brief Allocate a new fd handle
+ * @return A unique new handle
+ */
+int stream_alloc_fd()
+{
+	int fd = scheduler_current_task->fd_ctr++;
+	if(scheduler_current_task->fd_ctr == 0) {
+		scheduler_current_task->fd_ctr--;
+		syscall_errno = EMFILE;
+		return -1;
+	}
+
+	return fd;
+}
+
+/**
+ * @brief Claim a fd handle
+ * @param fd The handle to claim
+ */
+void stream_claim_fd(int fd)
+{
+	/* Keep track of the open fds */
+	if (fd >= scheduler_current_task->fd_ctr)
+		scheduler_current_task->fd_ctr = fd + 1;
+}
+
+/**
+ * @brief Free a fd handles
+ * @param fd The handle to free
+ */
+void stream_free_fd( __attribute__(( __unused__ )) int fd)
+{
+	//TODO: Implement fd reuse
+}
+
+/**
  * @brief Get directory entries
  *  
  * This function implements the getdents(2) system call
@@ -1059,7 +1095,7 @@ int _sys_dup2(int oldfd, int newfd)
 	if (newfd < 0) {
 		syscall_errno = EBADF;
 		return -1;
-	}
+	} 
 	
 	/* Get the stream ptr for newfd */
 	newptr = stream_get_ptr(newfd);
@@ -1068,6 +1104,9 @@ int _sys_dup2(int oldfd, int newfd)
 	if (newptr) {
 		_sys_close(newfd);
 	}
+
+	/* Keep track of used fds */
+	stream_claim_fd(newfd);
 
 	/* Allocate memory for the new pointer */
 	newptr = heapmm_alloc(sizeof(stream_ptr_t));
@@ -1078,10 +1117,6 @@ int _sys_dup2(int oldfd, int newfd)
 		return -1;
 	}
 
-	/* Keep track of the open fds */
-	if (newfd >= scheduler_current_task->fd_ctr)
-		scheduler_current_task->fd_ctr = newfd + 1;
-
 	/* Fill out stream pointer fields */
 	newptr->info = oldptr->info;
 	newptr->id   = newfd;
@@ -1089,6 +1124,7 @@ int _sys_dup2(int oldfd, int newfd)
 
 	/* Bump stream info reference count */
 	newptr->info->ref_count++;
+	
 	
 	/* Add duplicate to the table */
 	llist_add_end(scheduler_current_task->fd_table, (llist_t *) newptr);
@@ -1106,9 +1142,26 @@ int _sys_dup2(int oldfd, int newfd)
 
 int _sys_dup(int oldfd)
 {
+	int newfd, status;
+
+	/* Allocate a new fd */
+	newfd = stream_alloc_fd();
+	
+	/* Check for errors */
+	if (newfd == -1){
+		syscall_errno = EMFILE;
+		return -1;
+	}	
+	
 	/** Call _sys_dup2 with a new fd for newfd */
-	//TODO: Check for fd_ctr overflow
-	return _sys_dup2(oldfd, scheduler_current_task->fd_ctr++);
+	status = _sys_dup2(oldfd, newfd);
+
+	if (status == -1) {
+		stream_free_fd(newfd);
+		return -1;
+	}
+
+	return status;
 }
 
 /** 
@@ -1118,6 +1171,7 @@ int _sys_dup(int oldfd)
  * @param flags Flags to set on the streams
  * @return On success, zero is returned. On error, -1 is returned.
  * @exception ENOMEM There was not enough memory to create the pipe
+ * @exception EMFILE Maximum number of open stream pointers reached
  */
 int _sys_pipe2(int pipefd[2], int flags)
 {
@@ -1128,9 +1182,15 @@ int _sys_pipe2(int pipefd[2], int flags)
 	stream_ptr_t	*ptr_write;	
 
 	/* Allocate new fd's for the pipe endpoints */
-	//TODO: Check for fd_ctr overflow
-	pipefd[0] = scheduler_current_task->fd_ctr++;//READ
-	pipefd[1] = scheduler_current_task->fd_ctr++;//WRITE
+	if ((pipefd[0] = stream_alloc_fd()) == -1) {
+		syscall_errno = EMFILE;
+		goto _bailout_A;
+	}
+
+	if ((pipefd[1] = stream_alloc_fd()) == -1) {
+		syscall_errno = EMFILE;
+		goto _bailout_B;
+	}
 
 	/* Create the pipe itself */
 	pipe = pipe_create();
@@ -1248,6 +1308,10 @@ _bailout_3:
 _bailout_2:
 	pipe_free(pipe);
 _bailout_1:
+	stream_free_fd(pipefd[1]);
+_bailout_B:
+	stream_free_fd(pipefd[0]);
+_bailout_A:
 	return -1;
 	
 }
@@ -1391,7 +1455,14 @@ int _sys_open(char *path, int flags, mode_t mode)
 	}
 
 	/* Allocate fd handle */
-	fd = scheduler_current_task->fd_ctr++;
+	fd = stream_alloc_fd();
+
+	if (fd == -1) {
+		heapmm_free(info, sizeof(stream_info_t));
+		heapmm_free(ptr, sizeof(stream_ptr_t));
+		syscall_errno = EMFILE;
+		return -1;
+	}
 			
 	/* Fill stream pointer fields */
 	ptr->id = fd;
@@ -1413,6 +1484,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	if (!(info->lock)) {
 		heapmm_free(ptr, sizeof(stream_ptr_t));
 		heapmm_free(info, sizeof(stream_info_t));
+		stream_free_fd(fd);
 		syscall_errno = ENOMEM;
 		return -1;
 	}
@@ -1525,6 +1597,9 @@ int _sys_close_int(process_info_t *process, int fd)
 	/* Remove the pointer from the fd table */
 	llist_unlink((llist_t *) ptr);
 
+	/* Free the fd handle */
+	stream_free_fd(fd);
+	
 	/* Acquire a lock on the stream */
 	semaphore_down(ptr->info->lock);
 
