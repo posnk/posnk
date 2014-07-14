@@ -1442,12 +1442,23 @@ int _sys_open(char *path, int flags, mode_t mode)
 		syscall_errno = EEXIST;
 		return -1;
 	}
-
-	//TODO: Permission checks
-
+	
 	/* Grab the files inode */
 	inode = vfs_inode_ref(dirc->inode);
 
+	/* Check whether we have permission to open with this mode */
+	if ((flags & O_ACCMODE) == O_RDONLY)
+		st = vfs_have_permissions(inode, MODE_READ);
+	else if ((flags & O_ACCMODE) == O_WRONLY)
+		st = vfs_have_permissions(inode, MODE_WRITE);
+	else if ((flags & O_ACCMODE) == O_RDWR)
+		st = vfs_have_permissions(inode, MODE_READ | MODE_WRITE);
+
+	if (!st) {
+		syscall_errno = EACCES;
+		return -1;
+	}
+	
 	/* Allocate memory for the stream info */
 	info = heapmm_alloc(sizeof(stream_info_t));
 
