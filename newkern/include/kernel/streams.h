@@ -16,29 +16,102 @@
 #ifndef __KERNEL_STREAMS_H__
 #define __KERNEL_STREAMS_H__
 
+/*
+ * @defgroup stream Stream API
+ * @brief Implements the UNIX file API ( fd streams )
+ *
+ * The streams programming interface provides an unified way of transferring 
+ * data. It wraps the VFS API and implements pipes. For files it keeps track
+ * of the current offset.
+ *
+ * Slightly different terminology is used here:
+ * 
+ * UNIX - POSNK
+ * @li File description - stream info
+ * @li File descriptor - stream pointer
+ * @li File (opened) - stream
+ * @{
+ */
+
+/** This stream refers to a file */
 #define STREAM_TYPE_FILE	(0)
+
+/** This stream is a pipe endpoint */
 #define STREAM_TYPE_PIPE	(1)
+
+/**
+ * @brief Describes a stream
+ * @see stream_info
+ */
 
 typedef struct stream_info stream_info_t;
 
+/**
+ * @brief Describes a pointer to a stream
+ * @see stream_ptr
+ */
+
 typedef struct stream_ptr stream_ptr_t;
 
+/**
+ * @brief Describes a pointer to a stream
+ *
+ * A stream pointer is what is handled by most programs, it is referred to by
+ * a unique handle (fd) and refers to a stream. The actual state of a stream 
+ * is stored in the stream info object, the stream pointer contains only 
+ * flags affecting its behaviour on process events
+ */
+
 struct stream_ptr {
+
+	/** The linked list node */
 	llist_t  	node;
+
+	/** The handle for this stream pointer */
 	int 		id;
-	int		fd_flags;//NAME IS NOT FLAGS TO PREVENT CONFUSION WITH
-				 //INFO FLAGS
+
+	/**
+         * @brief The flags for this stream pointer 
+         * @warning These are distinct from the stream flags
+         */
+	int		fd_flags;
+
+	/** A pointer to the stream info object this stream_ptr refers to*/
 	stream_info_t  *info;
 };
 
+/**
+ * @brief Describes a stream
+ * A stream object is shared between all pointers to it and thus all processes
+ * having such a pointer. This means that the state of the stream is shared 
+ * too. The stream object is only destroyed when the last pointer to it is
+ * closed
+ */
+
 struct stream_info {
+
+	/** The type of stream */
 	int		 type;
+
+	/** The amount of pointers referring to this stream */
 	int		 ref_count;
+
+	/** The flags for this stream @see _sys_open */
 	int	 	 flags;
+
+	/** The current file offset for this stream */
 	aoff_t		 offset;
+
+	/** The inode referred to by this stream */
 	inode_t		*inode;
+
+	/** The dir_cache entry referred to by this stream */
 	dir_cache_t	*dirc;
+
+	/** This stream's mutex lock */
 	semaphore_t	*lock;
+
+	/** The pipe referred to by this stream */
 	pipe_info_t	*pipe;
 };
 
@@ -84,4 +157,5 @@ int _sys_close_int(process_info_t *process, int fd);
 
 int _sys_truncate(int fd, off_t size);
 
+///@}
 #endif

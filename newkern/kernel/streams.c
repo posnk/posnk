@@ -12,10 +12,10 @@
  *
  * Part of P-OS kernel.
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
- * Changelog:
- * 20-04-2014 - Created
+ * Changelog:\n
+ * @li 20-04-2014 - Created
  */
 #include "kernel/syscall.h"
 #include "kernel/streams.h"
