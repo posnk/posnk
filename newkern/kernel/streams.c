@@ -1569,8 +1569,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	}
 
 	/* Bump inode open count */
-	//TODO: Fix this
-	inode->usage_count++;
+	inode->open_count++;
 
 	/* Release lock on the stream info */
 	semaphore_up(info->lock);
@@ -1668,7 +1667,7 @@ int _sys_close_int(process_info_t *process, int fd)
 						pipe_close_write(ptr->info->inode->fifo);
 					}
 				}
-
+				inode->open_count--;
 				/* Release the inode */
 				vfs_inode_release(ptr->info->inode);
 
