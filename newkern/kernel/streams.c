@@ -1455,6 +1455,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 		st = vfs_have_permissions(inode, MODE_READ | MODE_WRITE);
 
 	if (!st) {
+		vfs_inode_release(inode);
 		syscall_errno = EACCES;
 		return -1;
 	}
@@ -1464,6 +1465,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 
 	/* Check for errors */
 	if (!info) {
+		vfs_inode_release(inode);
 		syscall_errno = ENOMEM;
 		return -1;
 	}
@@ -1474,6 +1476,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	/* Check for errors */
 	if (!ptr) {
 		heapmm_free(info, sizeof(stream_info_t));
+		vfs_inode_release(inode);
 		syscall_errno = ENOMEM;
 		return -1;
 	}
@@ -1484,6 +1487,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	if (fd == -1) {
 		heapmm_free(info, sizeof(stream_info_t));
 		heapmm_free(ptr, sizeof(stream_ptr_t));
+		vfs_inode_release(inode);
 		syscall_errno = EMFILE;
 		return -1;
 	}
@@ -1508,6 +1512,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	if (!(info->lock)) {
 		heapmm_free(ptr, sizeof(stream_ptr_t));
 		heapmm_free(info, sizeof(stream_info_t));
+		vfs_inode_release(inode);
 		stream_free_fd(fd);
 		syscall_errno = ENOMEM;
 		return -1;
