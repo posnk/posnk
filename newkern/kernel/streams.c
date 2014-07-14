@@ -1168,10 +1168,11 @@ int _sys_dup(int oldfd)
  * @brief Create a pipe
  * @param pipefd The created fd's will be put in this array, the 
  * read endpoint will be in pipefd[0], the write endpoint in pipefd[1]
- * @param flags Flags to set on the streams
+ * @param flags Flags to set on the streams (O_CLOEXEC and/or O_NONBLOCK)
  * @return On success, zero is returned. On error, -1 is returned.
  * @exception ENOMEM There was not enough memory to create the pipe
  * @exception EMFILE Maximum number of open stream pointers reached
+ * @exception EINVAL Invalid value in flags
  */
 int _sys_pipe2(int pipefd[2], int flags)
 {
@@ -1236,7 +1237,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 		syscall_errno = ENOMEM;
 		goto _bailout_5;
 	}
-	//TODO: Handle FD_CLOEXEC, verify flags field
+	
 	/* Fill out the read endpoint pointer fields */
 	ptr_read->id = pipefd[0];
 	ptr_read->info = info_read;
@@ -1246,6 +1247,18 @@ int _sys_pipe2(int pipefd[2], int flags)
 	ptr_write->id = pipefd[1];
 	ptr_write->info = info_write;
 	ptr_write->fd_flags = 0;
+
+	/* Check for FD_CLOEXEC flag */
+	if (flags & O_CLOEXEC) {
+		flags &= ~O_CLOEXEC;
+		ptr_read->fd_flags |= FD_CLOEXEC;
+		ptr_write->fd_flags |= FD_CLOEXEC;
+	}
+
+	if (flags & ~O_NONBLOCK) {
+		syscall_errno = EINVAL;
+		goto _bailout_6;
+	}
 
 	/* Fill out the read endpoint info fields */
 	info_read->pipe = pipe;
