@@ -151,6 +151,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a7f7163659cc3ed18fb77ba36481fd6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator that will select all closeable stream pointers.  <a href="#a7f7163659cc3ed18fb77ba36481fd6c5"></a><br/></td></tr>
 <tr class="memitem:gab0711d48a143596389ab19b99fbcd3b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__stream.html#gab0711d48a143596389ab19b99fbcd3b3">stream_do_close_all</a> (<a class="el" href="process_8h.html#aba6f35930ecff1efae67096dfaa95185">process_info_t</a> *process)</td></tr>
 <tr class="memdesc:gab0711d48a143596389ab19b99fbcd3b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close all stream pointers for a process.  <a href="group__stream.html#gab0711d48a143596389ab19b99fbcd3b3"></a><br/></td></tr>
+<tr class="memitem:a2d55d32570fd809c62d13ab0085f5dca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a2d55d32570fd809c62d13ab0085f5dca">stream_alloc_fd</a> ()</td></tr>
+<tr class="memdesc:a2d55d32570fd809c62d13ab0085f5dca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocate a new fd handle.  <a href="#a2d55d32570fd809c62d13ab0085f5dca"></a><br/></td></tr>
+<tr class="memitem:a8869ae2b9e5f982d0aecd90bd391fb8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#a8869ae2b9e5f982d0aecd90bd391fb8f">stream_claim_fd</a> (int fd)</td></tr>
+<tr class="memdesc:a8869ae2b9e5f982d0aecd90bd391fb8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Claim a fd handle.  <a href="#a8869ae2b9e5f982d0aecd90bd391fb8f"></a><br/></td></tr>
+<tr class="memitem:ab6cba25b02baab322694c3f22c1a6f9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="streams_8c.html#ab6cba25b02baab322694c3f22c1a6f9f">stream_free_fd</a> (int fd)</td></tr>
+<tr class="memdesc:ab6cba25b02baab322694c3f22c1a6f9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a fd handles.  <a href="#ab6cba25b02baab322694c3f22c1a6f9f"></a><br/></td></tr>
 <tr class="memitem:gafa8fdc21fe4e1a47a3be2c913d080808"><td class="memItemLeft" align="right" valign="top"><a class="el" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__stream.html#gafa8fdc21fe4e1a47a3be2c913d080808">_sys_getdents</a> (int fd, void *buffer, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> count)</td></tr>
 <tr class="memdesc:gafa8fdc21fe4e1a47a3be2c913d080808"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get directory entries.  <a href="group__stream.html#gafa8fdc21fe4e1a47a3be2c913d080808"></a><br/></td></tr>
 <tr class="memitem:gac8134168213829dab4254391fe4a548f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="glib_8h.html#a9da80127e4eb344e6a9d51f30e992b1a">ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__stream.html#gac8134168213829dab4254391fe4a548f">_sys_read</a> (int fd, void *buffer, <a class="el" href="types_8h.html#a7c94ea6f8948649f8d181ae55911eeaf">size_t</a> count)</td></tr>
@@ -249,11 +255,65 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section see"><dt>See Also</dt><dd><a class="el" href="group__vfs.html#ga9913748fc23c6bfe9d775a2f27d82228" title="Resize a file.">vfs_truncate</a> for more errors </dd></dl>
 
-<p>Definition at line <a class="el" href="streams_8c_source.html#l00544">544</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00578">578</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
 
 <p>References <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="streams_8h_source.html#l00103">stream_info::flags</a>, <a class="el" href="streams_8h_source.html#l00083">stream_ptr::info</a>, <a class="el" href="streams_8h_source.html#l00109">stream_info::inode</a>, <a class="el" href="streams_8h_source.html#l00115">stream_info::lock</a>, <a class="el" href="fcntl_8h_source.html#l00037">O_ACCMODE</a>, <a class="el" href="fcntl_8h_source.html#l00023">O_RDONLY</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="streams_8c_source.html#l00052">stream_get_ptr()</a>, <a class="el" href="streams_8h_source.html#l00040">STREAM_TYPE_FILE</a>, <a class="el" href="streams_8h_source.html#l00043">STREAM_TYPE_PIPE</a>, <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>, <a class="el" href="streams_8h_source.html#l00097">stream_info::type</a>, and <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>.</p>
 
 <p>Referenced by <a class="el" href="sc__streams_8c_source.html#l00206">sys_ftruncate()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2d55d32570fd809c62d13ab0085f5dca"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int stream_alloc_fd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Allocate a new fd handle. </p>
+<dl class="section return"><dt>Returns</dt><dd>A unique new handle </dd></dl>
+
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00187">187</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>References <a class="el" href="errno_8h_source.html#l00027">EMFILE</a>, <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, and <a class="el" href="syscall__ids_8h_source.html#l00019">syscall_errno</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01150">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, and <a class="el" href="streams_8c_source.html#l01184">_sys_pipe2()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8869ae2b9e5f982d0aecd90bd391fb8f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stream_claim_fd </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Claim a fd handle. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fd</td><td>The handle to claim </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00203">203</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>References <a class="el" href="process_8h_source.html#l00093">process_info::fd_ctr</a>, and <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01087">_sys_dup2()</a>.</p>
 
 </div>
 </div>
@@ -333,6 +393,35 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ab6cba25b02baab322694c3f22c1a6f9f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void stream_free_fd </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>fd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Free a fd handles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fd</td><td>The handle to free </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000060">Todo:</a></b></dt><dd>: Implement fd reuse </dd></dl>
+
+<p>Definition at line <a class="el" href="streams_8c_source.html#l00214">214</a> of file <a class="el" href="streams_8c_source.html">streams.c</a>.</p>
+
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01618">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l01150">_sys_dup()</a>, <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, and <a class="el" href="streams_8c_source.html#l01184">_sys_pipe2()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a3d159f64d97eb54699c85af7255727ca"></a>
 <div class="memitem">
 <div class="memproto">
@@ -371,7 +460,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="process_8h_source.html#l00092">process_info::fd_table</a>, <a class="el" href="llist_8c_source.html#l00141">llist_iterate_select()</a>, and <a class="el" href="streams_8c_source.html#l00040">stream_ptr_search_iterator()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l01515">_sys_close_int()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01618">_sys_close_int()</a>.</p>
 
 </div>
 </div>
@@ -458,7 +547,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_456af83f63a9d8b27e10dd059fe0d1e0.html">kernel</a></li><li class="navelem"><a class="el" href="streams_8c.html">streams.c</a></li>
-    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 05:57:11 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

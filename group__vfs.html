@@ -253,7 +253,7 @@ Typedefs</h2></td></tr>
 
 <p>Definition at line <a class="el" href="vfs_8h_source.html#l00040">40</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, and <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, and <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>.</p>
 
 </div>
 </div>
@@ -271,7 +271,7 @@ Typedefs</h2></td></tr>
 
 <p>Definition at line <a class="el" href="vfs_8h_source.html#l00045">45</a> of file <a class="el" href="vfs_8h_source.html">vfs.h</a>.</p>
 
-<p>Referenced by <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
 
 </div>
 </div>
@@ -389,7 +389,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="vfs_8h_source.html#l00157">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="vfs_8c_source.html#l02200">vfs_dir_cache_ref()</a>, and <a class="el" href="vfs_8c_source.html#l02173">vfs_dir_cache_release()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, and <a class="el" href="streams_8c_source.html#l00742">_sys_fchdir()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, and <a class="el" href="streams_8c_source.html#l00776">_sys_fchdir()</a>.</p>
 
 </div>
 </div>
@@ -608,13 +608,13 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structdir__cache.html" title="An entry in the path element cache The kernel keeps track of these to resolve the ...">dir_cache</a> entry on the file referred to by path </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000102">Todo:</a></b></dt><dd>: Check for errors </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000092">Todo:</a></b></dt><dd>: Check for errors </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l02484">2484</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
 <p>References <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="process_8h_source.html#l00087">process_info::current_directory</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00157">dir_cache::inode</a>, <a class="el" href="vfs_8h_source.html#l00136">dirent::inode_id</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="types_8h_source.html#l00025">NULL</a>, <a class="el" href="vfs_8h_source.html#l00155">dir_cache::parent</a>, <a class="el" href="process_8h_source.html#l00086">process_info::root_directory</a>, <a class="el" href="stat_8h_source.html#l00042">S_ISDIR</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="string_8c_source.html#l00004">strchr()</a>, <a class="el" href="string_8c_source.html#l00029">strchrnul()</a>, <a class="el" href="string_8c_source.html#l00102">strncmp()</a>, <a class="el" href="string_8c_source.html#l00070">strncpy()</a>, <a class="el" href="vfs_8h_source.html#l00161">dir_cache::usage_count</a>, <a class="el" href="vfs_8c_source.html#l02212">vfs_dir_cache_new()</a>, <a class="el" href="vfs_8c_source.html#l02200">vfs_dir_cache_ref()</a>, <a class="el" href="vfs_8c_source.html#l02173">vfs_dir_cache_release()</a>, and <a class="el" href="vfs_8c_source.html#l00296">vfs_find_dirent()</a>.</p>
 
-<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="vfs_8c_source.html#l02682">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l02710">vfs_find_symlink()</a>.</p>
+<p>Referenced by <a class="el" href="sc__vfs_8c_source.html#l00154">_sys_chdir()</a>, <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="vfs_8c_source.html#l02682">vfs_find_inode()</a>, and <a class="el" href="vfs_8c_source.html#l02710">vfs_find_symlink()</a>.</p>
 
 </div>
 </div>
@@ -651,7 +651,7 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The directory entry matching name from the directory inode, if none, NULL is returned </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000094">Todo:</a></b></dt><dd>: Find a way to pass an error from here </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000084">Todo:</a></b></dt><dd>: Find a way to pass an error from here </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l00296">296</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -714,7 +714,7 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The file's parent directory </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000103">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>: Check for search permission </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l02655">2655</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -778,7 +778,7 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The file name, see warning! </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000093">Todo:</a></b></dt><dd>: Come up with a way to do this without tripping heap alloc error </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000083">Todo:</a></b></dt><dd>: Come up with a way to do this without tripping heap alloc error </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l00054">54</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -942,7 +942,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="vfs_8h_source.html#l00124">inode::atime</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00023">ENOTDIR</a>, <a class="el" href="vfs_8h_source.html#l00116">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00040">MODE_READ</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00204">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00116">vfs_inode_release()</a>, and <a class="el" href="vfs_8c_source.html#l00440">vfs_int_read_dir()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00203">_sys_getdents()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00239">_sys_getdents()</a>.</p>
 
 </div>
 </div>
@@ -984,7 +984,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="permissions_8c_source.html#l00035">get_perm_class()</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, and <a class="el" href="vfs_8c_source.html#l00186">vfs_get_min_permissions()</a>.</p>
 
-<p>Referenced by <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="vfs_8c_source.html#l00296">vfs_find_dirent()</a>, <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="vfs_8c_source.html#l00296">vfs_find_dirent()</a>, <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1010,7 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If successful 1, otherwise 0 </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000100">Todo:</a></b></dt><dd>: Track mounted devices </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000090">Todo:</a></b></dt><dd>: Track mounted devices </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l02112">2112</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -1047,7 +1047,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00114">inode::mount</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="vfs_8c_source.html#l02152">vfs_dir_cache_mkroot()</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l02682">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l02655">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l02710">vfs_find_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l00216">vfs_get_inode()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="vfs_8c_source.html#l02152">vfs_dir_cache_mkroot()</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l02682">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l02655">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l02710">vfs_find_symlink()</a>, and <a class="el" href="vfs_8c_source.html#l00216">vfs_get_inode()</a>.</p>
 
 </div>
 </div>
@@ -1077,7 +1077,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="llist_8c_source.html#l00078">llist_add_end()</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00114">inode::mount</a>, and <a class="el" href="vfs_8h_source.html#l00118">inode::usage_count</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l01515">_sys_close_int()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="process_8c_source.html#l00274">process_exec()</a>, <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="vfs_8c_source.html#l02212">vfs_dir_cache_new()</a>, <a class="el" href="vfs_8c_source.html#l02173">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01202">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01490">vfs_mount()</a>, <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01143">vfs_rmdir()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01618">_sys_close_int()</a>, <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="process_8c_source.html#l00274">process_exec()</a>, <a class="el" href="process_8c_source.html#l00193">process_reap()</a>, <a class="el" href="vfs_8c_source.html#l02212">vfs_dir_cache_new()</a>, <a class="el" href="vfs_8c_source.html#l02173">vfs_dir_cache_release()</a>, <a class="el" href="vfs_8c_source.html#l00933">vfs_getdents()</a>, <a class="el" href="vfs_8c_source.html#l01952">vfs_link()</a>, <a class="el" href="vfs_8c_source.html#l01202">vfs_mkdir()</a>, <a class="el" href="vfs_8c_source.html#l01297">vfs_mknod()</a>, <a class="el" href="vfs_8c_source.html#l01490">vfs_mount()</a>, <a class="el" href="vfs_8c_source.html#l00761">vfs_read()</a>, <a class="el" href="vfs_8c_source.html#l01143">vfs_rmdir()</a>, <a class="el" href="vfs_8c_source.html#l01600">vfs_symlink()</a>, <a class="el" href="vfs_8c_source.html#l01044">vfs_truncate()</a>, <a class="el" href="vfs_8c_source.html#l01790">vfs_unlink()</a>, and <a class="el" href="vfs_8c_source.html#l00554">vfs_write()</a>.</p>
 
 </div>
 </div>
@@ -1183,8 +1183,8 @@ Typedefs</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000096">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000097">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000086">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000087">Todo:</a></b></dt><dd>: Make this an assertion </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l01202">1202</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -1252,7 +1252,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="vfs_8h_source.html#l00124">inode::atime</a>, <a class="el" href="config_8h_source.html#l00010">CONFIG_FILE_MAX_NAME_LENGTH</a>, <a class="el" href="vfs_8h_source.html#l00128">inode::ctime</a>, <a class="el" href="vfs_8h_source.html#l00094">inode::device</a>, <a class="el" href="vfs_8h_source.html#l00092">inode::device_id</a>, <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00020">EEXIST</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00085">ENAMETOOLONG</a>, <a class="el" href="errno_8h_source.html#l00005">ENOENT</a>, <a class="el" href="errno_8h_source.html#l00015">ENOMEM</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="process_8h_source.html#l00076">process_info::gid</a>, <a class="el" href="vfs_8h_source.html#l00103">inode::gid</a>, <a class="el" href="vfs_8h_source.html#l00098">inode::hard_link_count</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00090">inode::id</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00377">fs_device::inode_size</a>, <a class="el" href="llist_8c_source.html#l00093">llist_unlink()</a>, <a class="el" href="vfs_8h_source.html#l00116">inode::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00045">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::mtime</a>, <a class="el" href="vfs_8h_source.html#l00096">inode::name</a>, <a class="el" href="pipe_8c_source.html#l00022">pipe_create()</a>, <a class="el" href="stat_8h_source.html#l00045">S_ISFIFO</a>, <a class="el" href="scheduler_8c_source.html#l00023">scheduler_current_task</a>, <a class="el" href="synch_8c_source.html#l00068">semaphore_alloc()</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="string_8c_source.html#l00065">strcpy()</a>, <a class="el" href="string_8c_source.html#l00038">strlen()</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="process_8h_source.html#l00075">process_info::uid</a>, <a class="el" href="vfs_8h_source.html#l00101">inode::uid</a>, <a class="el" href="process_8h_source.html#l00088">process_info::umask</a>, <a class="el" href="vfs_8c_source.html#l02682">vfs_find_inode()</a>, <a class="el" href="vfs_8c_source.html#l02655">vfs_find_parent()</a>, <a class="el" href="vfs_8c_source.html#l00054">vfs_get_filename()</a>, <a class="el" href="vfs_8c_source.html#l00204">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00158">vfs_inode_cache()</a>, <a class="el" href="vfs_8c_source.html#l00116">vfs_inode_release()</a>, <a class="el" href="vfs_8c_source.html#l00390">vfs_int_link()</a>, <a class="el" href="vfs_8c_source.html#l00322">vfs_int_mknod()</a>, and <a class="el" href="vfs_8c_source.html#l00344">vfs_int_rmnod()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l01323">_sys_open()</a>, <a class="el" href="init_8c_source.html#l00246">i386_kmain()</a>, <a class="el" href="sc__vfs_8c_source.html#l00316">sys_mknod()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>, and <a class="el" href="vfs_8c_source.html#l01202">vfs_mkdir()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="init_8c_source.html#l00246">i386_kmain()</a>, <a class="el" href="sc__vfs_8c_source.html#l00316">sys_mknod()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>, and <a class="el" href="vfs_8c_source.html#l01202">vfs_mkdir()</a>.</p>
 
 </div>
 </div>
@@ -1313,8 +1313,8 @@ Typedefs</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000098">Todo:</a></b></dt><dd>: Support multiple filesystems </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000099">Todo:</a></b></dt><dd>: Unmount </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000088">Todo:</a></b></dt><dd>: Support multiple filesystems </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000089">Todo:</a></b></dt><dd>: Unmount </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l01490">1490</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
@@ -1402,7 +1402,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="vfs_8h_source.html#l00124">inode::atime</a>, <a class="el" href="blkdev_8c_source.html#l00264">device_block_read()</a>, <a class="el" href="chardev_8c_source.html#l00076">device_char_read()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00116">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00040">MODE_READ</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00204">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00116">vfs_inode_release()</a>, and <a class="el" href="vfs_8c_source.html#l00461">vfs_int_read()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00305">_sys_read()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="procvmm_8c_source.html#l00224">procvmm_handle_fault()</a>, and <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00341">_sys_read()</a>, <a class="el" href="elfloader_8c_source.html#l00025">elf_load()</a>, <a class="el" href="procvmm_8c_source.html#l00224">procvmm_handle_fault()</a>, and <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>.</p>
 
 </div>
 </div>
@@ -1554,7 +1554,7 @@ Typedefs</h2></td></tr>
 
 <p>References <a class="el" href="errno_8h_source.html#l00016">EACCES</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00116">inode::lock</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00045">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::mtime</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00204">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00116">vfs_inode_release()</a>, and <a class="el" href="vfs_8c_source.html#l00505">vfs_int_truncate()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00544">_sys_ftruncate()</a>, <a class="el" href="sc__vfs_8c_source.html#l00275">_sys_truncate()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00578">_sys_ftruncate()</a>, <a class="el" href="streams_8c_source.html#l01398">_sys_open()</a>, <a class="el" href="sc__vfs_8c_source.html#l00275">_sys_truncate()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
 
 </div>
 </div>
@@ -1676,13 +1676,13 @@ Typedefs</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000095">Todo:</a></b></dt><dd>: Make this more efficient, implement sparse files </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000085">Todo:</a></b></dt><dd>: Make this more efficient, implement sparse files </dd></dl>
 
 <p>Definition at line <a class="el" href="vfs_8c_source.html#l00554">554</a> of file <a class="el" href="vfs_8c_source.html">vfs.c</a>.</p>
 
 <p>References <a class="el" href="blkdev_8c_source.html#l00182">device_block_write()</a>, <a class="el" href="chardev_8c_source.html#l00066">device_char_write()</a>, <a class="el" href="errno_8h_source.html#l00012">EBADF</a>, <a class="el" href="errno_8h_source.html#l00017">EFAULT</a>, <a class="el" href="errno_8h_source.html#l00025">EINVAL</a>, <a class="el" href="errno_8h_source.html#l00024">EISDIR</a>, <a class="el" href="vfs_8h_source.html#l00112">inode::fifo</a>, <a class="el" href="heapmm_8c_source.html#l00552">heapmm_alloc()</a>, <a class="el" href="heapmm_8c_source.html#l00574">heapmm_free()</a>, <a class="el" href="vfs_8h_source.html#l00108">inode::if_dev</a>, <a class="el" href="vfs_8h_source.html#l00116">inode::lock</a>, <a class="el" href="string_8c_source.html#l00045">memset()</a>, <a class="el" href="vfs_8h_source.html#l00105">inode::mode</a>, <a class="el" href="vfs_8h_source.html#l00045">MODE_WRITE</a>, <a class="el" href="vfs_8h_source.html#l00126">inode::mtime</a>, <a class="el" href="pipe_8c_source.html#l00085">pipe_write()</a>, <a class="el" href="stat_8h_source.html#l00026">S_IFBLK</a>, <a class="el" href="stat_8h_source.html#l00030">S_IFCHR</a>, <a class="el" href="stat_8h_source.html#l00028">S_IFDIR</a>, <a class="el" href="stat_8h_source.html#l00032">S_IFIFO</a>, <a class="el" href="stat_8h_source.html#l00020">S_IFMT</a>, <a class="el" href="stat_8h_source.html#l00024">S_IFREG</a>, <a class="el" href="synch_8c_source.html#l00029">semaphore_down()</a>, <a class="el" href="synch_8c_source.html#l00023">semaphore_up()</a>, <a class="el" href="vfs_8h_source.html#l00122">inode::size</a>, <a class="el" href="time_8c_source.html#l00025">system_time</a>, <a class="el" href="vfs_8c_source.html#l00257">vfs_effective_inode()</a>, <a class="el" href="vfs_8c_source.html#l00204">vfs_have_permissions()</a>, <a class="el" href="vfs_8c_source.html#l00116">vfs_inode_release()</a>, and <a class="el" href="vfs_8c_source.html#l00482">vfs_int_write()</a>.</p>
 
-<p>Referenced by <a class="el" href="streams_8c_source.html#l00427">_sys_write()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
+<p>Referenced by <a class="el" href="streams_8c_source.html#l00456">_sys_write()</a>, <a class="el" href="tar_8c_source.html#l00196">tar_read_record()</a>, and <a class="el" href="tar_8c_source.html#l00104">tar_read_record_mem()</a>.</p>
 
 </div>
 </div>
@@ -1691,7 +1691,7 @@ Typedefs</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 05:57:11 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

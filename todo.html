@@ -102,23 +102,17 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000078"></a>Global <a class="el" href="group__stream.html#ga700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>  (process_info_t *process, int fd)</dt>
+<dt><a class="anchor" id="_todo000068"></a>Global <a class="el" href="group__stream.html#ga700324ff2a13ba0eabe1b0a8dd6acc49">_sys_close_int</a>  (process_info_t *process, int fd)</dt>
 <dd>: Move to stream close  </dd>
-<dt><a class="anchor" id="_todo000067"></a>Global <a class="el" href="group__stream.html#ga9e29abc7702e850c4fe23dd86fc51139">_sys_dup</a>  (int oldfd)</dt>
-<dd>: Check for fd_ctr overflow  </dd>
-<dt><a class="anchor" id="_todo000064"></a>Global <a class="el" href="group__stream.html#ga3389d4f570b9ecdd4950666bc4f607fb">_sys_fstat</a>  (int fd, struct stat *buf)</dt>
+<dt><a class="anchor" id="_todo000061"></a>Global <a class="el" href="group__stream.html#ga3389d4f570b9ecdd4950666bc4f607fb">_sys_fstat</a>  (int fd, struct stat *buf)</dt>
 <dd>: FIX  </dd>
 <dt><a class="anchor" id="_todo000054"></a>Global <a class="el" href="sc__vfs_8c.html#ad8837f535c4d21cee0103f447de944bb">_sys_lstat</a>  (char *path, struct stat *buf)</dt>
 <dd><p class="startdd">: FIX </p>
 <p>: Implement sparse files </p>
 <p class="enddd">: Ask FS about block size  </p>
 </dd>
-<dt><a class="anchor" id="_todo000070"></a>Global <a class="el" href="group__stream.html#ga5f58feff0214b638bff817867024ca19">_sys_open</a>  (char *path, int flags, mode_t mode)</dt>
+<dt><a class="anchor" id="_todo000064"></a>Global <a class="el" href="group__stream.html#ga5f58feff0214b638bff817867024ca19">_sys_open</a>  (char *path, int flags, mode_t mode)</dt>
 <dd>: Make this an assertion  </dd>
-<dt><a class="anchor" id="_todo000068"></a>Global <a class="el" href="group__stream.html#gaa47253a2ed38cacde66dd0c8aabdcd21">_sys_pipe2</a>  (int pipefd[2], int flags)</dt>
-<dd>: Check for fd_ctr overflow  </dd>
-<dt><a class="anchor" id="_todo000060"></a>Global <a class="el" href="group__stream.html#gac8134168213829dab4254391fe4a548f">_sys_read</a>  (int fd, void *buffer, size_t count)</dt>
-<dd>: Move this past <a class="el" href="pipe_8c.html#ac4c8b40fe40f71388c8f77d165ca7258">pipe_read()</a>; call  </dd>
 <dt><a class="anchor" id="_todo000051"></a>Global <a class="el" href="sc__vfs_8c.html#a21a7b7d6519c5654a92b902dc2b1beec">_sys_stat</a>  (char *path, struct stat *buf)</dt>
 <dd><p class="startdd">: FIX </p>
 <p>: Implement sparse files </p>
@@ -126,33 +120,31 @@ $(document).ready(function(){initNavTree('todo.html','');});
 </dd>
 <dt><a class="anchor" id="_todo000050"></a>Global <a class="el" href="sc__vfs_8c.html#a6e4f3463d6f988ed32ac3c8568227c9a">_sys_truncate</a>  (char *path, off_t length)</dt>
 <dd>: Add permission check  </dd>
-<dt><a class="anchor" id="_todo000062"></a>Global <a class="el" href="group__stream.html#ga3f81816bbc345cfe6320c92a67e48627">_sys_write</a>  (int fd, void *buffer, size_t count)</dt>
-<dd>: Move this past <a class="el" href="pipe_8c.html#af3def0b347db947156a5684d8973f8fc">pipe_write()</a>; call  </dd>
-<dt><a class="anchor" id="_todo000109"></a>Global <a class="el" href="ata_8h.html#a21f42065f261f12cfc4e20e38505bf92">ata_initialize</a>  (ata_device_t *device)</dt>
+<dt><a class="anchor" id="_todo000099"></a>Global <a class="el" href="ata_8h.html#a21f42065f261f12cfc4e20e38505bf92">ata_initialize</a>  (ata_device_t *device)</dt>
 <dd><p class="startdd">: Wait here ? osdev wiki says so but does not specify why.(no support for kernel-land sleeps yet) </p>
 <p>: ^^^^ </p>
 <p>: Handle ATAPI devices </p>
 <p class="enddd">: Hook this somewhere  </p>
 </dd>
-<dt><a class="anchor" id="_todo000108"></a>Global <a class="el" href="ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata_poll_wait</a>  (ata_device_t *device)</dt>
+<dt><a class="anchor" id="_todo000098"></a>Global <a class="el" href="ata_8h.html#a2b222e2f61e5f4f90cd8ba4f16470ab3">ata_poll_wait</a>  (ata_device_t *device)</dt>
 <dd>: Timeout  </dd>
-<dt><a class="anchor" id="_todo000113"></a>Global <a class="el" href="ata_8h.html#ac3498795f5350a738d0515a8bee6aa88">ata_read</a>  (ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)</dt>
+<dt><a class="anchor" id="_todo000103"></a>Global <a class="el" href="ata_8h.html#ac3498795f5350a738d0515a8bee6aa88">ata_read</a>  (ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)</dt>
 <dd>: Implement a work queue  </dd>
-<dt><a class="anchor" id="_todo000114"></a>Global <a class="el" href="ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd">ata_write</a>  (ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)</dt>
+<dt><a class="anchor" id="_todo000104"></a>Global <a class="el" href="ata_8h.html#a375cde57330fb3ff9151f6a6db071cfd">ata_write</a>  (ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)</dt>
 <dd>: Implement a work queue  </dd>
 <dt><a class="anchor" id="_todo000001"></a>Global <a class="el" href="blkdev_8c.html#aebf4864124f3a70e04199e56d9c10a63">block_dev_table</a>  </dt>
 <dd>: IMPLEMENT BLOCK DEVICES  </dd>
-<dt><a class="anchor" id="_todo000082"></a>Global <a class="el" href="syscall_8c.html#aff9334c02eb1357c9111f2e1a10aa001">debug_uputs</a>  (uint32_t param[4], uint32_t param_size[4])</dt>
+<dt><a class="anchor" id="_todo000072"></a>Global <a class="el" href="syscall_8c.html#aff9334c02eb1357c9111f2e1a10aa001">debug_uputs</a>  (uint32_t param[4], uint32_t param_size[4])</dt>
 <dd>: ENOMEM  </dd>
 <dt><a class="anchor" id="_todo000002"></a>Global <a class="el" href="exception_8c.html#a6144950ba049dd82bec04ca06f81c30e">exception_handle</a>  (int exception, void *instr_pointer, void *state, size_t state_size)</dt>
 <dd><p class="startdd">: Kernel mode exception </p>
 <p class="enddd">: Look up appropriate signal for exception  </p>
 </dd>
-<dt><a class="anchor" id="_todo000105"></a>Global <a class="el" href="ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a">ext2_e2tovfs_inode</a>  (ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)</dt>
+<dt><a class="anchor" id="_todo000095"></a>Global <a class="el" href="ext2_8c.html#aa3a8b3b9c81523a0dede5833d7e8df4a">ext2_e2tovfs_inode</a>  (ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)</dt>
 <dd>: Read link path  </dd>
-<dt><a class="anchor" id="_todo000104"></a>Global <a class="el" href="ext2_8c.html#a3599ddb5bac9a8256c5d5e1138c3890b">ext2_load_bgd</a>  (ext2_device_t *device, uint32_t bg_id)</dt>
+<dt><a class="anchor" id="_todo000094"></a>Global <a class="el" href="ext2_8c.html#a3599ddb5bac9a8256c5d5e1138c3890b">ext2_load_bgd</a>  (ext2_device_t *device, uint32_t bg_id)</dt>
 <dd>: Cache BGDs  </dd>
-<dt><a class="anchor" id="_todo000106"></a>Global <a class="el" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>  (dev_t device, uint32_t flags)</dt>
+<dt><a class="anchor" id="_todo000096"></a>Global <a class="el" href="vfs_8c.html#a815dafb62570f49d698a5ba01cd8a45b">ext2_mount</a>  (dev_t device, uint32_t flags)</dt>
 <dd>: Implement fallback to alternative superblock  </dd>
 <dt><a class="anchor" id="_todo000021"></a>Global <a class="el" href="heapmm_8c.html#a964ab2f29876cde7553ef89df6ba250c">heapmm_alloc_alligned</a>  (size_t size, uintptr_t alignment)</dt>
 <dd><p class="startdd">: Get a lock on the free block table </p>
@@ -184,32 +176,32 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>: Release lock on the free block table </p>
 <p class="enddd">: Release lock on the free block table  </p>
 </dd>
-<dt><a class="anchor" id="_todo000120"></a>Global <a class="el" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a>  (multiboot_info_t *mbd, unsigned int magic)</dt>
+<dt><a class="anchor" id="_todo000110"></a>Global <a class="el" href="init_8c.html#a579679dd45f18736bcedbe890a2120ea">i386_init_mm</a>  (multiboot_info_t *mbd, unsigned int magic)</dt>
 <dd>: PANIC!!!  </dd>
-<dt><a class="anchor" id="_todo000119"></a>Global <a class="el" href="init_8c.html#a23eb3e32af195a3401a0dea2234f22e0">i386_init_multiboot_memprobe</a>  (multiboot_info_t *mbt)</dt>
+<dt><a class="anchor" id="_todo000109"></a>Global <a class="el" href="init_8c.html#a23eb3e32af195a3401a0dea2234f22e0">i386_init_multiboot_memprobe</a>  (multiboot_info_t *mbt)</dt>
 <dd>: Verify page alignment of mmap entries  </dd>
-<dt><a class="anchor" id="_todo000121"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a04a5e66c956ee3c8635a0f89794c3bdd">i386_set_pd_param_t</a>  </dt>
+<dt><a class="anchor" id="_todo000111"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a04a5e66c956ee3c8635a0f89794c3bdd">i386_set_pd_param_t</a>  </dt>
 <dd>: Implement  </dd>
-<dt><a class="anchor" id="_todo000121"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a04a5e66c956ee3c8635a0f89794c3bdd">i386_set_pd_param_t</a>  </dt>
+<dt><a class="anchor" id="_todo000111"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a04a5e66c956ee3c8635a0f89794c3bdd">i386_set_pd_param_t</a>  </dt>
 <dd>: Implement  </dd>
-<dt><a class="anchor" id="_todo000092"></a>Global <a class="el" href="vfs_8c.html#a4ce92837aa1da333980c953e88e1529a">inode_cache</a>  </dt>
+<dt><a class="anchor" id="_todo000082"></a>Global <a class="el" href="vfs_8c.html#a4ce92837aa1da333980c953e88e1529a">inode_cache</a>  </dt>
 <dd>: Implement a proper inode cache  </dd>
-<dt><a class="anchor" id="_todo000124"></a>Global <a class="el" href="kdbg_8c.html#a2f4b7bc9171dc7062dc98c3fd034b5ea">kdbg_initialize</a>  ()</dt>
+<dt><a class="anchor" id="_todo000114"></a>Global <a class="el" href="kdbg_8c.html#a2f4b7bc9171dc7062dc98c3fd034b5ea">kdbg_initialize</a>  ()</dt>
 <dd>: PANIC!!!  </dd>
-<dt><a class="anchor" id="_todo000132"></a>Global <a class="el" href="kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d">kdbgmm_alloc_internal</a>  (size_t size, int morecore)</dt>
+<dt><a class="anchor" id="_todo000122"></a>Global <a class="el" href="kdbgmm_8c.html#a00ee68ae673ec46a4f9d6fe7e63d189d">kdbgmm_alloc_internal</a>  (size_t size, int morecore)</dt>
 <dd><p class="startdd">: Get a lock on the free block table </p>
 <p>: Release a lock on the free block table </p>
 <p>: Release a lock on the free block table </p>
 <p class="enddd">: Release a lock on the free block table  </p>
 </dd>
-<dt><a class="anchor" id="_todo000136"></a>Global <a class="el" href="kdbgmm_8c.html#a25976b65c9d92a85bc502d5169712943">kdbgmm_alloc_page_alligned</a>  (size_t size)</dt>
+<dt><a class="anchor" id="_todo000126"></a>Global <a class="el" href="kdbgmm_8c.html#a25976b65c9d92a85bc502d5169712943">kdbgmm_alloc_page_alligned</a>  (size_t size)</dt>
 <dd><p class="startdd">: Get a lock on the free block table </p>
 <p>: Release a lock on the free block table </p>
 <p>: Release a lock on the free block table </p>
 <p>: Release a lock on the free block table </p>
 <p class="enddd">: Release a lock on the free block table  </p>
 </dd>
-<dt><a class="anchor" id="_todo000125"></a>Global <a class="el" href="kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16">kdbgmm_free_internal</a>  (void *address, size_t size)</dt>
+<dt><a class="anchor" id="_todo000115"></a>Global <a class="el" href="kdbgmm_8c.html#a9102851c5bf7325fd33051705f25fe16">kdbgmm_free_internal</a>  (void *address, size_t size)</dt>
 <dd><p class="startdd">: Release a lock on the free block table </p>
 <p>: Get a lock on the free block table </p>
 <p>: Get a lock on the free block table </p>
@@ -218,9 +210,9 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>: Release a lock on the free block table </p>
 <p class="enddd">: Release a lock on the free block table  </p>
 </dd>
-<dt><a class="anchor" id="_todo000141"></a>Global <a class="el" href="llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3">llist_add_end</a>  (llist_t *list, llist_t *entry)</dt>
+<dt><a class="anchor" id="_todo000131"></a>Global <a class="el" href="llist_8c.html#ac3dc636a7f0ea2c4aef77842b5e10ef3">llist_add_end</a>  (llist_t *list, llist_t *entry)</dt>
 <dd>: Maybe add some checks here  </dd>
-<dt><a class="anchor" id="_todo000142"></a>Global <a class="el" href="structpage__dir.html#a3c27bca311f44ca8d2cde53ba5be72b1">page_dir::content</a>  </dt>
+<dt><a class="anchor" id="_todo000132"></a>Global <a class="el" href="structpage__dir.html#a3c27bca311f44ca8d2cde53ba5be72b1">page_dir::content</a>  </dt>
 <dd>: Determine what else to add here  </dd>
 <dt><a class="anchor" id="_todo000026"></a>Global <a class="el" href="kernel_2paging_8c.html#a50c93659e1da8c77ece658e76e8b2340">paging_handle_fault</a>  (void *virt_addr, void *instr_ptr, void *state, size_t state_size, int present, int write, int user)</dt>
 <dd><p class="startdd">: Dispatch exception, usermode program tried to access kernel space </p>
@@ -231,7 +223,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <p>: If no fix was found, dispatch exception </p>
 <p class="enddd">: Copy on write,  </p>
 </dd>
-<dt><a class="anchor" id="_todo000122"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02">paging_map</a>  (void *virt_addr, physaddr_t phys_addr, page_flags_t flags)</dt>
+<dt><a class="anchor" id="_todo000112"></a>Global <a class="el" href="arch_2i386_2paging_8c.html#a3eedbba6865f33f438eafed00c8d4a02">paging_map</a>  (void *virt_addr, physaddr_t phys_addr, page_flags_t flags)</dt>
 <dd>: Determine whether we have to free previously mapped frame  </dd>
 <dt><a class="anchor" id="_todo000033"></a>Global <a class="el" href="physmm_8c.html#a398e7b10559e3b6ac316c0e77e1f79ca">physmm_alloc_frame</a>  ()</dt>
 <dd><p class="startdd">: Lock physmm_bitmap </p>
@@ -260,18 +252,20 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd>: Implement dynamic stack size  </dd>
 <dt><a class="anchor" id="_todo000044"></a>Global <a class="el" href="procvmm_8c.html#a7e9e5731a4b5aa019c0d27c53d20654a">procvmm_handle_fault</a>  (void *address)</dt>
 <dd>: Implement public mappings  </dd>
-<dt><a class="anchor" id="_todo000107"></a>Global <a class="el" href="ramfs_8c.html#a6f83e2c20ab1c09fe316b383c9f16965">ramfs_rmnod</a>  (inode_t *inode)</dt>
+<dt><a class="anchor" id="_todo000097"></a>Global <a class="el" href="ramfs_8c.html#a6f83e2c20ab1c09fe316b383c9f16965">ramfs_rmnod</a>  (inode_t *inode)</dt>
 <dd>: Free blocks  </dd>
 <dt><a class="anchor" id="_todo000059"></a>Global <a class="el" href="scheduler_8c.html#a7d06701ac073c331c83519e3909b7fce">schedule</a>  ()</dt>
 <dd>: Increment ticks only on preemptive scheduler calls  </dd>
-<dt><a class="anchor" id="_todo000123"></a>Global <a class="el" href="scheduler_8h.html#a413ca2fd9749f8037c2cd560665a0d20">scheduler_invoke_signal_handler</a>  (int signal)</dt>
+<dt><a class="anchor" id="_todo000113"></a>Global <a class="el" href="scheduler_8h.html#a413ca2fd9749f8037c2cd560665a0d20">scheduler_invoke_signal_handler</a>  (int signal)</dt>
 <dd>: Use current user stack pointer  </dd>
 <dt><a class="anchor" id="_todo000057"></a>Global <a class="el" href="scheduler_8c.html#a948805aff6bd1a6534f6385041afc2ef">scheduler_next_task_iterator</a>  (llist_t *node, void *param)</dt>
 <dd><p class="startdd">: Signal timeout </p>
 <p class="enddd">: Signal timeout  </p>
 </dd>
-<dt><a class="anchor" id="_todo000143"></a>Global <a class="el" href="signals_8h.html#a136c64ec2d1306de745e39d6aee362ca">SIGHUP</a>  </dt>
+<dt><a class="anchor" id="_todo000133"></a>Global <a class="el" href="signals_8h.html#a136c64ec2d1306de745e39d6aee362ca">SIGHUP</a>  </dt>
 <dd>: Rewrite signals code to be POSIX compliant !  </dd>
+<dt><a class="anchor" id="_todo000060"></a>Global <a class="el" href="streams_8c.html#ab6cba25b02baab322694c3f22c1a6f9f">stream_free_fd</a>  (int fd)</dt>
+<dd>: Implement fd reuse  </dd>
 <dt><a class="anchor" id="_todo000045"></a>Global <a class="el" href="sc__process_8c.html#a9059e3c677a78bbfa5a12368ea6a604a">sys_kill</a>  (uint32_t param[4], uint32_t param_size[4])</dt>
 <dd>: Implement kill all system processes  </dd>
 <dt><a class="anchor" id="_todo000049"></a>Global <a class="el" href="sc__process_8c.html#a258509c7bd40585df15de8f7182eb19a">sys_sbrk</a>  (uint32_t param[4], uint32_t param_size[4])</dt>
@@ -282,50 +276,50 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <dd><p class="startdd">: Determine whether pgroup exists </p>
 <p class="enddd">: Implement this in libc, linux only hehehe  </p>
 </dd>
-<dt><a class="anchor" id="_todo000081"></a>Global <a class="el" href="syscall_8c.html#a98d180b3b9e42268ac21559a97c2fd62">syscall_register</a>  (int call_id, syscall_func_t func)</dt>
+<dt><a class="anchor" id="_todo000071"></a>Global <a class="el" href="syscall_8c.html#a98d180b3b9e42268ac21559a97c2fd62">syscall_register</a>  (int call_id, syscall_func_t func)</dt>
 <dd>: Find way to free syscall buffers after signal kill  </dd>
-<dt><a class="anchor" id="_todo000083"></a>Global <a class="el" href="tar_8c.html#a2d405ba96a6c6f61802627b21090a506">tar_get_mode</a>  (tar_header_t *header)</dt>
+<dt><a class="anchor" id="_todo000073"></a>Global <a class="el" href="tar_8c.html#a2d405ba96a6c6f61802627b21090a506">tar_get_mode</a>  (tar_header_t *header)</dt>
 <dd>: Implement proper symlinks  </dd>
-<dt><a class="anchor" id="_todo000085"></a>Global <a class="el" href="tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b">tar_read_record</a>  (inode_t *tar_file, off_t *pos)</dt>
+<dt><a class="anchor" id="_todo000075"></a>Global <a class="el" href="tar_8c.html#a1486244807caa937c1cfdc8d72ff6c6b">tar_read_record</a>  (inode_t *tar_file, off_t *pos)</dt>
 <dd>: Implement proper symlinks  </dd>
-<dt><a class="anchor" id="_todo000084"></a>Global <a class="el" href="tar_8c.html#a0257364b4421a84722534015f9e21279">tar_read_record_mem</a>  (uintptr_t tar_data, off_t *pos)</dt>
+<dt><a class="anchor" id="_todo000074"></a>Global <a class="el" href="tar_8c.html#a0257364b4421a84722534015f9e21279">tar_read_record_mem</a>  (uintptr_t tar_data, off_t *pos)</dt>
 <dd>: Implement proper symlinks  </dd>
-<dt><a class="anchor" id="_todo000086"></a>Global <a class="el" href="tty_8c.html#a3918933914550c157c29424750aeb045">tty_close</a>  (dev_t device, int fd)</dt>
+<dt><a class="anchor" id="_todo000076"></a>Global <a class="el" href="tty_8c.html#a3918933914550c157c29424750aeb045">tty_close</a>  (dev_t device, int fd)</dt>
 <dd>: process_strip_ctty(device);  </dd>
-<dt><a class="anchor" id="_todo000088"></a>Global <a class="el" href="tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty_input_char</a>  (dev_t device, char c)</dt>
+<dt><a class="anchor" id="_todo000078"></a>Global <a class="el" href="tty_8c.html#a2a01bfbfacd2694da3bd7fb74f1f65fe">tty_input_char</a>  (dev_t device, char c)</dt>
 <dd>: Flow control  </dd>
-<dt><a class="anchor" id="_todo000089"></a>Global <a class="el" href="tty_8c.html#aeb54be231efa53ed345f67fad6ccfdff">tty_ioctl</a>  (dev_t device, int fd, int func, int arg)</dt>
+<dt><a class="anchor" id="_todo000079"></a>Global <a class="el" href="tty_8c.html#aeb54be231efa53ed345f67fad6ccfdff">tty_ioctl</a>  (dev_t device, int fd, int func, int arg)</dt>
 <dd><p class="startdd">: Call driver </p>
 <p>: Strip pgrp of ctty </p>
 <p class="enddd">: process_signal_pgroup(tty-&gt;fg_pgid, SIGWINCH);  </p>
 </dd>
-<dt><a class="anchor" id="_todo000087"></a>Global <a class="el" href="tty_8c.html#af04629abe6c2dbe5e5089f147877621d">tty_output_char</a>  (dev_t device, char c)</dt>
+<dt><a class="anchor" id="_todo000077"></a>Global <a class="el" href="tty_8c.html#af04629abe6c2dbe5e5089f147877621d">tty_output_char</a>  (dev_t device, char c)</dt>
 <dd>: Flow control  </dd>
-<dt><a class="anchor" id="_todo000102"></a>Global <a class="el" href="group__vfs.html#ga90dc951c937e30b96e59f73075bbcd3a">vfs_find_dirc</a>  (char *path)</dt>
+<dt><a class="anchor" id="_todo000092"></a>Global <a class="el" href="group__vfs.html#ga90dc951c937e30b96e59f73075bbcd3a">vfs_find_dirc</a>  (char *path)</dt>
 <dd>: Check for errors  </dd>
-<dt><a class="anchor" id="_todo000101"></a>Global <a class="el" href="vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a">vfs_find_dirc_parent</a>  (char *path)</dt>
+<dt><a class="anchor" id="_todo000091"></a>Global <a class="el" href="vfs_8c.html#acf4cb3ecb7c77abf8ae71c18c549865a">vfs_find_dirc_parent</a>  (char *path)</dt>
 <dd>: Check for errors  </dd>
-<dt><a class="anchor" id="_todo000094"></a>Global <a class="el" href="group__vfs.html#ga489abb04eb8e74a3f11a0a20f32a845c">vfs_find_dirent</a>  (inode_t *inode, char *name)</dt>
+<dt><a class="anchor" id="_todo000084"></a>Global <a class="el" href="group__vfs.html#ga489abb04eb8e74a3f11a0a20f32a845c">vfs_find_dirent</a>  (inode_t *inode, char *name)</dt>
 <dd>: Find a way to pass an error from here  </dd>
-<dt><a class="anchor" id="_todo000103"></a>Global <a class="el" href="group__vfs.html#gaa8336c694b79fb0e56847ab2e1b26750">vfs_find_parent</a>  (char *path)</dt>
+<dt><a class="anchor" id="_todo000093"></a>Global <a class="el" href="group__vfs.html#gaa8336c694b79fb0e56847ab2e1b26750">vfs_find_parent</a>  (char *path)</dt>
 <dd>: Check for search permission  </dd>
-<dt><a class="anchor" id="_todo000093"></a>Global <a class="el" href="group__vfs.html#gaf09508470980cccac2b4a2b86cd0c716">vfs_get_filename</a>  (const char *path)</dt>
+<dt><a class="anchor" id="_todo000083"></a>Global <a class="el" href="group__vfs.html#gaf09508470980cccac2b4a2b86cd0c716">vfs_get_filename</a>  (const char *path)</dt>
 <dd>: Come up with a way to do this without tripping heap alloc error  </dd>
-<dt><a class="anchor" id="_todo000100"></a>Global <a class="el" href="group__vfs.html#gac1913485037320335c4030439d537df8">vfs_initialize</a>  (fs_device_t *root_device)</dt>
+<dt><a class="anchor" id="_todo000090"></a>Global <a class="el" href="group__vfs.html#gac1913485037320335c4030439d537df8">vfs_initialize</a>  (fs_device_t *root_device)</dt>
 <dd>: Track mounted devices  </dd>
-<dt><a class="anchor" id="_todo000096"></a>Global <a class="el" href="group__vfs.html#ga22ee4ff0cc661e9246bd6a76702b298e">vfs_mkdir</a>  (char *path, mode_t mode)</dt>
+<dt><a class="anchor" id="_todo000086"></a>Global <a class="el" href="group__vfs.html#ga22ee4ff0cc661e9246bd6a76702b298e">vfs_mkdir</a>  (char *path, mode_t mode)</dt>
 <dd>: Make this an assertion  </dd>
-<dt><a class="anchor" id="_todo000098"></a>Global <a class="el" href="group__vfs.html#ga61886b169216dc8c85945584536fbb1d">vfs_mount</a>  (char *device, char *mountpoint, char *fstype, uint32_t flags)</dt>
+<dt><a class="anchor" id="_todo000088"></a>Global <a class="el" href="group__vfs.html#ga61886b169216dc8c85945584536fbb1d">vfs_mount</a>  (char *device, char *mountpoint, char *fstype, uint32_t flags)</dt>
 <dd>: Support multiple filesystems  </dd>
-<dt><a class="anchor" id="_todo000095"></a>Global <a class="el" href="group__vfs.html#gab379ab04ee753835803908fe8e2390ed">vfs_write</a>  (inode_t *inode, aoff_t file_offset, void *buffer, aoff_t count, aoff_t *read_size, int non_block)</dt>
+<dt><a class="anchor" id="_todo000085"></a>Global <a class="el" href="group__vfs.html#gab379ab04ee753835803908fe8e2390ed">vfs_write</a>  (inode_t *inode, aoff_t file_offset, void *buffer, aoff_t count, aoff_t *read_size, int non_block)</dt>
 <dd>: Make this more efficient, implement sparse files  </dd>
-<dt><a class="anchor" id="_todo000115"></a>Global <a class="el" href="vga__vterm_8c.html#a06b6798ef0a700339c490081eeec0057">vga_vterm_get_text_video_memory</a>  ()</dt>
+<dt><a class="anchor" id="_todo000105"></a>Global <a class="el" href="vga__vterm_8c.html#a06b6798ef0a700339c490081eeec0057">vga_vterm_get_text_video_memory</a>  ()</dt>
 <dd>: Check for paging init  </dd>
-<dt><a class="anchor" id="_todo000117"></a>Global <a class="el" href="vgacon__early_8c.html#a0832b5a1cd2330637607743cfccdcf07">vgacon_early_get_text_video_memory</a>  ()</dt>
+<dt><a class="anchor" id="_todo000107"></a>Global <a class="el" href="vgacon__early_8c.html#a0832b5a1cd2330637607743cfccdcf07">vgacon_early_get_text_video_memory</a>  ()</dt>
 <dd>: Check for paging init  </dd>
-<dt><a class="anchor" id="_todo000116"></a>Global <a class="el" href="vgacon_8c.html#aaafa2fce104ec7975d09037f8f2ae924">vgacon_get_text_video_memory</a>  ()</dt>
+<dt><a class="anchor" id="_todo000106"></a>Global <a class="el" href="vgacon_8c.html#aaafa2fce104ec7975d09037f8f2ae924">vgacon_get_text_video_memory</a>  ()</dt>
 <dd>: Check for paging init  </dd>
-<dt><a class="anchor" id="_todo000118"></a>Global <a class="el" href="vterm_8h.html#a46779f50ccfa4eb114381c82918af4fd">vterm_init</a>  (vterm_t *vterm, guint flags, int rows, int cols)</dt>
+<dt><a class="anchor" id="_todo000108"></a>Global <a class="el" href="vterm_8h.html#a46779f50ccfa4eb114381c82918af4fd">vterm_init</a>  (vterm_t *vterm, guint flags, int rows, int cols)</dt>
 <dd>:vterm-&gt;curattr=COLOR_PAIR(vterm-&gt;colors); </dd>
 </dl>
 </div></div><!-- contents -->
@@ -333,7 +327,7 @@ $(document).ready(function(){initNavTree('todo.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jul 14 2014 03:53:28 for posnk kernel by
+    <li class="footer">Generated on Mon Jul 14 2014 05:57:11 for posnk kernel by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1.2 </li>
   </ul>

@@ -46,12 +46,12 @@ var NAVTREEINDEX =
 "pci_8h.html#a709bf33dfa630c3a172f060326e39fb5",
 "protection_8c.html#a7eb32a88b8c2e0d0ffaa2d5c2c804554",
 "stacktrc_8h.html#a5a8efcfa83e2202f34400caacacb34e4",
-"structblkcache__cache.html#a48dd6baa4e74e2972900d3a46962d79e",
-"structinode.html#a4b3440e0db7cf4fd0e8d129457a17861",
-"structvfs__cache__params.html",
-"termios_8h.html#a15cde8857ad26391c93358f528e7e13a",
-"unistd_8h.html#ae5acf4043c0903cda7436b108e29e8e6",
-"vterm__csi__ICH_8c_source.html"
+"structblk__ops.html#a90dd23897b4107881a1e0a3bd1702b4a",
+"structinode.html#a456c01825931add904098a4b0002330d",
+"structustat.html#a7f1029770629fc087d4da8489ad676fd",
+"termios_8h.html#a12046b4322de1f4b85ed29267aa8173a",
+"unistd_8h.html#ad2a2e6c114780c3071efd24f16c7f7d8",
+"vterm__csi__EL_8c_source.html"
 ];
 
 var navTreeSubIndices = new Array();

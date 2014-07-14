@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"structinode.html#a456c01825931add904098a4b0002330d":[9,0,46,6],
+"structinode.html#a456f30eb0f88fbd83b4a95398c67d6c3":[9,0,46,10],
+"structinode.html#a4887e57edc2d19fe1dc38f49d78224ef":[9,0,46,16],
 "structinode.html#a4b3440e0db7cf4fd0e8d129457a17861":[9,0,46,2],
 "structinode.html#a4c0d828b6e65ecdac1622e4a18e0e834":[9,0,46,3],
 "structinode.html#a55a63ed7c60045de81212b920484fb50":[9,0,46,12],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "structtty__ops.html#a807323a5c5ee73cb3a862ad34da2286c":[9,0,76,2],
 "structtty__ops.html#a9804a67477261ce9d17103faa1e2c8fe":[9,0,76,3],
 "structustat.html":[9,0,77],
-"structustat.html#a18fc5d904886dac95ac9ae50c40b6423":[9,0,77,1],
-"structustat.html#a7f1029770629fc087d4da8489ad676fd":[9,0,77,0],
-"structustat.html#ac1963b280002ab392041bea858f69879":[9,0,77,2],
-"structustat.html#af178d9f55415ce131358a7ac689dac39":[9,0,77,3]
+"structustat.html#a18fc5d904886dac95ac9ae50c40b6423":[9,0,77,1]
 };
