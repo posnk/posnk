@@ -135,6 +135,7 @@ uint32_t sys_exit(__attribute__((__unused__)) uint32_t param[4], __attribute__((
 {
 	scheduler_current_task->state = PROCESS_KILLED;
 	process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
+	stream_do_close_all (scheduler_current_task);
 	procvmm_clear_mmaps();
 	schedule();
 	return 0; // NEVER REACHED

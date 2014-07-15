@@ -180,6 +180,8 @@ void process_handle_signals()
 					if (scheduler_current_task->state == PROCESS_KILLED) {
 						debugcon_printf("killedby: %i\n", sig_active);
 						process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
+
+						stream_do_close_all (scheduler_current_task);
 						procvmm_clear_mmaps();
 						schedule();
 						return;
