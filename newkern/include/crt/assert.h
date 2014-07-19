@@ -21,16 +21,17 @@
 #include "kernel/system.h" 
 
 #define softassert(AssertConditionArg) \
-do { if (AssertConditionArg) \
-	debugcon_printf("\n\nKernel assertion failed at %s:%i %s :\n%s\n", \
+do { if (!(AssertConditionArg)) \
+	debugcon_printf("\n\nKernel assertion failed at %s:%i in %s :\n%s\n", \
 		__FILE__, __LINE__, __FUNCTION__, #AssertConditionArg); \
 } while (0)
 
 #define hardassert(AssertConditionArg) \
-do { if (AssertConditionArg) \
-	debugcon_printf("\n\nKernel assertion failed at %s:%i %s :\n%s\nHalting system!", \
+do { 	if (!(AssertConditionArg)) {\
+	debugcon_printf("\n\nKernel assertion failed at %s:%i in %s :\n%s\n\nHalting system!", \
 		__FILE__, __LINE__, __FUNCTION__, #AssertConditionArg); \
 	halt();\
+	}\
 } while (0)
 
 

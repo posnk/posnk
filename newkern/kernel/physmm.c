@@ -11,6 +11,7 @@
 
 #include "kernel/physmm.h"
 #include "kernel/heapmm.h"
+#include <assert.h>
 
 uint32_t physmm_bitmap[PHYSMM_BITMAP_SIZE];
 
