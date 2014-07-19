@@ -93,6 +93,7 @@ void llist_add_end(llist_t *list,llist_t *entry)
 void llist_unlink(llist_t *entry)
 {
 	assert(entry != NULL);
+	assert((entry->prev && entry->next) || ((!entry->prev) && (!entry->next)));
 	if (entry->prev)
 		entry->prev->next = entry->next;
 	if (entry->next)

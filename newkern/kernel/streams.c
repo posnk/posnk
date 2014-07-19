@@ -33,6 +33,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <assert.h>
 
 /**
  * Iterator to test if stream pointer matches the fd
@@ -65,6 +66,7 @@ stream_ptr_t *stream_get_ptr (int fd)
 
 stream_ptr_t *stream_get_ptr_o (process_info_t *process, int fd)
 {
+	assert(process != NULL);
 	/* Look it up using stream_ptr_search_iterator */
 	return (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_ptr_search_iterator, (void *) fd);
 }
@@ -120,6 +122,7 @@ int stream_ptr_copy_iterator (llist_t *node, void *param)
 
 int stream_copy_fd_table (llist_t *target)
 {
+	assert(target != NULL);
 	/* Run stream_ptr_copy_iterator over the current process's ptr table */
 	return llist_iterate_select(scheduler_current_task->fd_table, &stream_ptr_copy_iterator, (void *) target) == NULL;
 }
@@ -173,6 +176,7 @@ int stream_closeall_iterator ( __attribute__((__unused__)) llist_t *node, __attr
 void stream_do_close_all (process_info_t *process)
 {
 	stream_ptr_t *ptr;
+	assert(process != NULL);
 	/* Loop until there are no more ptrs left that are to be closed */
 	for (ptr = (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_closeall_iterator, NULL); ptr != NULL; 
 	     ptr = (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_closeall_iterator, NULL))
@@ -242,8 +246,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 	int st;
 	stream_ptr_t *ptr;
 	/* Check for null pointers */
-	if (!buffer)
-		return EFAULT;
+	assert(buffer != NULL);
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
@@ -345,8 +348,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 	stream_ptr_t *ptr;
 
 	/* Check for null pointers */
-	if (!buffer)
-		return EFAULT;
+	assert(buffer != NULL);
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
@@ -460,8 +462,7 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 	stream_ptr_t *ptr;
 
 	/* Check for null pointers */
-	if (!buffer)
-		return EFAULT;
+	assert(buffer != NULL);
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
@@ -1404,10 +1405,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	inode_t *inode;
 	
 	/* Check for null pointers */
-	if (!path) {
-		syscall_errno = EFAULT;
-		return -1;
-	}		
+	assert(path != NULL);
 
 	/* Look up the file */
 	dirc = vfs_find_dirc(path);
@@ -1431,11 +1429,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 			dirc = vfs_find_dirc(path);
 
 			/* Check if it exists */
-			//TODO: Make this an assertion
-			if (!dirc) {
-				syscall_errno = ENOENT;
-				return -1;
-			}
+			assert(dirc != NULL);
 
 		} else {
 			/* O_CREAT not set: return error */
@@ -1632,6 +1626,8 @@ int _sys_close(int fd)
 int _sys_close_int(process_info_t *process, int fd)
 {	
 	stream_ptr_t *ptr;
+	assert(process != NULL);
+
 	/* Get the stream pointer */
 	ptr = stream_get_ptr_o(process, fd);
 
