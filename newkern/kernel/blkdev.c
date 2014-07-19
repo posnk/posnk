@@ -16,6 +16,7 @@
 #include <sys/types.h>
 #include <sys/errno.h>
 #include <string.h>
+#include <assert.h>
 
 /**
  * @brief Stores the driver descriptors for each block major device 
@@ -29,6 +30,8 @@ void device_block_init()
 {
 	/* Allocate memory for the device table */
 	block_dev_table = heapmm_alloc( sizeof(blk_dev_t *) * 256 );
+	assert(block_dev_table != NULL);
+
 	/* Clear the device table */
 	memset( block_dev_table, 0, sizeof(blk_dev_t *) * 256 );
 }
@@ -44,8 +47,7 @@ int device_block_register(blk_dev_t *driver)
 	dev_t minor, _m;
 
 	/* Check for null pointers */
-	if (!driver)
-		return 0;
+	assert(driver != NULL);
 
 	/* Check if the driver id is already in use */
 	if (block_dev_table[driver->major])
@@ -205,6 +207,7 @@ int device_block_fetch(dev_t device, aoff_t block_offset)
 	/* Check if the cache ran out of memory */
 	if (entry == BLKCACHE_ENOMEM)
 		return ENOMEM;
+	assert(entry != NULL);
 
 	/* Call the driver to actually read the data */
 	//TODO: Invalidate cache entry if this fails
@@ -327,6 +330,7 @@ int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t c
 	
 	/* Acquire a lock on the device */
 	semaphore_down(drv->locks[minor]);
+	assert(*(drv->locks[minor]) == 0);
 
 	/* Loop while we still have data left to write */
 	while (in_buffer != ((uintptr_t) count)) {
@@ -370,7 +374,7 @@ int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t c
 		
 			/* The block should be cached now, get it from the cache */
 			entry = blkcache_find(drv->caches[minor], block_offset);
-			//TODO: assert(entry != NULL)
+			assert(entry != NULL);
 
 		} else { //Just add it to the cache
 			/* We are replacing the whole block */
@@ -401,7 +405,7 @@ int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t c
 
 			}
 
-			//TODO: assert(entry != NULL)
+			assert(entry != NULL);
 
 		}
 
@@ -462,6 +466,7 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 	
 	/* Acquire a lock on the device */
 	semaphore_down(drv->locks[minor]);
+	assert(*(drv->locks[minor]) == 0);
 
 	/* Loop while we still have data left to read */
 	while (in_buffer != ((uintptr_t) count)) {
@@ -501,7 +506,7 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 			entry = blkcache_find(drv->caches[minor], block_offset);
 		}
 
-		//TODO: assert(entry != NULL)
+		assert(entry != NULL);
 
 		/* Copy the block data from the cache entry */
 		memcpy( (void *) ( ((uintptr_t) buffer) + in_buffer ),

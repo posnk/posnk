@@ -20,6 +20,7 @@
 #include <sys/types.h>
 #include <sys/errno.h>
 #include <string.h>
+#include <assert.h>
 
 /**
  * blkcache_create - Creates a new, empty block cache
@@ -35,8 +36,7 @@ blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries )
 	blkcache_cache_t *cache = ( blkcache_cache_t * ) 
 		heapmm_alloc( sizeof(blkcache_cache_t) );
 	
-	if ( cache == NULL)
-		return NULL;
+	assert(cache != NULL);
 
 	cache->max_entries = max_entries;
 	cache->block_size = block_size;
@@ -61,6 +61,8 @@ int blkcache_free( blkcache_cache_t *cache )
 	blkcache_entry_t	*entry;
 	llist_t			*_e;
 	int			successful = 1;
+	
+	assert(cache != NULL);
 
 	/* Iterate over the blocklist */
 	for (_e = cache->block_list.next; 
@@ -68,6 +70,8 @@ int blkcache_free( blkcache_cache_t *cache )
 		_e = cache->block_list.next ) {
 
 		entry = ( blkcache_entry_t * ) _e;
+
+		assert (entry != NULL);
 
 		/* Check if the block is dirty */
 
@@ -130,6 +134,9 @@ blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset )
 {
 	/* Look up the block in the cache which satisfies the condition for */
 	/* blkcache_get_iterator */
+
+	assert (cache != NULL);
+
 	return (blkcache_entry_t *) 
 		llist_iterate_select(	&(cache->block_list),
 					&blkcache_get_iterator,
@@ -150,6 +157,9 @@ void blkcache_bump( blkcache_cache_t *cache, blkcache_entry_t *entry )
 	/* in the list when full so to implement a LRU cache we simply move */
 	/* the block to the end of the list */
 
+	assert (cache != NULL);
+	assert (entry != NULL);
+
 	/* Remove the block from the list */
 	llist_unlink((llist_t *) &entry);
 	
@@ -169,6 +179,9 @@ blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache )
 {
 	/* The current implementation of the cache removes the first block  */
 	/* in the list when full so simply return that block */
+
+	assert (cache != NULL);
+
 	return (blkcache_entry_t *) cache->block_list.next;
 }
 
@@ -187,7 +200,9 @@ blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache )
 blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 {
 	blkcache_entry_t	*entry;
-	
+
+	assert (cache != NULL);
+
 	/* Attempt to get cached block */
 	entry = blkcache_find( cache, offset );
 	if ( entry )
@@ -201,6 +216,8 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 
 		/* Get the block to be removed */
 		entry = blkcache_get_discard_candidate( cache );
+
+		assert (entry != NULL);
 
 		/* Check whether block is dirty */
 		if (entry->flags & BLKCACHE_ENTRY_FLAG_DIRTY) {
