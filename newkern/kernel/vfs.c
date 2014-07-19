@@ -16,6 +16,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <assert.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
 
@@ -61,8 +62,7 @@ char *vfs_get_filename(const char *path)
 	ptrdiff_t pd;
 
 	/* Check for null pointers */
-	if (!path)
-		return NULL;
+	assert(path != NULL);
 	
 	/* Make a working copy of path */
 	pathlen = strlen(path);
@@ -99,6 +99,8 @@ char *vfs_get_filename(const char *path)
 		name = pathcopy;
 
 	newname = heapmm_alloc(strlen(name) + 1);
+	assert(newname != NULL);
+	
 	strcpy(newname, name);
 	
 	heapmm_free(pathcopy, pathlen + 1);
@@ -138,6 +140,7 @@ void vfs_inode_release(inode_t *inode)
 
 inode_t *vfs_inode_ref(inode_t *inode)
 {
+	assert (inode != NULL);
 	if ((!inode->mount) && (!inode->usage_count)) {
 		llist_unlink((llist_t *) inode);
 		llist_add_end(open_inodes, (llist_t *) inode);
@@ -156,6 +159,7 @@ inode_t *vfs_inode_ref(inode_t *inode)
 
 void vfs_inode_cache(inode_t *inode)
 {
+	assert (inode != NULL);
 	llist_add_end(inode_cache, (llist_t *) inode);
 }
 
@@ -184,6 +188,7 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
 
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 {
+	assert (inode != NULL);
 	if (req_mode & ((inode->mode) & 7))
 		return PERM_CLASS_OTHER;
 	if (req_mode & ((inode->mode >> 3) & 7))
@@ -201,6 +206,7 @@ perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
  */
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
+	assert (inode != NULL);
 	return get_perm_class(inode->uid, inode->gid) <= vfs_get_min_permissions(inode, req_mode);
 }
 
@@ -216,6 +222,7 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 {
 	inode_t *result;
 	vfs_cache_params_t search_params;
+	assert (device != NULL);
 
 	/* Search open inode list */
 	search_params.device_id = device->id;
@@ -295,6 +302,8 @@ inode_t *vfs_effective_inode(inode_t * inode)
 dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (name != NULL);
 
 	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(inode, MODE_EXEC)) {
@@ -321,6 +330,7 @@ dirent_t *vfs_find_dirent(inode_t * inode, char * name)
 int vfs_int_mknod(inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
 
 	/* Check if the driver supports mknod */
 	if (!inode->device->ops->mknod) {
@@ -343,6 +353,7 @@ int vfs_int_mknod(inode_t * inode)
 int vfs_int_rmnod(inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
 
 	/* Check if the driver supports rmnod */
 	if (!inode->device->ops->rmnod) {
@@ -365,6 +376,7 @@ int vfs_int_rmnod(inode_t * inode)
 int vfs_int_mkdir(inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
 
 	/* Check if the driver supports mkdir */
 	if (!inode->device->ops->mkdir) {
@@ -389,6 +401,8 @@ int vfs_int_mkdir(inode_t * inode)
 int vfs_int_link(inode_t * inode , char * name , ino_t nod_id)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (name != NULL);
 
 	/* Check if the driver supports link */
 	if (!inode->device->ops->link) {
@@ -412,6 +426,8 @@ int vfs_int_link(inode_t * inode , char * name , ino_t nod_id)
 int vfs_int_unlink(inode_t * inode , char * name)
 {	
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (name != NULL);
 
 	/* Check if the driver supports unlink */
 	if (!inode->device->ops->unlink) {
@@ -439,6 +455,9 @@ int vfs_int_unlink(inode_t * inode , char * name)
 int vfs_int_read_dir(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (buffer != NULL);
+	assert (read_size != NULL);
 
 	/* Call the driver */
 	return inode->device->ops->read_dir(inode, buffer, file_offset, count, read_size);
@@ -460,6 +479,9 @@ int vfs_int_read_dir(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t 
 int vfs_int_read(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *read_size)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (buffer != NULL);
+	assert (read_size != NULL);
 
 	/* Call the driver */
 	return inode->device->ops->read_inode(inode, buffer, file_offset, count, read_size);
@@ -481,6 +503,9 @@ int vfs_int_read(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t coun
 int vfs_int_write(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
+	assert (buffer != NULL);
+	assert (write_size != NULL);
 
 	/* Check if the driver supports write */
 	if (!inode->device->ops->write_inode) {
@@ -504,6 +529,7 @@ int vfs_int_write(inode_t * inode, void * buffer, aoff_t file_offset, aoff_t cou
 int vfs_int_truncate(inode_t * inode, aoff_t size)
 {
 	/* This function is implemented by the FS driver */
+	assert (inode != NULL);
 
 	/* Check if the driver supports truncate */
 	if (!inode->device->ops->trunc_inode) {
@@ -558,8 +584,9 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
 	void *zbuffer;
 
 	/* Check for null pointers */
-	if ((!_inode) || (!buffer) || (!write_size))
-		return EFAULT;
+	assert (_inode != NULL);
+	assert (buffer != NULL);
+	assert (write_size != NULL);
 
 	/* Resolve the effective inode */
 	inode = vfs_effective_inode(_inode);
@@ -763,8 +790,9 @@ int vfs_read(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count,
 	inode_t *inode;
 
 	/* Check for null pointers */
-	if ((!_inode) || (!buffer) || (!read_size))
-		return EFAULT;
+	assert (_inode != NULL);
+	assert (buffer != NULL);
+	assert (read_size != NULL);
 
 	/* Resolve the effective inode */
 	inode = vfs_effective_inode(_inode);
@@ -935,8 +963,9 @@ int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_
 	inode_t *inode;
 
 	/* Check for null pointers */
-	if ((!_inode) || (!buffer) || (!read_size))
-		return EFAULT;
+	assert (_inode != NULL);
+	assert (buffer != NULL);
+	assert (read_size != NULL);
 
 	/* Resolve the effective inode */
 	inode = vfs_effective_inode(_inode);
@@ -1046,8 +1075,7 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
 	inode_t *inode;
 
 	/* Check for null pointers */
-	if (!_inode)
-		return EFAULT;
+	assert (_inode != NULL);
 
 	/* Resolve the effective inode */
 	inode = vfs_effective_inode(_inode);
@@ -1143,8 +1171,7 @@ int vfs_rmdir(char *path)
 {
 
 	/* Check for null pointers */
-	if (!path)
-		return EFAULT;
+	assert (path != NULL);
 
 	/* Lookup the inode for the directory*/
 	inode_t *inode = vfs_find_inode(path);
@@ -1205,8 +1232,7 @@ int vfs_mkdir(char *path, mode_t mode)
 	int err;
 	
 	/* Check for null pointers */
-	if (!path)
-		return EFAULT;
+	assert (path != NULL);
 
 	/* Create the directory inode */
 	err = vfs_mknod(path, S_IFDIR | (mode & 0777), 0);
@@ -1219,20 +1245,13 @@ int vfs_mkdir(char *path, mode_t mode)
 	parent = vfs_find_parent(path);
 
 	/* Check if it really exists */
-	if (!parent)
-		return EFAULT;//TODO: Make this an assertion
+	assert(parent != NULL);
 
 	/* Look up the inode for the new directory */
 	dir = vfs_find_inode(path);
 
 	/* Check if it really exists */
-	if (!dir) {
-
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		return EFAULT;//TODO: Make this an assertion
-	}
+	assert(dir != NULL);
 
 	/* Accuire a lock on the inode */
 	semaphore_down(dir->lock);
@@ -1302,8 +1321,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	inode_t *_inode;
 
 	/* Check for null pointers */
-	if (!path)
-		return EFAULT;
+	assert (path != NULL);
 	
 	/* Look up the inode for the parent directory */
 	parent = vfs_find_parent(path);
@@ -1405,6 +1423,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	/* If needed, allocate pipe for FIFO */
 	if (S_ISFIFO(inode->mode)) {
 		inode->fifo = pipe_create();
+		assert(inode->fifo != NULL);
 	}
 	
 	/* Push inode to storage */
@@ -1493,8 +1512,8 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 	inode_t	    *dev_inode;
 
 	/* Check for null pointers */
-	if ((!device) || (!mountpoint) || (!fstype))
-		return EFAULT;
+	assert (device != NULL);
+	assert (mountpoint != NULL);
 
 	/* Look up the inode for the mountpoint */
 	mp_inode = vfs_find_inode(mountpoint);
@@ -1604,8 +1623,8 @@ int vfs_symlink(char *oldpath, char *path)
 	inode_t *inode;
 
 	/* Check for null pointers */
-	if ((!path) || (!oldpath))
-		return EFAULT;
+	assert (path != NULL);
+	assert (oldpath != NULL);
 	
 	/* Look up the inode for the parent directory */
 	parent = vfs_find_parent(path);
@@ -1794,8 +1813,7 @@ int vfs_unlink(char *path)
 	char * name;
 
 	/* Check for null pointers */
-	if (!path)
-		return EFAULT;
+	assert (path != NULL);
 	
 	/* Look up the inode for the file */
 
@@ -1956,8 +1974,8 @@ int vfs_link(char *oldpath, char *newpath)
 	inode_t *parent;
 
 	/* Check for null pointers */
-	if ((!newpath) || (!oldpath))
-		return EFAULT;
+	assert (newpath != NULL);
+	assert (oldpath != NULL);
 	
 	/* Look up the inode for the parent directory */
 	parent = vfs_find_parent(newpath);
@@ -2152,6 +2170,7 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 {
 	/* Allocate memory for the cache entry */
 	dir_cache_t *dirc = heapmm_alloc(sizeof(dir_cache_t));
+	assert (dirc != NULL);
 	
 	/* Set its parent to itself because it is the root of the graph */
 	dirc->parent = dirc;
@@ -2171,6 +2190,8 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 
 void vfs_dir_cache_release(dir_cache_t *dirc)
 {
+	assert (dirc != NULL);
+
 	/* Decrease the reference count for this dir cache entry */
 	if (dirc->usage_count)
 		dirc->usage_count--;
@@ -2198,6 +2219,7 @@ void vfs_dir_cache_release(dir_cache_t *dirc)
 
 dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc)
 {
+	assert (dirc != NULL);
 	dirc->usage_count++;
 	return dirc;
 }
@@ -2213,8 +2235,7 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 	inode_t *oi;
 
 	/* Check for null pointers */
-	if (!par)
-		return NULL;
+	assert (par != NULL);
 
 	/* Allocate memory for the cache entry */
 	dir_cache_t *dirc = heapmm_alloc(sizeof(dir_cache_t));
@@ -2255,8 +2276,7 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 int vfs_chdir(dir_cache_t *dirc)
 {
 	/* Check for null pointers */
-	if (!dirc) 
-		return EFAULT;
+	assert (dirc != NULL);
 
 	/* Check if it really is a directory */
 	if (!S_ISDIR(dirc->inode->mode)) 
@@ -2279,8 +2299,7 @@ int vfs_chdir(dir_cache_t *dirc)
 int vfs_chroot(dir_cache_t *dirc)
 {
 	/* Check for null pointers */
-	if (!dirc) 
-		return EFAULT;
+	assert (dirc != NULL);
 
 	/* Check if it really is a directory */
 	if (!S_ISDIR(dirc->inode->mode)) 
@@ -2317,13 +2336,8 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	int element_count = 0;	
 
 	/* Check for NULL or empty path */
-	if ((path == NULL) || ((*path) == '\0')) {
-
-		/* Release current dirc */
-		vfs_dir_cache_release(dirc);
-
-		return NULL;
-	}
+	assert (path != NULL);
+	assert ((*path) != '\0');
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
@@ -2426,7 +2440,7 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 			/* Create new dirc entry for this element */
 			newc = vfs_dir_cache_new(dirc, dirent->inode_id);
 
-			//TODO: Check for errors
+			assert(newc != NULL);
 
 			/* Release old element */
 			vfs_dir_cache_release(dirc);
@@ -2494,13 +2508,8 @@ dir_cache_t *vfs_find_dirc(char * path)
 	int element_count = 0;	
 
 	/* Check for NULL or empty path */
-	if ((path == NULL) || ((*path) == '\0')){
-
-		/* Release current dirc */
-		vfs_dir_cache_release(dirc);
-
-		return NULL;
-	}
+	assert (path != NULL);
+	assert ((*path) != '\0');
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
@@ -2598,7 +2607,7 @@ dir_cache_t *vfs_find_dirc(char * path)
 			/* Create new dirc entry for this element */
 			newc = vfs_dir_cache_new(dirc, dirent->inode_id);
 
-			//TODO: Check for errors
+			assert(newc != NULL);
 
 			/* Release old element */
 			vfs_dir_cache_release(dirc);
@@ -2652,7 +2661,7 @@ dir_cache_t *vfs_find_dirc(char * path)
  */
 
 inode_t *vfs_find_parent(char * path)
-{ //TODO: Check for search permission
+{ 
 	inode_t *ino;
 
 	/* Request the parent dir cache entry for this path */
@@ -2744,14 +2753,7 @@ inode_t *vfs_find_symlink(char * path)
 	heapmm_free(name, strlen(name) + 1);
 
 	/* If it is not found, return NULL. Should never happen... */
-	if (dirent == NULL) {
-
-		/* Release the dirc entry from the cache */		
-		vfs_dir_cache_release(dirc);
-
-		/* Return the inode */
-		return NULL;
-	}
+	assert(dirent != NULL);
 
 	/* Get the inode pointed to by the dirent */
 	ino = vfs_get_inode(dirc->parent->inode->device, dirent->inode_id);

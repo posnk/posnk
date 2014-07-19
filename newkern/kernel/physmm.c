@@ -30,6 +30,7 @@ void physmm_clear_bit(physaddr_t address)
 void physmm_free_range(physaddr_t start, physaddr_t end) 
 {
 	physaddr_t counter;
+	assert(start < end);
 	for (counter = start; counter < end; counter += PHYSMM_PAGE_SIZE){
 		physmm_free_frame(counter);
 	}
@@ -38,6 +39,7 @@ void physmm_free_range(physaddr_t start, physaddr_t end)
 void physmm_claim_range(physaddr_t start, physaddr_t end) 
 {
 	physaddr_t counter;
+	assert(start < end);
 	for (counter = start; counter < end; counter += PHYSMM_PAGE_SIZE){
 		physmm_clear_bit(counter);
 	}

@@ -13,6 +13,7 @@
 #include "util/llist.h"
 
 #include <stddef.h>
+#include <assert.h>
 
 /**
  * Gets the first entry in a doubly linked list
@@ -21,8 +22,7 @@
  */
 llist_t *llist_get_first(llist_t *list)
 {
-	if (list == 0)
-		return 0;
+	assert(list != NULL);
 	return list->next;
 }
 
@@ -33,8 +33,7 @@ llist_t *llist_get_first(llist_t *list)
  */
 llist_t *llist_get_last(llist_t *list)
 {
-	if (list == 0)
-		return 0;
+	assert(list != NULL);
 	return list->prev;
 }
 
@@ -46,8 +45,9 @@ llist_t *llist_get_last(llist_t *list)
 llist_t *llist_remove_last(llist_t *list)
 {
 	llist_t *result;
-	if (list == 0)
-		return 0;
+	assert(list != NULL);
+	assert(list->prev != NULL);
+	assert(list->prev->prev != NULL);
 	result = list->prev;
 	list->prev = list->prev->prev;
 	list->prev->next = list;
@@ -62,8 +62,9 @@ llist_t *llist_remove_last(llist_t *list)
 llist_t *llist_remove_first(llist_t *list)
 {
 	llist_t *result;
-	if (list == 0)
-		return 0;
+	assert(list != NULL);
+	assert(list->next != NULL);
+	assert(list->next->next != NULL);
 	result = list->next;
 	list->next = list->next->next;
 	list->next->prev = list;
@@ -77,9 +78,8 @@ llist_t *llist_remove_first(llist_t *list)
  */
 void llist_add_end(llist_t *list,llist_t *entry)
 {
-	if (list == 0)
-		return;
-	//TODO: Maybe add some checks here
+	assert(list != NULL);
+	assert(entry != NULL);
 	entry->prev = list->prev;
 	entry->next = list;
 	list->prev->next = entry;
@@ -92,6 +92,7 @@ void llist_add_end(llist_t *list,llist_t *entry)
  */
 void llist_unlink(llist_t *entry)
 {
+	assert(entry != NULL);
 	if (entry->prev)
 		entry->prev->next = entry->next;
 	if (entry->next)
@@ -106,6 +107,7 @@ void llist_unlink(llist_t *entry)
  */
 void llist_create(llist_t *list)
 {
+	assert(list != NULL);
 	list->next = list;
 	list->prev = list;
 }
@@ -117,9 +119,12 @@ void llist_create(llist_t *list)
  */
 int llist_size(llist_t *list)
 {
+	llist_t *work;
 	int size = 0;
-	llist_t *work = list->next;
+	assert(list != NULL);
+	work = list->next;
 	for (;;){
+		assert (work != NULL);
 		if (list == work)
 			break;
 		size++;
@@ -140,8 +145,12 @@ int llist_size(llist_t *list)
  */
 llist_t *llist_iterate_select(llist_t *list, llist_iterator_t iterator, void *param)
 {
-	llist_t *work = list->next;
+	llist_t *work;
+	assert(iterator != NULL);
+	assert(list != NULL);
+	work = list->next;
 	for (;;) {
+		assert (work != NULL);
 		if (list == work)
 			break;
 		if (iterator(work, param))
