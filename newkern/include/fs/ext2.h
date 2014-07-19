@@ -171,6 +171,7 @@ struct ext2_device {
 	ext2_superblock_t	superblock;
 	dev_t			dev_id;
 	uint32_t		bgdt_block;
+	aoff_t			inode_load_size;
 };
 
 fs_device_t *ext2_mount(dev_t device, uint32_t flags);

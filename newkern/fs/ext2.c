@@ -308,10 +308,10 @@ int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 	status = device_block_read(device->dev_id, 
 				   ino_offset, 
 				   ino,
-				   device->superblock.inode_size, 
+				   device->inode_load_size, 
 				   &read_size);
 	
-	if (status || (read_size != device->superblock.inode_size)) {
+	if (status || (read_size != device->inode_load_size)) {
 		ext2_free_bgd(device, bgd);
 		return 0;
 	}
@@ -472,6 +472,9 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 		dev->superblock.first_inode = EXT2_NO_EXT_FIRST_INO;
 		dev->superblock.inode_size = EXT2_NO_EXT_INODE_SIZE;		
 	}
+
+	dev->inode_load_size = (sizeof(ext2_inode_t) > dev->superblock.inode_size) ?
+				dev->superblock.inode_size : sizeof(ext2_inode_t);
 
 	dev->bgdt_block = dev->superblock.block_size_enc ? 1 : 2;
 
