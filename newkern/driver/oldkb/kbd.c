@@ -6,7 +6,7 @@
 
 uint8_t modifiers = 0;
 
-void kb_initialize(){
+void oldkb_init(){
         kb_set_leds(0xFF);
         kb_set_leds(0x00);
 	interrupt_register_handler(1, &kbd_isr, NULL);

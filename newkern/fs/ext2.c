@@ -480,3 +480,8 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 
 	return (fs_device_t *) dev;
 }
+
+int ext2_register()
+{
+	return vfs_register_fs("ext2", &ext2_mount);
+}

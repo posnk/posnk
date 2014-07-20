@@ -248,11 +248,9 @@ void vgacon_write_crtc_register(char id,char val){
 	i386_outb(0x3D4,id);
 	i386_outb(0x3D5,val);
 }
-void kb_initialize();
 
 void vgacon_init(){
 	sercon_init();
-	kb_initialize();
 	/*vgacon_vc.attrib = 0x07;
 	vgacon_vc.cursor_x = 0;
 	vgacon_vc.cursor_y = 0;		

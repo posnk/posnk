@@ -1,0 +1,3 @@
+DEV_DRIVER(oldkb, oldkb)
+DEV_DRIVER(vga_vterm, console)
+PNP_DRIVER(ata_pci, block/pata)

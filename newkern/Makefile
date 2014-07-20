@@ -8,6 +8,8 @@
 # define the C compiler to use
 CC = @echo " [  CC  ]	" $< ; /opt/standalone/bin/i586-elf-gcc
 LD = @echo " [  LD  ]	" $@ ; /opt/standalone/bin/i586-elf-gcc
+CPP = @echo " [  CPP ]	" $@ ; /opt/standalone/bin/i586-elf-cpp
+M4 = @echo " [  M4  ]	" $@ ; m4
 GAS = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
 NASM = @echo " [ NASM ]	" $< ; nasm
 
@@ -31,11 +33,6 @@ LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
 LIBS = 
-
-SRCS_DRV_ATA_PCI = driver/block/pata/ata.c \
-driver/block/pata/ata_pci.c
-
-SRCS_EXT2 = fs/ext2.c
 
 SRCS_PHEAPMM = kernel/heapmm.c
 
@@ -76,39 +73,10 @@ kdbg/kdbg.c \
 kdbg/kdbgio.c \
 kdbg/kdbgmm.c \
 kdbg/stacktrc.c \
-fs/ramfs.c \
 fs/mbr.c \
 util/llist.c \
 crt/string.c \
 crt/stdlib.c 
-
-SRCS_DRV_VTCON = driver/console/vterm/vterm.c \
-driver/console/vterm/vterm_colors.c \
-driver/console/vterm/vterm_csi.c \
-driver/console/vterm/vterm_csi_CUP.c \
-driver/console/vterm/vterm_csi_CUx.c \
-driver/console/vterm/vterm_csi_DCH.c \
-driver/console/vterm/vterm_csi_DECSTBM.c \
-driver/console/vterm/vterm_csi_DL.c \
-driver/console/vterm/vterm_csi_ECH.c \
-driver/console/vterm/vterm_csi_ED.c \
-driver/console/vterm/vterm_csi_EL.c \
-driver/console/vterm/vterm_csi_ICH.c \
-driver/console/vterm/vterm_csi_IL.c \
-driver/console/vterm/vterm_csi_RESTORECUR.c \
-driver/console/vterm/vterm_csi_SAVECUR.c \
-driver/console/vterm/vterm_csi_SGR.c \
-driver/console/vterm/vterm_dec_RM.c \
-driver/console/vterm/vterm_dec_SM.c \
-driver/console/vterm/vterm_erase.c \
-driver/console/vterm/vterm_escape.c \
-driver/console/vterm/vterm_misc.c \
-driver/console/vterm/vterm_render.c \
-driver/console/vterm/vterm_resize.c \
-driver/console/vterm/vterm_scroll.c \
-driver/console/vterm/vterm_tty.c \
-driver/console/vterm/vterm_write.c \
-driver/console/vga_vterm.c
 
 SRCS_I386 = arch/i386/x86.c \
 arch/i386/paging.c \
@@ -124,9 +92,6 @@ driver/console/vgacon.c \
 driver/console/sercon.c \
 driver/console/vgacon_early.c \
 driver/console/sercon_debug.c \
-driver/oldkb/dec.c \
-driver/oldkb/i8042.c \
-driver/oldkb/kbd.c \
 driver/bus/pci.c \
 driver/bus/pci_intel_host.c \
 arch/i386/fastcrt/memcpy.S \
@@ -152,13 +117,24 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o) $(SRCS_DRV_VTCON:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
-OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o) $(SRCS_DRV_ATA_PCI:.c=.o)
-OBJS_EXT2 = $(SRCS_EXT2:.c=.o)
+OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
+OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
+
+.PHONY: depend clean
+
 all:	cdrom_i386 install_h
 
-kernel_i386: $(OBJS) $(OBJS_I386) $(OBJS_EXT2)
-	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_EXT2)
+_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
+	$(M4) -I . build/drivermake.m4 > _dmake
+	$(CPP) -I . build/driverinit.c > _dinit.c
+
+include _dmake
+
+OBJS_DRIVER = $(SRCS_DRIVER:.c=.o)
+
+kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
+	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
+	@rm _dmake
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
@@ -175,8 +151,6 @@ cdrom_i386: kernel_i386 initrd
 
 #test_physmm: $(OBJS) tests/test_physmm.o
 #	$(CC) $(CFLAGS) $(INCLUDES) -o test_physmm $(OBJS) tests/test_physmm.o $(LFLAGS) $(LIBS)
-
-.PHONY: depend clean
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of

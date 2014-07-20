@@ -1,0 +1,2 @@
+FS_DRIVER(ext2)
+FS_DRIVER(ramfs)

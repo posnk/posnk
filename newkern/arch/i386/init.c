@@ -31,7 +31,6 @@
 #include "kernel/tty.h"
 #include "kernel/drivermgr.h"
 #include "kernel/interrupt.h"
-#include "fs/ramfs.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
 #include <fcntl.h>
@@ -232,7 +231,7 @@ void i386_idle_task()
 		asm ("hlt;");
 }
 
-void ata_pci_register();
+void register_dev_drivers();
 /**
  * Once we are here everything is set up properly
  * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
@@ -274,10 +273,11 @@ void i386_kmain()
 	drivermgr_init();
 	device_char_init();
 	device_block_init();
+	tty_init();
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Registering built in drivers...");
-	ata_pci_register();
+	register_dev_drivers();
 	earlycon_puts("OK\n");
 
 #ifndef CONFIG_i386_NO_PCI
@@ -301,9 +301,6 @@ void i386_kmain()
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");*/
-
-	tty_init();
-	vterm_vga_init();
 
 	earlycon_puts("Creating tty stub dev..");
 	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))

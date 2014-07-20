@@ -108,7 +108,7 @@ void con_handle_key(int keycode)
 		vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode);
 }
 
-void vterm_vga_init(){
+void vga_vterm_init(){
 	int vc_id;
         for (vc_id = 0;vc_id < 9;vc_id++){
                 vterm_vga_all_vcs[vc_id].cursor_x = 0;
@@ -119,5 +119,4 @@ void vterm_vga_init(){
         }
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
 	vterm_vga_switch_vc(0);
-	kb_initialize();
 }

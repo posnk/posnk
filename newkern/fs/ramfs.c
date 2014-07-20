@@ -277,7 +277,7 @@ uint32_t ramfs_device_ctr = 0xF00F0000;
 
 fs_device_operations_t *ramfs_ops;
 
-fs_device_t *ramfs_create()
+fs_device_t *ramfs_mount(dev_t device, uint32_t flags)
 {
 	ramfs_device_t *dev = (ramfs_device_t *) heapmm_alloc(sizeof(ramfs_device_t));
 	if (ramfs_ops == NULL) {
@@ -301,4 +301,9 @@ fs_device_t *ramfs_create()
 	dev->device.ops = ramfs_ops;
 	dev->device.inode_size = sizeof(ramfs_inode_t);
 	return (fs_device_t *)dev;
+}
+
+int ramfs_register()
+{
+	return vfs_register_fs("ramfs", &ramfs_mount);
 }
