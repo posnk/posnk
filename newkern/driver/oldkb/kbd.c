@@ -57,5 +57,5 @@ void kb_typed(uint8_t scan){
 		con_handle_key(t);
 }
 
-void kb_released(uint8_t scan){
+void kb_released(__attribute__((__unused__)) uint8_t scan){
 }

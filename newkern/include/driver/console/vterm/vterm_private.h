@@ -77,5 +77,9 @@ struct _vterm_s
 
 #define VTERM_CELL(vterm_ptr,x,y)               (vterm_ptr->cols[y][x])
 
+void vterm_invalidate_screen(vterm_t *vt);
+void vterm_invalidate_cursor(vterm_t *vt);
+void vterm_invalidate_cell(vterm_t *vt, int row, int col);
+
 #endif
 

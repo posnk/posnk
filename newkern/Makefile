@@ -163,14 +163,13 @@ cdrom_i386: kernel_i386 initrd
 .s.o:
 	$(NASM) $(NASMFLAGS) $< -o $@ 
 
-clean:
+clean: clean_driver
 	$(RM) *.o *~ $(MAIN)
 	$(RM) kernel/*.o
-	$(RM) fs/*.o
-	$(RM) arch/i386/*.o
 	$(RM) driver/console/*.o
 	$(RM) driver/bus/*.o
-	$(RM) driver/block/pata/*.o
+	$(RM) arch/i386/*.o
+	@rm _dmake
 
 emulate: cdrom_i386
 	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca

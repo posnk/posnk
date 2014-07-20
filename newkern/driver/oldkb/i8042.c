@@ -2,15 +2,9 @@
 #include "kernel/interrupt.h"
 #include "arch/i386/x86.h"
 #include "driver/oldkb/i8042.h"
-#define KBD_CPSLCK_BIT 1
-#define KBD_SHIFT_BIT 2
-#define KBD_CTRL_BIT 4
-#define KBD_ALT_BIT 8
-#define KBD_WIN_BIT 16
-#define KBD_MENU_BIT 32
-#define KBD_SCLLCK_BIT 64
-#define KBD_NUMLCK_BIT 128
-void uprinti(uint32_t i);
+#include "driver/oldkb/kbd.h"
+
+
 uint8_t currently_held_key = 0x00;
 uint8_t extended = 0;
 int sigfile_hndl = 0;
@@ -37,7 +31,7 @@ void kbd_send_encoder_command(uint8_t cmd){
         i386_outb(KBD_ENC_IO_PORT,cmd);
 }
 
-int kbd_isr(irq_id_t irq_id, void *context){
+int kbd_isr(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context){
         uint8_t scancode;
         if (kbd_controller_status () & KBD_CTRL_STATUS_OUT_BUF_BIT){
                 scancode = kbd_encoder_read_buffer();

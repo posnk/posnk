@@ -26,7 +26,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_misc.h"
 
-void vterm_resize(vterm_t *vterm,guint width,guint height)
+void vterm_resize(__attribute__((__unused__)) vterm_t *vterm, __attribute__((__unused__)) guint width, __attribute__((__unused__)) guint height)
 {
 	/*
    struct winsize ws={.ws_xpixel=0,.ws_ypixel=0};

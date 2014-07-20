@@ -24,7 +24,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_csi.h"
 
-void interpret_csi_SAVECUR(vterm_t *vterm,int param[],int pcount)
+void interpret_csi_SAVECUR(vterm_t *vterm, __attribute__((__unused__)) int param[], __attribute__((__unused__)) int pcount)
 {
    vterm->saved_x=vterm->ccol;
    vterm->saved_y=vterm->crow;
