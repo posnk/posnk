@@ -40,7 +40,7 @@ void kdbg_exit()
 {
 
 }
-
+void kdbg_dump_processes();
 void dbgapi_invoke_kdbg(int crash)
 {
 	kdbg_enter();
@@ -63,6 +63,10 @@ void kdbg_shell()
 		} else if (!strncmp(buf, "exit", 4)) {
 			kdbg_printf("Bye\n");
 			return;
+		} else if (!strncmp(buf, "attach", 6)) {
+			kdbg_attach_process(kdbg_parsedec(buf));
+		} else if (!strncmp(buf, "ps", 2)) {
+			kdbg_dump_processes();
 		} else {
 			kdbg_printf("Unknown command: %s\n", buf);
 		}

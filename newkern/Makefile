@@ -69,6 +69,7 @@ kernel/sc_streams.c \
 kernel/sc_time.c \
 kernel/sc_signals.c \
 kdbg/heapdbg.c \
+kdbg/taskdbg.c \
 kdbg/kdbg.c \
 kdbg/kdbgio.c \
 kdbg/kdbgmm.c \

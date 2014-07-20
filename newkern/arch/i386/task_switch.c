@@ -118,6 +118,14 @@ void scheduler_exsig(){
 				((i386_task_context_t *)scheduler_current_task->arch_state)->eip,
 				paging_get_physical_address(scheduler_current_task->page_directory->content));	
 }
+void i386_cs_debug_attach(uint32_t esp, uint32_t ebp, uint32_t eip, physaddr_t page_dir);
+void debug_attach_task(process_info_t *new_task)
+{
+	i386_cs_debug_attach(((i386_task_context_t *)new_task->arch_state)->esp,
+				((i386_task_context_t *)new_task->arch_state)->ebp,
+				((i386_task_context_t *)new_task->arch_state)->eip,
+				paging_get_physical_address(new_task->page_directory->content));	
+}
 
 void scheduler_exit_signal_handler()
 {

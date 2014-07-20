@@ -57,3 +57,22 @@ uintptr_t kdbg_parsehex(char *str)
 	}
 	return acc;
 }
+
+uintptr_t kdbg_parsedec(char *str)
+{
+	size_t l = strlen(str);
+	int n;
+	char c; 
+	uintptr_t acc = 0;
+	int b = 1;
+	for (n = l -1; n >= 0; n--) {
+		c = str[n];
+		if ((c >= '0') && (c <= '9'))
+			c -= '0';
+		else
+			break; 
+		acc += ((uintptr_t)c) * b;
+		b *= 10;
+	}
+	return acc;
+}

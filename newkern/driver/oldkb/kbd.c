@@ -2,7 +2,7 @@
 #include "driver/oldkb/kbd.h"
 #include "kernel/tty.h"
 #include "kernel/interrupt.h"
-
+#include <glib.h>
 
 uint8_t modifiers = 0;
 
@@ -59,4 +59,3 @@ void kb_typed(uint8_t scan){
 
 void kb_released(uint8_t scan){
 }
-

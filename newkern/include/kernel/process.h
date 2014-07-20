@@ -126,6 +126,7 @@ struct process_info {
 	ktime_t		 wait_timeout_s;//In microseconds
 	semaphore_t	*child_sema;
 	llist_t		*child_events;
+	uint32_t	 in_syscall;
 
 	void		*arch_state_pre_signal;
 	void		*isr_stack_pre_signal;
