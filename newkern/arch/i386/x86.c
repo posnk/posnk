@@ -1,5 +1,6 @@
 #include "arch/i386/x86.h"
 #include "kernel/earlycon.h"
+#include "kdbg/dbgapi.h"
 #include <stddef.h>
 
 uint8_t i386_inb(uint16_t port)

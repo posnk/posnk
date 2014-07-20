@@ -17,6 +17,7 @@
 #include "kernel/earlycon.h"
 #include "arch/i386/task_context.h"
 #include "arch/i386/protection.h"
+#include "arch/i386/x86.h"
 
 uint32_t i386_get_return_address ( void );
 

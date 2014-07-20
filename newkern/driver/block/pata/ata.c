@@ -151,7 +151,7 @@ void ata_set_interrupts(ata_device_t *device, int enabled)
 	ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
 }
 
-int ata_irq_handler(irq_id_t irq_id, void *context)
+int ata_irq_handler(__attribute__((__unused__)) irq_id_t irq_id, void *context)
 {
 	ata_device_t *device = context;
 	if (device->bmio_base) {
@@ -438,11 +438,11 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 	}
 }
 
-int ata_blk_open(dev_t device, int fd, int options) {return 0;}
+int ata_blk_open(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, __attribute__((__unused__)) int options) {return 0;}
 
-int ata_blk_close(dev_t device, int fd) {return 0;}
+int ata_blk_close(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd) {return 0;}
 
-int ata_blk_write(dev_t device, off_t file_offset, void * buffer )
+int ata_blk_write(dev_t device, aoff_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
@@ -469,7 +469,7 @@ int ata_blk_write(dev_t device, off_t file_offset, void * buffer )
 	return 0;
 }
 
-int ata_blk_read(dev_t device, off_t file_offset, void * buffer )
+int ata_blk_read(dev_t device, aoff_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
@@ -495,7 +495,7 @@ int ata_blk_read(dev_t device, off_t file_offset, void * buffer )
 	return 0;
 }
 
-int ata_blk_ioctl(dev_t device, int fd, int func, int arg)
+int ata_blk_ioctl(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, __attribute__((__unused__)) int func, __attribute__((__unused__)) int arg)
 {
 	return 0;
 }

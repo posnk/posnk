@@ -82,10 +82,9 @@ int vgacon_escape_pars[10];
 int vgacon_parse_par(char *str)
 {
 	size_t l = strlen(str);
-	int n;
+	size_t n;
 	char c; 
 	int acc = 0;
-	int b = -4;
 	for (n = 0; n < l; n++) {
 		c = str[n];
 		if ((c >= '0') && (c <= '9'))
@@ -125,7 +124,6 @@ void vgacon_handle_escape(char c)
 			case 'h':
 				break;
 			default:
-				debugcon_aprintf("unh esc:%c\n",c);
 				break;
 		}
 		vgacon_escape_ptr = 0;
@@ -152,7 +150,6 @@ void vgacon_handle_escape(char c)
 				vgacon_vc.cursor_y++;
 				break;
 			default:
-				debugcon_aprintf("unh esc:%c\n",c);
 				break;
 		}
 		vgacon_escape_ptr = 0;
@@ -164,11 +161,10 @@ void vgacon_handle_escape(char c)
 	} else if (c == ';') {		
 		vgacon_escape_pars[vgacon_escape_ppt++] = vgacon_parse_par(&vgacon_escape_buf[vgacon_escape_spt]);
 		vgacon_escape_spt = vgacon_escape_ptr;
-	} else
-		debugcon_aprintf("unh esc:%c\n",c);
+	}
 }
 
-int vgacon_putc(dev_t dev, char c)
+int vgacon_putc(__attribute__((__unused__)) dev_t dev, char c)
 {
 	switch (vgacon_vc.escape){
 		case 0:
@@ -176,14 +172,14 @@ int vgacon_putc(dev_t dev, char c)
 		case 1:
 			if (c == '['){
 				vgacon_vc.escape = 2;
-				return;
+				return 0;
 			} else
 				vgacon_vc.escape = 0;
 			break;
 		case 2:
 			//debugcon_putc(c);
 			vgacon_handle_escape(c);
-			return;
+			return 0;
 	}
 	if (c == 0x1B)
 		vgacon_vc.escape = 1;
@@ -207,7 +203,7 @@ int vgacon_putc(dev_t dev, char c)
 	}		
 	vgacon_scroll();
 	vgacon_move_cursor();
-	return;
+	return 0;
 }
 
 void vgacon_clear_video(){
@@ -250,7 +246,6 @@ void vgacon_write_crtc_register(char id,char val){
 }
 
 void vgacon_init(){
-	sercon_init();
 	/*vgacon_vc.attrib = 0x07;
 	vgacon_vc.cursor_x = 0;
 	vgacon_vc.cursor_y = 0;		

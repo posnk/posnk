@@ -158,7 +158,6 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count);
 
 int _sys_close_int(process_info_t *process, int fd);
 
-int _sys_truncate(int fd, off_t size);
-
+int _sys_ftruncate(int fd, off_t size);
 ///@}
 #endif

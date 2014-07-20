@@ -47,4 +47,6 @@ void drivermgr_register_device_driver( drivermgr_device_driver_t *driver );
 
 void drivermgr_register_interface_driver( drivermgr_interface_driver_t *driver );
 
+void drivermgr_init();
+
 #endif

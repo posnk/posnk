@@ -19,6 +19,7 @@
 #include "kernel/permissions.h"
 #include "kernel/synch.h"
 #include "kernel/syscall.h"
+#include "kernel/streams.h"
 
 uint32_t sys_fork(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
@@ -251,7 +252,6 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 	}
 	chld = process_get(ev_info->child_pid);
 	pid = ev_info->child_pid;
-	debugcon_aprintf("received msg: %i\n", pid);
 	switch (ev_info->event) {
 		case PROCESS_CHILD_KILLED:
 			switch (chld->term_cause) {

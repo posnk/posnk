@@ -59,7 +59,6 @@ char *vfs_get_filename(const char *path)
 	char *pathcopy;
 	size_t pathlen;
 	char *newname;
-	ptrdiff_t pd;
 
 	/* Check for null pointers */
 	assert(path != NULL);
@@ -1490,26 +1489,47 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	return 0;	
 }
 
+/**
+ * @brief Register a file system driver
+ * 
+ * A file system driver calls this function to register its mount callback 
+ *
+ * @param name The name to register with (this is the identifier passed to mount)
+ * @param mnt_cb A pointer to the filesystem's mount function
+ * @return If successful, 0 is returned, otherwise a valid error code will be returned
+ */
 int vfs_register_fs(const char *name, fs_device_t *(*mnt_cb)(dev_t, uint32_t))
 {
 	fs_driver_t *driver;
+
+	/* Check for NULL pointers */
 	assert(name != NULL);
 	assert(mnt_cb != NULL);
 
+	/* Allocate memory for driver descriptor */
 	driver = heapmm_alloc(sizeof(fs_driver_t));
 
+	/* Check for errors */
 	if (!driver)
 		return ENOMEM;
 
+	/* Allocate memory for driver name */
 	driver->name = heapmm_alloc(strlen(name) + 1);
+
+	/* Check for errors */
 	if (!driver->name) {
+		/* Clean up */
 		heapmm_free(driver, sizeof(fs_driver_t));
 		return ENOMEM;
 	}
+
+	/* Copy driver name */
 	strcpy(driver->name, name);
 	
+	/* Set driver mount callback */
 	driver->mount = mnt_cb;
 
+	/* Add driver to list */
 	llist_add_end(&vfs_fs_driver_list, (llist_t *) driver);
 
 	return 0; 

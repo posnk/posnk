@@ -83,7 +83,7 @@ void vterm_invalidate_cursor(vterm_t *vt)
 		vterm_vga_position(vc, vt->ccol, vt->crow, 1);
 }
 
-void vterm_handle_bell(vterm_t *vt)
+void vterm_handle_bell(__attribute__((__unused__)) vterm_t *vt)
 {
 }
 

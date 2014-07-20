@@ -281,7 +281,7 @@ ext2_block_group_desc_t *ext2_load_bgd(ext2_device_t *device, uint32_t bg_id)
 	return bgd;
 }
 
-void ext2_free_bgd(ext2_device_t *device, ext2_block_group_desc_t *bgd)
+void ext2_free_bgd(__attribute__((__unused__)) ext2_device_t *device, ext2_block_group_desc_t *bgd)
 {
 	heapmm_free(bgd, sizeof(ext2_block_group_desc_t));
 }

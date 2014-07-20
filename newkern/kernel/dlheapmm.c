@@ -57,13 +57,6 @@ void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
 {
 	return dlmemalign((size_t) alignment, size);
 }
- void * __builtin_return_address (unsigned int level);
-int curpid()
-{
-	if (scheduler_current_task)
-		return scheduler_current_task->pid;
-	return -1;
-}
 
 /**
  * Allocates a new block of memory of given size to the caller
@@ -85,7 +78,7 @@ void *heapmm_alloc_page()
 /**
  * Releases a block of meory so it can be reallocated
  */
-void  heapmm_free(void *address, size_t size) 
+void  heapmm_free(void *address, __attribute__((__unused__)) size_t size) 
 {
 	dlfree(address);
 }
@@ -109,6 +102,6 @@ void * dlheapmm_sbrk ( size_t size )
 		return old;
 	} else {
 		//TODO: WARN
-		return -1;
+		return (void *) -1;
 	}
 }

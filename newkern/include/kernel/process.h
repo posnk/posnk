@@ -139,6 +139,8 @@ typedef struct process_mmap process_mmap_t;
 
 typedef struct process_child_event process_child_event_t;
 
+int curpid();
+
 process_info_t *process_get(pid_t pid);	
 
 int process_push_user_data(void *data, size_t size);

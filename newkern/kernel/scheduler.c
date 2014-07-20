@@ -15,6 +15,8 @@
 #include "kernel/synch.h"
 #include "kernel/streams.h"
 #include "kernel/scheduler.h"
+#include "kernel/earlycon.h"
+#include "kdbg/dbgapi.h"
 #include "kernel/paging.h"
 #include "util/llist.h"
 #include "config.h"
@@ -146,11 +148,11 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 		return 0;
 		
 }
-int serial_received();
+
 void schedule()
 {
 	//TODO: Increment ticks only on preemptive scheduler calls
-	if (serial_received())
+	if (debugcon_have_data())
 		dbgapi_invoke_kdbg(0);
 	scheduler_current_task->cpu_ticks++;
 	scheduler_task_t *next_task = (scheduler_task_t *) llist_iterate_select(scheduler_task_list, &scheduler_next_task_iterator, NULL);

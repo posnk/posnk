@@ -24,8 +24,8 @@ struct pipe_info {
 	int		 read_usage_count;
 	int		 write_usage_count;
 	void		*buffer;
-	off_t		 write_ptr;
-	off_t		 read_ptr;
+	aoff_t		 write_ptr;
+	aoff_t		 read_ptr;
 	semaphore_t	*write_lock;
 	semaphore_t	*read_lock;
 };
@@ -42,9 +42,9 @@ void pipe_close_read(pipe_info_t *pipe);
 
 void pipe_close_write(pipe_info_t *pipe);
 
-int pipe_write(pipe_info_t *pipe, void * buffer, size_t count, size_t *write_count, int non_block);
+int pipe_write(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *write_count, int non_block);
 
-int pipe_read(pipe_info_t *pipe, void * buffer, size_t count, size_t *read_count, int non_block);
+int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count, int non_block);
 
 #endif
 

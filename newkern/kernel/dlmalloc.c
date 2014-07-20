@@ -821,6 +821,9 @@ extern "C" {
 #define dlbulk_free            bulk_free
 #endif /* USE_DL_PREFIX */
 
+void dlheapmm_abort();
+void * dlheapmm_sbrk ( size_t size );
+
 /*
   malloc(size_t n)
   Returns a pointer to a newly allocated chunk of at least n bytes, or

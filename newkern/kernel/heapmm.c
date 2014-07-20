@@ -121,13 +121,7 @@ int heapmm_merge_end_iterator (llist_t *node, void *param)
 	end_address = (void *) ( ((uintptr_t)block->start) + ((uintptr_t) block->size) );
 	return (end_address == param) && !(block->size == 0);
 }
- void * __builtin_return_address (unsigned int level);
-int curpid()
-{
-	if (scheduler_current_task)
-		return scheduler_current_task->pid;
-	return -1;
-}
+
 /**
  * Releases a block of memory so it can be reallocated
  */

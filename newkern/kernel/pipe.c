@@ -82,11 +82,11 @@ void pipe_close_write(pipe_info_t *pipe)
 	}
 }
 
-int pipe_write(pipe_info_t *pipe, void * buffer, size_t count, size_t *write_count, int non_block)
+int pipe_write(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *write_count, int non_block)
 {
 	uintptr_t wbuf = (uintptr_t) buffer;
 	uintptr_t pbuf = (uintptr_t) pipe->buffer;
-	size_t turn_size, current_pos;
+	aoff_t turn_size, current_pos;
 	current_pos = 0;
 	for (;;){
 		turn_size = CONFIG_PIPE_BUFFER_SIZE - pipe->write_ptr;
@@ -118,11 +118,11 @@ int pipe_write(pipe_info_t *pipe, void * buffer, size_t count, size_t *write_cou
 	}
 }
 
-int pipe_read(pipe_info_t *pipe, void * buffer, size_t count, size_t *read_count, int non_block)
+int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count, int non_block)
 {
 	uintptr_t rbuf = (uintptr_t) buffer;
 	uintptr_t pbuf = (uintptr_t) pipe->buffer;
-	size_t turn_size, current_pos;
+	aoff_t turn_size, current_pos;
 	current_pos = 0;
 	void *ov_buf;
 	for (;;){

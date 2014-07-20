@@ -13,12 +13,12 @@ void debugcon_init() {
    i386_outb(PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
 }
 
-int serial_received() {
+int debugcon_have_data() {
    return i386_inb(PORT + 5) & 1;
 }
  
 char debugcon_getc() {
-   while (serial_received() == 0);
+   while (debugcon_have_data() == 0);
  
    return i386_inb(PORT);
 }

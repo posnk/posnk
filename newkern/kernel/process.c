@@ -60,6 +60,13 @@ int signal_default_actions[] =
 	SIGNAL_ACTION_ABORT,	//SIGXFSZ
 };
 
+int curpid()
+{
+	if (scheduler_current_task)
+		return scheduler_current_task->pid;
+	return -1;
+}
+
 void process_send_signal(process_info_t *process, int signal)
 {
 	debugcon_printf("sending signal to pid %i : %i\n",process->pid, signal);
@@ -171,7 +178,7 @@ void process_handle_signals()
 					debugcon_printf("handling signal: %i\n", sig_active);
 					if (scheduler_current_task->signal_handler_table[bit_counter] == NULL)
 						process_signal_handler_default(bit_counter);
-					else if (scheduler_current_task->signal_handler_table[bit_counter] == 1)
+					else if (scheduler_current_task->signal_handler_table[bit_counter] == (void *) 1)
 						continue;
 					else
 						scheduler_invoke_signal_handler(bit_counter);

@@ -123,12 +123,12 @@ int tty_close(dev_t device, __attribute__((__unused__)) int fd)
 
 void tty_buf_out_char(tty_info_t *tty, char c)
 {
-	size_t w;
+	aoff_t w;
 	pipe_write(tty->pipe_in, &c, 1, &w, 1);
 }
 
 void tty_flush_line_buffer(tty_info_t *tty){
-	size_t w;
+	aoff_t w;
 	pipe_write(tty->pipe_in, tty->line_buffer, tty->line_buffer_pos, &w, 1);
 	tty->line_buffer_pos = 0;	
 }

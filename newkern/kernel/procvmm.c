@@ -34,7 +34,7 @@ int procvmm_do_exec_mmaps()
 	scheduler_current_task->heap_max = (void *) 0x40000000;     //User mmap area starts here
 	scheduler_current_task->stack_bottom = (void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
 	scheduler_current_task->stack_top = (void *) 0xBF400000; //TODO: Implement dynamic stack size
-	procvmm_mmap_anon(0xBFBFF000, 0x1000, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(sigstack)");
+	procvmm_mmap_anon((void *) 0xBFBFF000, 0x1000, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(sigstack)");
 	return procvmm_mmap_anon(scheduler_current_task->stack_top, 0x7FEFFF, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(stack)");
 }
 
@@ -137,7 +137,7 @@ int procvmm_mmap_anon(void *start, size_t size, int flags, char *name)
 	uintptr_t in_page = ((uintptr_t) start) & PHYSMM_PAGE_ADDRESS_MASK;
 	if (in_page) {
 		start = (void*)(((uintptr_t)start) & ~PHYSMM_PAGE_ADDRESS_MASK);
-		size += (off_t) in_page;
+		size += (size_t) in_page;
 	}
 	region = procvmm_get_memory_region(start);
 	if (region)
@@ -225,7 +225,7 @@ int procvmm_handle_fault(void *address)
 {//TODO: Implement public mappings
 	page_flags_t flags = PAGING_PAGE_FLAG_USER;
 	uintptr_t in_region;
-	off_t file_off;
+	aoff_t file_off;
 	size_t read_size = PHYSMM_PAGE_SIZE;
 	size_t rd_count = 0;
 	physaddr_t frame;

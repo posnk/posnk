@@ -18,10 +18,11 @@ int sis_transmit_empty() {
    return i386_inb(PORT + 5) & 0x20;
 }
  
-void sercon_putc(dev_t dev, char a) {
+int sercon_putc(__attribute__((__unused__)) dev_t dev, char a) {
    while (sis_transmit_empty() == 0);
  
    i386_outb(PORT,a);
+   return 0;
 }
 
 void sercon_init() {

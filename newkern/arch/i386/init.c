@@ -31,6 +31,7 @@
 #include "kernel/tty.h"
 #include "kernel/drivermgr.h"
 #include "kernel/interrupt.h"
+#include "kdbg/dbgapi.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
 #include <fcntl.h>
@@ -246,7 +247,6 @@ void i386_kmain()
 {
 	pid_t pid_init, pid_idle;
 	int init_status, rv;
-	uint8_t firstsector[512];
 	uint32_t wp_params[4];
 
 	earlycon_puts("OK\n\n");

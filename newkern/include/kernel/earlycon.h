@@ -32,6 +32,9 @@ int earlycon_aprintf(const char* str,...);
 int debugcon_aprintf(const char* str,...);
 
 void debugcon_aputs(const char *str);
+
+int debugcon_have_data();
+
 #define earlycon_printf earlycon_aprintf
 #define earlycon_puts earlycon_aputs
 
