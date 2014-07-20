@@ -15,6 +15,7 @@
 #include "kernel/exception.h"
 #include "kernel/earlycon.h"
 #include "kernel/paging.h"
+#include "kernel/process.h"
 #include "kernel/system.h"
 #include "kernel/syscall.h"
 #include "kernel/scheduler.h"
@@ -76,6 +77,7 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		//earlycon_printf("Unhandled hardware interrupt %i\n", int_id - 32);
 		interrupt_dispatch(int_id - 32);
 		i386_interrupt_done (int_id - 32);
+		process_handle_signals();
 	} else if (int_id == I386_EXCEPTION_PAGE_FAULT) {
 		/* Dispatch to page fault handler */
 		paging_handle_fault(i386_get_page_fault_addr(), (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t)
@@ -86,6 +88,5 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 	} else {
 		/* Handle regular exceptions */
 		exception_handle(i386_exception_table[int_id], (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t));
-	}
-		
+	} 
 }

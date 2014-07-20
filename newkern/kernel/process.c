@@ -66,8 +66,6 @@ void process_send_signal(process_info_t *process, int signal)
 	if (signal == 0)
 		return;
 	process->waiting_signal_bitmap |= (1 << signal);
-	if (process == scheduler_current_task)
-		schedule();
 }
 
 void process_set_signal_mask(process_info_t *process, int mask)
