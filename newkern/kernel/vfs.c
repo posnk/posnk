@@ -1404,9 +1404,6 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 		return ENAMETOOLONG;
 	}
 
-	/* Set inode name field */
-	strcpy(inode->name, name);
-
 	/* Fill other inode fields */
 	inode->mode = mode & ~(scheduler_current_task->umask);
 	inode->if_dev = dev;
@@ -1771,10 +1768,6 @@ int vfs_symlink(char *oldpath, char *path)
 	
 		return ENAMETOOLONG;
 	}
-
-	/* Set inode name field */
-	strcpy(inode->name, name);
-
 	/* Fill other inode fields */
 	inode->mode = 0;
 	inode->if_dev = 0;

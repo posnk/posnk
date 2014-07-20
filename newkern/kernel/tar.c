@@ -215,13 +215,13 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 	status = vfs_read(tar_file, *pos, header, sizeof(tar_header_t), &rd_count, 0);	
 	if (status) {
 		heapmm_free(header, sizeof(tar_header_t));
-		earlycon_printf("WARNING: error read file while extracting %s, errno: %i\n",tar_file->name,status);
+		earlycon_printf("WARNING: error read file while extracting , errno: %i\n",status);
 		return status;
 	}
 	(*pos) += rd_count;
 	if (rd_count != sizeof(tar_header_t)) {
 		heapmm_free(header, sizeof(tar_header_t));
-		earlycon_printf("WARNING: size mismatch read file while extracting %s read:%i pos:%i, errno: %i\n",tar_file->name,status,rd_count,*pos);
+		earlycon_printf("WARNING: size mismatch read file while extracting read:%i pos:%i, errno: %i\n",status,rd_count,*pos);
 		return EIO;
 	}
 	if (strlen(header->name) == 0){

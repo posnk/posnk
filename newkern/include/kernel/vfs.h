@@ -97,8 +97,6 @@ struct inode {
 	uint32_t	 device_id;
 	/** Filesystem device this inode resides on */
 	fs_device_t	*device;
-	/** Filename @deprecated This should not be here, Inodes can have multiple filenames!*/
-	char	 	 name[CONFIG_FILE_MAX_NAME_LENGTH];
 	/** Number of hard links to this file */
 	nlink_t 	 hard_link_count;
 	/* Permissions */

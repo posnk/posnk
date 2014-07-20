@@ -332,7 +332,6 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 	vfs_ino->device_id = device->device.id;
 	vfs_ino->id = ino_id;
 	vfs_ino->device = (fs_device_t *) device;
-	strcpy(vfs_ino->name, "ext2inode");
 	vfs_ino->mount = NULL;
 	vfs_ino->lock = semaphore_alloc();
 	semaphore_up(vfs_ino->lock);

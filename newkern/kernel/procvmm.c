@@ -171,7 +171,7 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	if (!region)
 		return ENOMEM;
 	if (name == NULL)
-		name = file->name;
+		name = "(anon file)";
 	if (file_sz == -1)
 		file_sz = file->size;
 	in_page = ((uintptr_t) start) & PHYSMM_PAGE_ADDRESS_MASK;
