@@ -287,7 +287,7 @@ void i386_kmain()
 #endif
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
-	if (vfs_initialize(ramfs_create()))
+	if (vfs_initialize(3, "ramfs"))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");

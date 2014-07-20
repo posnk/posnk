@@ -29,8 +29,8 @@
 #include "kernel/pipe.h"
 
 #include "config.h"
-fs_device_t *ext2_mount(dev_t device, uint32_t flags);
-
+/** Filesystem driver list */
+llist_t vfs_fs_driver_list;
 
 /** The linked list serving as open inode list */
 llist_t *open_inodes;
@@ -1490,6 +1490,37 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	return 0;	
 }
 
+int vfs_register_fs(const char *name, fs_device_t *(*mnt_cb)(dev_t, uint32_t))
+{
+	fs_driver_t *driver;
+	assert(name != NULL);
+	assert(mnt_cb != NULL);
+
+	driver = heapmm_alloc(sizeof(fs_driver_t));
+
+	if (!driver)
+		return ENOMEM;
+
+	driver->name = heapmm_alloc(strlen(name) + 1);
+	if (!driver->name) {
+		heapmm_free(driver, sizeof(fs_driver_t));
+		return ENOMEM;
+	}
+	strcpy(driver->name, name);
+	
+	driver->mount = mnt_cb;
+
+	llist_add_end(&vfs_fs_driver_list, (llist_t *) driver);
+
+	return 0; 
+}
+
+int vfs_mount_iterator (llist_t *node, void *param) {
+	fs_driver_t *driver = (fs_driver_t *) node;
+	assert(driver->name != NULL);
+	return 0 == strcmp(driver->name, (char *) param);
+}
+
 /**
  * @brief Mount a filesystem
  * @param device The path of the block special file the fs resides on
@@ -1507,6 +1538,7 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 {
+	fs_driver_t *driver;
 	fs_device_t *fsdevice;
 	inode_t	    *mp_inode;
 	inode_t	    *dev_inode;
@@ -1554,10 +1586,24 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 
 		return ENOTBLK;
 	}
-		
+	
+	/* Look up the fs driver */	
+	driver = (fs_driver_t *) llist_iterate_select(&vfs_fs_driver_list, &vfs_mount_iterator, fstype);
+
+	/* Check if it exists */
+	if (!driver) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
+		return ENOENT;
+	}
+
 	/* Mount the filesystem */
-	//TODO: Support multiple filesystems
-	fsdevice = ext2_mount(dev_inode->if_dev, flags);
+	fsdevice = driver->mount(dev_inode->if_dev, flags);
 	
 	/* Check for errors */
 	if (!fsdevice) {
@@ -2120,14 +2166,21 @@ int vfs_link(char *oldpath, char *newpath)
 
 ///@}
 
+void register_fs_drivers();
+
 /** 
  * @brief Initialize the VFS layer 
  * @param root_device The filesystem device to use as root filesystem
+ * @param root_fs_type The type of filesystem used for the root device
  * @return If successful 1, otherwise 0
  */
 
-int vfs_initialize(fs_device_t * root_device)
+int vfs_initialize(dev_t root_device, char *root_fs_type)
 {
+	fs_driver_t *driver;
+	fs_device_t *fsdevice;
+	inode_t *root_inode;
+
 	//TODO: Track mounted devices
 	/* Allocate inode cache */
 	inode_cache = heapmm_alloc(sizeof(llist_t));
@@ -2135,19 +2188,45 @@ int vfs_initialize(fs_device_t * root_device)
 	/* Allocate open inode list */
 	open_inodes = heapmm_alloc(sizeof(llist_t));
 
-	/* Look up root inode */
-	inode_t *root_inode = root_device->ops->load_inode(root_device, root_device->root_inode_id);
-
-	/* Check for errors */
-	if (!root_inode)
-		return 0;
-
 	/* Create the inode cache */
 	llist_create(inode_cache);
 
 	/* Create the open inode list */
 	llist_create(open_inodes);
 
+	/* Create the file system device list */
+	llist_create(&vfs_fs_driver_list);
+	
+	/* Register fs drivers */
+	register_fs_drivers();
+	
+	/* Look up the rootfs driver */	
+	driver = (fs_driver_t *) llist_iterate_select(&vfs_fs_driver_list, &vfs_mount_iterator, root_fs_type);
+
+	/* Check if it exists */
+	if (!driver) {
+
+		//TODO: Panic here  : "Unknown rootfs type"
+
+		return 0;
+	}
+
+	/* Mount the filesystem */
+	fsdevice = driver->mount(root_device,  0);
+
+	if (!fsdevice) {
+		//TODO: Panic here  : "Could not mount rootfs"
+
+		return 0;
+	}
+
+	/* Look up root inode */
+	root_inode = fsdevice->ops->load_inode(fsdevice, fsdevice->root_inode_id);
+
+	/* Check for errors */
+	if (!root_inode)
+		return 0;
+	
 	/* Add the root inode to it */
 	llist_add_end(inode_cache, (llist_t *) root_inode);
 

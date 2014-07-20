@@ -78,6 +78,11 @@ typedef struct fs_device fs_device_t;
  * @see fs_device_operations
  */
 typedef struct fs_device_operations fs_device_operations_t;
+/**
+ * @brief A filesystem driver descriptor
+ * @see fs_driver
+ */
+typedef struct fs_driver fs_driver_t;
 
 /**
  * Describes a file currently cached by the kernel
@@ -353,7 +358,7 @@ struct fs_device_operations {
  * provided by the driver aswell as the mounted device.
  * In order to implement a filesystem driver you must provide two things:
  * \li A mount function of the form 
- *         fs_device_t fs_mount( dev_t device, uin32_t flags);
+ *         fs_device_t fs_mount( dev_t device, uint32_t flags);
  * \li Implementations of the callbacks in fs_device_operations
  * 
  * For more information on the callbacks see the documentation of 
@@ -375,6 +380,21 @@ struct fs_device {
           * of this driver.
           */
 	size_t 			inode_size;
+};
+
+/**
+ * @brief A filesystem driver descriptor
+ *
+ * This structure describes a filesystem driver, it is used to store available
+ * filesystem drivers in a table for use by vfs_mount
+ */
+struct fs_driver {
+	/** Linked list node */
+	llist_t		 link;
+	/** Filesystem name (e.g. ext2 or ramfs) */
+	char		*name;
+	/** Mount callback @see fs_device */
+	fs_device_t	*(*mount) (dev_t, uint32_t);
 };
 
 /** @name VFS API
@@ -405,6 +425,8 @@ int vfs_unlink(char *path);
 int vfs_link(char *oldpath, char *newpath);
 
 int vfs_symlink(char *oldpath, char *newpath);
+
+int vfs_register_fs(const char *name, fs_device_t *(*mnt_cb)(dev_t, uint32_t));
 
 int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
 
@@ -452,7 +474,7 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id);
 
 ///@}
 
-int vfs_initialize(fs_device_t * root_device);
+int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
 

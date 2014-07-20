@@ -273,7 +273,7 @@ int ramfs_unlink(inode_t *_inode, char *name )	//dir_inode_id, filename
 	return 0;
 }
 
-uint32_t ramfs_device_ctr = 0xF00F0000;
+uint32_t ramfs_device_ctr = 0x0F00;
 
 fs_device_operations_t *ramfs_ops;
 
@@ -300,6 +300,7 @@ fs_device_t *ramfs_mount(dev_t device, uint32_t flags)
 	dev->device.lock = semaphore_alloc();
 	dev->device.ops = ramfs_ops;
 	dev->device.inode_size = sizeof(ramfs_inode_t);
+	ramfs_device_ctr = ramfs_device_ctr + 1;
 	return (fs_device_t *)dev;
 }
 
