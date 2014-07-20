@@ -164,40 +164,81 @@ int procvmm_mmap_anon(void *start, size_t size, int flags, char *name)
 int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, char *name)
 {
 	uintptr_t in_page;
-	process_mmap_t *region = procvmm_get_memory_region(start);
+	process_mmap_t *region;
+
+	/* Check if region is already in use */
+	region = procvmm_get_memory_region(start);
 	if (region)
 		return EINVAL;
+
+	/* Allocate memory for region */
 	region = heapmm_alloc(sizeof(process_mmap_t));
+
+	/* Check for errors */
 	if (!region)
 		return ENOMEM;
+
+	/* Handle NULL name field */
 	if (name == NULL)
 		name = "(anon file)";
+
+	/* Handle unspecified in-file size */
 	if (file_sz == -1)
 		file_sz = file->size;
+
+	/* If start is not page alligned, try to adjust offset in such a way 
+	 * that the file can be loaded at the start of the page */
 	in_page = ((uintptr_t) start) & PHYSMM_PAGE_ADDRESS_MASK;
 	if (in_page) {
+		/* Page allign start */
 		start = (void*)(((uintptr_t)start) & ~PHYSMM_PAGE_ADDRESS_MASK);
-		if (offset < (off_t) in_page)
+
+		/* If the new offset would be before the start of the file 
+		 * bail out */
+		if (offset < (off_t) in_page) {
+			heapmm_free(region, sizeof(process_mmap_t));
 			return EINVAL; 
+		}
+
+		/* Adjust offset, size */
 		offset -= (off_t) in_page;
 		size += in_page;
 		file_sz += in_page;
 	}
+
+	/* Allocate memory for the region name */
 	region->name = heapmm_alloc(strlen(name)+1);
+
+	/* Copy region name */
 	strcpy(region->name, name);
+
+	if (!region->name) {
+		heapmm_free(region, sizeof(process_mmap_t));
+		return ENOMEM; 
+	}
+
+
+	/* Fill region fields */
 	region->start = start;
 	region->size = size;
 	region->file = file;
 	region->offset = offset;
 	region->flags = flags | PROCESS_MMAP_FLAG_FILE;
 	region->file_sz = file_sz;
+
+	/* Test for region collisions */
 	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
 		heapmm_free(region->name, strlen(name)+1);
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
+
+	/* Bump file usage count */
 	file->usage_count++;
+
+	/* Add to region list */
 	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	
 	return 0;
 }
 
@@ -248,7 +289,7 @@ int procvmm_handle_fault(void *address)
 			return 0;
 		}
 		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
-		file_off = region->offset + ((off_t) in_region);
+		file_off = region->offset + ((aoff_t) in_region);
 		if ((in_region < (uintptr_t) region->file_sz) && (file_off < region->file->size)) {
 			if ((in_region + read_size) > (uintptr_t) region->file_sz)
 				read_size = (size_t) (region->file_sz - in_region);

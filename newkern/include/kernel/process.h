@@ -47,6 +47,8 @@
 #define PROCESS_MMAP_FLAG_PUBLIC	(1<<3)
 #define PROCESS_MMAP_FLAG_STACK		(1<<4)
 #define PROCESS_MMAP_FLAG_HEAP		(1<<5)
+#define PROCESS_MMAP_FLAG_DEVICE	(1<<6)
+#define PROCESS_MMAP_FLAG_STREAM	(1<<7)
 
 struct process_mmap {
 	llist_t		 node;
@@ -55,8 +57,9 @@ struct process_mmap {
 	size_t		 size;
 	int		 flags;
 	inode_t		*file;
-	off_t		 offset;
-	off_t		 file_sz;
+	int		 fd;
+	aoff_t		 offset;
+	aoff_t		 file_sz;
 };
 
 struct process_child_event {
