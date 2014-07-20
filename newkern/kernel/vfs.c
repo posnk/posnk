@@ -2414,9 +2414,17 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	dirent_t *dirent;
 	int element_count = 0;	
 
-	/* Check for NULL or empty path */
+	/* Check for NULL  */
 	assert (path != NULL);
-	assert ((*path) != '\0');
+
+	/* Check for empty path */
+	if ((*path) == '\0'){
+		/* Release current directory */
+		vfs_dir_cache_release(dirc);
+
+		/* Empty path does not exist! */
+		return NULL;
+	}
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
@@ -2586,9 +2594,17 @@ dir_cache_t *vfs_find_dirc(char * path)
 	dirent_t *dirent;
 	int element_count = 0;	
 
-	/* Check for NULL or empty path */
+	/* Check for NULL  */
 	assert (path != NULL);
-	assert ((*path) != '\0');
+
+	/* Check for empty path */
+	if ((*path) == '\0'){
+		/* Release current directory */
+		vfs_dir_cache_release(dirc);
+
+		/* Empty path does not exist! */
+		return NULL;
+	}
 
 	/* Allocate buffer for path element */
 	path_element = (char *) heapmm_alloc(CONFIG_FILE_MAX_NAME_LENGTH);
