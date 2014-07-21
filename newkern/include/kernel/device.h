@@ -177,6 +177,10 @@ struct tty_ops {
 	 */
 
 	int	(*ioctl)	  (dev_t, int, int, int);			//device, fd, func, arg
+
+	int	(*mmap)		  (dev_t, int, int, void *, aoff_t, aoff_t);
+
+	int	(*unmmap)	  (dev_t, int, int, void *, aoff_t, aoff_t);
 };
 
 /**
@@ -300,6 +304,7 @@ struct blk_ops {
 	 * @exception EINVAL Invalid value for function
 	 */
 	int	(*ioctl)	  (dev_t, int, int, int);		//device, fd, func, arg
+
 };
 
 void device_char_init();
@@ -329,6 +334,10 @@ int device_char_close(dev_t device, int fd);
 int device_char_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block);
 
 int device_char_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
+
+int device_char_mmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t file_sz);
+
+int device_char_unmmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t file_sz);
 
 ///@}
 

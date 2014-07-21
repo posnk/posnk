@@ -178,3 +178,27 @@ int device_char_read(dev_t device, __attribute__((__unused__)) aoff_t file_offse
 	/* Call the driver */
 	return drv->ops->read(device, buffer, count, read_size, non_block);
 }
+
+int device_char_mmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t size)
+{
+	dev_t major = MAJOR(device);
+	char_dev_t *drv = char_dev_table[major];
+	/* Check if the device exists */
+	if (!drv) {
+		return ENXIO;
+	}
+	/* Call the driver */
+	return drv->ops->mmap(device, fd, flags, addr, offset, size);
+}
+
+int device_char_unmmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t size)
+{
+	dev_t major = MAJOR(device);
+	char_dev_t *drv = char_dev_table[major];
+	/* Check if the device exists */
+	if (!drv) {
+		return ENXIO;
+	}
+	/* Call the driver */
+	return drv->ops->unmmap(device, fd, flags, addr, offset, size);
+}

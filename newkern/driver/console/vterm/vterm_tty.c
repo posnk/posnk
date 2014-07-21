@@ -76,6 +76,10 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 		//vterm_minor_terms[minor].ttyname   = "console";
 	}
 	tty_register_driver(name, major, minor_count, &vterm_putc);
+	for (minor = 0; minor < (dev_t) minor_count; minor++) {
+		tty_get(MAKEDEV(major, minor))->win_size.ws_col = cols;
+		tty_get(MAKEDEV(major, minor))->win_size.ws_row = rows;
+	}
 }
 
 //tty_register_driver("vgacon", 12, 1, &vgacon_putc);

@@ -172,7 +172,7 @@ clean: clean_driver
 	@rm _dmake
 
 emulate: cdrom_i386
-	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca
+	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)

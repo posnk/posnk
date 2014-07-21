@@ -15,8 +15,15 @@
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
 #include "kernel/earlycon.h"
+#include "kernel/streams.h"
+#include "kernel/vfs.h"
+#include "kernel/device.h"
+#include "kernel/syscall.h"
 #include <string.h>
 #include <sys/errno.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <assert.h>
 
 void procvmm_clear_mmaps()
 {	
@@ -166,6 +173,8 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	uintptr_t in_page;
 	process_mmap_t *region;
 
+	assert(file != NULL);
+
 	/* Check if region is already in use */
 	region = procvmm_get_memory_region(start);
 	if (region)
@@ -183,7 +192,7 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 		name = "(anon file)";
 
 	/* Handle unspecified in-file size */
-	if (file_sz == -1)
+	if (file_sz == 0)
 		file_sz = file->size;
 
 	/* If start is not page alligned, try to adjust offset in such a way 
@@ -242,21 +251,146 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	return 0;
 }
 
-void procvmm_unmmap(process_mmap_t *region)
+int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t file_sz, int flags, char *name)
 {
+	uintptr_t in_page;
+	process_mmap_t *region;
+	inode_t* file;
+	stream_ptr_t *ptr;
+	int st;
+
+	//TODO: Permission check
+
+	/* Get the stream pointer */
+	ptr = stream_get_ptr(fd);
+
+	/* Check if it exists */
+	if (!ptr)
+		return EBADF;
+
+	/* Check if it is a file stream */
+	if (ptr->info->type != STREAM_TYPE_FILE)
+		return ENODEV;
+
+	/* Get inode */
+	file = ptr->info->inode;
+
+	assert(file != NULL);
+	
+	/* Check if region is already in use */
+	region = procvmm_get_memory_region(start);
+	if (region)
+		return EINVAL;
+
+	/* Allocate memory for region */
+	region = heapmm_alloc(sizeof(process_mmap_t));
+
+	/* Check for errors */
+	if (!region)
+		return ENOMEM;
+
+	/* Handle NULL name field */
+	if (name == NULL)
+		name = "(anon file)";
+
+	/* Handle unspecified in-file size */
+	if (file_sz == 0)
+		file_sz = file->size;
+
+	/* If start is not page alligned, try to adjust offset in such a way 
+	 * that the file can be loaded at the start of the page */
+	in_page = ((uintptr_t) start) & PHYSMM_PAGE_ADDRESS_MASK;
+	if (in_page) {
+		/* Page allign start */
+		start = (void*)(((uintptr_t)start) & ~PHYSMM_PAGE_ADDRESS_MASK);
+
+		/* If the new offset would be before the start of the file 
+		 * bail out */
+		if (offset < in_page) {
+			heapmm_free(region, sizeof(process_mmap_t));
+			return EINVAL; 
+		}
+
+		/* Adjust offset, size */
+		offset -= (off_t) in_page;
+		size += in_page;
+		file_sz += in_page;
+	}
+
+	/* Check whether this is a device mapping */
+	if (S_ISCHR(file->mode)) {
+		/* It is */
+		flags |= PROCESS_MMAP_FLAG_DEVICE;
+
+		/* Let the driver map the memory */
+		st = device_char_mmap(file->if_dev, fd, flags, start, offset, file_sz);
+
+		/* Check for errors */
+		if (st) {
+			heapmm_free(region, sizeof(process_mmap_t));
+			return st;
+		}
+			
+	}
+
+	/* Allocate memory for the region name */
+	region->name = heapmm_alloc(strlen(name)+1);
+
+	/* Copy region name */
+	strcpy(region->name, name);
+
+	if (!region->name) {
+		heapmm_free(region, sizeof(process_mmap_t));
+		return ENOMEM; 
+	}
+
+
+	/* Fill region fields */
+	region->start = start;
+	region->size = size;
+	region->file = file;
+	region->fd = fd;
+	region->offset = offset;
+	region->flags = flags | PROCESS_MMAP_FLAG_FILE | PROCESS_MMAP_FLAG_STREAM;
+	region->file_sz = file_sz;
+
+	/* Test for region collisions */
+	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+		heapmm_free(region->name, strlen(name)+1);
+		heapmm_free(region, sizeof(process_mmap_t));
+		return EINVAL;
+	}
+
+	/* Bump file usage count */
+	file->usage_count++;
+
+	/* Add to region list */
+	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	
+	return 0;
+}
+
+void procvmm_unmmap(process_mmap_t *region)
+{//TODO: Enable writeback
 	uintptr_t start = (uintptr_t) region->start;
 	uintptr_t page;
 	physaddr_t frame;
 	llist_unlink((llist_t *) region);
+	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
+		region->file->usage_count--;
+	}
+	if (region->flags & PROCESS_MMAP_FLAG_DEVICE) {
+		device_char_unmmap(region->file->if_dev, region->fd, region->flags, region->start, region->offset, region->file_sz);
+		heapmm_free(region->name, strlen(region->name) + 1);
+		heapmm_free(region, sizeof(process_mmap_t));	
+		return;
+	}
 	for (page = start; page < (start +region->size); page += PHYSMM_PAGE_SIZE) {
 		frame = paging_get_physical_address((void *)page);
 		if (frame) {
 			physmm_free_frame(frame);
 			paging_unmap((void *) page);
 		}
-	}
-	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
-		region->file->usage_count--;
 	}
 	heapmm_free(region->name, strlen(region->name) + 1);
 	heapmm_free(region, sizeof(process_mmap_t));		
@@ -275,6 +409,8 @@ int procvmm_handle_fault(void *address)
 	address = (void *) (((uintptr_t)address) & ~PHYSMM_PAGE_ADDRESS_MASK);
 	if (!region)
 		return 0;
+	if (region->flags & PROCESS_MMAP_FLAG_DEVICE)
+		return 0; //No demand paging for device maps
 	frame = physmm_alloc_frame();
 	if (!frame)
 		return 0;
@@ -308,4 +444,32 @@ int procvmm_handle_fault(void *address)
 	}
 	return 1;
 	
+}
+
+void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
+{
+	int st;
+	int _flags = 0;
+	process_mmap_t region, *_r;
+	if (flags & MAP_SHARED)
+		flags |= PROCESS_MMAP_FLAG_PUBLIC;
+	if (!(flags & MAP_FIXED)) {
+		region.start = (void *) 0x4000000;
+		region.size = len;
+		while (1) {
+			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
+			if (!_r)
+				break;
+			region.start = (void *)( ((uintptr_t)_r->start) + _r->size);
+		}
+		addr = region.start;
+	}
+	if (prot & PROT_WRITE)
+		flags |= PROCESS_MMAP_FLAG_WRITE;
+	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, 0, flags, NULL);
+	if (st) {
+		syscall_errno = st;
+		return MAP_FAILED;
+	}
+	return addr;
 }

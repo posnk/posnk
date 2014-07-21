@@ -44,4 +44,5 @@ void tty_input_char(dev_t device, char c);
 
 void tty_init();
 
+tty_info_t *tty_get(dev_t device);
 #endif
