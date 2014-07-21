@@ -490,3 +490,16 @@ uint32_t sys_execve(uint32_t param[4], uint32_t param_size[4])
 	return (uint32_t) status;
 }
 
+//void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+
+uint32_t sys_mmap(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+{
+	return (uint32_t) _sys_mmap(	(void *) param[0], 
+					(size_t) param[1], 
+					(int)    param[2], 
+					(int)    param[3],
+					(int)    param_size[4],
+					(int)    param_size[5]);
+}
+
+

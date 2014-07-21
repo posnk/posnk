@@ -192,4 +192,5 @@ void process_user_call(void *entry, void *stack);
 
 int process_exec(char *path, char **args, char **envs);
 
+void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 #endif

@@ -19,10 +19,12 @@
 #include "kernel/tty.h"
 #include "driver/console/vterm/vterm.h"
 #include "driver/console/vterm/vterm_private.h"
+#include "driver/video/fb.h"
 
 extern uint32_t *fb;
 font_def_t *fbcon_font = &rnd8x13;
-int fbcon_width = 1024;
+int fbcon_width;
+int fbcon_height;
 
 typedef struct fbcon_vc {
 	short cursor_x;
@@ -56,7 +58,7 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 		line = fbcon_font->data[bp - _y];
 
 		for (_x = 7; _x >= 0; _x--) 
-			fb[lp++] = (line & (1 << _x)) ? fg : bg;
+			fb_primary_lfb[lp++] = (line & (1 << _x)) ? fg : bg;
 	}	
 }
 
@@ -64,7 +66,7 @@ void fbcon_draw_hline(int x, int y, int w, int c) {
 	int _x, lp;
 	lp = y * fbcon_width + x;
 	for (_x = w; _x >= 0; _x--) 
-		fb[lp++] = c;
+		fb_primary_lfb[lp++] = c;
 }
 
 void fbcon_render_string(int x, int y, uint32_t fg, uint32_t bg, char *str) 
@@ -174,11 +176,13 @@ void con_handle_key(int keycode)
 void fbcon_vterm_init()
 {
 	int vc_id;
+	fbcon_width = fb_primary_mode_info->fb_width;
+	fbcon_height = fb_primary_mode_info->fb_height;
         for (vc_id = 0;vc_id < 9;vc_id++){
                 fbcon_all_vcs[vc_id].cursor_x = 0;
                 fbcon_all_vcs[vc_id].cursor_y = 0;  
                 fbcon_all_vcs[vc_id].page_id = vc_id;
         }
-	vterm_tty_setup("fbcon", 2, 9, 48, fbcon_width / 8);
+	vterm_tty_setup("fbcon", 2, 9, fbcon_height / (fbcon_font->height + 3), fbcon_width / 8);
 	fbcon_switch_vc(0);
 }

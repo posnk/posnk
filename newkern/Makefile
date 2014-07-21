@@ -140,6 +140,7 @@ kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
 	@cp include/crt/sys/termios.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/termios.h
+	@cp include/crt/sys/mman.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/mman.h
 
 cdrom_i386: kernel_i386 initrd
 	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
@@ -172,7 +173,7 @@ clean: clean_driver
 	@rm _dmake
 
 emulate: cdrom_i386
-	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std
+	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)

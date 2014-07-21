@@ -1,4 +1,5 @@
 DEV_DRIVER(oldkb, oldkb)
 PNP_DRIVER(ata_pci, block/pata)
+DEV_DRIVER(fb, video)
 DEV_DRIVER(mbfb, video)
 DEV_DRIVER(fbcon_vterm, console)

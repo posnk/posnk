@@ -119,8 +119,8 @@ int procvmm_collcheck_iterator (llist_t *node, void *param)
 	uintptr_t c_e = c_s + m2->size;
 	if (m == m2)
 		return 0;
-	return ((c_s >= b_s) && (c_s < b_e)) || ((c_e >= b_s) && (c_e < b_e)) || 
-	       ((b_s >= c_s) && (b_s < c_e)) || ((b_e >= c_s) && (b_e < c_e));
+	return ((c_s >= b_s) && (c_s < b_e)) || ((c_e > b_s) && (c_e < b_e)) || 
+	       ((b_s >= c_s) && (b_s < c_e)) || ((b_e > c_s) && (b_e < c_e));
 }
 
 int procvmm_resize_map(void *start, size_t newsize)
@@ -460,13 +460,13 @@ void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offse
 			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
 			if (!_r)
 				break;
-			region.start = (void *)( ((uintptr_t)_r->start) + _r->size);
+			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);
 		}
 		addr = region.start;
 	}
 	if (prot & PROT_WRITE)
 		flags |= PROCESS_MMAP_FLAG_WRITE;
-	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, 0, flags, NULL);
+	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, len, _flags, NULL);
 	if (st) {
 		syscall_errno = st;
 		return MAP_FAILED;

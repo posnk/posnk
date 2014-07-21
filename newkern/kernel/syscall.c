@@ -84,7 +84,8 @@ char *syscall_names[] =
 	"dbgdrop",
 	"mount",
 	"ftruncate",
-	"truncate"
+	"truncate",
+	"mmap"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -233,4 +234,5 @@ void syscall_init()
 	syscall_register(SYS_MOUNT, &sys_mount);
 	syscall_register(SYS_FTRUNCATE, &sys_ftruncate);
 	syscall_register(SYS_TRUNCATE, &sys_truncate);
+	syscall_register(SYS_MMAP, &sys_mmap);
 }
