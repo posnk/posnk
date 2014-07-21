@@ -50,6 +50,14 @@ _DEFUN (lchown, (path, owner, group),
    return (int) nk_do_syscall(SYS_CHOWN, a, b); 
 }
 
+int mount(char *dev, char *mp, char *fs, uint32_t flags)
+{
+   int a[] = {(uint32_t) dev, (uint32_t) mp, (uint32_t) fs, flags};
+   int b[] = {(uint32_t) 1+strlen(dev), 1+strlen(mp), 1+strlen(fs),0};
+   return (int) nk_do_syscall(SYS_MOUNT, a, b); 
+}
+
+
 void sync(){};
 
 int

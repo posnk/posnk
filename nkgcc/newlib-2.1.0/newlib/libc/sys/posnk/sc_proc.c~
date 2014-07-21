@@ -176,6 +176,12 @@ int setgid(int gid) {
    return (int) nk_do_syscall(SYS_SETGID, a, b); 
 }
 
+void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off); {
+   int a[] = {(uint32_t) addr,(uint32_t) len, (uint32_t) prot, (uint32_t) flags};
+   int b[] = {(uint32_t) fildes, (uint32_t) off,0,0};
+   return (uint32_t) nk_do_syscall(SYS_MMAP, a, b); 
+}
+
 int setresuid(int uid) {
 	return 0;
 }
@@ -271,7 +277,7 @@ pid_t wait3(int *status, int options,
 int sigaction(int signum, const struct sigaction *act,
                      struct sigaction *oldact)
 {
-	printf("WARN: USING SIGACTION\n");
+	//printf("WARN: USING SIGACTION\n");
 }
 
 unsigned int alarm(unsigned int seconds)

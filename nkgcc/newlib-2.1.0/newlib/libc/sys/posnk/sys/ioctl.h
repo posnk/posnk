@@ -59,4 +59,21 @@ struct winsize {
 	unsigned short ws_y;
 };
 
+/* fb device ioctls */
+
+#define IOCTL_FBGDINFO	(16)
+#define IOCTL_FBGMINFO	(17)
+#define IOCTL_FBSMINFO	(18)
+
+typedef struct fb_device_info {
+	size_t		fb_size;
+	int		fb_flags;
+} fb_device_info_t;
+
+typedef struct fb_mode_info {
+	unsigned short	fb_width;
+	unsigned short	fb_height;
+	unsigned short	fb_stride;
+	unsigned char	fb_bpp;
+} fb_mode_info_t;
 #endif
