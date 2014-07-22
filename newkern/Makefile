@@ -60,6 +60,8 @@ kernel/elfloader.c \
 kernel/tar.c \
 kernel/syscall.c \
 kernel/streams.c \
+kernel/ipc.c \
+kernel/shm.c \
 kernel/time.c \
 kernel/drivermgr.c \
 kernel/sc_process.c \

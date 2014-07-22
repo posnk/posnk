@@ -3,7 +3,6 @@
  *
  * Part of P-OS.
  *
- * Except where otherwise specified, this file is POSIX compliant.
  * 
  * Written by Peter Bosch <peterbosc@gmail.com>
  *

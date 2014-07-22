@@ -19,6 +19,7 @@
 #include "kernel/paging.h"
 #include "kernel/synch.h"
 #include "kernel/time.h"
+#include "kernel/shm.h"
 #include "kernel/vfs.h"
 #include "util/llist.h"
 
@@ -49,6 +50,7 @@
 #define PROCESS_MMAP_FLAG_HEAP		(1<<5)
 #define PROCESS_MMAP_FLAG_DEVICE	(1<<6)
 #define PROCESS_MMAP_FLAG_STREAM	(1<<7)
+#define PROCESS_MMAP_FLAG_SHM		(1<<8)
 
 struct process_mmap {
 	llist_t		 node;
@@ -60,6 +62,7 @@ struct process_mmap {
 	int		 fd;
 	aoff_t		 offset;
 	aoff_t		 file_sz;
+	shm_info_t	*shm;
 };
 
 struct process_child_event {
@@ -191,6 +194,10 @@ int procvmm_check(void *dest, size_t size);
 void process_user_call(void *entry, void *stack);
 
 int process_exec(char *path, char **args, char **envs);
+
+void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags);
+
+int procvmm_detach_shm(void *shmaddr);
 
 void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 #endif

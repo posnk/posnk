@@ -19,6 +19,7 @@
 #include "kernel/vfs.h"
 #include "kernel/device.h"
 #include "kernel/syscall.h"
+#include "kernel/shm.h"
 #include <string.h>
 #include <sys/errno.h>
 #include <sys/stat.h>
@@ -251,6 +252,61 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	return 0;
 }
 
+int procvmm_mmap_shm(void *start, shm_info_t *shm, int flags, char *name)
+{
+	process_mmap_t *region;
+
+	assert(shm != NULL);
+
+	/* Check if region is already in use */
+	region = procvmm_get_memory_region(start);
+	if (region)
+		return EINVAL;
+
+	/* Allocate memory for region */
+	region = heapmm_alloc(sizeof(process_mmap_t));
+
+	/* Check for errors */
+	if (!region)
+		return ENOMEM;
+
+	/* Handle NULL name field */
+	if (name == NULL)
+		name = "(sysv shm)";
+
+	/* Allocate memory for the region name */
+	region->name = heapmm_alloc(strlen(name)+1);
+
+	/* Copy region name */
+	strcpy(region->name, name);
+
+	if (!region->name) {
+		heapmm_free(region, sizeof(process_mmap_t));
+		return ENOMEM; 
+	}
+
+	/* Fill region fields */
+	region->start = start;
+	region->size = shm->info.shm_segsz;
+	region->flags = flags | PROCESS_MMAP_FLAG_SHM | PROCESS_MMAP_FLAG_PUBLIC;
+	region->shm = shm;
+
+	/* Test for region collisions */
+	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+		heapmm_free(region->name, strlen(name)+1);
+		heapmm_free(region, sizeof(process_mmap_t));
+		return EINVAL;
+	}
+
+	/* Bump file usage count */
+	shm->info.shm_nattch++;
+
+	/* Add to region list */
+	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	
+	return 0;
+}
+
 int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t file_sz, int flags, char *name)
 {
 	uintptr_t in_page;
@@ -379,6 +435,9 @@ void procvmm_unmmap(process_mmap_t *region)
 	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
 		region->file->usage_count--;
 	}
+	if (region->flags & PROCESS_MMAP_FLAG_SHM) {
+		region->shm->info.shm_nattch++;
+	}
 	if (region->flags & PROCESS_MMAP_FLAG_DEVICE) {
 		device_char_unmmap(region->file->if_dev, region->fd, region->flags, region->start, region->offset, region->file_sz);
 		heapmm_free(region->name, strlen(region->name) + 1);
@@ -388,7 +447,8 @@ void procvmm_unmmap(process_mmap_t *region)
 	for (page = start; page < (start +region->size); page += PHYSMM_PAGE_SIZE) {
 		frame = paging_get_physical_address((void *)page);
 		if (frame) {
-			physmm_free_frame(frame);
+			if (!(region->flags & PROCESS_MMAP_FLAG_SHM))
+				physmm_free_frame(frame);
 			paging_unmap((void *) page);
 		}
 	}
@@ -411,19 +471,19 @@ int procvmm_handle_fault(void *address)
 		return 0;
 	if (region->flags & PROCESS_MMAP_FLAG_DEVICE)
 		return 0; //No demand paging for device maps
-	frame = physmm_alloc_frame();
-	if (!frame)
-		return 0;
+	if (!(region->flags & PROCESS_MMAP_FLAG_SHM)) {
+		frame = physmm_alloc_frame();
+		if (!frame)
+			return 0;
+	}
 	if (region->flags & PROCESS_MMAP_FLAG_WRITE)
 		flags |= PAGING_PAGE_FLAG_RW;
-	paging_map(address, frame, flags);
-	memset(address, 0, read_size);
+	if (!(region->flags & PROCESS_MMAP_FLAG_SHM)) {
+		paging_map(address, frame, flags);
+		memset(address, 0, read_size);
+	}
 	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
-		if (!(region->file)) {
-			paging_unmap(address);
-			physmm_free_frame(frame);
-			return 0;
-		}
+		assert(region->file != NULL);
 		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
 		file_off = region->offset + ((aoff_t) in_region);
 		if ((in_region < (uintptr_t) region->file_sz) && (file_off < region->file->size)) {
@@ -442,8 +502,58 @@ int procvmm_handle_fault(void *address)
 			}
 		}		
 	}
+	if (region->flags & PROCESS_MMAP_FLAG_SHM) {
+		assert(region->shm != NULL);
+		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
+		paging_map(address, region->shm->frames[in_region / PHYSMM_PAGE_SIZE], flags);		
+	}
 	return 1;
 	
+}
+
+void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
+{
+	int st;
+	uintptr_t in_page;
+	process_mmap_t region, *_r;
+	if (addr == NULL) {
+		region.start = (void *) 0x4000000;
+		region.size = shm->info.shm_segsz;
+		while (1) {
+			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
+			if (!_r)
+				break;
+			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);
+		}
+		addr = region.start;
+	}
+	/* If start is not page alligned, try to adjust offset in such a way 
+	 * that the file can be loaded at the start of the page */
+	in_page = ((uintptr_t) addr) & PHYSMM_PAGE_ADDRESS_MASK;
+	if (in_page) {
+		/* Page allign start */
+		addr = (void*)( ((uintptr_t)addr) - in_page);
+	}
+	st = procvmm_mmap_shm(addr, shm, flags, NULL);
+	if (st) {
+		syscall_errno = st;
+		return (void *) -1;
+	}
+	return addr;
+}
+
+int procvmm_detach_shm(void *shmaddr)
+{
+	process_mmap_t *region = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_get_mmap_iterator, shmaddr);
+	if (!region) {
+		syscall_errno = EINVAL;
+		return -1;
+	}
+	region->shm->info.shm_nattch--;
+	if (region->shm->del && !region->shm->info.shm_nattch)
+		shm_do_delete(region->shm);
+	procvmm_unmmap(region);
+	return 0;
 }
 
 void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
@@ -464,6 +574,7 @@ void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offse
 		}
 		addr = region.start;
 	}
+
 	if (prot & PROT_WRITE)
 		flags |= PROCESS_MMAP_FLAG_WRITE;
 	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, len, _flags, NULL);
