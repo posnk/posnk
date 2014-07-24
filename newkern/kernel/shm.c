@@ -21,6 +21,11 @@
 llist_t	shm_list;
 int shm_id_ctr = 0;
 
+void shm_init()
+{
+	llist_create(&shm_list);
+}
+
 /**
  * Iterator to test if shm id matches the id
  */
@@ -172,14 +177,14 @@ void shm_do_delete(shm_info_t *info) {
 int _sys_shmget(key_t key, size_t size, int flags)
 {
 	int nframes, n;
-	shm_info_t *info;
+	shm_info_t *info = NULL;
 	if (key != IPC_PRIVATE)
 		info = shm_get_by_key(key);	
 	if (info && (flags & IPC_CREAT) && (flags & IPC_EXCL)) {
 		syscall_errno = EEXIST;
 		return -1;
 	} else if (!info) {
-		if (!(flags & IPC_CREAT)) {
+		if ((key != IPC_PRIVATE) && !(flags & IPC_CREAT)) {
 			syscall_errno = ENOENT;
 			return -1;
 		}
@@ -216,8 +221,10 @@ int _sys_shmget(key_t key, size_t size, int flags)
 		/* Initialize info */
 		info->id = shm_alloc_id();
 		if (info->id == -1) {
-			heapmm_free(info, sizeof(shm_info_t));
+			for (n = 0; n < nframes; n++)
+				physmm_free_frame(info->frames[n]);
 			heapmm_free(info->frames, sizeof(physaddr_t) * nframes);
+			heapmm_free(info, sizeof(shm_info_t));
 			return -1;
 		}
 

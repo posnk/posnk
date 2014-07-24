@@ -1,5 +1,5 @@
 /**
- * kernel/shm.c
+ * kernel/ipc.c
  *
  * Part of P-OS kernel.
  *

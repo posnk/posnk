@@ -67,6 +67,7 @@ kernel/drivermgr.c \
 kernel/sc_process.c \
 kernel/sc_perm.c \
 kernel/sc_vfs.c \
+kernel/sc_ipc.c \
 kernel/sc_streams.c \
 kernel/sc_time.c \
 kernel/sc_signals.c \
@@ -143,6 +144,8 @@ install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
 	@cp include/crt/sys/termios.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/termios.h
 	@cp include/crt/sys/mman.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/mman.h
+	@cp include/crt/sys/ipc.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ipc.h
+	@cp include/crt/sys/shm.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/shm.h
 
 cdrom_i386: kernel_i386 initrd
 	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos

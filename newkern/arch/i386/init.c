@@ -27,6 +27,7 @@
 #include "kernel/streams.h"
 #include "kernel/vfs.h"
 #include "kernel/tar.h"
+#include "kernel/shm.h"
 #include "kernel/device.h"
 #include "kernel/tty.h"
 #include "kernel/drivermgr.h"
@@ -307,7 +308,7 @@ void i386_kmain()
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");
-	
+	shm_init();
 	
 	earlycon_puts("Initializing protection...");
 	i386_protection_init();

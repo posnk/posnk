@@ -85,7 +85,11 @@ char *syscall_names[] =
 	"mount",
 	"ftruncate",
 	"truncate",
-	"mmap"
+	"mmap",
+	"shmat",
+	"shmdt",
+	"shmctl",
+	"shmget"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -235,4 +239,8 @@ void syscall_init()
 	syscall_register(SYS_FTRUNCATE, &sys_ftruncate);
 	syscall_register(SYS_TRUNCATE, &sys_truncate);
 	syscall_register(SYS_MMAP, &sys_mmap);
+	syscall_register(SYS_SHMAT, &sys_shmat);
+	syscall_register(SYS_SHMDT, &sys_shmdt);
+	syscall_register(SYS_SHMCTL, &sys_shmctl);
+	syscall_register(SYS_SHMGET, &sys_shmget);
 }

@@ -19,6 +19,7 @@
 #include "kernel/paging.h"
 #include "kernel/synch.h"
 #include "kernel/time.h"
+#include "kernel/sem.h"
 #include "kernel/shm.h"
 #include "kernel/vfs.h"
 #include "util/llist.h"
@@ -122,6 +123,12 @@ struct process_info {
 
 	/* Process statistics */
 	ticks_t		 cpu_ticks;
+
+
+	/* System V Semaphores */
+	sem_info_t	*sysv_sem_info;
+	int		 sysv_sem_num;
+	int		 sysv_sem_val;	
 
 	/* Process state */
 	page_dir_t	*page_directory;

@@ -1,5 +1,5 @@
 /**
- * sys/ipc.h
+ * sys/shm.h
  *
  * Part of P-OS.
  *

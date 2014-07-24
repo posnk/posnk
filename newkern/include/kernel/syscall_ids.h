@@ -91,6 +91,10 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_FTRUNCATE	60
 #define SYS_TRUNCATE	61
 #define SYS_MMAP	62
+#define SYS_SHMAT	63
+#define SYS_SHMDT	64
+#define SYS_SHMCTL	65
+#define SYS_SHMGET	66
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif

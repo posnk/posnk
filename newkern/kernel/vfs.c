@@ -879,7 +879,7 @@ int vfs_read(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count,
 			/* can take place now */
 			semaphore_up(inode->lock);
 
-			status = pipe_write(inode->fifo, buffer, count, read_size, non_block);		
+			status = pipe_read(inode->fifo, buffer, count, read_size, non_block);		
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
