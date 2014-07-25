@@ -37,7 +37,7 @@ typedef struct {
 } evdev_device_t;
 
 int evdev_register_device(evdev_device_info_t *info);
-
+void evdev_post_event(dev_t device, struct input_event event);
 void evdev_init();
 
 #endif

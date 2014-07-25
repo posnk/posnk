@@ -96,18 +96,20 @@ int i8042_self_test()
 void i8042_enable_aux()
 {
 	i8042_toggle_port(1, 1);
-	i8042_write_ram(I8042_RAM_CCR, (i8042_read_ram(I8042_RAM_CCR) | I8042_CCR_AUX_IEN) & ~I8042_CCR_AUX_DISABLE );
+	i8042_write_ram(I8042_RAM_CCR, (i8042_read_ram(I8042_RAM_CCR) | I8042_CCR_AUX_IEN | I8042_CCR_KBD_IEN) & ~I8042_CCR_AUX_DISABLE );
 }
 
 int i8042_isr(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context)
 {
 	int status = i8042_read_status();
 	int data = 0;
+	//debugcon_aprintf("i8042isr status:%i\n",status);
 	if (~status & I8042_STATUS_FLAG_IN_FULL)
-		return 0;
+		return 1;
 	while (status & I8042_STATUS_FLAG_IN_FULL) {
 		data = i8042_read_data();
 		if (status & I8042_STATUS_FLAG_AUX_DATA) {
+			ps2aux_handle_data(data);
 			
 		} else {
 			ps2kbd_handle_data(data);

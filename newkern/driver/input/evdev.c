@@ -12,6 +12,7 @@
 #include "driver/input/evdev.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
+#include "kernel/time.h"
 #include <sys/errno.h>
 #include <assert.h>
 #include "config.h"
@@ -19,7 +20,7 @@
 evdev_device_t **evdev_list;
 dev_t		 evdev_minor_counter = 0;
 
-int evdev_register_driver(evdev_device_info_t *info)
+int evdev_register_device(evdev_device_info_t *info)
 {
 	dev_t minor;
 	evdev_device_t *dev = heapmm_alloc(sizeof(evdev_device_t));
@@ -48,6 +49,8 @@ void evdev_post_event(dev_t device, struct input_event event)
 	assert(dev != NULL);
 	ev = heapmm_alloc(sizeof(evdev_event_t));
 	ev->event = event;
+	ev->event.time.tv_sec = (time_t) system_time;
+	ev->event.time.tv_usec = (time_t) system_time_micros;
 	llist_add_end(&(dev->queue), (llist_t *) ev);
 	dev->queue_count++;
 	if (dev->queue_count == CONFIG_EVDEV_QUEUE_SIZE) {
