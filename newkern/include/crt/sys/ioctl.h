@@ -77,6 +77,22 @@ typedef struct fb_mode_info {
 	unsigned char	fb_bpp;
 } fb_mode_info_t;
 
+
+/* event device ioctls */
+
+#define EVIOCGVERSION		(19)
+#define EVIOCGID		(20)
+#define EVIOCGREP		(21)
+#define EVIOCSREP		(22)
+#define EVIOCGKEYCODE		(23)
+#define EVIOCSKEYCODE		(24)
+#define EVIOCGKEY		(25)
+#define EVIOCGNAME(len)		(26)
+
+#define EVIOCGBIT(ev,len)	(27)
+#define EVIOCGABS(abs)		(28)
+
+
 int ioctl(int fildes, int request, void *arg);
 
 #endif

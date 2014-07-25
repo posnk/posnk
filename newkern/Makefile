@@ -123,7 +123,7 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o) $(SRCS_PHEAPMM:.c=.o)
+OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
 
 .PHONY: depend clean

@@ -14,6 +14,7 @@ typedef int ssize_t;
 #ifndef _TIME_T
 #define _TIME_T
 typedef long time_t;
+typedef long suseconds_t;
 #endif
 
 #ifndef _PTRDIFF_T

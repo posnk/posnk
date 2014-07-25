@@ -1,3 +1,2 @@
 DRIVER_SRC(oldkb/dec)
-DRIVER_SRC(oldkb/i8042)
 DRIVER_SRC(oldkb/kbd)
