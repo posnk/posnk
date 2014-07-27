@@ -76,4 +76,7 @@ typedef struct fb_mode_info {
 	unsigned short	fb_stride;
 	unsigned char	fb_bpp;
 } fb_mode_info_t;
+
+int ioctl(int fildes, int request, void *arg);
+
 #endif

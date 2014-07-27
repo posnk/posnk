@@ -4,10 +4,61 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
 #include <sys/utime.h>
 #include <_ansi.h>
 #include "posnk_sc.h"
 
+void *shmat(int shmid, const void *shmaddr, int shmflg)
+{
+   int a[] = {(uint32_t) shmid, (uint32_t) shmaddr, (uint32_t) shmflg,0};
+   int b[] = {0,0,0,0};
+   return (void *) nk_do_syscall(SYS_SHMAT, a, b); 
+}
+
+int shmdt(const void *shmaddr)
+{
+   int a[] = {(uint32_t) shmaddr, 0, 0, 0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SHMDT, a, b); 
+}
+
+int shmctl(int id, int cmd, struct shmid_ds *buf)
+{
+   int a[] = {(uint32_t) id, (uint32_t) cmd, (uint32_t) buf,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SHMCTL, a, b); 
+}
+
+int shmget(key_t key, size_t size, int flags)
+{
+   int a[] = {(uint32_t) key, (uint32_t) size, (uint32_t) flags,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SHMGET, a, b); 
+}
+
+int semctl(int semid, int semnum, int cmd, void *buf)
+{
+   int a[] = {(uint32_t) semid, (uint32_t) semnum, (uint32_t) cmd, (uint32_t) buf};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SEMCTL, a, b); 
+}
+
+int semget(key_t key, int nsems, int semflg)
+{
+   int a[] = {(uint32_t) key, (uint32_t) nsems, (uint32_t) semflg,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SEMGET, a, b); 
+}
+
+int semop(int semid, struct sembuf *sops, size_t nops);
+{
+   int a[] = {(uint32_t) semid, (uint32_t) sops, (uint32_t) nops,0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_SEMOP, a, b); 
+}
 
 int
 _DEFUN (mkdir, (path, mode),
@@ -49,6 +100,14 @@ _DEFUN (lchown, (path, owner, group),
    int b[] = {(uint32_t) 1+strlen(path),0,0,0};
    return (int) nk_do_syscall(SYS_CHOWN, a, b); 
 }
+
+int mount(char *dev, char *mp, char *fs, uint32_t flags)
+{
+   int a[] = {(uint32_t) dev, (uint32_t) mp, (uint32_t) fs, flags};
+   int b[] = {(uint32_t) 1+strlen(dev), 1+strlen(mp), 1+strlen(fs),0};
+   return (int) nk_do_syscall(SYS_MOUNT, a, b); 
+}
+
 
 void sync(){};
 
