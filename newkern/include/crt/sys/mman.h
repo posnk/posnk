@@ -25,4 +25,6 @@
 #define MAP_FIXED	(1<<2)
 #define MAP_FAILED	((void *)0)
 
+void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off);
+
 #endif
