@@ -26,6 +26,12 @@ void semaphore_up(semaphore_t *semaphore)
 	//Scheduler will check semaphore waits every time it is run.
 }
 
+void semaphore_add(semaphore_t *semaphore, unsigned int n)
+{
+	(*semaphore)+=n;
+	//Scheduler will check semaphore waits every time it is run.
+}
+
 int semaphore_down(semaphore_t *semaphore)
 {
 	if ((*semaphore) == 0) {

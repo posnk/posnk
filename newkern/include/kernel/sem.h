@@ -17,6 +17,8 @@
 #include <sys/types.h>
 #include <sys/sem.h>
 
+#include "kernel/synch.h"
+
 typedef struct {
 	unsigned short	 semval;
 	pid_t		 sempid;
@@ -30,14 +32,15 @@ typedef struct {
 	int		 id;
 	int		 del;
 	int		 refs;
+	semaphore_t	*nwaitsem;
+	semaphore_t	*zwaitsem;
 	struct semid_ds	 info;
 	sysv_sem_t	*sems;
 } sem_info_t;
 
-int _sys_semctl(int id, int cmd, void *arg);
-
-void sem_do_delete(sem_info_t *info);
-
+int _sys_semop(int semid, struct sembuf *sops, size_t nsops);
+int _sys_semctl(int id, int semnum, int cmd, void *buf);
 int _sys_semget(key_t key, int nsems, int flags);
 
+void sem_do_delete(sem_info_t *info);
 #endif

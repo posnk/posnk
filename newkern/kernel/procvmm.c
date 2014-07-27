@@ -273,23 +273,27 @@ int procvmm_mmap_shm(void *start, shm_info_t *shm, int flags, char *name)
 	/* Handle NULL name field */
 	if (name == NULL)
 		name = "(sysv shm)";
-
+	//debugcon_printf("aname\n");
 	/* Allocate memory for the region name */
 	region->name = heapmm_alloc(strlen(name)+1);
+	//debugcon_printf("cname\n");
 
 	/* Copy region name */
 	strcpy(region->name, name);
+	//debugcon_printf("tname\n");
 
 	if (!region->name) {
 		heapmm_free(region, sizeof(process_mmap_t));
 		return ENOMEM; 
 	}
+	//debugcon_printf("freg\n");
 
 	/* Fill region fields */
 	region->start = start;
 	region->size = shm->info.shm_segsz;
 	region->flags = flags | PROCESS_MMAP_FLAG_SHM | PROCESS_MMAP_FLAG_PUBLIC;
 	region->shm = shm;
+	//debugcon_printf("tcol\n");
 
 	/* Test for region collisions */
 	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
@@ -297,9 +301,11 @@ int procvmm_mmap_shm(void *start, shm_info_t *shm, int flags, char *name)
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
+	//debugcon_printf("bna\n");
 
 	/* Bump file usage count */
 	shm->info.shm_nattch++;
+	//debugcon_printf("alist\n");
 
 	/* Add to region list */
 	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
@@ -505,6 +511,7 @@ int procvmm_handle_fault(void *address)
 	if (region->flags & PROCESS_MMAP_FLAG_SHM) {
 		assert(region->shm != NULL);
 		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
+		//debugcon_printf("shmpf: 0x%x rsz:%i ir:%i pa:%x\n", address, region->size, in_region, region->shm->frames[in_region / PHYSMM_PAGE_SIZE]);
 		paging_map(address, region->shm->frames[in_region / PHYSMM_PAGE_SIZE], flags);		
 	}
 	return 1;
@@ -517,7 +524,7 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 	uintptr_t in_page;
 	process_mmap_t region, *_r;
 	if (addr == NULL) {
-		region.start = (void *) 0x4000000;
+		region.start = (void *) scheduler_current_task->heap_max;
 		region.size = shm->info.shm_segsz;
 		while (1) {
 			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
@@ -527,6 +534,7 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 		}
 		addr = region.start;
 	}
+	debugcon_printf("ipt\n");
 	/* If start is not page alligned, try to adjust offset in such a way 
 	 * that the file can be loaded at the start of the page */
 	in_page = ((uintptr_t) addr) & PHYSMM_PAGE_ADDRESS_MASK;
@@ -534,11 +542,13 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 		/* Page allign start */
 		addr = (void*)( ((uintptr_t)addr) - in_page);
 	}
+	debugcon_printf("ashm: %x\n",addr);
 	st = procvmm_mmap_shm(addr, shm, flags, NULL);
 	if (st) {
 		syscall_errno = st;
 		return (void *) -1;
 	}
+	debugcon_printf("raddr\n");
 	return addr;
 }
 
@@ -564,7 +574,7 @@ void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offse
 	if (flags & MAP_SHARED)
 		flags |= PROCESS_MMAP_FLAG_PUBLIC;
 	if (!(flags & MAP_FIXED)) {
-		region.start = (void *) 0x4000000;
+		region.start = (void *) scheduler_current_task->heap_max;
 		region.size = len;
 		while (1) {
 			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);

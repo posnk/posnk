@@ -17,13 +17,13 @@
 
 #define SEM_UNDO	(1<<0)
 
-#define GETNCNT		(0)
-#define GETPID		(1)
-#define GETVAL		(2)
-#define GETALL		(3)
-#define GETZCNT		(4)
-#define SETVAL		(5)
-#define SETALL		(6)
+#define GETNCNT		(3)
+#define GETPID		(4)
+#define GETVAL		(5)
+#define GETALL		(6)
+#define GETZCNT		(7)
+#define SETVAL		(8)
+#define SETALL		(9)
 
 struct semid_ds {
 	struct ipc_perm	sem_perm;

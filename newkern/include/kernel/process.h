@@ -124,19 +124,15 @@ struct process_info {
 	/* Process statistics */
 	ticks_t		 cpu_ticks;
 
-
-	/* System V Semaphores */
-	sem_info_t	*sysv_sem_info;
-	int		 sysv_sem_num;
-	int		 sysv_sem_val;	
-
 	/* Process state */
 	page_dir_t	*page_directory;
 	void		*arch_state;
 	int		 state;
+
 	semaphore_t	*waiting_on;
 	ktime_t		 wait_timeout_u;//In microseconds
 	ktime_t		 wait_timeout_s;//In microseconds
+
 	semaphore_t	*child_sema;
 	llist_t		*child_events;
 	uint32_t	 in_syscall;

@@ -97,7 +97,7 @@ void *_sys_shmat(int shmid, void *shmaddr, int shmflg)
 	}
 	st = procvmm_attach_shm(shmaddr, info, flags);
 	if ((!info->zero) && (st != (void *) -1) && (flags & PROCESS_MMAP_FLAG_WRITE)) {
-		memset(shmaddr, 0, info->info.shm_segsz);
+		memset(st, 0, info->info.shm_segsz);
 		info->zero = 1;		
 	}
 	return st;
