@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include "window.h"
 
-
 wlib_window_t *window_open(posgui_window_t *w)
 {
 	int nw;
@@ -28,8 +27,10 @@ wlib_window_t *window_open(posgui_window_t *w)
 	}
 	memcpy(wn, w, sizeof(posgui_window_t));
 	free(w);
+	wn->current_buf = 0;
+	wn->display_buf = 1;
 	wn->magic = WINDOW_MAGIC;
-	wn->pixbuf = shmget(IPC_PRIVATE, sizeof(uint32_t) * wn->width * wn->height, 0666 | IPC_CREAT);
+	wn->pixbuf = shmget(IPC_PRIVATE, sizeof(uint32_t) * wn->width * wn->height * wn->buffer_count, 0666 | IPC_CREAT);
 	if (wn->pixbuf == -1) {
 		printf("Failed to create pixshm :%s\n", strerror(errno));
 		return NULL;
@@ -58,4 +59,20 @@ wlib_window_t *window_open(posgui_window_t *w)
 	close(fifo_fd);
 	return ww;
 	
+}
+
+uint32_t *window_get_buffer(wlib_window_t *w)
+{
+	int off = w->winfo->current_buf * w->winfo->width * w->winfo->height;
+	return &(w->pixels[off]);
+}
+
+void window_swap_buffers(wlib_window_t *w)
+{
+	int o = w->winfo->current_buf;
+	int b = o + 1;
+	if (b >= w->winfo->buffer_count)
+		b = 0;
+	w->winfo->display_buf = o;
+	w->winfo->current_buf = b;
 }

@@ -13,6 +13,9 @@ typedef struct {
 	uint16_t	 y;
 	int		 pixbuf;
 	char		 title[128];
+	int		 buffer_count;
+	int		 current_buf;
+	int		 display_buf;
 } posgui_window_t;
 
 typedef struct {
@@ -22,6 +25,10 @@ typedef struct {
 } wlib_window_t;
 
 wlib_window_t *window_open(posgui_window_t *wp);
+
+uint32_t *window_get_buffer(wlib_window_t *w);
+
+void window_swap_buffers(wlib_window_t *w);
 
 #endif
 

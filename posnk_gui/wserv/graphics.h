@@ -32,6 +32,7 @@ void clear_gfx(int bg);
 int open_fb();
 
 void close_fb();
+void flip_fb();
 
 void render_string(int x, int y, uint32_t fg, uint32_t bg, char *str) ;
 

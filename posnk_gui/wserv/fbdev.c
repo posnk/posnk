@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <errno.h> 
 #include "graphics.h"
-
+char *		 fb_pixels_real;
 int		 fb_fd;
 long int	 fb_length = 0;
 void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off);
@@ -44,12 +44,21 @@ int open_fb()
 	fb_stride = (int) fb_mode_info.fb_stride;
 	fb_pix_len = ((int) fb_mode_info.fb_bpp / 8) + 3;
 	fb_pix_len &= ~3;
-	fb_pixels = (char *) mmap(0, (int)fb_length, 0, PROT_READ | PROT_WRITE, fb_fd, 0);
+	fb_pixels = (char *) malloc(fb_length);
 	if ((int)fb_pixels == 0) {
+		printf ("fatal: failed to allocate backbuffer memory: %s\n", strerror(errno));
+		return 0;
+	}
+	fb_pixels_real = (char *) mmap(0, (int)fb_length, 0, PROT_READ | PROT_WRITE, fb_fd, 0);
+	if ((int)fb_pixels_real == 0) {
 		printf ("fatal: failed to map framebuffer device to memory: %s\n", strerror(errno));
 		return 0;
 	}
 	return 1;
+}
+
+void flip_fb(){
+	memcpy(fb_pixels_real, fb_pixels, fb_length);
 }
 
 void close_fb()

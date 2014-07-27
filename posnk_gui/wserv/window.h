@@ -14,6 +14,9 @@ typedef struct {
 	uint16_t	 y;
 	int		 pixbuf;
 	char		 title[128];
+	int		 buffer_count;
+	int		 current_buf;
+	int		 display_buf;
 } posgui_window_t;
 
 typedef struct {

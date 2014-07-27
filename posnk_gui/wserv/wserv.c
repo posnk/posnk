@@ -27,10 +27,9 @@ int main(int argc, char *argv[], char *envp[]){
 	if (!fifo_init())
 		return 255;
 	window_init();
-	fill_rect(20,20,100,100,0xFF00FF);
-	draw_rect(20,20,100,100,0xFFFFFF);
 	while(fifo_loop()) {
 		window_render_all();
+		flip_fb();
 		usleep(9000);
 	}
 	close_fb();

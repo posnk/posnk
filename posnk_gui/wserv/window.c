@@ -40,18 +40,35 @@ void window_register(int ctlbuf)
 
 void window_render(wserv_window_t *w)
 {
-	int x,y,_x, _y;
+	int x,y,_x, _y, dw ,dh, bstart, pos;
 	x = w->winfo->x+3;
 	y = w->winfo->y+20;
-	fill_rect(w->winfo->x, w->winfo->y, w->winfo->width+6, 18, 0x00FF00);
+	dw = w->winfo->width+6;
+	dh = w->winfo->height+24;
+	if ((w->winfo->x + dw) > fb_width)
+		dw = fb_width - w->winfo->x;
+	if ((w->winfo->y + dh) > fb_height)
+		dh = fb_height - w->winfo->y;
+	if ((w->winfo->x > fb_width) || (w->winfo->y > fb_height))
+		return;
+	fill_rect(w->winfo->x, w->winfo->y, dw, 18, 0x00FF00);
 	render_string(w->winfo->x+5, w->winfo->y, 0xFFFFFF, 0x00FF00, w->winfo->title);
-	draw_rect(x - 1,y - 1,w->winfo->width+4,w->winfo->height+2,0xFFFFFF);
-	draw_rect(x - 2,y - 1,w->winfo->width+5,w->winfo->height+3,0xFFFFFF);
-	draw_rect(x - 3,y - 1,w->winfo->width+6,w->winfo->height+4,0xFFFFFF);
-	for (_x = 0; _x < w->winfo->width; _x++)
-		for (_y = 0; _y < w->winfo->height; _y++) {
-			*FB_PIX_AT(x + _x, y + _y) = w->pixels[_x + _y * w->winfo->width];
+	draw_rect(x - 1,y - 1,dw-2,dh-22,0xFFFFFF);
+	draw_rect(x - 2,y - 1,dw-1,dh-21,0xFFFFFF);
+	draw_rect(x - 3,y - 1,dw,dh-20,0xFFFFFF);
+	dw -= 6;
+	dh -= 24;
+	if (dw < 0)
+		dw = 0;
+	if (dh < 0)
+		dh = 0;
+	bstart = w->winfo->display_buf * w->winfo->width * w->winfo->height;
+	for (_y = 0; _y < dh; _y++) {
+		pos = bstart + _y * w->winfo->width;
+		for (_x = 0; _x < dw; _x++) {
+			*FB_PIX_AT(x + _x, y + _y) = w->pixels[pos++];
 		}
+	}
 }
 
 void window_render_all()
