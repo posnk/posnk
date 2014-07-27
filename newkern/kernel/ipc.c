@@ -8,7 +8,8 @@
  * Changelog:
  * 22-07-2014 - Created
  */
-
+#include "kernel/shm.h"
+#include "kernel/sem.h"
 #include <sys/ipc.h>
 #include <assert.h>
 #include "kernel/permissions.h"
@@ -48,4 +49,10 @@ int ipc_have_permissions(struct ipc_perm *ipc, mode_t req_mode) {
 int ipc_is_creator(struct ipc_perm *ipc) {
 	assert (ipc != NULL);
 	return get_perm_class(ipc->cuid, ipc->cgid) == PERM_CLASS_OWNER;
+}
+
+void ipc_init()
+{
+	shm_init();
+	sem_init();
 }

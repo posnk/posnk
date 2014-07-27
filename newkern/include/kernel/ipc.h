@@ -24,4 +24,6 @@ perm_class_t ipc_get_min_permissions(struct ipc_perm *ipc, mode_t req_mode);
 int ipc_have_permissions(struct ipc_perm *ipc, mode_t req_mode);
 
 int ipc_is_creator(struct ipc_perm *ipc);
+
+void ipc_init();
 #endif

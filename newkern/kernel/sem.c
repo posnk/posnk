@@ -22,6 +22,11 @@
 llist_t	sem_list;
 int sem_id_ctr = 0;
 
+void sem_init()
+{
+	llist_create(&sem_list);
+}
+
 /**
  * Iterator to test if sem id matches the id
  */
@@ -67,7 +72,7 @@ int sem_alloc_id()
 inline int sysv_sem_checkblock_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
 {
 	assert(info != NULL);
-	assert(semnum > 0);
+	assert(semnum >= 0);
 	assert(semnum < info->info.sem_nsems);
 	if (semop == 0) 
 		return (info->sems[semnum].semval != 0);
@@ -321,6 +326,7 @@ void sem_do_delete(sem_info_t *info) {
 
 int _sys_semget(key_t key, int nsems, int flags)
 {
+	int n;
 	sem_info_t *info = NULL;
 	if (key != IPC_PRIVATE)
 		info = sem_get_by_key(key);	
@@ -385,7 +391,12 @@ int _sys_semget(key_t key, int nsems, int flags)
 		info->info.sem_nsems = nsems;
 		info->info.sem_otime = 0;
 		info->info.sem_ctime = (time_t) system_time;
-
+		for (n = 0; n < nsems; n++) {
+			info->sems[n].semval = 0;
+			info->sems[n].sempid = 0;
+			info->sems[n].semncnt = 0;
+			info->sems[n].semzcnt = 0;
+		}
 		llist_add_end(&sem_list, (llist_t *) info);
 	} else if (!ipc_have_permissions(&(info->info.sem_perm), IPC_PERM_READ)) {
 		syscall_errno = EACCES;
