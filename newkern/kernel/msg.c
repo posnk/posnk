@@ -359,6 +359,7 @@ int _sys_msgget(key_t key, int flags)
 		info->del = 0;
 		info->refs = 0;
 		info->key = key;
+		info->used_bytes = 0;
 		llist_create(&(info->msgs));
 
 		/* Initialize semid_ds */
