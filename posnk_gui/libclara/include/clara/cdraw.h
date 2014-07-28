@@ -20,4 +20,6 @@ void clara_copy_surface(clara_surface_t *s, int x, int y, clara_surface_t *sourc
 
 void clara_clear_surface(clara_surface_t *s, int bg);
 
+void clara_draw_1d_image(clara_surface_t *s, int x, int y, int w, bitmap_image_t *image);
+
 #endif

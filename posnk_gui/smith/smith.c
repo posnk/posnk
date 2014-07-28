@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	int st;
 	uint32_t handle;
 	clara_surface_t *s;
-	clara_rect_t dims = {0,0,100,100};
+	clara_rect_t dims = {80,80,100,100};
 	clara_init_client("/oswdisp");	
 	handle = (uint32_t) clara_create_window();
 	if (handle == (uint32_t) -1) {

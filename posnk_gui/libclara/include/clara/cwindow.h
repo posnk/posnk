@@ -37,6 +37,7 @@ typedef struct {
 	uint32_t	 handle;
 	uint32_t	 flags;
 	clara_rect_t	 dimensions;
+	clara_rect_t	 frame_dims;
 	int		 surface_handle;
 	int		 surface_count;
 	int		 current_surface;

@@ -99,6 +99,7 @@ int clara_init_window(uint32_t handle, const char *title, clara_rect_t dimension
 
 	iw_msg.flags = flags;
 	strcpy(iw_msg.title, title);
+	iw_msg.dimensions = dimensions;
 
 	iw_msg.surface_count = surface_count;
 	iw_msg.surface_width = (uint16_t) surface_w;

@@ -14,7 +14,10 @@
 #include "owindow.h"
 #include "omsg.h"
 
-cllist_t	oswin_session_list;
+cllist_t	 oswin_session_list;
+
+uint32_t	 oswin_focused_handle = 0;
+osession_node_t *oswin_focused_session = NULL;
 
 void oswin_session_init()
 {
@@ -35,6 +38,8 @@ void oswin_session_accept(uint32_t cmdq_id)
 void oswin_session_close(osession_node_t *session)
 {
 	cllist_unlink((cllist_t *) session);	
+	if (session == oswin_focused_session)
+		oswin_focused_session = NULL;
 	msgctl(session->session.cmd_queue, IPC_RMID, NULL);
 	msgctl(session->session.event_queue, IPC_RMID, NULL);
 	free(session);

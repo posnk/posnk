@@ -16,6 +16,7 @@
 #define KBD_CTRL_STATUS_BUFFER_BIT      1<<5
 #define KBD_CTRL_STATUS_TIMEOUT_BIT     1<<6
 #define KBD_CTRL_STATUS_PARITY_BIT      1<<7
+#define KBD_CTRL_SET_CONFIG		0x60
 
 #define KBD_CPSLCK_BIT			1
 #define KBD_SHIFT_BIT			2

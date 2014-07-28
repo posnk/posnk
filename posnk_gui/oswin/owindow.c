@@ -12,6 +12,7 @@
 #include <clara/cwindow.h>
 #include "osession.h"
 #include "owindow.h"
+#include "odecor.h"
 #include "omsg.h"
 
 void oswin_window_process(osession_node_t *session)
@@ -67,6 +68,8 @@ void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_i
 	fprintf(stderr, "info: session %i initializing window %li \n", session->session.cmd_queue, cmd->msg.target);
 	
 	s = clara_window_do_init(window, cmd);
+
+	oswin_decorator_do_init(session, window);
 
 	if (s == -1)
 		s = -2;

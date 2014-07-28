@@ -16,6 +16,7 @@ clara_surface_t *clara_window_get_surface(uint32_t handle);
 
 void clara_exit_client();
 
+int clara_rect_test(clara_rect_t rect, clara_point_t point);
 
 #endif
 

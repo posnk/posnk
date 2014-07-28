@@ -9,14 +9,18 @@ uint8_t currently_held_key = 0x00;
 uint8_t extended = 0;
 int sigfile_hndl = 0;
 
+void i8042_init()
+{
+	kbd_send_controller_command(KBD_CTRL_SET_CONFIG);
+	kbd_send_encoder_command(0x37);
+}
+
 uint8_t kbd_controller_status(){
         return i386_inb(KBD_CTRL_IO_PORT);
 }
 
 void kbd_send_controller_command(uint8_t cmd){
-        while(1)
-                if((kbd_controller_status() & KBD_CTRL_STATUS_IN_BUF_BIT) == 0)
-                        break;
+        while(kbd_controller_status() & KBD_CTRL_STATUS_IN_BUF_BIT);
         i386_outb(KBD_CTRL_IO_PORT,cmd);
 }
 
@@ -24,11 +28,19 @@ uint8_t kbd_encoder_read_buffer(){
         return i386_inb(KBD_ENC_IO_PORT);
 }
 
+void mouse_send_command(uint8_t cmd) {
+	kbd_send_controller_command(0xD4);
+	kbd_send_encoder_command(cmd);
+}
+
 void kbd_send_encoder_command(uint8_t cmd){
-        while(1)
-                if((kbd_controller_status() & KBD_CTRL_STATUS_IN_BUF_BIT) == 0)
-                        break;
+        while(kbd_controller_status() & KBD_CTRL_STATUS_IN_BUF_BIT);
         i386_outb(KBD_ENC_IO_PORT,cmd);
+}
+
+int mouse_isr(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context)
+{
+	uint8_t data = kbd_encoder_read_buffer();
 }
 
 int kbd_isr(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context){

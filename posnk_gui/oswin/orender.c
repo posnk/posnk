@@ -1,15 +1,13 @@
 #include "osession.h"
+#include "odecor.h"
+#include "oinput.h"
 #include <clara/clara.h>
 #include <stdlib.h>
+#include <bitmap.h>
 #include <clara/cllist.h>
 #include <clara/cwindow.h>
 
 extern cllist_t oswin_session_list;
-
-void oswin_decorations_render(osession_node_t *session, clara_surface_t *target, clara_window_t *window)
-{
-}
-
 
 void oswin_window_render(osession_node_t *session, clara_surface_t *target)
 {

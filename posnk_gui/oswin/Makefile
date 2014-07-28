@@ -41,7 +41,9 @@ SRCS = omsg.c \
 	owindow.c \
 	oswin.c \
 	ofbdev.c \
-	orender.c
+	orender.c \
+	odecor.c \
+	oinput.c
 
 # define the C object files 
 #

@@ -40,7 +40,8 @@ SRCS = cmsg.c \
 	csession.c \
 	cwindow.c \
 	cllist.c \
-	cdraw.c
+	cdraw.c \
+	cutil.c
 
 # define the C object files 
 #

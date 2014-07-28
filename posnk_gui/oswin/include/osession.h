@@ -12,6 +12,10 @@ typedef struct {
 	clara_session_t 	session;
 } osession_node_t;
 
+extern uint32_t	 	oswin_focused_handle;
+extern osession_node_t *oswin_focused_session;
+extern cllist_t		oswin_session_list;
+
 void oswin_session_init();
 
 void oswin_session_accept(uint32_t cmdq_id);

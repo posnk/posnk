@@ -4,6 +4,11 @@
 #define __CLARA_CTYPES_H__
 
 typedef struct {
+	int16_t	x;
+	int16_t	y;
+} clara_point_t;
+
+typedef struct {
 	uint16_t	x;
 	uint16_t	y;
 	uint16_t	w;
