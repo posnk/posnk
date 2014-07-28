@@ -4,5 +4,8 @@
 
 int clara_init_client(const char *disp_path);
 
+void clara_exit_client();
+
+
 #endif
 

@@ -7,34 +7,35 @@
 
 # define the C compiler to use
 CC = @echo " [  CC  ]	" $< ; i386-pc-posnk-gcc
-AR = @echo " [  AR  ]	" $@ ; i386-pc-posnk-ar
-RL = @echo " [RANLIB]	" $@ ; i386-pc-posnk-ranlib
+LD = @echo " [  LD  ]	" $@ ; i386-pc-posnk-gcc
 
 NASM = @echo " [ NASM ]	" $< ; nasm
 
+PROGNAME = smith
+
 # define any compile-time flags
-CFLAGS = -Wall -g -I include
+CFLAGS = -Wall -g
 
-NASMFLAGS = -w+orphan-labels -felf -g 
+NASMFLAGS = -w+orphan-labels -felf -g
 
-INSTALL_DIR = ../../gcc_posnk/i386-pc-posnk
+INITRD_DIR = ../../newkern/initrd
 
 # define any directories containing header files other than /usr/include
 #
-INCLUDES = 
+INCLUDES = -Iinclude
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-ARFLAGS = rcs
+LFLAGS = 
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = 
+LIBS = -lbmp -lclara
 
 # define the C source files
-SRCS = bitmap.c
+SRCS = smith.c
 
 # define the C object files 
 #
@@ -45,15 +46,13 @@ SRCS = bitmap.c
 # with the .o suffix
 #
 OBJS = $(SRCS:.c=.o)
-all:	libbmp
+all:	$(PROGNAME)
 
-libbmp: $(OBJS)
-	$(AR) $(ARFLAGS) libbmp.a $(OBJS)
-	$(RL) libbmp.a
+$(PROGNAME): $(OBJS)
+	$(LD) $(LFLAGS) -o $(PROGNAME) $(OBJS) $(LIBS)
 
-install: libbmp
-	@cp libbmp.a $(INSTALL_DIR)/lib/libbmp.a
-	@cp include/* $(INSTALL_DIR)/include/
+install: $(PROGNAME)
+	cp $(PROGNAME) $(INITRD_DIR)/bin/$(PROGNAME)
 
 .PHONY: depend clean
 

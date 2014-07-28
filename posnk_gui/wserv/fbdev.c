@@ -13,7 +13,7 @@
 char *		 fb_pixels_real;
 int		 fb_fd;
 long int	 fb_length = 0;
-void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off);
+
 int open_fb()
 {
 	char *path = "/dev/fb0";

@@ -48,7 +48,7 @@ OBJS = $(SRCS:.c=.o)
 all:	wtest
 
 wtest: $(OBJS)
-	$(LD) $(LFLAGS) $(LIBS) -o wtest $(OBJS)
+	$(LD) $(LFLAGS) -o wtest $(OBJS) $(LIBS)
 
 install: wtest
 	cp wtest $(INITRD_DIR)/bin/wtest

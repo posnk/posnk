@@ -7,10 +7,15 @@
 #ifndef __CLARA_CSESSION_H__
 #define __CLARA_CSESSION_H__
 
-#define CLARA_PROTOCOL_VER	(0)
+#define CLARA_PROTOCOL_VER	(1)
 
 #define CLARA_MSG_CONNECT	(1)
 #define CLARA_MSG_CONN_ACC	(2)
+#define CLARA_MSG_DISCONNECT	(3)
+
+typedef struct {
+	clara_message_t msg;
+} clara_disconnect_msg_t;
 
 typedef struct {
 	clara_message_t	msg;
@@ -35,6 +40,8 @@ typedef struct {
 extern clara_session_t	clara_client_session;
 
 int clara_init_client(const char *disp_path);
+
+void clara_exit_client();
 
 #endif
 

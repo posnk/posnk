@@ -101,4 +101,14 @@ bailout_cmdq:
 	
 }
 
+void clara_exit_client()
+{
+	int s;
+	clara_disconnect_msg_t msg;
+	s = clara_send_cmd_async(CLARA_MSG_TARGET_SESSION, CLARA_MSG_DISCONNECT, &msg, CLARA_MSG_SIZE(clara_disconnect_msg_t));
+	if (s == -1) {
+		msgctl(clara_client_session.cmd_queue, IPC_RMID, NULL);
+		msgctl(clara_client_session.event_queue, IPC_RMID, NULL);
+	}
+}
 

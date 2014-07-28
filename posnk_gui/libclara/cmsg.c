@@ -66,7 +66,7 @@ ssize_t clara_recv_ev_block(long int target, void *msg, size_t size)
 	if (sz == -1)
 		return -1;
 
-	if (sz < sizeof(clara_message_t)) {
+	if (sz < CLARA_MSG_SIZE(clara_message_t)) {
 		errno = EINVAL;
 		return -1;
 	}
@@ -88,13 +88,13 @@ ssize_t clara_recv_ev(long int target, void *msg, size_t size)
 
 	sz = msgrcv(clara_client_session.event_queue, msg, size, target, IPC_NOWAIT);
 	if (sz == -1) {
-		if (errno == EAGAIN)
+		if ((errno == ENOMSG) || (errno == EAGAIN))
 			return 0;
 		else
 			return -1;
 	}
 
-	if (sz < sizeof(clara_message_t)) {
+	if (sz < CLARA_MSG_SIZE(clara_message_t)) {
 		errno = EINVAL;
 		return -1;
 	}
