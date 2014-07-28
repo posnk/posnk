@@ -92,7 +92,11 @@ char *syscall_names[] =
 	"shmget",
 	"semop",
 	"semctl",
-	"semget"
+	"semget",
+	"msgsnd",
+	"msgrcv",
+	"msgctl",
+	"msgget"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -249,4 +253,8 @@ void syscall_init()
 	syscall_register(SYS_SEMOP, &sys_semop);
 	syscall_register(SYS_SEMCTL, &sys_semctl);
 	syscall_register(SYS_SEMGET, &sys_semget);
+	syscall_register(SYS_MSGSND, &sys_msgsnd);
+	syscall_register(SYS_MSGRCV, &sys_msgrcv);
+	syscall_register(SYS_MSGCTL, &sys_msgctl);
+	syscall_register(SYS_MSGGET, &sys_msgget);
 }

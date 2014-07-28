@@ -10,6 +10,7 @@
  */
 #include "kernel/shm.h"
 #include "kernel/sem.h"
+#include "kernel/msg.h"
 #include <sys/ipc.h>
 #include <assert.h>
 #include "kernel/permissions.h"
@@ -55,4 +56,5 @@ void ipc_init()
 {
 	shm_init();
 	sem_init();
+	msg_init();
 }

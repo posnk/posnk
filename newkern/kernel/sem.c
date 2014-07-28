@@ -17,7 +17,6 @@
 #include "kernel/scheduler.h"
 #include "kernel/heapmm.h"
 #include "kernel/time.h"
-#include "kernel/paging.h"
 
 llist_t	sem_list;
 int sem_id_ctr = 0;
@@ -153,6 +152,8 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 					info->sems[nblock].semzcnt--;
 					info->refs--;
 					syscall_errno = EINTR;
+					if (info->del && !info->refs)
+						sem_do_delete(info);
 					return -1;
 				}
 				info->sems[nblock].semzcnt--;
@@ -162,12 +163,16 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 					info->sems[nblock].semncnt--;
 					info->refs--;
 					syscall_errno = EINTR;
+					if (info->del && !info->refs)
+						sem_do_delete(info);
 					return -1;
 				}
 				info->sems[nblock].semncnt--;
 			}
 			if (info->del) {
 				info->refs--;
+				if (!info->refs)
+					sem_do_delete(info);
 				syscall_errno = EIDRM;
 				return -1;
 			}
@@ -308,6 +313,9 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 			info->del = 1;
 			if (!info->refs) {
 				sem_do_delete(info);				
+			} else {
+				semaphore_add(info->zwaitsem, 999999);
+				semaphore_add(info->nwaitsem, 999999);
 			}
 			return 0;
 		default: 

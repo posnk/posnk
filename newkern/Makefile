@@ -63,6 +63,7 @@ kernel/streams.c \
 kernel/ipc.c \
 kernel/shm.c \
 kernel/sem.c \
+kernel/msg.c \
 kernel/time.c \
 kernel/drivermgr.c \
 kernel/sc_process.c \
@@ -148,6 +149,7 @@ install_h:
 	@cp include/crt/sys/ipc.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ipc.h
 	@cp include/crt/sys/shm.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/shm.h
 	@cp include/crt/sys/sem.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/sem.h
+	@cp include/crt/sys/msg.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/msg.h
 
 cdrom_i386: kernel_i386 initrd
 	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
