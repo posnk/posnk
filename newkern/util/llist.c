@@ -46,11 +46,10 @@ llist_t *llist_remove_last(llist_t *list)
 {
 	llist_t *result;
 	assert(list != NULL);
-	assert(list->prev != NULL);
-	assert(list->prev->prev != NULL);
 	result = list->prev;
-	list->prev = list->prev->prev;
-	list->prev->next = list;
+	if (result == list)
+		return NULL;
+	llist_unlink(result);
 	return result;
 }
 
@@ -63,11 +62,10 @@ llist_t *llist_remove_first(llist_t *list)
 {
 	llist_t *result;
 	assert(list != NULL);
-	assert(list->next != NULL);
-	assert(list->next->next != NULL);
 	result = list->next;
-	list->next = list->next->next;
-	list->next->prev = list;
+	if (result == list)
+		return NULL;
+	llist_unlink(result);
 	return result;
 }
 
