@@ -38,7 +38,9 @@ LIBS =
 # define the C source files
 SRCS = cmsg.c \
 	csession.c \
-	cllist.c
+	cwindow.c \
+	cllist.c \
+	cdraw.c
 
 # define the C object files 
 #

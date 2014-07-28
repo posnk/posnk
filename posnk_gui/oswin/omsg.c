@@ -51,6 +51,20 @@ int oswin_send_event_reliable(osession_node_t *session, long int target, uint32_
 	return msgsnd(session->session.event_queue, msg, size, 0);	
 }
 
+int oswin_send_sync_ack(osession_node_t *session, uint32_t seq, int result)
+{
+	clara_sync_ack_msg_t msg;
+	assert(session != NULL);
+
+	msg.msg.target = seq | CLARA_MSG_TARGET_SYNC_BIT;
+	msg.msg.type = CLARA_MSG_SYNC_ACK;
+	msg.msg.magic = CLARA_MSG_MAGIC;
+	msg.msg.seq = seq;
+	msg.result = result;
+
+	return msgsnd(session->session.event_queue, &msg, CLARA_MSG_SIZE(clara_sync_ack_msg_t), 0);	
+}
+
 int oswin_send_event(osession_node_t *session, long int target, uint32_t type, void *msg, size_t size)
 {
 	clara_message_t *m = (clara_message_t *) msg;

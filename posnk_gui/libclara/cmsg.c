@@ -23,7 +23,7 @@ int clara_send_cmd_sync(long int target, uint32_t type, void *msg, size_t size)
 	m->seq = clara_sync_seq++;
 
 	st = clara_send_cmd_async(target, type, msg, size);
-	if ((st == -1) || (st < size))
+	if (st == -1)
 		return st;	
 
 	nr = clara_recv_ev_block(((long int)m->seq) | CLARA_MSG_TARGET_SYNC_BIT, &reply_msg, CLARA_MSG_SIZE(clara_sync_ack_msg_t));

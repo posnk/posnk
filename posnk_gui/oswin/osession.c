@@ -1,15 +1,17 @@
 #include <stdint.h>
 #include <assert.h>
-#include <clara/cmsg.h>
-#include <clara/cllist.h>
-#include <clara/csession.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <sys/msg.h>
+#include <clara/cmsg.h>
+#include <clara/cllist.h>
+#include <clara/csession.h>
+#include <clara/cwindow.h>
 #include "osession.h"
+#include "owindow.h"
 #include "omsg.h"
 
 cllist_t	oswin_session_list;
@@ -47,6 +49,7 @@ void oswin_session_process()
 	osession_node_t *session;
 	for (_s = oswin_session_list.next; _s != &oswin_session_list; _s = _s->next) {
 		session = (osession_node_t *) _s;
+		oswin_window_process(session);
 		do {
 			nr = oswin_recv_cmd(session, CLARA_MSG_TARGET_SESSION, &in_buf, CLARA_MSG_SIZE(clara_msg_buffer_t));
 			_n = _s->next;
@@ -55,10 +58,11 @@ void oswin_session_process()
 				oswin_session_close(session);
 				nr = 0;
 			} else if (nr) {
-				nr = oswin_session_cmd(session, &in_buf);
+				nr = oswin_session_cmd(session, &in_buf);				
 			}
-			_s = _n->prev;
+			_s = _n->prev;			
 		} while (nr);
+
 	}
 }
 
@@ -76,6 +80,9 @@ int oswin_session_cmd(osession_node_t *session, clara_msg_buffer_t *cmd)
 			fprintf(stderr, "info: session %i disconnected\n", session->session.cmd_queue);
 			oswin_session_close(session);
 			return 0;
+		case CLARA_MSG_CREATE_WIN:
+			oswin_session_create_win(session, (clara_createwin_msg_t *) cmd);
+			break;
 		default:
 			fprintf(stderr, "warn: invalid command received for session %i: %i\n", session->session.cmd_queue, cmd->msg.type);
 	}
@@ -101,5 +108,23 @@ void oswin_session_connect(osession_node_t *session, clara_connect_msg_t *cmd)
 
 	if (s == -1) {
 		fprintf(stderr, "error: session %i connection acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));
+	}
+}
+
+void oswin_session_create_win(osession_node_t *session, clara_createwin_msg_t *cmd)
+{
+	int s;
+
+	assert(session != NULL);
+	assert(cmd != NULL);
+
+	fprintf(stderr, "info: session %i creating window %i \n", session->session.cmd_queue, cmd->handle);
+	
+	clara_window_add(&(session->session), cmd->handle);
+
+	s = oswin_send_sync_ack(session, cmd->msg.seq, 0);
+
+	if (s == -1) {
+		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));
 	}
 }

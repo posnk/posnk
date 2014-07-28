@@ -38,7 +38,10 @@ LIBS = -lbmp -lclara
 SRCS = omsg.c \
 	odisplay.c \
 	osession.c \
-	oswin.c
+	owindow.c \
+	oswin.c \
+	ofbdev.c \
+	orender.c
 
 # define the C object files 
 #

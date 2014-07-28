@@ -9,9 +9,18 @@
 
 #define CLARA_PROTOCOL_VER	(1)
 
+#define CLARA_HANDLE_MAX		(CLARA_MSG_TARGET_SYNC_BIT - 1)
+#define CLARA_HANDLE_MIN		(CLARA_MSG_TARGET_SESSION + 1)
+
 #define CLARA_MSG_CONNECT	(1)
 #define CLARA_MSG_CONN_ACC	(2)
 #define CLARA_MSG_DISCONNECT	(3)
+#define CLARA_MSG_CREATE_WIN	(4)
+
+typedef struct {
+	clara_message_t msg;
+	uint32_t	handle;
+} clara_createwin_msg_t;
 
 typedef struct {
 	clara_message_t msg;
@@ -40,6 +49,8 @@ typedef struct {
 extern clara_session_t	clara_client_session;
 
 int clara_init_client(const char *disp_path);
+
+int clara_create_window();
 
 void clara_exit_client();
 

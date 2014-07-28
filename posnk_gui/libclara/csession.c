@@ -10,8 +10,10 @@
 #include <clara/cllist.h>
 #include <clara/cmsg.h>
 #include <clara/csession.h>
+#include <clara/cwindow.h>
 
 clara_session_t clara_client_session;
+uint32_t	clara_client_handle_ctr = CLARA_HANDLE_MIN;
 
 int clara_init_client(const char *disp_path)
 {
@@ -99,6 +101,24 @@ bailout_cmdq:
 		close(fifo_fd);
 	return -1;
 	
+}
+
+int clara_create_window()
+{
+	clara_createwin_msg_t cw_msg;
+	int st;
+	uint32_t handle = clara_client_handle_ctr++;
+	
+	cw_msg.handle = handle;
+
+	st = clara_send_cmd_sync(CLARA_MSG_TARGET_SESSION, CLARA_MSG_CREATE_WIN, &cw_msg, CLARA_MSG_SIZE(clara_createwin_msg_t));
+
+	if (st < 0)
+		return st;
+
+	clara_window_add(&clara_client_session, handle);
+
+	return (int) handle;	
 }
 
 void clara_exit_client()
