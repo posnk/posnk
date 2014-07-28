@@ -38,8 +38,8 @@ struct sembuf {
 	short		sem_flg;
 };
 
-int	 semctl(int semid, int semnum, int cmd, void *buf);
+int	 semctl(int semid, int semnum, int cmd, ...);
 int	 semget(key_t key, int nsems, int semflg);
-int	 semop(int semid, struct sembuf *sops, size_t nops);
+int	 semop(int, struct sembuf *, size_t);
 
 #endif

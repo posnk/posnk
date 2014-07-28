@@ -7,9 +7,28 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/sem.h>
+#include <sys/msg.h>
 #include <sys/utime.h>
 #include <_ansi.h>
+#include <stdarg.h>
 #include "posnk_sc.h"
+
+key_t
+ftok (pathname, proj_id)
+     const char *pathname;
+     int proj_id;
+{
+  struct stat st;
+  key_t key;
+
+  if (stat (pathname, &st) < 0)
+    return (key_t) -1;
+
+  key = ((st.st_ino & 0xffff) | ((st.st_dev & 0xff) << 16)
+	 | ((proj_id & 0xff) << 24));
+
+  return key;
+}
 
 void *shmat(int shmid, const void *shmaddr, int shmflg)
 {
@@ -39,10 +58,14 @@ int shmget(key_t key, size_t size, int flags)
    return (int) nk_do_syscall(SYS_SHMGET, a, b); 
 }
 
-int semctl(int semid, int semnum, int cmd, void *buf)
+int semctl(int semid, int semnum, int cmd, ...)
 {
+   va_list argp;
+   va_start(argp, cmd);
+   void *buf = va_arg(argp, void *);
    int a[] = {(uint32_t) semid, (uint32_t) semnum, (uint32_t) cmd, (uint32_t) buf};
    int b[] = {0,0,0,0};
+   va_end(argp);
    return (int) nk_do_syscall(SYS_SEMCTL, a, b); 
 }
 
@@ -58,6 +81,34 @@ int semop(int semid, struct sembuf *sops, size_t nops)
    int a[] = {(uint32_t) semid, (uint32_t) sops, (uint32_t) nops,0};
    int b[] = {0,0,0,0};
    return (int) nk_do_syscall(SYS_SEMOP, a, b); 
+}
+
+ssize_t msgrcv(int msgid, void *msgp, size_t msgsz, long int msgtyp, int msgflg)
+{
+   int a[] = {(uint32_t) msgid, (uint32_t) msgp, (uint32_t) msgsz, (uint32_t) msgtyp};
+   int b[] = {(uint32_t) msgflg,0,0,0};
+   return (int) nk_do_syscall(SYS_MSGRCV, a, b); 
+}
+
+int msgsnd(int msgid, const void *msgp, size_t msgsz, int msgflg)
+{
+   int a[] = {(uint32_t) msgid, (uint32_t) msgp, (uint32_t) msgsz, (uint32_t) msgflg};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_MSGSND, a, b); 
+}
+
+int msgctl(int msgid, int cmd, struct msqid_ds *buf)
+{
+   int a[] = {(uint32_t) msgid, (uint32_t) cmd, (uint32_t) buf, 0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_MSGCTL, a, b); 
+}
+
+int msgget(key_t key, int msgflg)
+{
+   int a[] = {(uint32_t) key, (uint32_t) msgflg, 0, 0};
+   int b[] = {0,0,0,0};
+   return (int) nk_do_syscall(SYS_MSGGET, a, b); 
 }
 
 int

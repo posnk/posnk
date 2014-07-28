@@ -98,6 +98,10 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_SEMOP	67
 #define SYS_SEMCTL	68
 #define SYS_SEMGET	69
+#define SYS_MSGSND	70
+#define SYS_MSGRCV	71
+#define SYS_MSGCTL	72
+#define SYS_MSGGET	73
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif
