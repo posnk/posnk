@@ -586,7 +586,7 @@ void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offse
 	}
 
 	if (prot & PROT_WRITE)
-		flags |= PROCESS_MMAP_FLAG_WRITE;
+		_flags |= PROCESS_MMAP_FLAG_WRITE;
 	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, len, _flags, NULL);
 	if (st) {
 		syscall_errno = st;

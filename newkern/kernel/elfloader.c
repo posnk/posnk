@@ -143,8 +143,10 @@ int elf_load(char * path)
 				if (elf_pheader->p_vaddr < image_base)
 					image_base = elf_pheader->p_vaddr;
 				break;
+			case PT_TLS:
+				break;
 			default:
-				//earlycon_printf("ERROR: unknown program header type: %x\n", elf_pheader->p_type);
+				debugcon_printf("ERROR: unknown program header type: %x\n", elf_pheader->p_type);
 				heapmm_free(elf_pheader, elf_header->e_phentsize);
 				heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 				vfs_inode_release(inode);

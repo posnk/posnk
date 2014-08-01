@@ -150,6 +150,7 @@ install_h:
 	@cp include/crt/sys/shm.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/shm.h
 	@cp include/crt/sys/sem.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/sem.h
 	@cp include/crt/sys/msg.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/msg.h
+	@cp include/crt/linux/input.h ../gcc_posnk/i386-pc-posnk/include/linux/
 
 cdrom_i386: kernel_i386 initrd
 	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
