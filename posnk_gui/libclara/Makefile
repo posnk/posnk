@@ -15,7 +15,7 @@ RL = @echo " [RANLIB]	" $@ ; i386-pc-posnk-ranlib
 NASM = @echo " [ NASM ]	" $< ; nasm
 
 # define any compile-time flags
-CFLAGS = -Wall -g -I include
+CFLAGS = -Wall -g -I include -Ofast
 
 NASMFLAGS = -w+orphan-labels -felf -g 
 

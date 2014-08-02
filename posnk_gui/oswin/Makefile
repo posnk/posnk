@@ -14,7 +14,7 @@ NASM = @echo " [ NASM ]	" $< ; nasm
 PROGNAME = oswin
 
 # define any compile-time flags
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g `pkg-config --cflags --libs cairo`
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
@@ -32,7 +32,7 @@ LFLAGS =
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = -lbmp -lclara
+LIBS = -lbmp -lclara `pkg-config --cflags --libs cairo` -lpixman-1 -lm -lfontconfig -lfreetype -lexpat -lpng -lz
 
 # define the C source files
 SRCS = omsg.c \
@@ -41,9 +41,11 @@ SRCS = omsg.c \
 	owindow.c \
 	oswin.c \
 	ofbdev.c \
+	oevdev.c \
 	orender.c \
 	odecor.c \
-	oinput.c
+	oinput.c \
+	ovideo.c
 
 # define the C object files 
 #

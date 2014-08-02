@@ -16,15 +16,17 @@ int main(int argc, char **argv)
 		printf("couldn't create window: %s", strerror(errno));
 	}
 
-	st = clara_init_window(handle, "libclara test app <smith>", dims, 0, 100, 100, 2);
+	st = clara_init_window(handle, "libclara test app <smith>", dims, 0, 100, 100);
 	if (st == -1){
 		printf("couldn't init window: %s", strerror(errno));
 	}
+	dims.x = 0;
+	dims.y = 0;
 	while (1) {
 		s = clara_window_get_surface(handle);
 		clara_draw_rect(s, 10, 10, 10, 10, 0xFF00FF);
 		free(s);
-		clara_window_swap_buffers(handle);
+		clara_window_add_damage(dims);
 	}
 	clara_exit_client();
 	return 0;

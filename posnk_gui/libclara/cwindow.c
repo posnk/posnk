@@ -57,18 +57,14 @@ int clara_window_do_init(clara_window_t *window, clara_initwin_msg_t *msg)
 	strcpy(window->title, msg->title);
 	window->dimensions = msg->dimensions;
 
-	assert(msg->surface_count > 0);
 	assert(msg->surface_width > 0);
 	assert(msg->surface_height > 0);
-	assert(msg->surface_size >= (msg->surface_width * msg->surface_height * msg->surface_count * sizeof(uint32_t)));
+	assert(msg->surface_size >= (msg->surface_width * msg->surface_height  * sizeof(uint32_t)));
 	
-	window->surface_count = msg->surface_count;
 	window->surface_handle = msg->surface_handle;
 	window->surface.size = msg->surface_size;
 	window->surface.w = msg->surface_width;
 	window->surface.h = msg->surface_height;
-	window->current_surface = 0;
-	window->display_surface = msg->surface_count - 1;
 	
 	st = clara_window_attach_surface(window);
 	if (st)
@@ -79,7 +75,7 @@ int clara_window_do_init(clara_window_t *window, clara_initwin_msg_t *msg)
 	return 0;
 }
 
-int clara_init_window(uint32_t handle, const char *title, clara_rect_t dimensions, uint32_t flags, int surface_w, int surface_h, int surface_count)
+int clara_init_window(uint32_t handle, const char *title, clara_rect_t dimensions, uint32_t flags, int surface_w, int surface_h)
 {
 	clara_window_t *window;
 	clara_initwin_msg_t iw_msg;
@@ -101,10 +97,9 @@ int clara_init_window(uint32_t handle, const char *title, clara_rect_t dimension
 	strcpy(iw_msg.title, title);
 	iw_msg.dimensions = dimensions;
 
-	iw_msg.surface_count = surface_count;
 	iw_msg.surface_width = (uint16_t) surface_w;
 	iw_msg.surface_height = (uint16_t) surface_h;
-	iw_msg.surface_size = surface_w * surface_h * surface_count * sizeof(uint32_t);
+	iw_msg.surface_size = surface_w * surface_h * sizeof(uint32_t);
 
 	iw_msg.surface_handle = shmget(IPC_PRIVATE, iw_msg.surface_size, 0666 | IPC_CREAT);
 	
@@ -128,10 +123,10 @@ int clara_init_window(uint32_t handle, const char *title, clara_rect_t dimension
 	return 0;	
 }
 
-int clara_window_swap_buffers(uint32_t handle)
+int clara_window_add_damage(uint32_t handle, clara_rect_t rect)
 {
 	clara_window_t *window;
-	clara_swapwin_msg_t sw_msg;
+	clara_dmgwin_msg_t dw_msg;
 	int st;
 	
 	window = clara_window_get(&clara_client_session, handle);
@@ -141,19 +136,9 @@ int clara_window_swap_buffers(uint32_t handle)
 		return -1;
 	}
 
-	if (window->surface_count == 1)
-		return 0;
+	dw_msg.rect = rect;
 
-	window->display_surface = window->current_surface;
-	window->current_surface++;
-
-	if (window->current_surface >= window->surface_count)
-		window->current_surface = 0;
-	
-	sw_msg.back_surface = window->current_surface;
-	sw_msg.draw_surface = window->display_surface;
-
-	st = clara_send_cmd_sync(handle, CLARA_MSG_SWAP_WIN, &sw_msg, CLARA_MSG_SIZE(clara_swapwin_msg_t));
+	st = clara_send_cmd_sync(handle, CLARA_MSG_DAMAGE_WIN, &dw_msg, CLARA_MSG_SIZE(clara_dmgwin_msg_t));
 
 	if (st < 0)
 		return st;
@@ -185,34 +170,7 @@ clara_surface_t *clara_window_get_surface(uint32_t handle)
 	surface->h = window->surface.h;
 	surface->size = window->surface.size;
 
-	surface->pixels = &(window->surface.pixels[surface->w * surface->h * window->current_surface]);
-	
-	return surface;
-	
-}
-
-clara_surface_t *clara_window_get_disp_surface(clara_window_t *window)
-{
-
-	clara_surface_t *surface;
-
-	if (!window) {
-		errno = EINVAL;
-		return NULL;
-	}
-
-	surface = malloc(sizeof(clara_surface_t));
-
-	if (!surface) {
-		errno = ENOMEM;
-		return NULL;
-	}
-
-	surface->w = window->surface.w;
-	surface->h = window->surface.h;
-	surface->size = window->surface.size;
-
-	surface->pixels = &(window->surface.pixels[surface->w * surface->h * window->display_surface]);
+	surface->pixels = window->surface.pixels;
 	
 	return surface;
 	

@@ -4,7 +4,6 @@
 
 typedef struct {
 	int		fd;
-	clara_surface_t back_surface;
 	clara_surface_t draw_surface;
 } oswin_fbdev_t;
 

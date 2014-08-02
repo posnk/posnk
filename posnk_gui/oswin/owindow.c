@@ -14,6 +14,14 @@
 #include "owindow.h"
 #include "odecor.h"
 #include "omsg.h"
+#include "orender.h"
+
+cllist_t	oswin_window_list;
+
+void oswin_window_ginit()
+{
+	cllist_create(&oswin_window_list);
+}
 
 void oswin_window_process(osession_node_t *session)
 {
@@ -48,8 +56,8 @@ int oswin_window_cmd(osession_node_t *session, clara_window_t *window, clara_msg
 		case CLARA_MSG_INIT_WIN:
 			oswin_window_init(session, window, (clara_initwin_msg_t *) cmd);
 			break;
-		case CLARA_MSG_SWAP_WIN:
-			oswin_window_swap(session, window, (clara_swapwin_msg_t *) cmd);
+		case CLARA_MSG_DAMAGE_WIN:
+			oswin_window_damage(session, window, (clara_dmgwin_msg_t *) cmd);
 			break;
 		default:
 			fprintf(stderr, "warn: invalid command received for window %i.%li: %i\n", session->session.cmd_queue, cmd->msg.target, cmd->msg.type);
@@ -60,6 +68,8 @@ int oswin_window_cmd(osession_node_t *session, clara_window_t *window, clara_msg
 void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_initwin_msg_t *cmd)
 {
 	int s;
+	oswin_window_t	*ownd;	
+	clara_surface_t *sf;
 
 	assert(session != NULL);
 	assert(window != NULL);
@@ -71,6 +81,24 @@ void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_i
 
 	oswin_decorator_do_init(session, window);
 
+	ownd = malloc(sizeof(oswin_window_t));
+	if (!ownd) {
+		fprintf(stderr, "error: out of memory\n");
+		s = -1;
+	}
+
+	sf = &(window->surface);
+	
+	ownd->window = window;
+	ownd->session = &(session->session);
+	ownd->surface = cairo_image_surface_create_for_data ((unsigned char *)sf->pixels, CAIRO_FORMAT_RGB24, sf->w, sf->h, sf->w * 4);
+	if (!ownd->surface) {
+		fprintf(stderr, "error: could not make cairo surface for window\n");
+		s = -1;
+	}
+
+	cllist_add_end(&oswin_window_list, (cllist_t *) ownd);
+
 	if (s == -1)
 		s = -2;
 
@@ -79,9 +107,11 @@ void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_i
 	if (s == -1) {
 		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));
 	}
+	
+	oswin_add_damage(window->frame_dims.x, window->frame_dims.y, window->frame_dims.w, window->frame_dims.h);
 }
 
-void oswin_window_swap(osession_node_t *session, clara_window_t *window, clara_swapwin_msg_t *cmd)
+void oswin_window_damage(osession_node_t *session, clara_window_t *window, clara_dmgwin_msg_t *cmd)
 {
 	int s = 0;
 
@@ -89,8 +119,7 @@ void oswin_window_swap(osession_node_t *session, clara_window_t *window, clara_s
 	assert(window != NULL);
 	assert(cmd != NULL);
 
-	window->display_surface = cmd->draw_surface;	
-	window->current_surface = cmd->back_surface;
+	oswin_add_damage(cmd->rect.x, cmd->rect.y, cmd->rect.w, cmd->rect.h);
 
 	s = oswin_send_sync_ack(session, cmd->msg.seq, s);
 

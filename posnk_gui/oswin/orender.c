@@ -1,36 +1,86 @@
 #include "osession.h"
+#include "orender.h"
+#include "owindow.h"
 #include "odecor.h"
 #include "oinput.h"
+#include "ovideo.h"
 #include <clara/clara.h>
 #include <stdlib.h>
 #include <bitmap.h>
+#include <assert.h>
 #include <clara/cllist.h>
 #include <clara/cwindow.h>
 
+extern oswin_video_t	oswin_video;
 extern cllist_t oswin_session_list;
 
-void oswin_window_render(osession_node_t *session, clara_surface_t *target)
+cllist_t	oswin_damage_list;
+
+clara_point_t	oswin_old_pointer_position;
+
+void oswin_render_init()
 {
-	cllist_t *_s;
-	clara_surface_t *wdisp;
-	clara_window_t *window;
-	for (_s = session->session.window_list.next; _s != &(session->session.window_list); _s = _s->next) {
-		window = (clara_window_t *) _s;
-		if (!(window->flags & CLARA_WIN_FLAG_INITIALIZED))
-			continue;
-		wdisp =  clara_window_get_disp_surface(window);
-		clara_copy_surface(target, window->dimensions.x, window->dimensions.y, wdisp);
-		free(wdisp);
-		oswin_decorations_render(session, target, window);
-	}
+	cllist_create(&oswin_damage_list);
 }
 
-void oswin_session_render(clara_surface_t *target)
+void oswin_add_damage(int x, int y, int w, int h)
 {
-	cllist_t *_s;
-	osession_node_t *session;
-	for (_s = oswin_session_list.next; _s != &oswin_session_list; _s = _s->next) {
-		session = (osession_node_t *) _s;
-		oswin_window_render(session, target);
+	oswin_damage_t *drect = malloc (sizeof(oswin_damage_t));
+	assert(drect != NULL);
+	drect->rect.x = x;
+	drect->rect.y = y;
+	drect->rect.w = w;
+	drect->rect.h = h;
+	cllist_add_end(&oswin_damage_list, (cllist_t *) drect);
+}
+
+void oswin_render(cairo_t *cr)
+{
+	cairo_matrix_t	m;
+	oswin_window_t *wnd;
+	oswin_damage_t *drect;
+	cllist_t *_n, *_d;
+
+	clara_point_t cursr = oswin_input_pointer_position;
+	int cchg = (cursr.x != oswin_old_pointer_position.x) || (cursr.y != oswin_old_pointer_position.y);
+
+	oswin_start_clip();
+
+	if (cchg) {
+		oswin_cursor_clip(cursr.x, cursr.y);
+		oswin_cursor_clip(oswin_old_pointer_position.x, oswin_old_pointer_position.y);
+	}	
+
+	oswin_old_pointer_position = cursr;
+
+	for (_n = oswin_damage_list.next; _n != &oswin_damage_list; _n = _n->next) {
+		drect = (oswin_damage_t *) _n;
+		oswin_set_clip(drect->rect.x, drect->rect.y, drect->rect.w, drect->rect.h);
+		_d = _n->next;
+		cllist_unlink(_n);
+		free(_n);
+		_n = _d->prev;
 	}
+
+	oswin_finish_clip();
+	
+	oswin_background_render(cr);
+
+	for (_n = oswin_window_list.next; _n != &oswin_window_list; _n = _n->next) {
+		wnd = (oswin_window_t *) _n;
+				
+		cairo_get_matrix(cr, &m);
+		cairo_translate(cr, wnd->window->dimensions.x, wnd->window->dimensions.y);
+
+		oswin_decorations_render(wnd->session, cr, wnd->window);
+
+		cairo_set_source_surface (cr, wnd->surface, 0, 0);
+		cairo_rectangle(cr, 0, 0, wnd->window->dimensions.w, wnd->window->dimensions.h);
+		cairo_fill(cr);	
+	
+		cairo_set_matrix(cr, &m);
+
+	}
+	
+	oswin_cursor_render(cr, cursr.x, cursr.y);
 }
