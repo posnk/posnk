@@ -839,6 +839,7 @@ int _sys_fstat(int fd, struct stat* buf)
 	buf->st_ino  = ptr->info->inode->id;
 	buf->st_rdev = ptr->info->inode->if_dev;
 	buf->st_mode = ptr->info->inode->mode;
+	buf->st_size = (off_t) ptr->info->inode->size;
 	//buf->st_blocks = buf->st_size * 512;//TODO: Implement sparse files
 	//buf->st_blksize = 512;//TODO: Ask FS about block size
 	buf->st_nlink = ptr->info->inode->hard_link_count;
