@@ -10,6 +10,6 @@ typedef struct {
 
 void oswin_render_init();
 
-void oswin_add_damage(int x, int y, int w, int h);
+void oswin_add_damage(clara_rect_t rect);
 
 #endif

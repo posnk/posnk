@@ -1,3 +1,5 @@
+
+#include <stdint.h>
 #include <fcntl.h>        /* for fcntl */
 #include <sys/types.h>
 #include <sys/stat.h>

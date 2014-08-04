@@ -7,7 +7,7 @@
 #define __CLARA_CWINDOW_H__
 
 #define CLARA_MSG_INIT_WIN		(5)
-#define CLARA_MSG_DAMAGE_WIN		(6)
+#define CLARA_MSG_DAMAGE_WIN		(6)		
 
 #define CLARA_WIN_FLAG_INITIALIZED	(1<<0)
 

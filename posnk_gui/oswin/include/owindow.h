@@ -10,10 +10,12 @@
 
 typedef struct {
 	cllist_t		 link;
-	clara_session_t		*session;
+	osession_node_t		*session;
 	clara_window_t		*window;
 	cairo_surface_t		*surface;
 } oswin_window_t;
+
+extern oswin_window_t	*oswin_focused_window;
 
 extern cllist_t	oswin_window_list;
 
@@ -25,5 +27,11 @@ void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_i
 
 void oswin_window_damage(osession_node_t *session, clara_window_t *window, clara_dmgwin_msg_t *cmd);
 
+void oswin_session_focus(osession_node_t *ses, oswin_window_t *wnd);
+
 void oswin_window_ginit();
+
+void oswin_window_order();
+
+void oswin_window_close(osession_node_t *session, oswin_window_t *window);
 #endif

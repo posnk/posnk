@@ -43,7 +43,7 @@ void oswin_render(cairo_t *cr);
 
 int main(int argc, char *argv[], char *envp[]){
 	cairo_t *cr;
-	
+	clara_rect_t s = {0,0,9999,9999};
 	fprintf(stderr, "info: oswin 0.01 by Peter Bosch\n");
 
 	if (oswin_fbdev_init("/dev/fb0") == -1)
@@ -64,12 +64,12 @@ int main(int argc, char *argv[], char *envp[]){
 	oswin_window_ginit();
 
 	cr = oswin_get_context();
-	oswin_add_damage(0,0,9999,9999);
+	oswin_add_damage(s);
 
 	while(oswin_display_poll() != -1) {
 		oswin_session_process();
 		evdev_poll();
-		oswin_input_process();
+		oswin_window_order();
 		oswin_render(cr);
 		oswin_flip_buffers();
 		usleep(900);

@@ -23,14 +23,11 @@ void oswin_render_init()
 	cllist_create(&oswin_damage_list);
 }
 
-void oswin_add_damage(int x, int y, int w, int h)
+void oswin_add_damage(clara_rect_t rect)
 {
 	oswin_damage_t *drect = malloc (sizeof(oswin_damage_t));
 	assert(drect != NULL);
-	drect->rect.x = x;
-	drect->rect.y = y;
-	drect->rect.w = w;
-	drect->rect.h = h;
+	drect->rect = rect;
 	cllist_add_end(&oswin_damage_list, (cllist_t *) drect);
 }
 
@@ -45,9 +42,10 @@ void oswin_render(cairo_t *cr)
 	int cchg = (cursr.x != oswin_old_pointer_position.x) || (cursr.y != oswin_old_pointer_position.y);
 
 	oswin_start_clip();
+	
+	oswin_cursor_clip(cursr.x, cursr.y);
 
 	if (cchg) {
-		oswin_cursor_clip(cursr.x, cursr.y);
 		oswin_cursor_clip(oswin_old_pointer_position.x, oswin_old_pointer_position.y);
 	}	
 

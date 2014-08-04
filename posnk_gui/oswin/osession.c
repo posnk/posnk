@@ -13,15 +13,27 @@
 #include "osession.h"
 #include "owindow.h"
 #include "omsg.h"
+#include "orender.h"
 
 cllist_t	 oswin_session_list;
 
-uint32_t	 oswin_focused_handle = 0;
+oswin_window_t	*oswin_focused_window = NULL;
 osession_node_t *oswin_focused_session = NULL;
 
 void oswin_session_init()
 {
 	cllist_create(&oswin_session_list);
+}
+
+void oswin_session_focus(osession_node_t *ses, oswin_window_t *wnd)
+{
+	
+	if (oswin_focused_window)
+		oswin_add_damage(oswin_focused_window->window->frame_dims);
+	oswin_focused_session = ses;
+	oswin_focused_window = wnd;
+	if (oswin_focused_window)
+		oswin_add_damage(oswin_focused_window->window->frame_dims);
 }
 
 void oswin_session_accept(uint32_t cmdq_id)

@@ -5,7 +5,6 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <sys/msg.h>
 #include <clara/cmsg.h>
 #include <clara/cllist.h>
 #include <clara/csession.h>
@@ -18,86 +17,101 @@
 #include "odecor.h"
 #include "oinput.h"
 
-int		oswin_input_queue;
 clara_point_t	oswin_input_pointer_position = {0,0};
+
+clara_window_t  *oswin_dragging_window = NULL;
+clara_point_t	 oswin_dragging_start;
+int		 oswin_dragging_resize = 0;
 
 int oswin_input_init()
 {
-	oswin_input_queue = msgget(IPC_PRIVATE, 0666 | IPC_CREAT);
-	if (oswin_input_queue == -1) {
-		fprintf(stderr, "fatal: could not create input message queue: %s\n", strerror(errno));
-		return -1;
-	}
 	return 0;
 }
 
 void oswin_input_close()
 {
-	msgctl(oswin_input_queue, IPC_RMID, NULL);
 }
 
-int oswin_input_recv(clara_event_msg_t *msg)
+void oswin_frame_handle_click(osession_node_t *session, oswin_window_t *_window, clara_event_msg_t *event)
 {
-	ssize_t sz;
-	assert(msg != NULL);
-
-	sz = msgrcv(oswin_input_queue, msg, CLARA_MSG_SIZE(clara_event_msg_t), 0, IPC_NOWAIT);
-	if (sz == -1) {
-		if ((errno == ENOMSG) || (errno == EAGAIN))
-			return 0;
-		else
-			return -1;
+	int action;
+	event->ptr.x -= _window->window->frame_dims.x;
+	event->ptr.y -= _window->window->frame_dims.y;
+	action = oswin_decorator_handle_input(session, _window, event);
+	switch (action) {
+		case OSWIN_INPUT_ACTION_WIN_CLOSE:
+			break;
+		case OSWIN_INPUT_ACTION_WIN_MAXIMIZE:
+			break;
+		case OSWIN_INPUT_ACTION_WIN_ICONIFY:
+			break;
+		case OSWIN_INPUT_ACTION_WIN_DRAG:
+			oswin_dragging_window = _window->window;
+			oswin_dragging_resize = 0;
+			oswin_dragging_start = event->ptr;
+			break;
+		case OSWIN_INPUT_ACTION_WIN_RESIZE:
+			oswin_dragging_window = _window->window;
+			oswin_dragging_resize = 1;
+			oswin_dragging_start = event->ptr;
+			break;
+		case OSWIN_INPUT_ACTION_NONE:
+			break;
 	}
-
-	if (sz < CLARA_MSG_SIZE(clara_event_msg_t)) {
-		errno = EINVAL;
-		return -1;
-	}
-
-	if (msg->msg.magic != CLARA_MSG_MAGIC) {
-		errno = EINVAL;
-		return -1;
-	}
-	
-	return 1;
-
 }
 
-int oswin_input_send(clara_event_msg_t *msg)
+void oswin_input_handle_drag(clara_event_msg_t *event)
 {
-	clara_message_t *m = (clara_message_t *) msg;
-	assert(m != NULL);
+	assert(oswin_dragging_window != NULL);
 
-	m->target = 1;
-	m->type = CLARA_MSG_EVENT;
-	m->magic = CLARA_MSG_MAGIC;
+	event->ptr.x -= oswin_dragging_window->frame_dims.x;
+	event->ptr.y -= oswin_dragging_window->frame_dims.y;
 
-	return msgsnd(oswin_input_queue, msg, CLARA_MSG_SIZE(clara_event_msg_t), 0);	
-}
+	if (oswin_dragging_resize) {
 
-int oswin_input_process()
-{
-	int s;
-	clara_event_msg_t in_buf;
-	do {
-		s = oswin_input_recv(&in_buf);
-		if (s == -1) {
-			fprintf(stderr, "error: could not receive input events (%s)\n", strerror(errno));
-			s = 0;
-			return -1;
-		} else if (s) {
-			s = oswin_input_handle(&in_buf);				
-		}	
-	} while (s);
-	return 0;
+		oswin_dragging_window->dimensions.w += event->ptr.x - oswin_dragging_start.x;
+		oswin_dragging_window->dimensions.h += event->ptr.y - oswin_dragging_start.y;
+
+		if (oswin_dragging_window->dimensions.w < 100)
+			oswin_dragging_window->dimensions.w = 100;
+		if (oswin_dragging_window->dimensions.h < 100)
+			oswin_dragging_window->dimensions.h = 100;
+
+		if (event->event_type == CLARA_EVENT_TYPE_MOUSE_BTN_UP)
+			oswin_dragging_window = NULL;
+
+		oswin_add_damage(oswin_dragging_window->frame_dims);
+
+		oswin_decorator_update_frame_dims(oswin_dragging_window);
+
+		oswin_add_damage(oswin_dragging_window->frame_dims);
+
+		oswin_dragging_start = event->ptr;
+
+	} else {
+
+		oswin_dragging_window->dimensions.x += event->ptr.x - oswin_dragging_start.x;
+		oswin_dragging_window->dimensions.y += event->ptr.y - oswin_dragging_start.y;
+
+		oswin_add_damage(oswin_dragging_window->frame_dims);
+
+		oswin_decorator_update_frame_dims(oswin_dragging_window);
+
+		oswin_add_damage(oswin_dragging_window->frame_dims);
+
+		if (event->event_type == CLARA_EVENT_TYPE_MOUSE_BTN_UP)
+			oswin_dragging_window = NULL;
+
+	}
 }
 
 int oswin_input_handle(clara_event_msg_t *event)
 {
 	uint32_t target;
-	cllist_t *_s, *_w;
+	cllist_t *_w;
 	clara_window_t *window;
-	osession_node_t *session;
+	oswin_window_t *wnd;
+	int frame = 0;
 	assert(event != NULL);
 
 	if (event->flags & CLARA_EVENT_FLAG_PNT_ABS) {
@@ -106,39 +120,44 @@ int oswin_input_handle(clara_event_msg_t *event)
 		oswin_input_pointer_position.x += event->ptr.x;
 		oswin_input_pointer_position.y += event->ptr.y;
 	}
+	event->ptr = oswin_input_pointer_position;
+
+	if (oswin_dragging_window != NULL){
+		oswin_input_handle_drag(event);
+		return 1;
+	}
 
 	if (event->flags & CLARA_EVENT_FLAG_WM) {
 		//Handle oswin input
 	} else if (event->flags & CLARA_EVENT_FLAG_FOCUS) {
 		if (oswin_focused_session != NULL) {
-			window = clara_window_get(&(oswin_focused_session->session), oswin_focused_handle);
-			if (window)
-				target = oswin_focused_handle;
-			else
+			if (oswin_focused_window) {
+				event->ptr.x -= oswin_focused_window->window->dimensions.x;
+				event->ptr.y -= oswin_focused_window->window->dimensions.y;
+			} else
 				target = CLARA_MSG_TARGET_SESSION;
 			oswin_send_event(oswin_focused_session, target, CLARA_MSG_EVENT, event, CLARA_MSG_SIZE(clara_event_msg_t));
+			return 1;
 		} else
 			return 0;
 	} else {
-		for (_s = oswin_session_list.next; _s != &oswin_session_list; _s = _s->next) {
-			session = (osession_node_t *) _s;
-			for (_w = session->session.window_list.next; _w != &(session->session.window_list); _w = _w->next) {
-				window = (clara_window_t *) _w;
-				if (clara_rect_test(window->dimensions, oswin_input_pointer_position)) {
-					if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
-						oswin_focused_session = session;
-						oswin_focused_handle = window->handle;
-					}
-					oswin_send_event(session, window->handle, CLARA_MSG_EVENT, event, CLARA_MSG_SIZE(clara_event_msg_t));
-					return 1;
-				} else if (clara_rect_test(window->frame_dims, oswin_input_pointer_position)) {
-					if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
-						oswin_focused_session = session;
-						oswin_focused_handle = window->handle;
-					}
-					oswin_decorator_handle_input(session, window, event);
-					return 1;
+		for (_w = oswin_window_list.prev; _w != &oswin_window_list; _w = _w->prev) {
+			wnd = (oswin_window_t *) _w;
+			window = wnd->window;
+			if (clara_rect_test(window->dimensions, oswin_input_pointer_position)) {
+				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
+					oswin_session_focus(wnd->session, wnd);
 				}
+				event->ptr.x -= window->dimensions.x;
+				event->ptr.y -= window->dimensions.y;
+				oswin_send_event(wnd->session, window->handle, CLARA_MSG_EVENT, event, CLARA_MSG_SIZE(clara_event_msg_t));
+				return 1;
+			} else if (clara_rect_test(window->frame_dims, oswin_input_pointer_position)) {
+				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
+					oswin_session_focus(wnd->session, wnd);
+				}
+				oswin_frame_handle_click(wnd->session, wnd, event);
+				return 1;
 			}
 		}
 	}

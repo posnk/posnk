@@ -1,18 +1,17 @@
+#ifndef __OSWIN_OSESSION_H__
+#define __OSWIN_OSESSION_H__
+
 #include <stdint.h>
 #include <clara/cllist.h>
 #include <clara/csession.h>
 #include <clara/cwindow.h>
 #include <clara/ctypes.h>
 
-#ifndef __OSWIN_OSESSION_H__
-#define __OSWIN_OSESSION_H__
-
 typedef struct {
 	cllist_t		link;
 	clara_session_t 	session;
 } osession_node_t;
 
-extern uint32_t	 	oswin_focused_handle;
 extern osession_node_t *oswin_focused_session;
 extern cllist_t		oswin_session_list;
 

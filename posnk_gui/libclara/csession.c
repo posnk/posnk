@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <errno.h> //For error reporting
 #include <string.h> //For memory functions and error reporting
-#include <fcntl.h>
 #include <sys/types.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/msg.h>
 #include <unistd.h>

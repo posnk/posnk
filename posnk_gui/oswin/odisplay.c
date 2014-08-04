@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <errno.h> //For error reporting
 #include <string.h> //For memory functions and error reporting
