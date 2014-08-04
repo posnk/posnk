@@ -40,10 +40,13 @@ void oswin_frame_handle_click(osession_node_t *session, oswin_window_t *_window,
 	action = oswin_decorator_handle_input(session, _window, event);
 	switch (action) {
 		case OSWIN_INPUT_ACTION_WIN_CLOSE:
+			printf("close\n");
 			break;
 		case OSWIN_INPUT_ACTION_WIN_MAXIMIZE:
+			printf("maximize\n");
 			break;
 		case OSWIN_INPUT_ACTION_WIN_ICONIFY:
+			printf("iconify\n");
 			break;
 		case OSWIN_INPUT_ACTION_WIN_DRAG:
 			oswin_dragging_window = _window->window;
@@ -56,6 +59,9 @@ void oswin_frame_handle_click(osession_node_t *session, oswin_window_t *_window,
 			oswin_dragging_start = event->ptr;
 			break;
 		case OSWIN_INPUT_ACTION_NONE:
+			break;
+		default:
+			printf("unh wnd act: %i\n", action);
 			break;
 	}
 }
@@ -111,7 +117,6 @@ int oswin_input_handle(clara_event_msg_t *event)
 	cllist_t *_w;
 	clara_window_t *window;
 	oswin_window_t *wnd;
-	int frame = 0;
 	assert(event != NULL);
 
 	if (event->flags & CLARA_EVENT_FLAG_PNT_ABS) {

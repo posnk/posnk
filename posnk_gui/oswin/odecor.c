@@ -90,14 +90,23 @@ int  oswin_decorator_handle_input(osession_node_t *session, oswin_window_t *_win
 	int tb_w = window->dimensions.w + 4;
 	int tb_h = cairo_image_surface_get_height(oswin_bmp_title[0]);
 	int cb_w = cairo_image_surface_get_width(oswin_bmp_close_d[0]);
-	int cb_h = cairo_image_surface_get_height(oswin_bmp_close_d[0]);
+	int mb_w = cairo_image_surface_get_width(oswin_bmp_max_d[0]);
+	int ib_w = cairo_image_surface_get_width(oswin_bmp_min_d[0]);
 	int cb_x = tb_w - cb_w;
+	int mb_x = cb_x - mb_w;
+	int ib_x = mb_x - ib_w;
 	clara_rect_t tb_r = {0, 0, tb_w, tb_h};
-	clara_rect_t cb_r = {cb_x, 0, cb_w, cb_h};
+	clara_rect_t cb_r = {cb_x, 0, cb_w, tb_h};
+	clara_rect_t mb_r = {mb_x, 0, mb_w, tb_h};
+	clara_rect_t ib_r = {ib_x, 0, ib_w, tb_h};
 	switch (event->event_type) {
 		case CLARA_EVENT_TYPE_MOUSE_BTN_DOWN:
 			if (clara_rect_test(cb_r, event->ptr)) {
 				return OSWIN_INPUT_ACTION_WIN_CLOSE;
+			} else if (clara_rect_test(mb_r, event->ptr)) {
+				return OSWIN_INPUT_ACTION_WIN_MAXIMIZE;
+			} else if (clara_rect_test(ib_r, event->ptr)) {
+				return OSWIN_INPUT_ACTION_WIN_ICONIFY;
 			} else if (clara_rect_test(tb_r, event->ptr)) {
 				return OSWIN_INPUT_ACTION_WIN_DRAG;
 			} else {
