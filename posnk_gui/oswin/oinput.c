@@ -68,6 +68,7 @@ void oswin_frame_handle_click(osession_node_t *session, oswin_window_t *_window,
 
 void oswin_input_handle_drag(clara_event_msg_t *event)
 {
+	clara_event_msg_t ev_out;
 	assert(oswin_dragging_window != NULL);
 
 	event->ptr.x -= oswin_dragging_window->frame_dims.x;
@@ -83,9 +84,6 @@ void oswin_input_handle_drag(clara_event_msg_t *event)
 		if (oswin_dragging_window->dimensions.h < 100)
 			oswin_dragging_window->dimensions.h = 100;
 
-		if (event->event_type == CLARA_EVENT_TYPE_MOUSE_BTN_UP)
-			oswin_dragging_window = NULL;
-
 		oswin_add_damage(oswin_dragging_window->frame_dims);
 
 		oswin_decorator_update_frame_dims(oswin_dragging_window);
@@ -93,6 +91,15 @@ void oswin_input_handle_drag(clara_event_msg_t *event)
 		oswin_add_damage(oswin_dragging_window->frame_dims);
 
 		oswin_dragging_start = event->ptr;
+
+		ev_out.event_type = CLARA_EVENT_TYPE_RESIZE_WINDOW;
+		ev_out.param[0] = (uint32_t) oswin_dragging_window->dimensions.w;
+		ev_out.param[1] = (uint32_t) oswin_dragging_window->dimensions.h;
+
+		oswin_send_event(oswin_focused_session, oswin_dragging_window->handle, CLARA_MSG_EVENT, &ev_out, CLARA_MSG_SIZE(clara_event_msg_t));
+
+		if (event->event_type == CLARA_EVENT_TYPE_MOUSE_BTN_UP)
+			oswin_dragging_window = NULL;
 
 	} else {
 
@@ -104,6 +111,12 @@ void oswin_input_handle_drag(clara_event_msg_t *event)
 		oswin_decorator_update_frame_dims(oswin_dragging_window);
 
 		oswin_add_damage(oswin_dragging_window->frame_dims);
+
+		ev_out.event_type = CLARA_EVENT_TYPE_MOVE_WINDOW;
+		ev_out.param[0] = (uint32_t) oswin_dragging_window->dimensions.x;
+		ev_out.param[1] = (uint32_t) oswin_dragging_window->dimensions.y;
+
+		oswin_send_event(oswin_focused_session, oswin_dragging_window->handle, CLARA_MSG_EVENT, &ev_out, CLARA_MSG_SIZE(clara_event_msg_t));
 
 		if (event->event_type == CLARA_EVENT_TYPE_MOUSE_BTN_UP)
 			oswin_dragging_window = NULL;
@@ -139,6 +152,7 @@ int oswin_input_handle(clara_event_msg_t *event)
 			if (oswin_focused_window) {
 				event->ptr.x -= oswin_focused_window->window->dimensions.x;
 				event->ptr.y -= oswin_focused_window->window->dimensions.y;
+				target = oswin_focused_window->window->handle;
 			} else
 				target = CLARA_MSG_TARGET_SESSION;
 			oswin_send_event(oswin_focused_session, target, CLARA_MSG_EVENT, event, CLARA_MSG_SIZE(clara_event_msg_t));
