@@ -14,7 +14,7 @@ NASM = @echo " [ NASM ]	" $< ; nasm
 PROGNAME = smith
 
 # define any compile-time flags
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g `pkg-config --cflags --libs cairo`
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
