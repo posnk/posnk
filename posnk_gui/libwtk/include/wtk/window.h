@@ -13,6 +13,8 @@ struct wtk_window {
 	wtk_widget_t	*widget;
 	cairo_t		*context;
 	cairo_surface_t	*surface;
+	cairo_t		*b_context;
+	cairo_surface_t	*b_surface;
 	clara_surface_t *c_surf;
 };
 

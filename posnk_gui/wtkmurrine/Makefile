@@ -38,6 +38,7 @@ LIBS =  -lbmp -lclara `pkg-config --cflags --libs cairo` -lpixman-1 -lm -lfontco
 # define the C source files
 SRCS = cairo-support.c \
 	murrine_draw.c \
+	murrine_radiance.c \
 
 # define the C object files 
 #

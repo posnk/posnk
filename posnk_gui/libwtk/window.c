@@ -51,6 +51,22 @@ wtk_window_t *wtk_window_create(int width, int height, int flags, char *name)
 		return NULL;
 	}
 
+	wnd->b_surface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, wnd->c_surf->w, wnd->c_surf->h);
+	if (!wnd->b_surface) {
+		printf("could not create cairo back buffer surface\n");
+		free(wnd);
+		return NULL;
+	}
+
+	wnd->b_context = cairo_create (wnd->b_surface);
+
+	status = cairo_status(wnd->b_context);
+	if (status != CAIRO_STATUS_SUCCESS) {
+		printf("fatal: could not create cairo back buffer context: %s\n", cairo_status_to_string(status));
+		free(wnd);
+		return NULL;
+	}
+
 	return wnd;
 }
 
@@ -82,14 +98,17 @@ void wtk_window_evprocess(wtk_window_t *wnd)
 
 void wtk_window_process(wtk_window_t *wnd)
 {
-	cairo_new_path(wnd->context);
-	cairo_reset_clip(wnd->context);
+	cairo_new_path(wnd->b_context);
+	cairo_reset_clip(wnd->b_context);
 
-	wtk_widget_do_clip(wnd->widget, wnd->context);
+	wtk_widget_do_clip(wnd->widget, wnd->b_context);
 
-	cairo_clip (wnd->context);
+	cairo_clip (wnd->b_context);
 
-	wtk_widget_render(wnd->widget, wnd->context);
+	wtk_widget_render(wnd->widget, wnd->b_context, 1);
+
+	cairo_set_source_surface(wnd->context, wnd->b_surface, 0, 0);
+	cairo_paint(wnd->context);
 
 	clara_window_add_damage(wnd->handle, wnd->widget->rect);
 

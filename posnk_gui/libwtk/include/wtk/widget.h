@@ -12,7 +12,7 @@ typedef struct wtk_widget	wtk_widget_t;
 typedef struct wtk_callbacks	wtk_callbacks_t;
 
 struct wtk_callbacks {
-	void (*paint)(wtk_widget_t *, cairo_t *);
+	void (*paint)(wtk_widget_t *, cairo_t *, int focused);
 	void (*key_down)(wtk_widget_t *, uint32_t keycode, char keychar);
 	void (*key_up)(wtk_widget_t *, uint32_t keycode, char keychar);
 	void (*key_typed)(wtk_widget_t *, uint32_t keycode, char keychar);
@@ -34,7 +34,7 @@ struct wtk_widget {
 
 void wtk_widget_do_clip(wtk_widget_t *widget, cairo_t *context);
 
-void wtk_widget_render(wtk_widget_t *widget, cairo_t *context);
+void wtk_widget_render(wtk_widget_t *widget, cairo_t *context, int focused);
 
 void wtk_widget_handle_event(wtk_widget_t *widget, clara_event_msg_t *event);
 

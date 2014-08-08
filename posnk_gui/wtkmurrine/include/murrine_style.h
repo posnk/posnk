@@ -23,6 +23,7 @@
 
 #include "murrine_types.h"
 
+typedef struct _MurrineTheme MurrineTheme;
 typedef struct _MurrineStyle MurrineStyle;
 typedef struct _MurrineStyleClass MurrineStyleClass;
 
@@ -45,6 +46,9 @@ struct _MurrineStyle
 	double   gradient_shades[4];
 	double   highlight_shade;
 	double   lightborder_shade;
+
+	double	 xthickness;
+	double	 ythickness;
 
 	uint8   glazestyle;
 	uint8   glowstyle;
@@ -90,6 +94,9 @@ struct _MurrineTheme {
 	MurrineStyle	menubar_style;
 	MurrineStyle	toolbar_style;
 	MurrineStyle	toolbar_button_style;
+	MurrineStyle	menu_style;
+	MurrineStyle	menu_item_style;
+	MurrineStyle	menubar_item_style;
 };
 
 struct _MurrineStyleClass
