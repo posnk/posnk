@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
 	clara_rect_t dims1 = {80,80,150,40};
 	clara_rect_t dims2 = {80,160,150,40};
-	clara_rect_t dimt = {80,210,150,24};
+	clara_rect_t dimt = {80,210,150,30};
 	clara_rect_t dimm = {0,0,300,24};
 	wtk_window_t *window;
 	wtk_widget_t *button1;
