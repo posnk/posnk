@@ -10,3 +10,5 @@ void murrine_draw_btn(cairo_t *ctx, int focused, int is_default, int state, int 
 void murrine_draw_textbox(cairo_t *ctx, int w, int h, int focused);
 
 void murrine_draw_menubar(cairo_t *ctx, int w, int h, int style);
+
+void murrine_draw_menubar_item(cairo_t *ctx, int w, int h, int focused);

@@ -137,8 +137,8 @@ MurrineTheme *murrine_radiance()
 	radiance->wider_style.ythickness = 3;
 
 	memcpy(&radiance->entry_style, &radiance->default_style, sizeof(MurrineStyle));
-	radiance->entry_style.xthickness = 3;
-	radiance->entry_style.ythickness = 3;
+	radiance->entry_style.xthickness = 1;
+	radiance->entry_style.ythickness = 1;
 
 	memcpy(&radiance->scrollbar_style, &radiance->button_style, sizeof(MurrineStyle));
 	radiance->scrollbar_style.colors.bg[WTK_STATE_NORMAL] = bg_colour;
@@ -334,13 +334,26 @@ void murrine_draw_textbox(cairo_t *ctx, int w, int h, int focused)
 {
 	MurrineTheme *thm = murrine_radiance();
 	WidgetParameters params;
-	FrameParameters  frame;
-	frame.shadow    = WTK_SHADOW_ETCHED_IN;
-	frame.gap_side  = MRN_GAP_LEFT;
-	frame.gap_x     = 5;
-	frame.gap_width = 0;
-	frame.border    = &thm->notebook_style.colors.shade[4];
-	murrine_set_widget_parameters(&(thm->notebook_style), WTK_STATE_NORMAL, focused, FALSE, &params);	
-	params.style_functions->draw_frame(ctx, &(thm->notebook_style.colors), &params, &frame, 0, 0, w, h);
+	FocusParameters focus;
+	focus.color = thm->entry_style.colors.spot[2];
+	murrine_set_widget_parameters(&(thm->entry_style), /*focused ? WTK_STATE_SELECTED : */WTK_STATE_NORMAL, focused, FALSE, &params);	
+	params.style_functions->draw_entry(ctx, &(thm->entry_style.colors), &params, &focus, 0, 0, w, h);
+	free(thm);
+}
+
+void murrine_draw_menubar_item(cairo_t *ctx, int w, int h, int focused)
+{
+	MurrineTheme *thm = murrine_radiance();
+	WidgetParameters params;
+	murrine_set_widget_parameters(&(thm->menubar_item_style), WTK_STATE_NORMAL, focused, FALSE, &params);	
+	params.active = FALSE;
+	params.prelight = TRUE;
+	params.focus = TRUE;
+	params.state_type = MRN_STATE_SELECTED;
+	params.xthickness = 2;
+	params.ythickness = 2;
+	params.reliefstyle = 0;
+	params.corners = MRN_CORNER_TOPRIGHT | MRN_CORNER_TOPLEFT;
+	params.style_functions->draw_button(ctx, &(thm->menubar_item_style.colors), &params, 0, 0, w, h, TRUE);
 	free(thm);
 }

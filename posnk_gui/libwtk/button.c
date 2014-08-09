@@ -14,7 +14,9 @@ void wtk_button_paint(wtk_widget_t *w, cairo_t *context, int focused)
 	cairo_font_extents_t fe;
 	cairo_text_extents_t te;
 	int t_x, t_y, t_h, t_w;
-
+	int s = button->state;
+	if (focused && (s == WTK_STATE_NORMAL))
+		s = WTK_STATE_SELECTED;
 	t_w = w->rect.w;
 	t_h = w->rect.h;
 	murrine_draw_btn(context, focused, 0, button->state, t_w, t_h);

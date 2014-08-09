@@ -21,6 +21,7 @@
 #define CLARA_EVENT_TYPE_KEY_DOWN	(5)
 #define CLARA_EVENT_TYPE_RESIZE_WINDOW	(6)
 #define CLARA_EVENT_TYPE_MOVE_WINDOW	(7)
+#define CLARA_EVENT_TYPE_KEY_TYPE	(8)
 
 typedef struct {
 	clara_message_t	msg;	

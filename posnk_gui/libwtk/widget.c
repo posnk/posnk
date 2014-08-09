@@ -29,6 +29,8 @@ void wtk_widget_render(wtk_widget_t *widget, cairo_t *context, int focused)
 	cairo_get_matrix(context, &m);
 	cairo_translate(context, widget->rect.x, widget->rect.y);
 	cairo_save(context);
+	//if (focused)
+	//	printf("renderfocus\n");
 	if (widget->callbacks.paint)
 		widget->callbacks.paint(widget, context, focused);
 	else {
@@ -49,12 +51,17 @@ void wtk_widget_dispatch_event(wtk_widget_t *widget, clara_event_msg_t *event)
 	switch (event->event_type) {
 		case CLARA_EVENT_TYPE_KEY_DOWN:
 			if (widget->callbacks.key_down)
-				widget->callbacks.key_down(widget, event->param[0], 'X');
+				widget->callbacks.key_down(widget, event->param[0], (char) event->param[1], event->param[2]);
 			break;
 
 		case CLARA_EVENT_TYPE_KEY_UP:
 			if (widget->callbacks.key_up)
-				widget->callbacks.key_up(widget, event->param[0], 'X');
+				widget->callbacks.key_up(widget, event->param[0], (char) event->param[1], event->param[2]);
+			break;
+
+		case CLARA_EVENT_TYPE_KEY_TYPE:
+			if (widget->callbacks.key_typed)
+				widget->callbacks.key_typed(widget, event->param[0], (char) event->param[1], event->param[2]);
 			break;
 
 		case CLARA_EVENT_TYPE_MOUSE_BTN_DOWN:
@@ -92,8 +99,10 @@ void wtk_widget_handle_event(wtk_widget_t *widget, clara_event_msg_t *event)
 			w = (wtk_widget_t *) _w;
 			if (clara_rect_test(w->rect, event->ptr)) {
 				printf("widg hit (%i, %i, %i, %i) ptr (%i, %i)\n", (int) w->rect.x, (int) w->rect.y, (int) w->rect.w, (int) w->rect.h, (int) event->ptr.x, (int) event->ptr.y);
-				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS)
+				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
 					widget->focused = w;
+				//	printf("focus chg\n");
+				}
 				wtk_widget_handle_event(w, event);
 				return;
 			}

@@ -45,7 +45,9 @@ SRCS = omsg.c \
 	orender.c \
 	odecor.c \
 	oinput.c \
-	ovideo.c
+	ovideo.c \
+	keymap.c \
+	okbd.c
 
 # define the C object files 
 #

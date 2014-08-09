@@ -17,19 +17,17 @@
 #include <string.h>
 #include "oinput.h"
 
-int evdev_fd;
-
 int evdev_init(const char *dev)
 {
-	evdev_fd = open(dev, O_RDONLY | O_NONBLOCK);
+	int evdev_fd = open(dev, O_RDONLY | O_NONBLOCK);
 	if (evdev_fd == -1) {
 		fprintf(stderr, "fatal: cannot open event device %s : %s\n",dev,  strerror(errno));
 		return -1;
 	}
-	return 0;
+	return evdev_fd;
 }
 
-int evdev_poll()
+int evdev_poll(int evdev_fd)
 {
 	int nr = 1;
 	clara_event_msg_t msg;
@@ -71,9 +69,8 @@ int evdev_poll()
 						oswin_input_handle(&msg);
 						break;
 					default:
-						msg.event_type = ev.value | CLARA_EVENT_TYPE_KEY_UP;
-						msg.param[0] = ev.code;
-						oswin_input_handle(&msg);
+						if (ev.code < KEY_UNKNOWN)
+							oswin_handle_key(ev.value, ev.code);
 						break;						
 				}
 			} else

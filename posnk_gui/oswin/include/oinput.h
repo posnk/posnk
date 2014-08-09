@@ -18,4 +18,5 @@ void oswin_input_close();
 int oswin_input_send(clara_event_msg_t *msg);
 int oswin_input_process();
 int oswin_input_handle(clara_event_msg_t *event);
+void oswin_handle_key(int val, uint32_t scancode);
 #endif
