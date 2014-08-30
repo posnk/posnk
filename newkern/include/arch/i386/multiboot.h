@@ -40,6 +40,10 @@
      # define EXT_C(sym)                     sym
      #endif
      
+     #define MULTIBOOT_INFO_VIDEO_INFO               0x00000800
+     #define MULTIBOOT_INFO_BOOT_LOADER_NAME         0x00000200
+     #define MULTIBOOT_INFO_CMDLINE                  0x00000004
+     
      #ifndef ASM
      /* Do not include here in boot.S. */
      
@@ -93,6 +97,17 @@
        } u;
        unsigned long mmap_length;//44
        unsigned long mmap_addr;//48
+       unsigned long drives_length;//52
+       unsigned long drives_addr;//56
+       unsigned long config_table;//60
+       unsigned long boot_loader_name;//64
+       unsigned long apm_table;//68
+       unsigned long vbe_control_info;//72
+       unsigned long vbe_mode_info;//76
+       unsigned short vbe_mode;//80
+       unsigned short vbe_interface_seg;//82
+       unsigned short vbe_interface_off;//84
+       unsigned short vbe_interface_len;//86
      } multiboot_info_t;
      
      /* The module structure. */

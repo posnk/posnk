@@ -22,6 +22,7 @@
 #include "arch/i386/paging.h"
 #include "arch/i386/multiboot.h"
 #include "arch/i386/protection.h"
+#include "arch/i386/vbe.h"
 #include "driver/bus/pci.h"
 #include "kernel/syscall.h"
 #include "kernel/streams.h"
@@ -39,6 +40,10 @@
 #include <string.h>
 
 multiboot_info_t *mb_info;
+
+
+//XXX: Dirty Hack
+vbe_mode_info_t	  vbe_mode;
 
 extern uint32_t i386_start_kheap;
 
@@ -104,6 +109,18 @@ void i386_init_load_modules(multiboot_info_t *mbt)
 	}
 }
 
+void i386_init_handle_vbe(multiboot_info_t *mbt)
+{
+	if ((~mbt->flags & MULTIBOOT_INFO_VIDEO_INFO) || (!mbt->vbe_mode_info)) {
+		debugcon_puts("BOOTLOADER DID NOT SET UP VIDEO MODE\n");
+		vbe_mode.Xres = 0;
+		return;
+	}
+	mbt->vbe_mode_info |= 0xC0000000;
+	memcpy(&vbe_mode, (void *) mbt->vbe_mode_info, sizeof(vbe_mode_info_t));
+	debugcon_printf("Bootloader VBE info @%x : {mode: %i,  lfb: %x, w:%i, h: %i, bpp: %i}\n", (mbt->vbe_mode_info), (int)mbt->vbe_mode, (int)vbe_mode.physbase, (int)vbe_mode.Xres, (int)vbe_mode.Yres, (int)vbe_mode.bpp);	
+}
+
 void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 {
 	size_t initial_heap = 4096;
@@ -133,6 +150,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	} else {
 		mem_avail = i386_init_multiboot_memprobe(mbd);
 		i386_init_reserve_modules(mbd);
+		i386_init_handle_vbe(mbd);
 	}
 	physmm_claim_range(0x100000, 0x400000);//((physaddr_t)&i386_start_kheap) - 0xC0000000);
 

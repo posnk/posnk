@@ -2344,6 +2344,8 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id)
 	/* Set the inode */
 	dirc->inode = vfs_effective_inode( oi );
 
+	assert(dirc->inode != NULL);
+
 	/* Release the outer inode */
 	if (oi)
 		vfs_inode_release( oi );

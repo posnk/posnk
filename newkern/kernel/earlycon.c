@@ -2,8 +2,11 @@
 #include <stdint.h>
 #include <string.h>
 
-char earlycon_printf_buffer[256];
+int earlycon_conup = 0;
 
+char earlycon_printf_buffer[256];
+char earlycon_screen_buffer[40960];
+int earlycon_screen_ptr = 0;
 void utoa(unsigned int value,int base,char *str);
 void utoa_s(int value,int base,char *str);
 
@@ -101,9 +104,21 @@ int earlycon_aprintf(const char* str,...){
 	va_list args;
 	va_start(args,str);
 	int res = earlycon_vsprintf(earlycon_printf_buffer, str, args);
-	earlycon_aputs(earlycon_printf_buffer);
+	earlycon_puts(earlycon_printf_buffer);
 	va_end(args);
 	return res;
+}
+
+void earlycon_puts(const char *str){
+	size_t len;
+	if (!earlycon_conup) {
+		len = strlen(str);
+		earlycon_aputs(str);
+		memcpy(&(earlycon_screen_buffer[earlycon_screen_ptr]), str, len);
+		earlycon_screen_ptr += len;
+	} else {
+		con_puts(str);
+	}
 }
 
 int debugcon_aprintf(const char* str,...){
@@ -113,4 +128,19 @@ int debugcon_aprintf(const char* str,...){
 	debugcon_aputs(earlycon_printf_buffer);
 	va_end(args);
 	return res;
+}
+
+int panic_printf(const char* str,...){
+	va_list args;
+	va_start(args,str);
+	int res = earlycon_vsprintf(earlycon_printf_buffer, str, args);
+	panicscreen(earlycon_printf_buffer);
+	va_end(args);
+	return res;
+}
+
+void earlycon_switchover()
+{
+	con_puts(earlycon_screen_buffer);
+	earlycon_conup = 1;
 }

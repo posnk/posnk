@@ -92,6 +92,7 @@ int procvmm_mmap_copy_iterator (llist_t *node, void *param)
 	n->file = m->file;
 	n->file_sz = m->file_sz;
 	n->offset = m->offset;
+	n->shm = m->shm;
 	n->name = heapmm_alloc(strlen(m->name)+1);
 	strcpy(n->name, m->name);
 	llist_add_end(table, (llist_t *) n);	

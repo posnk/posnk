@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include "kernel/tty.h"
+#include "kernel/earlycon.h"
 #include "driver/console/vterm/vterm.h"
 #include "driver/console/vterm/vterm_private.h"
 
@@ -119,4 +120,9 @@ void vga_vterm_init(){
         }
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
 	vterm_vga_switch_vc(0);
+}
+
+void panicscreen(const char *text)
+{
+	earlycon_aputs(text);
 }

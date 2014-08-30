@@ -66,6 +66,14 @@ int vterm_putc(dev_t dev, char c)
 	return 0;
 }
 
+void con_puts(char *b)
+{
+	int c;
+	size_t size = strlen(b);
+	for (c = 0; c < size; c++)
+		tty_input_char(vterm_minor_terms[0].device_id, b[c]);
+}
+
 void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int cols)
 {
 	dev_t minor;

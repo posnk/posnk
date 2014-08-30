@@ -20,10 +20,38 @@
 #include "kernel/syscall.h"
 #include "driver/video/mbfb.h"
 #include "driver/video/fb.h"
+#include "arch/i386/vbe.h"
 
 fb_device_info_t mbfb_device_info;
 fb_mode_info_t mbfb_mode_info;
 physaddr_t real_fb;
+
+extern vbe_mode_info_t	  vbe_mode;
+
+uint32_t *mbfb_maplfb()
+{
+	uint32_t *fb;
+	uintptr_t mu,d;
+
+	fb = heapmm_alloc_alligned(mbfb_device_info.fb_size, PHYSMM_PAGE_SIZE);
+	if (!fb)
+		return NULL;
+
+	mu = (uintptr_t) fb;
+		
+	for (d = 0; d < mbfb_device_info.fb_size; d += 0x1000) {
+		physmm_free_frame(paging_get_physical_address((void *)(mu + d)));
+		paging_unmap((void *)(mu + d));
+	}
+	
+	for (d = 0; d < mbfb_device_info.fb_size; d += 0x1000) {
+
+		paging_map(	 (void *)(mu + d),
+			  	 real_fb + (physaddr_t) d,
+				 PAGING_PAGE_FLAG_NOCACHE | PAGING_PAGE_FLAG_RW);
+	}
+	return fb;
+}
 
 uint32_t *mbfb_detect()
 {
@@ -178,12 +206,22 @@ char_dev_t mbfb_desc = {
 
 void mbfb_init()
 {	
-	mbfb_mode_info.fb_width = 1024;
-	mbfb_mode_info.fb_height = 768;
-	mbfb_mode_info.fb_stride = 1024 * 4;
-	mbfb_mode_info.fb_bpp = 24;
-	mbfb_device_info.fb_size = MBFB_FB_SIZE;
-	fb_primary_lfb = mbfb_detect();
+	if (!vbe_mode.Xres) {
+		mbfb_mode_info.fb_width = 1024;
+		mbfb_mode_info.fb_height = 768;
+		mbfb_mode_info.fb_stride = 1024 * 4;
+		mbfb_mode_info.fb_bpp = 24;
+		mbfb_device_info.fb_size = MBFB_FB_SIZE;
+		fb_primary_lfb = mbfb_detect();
+	} else {
+		mbfb_mode_info.fb_width = vbe_mode.Xres;
+		mbfb_mode_info.fb_height = vbe_mode.Yres;
+		mbfb_mode_info.fb_stride = vbe_mode.pitch;
+		mbfb_mode_info.fb_bpp = vbe_mode.bpp;
+		mbfb_device_info.fb_size = mbfb_mode_info.fb_stride * vbe_mode.Yres;
+		real_fb = vbe_mode.physbase;
+		fb_primary_lfb = mbfb_maplfb();
+	}
 	fb_primary_device_info = &mbfb_device_info;
 	fb_primary_mode_info = &mbfb_mode_info;
 	device_char_register(&mbfb_desc);

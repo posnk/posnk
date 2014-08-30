@@ -31,12 +31,21 @@ int earlycon_aprintf(const char* str,...);
 
 int debugcon_aprintf(const char* str,...);
 
+int panic_printf(const char* str,...);
+
 void debugcon_aputs(const char *str);
+
+void earlycon_puts(const char *str);
 
 int debugcon_have_data();
 
+void panicscreen(const char *text);
+
+void con_puts(char *b);
+
+void earlycon_switchover();
+
 #define earlycon_printf earlycon_aprintf
-#define earlycon_puts earlycon_aputs
 
 #define debugcon_printf debugcon_aprintf
 #define debugcon_puts debugcon_aputs

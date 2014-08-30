@@ -48,6 +48,7 @@ int exception_signals[] = {
 
 void exception_panic(int exception, void *instr_pointer, void *state, size_t state_size)
 {
+	panic_printf("PANIC! Unhandled kernelmode exception: %s(%i)\n",exception_names[exception],exception);
 	earlycon_printf("PANIC! Unhandled kernelmode exception: %s(%i)\n",exception_names[exception],exception);
 	earlycon_printf("Exception occurred at 0x%x\n", instr_pointer);
 	earlycon_printf("Register dump: \n");

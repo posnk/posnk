@@ -28,6 +28,8 @@ do { if (!(AssertConditionArg)) \
 
 #define hardassert(AssertConditionArg) \
 do { 	if (!(AssertConditionArg)) {\
+	panic_printf("\n\nKernel assertion failed at %s:%i in %s :\n%s\n\nHalting system!", \
+		__FILE__, __LINE__, __FUNCTION__, #AssertConditionArg); \
 	debugcon_printf("\n\nKernel assertion failed at %s:%i in %s :\n%s\n\nHalting system!", \
 		__FILE__, __LINE__, __FUNCTION__, #AssertConditionArg); \
 	halt();\
