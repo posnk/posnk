@@ -24,4 +24,6 @@ void oswin_start_clip();
 void oswin_set_clip(int x, int y, int w, int h);
 
 void oswin_finish_clip();
+
+clara_rect_t oswin_get_screen_dims();
 #endif

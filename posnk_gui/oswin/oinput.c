@@ -171,7 +171,7 @@ int oswin_input_handle(clara_event_msg_t *event)
 				event->ptr.y -= window->dimensions.y;
 				oswin_send_event(wnd->session, window->handle, CLARA_MSG_EVENT, event, CLARA_MSG_SIZE(clara_event_msg_t));
 				return 1;
-			} else if (clara_rect_test(window->frame_dims, oswin_input_pointer_position)) {
+			} else if (clara_rect_test(window->frame_dims, oswin_input_pointer_position) && (~window->flags & CLARA_WIN_FLAG_UNDECORATED)) {
 				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
 					oswin_session_focus(wnd->session, wnd);
 				}

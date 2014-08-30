@@ -29,4 +29,5 @@ void oswin_session_connect(osession_node_t *session, clara_connect_msg_t *cmd);
 
 void oswin_session_create_win(osession_node_t *session, clara_createwin_msg_t *cmd);
 
+void oswin_session_poll_dims(osession_node_t *session, clara_poll_dims_msg_t *cmd);
 #endif

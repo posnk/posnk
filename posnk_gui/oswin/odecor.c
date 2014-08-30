@@ -25,7 +25,6 @@ FT_Library 	 oswin_title_font_lib;
 FT_Face 	 oswin_title_font_ft;
 cairo_font_face_t *oswin_title_font;
 cairo_surface_t *oswin_bmp_cursor;
-cairo_surface_t *oswin_bmp_background;
 
 cairo_surface_t *oswin_bmp_title[2];
 cairo_surface_t *oswin_bmp_close_d[2];
@@ -46,11 +45,7 @@ cairo_surface_t *oswin_bmp_surface(bitmap_image_t *s)
 
 void oswin_decorator_init()
 {
-	int dd = 0;
 	int st;
-	int fd;
-	struct stat f_b;
-	uint8_t	*f_m;
 	oswin_bmp_title[1]   = oswin_bmp_surface(load_bmp("/share/oswin/title_active.bmp"));
 	oswin_bmp_title[0] = oswin_bmp_surface(load_bmp("/share/oswin/title_inactive.bmp"));
 	oswin_bmp_close_d[1] = oswin_bmp_surface(load_bmp("/share/oswin/close_active_d.bmp"));
@@ -62,7 +57,6 @@ void oswin_decorator_init()
 	oswin_bmp_min_d[1] = oswin_bmp_surface(load_bmp("/share/oswin/min_active_d.bmp"));
 	oswin_bmp_min_d[0] = oswin_bmp_surface(load_bmp("/share/oswin/min_inactive_d.bmp"));
 	oswin_bmp_cursor 	 = cairo_image_surface_create_from_png ("/share/oswin/cursor.png");
-	oswin_bmp_background	 = oswin_bmp_surface(load_bmp("/root/dsotm.bmp"));
 	oswin_ptn_title[1]	 = cairo_pattern_create_for_surface(oswin_bmp_title[1]);
 	oswin_ptn_title[0]	 = cairo_pattern_create_for_surface(oswin_bmp_title[0]);
 	cairo_pattern_set_extend(oswin_ptn_title[0], CAIRO_EXTEND_REPEAT);
@@ -199,6 +193,6 @@ void oswin_cursor_clip(int x, int y)
 
 void oswin_background_render(cairo_t *cr)
 {
-	cairo_set_source_surface (cr, oswin_bmp_background, 0, 0);
+	cairo_set_source_rgb(cr, 0, 0, 0);
 	cairo_paint(cr);
 }

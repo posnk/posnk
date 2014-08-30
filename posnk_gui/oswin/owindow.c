@@ -25,7 +25,7 @@ void oswin_window_ginit()
 
 void oswin_window_order()
 {
-	if (!oswin_focused_window)
+	if ((!oswin_focused_window) || (oswin_focused_window->window->flags & CLARA_WIN_FLAG_NOFRONT))
 		return;
 	cllist_unlink((cllist_t *)oswin_focused_window);
 	cllist_add_end(&oswin_window_list, (cllist_t *)oswin_focused_window);
@@ -125,9 +125,10 @@ void oswin_window_init(osession_node_t *session, clara_window_t *window, clara_i
 		fprintf(stderr, "error: could not make cairo surface for window\n");
 		s = -1;
 	}
-
-	cllist_add_end(&oswin_window_list, (cllist_t *) ownd);
-
+	if (window->flags & CLARA_WIN_FLAG_NOFRONT)
+		cllist_add_start(&oswin_window_list, (cllist_t *) ownd);
+	else
+		cllist_add_end(&oswin_window_list, (cllist_t *) ownd);
 	if (s == -1)
 		s = -2;
 

@@ -70,7 +70,8 @@ void oswin_render(cairo_t *cr)
 		cairo_get_matrix(cr, &m);
 		cairo_translate(cr, wnd->window->dimensions.x, wnd->window->dimensions.y);
 
-		oswin_decorations_render(wnd->session, cr, wnd->window);
+		if (~wnd->window->flags & CLARA_WIN_FLAG_UNDECORATED)
+			oswin_decorations_render(wnd->session, cr, wnd->window);
 
 		cairo_set_source_surface (cr, wnd->surface, 0, 0);
 		cairo_rectangle(cr, 0, 0, wnd->window->dimensions.w, wnd->window->dimensions.h);

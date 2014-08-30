@@ -14,6 +14,7 @@
 #include "owindow.h"
 #include "omsg.h"
 #include "orender.h"
+#include "ovideo.h"
 
 cllist_t	 oswin_session_list;
 
@@ -100,6 +101,9 @@ int oswin_session_cmd(osession_node_t *session, clara_msg_buffer_t *cmd)
 		case CLARA_MSG_CREATE_WIN:
 			oswin_session_create_win(session, (clara_createwin_msg_t *) cmd);
 			break;
+		case CLARA_MSG_POLL_DIMS:
+			oswin_session_poll_dims(session, (clara_poll_dims_msg_t *) cmd);
+			break;
 		default:
 			fprintf(stderr, "warn: invalid command received for session %i: %i\n", session->session.cmd_queue, cmd->msg.type);
 	}
@@ -140,6 +144,26 @@ void oswin_session_create_win(osession_node_t *session, clara_createwin_msg_t *c
 	clara_window_add(&(session->session), cmd->handle);
 
 	s = oswin_send_sync_ack(session, cmd->msg.seq, 0);
+
+	if (s == -1) {
+		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));
+	}
+}
+
+void oswin_session_poll_dims(osession_node_t *session, clara_poll_dims_msg_t *cmd)
+{
+	int s;
+	int r = 0;
+	clara_rect_t dims;
+
+	assert(session != NULL);
+	assert(cmd != NULL);
+
+	dims = oswin_get_screen_dims();
+
+	r = (dims.w & 0xFFFF) | ((dims.h & 0xFFFF) << 16);
+
+	s = oswin_send_sync_ack(session, cmd->msg.seq, r);
 
 	if (s == -1) {
 		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));

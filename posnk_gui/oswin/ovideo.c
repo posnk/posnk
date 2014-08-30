@@ -7,6 +7,7 @@
 #include "ovideo.h"
 
 oswin_video_t	oswin_video;
+clara_rect_t	oswin_screen_dims;
 
 int oswin_video_init(clara_surface_t *s)
 {
@@ -39,6 +40,11 @@ int oswin_video_init(clara_surface_t *s)
 		fprintf(stderr, "fatal: could not create cairo context for back buffer: %s\n", cairo_status_to_string(status));
 		return -1;
 	}
+
+	oswin_screen_dims.x = 0;
+	oswin_screen_dims.y = 0;
+	oswin_screen_dims.w = s->w;
+	oswin_screen_dims.h = s->h;
 
 	return 0;
 }
@@ -78,4 +84,9 @@ void oswin_finish_clip()
 {
 	cairo_clip (oswin_video.back_context);
 	cairo_clip (oswin_video.fb_context);
+}
+
+clara_rect_t oswin_get_screen_dims()
+{
+	return oswin_screen_dims;
 }
