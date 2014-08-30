@@ -1,0 +1,20 @@
+#!/bin/bash
+cd libclara
+make clean 
+make install
+cd ../wtkmurrine
+make clean
+make install
+cd ../libwtk
+make clean
+make install
+cd ../wtktest
+make clean
+make install
+cd ../oswin
+make clean
+make install
+cd ../tardis
+make clean
+make install
+cd ..

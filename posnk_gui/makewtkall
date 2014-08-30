@@ -1,0 +1,11 @@
+#!/bin/bash
+cd wtkmurrine
+make clean
+make install
+cd ../libwtk
+make clean
+make install
+cd ../wtktest
+make clean
+make install
+cd ..
