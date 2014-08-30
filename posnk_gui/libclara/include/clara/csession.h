@@ -3,6 +3,7 @@
 
 #include <clara/cmsg.h>
 #include <clara/cllist.h>
+#include <clara/ctypes.h>
 
 #ifndef __CLARA_CSESSION_H__
 #define __CLARA_CSESSION_H__
@@ -16,6 +17,7 @@
 #define CLARA_MSG_CONN_ACC	(2)
 #define CLARA_MSG_DISCONNECT	(3)
 #define CLARA_MSG_CREATE_WIN	(4)
+#define CLARA_MSG_POLL_DIMS	(9)
 
 typedef struct {
 	clara_message_t msg;
@@ -25,6 +27,10 @@ typedef struct {
 typedef struct {
 	clara_message_t msg;
 } clara_disconnect_msg_t;
+
+typedef struct {
+	clara_message_t msg;
+} clara_poll_dims_msg_t;
 
 typedef struct {
 	clara_message_t	msg;
@@ -53,6 +59,8 @@ int clara_init_client(const char *disp_path);
 int clara_create_window();
 
 void clara_exit_client();
+
+clara_rect_t clara_get_screen_dims();
 
 #endif
 

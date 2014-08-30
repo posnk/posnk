@@ -3,6 +3,7 @@
 #include <clara/cllist.h>
 #include <clara/cmsg.h>
 #include <clara/ctypes.h>
+#include <clara/csession.h>
 #ifndef __CLARA_CWINDOW_H__
 #define __CLARA_CWINDOW_H__
 
@@ -10,6 +11,8 @@
 #define CLARA_MSG_DAMAGE_WIN		(6)		
 
 #define CLARA_WIN_FLAG_INITIALIZED	(1<<0)
+#define CLARA_WIN_FLAG_UNDECORATED	(1<<1)
+#define CLARA_WIN_FLAG_NOFRONT		(1<<2)
 
 typedef struct {
 	clara_message_t	 msg;

@@ -87,6 +87,21 @@ void cllist_add_end(cllist_t *list,cllist_t *entry)
 }
 
 /**
+ * Adds a node to the start of the linked list
+ * @param list  Pointer to the linked list head node
+ * @param entry The node to add to the list
+ */
+void cllist_add_start(cllist_t *list,cllist_t *entry)
+{
+	assert(list != NULL);
+	assert(entry != NULL);
+	entry->next = list->next;
+	entry->prev = list;
+	list->next->prev = entry;
+	list->next = entry;
+}
+
+/**
  * Unlinks a node from the list it is in.
  * @param entry The node to unlink
  */

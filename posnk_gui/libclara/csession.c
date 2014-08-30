@@ -122,6 +122,29 @@ int clara_create_window()
 	return (int) handle;	
 }
 
+clara_rect_t clara_get_screen_dims()
+{
+	clara_rect_t d;
+	clara_poll_dims_msg_t cw_msg;
+	int st;
+
+	st = clara_send_cmd_sync(CLARA_MSG_TARGET_SESSION, CLARA_MSG_POLL_DIMS, &cw_msg, CLARA_MSG_SIZE(clara_poll_dims_msg_t));
+
+	d.w = -1;
+	d.h = -1;
+
+	if (st < 0)
+		return d;
+
+	d.x = 0;
+	d.y = 0;
+	d.w = st & 0xFFFF;
+	d.h = (st >> 16) & 0xFFFF;
+
+	return d;	
+}
+
+
 void clara_exit_client()
 {
 	int s;
