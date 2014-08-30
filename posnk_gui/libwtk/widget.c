@@ -12,7 +12,9 @@ void wtk_widget_do_clip(wtk_widget_t *widget, cairo_t *context)
 	cairo_get_matrix(context, &m);
 	cairo_translate(context, widget->rect.x, widget->rect.y);
 
-	if (widget->flags & WTK_WIDGET_FLAG_DIRTY)
+	if ((widget->flags & WTK_WIDGET_FLAG_DIRTY) && widget->callbacks.do_clip)
+		widget->callbacks.do_clip(widget, context);
+	else if (widget->flags & WTK_WIDGET_FLAG_DIRTY)
 		cairo_rectangle(context, 0, 0, widget->rect.w, widget->rect.h);
 
 	for (_w = widget->children.next; _w != &(widget->children); _w = _w->next)
@@ -44,6 +46,8 @@ void wtk_widget_render(wtk_widget_t *widget, cairo_t *context, int focused)
 		wtk_widget_render((wtk_widget_t *) _w, context, widget->focused == (wtk_widget_t *) _w);
 
 	cairo_set_matrix(context, &m);
+
+	widget->flags &= ~WTK_WIDGET_FLAG_DIRTY;
 }
 
 void wtk_widget_dispatch_event(wtk_widget_t *widget, clara_event_msg_t *event)
@@ -98,7 +102,7 @@ void wtk_widget_handle_event(wtk_widget_t *widget, clara_event_msg_t *event)
 		for (_w = widget->children.next; _w != &(widget->children); _w = _w->next) {
 			w = (wtk_widget_t *) _w;
 			if (clara_rect_test(w->rect, event->ptr)) {
-				printf("widg hit (%i, %i, %i, %i) ptr (%i, %i)\n", (int) w->rect.x, (int) w->rect.y, (int) w->rect.w, (int) w->rect.h, (int) event->ptr.x, (int) event->ptr.y);
+				//printf("widg hit (%i, %i, %i, %i) ptr (%i, %i)\n", (int) w->rect.x, (int) w->rect.y, (int) w->rect.w, (int) w->rect.h, (int) event->ptr.x, (int) event->ptr.y);
 				if (event->flags & CLARA_EVENT_FLAG_SETFOCUS) {
 					widget->focused = w;
 				//	printf("focus chg\n");

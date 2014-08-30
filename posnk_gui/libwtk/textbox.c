@@ -51,6 +51,7 @@ void wtk_textbox_key_typed(wtk_widget_t *w, uint32_t keycode, char keychar)
 	if (strlen(textbox->text) > 159)
 		return;
 	sprintf(textbox->text, "%s%c", textbox->text, keychar);
+	wtk_widget_redraw(w);
 }
 
 void wtk_textbox_key_down(wtk_widget_t *w, uint32_t keycode, char keychar)
@@ -63,6 +64,7 @@ void wtk_textbox_key_down(wtk_widget_t *w, uint32_t keycode, char keychar)
 			return;
 		textbox->text[len - 1] = 0;
 	}
+	wtk_widget_redraw(w);
 
 }
 

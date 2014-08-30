@@ -1,5 +1,5 @@
-#ifndef __WTK_TEXTBOX_H__
-#define __WTK_TEXTBOX_H__
+#ifndef __WTK_MENUBAR_H__
+#define __WTK_MENUBAR_H__
 
 #include <wtk/widget.h>
 

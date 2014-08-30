@@ -13,6 +13,7 @@ typedef struct wtk_callbacks	wtk_callbacks_t;
 
 struct wtk_callbacks {
 	void (*paint)(wtk_widget_t *, cairo_t *, int focused);
+	void (*do_clip)(wtk_widget_t *, cairo_t *);
 	void (*key_down)(wtk_widget_t *, uint32_t keycode, char keychar, int modifiers);
 	void (*key_up)(wtk_widget_t *, uint32_t keycode, char keychar, int modifiers);
 	void (*key_typed)(wtk_widget_t *, uint32_t keycode, char keychar, int modifiers);

@@ -40,7 +40,6 @@ typedef int    gint32;
 typedef gint   gboolean;
 typedef gint   bool;
 typedef gchar  chtype;
-typedef gint   ssize_t;
 
 typedef unsigned char	guchar;
 typedef unsigned short	gushort;
