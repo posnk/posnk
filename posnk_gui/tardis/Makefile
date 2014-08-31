@@ -40,6 +40,7 @@ SRCS = main.c \
 	panel.c \
 	spacer.c \
 	userwidg.c \
+	tasklist.c \
 	clock.c
 
 # define the C object files 

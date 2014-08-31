@@ -61,7 +61,7 @@ panel_widget_t *userwidg_create()
 
 	userwidg_setup();
 
-	w->w_mode = PANEL_W_MODE_FILL;
+	w->w_mode = PANEL_W_MODE_FIXED;
 
 	w->widget = wtk_create_widget(rect);
 

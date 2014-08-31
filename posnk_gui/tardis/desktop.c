@@ -39,7 +39,7 @@ void desktop_initialize(const char * bg_path)
 	desktop_background = cairo_image_surface_create_from_png (bg_path);
 	assert (desktop_background != NULL);
 
-	desktop_window = wtk_window_create(d.w, d.h, CLARA_WIN_FLAG_NOFRONT | CLARA_WIN_FLAG_UNDECORATED, "TARDIS (Clara Desktop)");
+	desktop_window = wtk_window_create(d.w, d.h, CLARA_WIN_FLAG_NOFRONT | CLARA_WIN_FLAG_UNDECORATED | CLARA_WIN_FLAG_NOLIST, "TARDIS (Clara Desktop)");
 	assert (desktop_window != NULL);
 
 	desktop_widget = wtk_create_widget(d);
@@ -54,13 +54,9 @@ void desktop_initialize(const char * bg_path)
 
 	wtk_widget_add(desktop_widget, desktop_panel_widget);
 	
-	panel_add_widget(clock_create());
-	
-	panel_add_widget(spacer_create());
+	panel_add_widget(tasklist_create());
 	
 	panel_add_widget(clock_create());
-	
-	panel_add_widget(spacer_create());
 	
 	panel_add_widget(userwidg_create());
 }

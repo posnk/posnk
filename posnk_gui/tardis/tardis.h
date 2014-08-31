@@ -31,4 +31,6 @@ panel_widget_t *clock_create();
 
 panel_widget_t *spacer_create();
 
+panel_widget_t *tasklist_create();
+
 #endif
