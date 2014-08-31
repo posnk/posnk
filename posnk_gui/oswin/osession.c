@@ -104,6 +104,9 @@ int oswin_session_cmd(osession_node_t *session, clara_msg_buffer_t *cmd)
 		case CLARA_MSG_POLL_DIMS:
 			oswin_session_poll_dims(session, (clara_poll_dims_msg_t *) cmd);
 			break;
+		case CLARA_MSG_WNDLIST:
+			oswin_session_wndlist(session, (clara_wndlist_msg_t *) cmd);
+			break;
 		default:
 			fprintf(stderr, "warn: invalid command received for session %i: %i\n", session->session.cmd_queue, cmd->msg.type);
 	}
@@ -164,6 +167,44 @@ void oswin_session_poll_dims(osession_node_t *session, clara_poll_dims_msg_t *cm
 	r = (dims.w & 0xFFFF) | ((dims.h & 0xFFFF) << 16);
 
 	s = oswin_send_sync_ack(session, cmd->msg.seq, r);
+
+	if (s == -1) {
+		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));
+	}
+}
+
+void oswin_session_wndlist(osession_node_t *session, clara_wndlist_msg_t *cmd)
+{
+	int s;
+
+	int wndcount, p = 0;
+	cllist_t	*_w;
+	oswin_window_t	*w;	
+	
+	clara_wndlist_t	*wndlist;
+	size_t		 wndlist_size;
+
+	assert(session != NULL);
+	assert(cmd != NULL);
+
+	wndcount = cllist_size(&oswin_window_list);
+
+	wndlist_size = sizeof(clara_wndlist_t) + sizeof(clara_wndlist_e_t) * wndcount;
+
+	wndlist = malloc(wndlist_size);
+	wndlist->entry_count = wndcount;
+
+	for (_w = oswin_window_list.next; _w != &oswin_window_list; _w = _w->next) {
+		w = (oswin_window_t *) _w;
+		wndlist->entries[p].flags = w->window->flags;
+		wndlist->entries[p].dimensions = w->window->dimensions;
+		strcpy(wndlist->entries[p].title, w->window->title);
+		wndlist->entries[p++].focused = w == oswin_focused_window;
+	}
+
+	s = oswin_send_sync_ack_pl(session, cmd->msg.seq, wndlist, wndlist_size);
+
+	free(wndlist);
 
 	if (s == -1) {
 		fprintf(stderr, "error: session %i synchronous command acknowledge failed to send: %s \n", session->session.cmd_queue, strerror(errno));

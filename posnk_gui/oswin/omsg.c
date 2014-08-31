@@ -6,6 +6,7 @@
 
 #include <sys/types.h>
 #include <sys/msg.h>
+#include <sys/shm.h>
 
 #include <clara/cmsg.h>
 #include <clara/csession.h>
@@ -61,6 +62,31 @@ int oswin_send_sync_ack(osession_node_t *session, uint32_t seq, int result)
 	msg.msg.magic = CLARA_MSG_MAGIC;
 	msg.msg.seq = seq;
 	msg.result = result;
+
+	return msgsnd(session->session.event_queue, &msg, CLARA_MSG_SIZE(clara_sync_ack_msg_t), 0);	
+}
+
+int oswin_send_sync_ack_pl(osession_node_t *session, uint32_t seq, void *payload, size_t size)
+{
+	void *payload_shm;
+	clara_sync_ack_msg_t msg;
+	assert(session != NULL);
+
+	msg.msg.target = seq | CLARA_MSG_TARGET_SYNC_BIT;
+	msg.msg.type = CLARA_MSG_SYNC_ACK;
+	msg.msg.magic = CLARA_MSG_MAGIC;
+	msg.msg.seq = seq;
+	msg.payload_size = size;
+
+	msg.payload_handle = shmget(IPC_PRIVATE, size, 0666 | IPC_CREAT);
+	assert (msg.payload_handle != -1);
+
+	payload_shm = shmat(msg.payload_handle, NULL, 0);	
+	assert (payload_shm != NULL);
+
+	memcpy(payload_shm, payload, size);
+
+	shmdt(payload_shm);
 
 	return msgsnd(session->session.event_queue, &msg, CLARA_MSG_SIZE(clara_sync_ack_msg_t), 0);	
 }

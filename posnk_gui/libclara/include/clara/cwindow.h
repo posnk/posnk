@@ -13,6 +13,7 @@
 #define CLARA_WIN_FLAG_INITIALIZED	(1<<0)
 #define CLARA_WIN_FLAG_UNDECORATED	(1<<1)
 #define CLARA_WIN_FLAG_NOFRONT		(1<<2)
+#define CLARA_WIN_FLAG_NOLIST		(1<<3)
 
 typedef struct {
 	clara_message_t	 msg;

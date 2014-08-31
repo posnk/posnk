@@ -28,9 +28,12 @@ typedef union {
 typedef struct {
 	clara_message_t	msg;	
 	int		result;
+	int		payload_handle;
+	size_t		payload_size;	
 } clara_sync_ack_msg_t;
 
 int clara_send_cmd_sync(long int target, uint32_t type, void *msg, size_t size);
+void *clara_send_cmd_sync_pl(long int target, uint32_t type, void *msg, size_t size);
 int clara_send_cmd_async(long int target, uint32_t type, void *msg, size_t size);
 ssize_t clara_recv_ev_block(long int target, void *msg, size_t size);
 ssize_t clara_recv_ev(long int target, void *msg, size_t size);

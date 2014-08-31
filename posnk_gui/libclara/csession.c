@@ -144,6 +144,17 @@ clara_rect_t clara_get_screen_dims()
 	return d;	
 }
 
+clara_wndlist_t *clara_list_windows()
+{
+	clara_wndlist_msg_t cw_msg;
+	clara_wndlist_t *list;
+
+	list = (clara_wndlist_t *) clara_send_cmd_sync_pl(CLARA_MSG_TARGET_SESSION, CLARA_MSG_WNDLIST, &cw_msg, CLARA_MSG_SIZE(clara_wndlist_msg_t));
+
+	return list;	
+}
+
+
 
 void clara_exit_client()
 {
