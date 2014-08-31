@@ -23,5 +23,7 @@ panel_widget_t *spacer_create()
 
 	w->widget->callbacks.paint = &spacer_paint;
 
+	w->process = NULL;
+
 	return w;
 }

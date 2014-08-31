@@ -38,6 +38,7 @@ LIBS =  -lwtk -lwtkmurrine -lbmp -lclara `pkg-config --cflags --libs cairo` -lpi
 SRCS = main.c \
 	desktop.c \
 	panel.c \
+	spacer.c \
 	clock.c
 
 # define the C object files 

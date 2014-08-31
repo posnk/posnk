@@ -55,6 +55,14 @@ void desktop_initialize(const char * bg_path)
 	wtk_widget_add(desktop_widget, desktop_panel_widget);
 	
 	panel_add_widget(clock_create());
+	
+	panel_add_widget(spacer_create());
+	
+	panel_add_widget(clock_create());
+	
+	panel_add_widget(spacer_create());
+	
+	panel_add_widget(clock_create());
 }
 
 void desktop_process()
