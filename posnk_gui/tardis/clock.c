@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <murrine.h>
 #include <linux/input.h>
-
+#include "tardis.h"
 
 void clock_paint(wtk_widget_t *w, cairo_t *context, int focused)
 {
@@ -45,9 +45,27 @@ void clock_paint(wtk_widget_t *w, cairo_t *context, int focused)
 	cairo_show_text (context, text);
 }
 
-wtk_widget_t *clock_create(clara_rect_t rect)
+void clock_process(panel_widget_t *w)
 {
-	wtk_widget_t *w = wtk_create_widget(rect);
-	w->callbacks.paint = &clock_paint;
+	if (difftime(time(NULL), (time_t) w->impl) >= 1) {
+		wtk_widget_redraw(w->widget);
+		time((time_t *) &w->impl);
+	}
+}
+
+panel_widget_t *clock_create()
+{
+	clara_rect_t rect = {0, 0, 200, 0};
+
+	panel_widget_t *w = malloc(sizeof(panel_widget_t));
+
+	w->w_mode = PANEL_W_MODE_FIXED;
+
+	w->widget = wtk_create_widget(rect);
+
+	w->widget->callbacks.paint = &clock_paint;
+	w->process = &clock_process;
+
+	w->impl = 0;
 	return w;
 }

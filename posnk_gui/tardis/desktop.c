@@ -15,12 +15,11 @@ int		 desktop_dirty = 1;
 
 wtk_window_t	*desktop_window;
 wtk_widget_t	*desktop_widget;
+wtk_widget_t	*desktop_panel_widget;
 wtk_widget_t	*desktop_clock_widget;
 
 
 cairo_surface_t *desktop_background;
-
-time_t		 desktop_update_ts;
 
 void desktop_paint(wtk_widget_t *w, cairo_t *ctx, int focused) 
 {
@@ -40,7 +39,7 @@ void desktop_initialize(const char * bg_path)
 {
 	int16_t cw = 256;
 	clara_rect_t d = clara_get_screen_dims();
-	clara_rect_t clock_rect = {d.w - cw, 0, cw, 32};
+	
 
 	desktop_background = cairo_image_surface_create_from_png (bg_path);
 	assert (desktop_background != NULL);
@@ -56,16 +55,15 @@ void desktop_initialize(const char * bg_path)
 
 	wtk_widget_add(desktop_window->widget, desktop_widget);
 	
-	desktop_clock_widget = clock_create(clock_rect);
+	desktop_panel_widget = panel_create();
 
-	wtk_widget_add(desktop_widget, desktop_clock_widget);
+	wtk_widget_add(desktop_widget, desktop_panel_widget);
+	
+	panel_add_widget(clock_create());
 }
 
 void desktop_process()
 {
-	if (difftime(time(NULL), desktop_update_ts) >= 1) {
-		wtk_widget_redraw(desktop_clock_widget);
-		time(&desktop_update_ts);
-	}
+	panel_process();
 	wtk_window_process(desktop_window);
 }
