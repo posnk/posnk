@@ -23,8 +23,10 @@ wtk_widget_t *panel_create();
 
 void panel_add_widget(panel_widget_t *widget);
 
+void panel_process();
+
 panel_widget_t *clock_create();
 
-void panel_process();
+panel_widget_t *spacer_create();
 
 #endif
