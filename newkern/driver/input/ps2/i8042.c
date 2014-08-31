@@ -119,9 +119,50 @@ int i8042_isr(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unus
 	return 1;
 }
 
+int i8042_isrm(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context)
+{
+	//int status = i8042_read_status();
+	int data = 0;
+	//debugcon_aprintf("i8042isr status:%i\n",status);
+	//if (~status & I8042_STATUS_FLAG_IN_FULL)
+	//	return 1;
+	//while (status & I8042_STATUS_FLAG_IN_FULL) {
+		data = i8042_read_data();
+	//	if (status & I8042_STATUS_FLAG_AUX_DATA) {
+			ps2aux_handle_data(data);
+			
+	//	} else {
+			//ps2kbd_handle_data(data);
+	//	}
+	//	status = i8042_read_status();
+	//}
+	return 1;
+}
+
+int i8042_isrk(__attribute__((__unused__)) irq_id_t irq_id, __attribute__((__unused__)) void *context)
+{
+	//int status = i8042_read_status();
+	int data = 0;
+	//debugcon_aprintf("i8042isr status:%i\n",status);
+	//if (~status & I8042_STATUS_FLAG_IN_FULL)
+	//	return 1;
+	//while (status & I8042_STATUS_FLAG_IN_FULL) {
+		data = i8042_read_data();
+	//	if (status & I8042_STATUS_FLAG_AUX_DATA) {
+			//ps2aux_handle_data(data);
+			
+	//	} else {
+			ps2kbd_handle_data(data);
+	//	}
+	//	status = i8042_read_status();
+	//}
+	return 1;
+}
+
+
 void i8042_init()
 {
-	i8042_self_test();
-	interrupt_register_handler(1, &i8042_isr, NULL);
-	interrupt_register_handler(12, &i8042_isr, NULL);
+	//i8042_self_test();
+	interrupt_register_handler(1, &i8042_isrk, NULL);
+	interrupt_register_handler(12, &i8042_isrm, NULL);
 }
