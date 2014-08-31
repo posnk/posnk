@@ -1,14 +1,11 @@
-#include <string.h>
-#include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+
 #include <clara/clara.h>
 #include <clara/cwindow.h>
-#include <unistd.h>
-#include <assert.h>
-#include <time.h>
 #include <wtk/window.h>
 #include <wtk/widget.h>
+
 #include "tardis.h"
 
 int		 desktop_dirty = 1;
@@ -37,9 +34,7 @@ void desktop_do_clip(wtk_widget_t *w, cairo_t *ctx)
 
 void desktop_initialize(const char * bg_path)
 {
-	int16_t cw = 256;
-	clara_rect_t d = clara_get_screen_dims();
-	
+	clara_rect_t d = clara_get_screen_dims();	
 
 	desktop_background = cairo_image_surface_create_from_png (bg_path);
 	assert (desktop_background != NULL);

@@ -1,13 +1,9 @@
 #include <time.h>
+#include <stdlib.h>
 #include <cairo.h>
 #include <wtk/widget.h>
 #include <wtk/textbox.h>
 #include <wtk/resources.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <murrine.h>
-#include <linux/input.h>
 #include "tardis.h"
 
 void clock_paint(wtk_widget_t *w, cairo_t *context, int focused)

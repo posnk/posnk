@@ -1,13 +1,13 @@
-#include <string.h>
-#include <errno.h>
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+
 #include <clara/clara.h>
 #include <clara/cwindow.h>
 #include <clara/cllist.h>
 #include <wtk/window.h>
 #include <wtk/widget.h>
+
 #include "tardis.h"
 
 wtk_widget_t	*panel_widget;

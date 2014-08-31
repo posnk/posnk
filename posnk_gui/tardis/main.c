@@ -1,11 +1,12 @@
-#include <string.h>
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <clara/clara.h>
+
 #include <unistd.h>
+
+#include <clara/clara.h>
 #include <wtk/window.h>
 #include <wtk/widget.h>
+
 #include "tardis.h"
 
 int main(int argc, char **argv)
