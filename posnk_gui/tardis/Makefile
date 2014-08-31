@@ -39,6 +39,7 @@ SRCS = main.c \
 	desktop.c \
 	panel.c \
 	spacer.c \
+	userwidg.c \
 	clock.c
 
 # define the C object files 

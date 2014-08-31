@@ -62,7 +62,7 @@ void desktop_initialize(const char * bg_path)
 	
 	panel_add_widget(spacer_create());
 	
-	panel_add_widget(clock_create());
+	panel_add_widget(userwidg_create());
 }
 
 void desktop_process()
