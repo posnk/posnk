@@ -104,6 +104,14 @@ void desktop_tv_render_item(wtk_widget_t *w, cairo_t *context, int n, int select
 	cairo_show_text (context, desktop_item[n].name);
 }
 
+void desktop_tv_on_click(wtk_widget_t *w, int n)
+{
+	pid_t pid = fork();
+	if (pid != 0)
+		return;
+	system(desktop_item[n].cmd);
+}
+
 void desktop_load_icons()
 {
 	int n;
@@ -150,6 +158,7 @@ void desktop_initialize(const char * bg_path)
 
 	tileview->callbacks.get_item_count = &desktop_tv_get_item_count;
 	tileview->callbacks.render_tile = &desktop_tv_render_item;
+	tileview->callbacks.on_click = &desktop_tv_on_click;
 	tileview->tile_w = 100;
 	tileview->tile_h = 79;
 	tileview->gap_x = 0;
