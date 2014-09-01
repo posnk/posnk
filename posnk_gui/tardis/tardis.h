@@ -19,6 +19,13 @@ struct panel_widget {
 	void		*impl;
 };
 
+typedef struct {
+	char		*cmd;
+	char		*name;
+	char		*icon;
+	cairo_surface_t *icon_surface;
+} desktop_item_t;
+ 
 wtk_widget_t *panel_create();
 
 void panel_add_widget(panel_widget_t *widget);
