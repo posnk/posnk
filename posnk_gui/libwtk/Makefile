@@ -41,6 +41,7 @@ SRCS = window.c \
 	button.c \
 	textbox.c \
 	menubar.c \
+	tileview.c \
 	resources.c
 
 # define the C object files 
