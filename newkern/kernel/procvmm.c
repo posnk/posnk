@@ -442,9 +442,9 @@ void procvmm_unmmap(process_mmap_t *region)
 	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
 		region->file->usage_count--;
 	}
-	if (region->flags & PROCESS_MMAP_FLAG_SHM) {
-		region->shm->info.shm_nattch++;
-	}
+	//if (region->flags & PROCESS_MMAP_FLAG_SHM) {
+	//	region->shm->info.shm_nattch--;
+	//}
 	if (region->flags & PROCESS_MMAP_FLAG_DEVICE) {
 		device_char_unmmap(region->file->if_dev, region->fd, region->flags, region->start, region->offset, region->file_sz);
 		heapmm_free(region->name, strlen(region->name) + 1);
@@ -535,7 +535,7 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 		}
 		addr = region.start;
 	}
-	debugcon_printf("ipt\n");
+	//debugcon_printf("ipt\n");
 	/* If start is not page alligned, try to adjust offset in such a way 
 	 * that the file can be loaded at the start of the page */
 	in_page = ((uintptr_t) addr) & PHYSMM_PAGE_ADDRESS_MASK;
@@ -543,13 +543,13 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 		/* Page allign start */
 		addr = (void*)( ((uintptr_t)addr) - in_page);
 	}
-	debugcon_printf("ashm: %x\n",addr);
+	//debugcon_printf("ashm: %x\n",addr);
 	st = procvmm_mmap_shm(addr, shm, flags, NULL);
 	if (st) {
 		syscall_errno = st;
 		return (void *) -1;
 	}
-	debugcon_printf("raddr\n");
+	//debugcon_printf("raddr\n");
 	return addr;
 }
 

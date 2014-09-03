@@ -154,8 +154,10 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 void schedule()
 {
 	//TODO: Increment ticks only on preemptive scheduler calls
+#ifdef CONFIG_SERIAL_DEBUGGER_TRIG	
 	if (debugcon_have_data())
 		dbgapi_invoke_kdbg(0);
+#endif
 	scheduler_current_task->cpu_ticks++;
 	scheduler_task_t *next_task = (scheduler_task_t *) llist_iterate_select(scheduler_task_list, &scheduler_next_task_iterator, NULL);
 	if (scheduler_current_task->state == PROCESS_RUNNING)

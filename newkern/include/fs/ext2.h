@@ -52,6 +52,8 @@
 
 #define EXT2_DEV_DECODE(dIn)		MAKEDEV( ((dIn >> 8) & 0xFF), (dIn & 0xFF) ) 
 
+#define EXT2_DEV_ENCODE(dIn)		MAKEDEV( ((MAJOR(dIn) << 8) & 0xFF00) | (MINOR(dIn) & 0xFF) ) 
+
 //We currently only support filetype in dirent
 #define EXT2_SUPPORTED_REQ_FEATURES	(2)
 
