@@ -231,7 +231,6 @@ inode_t * ramfs_load_inode(fs_device_t *device, ino_t id)
 		inode->inode.device_id = device->id;
 		inode->inode.mode = S_IFDIR | 0777;
 		inode->inode.if_dev = 0;
-		inode->inode.link_path[0] = 0;
 		inode->inode.uid = 0; //root
 		inode->inode.gid = 0; //root
 		inode->inode.lock = semaphore_alloc();

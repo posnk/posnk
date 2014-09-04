@@ -418,20 +418,19 @@ uint32_t sys_stat(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_readlink(char *path, char *buf, size_t bufsiz)
 {
+	size_t read_size = 0;
 	inode_t *inode = vfs_find_symlink(path);
 	if (!inode) {
 		syscall_errno = ENOENT;
 		return -1;
 	}
-	if (!inode->link_path[0]) {
-		syscall_errno = EINVAL;
+
+	syscall_errno = vfs_readlink(inode, buf, bufsiz, &read_size);
+
+	if (syscall_errno != 0)
 		return -1;
-	}
-	if (bufsiz == 0)
-		return 0;
-	buf[0] = 0;
-	strncpy(buf, inode->link_path, bufsiz);
-	return strlen(buf);
+
+	return read_size;
 }
 
 //int stat(char *path, struct stat* buf);
@@ -481,10 +480,7 @@ int _sys_lstat(char *path, struct stat* buf)
 	buf->st_dev  = (dev_t) inode->device_id;//TODO: FIX
 	buf->st_ino  = inode->id;
 	buf->st_rdev = inode->if_dev;
-	if (inode->link_path[0])
-		buf->st_size = strlen(inode->link_path);
-	else
-		buf->st_size = inode->size;
+	buf->st_size = inode->size;
 	buf->st_mode = inode->mode;
 	//buf->st_blocks = buf->st_size * 512;//TODO: Implement sparse files
 	//buf->st_blksize = 512;//TODO: Ask FS about block size

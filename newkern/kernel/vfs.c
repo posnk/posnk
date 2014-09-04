@@ -270,12 +270,16 @@ inode_t *vfs_effective_inode(inode_t * inode)
 		/* If so: return it's root inode */
 		return vfs_inode_ref(inode->mount);
 	}
-	
-	/* Is this inode a symlink? */
+
+	/*
+//TODO: NEW SYMLINK IMPLEMENTATION
+	/* Is this inode a symlink? * /
 	if (inode->link_path[0]) {
-		/* If so: look up the inode it points to */
+		/* If so: look up the inode it points to * /
 		return vfs_find_inode(inode->link_path);
 	}
+
+	*/
 
 	/* This is a regular inode, return it. */
 	return vfs_inode_ref(inode);
@@ -1659,6 +1663,93 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 	return 0;
 }
 
+/**
+ * @brief Reads a symbolic link path
+ * @param inode The symbolic link inode to read
+ * @param buffer The buffer to read the path to
+ * @param size The size of the read buffer
+ * @param read_size The number of characters actually read
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception EINVAL The file is not a symbolic link
+ * @exception EIO    An IO error occurred while reading the link
+ * @exception EACCES User does not have read permission for the symbolic link
+ * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
+ */
+
+int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
+{
+
+	inode_t *inode;
+	int status;
+	aoff_t _read_size;
+
+	/* Check for null pointers */
+	assert (_inode != NULL);
+	assert (buffer != NULL);
+	assert (read_size != NULL);
+
+	/* Get a stable reference to the inode */
+	inode = vfs_inode_ref(_inode);
+
+	/* Accuire a lock on the inode */
+	semaphore_down(inode->lock);
+
+	/* Verify read permission */
+	if (!vfs_have_permissions(inode, MODE_READ)) {
+		
+		/* Release the lock on this inode */
+		semaphore_up(inode->lock);	
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
+		
+		/* Return the error "Access Denied"  */
+		/* because this call might have been */
+		/* made without checking permissions */		
+		return EACCES;
+
+	}
+
+	/* Make sure the file is a symbolic link */
+	if (!S_ISLNK(inode->mode)) {
+		
+		/* Release the lock on this inode */
+		semaphore_up(inode->lock);	
+
+		/* Release the dereferenced inode */
+		vfs_inode_release(inode);
+		
+		/* Return the error "Invalid Operation", */
+		/* we can not readlink() something that  */
+		/* is not a symbolic link */		
+		return EINVAL;
+
+	}
+
+	if (size > inode->size)
+		size = inode->size;	
+
+	/* Call on the FS driver to read the data */
+	status = vfs_int_read(inode, (void *) buffer, 0, (aoff_t) size, &_read_size);
+
+	*read_size = (size_t) _read_size;
+
+	/* If data was actually read, update atime */
+	if (*read_size)
+		inode->atime = system_time;
+
+	/* Release the lock on this inode */
+	semaphore_up(inode->lock);	
+
+	/* Release the dereferenced inode */
+	vfs_inode_release(inode);
+
+	/* Pass any errors on the the caller */
+	return status;
+
+}
 
 
 /**
@@ -1680,6 +1771,7 @@ int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags)
 
 int vfs_symlink(char *oldpath, char *path)
 {
+	aoff_t write_size_rv, write_size;
 	int status;
 	char * name;
 	inode_t *parent;
@@ -1769,7 +1861,7 @@ int vfs_symlink(char *oldpath, char *path)
 		return ENAMETOOLONG;
 	}
 	/* Fill other inode fields */
-	inode->mode = 0;
+	inode->mode = S_IFLNK | 0777;
 	inode->if_dev = 0;
 	inode->uid = scheduler_current_task->uid; 
 	inode->gid = scheduler_current_task->gid; 
@@ -1779,9 +1871,6 @@ int vfs_symlink(char *oldpath, char *path)
 
 	/* Set atime, mtime, ctime */
 	inode->atime = inode->mtime = inode->ctime = system_time;
-
-	/* Set link target */
-	strcpy(inode->link_path, oldpath);
 
 	/* Push inode to storage */
 	status = vfs_int_mknod(inode);
@@ -1800,6 +1889,29 @@ int vfs_symlink(char *oldpath, char *path)
 		/* Pass the error to the caller */
 		return status;
 	}	
+
+	/* Set link target */
+	write_size = strlen(oldpath) + 1;
+
+	status = vfs_int_write(inode, oldpath, 0, write_size, &write_size_rv);
+
+	inode->size = write_size;
+
+	/* Check for errors */
+	if (status || (write_size_rv != write_size)) {
+		/* If an error occurred, clean up */
+		vfs_int_rmnod(inode);
+		heapmm_free(inode, parent->device->inode_size);
+
+		/* Release the lock on the parent inode*/
+		semaphore_up(parent->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Pass the error to the caller */
+		return status;
+	}
 
 	/* Add inode to cache */
 	llist_add_end(inode_cache, (llist_t *) inode);

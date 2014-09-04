@@ -1,0 +1,26 @@
+This file contains notes regarding the VFS rewrite starting September 4th 2014.
+
+Goals: 
+
+	Re-implement symbolic links to be semantically correct.
+
+Step 1 : Delete inode->link_path member
+
+Build log after delete:
+
+---------------------------------------------------------------------------------------------------------------------
+kernel/vfs.c: In function 'vfs_effective_inode':
+kernel/vfs.c:275:11: error: 'inode_t' has no member named 'link_path'
+kernel/vfs.c:277:30: error: 'inode_t' has no member named 'link_path'
+kernel/vfs.c: In function 'vfs_symlink':
+kernel/vfs.c:1784:14: error: 'inode_t' has no member named 'link_path'
+kernel/sc_vfs.c: In function '_sys_readlink':
+kernel/sc_vfs.c:426:12: error: 'inode_t' has no member named 'link_path'
+kernel/sc_vfs.c:433:20: error: 'inode_t' has no member named 'link_path'
+kernel/sc_vfs.c: In function '_sys_lstat':
+kernel/sc_vfs.c:484:11: error: 'inode_t' has no member named 'link_path'
+kernel/sc_vfs.c:485:30: error: 'inode_t' has no member named 'link_path'
+fs/ext2.c:345:9: error: 'inode_t' has no member named 'link_path'
+
+
+---------------------------------------------------------------------------------------------------------------------

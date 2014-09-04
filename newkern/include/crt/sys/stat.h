@@ -4,45 +4,57 @@
 #include <sys/types.h>
 
 struct stat {
-dev_t	st_dev;
-ino_t	st_ino;
-umode_t	st_mode;
-nlink_t	st_nlink;
-uid_t	st_uid;
-gid_t	st_gid;
-dev_t	st_rdev;
-off_t	st_size;
-time_t	st_atime;
-time_t	st_mtime;
-time_t	st_ctime;
+	dev_t	st_dev;
+	ino_t	st_ino;
+	umode_t	st_mode;
+	nlink_t	st_nlink;
+	uid_t	st_uid;
+	gid_t	st_gid;
+	dev_t	st_rdev;
+	off_t	st_size;
+	time_t	st_atime;
+	time_t	st_mtime;
+	time_t	st_ctime;
 } ;
 
-#define S_IFMT 00170000
-/* Regular file */
-#define S_IFSOCK 0200000
-/* Regular file */
-#define S_IFREG 0100000
-/* Block special file */
-#define S_IFBLK 0060000
-/* Directory */
-#define S_IFDIR 0040000
-/* Character special file */
-#define S_IFCHR 0020000
-/* FIFO */
-#define S_IFIFO 0010000
+/** Mask for the file "type" field */
+#define S_IFMT		00170000
+
+/** Socket */
+#define S_IFSOCK	00140000
+
+/** Symbolic link */
+#define S_IFLNK		00120000
+
+/** Regular file */
+#define S_IFREG		00100000
+
+/** Block special file */
+#define S_IFBLK		00060000
+
+/** Directory */
+#define S_IFDIR		00040000
+
+/** Character special file */
+#define S_IFCHR		00020000
+
+/** FIFO */
+#define S_IFIFO		00010000
 
 /* Setuid */
-#define S_ISUID 0004000
+#define S_ISUID		00004000
 /* Setgid */
-#define S_ISGID 0002000
+#define S_ISGID		00002000
 /* Sticky */
-#define S_ISVTX 0001000
+#define S_ISVTX		00001000
 
 #define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 #define S_ISCHR(m) (((m) & S_IFMT) == S_IFCHR)
 #define S_ISBLK(m) (((m) & S_IFMT) == S_IFBLK)
 #define S_ISFIFO(m) (((m) & S_IFMT) == S_IFIFO)
+#define S_ISLNK(m) (((m) & S_IFMT) == S_IFLNK)
+#define S_ISSOCK(m) (((m) & S_IFMT) == S_IFSOCK)
 
 #define S_IRWXU 00700
 #define S_IRUSR 00400

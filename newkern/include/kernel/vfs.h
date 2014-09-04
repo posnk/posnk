@@ -109,8 +109,6 @@ struct inode {
 	/* Special file */
 	/** Device id for special files */
 	dev_t	 	 if_dev;
-	/** Symbolic link target */
-	char 	 	 link_path[CONFIG_FILE_MAX_NAME_LENGTH];
 	/** FIFO pipe back end */
 	pipe_info_t 	*fifo;
 	/** Mounted filesystem root inode */
@@ -423,6 +421,8 @@ int vfs_unlink(char *path);
 int vfs_link(char *oldpath, char *newpath);
 
 int vfs_symlink(char *oldpath, char *newpath);
+
+int vfs_readlink(inode_t *inode, char * buffer, size_t size, size_t *read_size);
 
 int vfs_register_fs(const char *name, fs_device_t *(*mnt_cb)(dev_t, uint32_t));
 

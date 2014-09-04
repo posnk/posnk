@@ -342,7 +342,6 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 
 	vfs_ino->mode = (umode_t) (ino->mode & 0xFFF);
 
-	vfs_ino->link_path[0] = 0;
 	switch (EXT2_MODE_FMT(ino->mode)) {
 		case EXT2_IFBLK:
 			vfs_ino->mode |= S_IFBLK;
@@ -365,8 +364,7 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 			vfs_ino->mode |= S_IFREG;
 			break;
 		case EXT2_IFLNK:
-			vfs_ino->mode |= S_IFREG;
-			//TODO: Read link path
+			vfs_ino->mode |= S_IFLNK;
 			break;
 		default:
 			vfs_ino->mode |= S_IFREG;
