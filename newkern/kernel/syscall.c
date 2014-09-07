@@ -136,6 +136,7 @@ uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 	buffer[param_size[0] - 1] = '\0';
 	earlycon_puts(buffer);
 	heapmm_free(buffer, param_size[0]);
+	shutdown();
 	return 1;	
 }
 

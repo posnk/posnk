@@ -14,4 +14,6 @@
  
  void halt();
  
+ void shutdown();
+
  #endif

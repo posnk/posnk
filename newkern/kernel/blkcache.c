@@ -105,6 +105,46 @@ int blkcache_free( blkcache_cache_t *cache )
 
 /**
  * blkcache_get_iterator - INTERNAL function that selects the block to be 
+ * returned by llist_iterate_select in blkcache_get_dirty
+ *
+ * @param node The block to be tested
+ * @param param UNUSED
+ *
+ * @return TRUE when node starts at the specified offset, FALSE otherwise
+ */
+
+int blkcache_dirty_iterator ( llist_t *node, void *param )
+{
+	blkcache_entry_t *block = (blkcache_entry_t *) node;
+
+	/* If the block starts at the requested offset return TRUE. */
+	return block->flags & BLKCACHE_ENTRY_FLAG_DIRTY;		
+}
+
+/**
+ * blkcache_find - Get the first dirty block from the cache
+ *
+ * @param cache The cache to get the block from
+ *
+ * @return The block that was requested, or NULL incase it is not in the cache
+ */
+
+blkcache_entry_t *blkcache_get_dirty( blkcache_cache_t *cache )
+{
+	/* Look up the block in the cache which satisfies the condition for */
+	/* blkcache_dirty_iterator */
+
+	assert (cache != NULL);
+
+	return (blkcache_entry_t *) 
+		llist_iterate_select(	&(cache->block_list),
+					&blkcache_dirty_iterator,
+					NULL);
+	
+}
+
+/**
+ * blkcache_get_iterator - INTERNAL function that selects the block to be 
  * returned by llist_iterate_select in blkcache_find
  *
  * @param node The block to be tested

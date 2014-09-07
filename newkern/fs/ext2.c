@@ -11,6 +11,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <assert.h>
 
 #include <sys/errno.h>
 #include <sys/types.h>
@@ -20,6 +21,18 @@
 #include "kernel/device.h"
 #include "kernel/vfs.h"
 #include "kernel/earlycon.h"
+
+uint32_t ext2_divup(uint32_t a, uint32_t b)
+{
+	uint32_t result = a / b;
+	if ( a % b ) { result++; }
+	return result;
+}
+
+
+void ext2_handle_error(ext2_device_t *device)
+{
+}
 
 int ext2_read_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, aoff_t count, aoff_t *read_size)
 {
@@ -51,58 +64,545 @@ int ext2_write_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, 
 	return status;
 }
 
+ext2_block_group_desc_t *ext2_load_bgd(ext2_device_t *device, uint32_t bg_id)
+{
+	//TODO: Cache BGDs
+	ext2_block_group_desc_t *bgd;
+	off_t bgd_addr;	
+	size_t read_size;
+	int status;
+
+	if (!device)
+		return NULL;
+
+	bgd = heapmm_alloc(sizeof(ext2_block_group_desc_t));
+	if (!bgd)
+		return NULL;
+
+	bgd_addr = (device->bgdt_block << (10 + device->superblock.block_size_enc)) + 
+			bg_id * sizeof(ext2_block_group_desc_t);
+	
+	status = device_block_read(device->dev_id, bgd_addr, bgd, sizeof(ext2_block_group_desc_t), &read_size);
+	
+	if (status || (read_size != sizeof(ext2_block_group_desc_t))) {
+		heapmm_free(bgd, sizeof(ext2_block_group_desc_t));
+		return NULL;
+	}
+
+	return bgd;
+}
+
+int ext2_store_bgd(ext2_device_t *device, uint32_t bg_id, ext2_block_group_desc_t *bgd)
+{
+	//TODO: Cache BGDs
+	off_t bgd_addr;	
+	size_t read_size;
+	int status;
+
+	if (!device)
+		return 0;
+
+	bgd_addr = (device->bgdt_block << (10 + device->superblock.block_size_enc)) + 
+			bg_id * sizeof(ext2_block_group_desc_t);
+	
+	status = device_block_write(device->dev_id, bgd_addr, bgd, sizeof(ext2_block_group_desc_t), &read_size);
+	
+	if (status || (read_size != sizeof(ext2_block_group_desc_t))) {
+		return 1;
+	}
+
+	return 0;
+}
+
+void ext2_free_bgd(__attribute__((__unused__)) ext2_device_t *device, ext2_block_group_desc_t *bgd)
+{
+	heapmm_free(bgd, sizeof(ext2_block_group_desc_t));
+}
+
+inline uint32_t ext2_free_block(ext2_device_t *device, uint32_t block_id)
+{
+	uint32_t b_count = device->superblock.block_count;
+	uint32_t bgrp_id = 0;
+	uint32_t bgrp_bcnt = device->superblock.blocks_per_group;
+	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_bcnt = bm_block_size * 32;
+	uint32_t bm_id;
+	uint32_t block_map[bm_block_size];
+	uint32_t first_b = device->superblock.block_size_enc ? 0 : 1;
+	uint32_t idx ,nb;
+
+	int status;
+
+	ext2_block_group_desc_t *bgd;
+
+	assert (block_id < b_count);
+	assert (block_id > first_b);
+
+	bgrp_id = (block_id - first_b) / bgrp_bcnt;
+	idx = block_id - first_b - bgrp_id * bgrp_bcnt;
+	bm_id = idx / bm_block_bcnt;
+	idx -= bm_id * bm_block_bcnt;
+	nb = idx % 32;
+	idx -= nb;
+	
+	bgd = ext2_load_bgd(device, bgrp_id);
+
+	status = ext2_read_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
+	if (status)
+		return status;
+
+	EXT2_BITMAP_CLR(block_map[idx], nb);
+
+	status = ext2_write_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (block bitmap), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+
+	bgd->free_block_count++;
+
+	status = ext2_store_bgd(device, bgrp_id, bgd);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (BGD), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+	ext2_free_bgd(device, bgd);
+
+	device->superblock.free_block_count++;
+	
+	memset(block_map, 0, bm_block_size * 4);
+
+	return 0;
+}
+
+inline uint32_t ext2_alloc_block(ext2_device_t *device, uint32_t start)
+{
+	uint32_t b_count = device->superblock.block_count;
+	uint32_t block_id = start;
+	uint32_t bgrp_id = 0;
+	uint32_t bgrp_bcnt = device->superblock.blocks_per_group;
+	uint32_t bgrp_count = ext2_divup(b_count,bgrp_bcnt);//DIVUP
+	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_bcnt = bm_block_size * 32;
+	uint32_t bgrp_bmcnt = ext2_divup(bgrp_bcnt,bm_block_bcnt);//DIVUP
+	uint32_t bm_id;
+	uint32_t block_map[bm_block_size];
+	uint32_t first_b = device->superblock.block_size_enc ? 0 : 1;
+	uint32_t idx ,nb;
+
+	int status;
+
+	ext2_block_group_desc_t *bgd;
+
+	assert (start < b_count);
+
+	if (start == 0)
+		block_id = first_b;
+
+	bgrp_id = (block_id - first_b) / bgrp_bcnt;
+	idx = block_id - first_b - bgrp_id * bgrp_bcnt;
+	bm_id = idx / bm_block_bcnt;
+	idx -= bm_id * bm_block_bcnt;
+	nb = idx % 32;
+	idx -= nb;
+	for (; bgrp_id < bgrp_count; bgrp_id++) {
+		bgd = ext2_load_bgd(device, bgrp_id);
+
+		if (bgd->free_block_count) {
+			for (; bm_id < bgrp_bmcnt; bm_id++) {
+				status = ext2_read_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
+				if (status)
+					return 0;
+				for (; idx < bm_block_size; idx++) {
+					if (block_map[idx] != 0xFFFFFFFF) {					
+						for (; nb < 32; nb++)
+							if (!EXT2_BITMAP_GET(block_map[idx], nb))
+								goto found_it;
+					}
+					nb = 0;	
+				}
+				idx = 0;
+			}
+		}
+		bm_id = 0;		
+		ext2_free_bgd(device, bgd);
+	}
+	bgrp_id = 0;
+	for (; bgrp_id < bgrp_count; bgrp_id++) {
+		bgd = ext2_load_bgd(device, bgrp_id);
+
+		if (bgd->free_block_count) {
+			for (; bm_id < bgrp_bmcnt; bm_id++) {
+				status = ext2_read_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
+				if (status)
+					return 0;
+				for (; idx < bm_block_size; idx++) {
+					if (block_map[idx] != 0xFFFFFFFF) {					
+						for (; nb < 32; nb++)
+							if (!EXT2_BITMAP_GET(block_map[idx], nb))
+								goto found_it;
+					}
+					nb = 0;	
+				}
+				idx = 0;
+			}
+		}
+		bm_id = 0;		
+		ext2_free_bgd(device, bgd);
+	}
+	return EXT2_ENOSPC;
+found_it:
+
+	block_id = nb + idx * 32 + bm_id * bm_block_bcnt + bgrp_id * bgrp_bcnt;
+
+	EXT2_BITMAP_SET(block_map[idx], nb);
+	status = ext2_write_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (block bitmap), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+
+	bgd->free_block_count--;
+
+	status = ext2_store_bgd(device, bgrp_id, bgd);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (BGD), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+	ext2_free_bgd(device, bgd);
+
+	device->superblock.free_block_count--;
+	
+	memset(block_map, 0, bm_block_size * 4);
+
+	status = ext2_write_block(device, block_id, 0, block_map, bm_block_size * 4, NULL);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (block clear)!");
+		ext2_handle_error(device);
+	}
+
+	return block_id;
+}
+
+uint32_t ext2_allocate_indirect_block(ext2_device_t *device, ext2_inode_t *inode)
+{
+	return ext2_alloc_block(device, 0);//TODO: Prevent fragmentation, swap 0 for previous block in inode
+}
+
 uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block_id)
 {
 	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
-	uint32_t indirect_id = 0;
-	int status, o, d;
-	if (block_id > (12 + indirect_count * indirect_count + indirect_count)) { //Triply indirect
-		status = ext2_read_block(device, 
-					 inode->block[14],
-				         ( (block_id - 12 - indirect_count * indirect_count - indirect_count) / (indirect_count * indirect_count) ) * 4,
-					 &indirect_id,
-					 4, NULL);
-		if (status)
+	uint32_t indirect_id, indirect_off, indirect_rd;
+	uint32_t s_indir_l = indirect_count;
+	uint32_t d_indir_l = indirect_count * indirect_count;
+	uint32_t s_indir_s = 12;
+	uint32_t d_indir_s = s_indir_s + s_indir_l;
+	uint32_t t_indir_s = d_indir_s + d_indir_l;
+	int status;
+
+	if (block_id >= t_indir_s) { //Triply indirect
+		indirect_id = inode->block[14];
+		indirect_off = (block_id - t_indir_s) / d_indir_l;
+
+		if (!indirect_id)
 			return 0;
+
+		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+		if (status || !indirect_rd)
+			return 0;
+
+		indirect_id = indirect_rd;
+
+		block_id -= indirect_off * d_indir_l + d_indir_l;
 		
-	} else {
+	} else if (block_id >= d_indir_s) {
+
 		indirect_id = inode->block[13];
+
+		if (!indirect_id)
+			return 0;
 	}
-	if (block_id > (11 + indirect_count)) { //Doubly indirect
-		o = block_id - 12 - indirect_count;
-		d = o / indirect_count;
-		status = ext2_read_block(device, 
-					 indirect_id,
-				         (d % indirect_count) * 4,
-					 &indirect_id,
-					 4, NULL);
 
-		if (status)
+	if (block_id >= d_indir_s) { //Doubly indirect
+		indirect_off = (block_id - d_indir_s) / s_indir_l;
+
+		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+		if (status || !indirect_rd)
 			return 0;
 
-		status = ext2_read_block(device, 
-					 indirect_id,
-				         ( (o - d * indirect_count) % indirect_count) * 4,
-					 &indirect_id,
-					 4, NULL);
-		if (status)
-			return 0;
+		indirect_id = indirect_rd;
 
-		return indirect_id;
-	} else {
+		block_id -= s_indir_l + indirect_off * s_indir_l;
+
+	} else if (block_id >= s_indir_s) {
+
 		indirect_id = inode->block[12];
-	}
-	if (block_id > 11) { //Singly Indirect
-		status = ext2_read_block(device, 
-					 indirect_id,
-				         ( (block_id - 12) % indirect_count) * 4,
-					 &indirect_id,
-					 4, NULL);
-		if (status)
+
+		if (!indirect_id)
 			return 0;
-		return indirect_id;
+
 	}
+
+	if (block_id >= s_indir_s) { //Singly Indirect
+
+		indirect_off = block_id - s_indir_s;
+
+		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+		if (status || !indirect_rd)
+			return 0;
+
+		return indirect_rd;
+	}
+
 	return inode->block[block_id];
+}
+
+int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block_id, uint32_t block_v)
+{
+	uint32_t indirect_count = 256 << device->superblock.block_size_enc;
+	uint32_t indirect_id, indirect_off, indirect_rd;
+	uint32_t s_indir_l = indirect_count;
+	uint32_t d_indir_l = indirect_count * indirect_count;
+	uint32_t s_indir_s = 12;
+	uint32_t d_indir_s = s_indir_s + s_indir_l;
+	uint32_t t_indir_s = d_indir_s + d_indir_l;
+	int status;
+
+	if (block_id >= t_indir_s) { //Triply indirect
+		indirect_id = inode->block[14];
+		indirect_off = (block_id - t_indir_s) / d_indir_l;
+
+		if (!indirect_id) {
+
+			indirect_id = ext2_allocate_indirect_block(device, inode);
+
+			if (indirect_id == 0)
+				return ENOSPC;			
+
+			inode->block[14] = indirect_id;
+		}
+
+		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+		if (status)
+			return status;
+
+		if (!indirect_rd) {
+
+			indirect_rd = ext2_allocate_indirect_block(device, inode);
+
+			if (indirect_rd == 0)
+				return ENOSPC;	
+
+			status = ext2_write_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+			if (status)
+				return status;			
+		}
+
+		indirect_id = indirect_rd;
+
+		block_id -= indirect_off * d_indir_l + d_indir_l;
+		
+	} else if (block_id >= d_indir_s) {
+
+		indirect_id = inode->block[13];
+
+		if (!indirect_id) {
+
+			indirect_id = ext2_allocate_indirect_block(device, inode);
+
+			if (indirect_id == 0)
+				return ENOSPC;	
+
+			inode->block[13] = indirect_id;
+		}
+	}
+
+	if (block_id >= d_indir_s) { //Doubly indirect
+		indirect_off = (block_id - d_indir_s) / s_indir_l;
+
+		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+		if (status)
+			return status;
+
+		if (!indirect_rd) {
+
+			indirect_rd = ext2_allocate_indirect_block(device, inode);
+
+			if (indirect_rd == 0)
+				return ENOSPC;	
+
+			status = ext2_write_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
+			if (status)
+				return status;			
+		}
+
+		indirect_id = indirect_rd;
+
+		block_id -= s_indir_l + indirect_off * s_indir_l;
+
+	} else if (block_id >= s_indir_s){
+
+		indirect_id = inode->block[12];
+
+		if (!indirect_id) {
+
+			indirect_id = ext2_allocate_indirect_block(device, inode);
+
+			if (indirect_id == 0)
+				return ENOSPC;	
+
+			inode->block[12] = indirect_id;
+		}
+
+	}
+
+	if (block_id >= s_indir_s) { //Singly Indirect
+
+		indirect_off = block_id - s_indir_s;
+
+		status = ext2_write_block(device, indirect_id, indirect_off * 4, &block_v, 4, NULL);
+		if (status)
+			return status;	
+
+		return 0;
+	}
+
+	inode->block[block_id] = block_v;
+
+	return 0;
+}
+
+int ext2_shrink_inode(ext2_device_t *device, ext2_inode_t *inode, aoff_t old_size, aoff_t new_size)
+{
+	aoff_t count;
+	aoff_t length = old_size - new_size;
+	aoff_t block_size;
+	aoff_t in_blk;
+	aoff_t in_blk_size;
+	aoff_t in_file;
+	uint32_t block_addr;	
+	int status;
+
+	block_size = 1024 << device->superblock.block_size_enc;
+
+	for (count = 0; count < length; count += in_blk_size) {
+		in_file = count + new_size;
+		in_blk = in_file % block_size;				
+		in_blk_size = length - count;
+
+		if (in_blk_size > block_size)
+			in_blk_size = block_size;
+	
+		if ((in_blk || (in_blk_size != block_size)))
+			continue;
+	
+		block_addr = ext2_decode_block_id (device, inode, in_file / block_size);
+
+		if (block_addr) {
+			debugcon_printf("ext2: shrinking file!\n");
+			status = ext2_free_block(device, block_addr);
+			if (status) 
+				return status;
+			if (block_addr == EXT2_ENOSPC)
+				return ENOSPC;
+
+			status = ext2_set_block_id(device, inode, in_file / block_size, 0);
+			if (status)
+				return status;
+
+			inode->blocks--;
+		}
+
+		if (status)
+			return status;
+	}
+
+	return 0;
+}
+
+int ext2_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
+{
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+
+	if (!_inode) {	
+		return EFAULT;
+	}
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	if (size > _inode->size) {
+		//TODO: Implement explicit file growth
+	} else if (size < _inode->size) {
+		return ext2_shrink_inode(device, &(inode->inode), _inode->size, size);
+	}
+	return 0;	
+}
+
+int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nwritten)
+{
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+	aoff_t count;
+	aoff_t block_size;
+	aoff_t in_blk_size;
+	aoff_t in_blk;
+	aoff_t in_file;
+	uint32_t block_addr, p_block_addr;	
+	uint8_t *buffer = _buffer;
+	int status;
+
+	if (!_inode) {	
+		*nwritten = 0;
+		return EFAULT;
+	}
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	block_size = 1024 << device->superblock.block_size_enc;
+	
+	p_block_addr = 0;
+
+	for (count = 0; count < length; count += in_blk_size) {
+		in_file = count + f_offset;
+		in_blk = in_file % block_size;				
+		in_blk_size = length - count;
+
+		*nwritten = count;
+
+		if (in_blk_size > block_size)
+			in_blk_size = block_size;
+
+		block_addr = ext2_decode_block_id (device, &(inode->inode), in_file / block_size);
+
+		if (!block_addr) {
+			debugcon_printf("ext2: growing file!\n");
+			block_addr = ext2_alloc_block(device, p_block_addr);
+			if (!block_addr) 
+				return EIO;
+			if (block_addr == EXT2_ENOSPC)
+				return ENOSPC;
+
+			status = ext2_set_block_id(device, &(inode->inode), in_file / block_size, block_addr);
+			if (status)
+				return status;
+
+			inode->inode.blocks++;
+		}
+
+		status = ext2_write_block(device, block_addr, in_blk, &(buffer[count]), in_blk_size, NULL);
+
+		if (status)
+			return status;
+
+		p_block_addr = block_addr;
+	}
+	
+	*nwritten = count;
+
+	return 0;
 }
 
 int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
@@ -253,39 +753,6 @@ dirent_t *ext2_finddir(inode_t *_inode, char * name)
 	return NULL;
 }
 
-ext2_block_group_desc_t *ext2_load_bgd(ext2_device_t *device, uint32_t bg_id)
-{
-	//TODO: Cache BGDs
-	ext2_block_group_desc_t *bgd;
-	off_t bgd_addr;	
-	size_t read_size;
-	int status;
-
-	if (!device)
-		return NULL;
-
-	bgd = heapmm_alloc(sizeof(ext2_block_group_desc_t));
-	if (!bgd)
-		return NULL;
-
-	bgd_addr = (device->bgdt_block << (10 + device->superblock.block_size_enc)) + 
-			bg_id * sizeof(ext2_block_group_desc_t);
-	
-	status = device_block_read(device->dev_id, bgd_addr, bgd, sizeof(ext2_block_group_desc_t), &read_size);
-	
-	if (status || (read_size != sizeof(ext2_block_group_desc_t))) {
-		heapmm_free(bgd, sizeof(ext2_block_group_desc_t));
-		return NULL;
-	}
-
-	return bgd;
-}
-
-void ext2_free_bgd(__attribute__((__unused__)) ext2_device_t *device, ext2_block_group_desc_t *bgd)
-{
-	heapmm_free(bgd, sizeof(ext2_block_group_desc_t));
-}
-
 int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 {
 	ext2_block_group_desc_t *bgd;
@@ -318,6 +785,40 @@ int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 	
 	ext2_free_bgd(device, bgd);
 	return 1;
+}
+
+int ext2_store_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
+{
+	ext2_block_group_desc_t *bgd;
+	off_t			index, ino_offset;
+	size_t read_size;
+	int status;
+
+	if (!device)
+		return EFAULT;
+
+	bgd = ext2_load_bgd(device, (ino_id - 1) / device->superblock.inodes_per_group);
+	if (!bgd) {
+		return EIO;
+	}	
+
+	index = (ino_id - 1) % device->superblock.inodes_per_group;
+	ino_offset = (bgd->inode_table << (10 + device->superblock.block_size_enc)) + 
+			index * device->superblock.inode_size;
+
+	status = device_block_write(device->dev_id, 
+				   ino_offset, 
+				   ino,
+				   device->inode_load_size, 
+				   &read_size);
+	
+	if (status || (read_size != device->inode_load_size)) {
+		ext2_free_bgd(device, bgd);
+		return status;
+	}
+	
+	ext2_free_bgd(device, bgd);
+	return 0;
 }
 
 void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)
@@ -372,10 +873,64 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 			break;
 	}
 	vfs_ino->usage_count = 0;
-	vfs_ino->size = ino->blocks * 512;
+	vfs_ino->size = ino->size;
 	vfs_ino->atime = (ktime_t) ino->atime;
 	vfs_ino->ctime = (ktime_t) ino->ctime;
 	vfs_ino->mtime = (ktime_t) ino->mtime;
+}
+
+
+void ext2_vfstoe2_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)
+{
+	ext2_inode_t *ino;
+	inode_t *vfs_ino;
+
+	ino = &(_ino->inode);
+	vfs_ino = &(_ino->vfs_ino);
+	semaphore_down(vfs_ino->lock);
+	
+	ino->link_count = vfs_ino->hard_link_count;
+	ino->uid = vfs_ino->uid;
+	ino->gid = vfs_ino->gid;
+
+	ino->mode = vfs_ino->mode & 0xFFF;
+
+	switch (vfs_ino->mode & S_IFMT) {
+		case S_IFBLK:
+			ino->mode |= EXT2_IFBLK;
+			ino->block[0] = EXT2_DEV_ENCODE(vfs_ino->if_dev);
+			break;
+		case S_IFCHR:
+			ino->mode |= EXT2_IFCHR;
+			ino->block[0] = EXT2_DEV_ENCODE(vfs_ino->if_dev);
+			break;
+		case S_IFDIR:
+			ino->mode |= EXT2_IFDIR;
+			break;
+		case S_IFSOCK:
+			ino->mode |= EXT2_IFSOCK;
+			break;
+		case S_IFIFO:
+			ino->mode |= EXT2_IFIFO;
+			break;
+		case S_IFREG:
+			ino->mode |= EXT2_IFREG;
+			break;
+		case S_IFLNK:
+			ino->mode |= EXT2_IFLNK;
+			break;
+		default:
+			ino->mode |= S_IFREG;
+			debugcon_printf("ext2: vfs inode %i has invalid mode: %i", (uint32_t)ino_id, (uint32_t)ino->mode);
+			break;
+	}
+
+	ino->size = vfs_ino->size;
+	ino->atime = vfs_ino->atime;
+	ino->ctime = vfs_ino->ctime;
+	ino->mtime = vfs_ino->mtime;
+
+	semaphore_up(vfs_ino->lock);
 }
 
 inode_t *ext2_load_inode(fs_device_t *device, ino_t id) {
@@ -397,19 +952,35 @@ inode_t *ext2_load_inode(fs_device_t *device, ino_t id) {
 	return (inode_t *) ino;
 }
 
+int ext2_store_inode(inode_t *_inode) {
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+
+	if (!_inode) {	
+		return EFAULT;
+	}
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	ext2_vfstoe2_inode(device, inode, _inode->id);
+
+	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
+}
+
 fs_device_operations_t ext2_ops = {
-	&ext2_load_inode,
-	NULL,//Store inode
+	&ext2_load_inode,//Load inode
+	&ext2_store_inode,//Store inode
 	NULL,//Make inode
 	NULL,//Remove inode
 	&ext2_read_inode,//Read from file
-	NULL,//Write to file
+	&ext2_write_inode,//Write to file
 	&ext2_readdir,//Read from directory
 	&ext2_finddir,//Find directory entry
 	NULL,//Make directory
 	NULL,//Make directory entry
 	NULL,//Remove directory entry
-	NULL //Change file length
+	&ext2_trunc_inode //Change file length
 };
 
 fs_device_t *ext2_mount(dev_t device, uint32_t flags)

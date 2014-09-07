@@ -398,6 +398,8 @@ struct fs_driver {
  */
 ///@{
 
+void vfs_cache_flush();
+
 inode_t *vfs_inode_ref(inode_t *inode);
 
 void vfs_inode_release(inode_t *inode);
@@ -455,6 +457,10 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
 void vfs_dir_cache_release(dir_cache_t *dirc);
 
 dir_cache_t *vfs_find_dirc(char * path);
+
+dir_cache_t *vfs_find_dirc_at(dir_cache_t *curdir, char * path);
+
+dir_cache_t *vfs_find_dirc_parent_at(dir_cache_t *curdir, char * path);
 
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 

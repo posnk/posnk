@@ -24,3 +24,13 @@ fs/ext2.c:345:9: error: 'inode_t' has no member named 'link_path'
 
 
 ---------------------------------------------------------------------------------------------------------------------
+
+Step 2: Implement new symlink readlink()
+
+DONE
+
+Step 3: Rewrite path resolution routines to this format
+
+vfs_get_XXX(parent, name) 
+
+Step 4: Implement symlink referral

@@ -215,6 +215,67 @@ int device_block_fetch(dev_t device, aoff_t block_offset)
 
 }
 
+int device_block_flush_all(dev_t device)
+{
+	blkcache_entry_t *entry = (blkcache_entry_t *) 1;
+	dev_t major = MAJOR(device);
+	dev_t minor = MINOR(device);
+	blk_dev_t *drv = block_dev_table[major];
+	int rv;
+
+	/* Check if the device exists */
+	if ((!drv) || (minor > drv->minor_count)) {
+		return ENXIO;
+	}
+
+	while (entry) {/* Get the entry from the cache */
+		entry = blkcache_get_dirty(drv->caches[minor]);
+
+		/* If the block is not cached, return success */
+		if (!entry) {
+			return 0;
+		}
+	
+		/* Call the driver to write the block to storage */
+		rv = drv->ops->write(device, entry->offset, entry->data);
+	
+		/* If successful clear the DIRTY flag from the cache entry */
+		if (!rv)
+			entry->flags &= ~BLKCACHE_ENTRY_FLAG_DIRTY;
+		else
+			return rv;
+		//rv = drv->ops->read(device, entry->offset, entry->data);
+//		for (rv)
+		/* If successful clear the DIRTY flag from the cache entry */
+//		if (!rv)
+//			entry->flags &= ~BLKCACHE_ENTRY_FLAG_DIRTY;
+//		else
+//			return rv;
+	}
+	return 0;
+}
+
+int device_block_flush_global()
+{
+	blk_dev_t *drv;
+	dev_t mj,mi;
+	int st, se = 0;
+
+	for (mj = 0; mj < 256; mj++) {
+		drv = block_dev_table[mj];
+		if (!drv)
+			continue;
+		for (mi = 0; mi < drv->minor_count; mi++) {
+			st = device_block_flush_all(MAKEDEV(mj, mi));
+			if (st)
+				se = st;
+		}
+
+	}
+
+	return se;
+}
+
 /**
  * @brief Handles the ioctl(2) call on a device
  * 

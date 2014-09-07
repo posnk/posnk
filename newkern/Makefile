@@ -73,6 +73,7 @@ kernel/sc_ipc.c \
 kernel/sc_streams.c \
 kernel/sc_time.c \
 kernel/sc_signals.c \
+kernel/shutdown.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \

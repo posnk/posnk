@@ -282,6 +282,7 @@ fs_device_t *ramfs_mount(__attribute__((__unused__)) dev_t device, __attribute__
 	if (ramfs_ops == NULL) {
 		ramfs_ops = (fs_device_operations_t *) heapmm_alloc(sizeof(fs_device_operations_t));
 		ramfs_ops->load_inode = &ramfs_load_inode;
+		ramfs_ops->store_inode = &ramfs_store_inode;
 		ramfs_ops->mknod = &ramfs_mknod;
 		ramfs_ops->rmnod = &ramfs_rmnod;
 		ramfs_ops->read_inode = &ramfs_read_inode;

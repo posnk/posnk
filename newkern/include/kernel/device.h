@@ -325,6 +325,10 @@ int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t c
 
 int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size);
 
+int device_block_flush_all(dev_t device);
+
+int device_block_flush_global();
+
 int device_char_ioctl(dev_t device, int fd, int func, int arg);
 
 int device_char_open(dev_t device, int fd, int options);

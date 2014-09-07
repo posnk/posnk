@@ -15,6 +15,7 @@
 #include "kdbg/kdbgio.h"
 #include "kdbg/dbgapi.h"
 #include "kdbg/heapdbg.h"
+#include "kernel/system.h"
 #include <string.h>
 
 void kdbg_initialize()
@@ -65,6 +66,8 @@ void kdbg_shell()
 			return;
 		} else if (!strncmp(buf, "attach", 6)) {
 			kdbg_attach_process(kdbg_parsedec(buf));
+		} else if (!strncmp(buf, "shutdown", 8)) {
+			shutdown();
 		} else if (!strncmp(buf, "ps", 2)) {
 			kdbg_dump_processes();
 		} else {

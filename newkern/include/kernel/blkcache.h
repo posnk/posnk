@@ -81,6 +81,8 @@ blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset );
 
 void blkcache_bump( blkcache_cache_t *cache, blkcache_entry_t *entry );
 
+blkcache_entry_t *blkcache_get_dirty( blkcache_cache_t *cache );
+
 /**
  * blkcache_get_discard_candidate - Returns the block to be discarded next
  *

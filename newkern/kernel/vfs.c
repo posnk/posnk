@@ -251,6 +251,17 @@ inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id)
 	return vfs_inode_ref(result);
 }
 
+/*
+ * Iterator function that flushes the inode caches
+ */
+
+int vfs_cache_flush_iterator (llist_t *node, void *param)
+{
+	inode_t *inode = (inode_t *) node;
+	inode->device->ops->store_inode(inode);
+	return 0;		
+}
+
 /**
  * @brief Get the effective inode for an inode,
  * in other words : Dereference possible symlinks and mounts
@@ -544,6 +555,22 @@ int vfs_int_truncate(inode_t * inode, aoff_t size)
 	return inode->device->ops->trunc_inode(inode, size);
 }
 ///@}
+
+/**
+ * @brief Flush the inode cache
+ * 
+ */
+
+void vfs_cache_flush()
+{
+
+	/* Flush open inode list */
+	llist_iterate_select(open_inodes, &vfs_cache_flush_iterator, NULL);
+
+	/* Flush inode cache */
+	llist_iterate_select(inode_cache, &vfs_cache_flush_iterator, NULL);
+
+}
 
 /** @name VFS API
  *  Public VFS functions
@@ -2520,6 +2547,18 @@ int vfs_chroot(dir_cache_t *dirc)
 	return 0;
 }
 
+
+/** 
+ * @brief Look up a file referred to by a path
+ * @param path The path to resolve
+ * @return A dir_cache entry on the file referred to by path
+ */
+
+dir_cache_t *vfs_find_dirc(char * path) {
+	return vfs_find_dirc_at(scheduler_current_task->current_directory, path);
+}
+
+
 /** 
  * @brief Look up the parent directory of a file referred to by a path
  * 
@@ -2530,7 +2569,21 @@ int vfs_chroot(dir_cache_t *dirc)
 
 dir_cache_t *vfs_find_dirc_parent(char * path)
 {
-	dir_cache_t *dirc = vfs_dir_cache_ref(scheduler_current_task->current_directory);
+	return vfs_find_dirc_parent_at(scheduler_current_task->current_directory, path);
+}
+
+/** 
+ * @brief Look up the parent directory of a file referred to by a path
+ * 
+ * This function will also succeed if path does not exist but its parent does
+ * @param curdir The directory to start resolving in
+ * @param path The path to resolve
+ * @return A dir_cache entry on the parent of the file referred to by path
+ */
+
+dir_cache_t *vfs_find_dirc_parent_at(dir_cache_t *curdir, char * path)
+{
+	dir_cache_t *dirc = vfs_dir_cache_ref(curdir);
 	dir_cache_t *newc;
 	inode_t * parent = dirc->inode;
 	char * separator;
@@ -2701,16 +2754,17 @@ dir_cache_t *vfs_find_dirc_parent(char * path)
 	}
 }
 
-
 /** 
- * @brief Look up a file referred to by a path
+ * @brief Look up a file referred to by a path using a specified directory as
+ * current.
+ * @param curdir The directory to start resolving in
  * @param path The path to resolve
  * @return A dir_cache entry on the file referred to by path
  */
 
-dir_cache_t *vfs_find_dirc(char * path)
+dir_cache_t *vfs_find_dirc_at(dir_cache_t *curdir, char * path)
 { 
-	dir_cache_t *dirc = vfs_dir_cache_ref(scheduler_current_task->current_directory);
+	dir_cache_t *dirc = vfs_dir_cache_ref(curdir);
 	dir_cache_t *newc;
 	inode_t * parent = dirc->inode;
 	char * separator;
