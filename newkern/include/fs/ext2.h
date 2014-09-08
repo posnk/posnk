@@ -50,6 +50,8 @@
 #define EXT2_IFCHR			(0x2000)
 #define EXT2_IFIFO			(0x1000)
 
+#define EXT2_FT_UNKNOWN			(0)
+
 #define EXT2_DEV_DECODE(dIn)		MAKEDEV( ((dIn >> 8) & 0xFF), (dIn & 0xFF) ) 
 
 #define EXT2_DEV_ENCODE(dIn)		((MAJOR(dIn) << 8) & 0xFF00) | (MINOR(dIn) & 0xFF)

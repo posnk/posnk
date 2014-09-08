@@ -29,6 +29,12 @@ uint32_t ext2_divup(uint32_t a, uint32_t b)
 	return result;
 }
 
+uint32_t ext2_roundup(uint32_t a, uint32_t b)
+{//XXX: Works only with power-of-two values for B
+	b--;
+	return (a+b) & ~b;
+}
+
 
 void ext2_handle_error(ext2_device_t *device)
 {
@@ -253,7 +259,7 @@ inline uint32_t ext2_alloc_block(ext2_device_t *device, uint32_t start)
 	return EXT2_ENOSPC;
 found_it:
 
-	block_id = nb + idx * 32 + bm_id * bm_block_bcnt + bgrp_id * bgrp_bcnt;
+	block_id = nb + idx * 32 + bm_id * bm_block_bcnt + bgrp_id * bgrp_bcnt + first_b;
 
 	EXT2_BITMAP_SET(block_map[idx], nb);
 	status = ext2_write_block(device, bgd->block_bitmap + bm_id, 0, block_map, bm_block_size * 4, NULL);
@@ -517,6 +523,8 @@ int ext2_shrink_inode(ext2_device_t *device, ext2_inode_t *inode, aoff_t old_siz
 			return status;
 	}
 
+	//TODO: Dealloc indirect blocks
+
 	return 0;
 }
 
@@ -654,8 +662,87 @@ int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t leng
 	return 0;
 }
 
-int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
+int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
 {
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+
+	size_t reclen,namelen, f_reclen;
+	ext2_dirent_t dirent;	
+	ext2_dirent_t f_dirent;	
+	
+	int status, m = 0;
+
+	aoff_t split_offset, hole_offset, nread, pos, dsize, hole_size;
+
+	if (!_inode) 
+		return EFAULT;
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	dsize = _inode->size;
+
+	namelen = strlen(name);
+	reclen = ext2_roundup(sizeof(ext2_dirent_t) + namelen, 4);
+
+	for (pos = 0; pos < dsize; pos += f_dirent.rec_len) {
+		status = ext2_read_inode(_inode, &f_dirent, pos, sizeof(ext2_dirent_t), &nread);
+		if (status || (nread != sizeof(ext2_dirent_t)))
+			return status ? status : EIO;
+		
+		f_reclen = ext2_roundup (sizeof(ext2_dirent_t) + f_dirent.name_len, 4);
+		
+		if ((((!f_dirent.inode) || (!f_dirent.name_len))) && (f_dirent.rec_len >= reclen)) {
+			hole_offset = pos;
+			hole_size = f_dirent.rec_len;
+			m = 1;
+			break;
+		} else if ((f_dirent.rec_len - f_reclen) >= reclen) {
+			split_offset = pos;
+			hole_offset = pos + f_reclen;
+			hole_size = f_dirent.rec_len - f_reclen;
+			m = 2;
+			break;
+		}
+		split_offset = pos;
+	}
+
+	if (m == 0) {
+ 		//Append new block to the end of the file, split_offset contains the offset of the last dirent
+		hole_size = 1024 << device->superblock.block_size_enc;
+		hole_offset = split_offset;
+		_inode->size += hole_size;
+	}
+
+	dirent.rec_len = hole_size;
+	dirent.name_len = namelen;
+	dirent.inode = ino_id;
+	//TODO: Set file type
+	dirent.file_type = EXT2_FT_UNKNOWN;
+	
+	status = ext2_write_inode(_inode, name, hole_offset + sizeof(ext2_dirent_t), namelen, &nread);
+	if (status || (nread != namelen))
+		return status ? status : EIO;
+	
+	status = ext2_write_inode(_inode, &dirent, hole_offset, sizeof(ext2_dirent_t), &nread);
+	if (status || (nread != sizeof(ext2_dirent_t)))
+		return status ? status : EIO;
+	
+	if (m == 2){
+		f_dirent.rec_len = hole_offset - split_offset;
+
+		status = ext2_write_inode(_inode, &f_dirent, split_offset, sizeof(ext2_dirent_t), &nread);
+		if (status || (nread != sizeof(ext2_dirent_t)))
+			return status ? status : EIO;
+	}
+
+	return 0;
+	
+}
+
+int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
+{///XXX: Dependent on : sizeof(vfs_dirent_t) == sizeof(ext2_dirent_t)
 	int status;
 
 	ext2_dirent_t *dirent;
@@ -978,7 +1065,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_readdir,//Read from directory
 	&ext2_finddir,//Find directory entry
 	NULL,//Make directory
-	NULL,//Make directory entry
+	&ext2_link,//Make directory entry
 	NULL,//Remove directory entry
 	&ext2_trunc_inode //Change file length
 };
