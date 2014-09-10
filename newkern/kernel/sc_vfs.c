@@ -166,6 +166,7 @@ int _sys_chdir(char *path)
 		syscall_errno = status;
 		return -1;
 	}
+	vfs_dir_cache_release(dirc);
 
 	return 0;
 }
@@ -206,6 +207,7 @@ int _sys_chmod(char *path, mode_t mode)
 	inode->mode &= ~07777;
 	inode->mode |= mode & 07777;
 	inode->ctime = system_time;
+	vfs_inode_release(inode);
 	return 0;
 }
 
@@ -248,6 +250,7 @@ int _sys_chown(char *path, uid_t owner, gid_t group)
 	if (owner != 65535)
 		inode->uid = owner;
 	inode->ctime = system_time;
+	vfs_inode_release(inode);
 	return 0;
 }
 
@@ -282,6 +285,7 @@ int _sys_truncate(char *path, off_t length)
 	//TODO: Add permission check
 	inode->ctime = system_time;
 	vfs_truncate(inode, length);
+	vfs_inode_release(inode);
 	return 0;
 }
 
@@ -380,6 +384,7 @@ int _sys_stat(char *path, struct stat* buf)
 	buf->st_atime = (time_t) inode->atime; 
 	buf->st_mtime = (time_t) inode->mtime;
 	buf->st_ctime = (time_t) inode->ctime;
+	vfs_inode_release(inode);
 	return 0;
 }
 
@@ -426,6 +431,8 @@ int _sys_readlink(char *path, char *buf, size_t bufsiz)
 	}
 
 	syscall_errno = vfs_readlink(inode, buf, bufsiz, &read_size);
+
+	vfs_inode_release(inode);
 
 	if (syscall_errno != 0)
 		return -1;
@@ -490,6 +497,7 @@ int _sys_lstat(char *path, struct stat* buf)
 	buf->st_atime = (time_t) inode->atime; 
 	buf->st_mtime = (time_t) inode->mtime;
 	buf->st_ctime = (time_t) inode->ctime;
+	vfs_inode_release(inode);
 	return 0;
 }
 
