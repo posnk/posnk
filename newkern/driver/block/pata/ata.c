@@ -15,6 +15,8 @@
 #include "arch/i386/x86.h"
 #include "driver/block/pata/ata.h"
 #include "kernel/earlycon.h"
+#include "kernel/time.h"
+#include "kernel/scheduler.h"
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
@@ -346,6 +348,7 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 			semaphore_up(device->lock);
 			return 0;
 		}
+		scheduler_wait_micros(system_time_micros + 10);
 		semaphore_up(device->lock);
 		return 1;
 	} else {
@@ -403,6 +406,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 			semaphore_up(device->lock);
 			return 0;
 		}
+		scheduler_wait_micros(system_time_micros + 10);
 		semaphore_up(device->lock);
 		return 1;
 	} else {
@@ -433,7 +437,6 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_CACHE_FLUSH);
 		ata_poll_wait(device);
-		semaphore_up(device->lock);
 		return 1;
 	}
 }

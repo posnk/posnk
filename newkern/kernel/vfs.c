@@ -129,6 +129,8 @@ void vfs_inode_release(inode_t *inode)
 
 	llist_unlink((llist_t *) inode);
 	llist_add_end(inode_cache, (llist_t *) inode);
+
+	inode->device->ops->store_inode(inode);
 }
 
 /**

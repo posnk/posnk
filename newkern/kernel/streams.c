@@ -1680,6 +1680,8 @@ int _sys_close_int(process_info_t *process, int fd)
 				ptr->info->inode->open_count--;
 				/* Release the inode */
 				vfs_inode_release(ptr->info->inode);
+				/* Release the inode */
+				vfs_dir_cache_release(ptr->info->dirc);
 
 				break;
 			case STREAM_TYPE_PIPE:
