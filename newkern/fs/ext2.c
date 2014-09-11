@@ -175,8 +175,6 @@ inline uint32_t ext2_free_block(ext2_device_t *device, uint32_t block_id)
 	ext2_free_bgd(device, bgd);
 
 	device->superblock.free_block_count++;
-	
-	memset(block_map, 0, bm_block_size * 4);
 
 	return 0;
 }
@@ -288,6 +286,136 @@ found_it:
 	}
 
 	return block_id;
+}
+
+inline uint32_t ext2_alloc_inode(ext2_device_t *device)
+{
+	uint32_t i_count = device->superblock.inode_count;
+	uint32_t inode_id = 11;
+	uint32_t bgrp_id = 0;
+	uint32_t bgrp_icnt = device->superblock.inodes_per_group;
+	uint32_t bgrp_count = ext2_divup(i_count,bgrp_icnt);//DIVUP
+	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_icnt = bm_block_size * 32;
+	uint32_t bgrp_bmcnt = ext2_divup(bgrp_icnt,bm_block_icnt);//DIVUP
+	uint32_t bm_id;
+	uint32_t inode_map[bm_block_size];
+	uint32_t first_i = 1;
+	uint32_t idx ,nb;
+
+	int status;
+
+	ext2_block_group_desc_t *bgd;
+
+	bgrp_id = (inode_id - first_i) / bgrp_icnt;
+	idx = inode_id - first_i - bgrp_id * bgrp_icnt;
+	bm_id = idx / bm_block_icnt;
+	idx -= bm_id * bm_block_icnt;
+	nb = idx % 32;
+	idx -= nb;
+
+	for (; bgrp_id < bgrp_count; bgrp_id++) {
+		bgd = ext2_load_bgd(device, bgrp_id);
+
+		if (bgd->free_inode_count) {
+			for (; bm_id < bgrp_bmcnt; bm_id++) {
+				status = ext2_read_block(device, bgd->inode_bitmap + bm_id, 0, inode_map, bm_block_size * 4, NULL);
+				if (status)
+					return 0;
+				for (; idx < bm_block_size; idx++) {
+					if (inode_map[idx] != 0xFFFFFFFF) {					
+						for (; nb < 32; nb++)
+							if (!EXT2_BITMAP_GET(inode_map[idx], nb))
+								goto found_it;
+					}
+					nb = 0;	
+				}
+				idx = 0;
+			}
+		}
+		bm_id = 0;		
+		ext2_free_bgd(device, bgd);
+	}
+	bgrp_id = 0;
+
+	return EXT2_ENOSPC;
+found_it:
+
+	inode_id = nb + idx * 32 + bm_id * bm_block_icnt + bgrp_id * bgrp_icnt + first_i;
+
+	EXT2_BITMAP_SET(inode_map[idx], nb);
+	status = ext2_write_block(device, bgd->inode_bitmap + bm_id, 0, inode_map, bm_block_size * 4, NULL);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (inode bitmap), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+
+	bgd->free_inode_count--;
+
+	status = ext2_store_bgd(device, bgrp_id, bgd);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (BGD), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+	ext2_free_bgd(device, bgd);
+
+	device->superblock.free_inode_count--;
+
+	return inode_id;
+}
+
+inline uint32_t ext2_free_inode(ext2_device_t *device, uint32_t inode_id)
+{
+	uint32_t i_count = device->superblock.inode_count;
+	uint32_t bgrp_id = 0;
+	uint32_t bgrp_icnt = device->superblock.inodes_per_group;
+	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_icnt = bm_block_size * 32;
+	uint32_t bm_id;
+	uint32_t inode_map[bm_block_size];
+	uint32_t first_i = 1;
+	uint32_t idx ,nb;
+
+	int status;
+
+	ext2_block_group_desc_t *bgd;
+
+	assert (inode_id < i_count);
+	assert (inode_id > first_i);
+
+	bgrp_id = (inode_id - first_i) / bgrp_icnt;
+	idx = inode_id - first_i - bgrp_id * bgrp_icnt;
+	bm_id = idx / bm_block_icnt;
+	idx -= bm_id * bm_block_icnt;
+	nb = idx % 32;
+	idx -= nb;
+	
+	bgd = ext2_load_bgd(device, bgrp_id);
+
+	status = ext2_read_block(device, bgd->inode_bitmap + bm_id, 0, inode_map, bm_block_size * 4, NULL);
+	if (status)
+		return status;
+
+	EXT2_BITMAP_CLR(inode_map[idx], nb);
+
+	status = ext2_write_block(device, bgd->inode_bitmap + bm_id, 0, inode_map, bm_block_size * 4, NULL);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (inode bitmap), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+
+	bgd->free_inode_count++;
+
+	status = ext2_store_bgd(device, bgrp_id, bgd);
+	if (status) {
+		debugcon_printf("ext2: MAYDAY MAYDAY MAYDAY: write error (BGD), FILESYSTEM IS PROBABLY CORRUPTED NOW!");
+		ext2_handle_error(device);
+	}
+	ext2_free_bgd(device, bgd);
+
+	device->superblock.free_inode_count++;
+
+	return 0;
 }
 
 uint32_t ext2_allocate_indirect_block(ext2_device_t *device, ext2_inode_t *inode)
@@ -967,7 +1095,7 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 }
 
 
-void ext2_vfstoe2_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)
+void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 {
 	ext2_inode_t *ino;
 	inode_t *vfs_ino;
@@ -1050,7 +1178,7 @@ int ext2_store_inode(inode_t *_inode) {
 	device = (ext2_device_t *) _inode->device;
 	inode = (ext2_vinode_t *) _inode;
 
-	ext2_vfstoe2_inode(device, inode, _inode->id);
+	ext2_vfstoe2_inode(inode, _inode->id);
 
 	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
 }
