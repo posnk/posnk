@@ -2869,16 +2869,9 @@ dir_cache_t *vfs_find_dirc_at(dir_cache_t *curdir, char * path)
 				/* If not, clean up and return */
 				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
-				/* Free the current dirc if it is not referenced 
-                         	 * somewhere else */
-				if (dirc && dirc->usage_count == 0){
-					/* Release its reference on its parent */
-					vfs_dir_cache_release(dirc->parent);
-					/* Free its memory */
-					heapmm_free(dirc, sizeof(dir_cache_t));
-				}
-				/* Return NULL as an element in the path was 
-				 * not found */
+				/* Release parent dirc */
+				vfs_dir_cache_release(dirc);
+
 				return NULL;
 			}
 			
