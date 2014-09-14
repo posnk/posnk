@@ -817,6 +817,8 @@ int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
 	namelen = strlen(name);
 	reclen = ext2_roundup(sizeof(ext2_dirent_t) + namelen, 4);
 
+	split_offset = 0;
+
 	for (pos = 0; pos < dsize; pos += f_dirent.rec_len) {
 		status = ext2_read_inode(_inode, &f_dirent, pos, sizeof(ext2_dirent_t), &nread);
 		if (status || (nread != sizeof(ext2_dirent_t)))
@@ -1183,6 +1185,8 @@ int ext2_store_inode(inode_t *_inode) {
 
 	ext2_vfstoe2_inode(inode, _inode->id);
 
+	debugcon_printf("ext2: storing inode %i\n", _inode->id);
+
 	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
 }
 
@@ -1221,7 +1225,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_write_inode,//Write to file
 	&ext2_readdir,//Read from directory
 	&ext2_finddir,//Find directory entry
-	NULL,//Make directory
+	&ext2_mkdir,//Make directory
 	&ext2_link,//Make directory entry
 	NULL,//Remove directory entry
 	&ext2_trunc_inode //Change file length

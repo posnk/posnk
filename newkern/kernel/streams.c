@@ -1441,6 +1441,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	} else if ((flags & O_CREAT) && (flags & O_EXCL)) {
 		/* File exists and O_EXCL is set, signal error */
 		syscall_errno = EEXIST;
+		vfs_dir_cache_release(dirc);
 		return -1;
 	}
 	
