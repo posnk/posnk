@@ -420,7 +420,10 @@ inline uint32_t ext2_free_inode(ext2_device_t *device, uint32_t inode_id)
 
 uint32_t ext2_allocate_indirect_block(ext2_device_t *device, ext2_inode_t *inode)
 {
-	return ext2_alloc_block(device, 0);//TODO: Prevent fragmentation, swap 0 for previous block in inode
+	uint32_t id = ext2_alloc_block(device, 0);//TODO: Prevent fragmentation, swap 0 for previous block in inode
+	if (id != EXT2_ENOSPC)
+		inode->blocks++;
+	return id;
 }
 
 uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block_id)
@@ -1102,7 +1105,7 @@ void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 
 	ino = &(_ino->inode);
 	vfs_ino = &(_ino->vfs_ino);
-	semaphore_down(vfs_ino->lock);
+	//semaphore_down(vfs_ino->lock);
 	
 	ino->link_count = vfs_ino->hard_link_count;
 	ino->uid = vfs_ino->uid;
@@ -1145,7 +1148,7 @@ void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 	ino->ctime = vfs_ino->ctime;
 	ino->mtime = vfs_ino->mtime;
 
-	semaphore_up(vfs_ino->lock);
+	//semaphore_up(vfs_ino->lock);
 }
 
 inode_t *ext2_load_inode(fs_device_t *device, ino_t id) {
@@ -1183,10 +1186,36 @@ int ext2_store_inode(inode_t *_inode) {
 	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
 }
 
+int ext2_mknod(inode_t *_inode) {
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+
+	if (!_inode) {	
+		return EFAULT;
+	}
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	_inode->id = (ino_t) ext2_alloc_inode(device);
+	if (_inode->id == EXT2_ENOSPC)
+		return ENOSPC;
+
+	memset(&(inode->inode), 0, sizeof(ext2_inode_t));
+
+	ext2_vfstoe2_inode(inode, _inode->id);
+
+	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
+}
+
+int ext2_mkdir(inode_t *_inode) {
+	return 0;
+}
+
 fs_device_operations_t ext2_ops = {
 	&ext2_load_inode,//Load inode
 	&ext2_store_inode,//Store inode
-	NULL,//Make inode
+	&ext2_mknod,//Make inode
 	NULL,//Remove inode
 	&ext2_read_inode,//Read from file
 	&ext2_write_inode,//Write to file
