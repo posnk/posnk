@@ -1316,6 +1316,50 @@ int vfs_mkdir(char *path, mode_t mode)
 	/* Release the lock on this inode */
 	semaphore_up(dir->lock);
 
+	/* Make self (".") link */
+	err = vfs_int_link(dir, ".", dir->id);
+
+	/* If there was an error, remove the directory */
+	if (err) {
+
+		/* Release the lock on this inode */
+		semaphore_up(dir->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(dir);
+
+		/* Delete the directory */
+		vfs_unlink(path);
+
+		/* Pass the error to the caller */
+		return err;
+	}
+
+	/* Make parent ("..") link */
+	err = vfs_int_link(dir, "..", parent->id);
+
+	/* If there was an error, remove the directory */
+	if (err) {
+
+		/* Release the lock on this inode */
+		semaphore_up(dir->lock);
+
+		/* Release the parent inode */
+		vfs_inode_release(parent);
+
+		/* Release the inode */
+		vfs_inode_release(dir);
+
+		/* Delete the directory */
+		vfs_unlink(path);
+
+		/* Pass the error to the caller */
+		return err;
+	}
+
 	/* Release the parent inode */
 	vfs_inode_release(parent);
 

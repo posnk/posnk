@@ -422,7 +422,7 @@ uint32_t ext2_allocate_indirect_block(ext2_device_t *device, ext2_inode_t *inode
 {
 	uint32_t id = ext2_alloc_block(device, 0);//TODO: Prevent fragmentation, swap 0 for previous block in inode
 	if (id != EXT2_ENOSPC)
-		inode->blocks++;
+		inode->blocks += 2 << device->superblock.block_size_enc;
 	return id;
 }
 
@@ -647,7 +647,7 @@ int ext2_shrink_inode(ext2_device_t *device, ext2_inode_t *inode, aoff_t old_siz
 			if (status)
 				return status;
 
-			inode->blocks--;
+			inode->blocks -= 2 << device->superblock.block_size_enc;;
 		}
 
 		if (status)
@@ -728,7 +728,7 @@ int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 			if (status)
 				return status;
 
-			inode->inode.blocks++;
+			inode->inode.blocks += 2 << device->superblock.block_size_enc;
 		}
 
 		status = ext2_write_block(device, block_addr, in_blk, &(buffer[count]), in_blk_size, NULL);
@@ -1213,7 +1213,26 @@ int ext2_mknod(inode_t *_inode) {
 }
 
 int ext2_mkdir(inode_t *_inode) {
-	return 0;
+	ext2_block_group_desc_t *bgd;
+	ext2_device_t *device;
+	int st;
+	if (!_inode) {	
+		return EFAULT;
+	}
+
+	device = (ext2_device_t *) _inode->device;
+
+	bgd = ext2_load_bgd(device, (_inode->id - 1) / device->superblock.inodes_per_group);
+
+	assert(bgd != NULL);
+
+	bgd->used_dir_count++;
+	
+	st = ext2_store_bgd(device, (_inode->id - 1) / device->superblock.inodes_per_group, bgd);
+	
+	ext2_free_bgd(device, bgd);
+
+	return st;//TODO: Is this an error ?
 }
 
 fs_device_operations_t ext2_ops = {
