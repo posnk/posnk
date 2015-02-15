@@ -1,12 +1,15 @@
 /**
- * kernel/shm.c
+ * @file kernel/shm.c
+ * 
+ * @brief Implements SystemV shared memory IPC
  *
  * Part of P-OS kernel.
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
- * 22-07-2014 - Created
+ * \i 22-07-2014 - Created
+ * \i 22-07-2014 - Documented
  */
 #include <string.h>
 #include <sys/errno.h>
@@ -18,16 +21,28 @@
 #include "kernel/time.h"
 #include "kernel/paging.h"
 
+/**
+ * List of all SHM objects in the system
+ */
 llist_t	shm_list;
+
+/**
+ * SHM ID Allocation counter
+ */
+//XXX: Is 2^32 SHM ID's enough if we don't recycle???
 int shm_id_ctr = 0;
 
+/**
+ * @brief Initialize SysV SHM subsystem
+ */
 void shm_init()
 {
+	//Initialize the SHM list
 	llist_create(&shm_list);
 }
 
 /**
- * Iterator to test if shm id matches the id
+ * @brief Iterator to test if shm id matches the id
  */
 int shm_id_search_iterator (llist_t *node, void *param)
 {
@@ -37,7 +52,7 @@ int shm_id_search_iterator (llist_t *node, void *param)
 }
 
 /**
- * Iterator to test if shm key matches the key
+ * @brief Iterator to test if shm key matches the key
  */
 int shm_key_search_iterator (llist_t *node, void *param)
 {
@@ -46,25 +61,47 @@ int shm_key_search_iterator (llist_t *node, void *param)
 	return ptr->key == key;
 }
 
+/**
+ * @brief Look up a shared memory segment by it's IPC key
+ * @param key The key to resolve
+ * @return The SHM segment descriptor if it was found, if not: NULL
+ */
 shm_info_t *shm_get_by_key(key_t key)
 {
+	//Use llist_iterate_select with the shm_key_search_iterator delegate to match *key*
 	return (shm_info_t *) llist_iterate_select(&shm_list, &shm_key_search_iterator, (void *) key);
 }
 
+/**
+ * @brief Look up a shared memory segment by it's IPC ID
+ * @param id The ID to resolve
+ * @return The SHM segment descriptor if it was found, if not: NULL
+ */
 shm_info_t *shm_get_by_id(int id)
 {
+	//Use llist_iterate_select with the shm_id_search_iterator delegate to match *key*
 	return (shm_info_t *) llist_iterate_select(&shm_list, &shm_id_search_iterator, (void *) id);
 }
 
+/**
+ * @brief Allocate a new SHM ID
+ * @return A newly allocated unique SHM ID or incase of an error: -1
+ * @exception ENFILE No more SHM ID's were available
+ */
 int shm_alloc_id()
 {
+	//Allocate a new ID by bumping *shm_id_counter*
 	int id = shm_id_ctr++;
+	//Test for overflow
 	if(shm_id_ctr <= 0) {
+		//We had overflow: restore previous counter value and signal
+		//ENFILE
 		shm_id_ctr--;
 		syscall_errno = ENFILE;
 		return -1;
 	}
 
+	//Return the newly allocated ID
 	return id;
 }
 
