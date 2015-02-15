@@ -59,7 +59,7 @@
 #define ATA_BM_STATUS_FLAG_DMAGO	(1<<0)
 
 #define ATA_STATUS_FLAG_ERR		(1<<0)
-#define ATA_STATUS_FLAG_DRQ		(1<<3)
+#define ATA_STATUS_FLAG_DRQ		(1<<3) /* Called DATA_READY in sortix */
 #define ATA_STATUS_FLAG_SRV		(1<<4)
 #define ATA_STATUS_FLAG_DF		(1<<5)
 #define ATA_STATUS_FLAG_RDY		(1<<6)
@@ -182,6 +182,12 @@ struct ata_prd {
 uint8_t ata_read_port(ata_device_t *device, uint16_t port);
 
 void ata_write_port(ata_device_t *device, uint16_t port, uint8_t value);
+
+void ata_write_port_long(ata_device_t *device, uint16_t port, uint32_t value);
+
+void ata_read_data(ata_device_t *device, uint16_t port, uint8_t *buffer, size_t count);
+
+void ata_write_data(ata_device_t *device, uint16_t port, uint8_t *buffer, size_t count);
 
 int ata_poll_wait(ata_device_t *device);
 

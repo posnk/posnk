@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo losetup -o 1048576 --sizelimit 1072693248 -f --show hdd.img

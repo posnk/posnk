@@ -120,6 +120,8 @@ void vga_vterm_init(){
         }
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
 	vterm_vga_switch_vc(0);
+	vterm_tty_invalidate_screen(MAKEDEV(2, 0));
+	earlycon_switchover();
 }
 
 void panicscreen(const char *text)

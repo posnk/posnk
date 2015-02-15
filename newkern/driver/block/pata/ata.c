@@ -1,12 +1,15 @@
 /**
- * driver/block/pata/ata.c
+ * @file driver/block/pata/ata.c
  *
- * Part of P-OS kernel.
+ * Implements the functionality common to all ATA ports
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * Part of P-OS driver library.
+ *
+ * @author Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
- * 02-07-2014 - Created
+ * \li 02-07-2014 - Created
+ * \li 20-01-2015 - Commented
  */
 
 #include "config.h"
@@ -32,113 +35,20 @@ ata_prd_t *ata_prd_list;
 
 extern blk_ops_t ata_block_driver_ops;
 
-uint8_t ata_read_port(ata_device_t *device, uint16_t port)
-{
-	uint8_t rv;
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
-	if (port < 0x08)
-		rv = i386_inb(device->pio_base  + port);
-	else if (port < 0x0C)
-		rv = i386_inb(device->pio_base  + port - 6);
-	else if (port < 0x0E)
-		rv = i386_inb(device->ctrl_base + port - 10);
-	else if (port < 0x16)
-		rv = i386_inb(device->bmio_base + port - 14);
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-	return rv;
-}
-
-void ata_write_port(ata_device_t *device, uint16_t port, uint8_t value)
-{
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
-	if (port < 0x08)
-		i386_outb(device->pio_base  + port, value);
-	else if (port < 0x0C)
-		i386_outb(device->pio_base  + port - 6, value);
-	else if (port < 0x0E)
-		i386_outb(device->ctrl_base + port - 10, value);
-	else if (port < 0x16)
-		i386_outb(device->bmio_base + port - 14, value);
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-}
-
-void ata_write_port_long(ata_device_t *device, uint16_t port, uint32_t value)
-{
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
-	if (port < 0x08)
-		i386_outl(device->pio_base  + port, value);
-	else if (port < 0x0C)
-		i386_outl(device->pio_base  + port - 6, value);
-	else if (port < 0x0E)
-		i386_outl(device->ctrl_base + port - 10, value);
-	else if (port < 0x16)
-		i386_outl(device->bmio_base + port - 14, value);
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-}
-
-void ata_read_data(ata_device_t *device, uint16_t port, uint8_t *buffer, size_t count)
-{
-	uint16_t port_addr = 0;
-	uint32_t *_buffer = (uint32_t *) buffer;
-	size_t ptr;
-	count >>= 2;
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
-	if (port < 0x08)
-		port_addr = device->pio_base  + port;
-	else if (port < 0x0C)
-		port_addr = device->pio_base  + port - 6;
-	else if (port < 0x0E)
-		port_addr = device->ctrl_base + port - 10;
-	else if (port < 0x16)
-		port_addr = device->bmio_base + port - 14;
-
-	for (ptr = 0; ptr < count; ptr ++)
-		_buffer[ptr] = i386_inl(port_addr);
-
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-
-}
-
-void ata_write_data(ata_device_t *device, uint16_t port, uint8_t *buffer, size_t count)
-{
-	uint16_t port_addr = 0;
-	uint32_t *_buffer = (uint32_t *) buffer;
-	size_t ptr;
-	count >>= 2;
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg | ATA_DCR_FLAG_HIGHORDER);
-	if (port < 0x08)
-		port_addr = device->pio_base  + port;
-	else if (port < 0x0C)
-		port_addr = device->pio_base  + port - 6;
-	else if (port < 0x0E)
-		port_addr = device->ctrl_base + port - 10;
-	else if (port < 0x16)
-		port_addr = device->bmio_base + port - 14;
-
-	for (ptr = 0; ptr < count; ptr ++)
-		i386_outl(port_addr, _buffer[ptr]);
-
-	if ((port > 0x07) && (port < 0x0C)) //LBA48
-		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-
-}
-
-int ata_poll_wait(ata_device_t *device)
+int ata_poll_wait_resched(ata_device_t *device)
 {
 	int _t;
 	uint8_t status;
+	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
 	for (_t = 0; _t < 4; _t++)
 		ata_read_port(device, ATA_ALTSTATUS_PORT);
-	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY);//TODO: Timeout
+
+	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY) {
+		if (system_time > timeout_end)
+			return 0;
+		schedule();
+	}
+
 	if (status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR))
 		return 0;
 	if (status & ATA_STATUS_FLAG_DRQ)
@@ -147,6 +57,38 @@ int ata_poll_wait(ata_device_t *device)
 		return 2;
 }
 
+/**
+ * @brief Waits for the ATA device to become available
+ * @param device ATA device to wait on
+ * @return If successful and DRQ was set, the function will return 1, if DRQ
+ * 	   was not set the function will return 2 unless an error occurred, in which case
+ *         the function will return 0
+ *
+ */
+int ata_poll_wait(ata_device_t *device)
+{
+	int _t;
+	uint8_t status;
+	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
+	for (_t = 0; _t < 4; _t++)
+		ata_read_port(device, ATA_ALTSTATUS_PORT);
+	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY){
+		if (system_time > timeout_end)
+			return 0;
+	}
+	if (status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR))
+		return 0;
+	if (status & ATA_STATUS_FLAG_DRQ)
+		return 1;
+	else	
+		return 2;
+}
+
+/**
+ * @brief Enables or disables interrupts for an ATA device
+ * @param device The ATA device to operate on
+ * @param enabled Whether to enable interrupts on the device
+ */
 void ata_set_interrupts(ata_device_t *device, int enabled)
 {
 	device->ctrl_reg = enabled ? 0 : ATA_DCR_FLAG_INT_DIS;
@@ -357,14 +299,20 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_READ_PIO);
 		if (ata_interrupt_enabled) {
-			semaphore_down(device->int_wait);
-			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
-				return 0;
+			if (semaphore_tdown(device->int_wait, 3)) {
+				debugcon_printf("ata: device %i:%i DMA read timeout\n", device->bus_number, drive);
 				semaphore_up(device->lock);
+				return 0;
+			}
+			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
+				debugcon_printf("ata: device %i:%i DMA read error\n", device->bus_number, drive);
+				semaphore_up(device->lock);
+				return 0;
 			}
 			if (!(device->int_status & ATA_STATUS_FLAG_DRQ)){
-				return 0;
+				debugcon_printf("ata: device %i:%i DMA read no DRQ!\n", device->bus_number, drive);
 				semaphore_up(device->lock);
+				return 0;
 			}
 		} else {
 			if (ata_poll_wait(device) != 1) {
@@ -415,14 +363,20 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_WRITE_PIO);
 		if (ata_interrupt_enabled) {
-			semaphore_down(device->int_wait);
-			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
-				return 0;
+			if (semaphore_tdown(device->int_wait, 3)){
+				debugcon_printf("ata: device %i:%i DMA write timeout\n", device->bus_number, drive);
 				semaphore_up(device->lock);
+				return 0;
+			}
+			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
+				debugcon_printf("ata: device %i:%i DMA write error\n", device->bus_number, drive);
+				semaphore_up(device->lock);
+				return 0;
 			}
 			if (!(device->int_status & ATA_STATUS_FLAG_DRQ)){
-				return 0;
+				debugcon_printf("ata: device %i:%i DMA write no DRQ\n", device->bus_number, drive);
 				semaphore_up(device->lock);
+				return 0;
 			}
 		} else {
 			if (ata_poll_wait(device) != 1) {
@@ -461,7 +415,7 @@ int ata_blk_write(dev_t device, aoff_t file_offset, void * buffer )
 	if (minor) {
 		if (_dev->drives[drive].partitions[minor - 1].type == 0)
 			return ENODEV;
-		if (lba > _dev->drives[drive].partitions[minor - 1].size)
+		if (lba > _dev->drives[drive].partitions[minor - 1].end)
 			return ENOSPC;
 		lba += _dev->drives[drive].partitions[minor - 1].start;
 	}
@@ -488,7 +442,7 @@ int ata_blk_read(dev_t device, aoff_t file_offset, void * buffer )
 	if (minor) {
 		if (_dev->drives[drive].partitions[minor - 1].type == 0)
 			return ENODEV;
-		if (lba > _dev->drives[drive].partitions[minor - 1].size)
+		if (lba > _dev->drives[drive].partitions[minor - 1].end)
 			return ENOSPC;
 		lba += _dev->drives[drive].partitions[minor - 1].start;
 	}

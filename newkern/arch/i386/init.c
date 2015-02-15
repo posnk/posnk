@@ -241,10 +241,14 @@ void i386_init_stub()
 		asm ("hlt;");
 }
 
+/**
+ * This function implements the idle task that runs when there are no other running processes
+ */
+
 void i386_idle_task()
 {	
 	scheduler_set_as_idle();	
-	strcpy(scheduler_current_task->name,"idle task");
+	strcpy(scheduler_current_task->name, "idle task");
 	asm ("sti");
 		
 	for (;;)
@@ -269,6 +273,7 @@ void i386_kmain()
 	uint32_t wp_params[4];
 
 	earlycon_puts("OK\n\n");
+
 	earlycon_printf("P-OS Kernel v0.01 built on %s %s. %i MB free\n",__DATE__,__TIME__,physmm_count_free()/0x100000);
 
 	earlycon_puts("Initializing exception handlers...");
@@ -314,7 +319,9 @@ void i386_kmain()
 	earlycon_puts("Loading module files...");
 	i386_init_load_modules(mb_info);
 	earlycon_puts("OK\n");
-
+//DEV_DRIVER(fb, video)
+//DEV_DRIVER(mbfb, video)
+//DEV_DRIVER(fbcon_vterm, console)
 	/*earlycon_puts("Extracting initrd..");
 	if (!tar_extract("/initrd.tar"))
 		earlycon_puts("OK\n");
@@ -326,6 +333,7 @@ void i386_kmain()
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");
+
 	ipc_init();
 	
 	earlycon_puts("Initializing protection...");
@@ -354,9 +362,10 @@ void i386_kmain()
 	wp_params[1] = (uint32_t) &init_status;
 	wp_params[2] = 0;
 	rv = sys_waitpid(wp_params,wp_params);
+
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 
 	earlycon_puts("\n\nkernel main exited... halting!");
-
 	halt();
+
 }

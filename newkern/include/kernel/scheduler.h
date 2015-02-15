@@ -36,6 +36,8 @@ void scheduler_init();
 
 void scheduler_wait_on(semaphore_t *semaphore);
 
+void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds);
+
 int scheduler_wait_time(ktime_t time);
 
 int scheduler_wait_micros(ktime_t microtime);

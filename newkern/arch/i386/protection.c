@@ -10,7 +10,7 @@ void i386_set_tss_descriptor(uint32_t base, uint32_t limit, uint8_t flags,uint8_
 	i386_tss_descriptor.baseLo		= (base >> I386_GDT_BASE_LOW_SHIFT)	& I386_GDT_BASE_LOW_MASK;
 	i386_tss_descriptor.baseMid		= (base >> I386_GDT_BASE_MID_SHIFT)	& I386_GDT_BASE_MID_MASK;
 	i386_tss_descriptor.baseHi		= (base >> I386_GDT_BASE_HIGH_SHIFT)	& I386_GDT_BASE_HIGH_MASK;
-	i386_tss_descriptor.limit		= (limit >> I386_GDT_LIMIT_LOW_SHIFT) & I386_GDT_LIMIT_LOW_MASK;
+	i386_tss_descriptor.limit		= (limit >> I386_GDT_LIMIT_LOW_SHIFT)	& I386_GDT_LIMIT_LOW_MASK;
 	i386_tss_descriptor.granularity		= granularity | ((limit >> I386_GDT_LIMIT_HIGH_SHIFT) & I386_GDT_LIMIT_HIGH_MASK);
 	i386_tss_descriptor.flags		= flags;
 }

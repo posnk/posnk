@@ -6,6 +6,9 @@ SRCS_DRIVER = _dinit.c \
 include(`fs/fs.list')dnl
 include(`driver/dev.list')dnl
 
+SRCS_HOST_FS = _dinit.c \
+include(`fs/fs.list')dnl
+
 clean_driver:
 define(`FS_DRIVER', ``	$(RM) fs/$1.o'')dnl
 define(`DRIVER_SRC', ``	$(RM) driver/$1.o'')dnl

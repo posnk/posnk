@@ -16,7 +16,7 @@ void register_fs_drivers() {
 #include "fs/fs.list"
 
 }
-
+#ifndef HOSTED_TEST
 void register_dev_drivers() {
 
 #define DEV_DRIVER(NaMe, PaTh) NaMe ## _init();
@@ -24,3 +24,4 @@ void register_dev_drivers() {
 #include "driver/dev.list"
 
 }
+#endif

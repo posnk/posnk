@@ -18,6 +18,7 @@ typedef struct partition_info {
 	uint8_t  type;
 	uint32_t start;
 	uint32_t size;
+	uint32_t end;
 } partition_info_t;
 
 

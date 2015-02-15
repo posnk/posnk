@@ -25,6 +25,7 @@ int mbr_parse(partition_info_t *partition_list, uint8_t *mbr)
 		partition_list[part].type = mbr[po + MBR_PARTITION_TYPE];
 		partition_list[part].start = *((uint32_t *)&mbr[po + MBR_PARTITION_OFFSET]);
 		partition_list[part].size = *((uint32_t *)&mbr[po + MBR_PARTITION_SIZE]);
+		partition_list[part].end = partition_list[part].start + partition_list[part].size;
 		debugcon_printf("mbr: partition %i type %i starts at %i, has size %i!\n", part, partition_list[part].type,partition_list[part].start,partition_list[part].size);
 	}
 

@@ -62,6 +62,20 @@ int semaphore_idown(semaphore_t *semaphore)
 	return 0;
 }
 
+int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
+{
+	if ((*semaphore) == 0) {
+		scheduler_wait_on_timeout(semaphore, seconds);
+		if (scheduler_current_task->state == PROCESS_TIMED_OUT){
+			scheduler_current_task->state = PROCESS_RUNNING;
+			return -1;
+		}
+	} else {
+		(*semaphore)--;
+	}
+	return 0;
+}
+
 int semaphore_try_down(semaphore_t *semaphore)
 {
 	if ((*semaphore) == 0)

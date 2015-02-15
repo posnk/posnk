@@ -130,6 +130,8 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 		return 1;
 	else if (task->state == PROCESS_INTERRUPTED)
 		return 1;
+	else if (task->state == PROCESS_TIMED_OUT)
+		return 1;
 	else if (task->state == PROCESS_WAITING) {
 		//earlycon_printf("pid %i is waiting on %x\n",task->pid, task->waiting_on);
 		if (process_was_interrupted(task)) {
@@ -137,10 +139,12 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 			task->waiting_on = NULL;
 			return 1;
 		} else if ( (task->wait_timeout_u != 0) && (task->wait_timeout_u <= system_time_micros) ) {
-			task->state = PROCESS_READY;
+			task->state = PROCESS_TIMED_OUT;
+			task->waiting_on = NULL;
 			return 1;//TODO: Signal timeout
 		} else if ( (task->wait_timeout_s != 0) && (task->wait_timeout_s <= system_time) ) {
-			task->state = PROCESS_READY;
+			task->state = PROCESS_TIMED_OUT;
+			task->waiting_on = NULL;
 			return 1;//TODO: Signal timeout
 		} else if ( (task->waiting_on == NULL) || (!semaphore_try_down(task->waiting_on)) )
 			return 0;
@@ -196,6 +200,7 @@ int scheduler_wait_micros(ktime_t microtime)
 		scheduler_current_task->state = PROCESS_RUNNING;
 		return 0;
 	}
+	scheduler_current_task->state = PROCESS_RUNNING;
 	return 1;
 }
 
@@ -210,6 +215,7 @@ int scheduler_wait_time(ktime_t time)
 		scheduler_current_task->state = PROCESS_RUNNING;
 		return 0;
 	}
+	scheduler_current_task->state = PROCESS_RUNNING;
 	return 1;
 }
 
@@ -219,6 +225,17 @@ void scheduler_wait_on(semaphore_t *semaphore)
 	scheduler_current_task->waiting_on = semaphore;
 	scheduler_current_task->wait_timeout_u = 0;
 	scheduler_current_task->wait_timeout_s = 0;
+	scheduler_current_task->state = PROCESS_WAITING;
+	schedule();
+	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
+}
+
+void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
+{
+	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
+	scheduler_current_task->waiting_on = semaphore;
+	scheduler_current_task->wait_timeout_u = 0;
+	scheduler_current_task->wait_timeout_s = seconds;
 	scheduler_current_task->state = PROCESS_WAITING;
 	schedule();
 	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);

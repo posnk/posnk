@@ -6,15 +6,21 @@
 #
 
 # define the C compiler to use
-CC = @echo " [  CC  ]	" $< ; /opt/standalone/bin/i586-elf-gcc
-LD = @echo " [  LD  ]	" $@ ; /opt/standalone/bin/i586-elf-gcc
-CPP = @echo " [  CPP ]	" $@ ; /opt/standalone/bin/i586-elf-cpp
-M4 = @echo " [  M4  ]	" $@ ; m4
-GAS = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
+CC   = @echo " [  CC  ]	" $< ; /opt/standalone/bin/i586-elf-gcc
+LD   = @echo " [  LD  ]	" $@ ; /opt/standalone/bin/i586-elf-gcc
+CPP  = @echo " [  CPP ]	" $@ ; /opt/standalone/bin/i586-elf-cpp
+M4   = @echo " [  M4  ]	" $@ ; m4
+GAS  = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
 NASM = @echo " [ NASM ]	" $< ; nasm
+HCC  = @echo " [ HCC  ]	" $< ; gcc
+HLD  = @echo " [ HLD  ]	" $@ ; gcc
+HCPP = @echo " [ HCPP ]	" $@ ; cpp
+HGAS = @echo " [  HAS ]	" $@ ; as
 
 # define any compile-time flags
 CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer -finline-functions -finline-functions-called-once -fauto-inc-dec
+
+HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
@@ -24,10 +30,14 @@ GASFLAGS = -g -ffreestanding
 #
 INCLUDES = -I./include -I./include/crt
 
+HINCLUDES = -I./include
+
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
 LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
+
+HLFLAGS = -g
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
@@ -114,6 +124,14 @@ arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
 arch/i386/prot_asm.s
 
+TEST_FS_SRCS = tests/fs/mm.c \
+tests/fs/dev.c \
+tests/fs/synch.c \
+tests/fs/vfs.c \
+tests/fs/main.c \
+kernel/drivermgr.c \
+util/llist.c
+
 TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 
 # define the C object files 
@@ -127,6 +145,8 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
 
+OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho) 
+
 .PHONY: depend clean
 
 all:	cdrom_i386 install_h
@@ -135,9 +155,26 @@ _dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
 	$(M4) -I . build/drivermake.m4 > _dmake
 	$(CPP) -I . build/driverinit.c > _dinit.c
 
+test_dmake:	
+	$(HCPP) -DHOSTED_TEST -I . build/driverinit.c > _dinit.c
+	$(M4) -I . build/drivermake.m4 > _dmake
+
 include _dmake
 
 OBJS_DRIVER = $(SRCS_DRIVER:.c=.o)
+
+OBJS_HOST_FS = $(SRCS_HOST_FS:.c=.ho)
+
+testfs: test_dmake $(OBJS_TESTFS) $(OBJS_HOST_FS)
+	$(HLD) $(HLFLAGS) -o testfs $(OBJS_TESTFS) $(OBJS_HOST_FS)
+
+test: testfs
+	@touch empty
+	@dd if=/dev/zero of=ext2test.ext2 bs=1024 count=100k
+	@echo " [MKE2FS] " ext2test.ext2 ; yes | /sbin/mke2fs ./ext2test.ext2 -L posnk_e2_test -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
+	@echo " [TESTFS] " ext2 ext2test.ext2 ; ./testfs ext2 ext2test.ext2
+	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
+	@rm empty
 
 kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
 	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
@@ -172,6 +209,9 @@ cdrom_i386: kernel_i386 initrd
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
+%.ho: %.c
+	$(HCC) $(HCFLAGS) $(HINCLUDES) -c $<  -o $@
+
 .s.o:
 	$(NASM) $(NASMFLAGS) $< -o $@ 
 
@@ -182,6 +222,14 @@ clean: clean_driver
 	$(RM) driver/bus/*.o
 	$(RM) arch/i386/*.o
 	@rm _dmake
+
+clean_test:
+	$(RM) test/fs/*.ho
+	$(RM) fs/*.ho
+	$(RM) kernel/*.ho
+	$(RM) driver/console/*.ho
+	$(RM) driver/bus/*.ho
+	$(RM) arch/i386/*.ho
 
 emulate: cdrom_i386
 	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)

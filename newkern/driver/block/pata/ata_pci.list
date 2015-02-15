@@ -1,2 +1,3 @@
 DRIVER_SRC(block/pata/ata)
+DRIVER_SRC(block/pata/ata_pc)
 DRIVER_SRC(block/pata/ata_pci)

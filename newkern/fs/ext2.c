@@ -21,6 +21,9 @@
 #include "kernel/device.h"
 #include "kernel/vfs.h"
 #include "kernel/earlycon.h"
+	
+
+void *ext2_zero_buffer = NULL;
 
 uint32_t ext2_divup(uint32_t a, uint32_t b)
 {
@@ -38,6 +41,8 @@ uint32_t ext2_roundup(uint32_t a, uint32_t b)
 
 void ext2_handle_error(ext2_device_t *device)
 {
+	assert(0/* EXT2 ERROR */);
+
 }
 
 int ext2_read_block(ext2_device_t *dev, uint32_t block_ptr, uint32_t in_block, void *buffer, aoff_t count, aoff_t *read_size)
@@ -420,9 +425,18 @@ inline uint32_t ext2_free_inode(ext2_device_t *device, uint32_t inode_id)
 
 uint32_t ext2_allocate_indirect_block(ext2_device_t *device, ext2_inode_t *inode)
 {
+	int status;
+	size_t block_size = 1024 << device->superblock.block_size_enc;
 	uint32_t id = ext2_alloc_block(device, 0);//TODO: Prevent fragmentation, swap 0 for previous block in inode
-	if (id != EXT2_ENOSPC)
+	if (id != EXT2_ENOSPC) {
 		inode->blocks += 2 << device->superblock.block_size_enc;
+		if (!ext2_zero_buffer) {
+			ext2_zero_buffer = heapmm_alloc(block_size);
+			memset(ext2_zero_buffer, 0, block_size);
+		}
+		status = ext2_write_block(device, id, 0, ext2_zero_buffer, block_size, NULL);
+		assert(status == 0);
+	}
 	return id;
 }
 
@@ -445,8 +459,10 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 			return 0;
 
 		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
-		if (status || !indirect_rd)
+		if (status || !indirect_rd) {
+			assert ( status == 0 );
 			return 0;
+		}
 
 		indirect_id = indirect_rd;
 
@@ -464,8 +480,10 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 		indirect_off = (block_id - d_indir_s) / s_indir_l;
 
 		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
-		if (status || !indirect_rd)
+		if (status || !indirect_rd) {
+			assert ( status == 0 );
 			return 0;
+		}
 
 		indirect_id = indirect_rd;
 
@@ -485,8 +503,10 @@ uint32_t ext2_decode_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32
 		indirect_off = block_id - s_indir_s;
 
 		status = ext2_read_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
-		if (status || !indirect_rd)
+		if (status || !indirect_rd) {
+			assert ( status == 0 );
 			return 0;
+		}
 
 		return indirect_rd;
 	}
@@ -513,7 +533,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 
 			indirect_id = ext2_allocate_indirect_block(device, inode);
 
-			if (indirect_id == 0)
+			if (indirect_id == EXT2_ENOSPC)
 				return ENOSPC;			
 
 			inode->block[14] = indirect_id;
@@ -527,7 +547,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 
 			indirect_rd = ext2_allocate_indirect_block(device, inode);
 
-			if (indirect_rd == 0)
+			if (indirect_rd == EXT2_ENOSPC)
 				return ENOSPC;	
 
 			status = ext2_write_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
@@ -547,7 +567,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 
 			indirect_id = ext2_allocate_indirect_block(device, inode);
 
-			if (indirect_id == 0)
+			if (indirect_id == EXT2_ENOSPC)
 				return ENOSPC;	
 
 			inode->block[13] = indirect_id;
@@ -565,7 +585,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 
 			indirect_rd = ext2_allocate_indirect_block(device, inode);
 
-			if (indirect_rd == 0)
+			if (indirect_rd == EXT2_ENOSPC)
 				return ENOSPC;	
 
 			status = ext2_write_block(device, indirect_id, indirect_off * 4, &indirect_rd, 4, NULL);
@@ -585,7 +605,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 
 			indirect_id = ext2_allocate_indirect_block(device, inode);
 
-			if (indirect_id == 0)
+			if (indirect_id == EXT2_ENOSPC)
 				return ENOSPC;	
 
 			inode->block[12] = indirect_id;

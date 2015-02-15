@@ -178,6 +178,7 @@ int device_block_flush(dev_t device, aoff_t block_offset)
 
 int device_block_fetch(dev_t device, aoff_t block_offset)
 {
+	int rv;
 	blkcache_entry_t *entry;
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
@@ -194,8 +195,13 @@ int device_block_fetch(dev_t device, aoff_t block_offset)
 	/* Check if the cache was full */
 	if (!entry) {
 		/* If it is, flush the discard candidate */
-		device_block_flush(device,
+		rv = device_block_flush(device,
 			blkcache_get_discard_candidate(drv->caches[minor])->offset);
+				
+		/* Check for errors */
+		if (rv) {
+			return rv;
+		}
 
 		/* blkcache_get will flush the discard candidate if the cache
                  * is full but only if it is not DIRTY, we have just flushed it
@@ -448,8 +454,15 @@ int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t c
 				/* It is */
 
 				/* Flush the discard candidate */
-				device_block_flush(device,
+				rv = device_block_flush(device,
 					blkcache_get_discard_candidate(drv->caches[minor])->offset);
+				
+				/* Check for errors */
+				if (rv) {
+					/* Release the lock on this device */
+					semaphore_up(drv->locks[minor]);
+					return rv;
+				}
 
 				/* Retry */
 				entry = blkcache_get(drv->caches[minor], block_offset);
