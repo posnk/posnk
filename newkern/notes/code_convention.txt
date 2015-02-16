@@ -1,0 +1,121 @@
+Revision 1		   posnk code convention		      16/02/2015
+
+1. Source file layout
+
+	Each source file must start with a header comment containing doxygen 
+	information, a line indicating the project it is part of, a changelog 
+	and a license insertion point.
+
+	Source files are divided into sections seperated by single line C style
+	comments, these sections may only contain a single kind of construct (an
+	exception to this rule are function-local typedefs such as those used to
+	pass iterator parameters), internal functions are to be kept in a 
+	separate section from public functions.
+		
+	Source files are to be kept as small as is possible without obscuring 
+	the mechanisms contained by them.
+
+	Includes are to be grouped into library references and project
+	references, further grouping according to module is recommended when 
+	there are a large number of includes.
+
+2. Naming
+	
+	Names are in the underscore (snake_case) convention. 
+
+	All global symbols are to be named <module>[_int]_<name>, all typedefs 
+	are to be postfixed with _t, likewise all structs are to be postfixed 
+	with _s.
+
+	Macro names are capitalized and configuration macros are to be prefixed 
+	by CONFIG_ except for platform-selection macros which are to be named 
+	ARCH_<PLATFORM_NAME>
+
+3. Comments
+	
+	All global definitions are required to be documented by doxygen comments
+	containing a brief description for the construct and its parameters, 
+	errors and return values.
+
+	In-code comments should be on seperate lines where possible and should 
+	only use C-style block comments (/**/).
+
+4. Function definitions
+
+	Functions which can reasonably be expected to fail are required to 
+	return a status code of type errno_t and should pass any return value
+	via a pointer parameter.
+
+
+5. Whitespaces and line-breaks
+	
+	Indentation should use the <TAB> character.
+
+	Braces for conditional statements and structure definitions should be on
+	the line containing the definiton, braces for functions must be on the 
+	first line following the definition.
+
+6. Example	
+
+	----------------------EXAMPLE-----------------------
+	/**
+	 * @file example/source1.c
+	 *
+	 * Implements the first code convention example.
+	 *
+	 * Part of Code Convention Example Project
+	 *
+	 * @author John Doe <john@doe.com>
+	 *
+	 * Changelog:
+	 * \li 01-01-1970 - Created
+	 * \li 02-01-1970 - First edit
+	 */
+
+	/* Includes */
+	#include <string.h>
+	#include <errno.h>
+
+	#include "example/header1.h"
+	#include "example/header2.h"
+
+	/* Type Definitions */
+	typedef struct {
+	} example_t;
+
+	/* Global Variables */
+	example_t example_var;
+
+	/* Internal Functions */
+
+	/**
+	 * @brief An internal function
+	 *
+	 * @param bar 	 A parameter
+	 * @param result Pointer to store the result in
+	 * @return An error code or 0 in the case of success
+	 */
+	errno_t example_int_foo(int bar, int *result) 
+	{
+		return ESUCCESS;
+	}
+
+	/* Public Functions */
+
+	/**
+	 * @brief A function
+	 *
+	 * @param bar 	 A parameter
+	 * @param result Pointer to store the result in
+	 * @return An error code or 0 in the case of success
+	 */
+	errno_t example_foo(int bar, int *result) 
+	{
+		/* Sanity checks */
+		...
+		
+		/* Call internal function */
+		return example_int_foo(bar, result);
+	}	
+	----------------------------------------------------
+

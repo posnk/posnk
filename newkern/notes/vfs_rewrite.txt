@@ -34,3 +34,7 @@ Step 3: Rewrite path resolution routines to this format
 vfs_get_XXX(parent, name) 
 
 Step 4: Implement symlink referral
+
+*********************************************************************************************************************
+
+

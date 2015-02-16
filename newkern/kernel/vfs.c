@@ -32,18 +32,6 @@
 /** Filesystem driver list */
 llist_t vfs_fs_driver_list;
 
-/** The linked list serving as open inode list */
-llist_t *open_inodes;
-
-/** The linked list serving as inode cache */
-//TODO: Implement a proper inode cache
-llist_t *inode_cache;
-
-typedef struct vfs_cache_params {
-	uint32_t device_id;
-	ino_t inode_id;
-} vfs_cache_params_t;
-
 
 /**
  * @brief Extract the filename part of a path
@@ -105,74 +93,6 @@ char *vfs_get_filename(const char *path)
 	heapmm_free(pathcopy, pathlen + 1);
 
 	return newname;
-}
-
-
-/**
- * @brief Release a reference to an inode
- * @param inode The reference to release
- */
-
-void vfs_inode_release(inode_t *inode)
-{
-	/* Decrease the reference count for this inode */
-	if (inode->usage_count)
-		inode->usage_count--;
-
-	/* If the inode has no more references, destroy it */
-	if (inode->usage_count)
-		return;
-
-	/* If the inode has a mount on it, don't destroy it */
-	if (inode->mount)
-		return;
-
-	llist_unlink((llist_t *) inode);
-	llist_add_end(inode_cache, (llist_t *) inode);
-
-	inode->device->ops->store_inode(inode);
-}
-
-/**
- * @brief Create a new reference to an inode
- * @param dirc The entry to refer to
- * @return The new reference
- */
-
-inode_t *vfs_inode_ref(inode_t *inode)
-{
-	assert (inode != NULL);
-	if ((!inode->mount) && (!inode->usage_count)) {
-		llist_unlink((llist_t *) inode);
-		llist_add_end(open_inodes, (llist_t *) inode);
-	}
-
-	inode->usage_count++;
-
-	return inode;
-}
-
-/**
- * @brief Add an inode to the cache
- * @param dirc The entry to refer to
- * @return The new reference
- */
-
-void vfs_inode_cache(inode_t *inode)
-{
-	assert (inode != NULL);
-	llist_add_end(inode_cache, (llist_t *) inode);
-}
-
-/*
- * Iterator function that looks up the requested inode
- */
-
-int vfs_cache_find_iterator (llist_t *node, void *param)
-{
-	inode_t *inode = (inode_t *) node;
-	vfs_cache_params_t *p = (vfs_cache_params_t *) param;
-	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
 }
 
 /** @name VFS Internal

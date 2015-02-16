@@ -1,0 +1,15 @@
+Project: VFS Rewrite and Interface redesign
+Developers: Peter Bosch
+Started: 16/02/2015
+
+Description: 
+	Split VFS into more comprehensible chunks and implement a consistent
+	convention for status and result passing in function calls and 
+	callback interfaces.
+
+Outline:
+	Step I:
+		Move VFS code into kernel/vfs folder.
+		Split off inode cache.
+		Split off dirent cache.
+
