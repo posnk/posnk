@@ -1,6 +1,10 @@
 #ifndef __SYS_ERRNO_H__
 #define __SYS_ERRNO_H__
 
+#include <sys/error.h>
+
+#define ESUCCESS 0 /* No error */
+
 #define EPERM 1 /* Not super-user */
 #define ENOENT 2 /* No such file or directory */
 #define ESRCH 3 /* No such process */

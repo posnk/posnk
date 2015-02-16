@@ -44,8 +44,19 @@ Revision 1		   posnk code convention		      16/02/2015
 
 	Functions which can reasonably be expected to fail are required to 
 	return a status code of type errno_t and should pass any return value
-	via a pointer parameter.
+	via a pointer parameter. The header <sys/errno.h> provides macros for 
+	doing this in a convenient way:
+	
+	- RETURN_VALUE(<type>) which evaluates to 
+		<type>* _retval
+	- RETURN(<value>) which evaluates to
+		do { *_retval = (<value>); return ESUCCESS; } while(0);
+	- THROW(<status>, <value>) which evaluates to
+		do { *_retval = (<value>); return <status>; } while(0);	
+	- CHAINRET(<func>, <parameters>) which evaluates to 
+		do { return <func>(<parameters>, _retval); } while(0);
 
+	Functions not taking any parameters must be declared taking void.
 
 5. Whitespaces and line-breaks
 	
