@@ -132,6 +132,8 @@ tests/fs/main.c \
 kernel/drivermgr.c \
 util/llist.c
 
+SRCS_TESTERROR = tests/test_error.c
+
 TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 
 # define the C object files 
@@ -165,10 +167,16 @@ OBJS_DRIVER = $(SRCS_DRIVER:.c=.o)
 
 OBJS_HOST_FS = $(SRCS_HOST_FS:.c=.ho)
 
+OBJS_TESTERROR = $(SRCS_TESTERROR:.c=.ho)
+
 testfs: test_dmake $(OBJS_TESTFS) $(OBJS_HOST_FS)
 	$(HLD) $(HLFLAGS) -o testfs $(OBJS_TESTFS) $(OBJS_HOST_FS)
 
-test: testfs
+testerror: $(OBJS_TESTERROR)
+	$(HLD) $(HLFLAGS) -o testerror $(OBJS_TESTERROR)
+
+test: testfs testerror
+	@echo " [ TEST ] error.h"; ./testerror
 	@touch empty
 	@dd if=/dev/zero of=ext2test.ext2 bs=1024 count=100k
 	@echo " [MKE2FS] " ext2test.ext2 ; yes | /sbin/mke2fs ./ext2test.ext2 -L posnk_e2_test -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
