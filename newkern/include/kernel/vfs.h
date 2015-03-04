@@ -388,7 +388,7 @@ void vfs_cache_flush();
 
 inode_t *vfs_inode_ref(inode_t *inode);
 
-void vfs_inode_release(inode_t *inode);
+SVFUNC(vfs_inode_release, inode_t *inode);
 
 inode_t *vfs_find_parent(char * path);
 
@@ -457,8 +457,6 @@ int vfs_have_permissions(inode_t *inode, mode_t req_mode);
 inode_t *vfs_get_inode(fs_device_t *device, ino_t inode_id);
 
 inode_t *vfs_effective_inode(inode_t * inode);
-
-void vfs_dir_cache_release(dir_cache_t *dirc);
 
 dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc);
 
