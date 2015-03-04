@@ -25,6 +25,7 @@
 #include "util/llist.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/errno.h>
 
 /**
  * @defgroup vfs VFS
@@ -183,7 +184,7 @@ struct fs_device_operations {
 	 * @param inode The inode id to load
          * @return The loaded inode
 	 */
-	inode_t *	(*load_inode)	(fs_device_t *, ino_t);//inode id -> inode
+	SFUNCPTR( inode_t *, load_inode, fs_device_t *, ino_t );
 
 	/**
 	 * @brief Write an inode to storage
@@ -192,9 +193,8 @@ struct fs_device_operations {
 	 * this function
          *
 	 * @param inode The inode to write 
-         * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*store_inode)	(inode_t *);//inode -> status
+	SVFUNCPTR( store_inode, inode_t * );
 
 	/**
 	 * @brief Create an inode
@@ -204,9 +204,8 @@ struct fs_device_operations {
          *
 	 * Implementations must fill inode->id
 	 * @param inode The inode to create
-         * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*mknod)	(inode_t *);	//inode -> status
+	SVFUNCPTR( mknod, inode_t * );	
 
 	/**
 	 * @brief Delete an inode
@@ -217,9 +216,8 @@ struct fs_device_operations {
          * Implementations are recommended to free any data associated with 
          * the inode
 	 * @param inode The inode to delete
-         * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*rmnod)	(inode_t *);	//inode -> status
+	SVFUNCPTR( rmnod, inode_t * );	
 
 	/**
 	 * @brief Read data from a file
@@ -233,12 +231,9 @@ struct fs_device_operations {
 	 * @param buffer      The buffer to store the data in
 	 * @param file_offset The offset in the file to start reading at
 	 * @param count       The number of bytes to read
-	 * @param nread       A pointer to a variable in which the number of 
-	 *			bytes read will be stored
-	 * @return In case of error: a valid error code, Otherwise 0
+	 * @return The number of bytes read
 	 */
-
-	int		(*read_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread
+	SFUNCPTR( aoff_t, read_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
 
 	/**
 	 * @brief Write data to a file
@@ -251,11 +246,9 @@ struct fs_device_operations {
 	 * @param buffer      The buffer containing the data to write
 	 * @param file_offset The offset in the file to start writing at
 	 * @param count       The number of bytes to write
-	 * @param nwritten    A pointer to a variable in which the number of 
-	 *			 bytes written will be stored
-	 * @return In case of error: a valid error code, Otherwise 0
+	 * @return The number of bytes written
 	 */
-	int		(*write_inode)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nwritten
+	SFUNCPTR( aoff_t, write_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
 
 	/**
 	 * @brief Read directory entries from backing storage
@@ -269,12 +262,9 @@ struct fs_device_operations {
 	 * @param buffer      The buffer to store the entries in
 	 * @param file_offset The offset in the directory to start reading at
 	 * @param count       The number of bytes to read
-	 * @param nread	      A pointer to a variable in which the number of 
-	 *			bytes read will be stored
-	 * @return In case of error: a valid error code, Otherwise 0
+	 * @return The number of bytes read
 	 */
-
-	int		(*read_dir)	(inode_t *, void *, aoff_t, aoff_t, aoff_t *);//buffer, f_offset, length, nread 
+	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
 
 	/** 
 	 * @brief Find a directory entry
@@ -288,7 +278,7 @@ struct fs_device_operations {
 	 * @return The directory entry matching name from the directory inode, 
 	 *          if none, NULL is returned
 	 */
-	dirent_t *	(*find_dirent)	(inode_t *, char *);	//dir_inode_id, filename -> dirent_t  
+	SFUNCPTR( dirent_t *, find_dirent, inode_t *, char * );	//dir_inode_id, filename -> dirent_t  
 
 	/**
 	 * @brief Create directory structures
@@ -299,9 +289,8 @@ struct fs_device_operations {
          * Implementations are not required to implement this function but must
          * provide a stub to allow directories to be created
 	 * @param inode The inode for the new directory
-	 * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*mkdir)	(inode_t *);		//dir_inode_id -> status
+	SVFUNCPTR( mkdir, inode_t * );		//dir_inode_id -> status
 
 	/**
 	 * @brief Create a directory entry
@@ -314,10 +303,9 @@ struct fs_device_operations {
 	 * @param inode  The inode for the directory
 	 * @param name   The file name for the directory entry
 	 * @param nod_id The inode id that the directory entry will point to
-	 * @return In case of error: a valid error code, Otherwise 0
 	 */
 
-	int		(*link)		(inode_t *, char *, ino_t);	//dir_inode_id, filename, inode_id -> status
+	SVFUNCPTR( link, inode_t *, char *, ino_t );	//dir_inode_id, filename, inode_id -> status
 
 	/**
 	 * @brief Delete a directory entry
@@ -328,9 +316,8 @@ struct fs_device_operations {
 	 * 
 	 * @param inode - The inode for the directory
 	 * @param name  - The file name of the directory entry to delete
-	 * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*unlink)	(inode_t *, char *);	//dir_inode_id, filename
+	SVFUNCPTR( unlink, inode_t *, char * );	//dir_inode_id, filename
 
 	/**
 	 * @brief Resize a file
@@ -341,9 +328,8 @@ struct fs_device_operations {
 	 * 
 	 * @param inode       The inode for the file
 	 * @param size	      The new size of the file
-	 * @return In case of error: a valid error code, Otherwise 0
 	 */
-	int		(*trunc_inode)	(inode_t *, aoff_t);
+	SVFUNCPTR( trunc_inode, inode_t *, aoff_t );
 };
 
 /** 
@@ -442,7 +428,7 @@ int vfs_chroot(dir_cache_t *dirc);
 
 int vfs_chdir(dir_cache_t *dirc);
 
-char *vfs_get_filename(const char *path);
+SFUNC(char *, vfs_get_filename, const char *path);
 
 ///@}
 
@@ -451,6 +437,8 @@ char *vfs_get_filename(const char *path);
  *  Utility functions for use by VFS functions only
  */
 ///@{
+
+inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
 
@@ -481,6 +469,19 @@ dir_cache_t *vfs_dir_cache_new(dir_cache_t *par, ino_t inode_id);
 int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
+
+SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id );
+SVFUNC( ifs_store_inode, inode_t * inode );
+SVFUNC( ifs_mknod, inode_t * inode );
+SVFUNC( ifs_rmnod, inode_t * inode);
+SVFUNC( ifs_mkdir, inode_t * inode);
+SFUNC( dirent_t *, ifs_find_dirent, inode_t * inode, char * name);
+SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id );
+SVFUNC( ifs_unlink, inode_t * inode , char * name );
+SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
+SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
+SFUNC( ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size);
+SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 
 #endif
 

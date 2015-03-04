@@ -16,6 +16,8 @@
 
 /* Includes */
 
+#include <sys/errno.h>
+
 #include "util/llist.h"
 
 #include "kernel/vfs.h"
@@ -118,7 +120,7 @@ SVFUNC( ifs_mknod, inode_t * inode )
  *
  * @exception ENOTSUP This driver does not support this function
  */
-SVFUNC( vfs_int_rmnod, inode_t * inode)
+SVFUNC( ifs_rmnod, inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -145,7 +147,7 @@ SVFUNC( vfs_int_rmnod, inode_t * inode)
  * @exception ENOTSUP This driver does not support this function
  */
 
-SVFUNC( vfs_int_mkdir, inode_t * inode)
+SVFUNC( ifs_mkdir, inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -204,7 +206,7 @@ SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, char * name)
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( vfs_int_link, inode_t * inode , char * name , ino_t nod_id )
+SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -232,7 +234,7 @@ SVFUNC( vfs_int_link, inode_t * inode , char * name , ino_t nod_id )
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( vfs_int_unlink, inode_t * inode , char * name )
+SVFUNC( ifs_unlink, inode_t * inode , char * name )
 {	
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -263,7 +265,7 @@ SVFUNC( vfs_int_unlink, inode_t * inode , char * name )
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, vfs_int_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -294,7 +296,7 @@ SFUNC( aoff_t, vfs_int_read_dir, inode_t * inode, void * buffer, aoff_t file_off
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, vfs_int_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -325,7 +327,7 @@ SFUNC( aoff_t, vfs_int_read, inode_t * inode, void * buffer, aoff_t file_offset,
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( vfs_int_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
+SFUNC( ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -353,7 +355,7 @@ SFUNC( vfs_int_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( vfs_int_truncate, inode_t * inode, aoff_t size)
+SVFUNC( ifs_truncate, inode_t * inode, aoff_t size)
 {
 	/* This function is implemented by the FS driver */
 	assert (inode != NULL);
@@ -367,4 +369,4 @@ SVFUNC( vfs_int_truncate, inode_t * inode, aoff_t size)
 	/* Call the driver */
 	CHAINRETV( inode->device->ops->trunc_inode(inode, size);
 }
-///@}
+
