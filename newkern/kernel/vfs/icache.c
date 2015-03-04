@@ -16,7 +16,11 @@
 
 /* Includes */
 
+#include <assert.h>
+
 #include "util/llist.h"
+
+#include "kernel/vfs.h"
 
 /* Global Variables */
 
@@ -34,12 +38,14 @@ typedef struct vfs_cache_params {
 	ino_t inode_id;
 } vfs_cache_params_t;
 
+/* Public Functions */
+
 /**
  * @brief Release a reference to an inode
  * @param inode The reference to release
  */
 
-void vfs_inode_release(inode_t *inode)
+SVFUNC(vfs_inode_release, inode_t *inode)
 {
 	/* Decrease the reference count for this inode */
 	if (inode->usage_count)
@@ -47,16 +53,17 @@ void vfs_inode_release(inode_t *inode)
 
 	/* If the inode has no more references, destroy it */
 	if (inode->usage_count)
-		return;
+		RETURNV;
 
 	/* If the inode has a mount on it, don't destroy it */
 	if (inode->mount)
-		return;
+		RETURNV;
 
 	llist_unlink((llist_t *) inode);
 	llist_add_end(inode_cache, (llist_t *) inode);
 
-	inode->device->ops->store_inode(inode);
+	CHAINRETV( ifs_store_inode , inode );
+	//TODO: Move out of this file
 }
 
 /**
@@ -67,10 +74,12 @@ void vfs_inode_release(inode_t *inode)
 
 inode_t *vfs_inode_ref(inode_t *inode)
 {
+
 	assert (inode != NULL);
+
 	if ((!inode->mount) && (!inode->usage_count)) {
-		llist_unlink((llist_t *) inode);
-		llist_add_end(open_inodes, (llist_t *) inode);
+		llist_unlink( (llist_t *) inode );
+		llist_add_end( open_inodes, (llist_t *) inode );
 	}
 
 	inode->usage_count++;
@@ -86,7 +95,9 @@ inode_t *vfs_inode_ref(inode_t *inode)
 
 void vfs_inode_cache(inode_t *inode)
 {
+
 	assert (inode != NULL);
+
 	llist_add_end(inode_cache, (llist_t *) inode);
 }
 
@@ -101,4 +112,44 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
 	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
 }
 
+/**
+ * @brief Get an inode from cache by it's ID
+ * 
+ * @param device   The device to get the inode from
+ * @param inode_id The ID of the inode to look up
+ * @return The inode with id inode_id from device or NULL if the inode was not
+ *	   cached.
+ */
+
+inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id)
+{
+	inode_t *result;
+	vfs_cache_params_t search_params;
+
+	/* Check for NULL pointers */
+	assert ( device != NULL );
+
+	/* Setup search parameters */
+	search_params.device_id = device->id;
+	search_params.inode_id = inode_id;
+
+	/* Search open inode list */
+	result = (inode_t *) llist_iterate_select(open_inodes, &vfs_cache_find_iterator, (void *) &search_params);
+
+	if (result) {
+		/* Cache hit, return inode */
+		return vfs_inode_ref(result);
+	}
+
+	/* Search inode cache */
+	result = (inode_t *) llist_iterate_select(inode_cache, &vfs_cache_find_iterator, (void *) &search_params);
+
+	if (result) {
+		/* Cache hit, return inode */
+		return vfs_inode_ref(result);
+	}
+
+	/* Cache miss */
+	return NULL;
+}
 
