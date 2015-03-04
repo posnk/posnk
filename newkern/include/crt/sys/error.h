@@ -19,9 +19,10 @@ typedef int errno_t;
 #define RETURN_VALUE(TyPe)	TyPe* _retval
 #define RETURN(VaLuE)		do { *_retval = (VaLuE); return ESUCCESS; } while (0)
 #define THROW(StAtUs, VaLuE)	do { *_retval = (VaLuE); return StAtUs; } while (0)
+#define THROWV(StAtUs)		do { return StAtUs; } while (0)
 #define CHAINRET(FuNc, ...)	do { return FuNc(__VA_ARGS__, _retval); } while (0)
 #define CHAINRETV(FuNc, ...)	do { return FuNc(__VA_ARGS__); } while (0)
 #define SFUNC(TyPe, NaMe, ...)  errno_t NaMe(__VA_ARGS__, RETURN_VALUE(TyPe))
-#define SVFUNC(NaMe, ...)  errno_t NaMe(__VA_ARGS__)
+#define SVFUNC(NaMe, ...)  	errno_t NaMe(__VA_ARGS__)
 
 #endif
