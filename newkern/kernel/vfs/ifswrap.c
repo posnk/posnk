@@ -16,6 +16,8 @@
 
 /* Includes */
 
+#include <assert.h>
+
 #include <sys/errno.h>
 
 #include "util/llist.h"
@@ -54,7 +56,7 @@ SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id )
 	}
 
 	/* Call the driver */
-	CHAINRET( device->ops->load_inode, id );
+	CHAINRET( device->ops->load_inode, device, id );
 }
 
 
@@ -327,7 +329,7 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size)
+SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -355,7 +357,7 @@ SFUNC( ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t cou
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( ifs_truncate, inode_t * inode, aoff_t size)
+SVFUNC( ifs_truncate, inode_t * inode, aoff_t size )
 {
 	/* This function is implemented by the FS driver */
 	assert (inode != NULL);
@@ -367,6 +369,6 @@ SVFUNC( ifs_truncate, inode_t * inode, aoff_t size)
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->trunc_inode(inode, size);
+	CHAINRETV( inode->device->ops->trunc_inode, inode, size);
 }
 

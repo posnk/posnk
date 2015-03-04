@@ -480,7 +480,7 @@ SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id );
 SVFUNC( ifs_unlink, inode_t * inode , char * name );
 SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
-SFUNC( ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count, aoff_t *write_size);
+SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 
 #endif
