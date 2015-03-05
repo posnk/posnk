@@ -390,13 +390,7 @@ inode_t *vfs_inode_ref(inode_t *inode);
 
 SVFUNC(vfs_inode_release, inode_t *inode);
 
-inode_t *vfs_find_parent(char * path);
-
-inode_t *vfs_find_inode(char * path);
-
-inode_t *vfs_find_symlink(char * path);
-
-dirent_t *vfs_find_dirent(inode_t * inode, char * name);
+SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name);
 
 int vfs_rmdir(char *path);
 
@@ -444,12 +438,6 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
 
 SVFUNC(vfs_dir_cache_release, dir_cache_t *dirc);
 
-dir_cache_t *vfs_find_dirc(char * path);
-
-dir_cache_t *vfs_find_dirc_at(dir_cache_t *curdir, char * path);
-
-dir_cache_t *vfs_find_dirc_parent_at(dir_cache_t *curdir, char * path);
-
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode);
@@ -480,6 +468,12 @@ SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset,
 SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
-
+SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc, char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
+SFUNC(inode_t *, vfs_find_parent, char * path);
+SFUNC(inode_t *, vfs_find_inode, char * path);
+SFUNC(inode_t *, vfs_find_symlink, char * path);
 #endif
 
