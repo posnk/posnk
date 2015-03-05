@@ -154,9 +154,11 @@ uint32_t sys_unlink(uint32_t param[4], uint32_t param_size[4])
 int _sys_chdir(char *path)
 {
 	int status;
-	dir_cache_t *dirc = vfs_find_dirc(path);
-	if (!dirc) {
-		syscall_errno = ENOENT;
+	dir_cache_t *dirc;
+
+	status = vfs_find_dirc(path, &dirc);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 
@@ -193,11 +195,15 @@ uint32_t sys_chdir(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_chmod(char *path, mode_t mode)
 {
-	inode_t *inode = vfs_find_inode(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_inode(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
+
 	if (get_perm_class(inode->uid, inode->gid) != PERM_CLASS_OWNER) {
 		syscall_errno = EPERM;
 		return -1;
@@ -234,9 +240,12 @@ uint32_t sys_chmod(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_chown(char *path, uid_t owner, gid_t group)
 {
-	inode_t *inode = vfs_find_inode(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_inode(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 	if (get_perm_class(inode->uid, inode->gid) != PERM_CLASS_OWNER) {
@@ -277,9 +286,12 @@ uint32_t sys_chown(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_truncate(char *path, off_t length)
 {
-	inode_t *inode = vfs_find_inode(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_inode(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 	//TODO: Add permission check
@@ -366,9 +378,12 @@ uint32_t sys_mkdir(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_stat(char *path, struct stat* buf)
 {
-	inode_t *inode = vfs_find_inode(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_inode(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 	buf->st_dev  = (dev_t) inode->device_id;//TODO: FIX
@@ -424,9 +439,12 @@ uint32_t sys_stat(uint32_t param[4], uint32_t param_size[4])
 int _sys_readlink(char *path, char *buf, size_t bufsiz)
 {
 	size_t read_size = 0;
-	inode_t *inode = vfs_find_symlink(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_symlink(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 
@@ -479,9 +497,12 @@ uint32_t sys_readlink(uint32_t param[4], uint32_t param_size[4])
 
 int _sys_lstat(char *path, struct stat* buf)
 {
-	inode_t *inode = vfs_find_symlink(path);
-	if (!inode) {
-		syscall_errno = ENOENT;
+	inode_t *inode;
+	int status;
+
+	status = vfs_find_symlink(path, &inode);
+	if (status) {
+		syscall_errno = status;
 		return -1;
 	}
 	buf->st_dev  = (dev_t) inode->device_id;//TODO: FIX

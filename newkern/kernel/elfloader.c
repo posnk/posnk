@@ -33,11 +33,14 @@ int elf_load(char * path)
 	Elf32_Phdr *elf_pheader;
 	uintptr_t image_base = 0xc0000000;
 	uintptr_t image_top = 0;
-	inode_t *inode = vfs_find_inode(path);
+	inode_t *inode;
 
-	if (!inode) {
-		return ENOENT;
+	status = vfs_find_inode(path, &inode);
+
+	if (status) {
+		return status;
 	}
+
 	if (!S_ISREG(inode->mode)) {
 		vfs_inode_release(inode);
 		return EACCES;
@@ -47,11 +50,11 @@ int elf_load(char * path)
 		return EACCES;
 	}
 
-	name = vfs_get_filename( path );
+	status = vfs_get_filename( path, &name );
 
-	if (!name) {
+	if (status) {
 		vfs_inode_release(inode);
-		return EFAULT;
+		return status;
 	}
 
 	strcpy(scheduler_current_task->name, name);

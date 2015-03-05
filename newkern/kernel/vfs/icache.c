@@ -40,6 +40,23 @@ typedef struct vfs_cache_params {
 
 /* Public Functions */
 
+void vfs_icache_initialize()
+{
+
+	/* Allocate inode cache */
+	inode_cache = heapmm_alloc(sizeof(llist_t));
+
+	/* Allocate open inode list */
+	open_inodes = heapmm_alloc(sizeof(llist_t));
+
+	/* Create the inode cache */
+	llist_create(inode_cache);
+
+	/* Create the open inode list */
+	llist_create(open_inodes);
+
+}
+
 /**
  * @brief Release a reference to an inode
  * @param inode The reference to release
@@ -151,5 +168,33 @@ inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id)
 
 	/* Cache miss */
 	return NULL;
+}
+
+/*
+ * Iterator function that flushes the inode caches
+ */
+
+int vfs_cache_flush_iterator (llist_t *node, void *param)
+{
+	errno_t status;
+	inode_t *inode = (inode_t *) node;
+	status = ifs_store_inode(inode);
+	return 0;		
+}
+
+/**
+ * @brief Flush the inode cache
+ * 
+ */
+
+void vfs_cache_flush()
+{
+
+	/* Flush open inode list */
+	llist_iterate_select(open_inodes, &vfs_cache_flush_iterator, NULL);
+
+	/* Flush inode cache */
+	llist_iterate_select(inode_cache, &vfs_cache_flush_iterator, NULL);
+
 }
 

@@ -26,11 +26,15 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos);
 int tar_extract(char * path)
 {	
 	off_t pos = 0;
-	inode_t *inode = vfs_find_inode(path);
+	inode_t *inode;
+	errno_t status;
+	
+	status = vfs_find_inode(path, &inode);
 
-	if (!inode) {
-		return ENOENT;
+	if (status) {
+		return status;
 	}
+
 	if (!S_ISREG(inode->mode)) {
 		return EACCES;
 	} 
@@ -129,11 +133,11 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 			if (status) {
 				debugcon_printf("WARNING: error creating file while extracting %s, errno: %i\n",header->name, status);
 				return status;
-			}
-			file = vfs_find_inode(header->name);
-			if (!file) {
+			}	
+			status = vfs_find_inode(header->name, &file);
+			if (status) {
 				debugcon_printf("WARNING: error opening file while extracting %s, errno: %i\n",header->name, status);
-				return ENOSPC;
+				return status;
 			}
 			file_size = tar_num_dec(header->size,12);
 			#ifdef CONFIG_TAR_TRUNCATE
@@ -186,10 +190,10 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		
 	}
 	if ((header->typeflag != LNKTYPE) && (header->typeflag != SYMTYPE)) {
-		file = vfs_find_inode(header->name);
-		if (!file) {
+		status = vfs_find_inode(header->name, &file);
+		if (status) {
 			debugcon_printf("WARNING: error opening node while extracting %s, errno: %i\n",header->name, status);
-			return ENOSPC;
+			return status;
 		}
 		file->uid = (uid_t) tar_num_dec(header->uid,8);
 		file->gid = (gid_t) tar_num_dec(header->gid,8);
@@ -247,8 +251,8 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 				heapmm_free(header, sizeof(tar_header_t));
 				return status;
 			}
-			file = vfs_find_inode(header->name);
-			if (!file) {
+			status = vfs_find_inode(header->name, &file);
+			if (status) {
 				earlycon_printf("WARNING: error opening file while extracting %s, errno: %i\n",header->name, status);
 				heapmm_free(header, sizeof(tar_header_t));
 				return ENOSPC;
@@ -325,8 +329,8 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 		
 	}
 	if (header->typeflag != LNKTYPE) {
-		file = vfs_find_inode(header->name);
-		if (!file) {
+		status = vfs_find_inode(header->name, &file);
+		if (status) {
 			earlycon_printf("WARNING: error opening node while extracting %s, errno: %i\n",header->name, status);
 			heapmm_free(header, sizeof(tar_header_t));
 			return ENOSPC;

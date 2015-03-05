@@ -383,7 +383,7 @@ struct fs_driver {
  *  Public VFS functions
  */
 ///@{
-
+void vfs_icache_initialize();
 void vfs_cache_flush();
 
 inode_t *vfs_inode_ref(inode_t *inode);

@@ -1404,15 +1404,16 @@ int _sys_open(char *path, int flags, mode_t mode)
 	stream_ptr_t *ptr;	
 	dir_cache_t *dirc;
 	inode_t *inode;
+
 	
 	/* Check for null pointers */
 	assert(path != NULL);
 
 	/* Look up the file */
-	dirc = vfs_find_dirc(path);
+	st = vfs_find_dirc(path, &dirc);
 	
 	/* Check if the file exists */
-	if (!dirc) {
+	if (st == ENOENT) {
 		/* If not, check if we are to create it */
 		if (flags & O_CREAT) {
 	
@@ -1427,17 +1428,22 @@ int _sys_open(char *path, int flags, mode_t mode)
 			}
 
 			/* Look up the newly created file */
-			dirc = vfs_find_dirc(path);
+			st = vfs_find_dirc(path, &dirc);
 
 			/* Check if it exists */
-			assert(dirc != NULL);
-
+			if (st) {
+				syscall_errno = st;
+				return -1;
+			}
 		} else {
 			/* O_CREAT not set: return error */
 			syscall_errno = ENOENT;
 			return -1;
 		}
 
+	} else if (st) {
+		syscall_errno = st;
+		return -1;
 	} else if ((flags & O_CREAT) && (flags & O_EXCL)) {
 		/* File exists and O_EXCL is set, signal error */
 		syscall_errno = EEXIST;

@@ -65,6 +65,10 @@ kernel/blkdev.c \
 kernel/chardev.c \
 kernel/tty.c \
 kernel/pipe.c \
+kernel/vfs/icache.c \
+kernel/vfs/dcache.c \
+kernel/vfs/ifswrap.c \
+kernel/vfs/pathres.c \
 kernel/vfs.c \
 kernel/elfloader.c \
 kernel/tar.c \
@@ -239,7 +243,7 @@ clean_test:
 	$(RM) driver/bus/*.ho
 	$(RM) arch/i386/*.ho
 
-emulate: cdrom_i386
+emulate:  cdrom_i386
 	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
 
 

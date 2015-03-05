@@ -12,4 +12,5 @@ Outline:
 		Move VFS code into kernel/vfs folder.
 		Split off inode cache.
 		Split off dirent cache.
+		Split off fs driver wrapper code
 
