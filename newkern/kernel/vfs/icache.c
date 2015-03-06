@@ -175,7 +175,17 @@ int vfs_cache_flush_iterator (llist_t *node, void *param)
 {
 	errno_t status;
 	inode_t *inode = (inode_t *) node;
+	
+	semaphore_down( inode->lock );
+
 	status = ifs_store_inode(inode);
+	
+	if (status) {
+		debugcon_printf("vfs: error while syncing inode: %i\n", status);
+	}
+
+	semaphore_up( inode->lock );
+
 	return 0;		
 }
 
