@@ -1,2 +1,2 @@
 #!/bin/bash
-gdb --tui -symbols=vmpos -ex "target remote localhost:1234"
+gdb  -symbols=vmpos -ex "target remote localhost:1234"

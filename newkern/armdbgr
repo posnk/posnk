@@ -1,0 +1,2 @@
+#!/bin/bash
+arm-none-eabi-gdb -symbols=loader_armv7 -ex "target remote localhost:1234"

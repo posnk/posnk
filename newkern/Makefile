@@ -5,12 +5,16 @@
 # 'make clean'  removes all .o and executable files
 #
 
+CROSS_COMPILE = /opt/standalone/bin/i586-elf-
+ARCH = i386
+
 # define the C compiler to use
-CC   = @echo " [  CC  ]	" $< ; /opt/standalone/bin/i586-elf-gcc
-LD   = @echo " [  LD  ]	" $@ ; /opt/standalone/bin/i586-elf-gcc
-CPP  = @echo " [  CPP ]	" $@ ; /opt/standalone/bin/i586-elf-cpp
+CC   = @echo " [  CC  ]	" $< ; $(CROSS_COMPILE)gcc
+LD   = @echo " [  LD  ]	" $@ ; $(CROSS_COMPILE)gcc
+CPP  = @echo " [  CPP ]	" $@ ; $(CROSS_COMPILE)cpp
+OCP  = @echo " [OBJCPY]	" $@ ; $(CROSS_COMPILE)objcopy
 M4   = @echo " [  M4  ]	" $@ ; m4
-GAS  = @echo " [  AS  ]	" $@ ; /opt/standalone/bin/i586-elf-as
+GAS  = @echo " [  AS  ]	" $@ ; $(CROSS_COMPILE)as
 NASM = @echo " [ NASM ]	" $< ; nasm
 HCC  = @echo " [ HCC  ]	" $< ; gcc
 HLD  = @echo " [ HLD  ]	" $@ ; gcc
@@ -26,6 +30,11 @@ NASMFLAGS = -w+orphan-labels -felf -g
 
 GASFLAGS = -g -ffreestanding
 
+MKIFLAGS = -A arm -O linux -T kernel -C none 
+
+ARMV7_LOAD_ADDR = 80008000
+ARMV7_ENTRY_POINT = 80008000
+
 # define any directories containing header files other than /usr/include
 #
 INCLUDES = -I./include -I./include/crt
@@ -36,6 +45,7 @@ HINCLUDES = -I./include
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
 LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
+A7LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 
 HLFLAGS = -g
 
@@ -130,6 +140,10 @@ arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
 arch/i386/prot_asm.s
 
+SRCS_ARMV7LOADER = arch/armv7/loader/init.c
+
+ASMS_ARMV7LOADER = arch/armv7/loader/start.S 
+
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/dev.c \
 tests/fs/synch.c \
@@ -152,12 +166,19 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 #
 OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
+OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.o)
 
 OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho) 
 
 .PHONY: depend clean
 
-all:	cdrom_i386 install_h
+default: default_$(ARCH)
+
+default_i386: cdrom_i386 install_h
+
+default_armv7: mmc_armv7
+
+all:	default 
 
 _dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
 	$(M4) -I . build/drivermake.m4 > _dmake
@@ -189,6 +210,23 @@ test: testfs testerror
 	@echo " [TESTFS] " ext2 ext2test.ext2 ; ./testfs ext2 ext2test.ext2
 	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
 	@rm empty
+
+mmc_armv7: _dmake loader_armv7_uboot
+	@dd if=/dev/zero of=posnk.sd bs=1024 count=100k 2> /dev/null
+	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
+	@echo " [MOUNT ] " posnk.sd ../hdd ; sudo mount -o loop -t ext2 posnk.sd ../hdd
+	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posnk
+	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
+ 	
+loader_armv7_uboot: loader_armv7.bin
+	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot
+
+loader_armv7.bin: loader_armv7	
+	$(OCP) -I elf32-littlearm -O binary --gap-fill 0xFF --set-start 0x$(ARMV7_LOAD_ADDR) -j .setup loader_armv7 loader_armv7.bin
+
+loader_armv7: $(OBJS_ARMV7LOADER) linkarmv7.ld
+	$(LD) -T arch/armv7/loader/ldr.ld $(A7LFLAGS) $(LIBS) -o loader_armv7 $(OBJS_ARMV7LOADER)
+	
 
 kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
 	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
@@ -230,12 +268,14 @@ cdrom_i386: kernel_i386 initrd
 	$(NASM) $(NASMFLAGS) $< -o $@ 
 
 clean: clean_driver
-	$(RM) *.o *~ $(MAIN)
-	$(RM) kernel/*.o
-	$(RM) driver/console/*.o
-	$(RM) driver/bus/*.o
-	$(RM) arch/i386/*.o
+	@$(RM) *.o *~ $(MAIN)
+	@$(RM) kernel/*.o
+	@$(RM) driver/console/*.o
+	@$(RM) driver/bus/*.o
+	@$(RM) arch/i386/*.o
+	@$(RM) arch/armv7/*.o
 	@rm _dmake
+	@rm loader_armv7*
 
 clean_test:
 	$(RM) test/fs/*.ho
