@@ -380,7 +380,7 @@ struct fs_driver {
 	/** Filesystem name (e.g. ext2 or ramfs) */
 	char		*name;
 	/** Mount callback @see fs_device */
-	fs_device_t	*(*mount) (dev_t, uint32_t);
+	SFUNCPTR(fs_device_t *, mount, dev_t, uint32_t);
 };
 
 /** @name VFS API
@@ -409,10 +409,6 @@ int vfs_link(char *oldpath, char *newpath);
 int vfs_symlink(char *oldpath, char *newpath);
 
 int vfs_readlink(inode_t *inode, char * buffer, size_t size, size_t *read_size);
-
-int vfs_register_fs(const char *name, fs_device_t *(*mnt_cb)(dev_t, uint32_t));
-
-int vfs_mount(char *device, char *mountpoint, char *fstype, uint32_t flags);
 
 int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
@@ -484,5 +480,11 @@ SFUNC(inode_t *, vfs_find_parent, char * path);
 SFUNC(inode_t *, vfs_find_inode, char * path);
 SFUNC(inode_t *, vfs_find_symlink, char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
+SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
+SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
+SVFUNC( vfs_register_fs, 
+		const char *name, 
+		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
+void vfs_ifsmgr_initialize( void );
 #endif
 

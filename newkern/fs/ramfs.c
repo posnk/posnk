@@ -276,7 +276,9 @@ uint32_t ramfs_device_ctr = 0x0F00;
 
 fs_device_operations_t *ramfs_ops;
 
-fs_device_t *ramfs_mount(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) uint32_t flags)
+SFUNC(fs_device_t *, ramfs_mount, 
+			__attribute__((__unused__)) dev_t device,
+			__attribute__((__unused__)) uint32_t flags)
 {
 	ramfs_device_t *dev = (ramfs_device_t *) heapmm_alloc(sizeof(ramfs_device_t));
 	if (ramfs_ops == NULL) {
@@ -301,7 +303,7 @@ fs_device_t *ramfs_mount(__attribute__((__unused__)) dev_t device, __attribute__
 	dev->device.ops = ramfs_ops;
 	dev->device.inode_size = sizeof(ramfs_inode_t);
 	ramfs_device_ctr = ramfs_device_ctr + 1;
-	return (fs_device_t *)dev;
+	RETURN( (fs_device_t *)dev );
 }
 
 int ramfs_register()
