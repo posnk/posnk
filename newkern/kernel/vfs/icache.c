@@ -22,6 +22,8 @@
 
 #include "kernel/vfs.h"
 
+#include "kernel/heapmm.h"
+
 /* Global Variables */
 
 /** The linked list serving as open inode list */
