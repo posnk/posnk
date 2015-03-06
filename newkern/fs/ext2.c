@@ -629,7 +629,7 @@ int ext2_set_block_id(ext2_device_t *device, ext2_inode_t *inode, uint32_t block
 	return 0;
 }
 
-int ext2_shrink_inode(ext2_device_t *device, ext2_inode_t *inode, aoff_t old_size, aoff_t new_size)
+SVFUNC(ext2_shrink_inode, ext2_device_t *device, ext2_inode_t *inode, aoff_t old_size, aoff_t new_size)
 {
 	aoff_t count;
 	aoff_t length = old_size - new_size;
@@ -659,33 +659,33 @@ int ext2_shrink_inode(ext2_device_t *device, ext2_inode_t *inode, aoff_t old_siz
 			debugcon_printf("ext2: shrinking file!\n");
 			status = ext2_free_block(device, block_addr);
 			if (status) 
-				return status;
+				THROWV(status);
 			if (block_addr == EXT2_ENOSPC)
-				return ENOSPC;
+				THROWV(ENOSPC);
 
 			status = ext2_set_block_id(device, inode, in_file / block_size, 0);
 			if (status)
-				return status;
+				THROWV(status);
 
 			inode->blocks -= 2 << device->superblock.block_size_enc;;
 		}
 
 		if (status)
-			return status;
+			THROWV(status);
 	}
 
 	//TODO: Dealloc indirect blocks
 
-	return 0;
+	RETURNV;
 }
 
-int ext2_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
+SVFUNC(ext2_trunc_inode, inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
 
 	if (!_inode) {	
-		return EFAULT;
+		THROWV(EFAULT);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -694,12 +694,12 @@ int ext2_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length -> 
 	if (size > _inode->size) {
 		//TODO: Implement explicit file growth
 	} else if (size < _inode->size) {
-		return ext2_shrink_inode(device, &(inode->inode), _inode->size, size);
+		CHAINRETV(ext2_shrink_inode, device, &(inode->inode), _inode->size, size);
 	}
-	return 0;	
+	RETURNV;	
 }
 
-int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nwritten)
+SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
@@ -713,8 +713,7 @@ int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 	int status;
 
 	if (!_inode) {	
-		*nwritten = 0;
-		return EFAULT;
+		THROW(EFAULT, 0);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -729,8 +728,6 @@ int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
-		*nwritten = count;
-
 		if (in_blk_size > block_size)
 			in_blk_size = block_size;
 
@@ -740,13 +737,13 @@ int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 			debugcon_printf("ext2: growing file!\n");
 			block_addr = ext2_alloc_block(device, p_block_addr);
 			if (!block_addr) 
-				return EIO;
+				THROW(EIO, 0);
 			if (block_addr == EXT2_ENOSPC)
-				return ENOSPC;
+				THROW(ENOSPC, 0);
 
 			status = ext2_set_block_id(device, &(inode->inode), in_file / block_size, block_addr);
 			if (status)
-				return status;
+				THROW(status, 0);
 
 			inode->inode.blocks += 2 << device->superblock.block_size_enc;
 		}
@@ -754,17 +751,15 @@ int ext2_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 		status = ext2_write_block(device, block_addr, in_blk, &(buffer[count]), in_blk_size, NULL);
 
 		if (status)
-			return status;
+			THROW(status, 0);
 
 		p_block_addr = block_addr;
 	}
 	
-	*nwritten = count;
-
-	return 0;
+	RETURN(count);
 }
 
-int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
+SFUNC(aoff_t, ext2_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
@@ -778,8 +773,7 @@ int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t leng
 	int status;
 
 	if (!_inode) {	
-		*nread = 0;
-		return EFAULT;
+		THROW(EFAULT, 0);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -792,28 +786,24 @@ int ext2_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t leng
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
-		*nread = count;
-
 		if (in_blk_size > block_size)
 			in_blk_size = block_size;
 
 		block_addr = ext2_decode_block_id (device, &(inode->inode), in_file / block_size);
 
 		if (!block_addr)
-			return EIO;
+			THROW(EIO, 0);
 
 		status = ext2_read_block(device, block_addr, in_blk, &(buffer[count]), in_blk_size, NULL);
 
 		if (status)
-			return status;
+			THROW(status, 0);
 	}
 	
-	*nread = count;
-
-	return 0;
+	RETURN(count);
 }
 
-int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
+SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
@@ -827,7 +817,7 @@ int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
 	aoff_t split_offset, hole_offset, nread, pos, dsize, hole_size;
 
 	if (!_inode) 
-		return EFAULT;
+		THROWV(EFAULT);
 
 	device = (ext2_device_t *) _inode->device;
 	inode = (ext2_vinode_t *) _inode;
@@ -842,7 +832,7 @@ int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
 	for (pos = 0; pos < dsize; pos += f_dirent.rec_len) {
 		status = ext2_read_inode(_inode, &f_dirent, pos, sizeof(ext2_dirent_t), &nread);
 		if (status || (nread != sizeof(ext2_dirent_t)))
-			return status ? status : EIO;
+			THROWV(status ? status : EIO);
 		
 		f_reclen = ext2_roundup (sizeof(ext2_dirent_t) + f_dirent.name_len, 4);
 		
@@ -876,25 +866,25 @@ int ext2_link(inode_t *_inode, char *name, ino_t ino_id)
 	
 	status = ext2_write_inode(_inode, name, hole_offset + sizeof(ext2_dirent_t), namelen, &nread);
 	if (status || (nread != namelen))
-		return status ? status : EIO;
+		THROWV(status ? status : EIO);
 	
 	status = ext2_write_inode(_inode, &dirent, hole_offset, sizeof(ext2_dirent_t), &nread);
 	if (status || (nread != sizeof(ext2_dirent_t)))
-		return status ? status : EIO;
+		THROWV(status ? status : EIO);
 	
 	if (m == 2){
 		f_dirent.rec_len = hole_offset - split_offset;
 
 		status = ext2_write_inode(_inode, &f_dirent, split_offset, sizeof(ext2_dirent_t), &nread);
 		if (status || (nread != sizeof(ext2_dirent_t)))
-			return status ? status : EIO;
+			THROWV(status ? status : EIO);
 	}
 
-	return 0;
+	RETURNV;
 	
 }
 
-int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)
+SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)
 {///XXX: Dependent on : sizeof(vfs_dirent_t) == sizeof(ext2_dirent_t)
 	int status;
 
@@ -905,13 +895,11 @@ int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length,
 	dirent_t *vfs_dir;
 	aoff_t pos, inode_nread;
 
-	*nread = 0;
-
 	if (!_inode) 
-		return EFAULT;
+		THROW(EFAULT, 0);
 
 	if (f_offset >= _inode->size)
-		return EINVAL;
+		RETURN(0);
 
 	if ((f_offset + length) > _inode->size)
 		length = _inode->size - f_offset;
@@ -919,21 +907,19 @@ int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length,
 	dirent = heapmm_alloc(sizeof(ext2_dirent_t));
 	
 	if (!dirent)
-		return ENOMEM;
+		THROW(ENOMEM, 0);
 
 	for (pos = 0; pos < length; pos += dirent->rec_len) {
-
-		*nread = pos;
 
 		status = ext2_read_inode(_inode, dirent, pos + f_offset, sizeof(ext2_dirent_t), &inode_nread);
 		if (status || (inode_nread != sizeof(ext2_dirent_t))) {
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return status ? status : EIO;
+			THROW(status ? status : EIO, 0);
 		}
 
 		if ((dirent->rec_len + pos) > length){
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return 0;
+			RETURN(pos);
 		}
 	
 		vfs_dir = (dirent_t *)&buffer[pos];
@@ -944,7 +930,7 @@ int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length,
 
 		if (status || (inode_nread != dirent->name_len)) {
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
-			return status ? status : EIO;
+			THROW(status ? status : EIO, 0);
 		}
 
 		name[dirent->name_len] = 0;
@@ -955,13 +941,11 @@ int ext2_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length,
 	}
 
 	heapmm_free(dirent, sizeof(ext2_dirent_t));
-
-	*nread = pos;
-
-	return 0;
+	
+	RETURN(pos);
 }
 
-dirent_t *ext2_finddir(inode_t *_inode, char * name)
+SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name)
 {
 	uint8_t *buffer = heapmm_alloc(1024);
 	int status;
@@ -971,12 +955,12 @@ dirent_t *ext2_finddir(inode_t *_inode, char * name)
 	dirent_t *dirent;
 	dirent_t *pp;
 	if (!buffer)
-		return NULL;
+		THROW(ENOMEM, NULL);
 	for (fpos = 0; nread != 0; fpos += nread) {
 		status = ext2_readdir(_inode, buffer, fpos, 1024, &nread);
 		if (status) {
 			heapmm_free(buffer, 1024);
-			return NULL;
+			THROW(status, NULL);
 		}
 		for (pos = 0; pos < nread; pos += dirent->d_reclen) {
 			dirent = (dirent_t *) &(buffer[pos]);
@@ -985,15 +969,15 @@ dirent_t *ext2_finddir(inode_t *_inode, char * name)
 				dirent->d_reclen = (dirent->d_reclen > sizeof(dirent_t)) ? sizeof(dirent_t) : dirent->d_reclen;
 				memcpy(pp, dirent,dirent->d_reclen);
 				heapmm_free(buffer, 1024);
-				return pp;
+				RETURN(pp);
 			}
 		}
 	}
 	heapmm_free(buffer, 1024);
-	return NULL;
+	THROW(ENOENT, NULL);
 }
 
-int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
+SVFUNC(ext2_load_e2inode, ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 {
 	ext2_block_group_desc_t *bgd;
 	off_t			index, ino_offset;
@@ -1001,11 +985,11 @@ int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 	int status;
 
 	if (!device)
-		return 0;
+		THROWV(EFAULT);
 
 	bgd = ext2_load_bgd(device, (ino_id - 1) / device->superblock.inodes_per_group);
 	if (!bgd) {
-		return 0;
+		THROWV(EIO);//TODO: Better error handling
 	}	
 
 	index = (ino_id - 1) % device->superblock.inodes_per_group;
@@ -1018,16 +1002,20 @@ int ext2_load_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 				   device->inode_load_size, 
 				   &read_size);
 	
-	if (status || (read_size != device->inode_load_size)) {
+	if (status) {
 		ext2_free_bgd(device, bgd);
-		return 0;
+		THROWV(status);
+	}
+	if (read_size != device->inode_load_size) {
+		ext2_free_bgd(device, bgd);
+		THROWV(EIO);//TODO: Better error handling
 	}
 	
 	ext2_free_bgd(device, bgd);
-	return 1;
+	RETURNV;
 }
 
-int ext2_store_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
+SVFUNC(ext2_store_e2inode, ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id)
 {
 	ext2_block_group_desc_t *bgd;
 	off_t			index, ino_offset;
@@ -1035,11 +1023,11 @@ int ext2_store_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id
 	int status;
 
 	if (!device)
-		return EFAULT;
+		THROWV(EFAULT);
 
 	bgd = ext2_load_bgd(device, (ino_id - 1) / device->superblock.inodes_per_group);
 	if (!bgd) {
-		return EIO;
+		THROWV(EIO);//TODO: Better error handling
 	}	
 
 	index = (ino_id - 1) % device->superblock.inodes_per_group;
@@ -1052,13 +1040,17 @@ int ext2_store_e2inode(ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id
 				   device->inode_load_size, 
 				   &read_size);
 	
-	if (status || (read_size != device->inode_load_size)) {
+	if (status){
 		ext2_free_bgd(device, bgd);
-		return status;
+		THROWV(status);
+	}
+	if (read_size != device->inode_load_size) {
+		ext2_free_bgd(device, bgd);
+		THROWV(EIO);//TODO: Better error handling
 	}
 	
 	ext2_free_bgd(device, bgd);
-	return 0;
+	RETURNV;
 }
 
 void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)
@@ -1173,31 +1165,33 @@ void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 	//semaphore_up(vfs_ino->lock);
 }
 
-inode_t *ext2_load_inode(fs_device_t *device, ino_t id) {
+SFUNC(inode_t *, ext2_load_inode, fs_device_t *device, ino_t id) {
 	ext2_vinode_t *ino;
 	ext2_device_t *_dev = (ext2_device_t *) device;
+	errno_t status;
 
 	if (!_dev)
-		return NULL;
+		THROW(EFAULT, NULL);
 
 	ino = heapmm_alloc(sizeof(ext2_vinode_t));
 	if (!ino)
-		return NULL;
+		THROW(ENOMEM, NULL);
 
-	if(!ext2_load_e2inode(_dev, &(ino->inode), id))
-		return NULL;
+	status = ext2_load_e2inode(_dev, &(ino->inode), id);
+	if (status)
+		THROW(status, NULL);
 
 	ext2_e2tovfs_inode(_dev, ino, id);
 
-	return (inode_t *) ino;
+	RETURN((inode_t *) ino);
 }
 
-int ext2_store_inode(inode_t *_inode) {
+SVFUNC(ext2_store_inode,inode_t *_inode) {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
 
 	if (!_inode) {	
-		return EFAULT;
+		THROWV(EFAULT);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -1207,15 +1201,15 @@ int ext2_store_inode(inode_t *_inode) {
 
 	debugcon_printf("ext2: storing inode %i\n", _inode->id);
 
-	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
+	CHAINRETV(ext2_store_e2inode, device, &(inode->inode), _inode->id);
 }
 
-int ext2_mknod(inode_t *_inode) {
+SVFUNC(ext2_mknod, inode_t *_inode) {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
 
 	if (!_inode) {	
-		return EFAULT;
+		THROWV(EFAULT);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -1223,21 +1217,21 @@ int ext2_mknod(inode_t *_inode) {
 
 	_inode->id = (ino_t) ext2_alloc_inode(device);
 	if (_inode->id == EXT2_ENOSPC)
-		return ENOSPC;
+		THROWV(ENOSPC);
 
 	memset(&(inode->inode), 0, sizeof(ext2_inode_t));
 
 	ext2_vfstoe2_inode(inode, _inode->id);
 
-	return ext2_store_e2inode(device, &(inode->inode), _inode->id);
+	CHAINRETV(ext2_store_e2inode,device, &(inode->inode), _inode->id);
 }
 
-int ext2_mkdir(inode_t *_inode) {
+SVFUNC(ext2_mkdir, inode_t *_inode) {
 	ext2_block_group_desc_t *bgd;
 	ext2_device_t *device;
 	int st;
 	if (!_inode) {	
-		return EFAULT;
+		THROWV(EFAULT);
 	}
 
 	device = (ext2_device_t *) _inode->device;
@@ -1251,8 +1245,8 @@ int ext2_mkdir(inode_t *_inode) {
 	st = ext2_store_bgd(device, (_inode->id - 1) / device->superblock.inodes_per_group, bgd);
 	
 	ext2_free_bgd(device, bgd);
-
-	return st;//TODO: Is this an error ?
+	
+	THROWV(st);
 }
 
 fs_device_operations_t ext2_ops = {
@@ -1270,7 +1264,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_trunc_inode //Change file length
 };
 
-fs_device_t *ext2_mount(dev_t device, uint32_t flags)
+SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
 {
 	int status;
 	aoff_t	_read_size;
@@ -1278,7 +1272,7 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 	ext2_device_t *dev = heapmm_alloc(sizeof(ext2_device_t));
 	
 	if (!dev)
-		return NULL;
+		THROW(ENOMEM, NULL);
 
 	dev->dev_id = device;	
 	dev->device.id = device;
@@ -1287,7 +1281,7 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 	dev->device.lock = semaphore_alloc();
 	if(!dev->device.lock) {
 		heapmm_free(dev, sizeof(ext2_device_t));
-		return 0;
+		THROW(ENOMEM, NULL);
 	}
 	semaphore_up(dev->device.lock);
 	dev->device.inode_size = sizeof(ext2_vinode_t);
@@ -1299,13 +1293,13 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 	if (_read_size != 1024) {
 		debugcon_printf("ext2: could not read superblock, error:%i, read:%i!\n", status, _read_size);
 		heapmm_free(dev, sizeof(ext2_device_t));
-		return 0;
+		THROW(status, NULL);
 	}
 
 	if (dev->superblock.signature != 0xEF53) {
 		debugcon_printf("ext2: superblock signature incorrect: %i!\n", dev->superblock.signature);
 		heapmm_free(dev, sizeof(ext2_device_t));
-		return 0;
+		THROW(EINVAL, NULL);
 	}	
 
 	if (dev->superblock.version_major == EXT2_VERSION_MAJOR_DYNAMIC) {
@@ -1313,7 +1307,7 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 		if (dev->superblock.required_features & ~(EXT2_SUPPORTED_REQ_FEATURES)) {
 			debugcon_printf("ext2: filesystem requires unsupported features, refusing to mount!\n");
 			heapmm_free(dev, sizeof(ext2_device_t));
-			return 0;
+			THROW(EINVAL, NULL);
 		}
 
 		if (dev->superblock.ro_force_features & ~(EXT2_SUPPORTED_ROF_FEATURES)) {
@@ -1333,7 +1327,7 @@ fs_device_t *ext2_mount(dev_t device, uint32_t flags)
 
 	dev->bgdt_block = dev->superblock.block_size_enc ? 1 : 2;
 
-	return (fs_device_t *) dev;
+	RETURN( (fs_device_t *) dev );
 }
 
 int ext2_register()
