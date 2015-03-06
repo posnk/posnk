@@ -352,6 +352,8 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 	/* Check for NULL  */
 	assert (path != NULL);
 
+	/* Check for loops */
+
 	/* Check for empty path */
 	if ((*path) == '\0'){
 		/* Release current directory */
@@ -630,6 +632,9 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 
 					/* Release symlink */
 					vfs_inode_release(parent);
+
+					/* Update current element */
+					parent = newc->inode;
 
 				}
 			}
