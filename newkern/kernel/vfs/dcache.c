@@ -120,15 +120,32 @@ SFUNC( dir_cache_t *, vfs_dir_cache_new, dir_cache_t *par, ino_t inode_id )
 	dir_cache_t *dirc = heapmm_alloc(sizeof(dir_cache_t));
 	
 	/* Check if the allocation succeeded */
-	if (!dirc)
+	if (!dirc) {
+		/* It did not */
+		
+		/* Report the error to the caller ("Out of memory") */	
 		THROW(ENOMEM, NULL);
+	}
 
-	/* Set its parent to itself because it is the root of the graph */
+	/* Set it's parent to the parent dirc passed to us */
 	dirc->parent = vfs_dir_cache_ref(par);
 
+	/* Get the inode for the entry to add */
 	status = vfs_get_inode(par->inode->device, inode_id, &oi);
-	if ( status )
+
+	/* Check whether an error occurred while loading the inode */
+	if ( status ) {
+		/* An error did indeed occur */
+
+		/* Release directory element memory */
+		heapmm_free(dirc, sizeof(dir_cache_t));
+
+		/* Release parent reference */
+		vfs_dir_cache_release(par); 
+	
+		/* Pass the error to the caller */
 		THROW( status, NULL );
+	}
 	
 	/* Set the inode */
 	dirc->inode = vfs_effective_inode( oi );

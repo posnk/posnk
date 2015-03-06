@@ -35,6 +35,10 @@
  * @{
  */
 
+#define PATHRES_FLAG_NOSYMLINK	(1<<0)
+#define PATHRES_FLAG_PARENT	(1<<1)
+
+
 /**
  * Bit definition for inode->mode, this file is readable
  */
@@ -470,6 +474,10 @@ SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, ao
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
 SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
+SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir,char * path,int flags,
+					int recurse_level );
+SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, dir_cache_t *curdir,char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path);
 SFUNC(dir_cache_t *, vfs_find_dirc, char * path);
 SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
 SFUNC(inode_t *, vfs_find_parent, char * path);
