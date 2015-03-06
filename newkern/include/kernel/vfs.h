@@ -388,7 +388,7 @@ void vfs_cache_flush();
 
 inode_t *vfs_inode_ref(inode_t *inode);
 
-SVFUNC(vfs_inode_release, inode_t *inode);
+void vfs_inode_release(inode_t *inode);
 
 SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name);
 
@@ -436,7 +436,7 @@ inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
 
-SVFUNC(vfs_dir_cache_release, dir_cache_t *dirc);
+void vfs_dir_cache_release(dir_cache_t *dirc);
 
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 
@@ -475,5 +475,6 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
 SFUNC(inode_t *, vfs_find_parent, char * path);
 SFUNC(inode_t *, vfs_find_inode, char * path);
 SFUNC(inode_t *, vfs_find_symlink, char * path);
+SVFUNC(vfs_sync_inode, inode_t *inode);
 #endif
 

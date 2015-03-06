@@ -16,12 +16,14 @@
 #include <sys/errno.h>
 //HACKHACKHACK: Uses inode cache as storage
 
-int ramfs_store_inode(inode_t *inode)
+SVFUNC(ramfs_store_inode, inode_t *inode)
 {
-	return inode != 0;
+	if (!inode)
+		THROWV(EFAULT);
+	RETURNV;
 }
 
-int ramfs_mknod(inode_t *_inode)	//inode -> status
+SVFUNC(ramfs_mknod, inode_t *_inode)	//inode -> status
 {
 	ramfs_device_t *dev = (ramfs_device_t *) _inode->device;
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
@@ -31,17 +33,18 @@ int ramfs_mknod(inode_t *_inode)	//inode -> status
 	inode->block_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
 
 	if (!(inode->block_list))
-		return ENOMEM;
+		THROWV(ENOMEM);
 
 	llist_create(inode->block_list);
 
-	return 0;	
+	RETURNV;	
 }
 
-int ramfs_rmnod(inode_t *inode)	//inode -> status
+SVFUNC(ramfs_rmnod, inode_t *inode)	//inode -> status
 {
-	//TODO: Free blocks
-	return inode ? 0 : EFAULT;
+	if (!inode)
+		THROWV(EFAULT);
+	RETURNV;
 }
 
 int ramfs_rawdir_search_iterator (llist_t *node, void *param)
@@ -51,7 +54,7 @@ int ramfs_rawdir_search_iterator (llist_t *node, void *param)
 	return (block->start == start);
 }
 
-int ramfs_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)//buffer, f_offset, length -> numbytes
+SFUNC(aoff_t, ramfs_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)//buffer, f_offset, length -> numbytes
 {
 	ramfs_dirent_t plholder;
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
@@ -73,16 +76,14 @@ int ramfs_readdir(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length
 		}
 		b_data = (uintptr_t) &(_block->dir);
 		if ((pos + _block->dir.d_reclen) > length) {
-			*nread = pos;
-			return 0;
+			RETURN(pos);
 		}
 		memcpy((void *) buffer, (void *) (b_data),  _block->dir.d_reclen);
 		pos += _block->dir.d_reclen;
 		buffer += _block->dir.d_reclen;
 		current_off += _block->dir.d_reclen;
 	}	
-	*nread = pos;
-	return 0;	
+	RETURN(pos);	
 }
 
 int ramfs_block_search_iterator (llist_t *node, void *param)
@@ -92,7 +93,7 @@ int ramfs_block_search_iterator (llist_t *node, void *param)
 	return (block->start <= start) && ((block->start + block->length) > start);
 }
 
-int ramfs_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nread)//buffer, f_offset, length -> numbytes
+SFUNC(aoff_t, ramfs_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
@@ -117,11 +118,13 @@ int ramfs_read_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t len
 		if (remaining_length == 0)
 			break;
 	}	
-	*nread = length - remaining_length;
-	return remaining_length ? EIO : 0;	
+	if (remaining_length)
+		THROW(EIO, length - remaining_length);	
+	else
+		RETURN(length - remaining_length);
 }
 
-int ramfs_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nwritten)//buffer, f_offset, length -> numbytes
+SFUNC(aoff_t, ramfs_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
@@ -144,32 +147,29 @@ int ramfs_write_inode(inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t le
 		current_off += in_blk_len;
 		buffer += in_blk_len;
 		if (remaining_length == 0) {
-			*nwritten = length;
-			return 0;
+			RETURN(length);
 		}
 	}	
 	_block = (ramfs_block_t *) heapmm_alloc(sizeof(ramfs_block_t));
 	if (_block == NULL) {
-		*nwritten = length - remaining_length;
-		return ENOSPC;
+		THROW(ENOSPC, length - remaining_length);
 	}
 	_block->start = current_off;
 	_block->length = remaining_length;
 	_block->data = heapmm_alloc((size_t) remaining_length);
 	memcpy(_block->data, (void *) buffer, (size_t) remaining_length);
 	llist_add_end(inode->block_list, (llist_t *) _block);
-	*nwritten = length;
-	return 0;	
+	RETURN(length);
 }
 
-int ramfs_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
+SVFUNC(ramfs_trunc_inode, inode_t *_inode, aoff_t size)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_block_t *_block;
 	if (size > _inode->size) {
 		_block = (ramfs_block_t *) heapmm_alloc(sizeof(ramfs_block_t));
 		if (!_block)
-			return ENOMEM;
+			THROWV(ENOMEM);
 
 		_block->start =  _inode->size;
 		_block->length = size - _inode->size;
@@ -177,7 +177,7 @@ int ramfs_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length ->
 		_block->data = heapmm_alloc((size_t) _block->length);
 		if (!_block->data) {
 			heapmm_free(_block, sizeof(ramfs_block_t));
-			return ENOMEM;
+			THROWV(ENOMEM);
 		}
 
 		memset(_block->data, 0, (size_t) _block->length);
@@ -188,9 +188,9 @@ int ramfs_trunc_inode(inode_t *_inode, aoff_t size)//buffer, f_offset, length ->
 		//ITERATE OVER BLOCKS
 		//   IF BLOCK STARTS PAST EOF DELETE BLOCK
 		//   IF BLOCK EXTENDS PAST EOF TRUNCATE BLOCKS
-		return EIO;
+		THROWV(EIO);
 	}
-	return 0;	
+	RETURNV;	
 }
 
 int ramfs_dirent_search_iterator (llist_t *node, void *param)
@@ -199,28 +199,28 @@ int ramfs_dirent_search_iterator (llist_t *node, void *param)
 	return strcmp(dirent->dir.name, (char *) param) == 0;
 }
 
-dirent_t * ramfs_find_dirent(inode_t *_inode, char *name )	//dir_inode_id, filename -> dirent_t 
+SFUNC(dirent_t *, ramfs_find_dirent, inode_t *_inode, char *name )	//dir_inode_id, filename -> dirent_t 
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_dirent_search_iterator, (void *) name);
 	if (dirent == NULL)
-		return NULL;
-	return &(dirent->dir);
+		THROW(ENOENT, NULL);
+	RETURN(&(dirent->dir));
 }
 
-int ramfs_mkdir(inode_t *_inode)
+SVFUNC(ramfs_mkdir, inode_t *_inode)
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 
 	inode->dirent_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
 	if (!(inode->dirent_list))
-		return ENOMEM;
+		THROWV(ENOMEM);
 
 	llist_create(inode->dirent_list);
-	return 0;
+	RETURNV;
 }
 
-inode_t * ramfs_load_inode(fs_device_t *device, ino_t id)
+SFUNC(inode_t *, ramfs_load_inode, fs_device_t *device, ino_t id)
 {
 	//ramfs_device_t *dev = (ramfs_device_t *) device;
 	ramfs_inode_t *inode;
@@ -237,18 +237,18 @@ inode_t * ramfs_load_inode(fs_device_t *device, ino_t id)
 		semaphore_up(inode->inode.lock);
 		ramfs_mknod((inode_t *) inode);
 		ramfs_mkdir((inode_t *) inode);
-		return (inode_t *) inode;
+		RETURN((inode_t *) inode);
 	}
-	return 0;
+	THROW(ENOTSUP, NULL);
 }//inode id -> inode
 
-int ramfs_link(inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, filename, inode_id -> status
+SVFUNC(ramfs_link, inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, filename, inode_id -> status
 {
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) heapmm_alloc(sizeof(ramfs_dirent_t));
 	ramfs_inode_t *_d_inode = (ramfs_inode_t *) _dir;
 
 	if (!dirent)
-		return ENOSPC;
+		THROWV(ENOSPC);
 
 	strcpy(dirent->dir.name, _name);
 	dirent->dir.inode_id = inode_id;
@@ -258,18 +258,18 @@ int ramfs_link(inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, file
 	_dir->size += sizeof(dirent_t);
 
 	llist_add_end(_d_inode->dirent_list, (llist_t *) dirent);
-	return 0;	
+	RETURNV;	
 }
 
-int ramfs_unlink(inode_t *_inode, char *name )	//dir_inode_id, filename
+SVFUNC(ramfs_unlink, inode_t *_inode, char *name )	//dir_inode_id, filename
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->block_list, &ramfs_dirent_search_iterator, (char *) name);
 	if (!dirent)
-		return ENOENT;
+		THROWV(ENOENT);
 	llist_unlink((llist_t *) dirent);
 	heapmm_free(dirent, sizeof(ramfs_dirent_t));
-	return 0;
+	RETURNV;
 }
 
 uint32_t ramfs_device_ctr = 0x0F00;

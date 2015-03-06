@@ -82,9 +82,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 	/* Check for empty path */
 	if ((*path) == '\0'){
 		/* Release current directory */
-		status = vfs_dir_cache_release(dirc);
-		if (status)
-			THROW( status, NULL );
+		vfs_dir_cache_release(dirc);
 
 		/* Empty path does not exist! */
 		THROW( ENOENT, NULL );
@@ -96,10 +94,8 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 	/* Check whether the allocation succeeded */
 	if (!path_element) {
 		/* Release current directory */
-		status = vfs_dir_cache_release(dirc);
-		if (status)
-			THROW( status, NULL );
-		
+		vfs_dir_cache_release(dirc);
+				
 		THROW( ENOMEM, NULL);
 	}
 
@@ -120,15 +116,8 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 			/* Path is absolute */
 
 			/* Release current dirc */
-			status = vfs_dir_cache_release(dirc);
-			if (status){
-				
-				/* Clean up */
-				heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
+			vfs_dir_cache_release(dirc);
 			
-				THROW( status, NULL );
-			}
-
 			/* Update current element */
 			dirc = vfs_dir_cache_ref(scheduler_current_task->root_directory);
 			parent = dirc->inode;
@@ -160,15 +149,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 			if (newc != dirc) {		
 
 				/* Release old element */	
-				status = vfs_dir_cache_release(dirc);
-				if (status){
-					/* status = */ vfs_dir_cache_release(newc);
-				
-					/* Clean up */
-					heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
-			
-					THROW( status, NULL );
-				}
+				vfs_dir_cache_release(dirc);
 
 				/* Update current element */
 				parent = newc->inode;
@@ -206,7 +187,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 
 				} else {
 					/* Release dirc */
-					/* status = */vfs_dir_cache_release(dirc);
+					vfs_dir_cache_release(dirc);
 
 					/* Return NULL */
 					THROW(ENOENT, NULL);
@@ -224,23 +205,13 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 						CONFIG_FILE_MAX_NAME_LENGTH);
 
 				/* Release parent dirc */
-				/* ?!?!? status = ?!?!?! */vfs_dir_cache_release(dirc);
+				vfs_dir_cache_release(dirc);
 
 				THROW(status, NULL);
 			}
 
 			/* Release old element */
-			status= vfs_dir_cache_release(dirc);
-
-			/* Check an error occurred */
-			if (status) {
-
-				/* If so, clean up and return */
-				heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
-
-				THROW(status, NULL);
-			}
+			vfs_dir_cache_release(dirc);
 
 			/* Update current element */
 			dirc = newc;		
@@ -262,16 +233,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 			newc = vfs_dir_cache_ref(dirc->parent);
 			
 			/* Release the current dir cache entry */
-			status = vfs_dir_cache_release(dirc);
-
-			if (status) {
-
-				/* If so, clean up and return */
-				heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
-
-				THROW(status, NULL);
-			}
+			vfs_dir_cache_release(dirc);
 
 			/* Return the previous element */
 			RETURN(newc);
@@ -286,7 +248,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path)
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
 			/* Release dirc  */
-			/* status = */vfs_dir_cache_release(dirc);
+			vfs_dir_cache_release(dirc);
 
 			THROW(ENOTDIR, NULL);
 		}
@@ -333,9 +295,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 	/* Check for empty path */
 	if ((*path) == '\0'){
 		/* Release current directory */
-		status = vfs_dir_cache_release(dirc);
-		if (status)
-			THROW( status, NULL );
+		vfs_dir_cache_release(dirc);
 
 		/* Empty path does not exist! */
 		THROW( ENOENT, NULL );
@@ -347,9 +307,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 	/* Check whether the allocation succeeded */
 	if (!path_element) {
 		/* Release current directory */
-		status = vfs_dir_cache_release(dirc);
-		if (status)
-			THROW( status, NULL );
+		vfs_dir_cache_release(dirc);
 		
 		THROW( ENOMEM, NULL);
 	}
@@ -372,17 +330,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 			/* Path is absolute */
 
 			/* Release current dirc */
-			status = vfs_dir_cache_release(dirc);
-			if (status) {
-				
-				/* Clean up */
-				heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
-
-				/* Pass on error */
-				THROW( status, NULL );
-
-			}
+			vfs_dir_cache_release(dirc);
 
 			/* Update current element */
 			dirc = vfs_dir_cache_ref(
@@ -418,34 +366,14 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 			if (newc != dirc) {	
 
 				/* Release old dirc */
-				status = vfs_dir_cache_release(dirc);
-				if (status) {
-					/* status = */ vfs_dir_cache_release(newc);
-				
-					/* Clean up */
-					heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
+				vfs_dir_cache_release(dirc);
 
-					/* Pass on error */
-					THROW( status, NULL );
-
-				}
 				/* Update current element */
 				parent = newc->inode;
 				dirc = newc;
 
 			} else {
-				status = vfs_dir_cache_release(newc);	
-				if (status) {
-				
-					/* Clean up */
-					heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
-
-					/* Pass on error */
-					THROW( status, NULL );
-
-				}	
+				vfs_dir_cache_release(newc);	
 			}
 		} else if ((element_size == 1) && !strncmp(remaining_path, ".", 1)) {				
 			/* Element is . */
@@ -468,7 +396,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 						CONFIG_FILE_MAX_NAME_LENGTH);
 
 				/* Release parent dirc */
-				/* ?!?!? status = ?!?!?! */vfs_dir_cache_release(dirc);
+				vfs_dir_cache_release(dirc);
 
 				THROW(status, NULL);
 			}
@@ -484,23 +412,13 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 						CONFIG_FILE_MAX_NAME_LENGTH);
 
 				/* Release parent dirc */
-				/* ?!?!? status = ?!?!?! */vfs_dir_cache_release(dirc);
+				vfs_dir_cache_release(dirc);
 
 				THROW(status, NULL);
 			}
 
 			/* Release old element */
-			status = vfs_dir_cache_release(dirc);
-
-			/* Check an error occurred */
-			if (status) {
-
-				/* If so, clean up and return */
-				heapmm_free(path_element, 
-						CONFIG_FILE_MAX_NAME_LENGTH);
-
-				THROW(status, NULL);
-			}
+			vfs_dir_cache_release(dirc);
 
 			/* Update current element */
 			dirc = newc;		
@@ -531,7 +449,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path)
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
 		/* Release old element */
-			/* ?!?!? status = ?!?!?! */vfs_dir_cache_release(dirc);
+			vfs_dir_cache_release(dirc);
 
 			THROW(ENOTDIR, NULL);
 		}

@@ -59,7 +59,7 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
  * @param dirc The reference to release
  */
 
-SVFUNC(vfs_dir_cache_release, dir_cache_t *dirc)
+void vfs_dir_cache_release( dir_cache_t *dirc )
 {
 	errno_t status;
 
@@ -71,24 +71,22 @@ SVFUNC(vfs_dir_cache_release, dir_cache_t *dirc)
 
 	/* If the entry has no more references, destroy it */
 	if (dirc->usage_count)
-		RETURNV;
+		return;
 
 	/* If this is not the graph root, release the parent ref */
 	if (dirc->parent != dirc) {
-		status = vfs_dir_cache_release(dirc->parent);
-		if ( status )
-			THROWV( status );
+
+		vfs_dir_cache_release(dirc->parent);
+
 	}
 
 	/* Decrease the inode reference count */
-	status = vfs_inode_release(dirc->inode);
-	if ( status )
-		THROWV( status );
+	vfs_inode_release(dirc->inode);
 
 	/* Release it's memory */
 	heapmm_free(dirc, sizeof(dir_cache_t));	
 
-	RETURNV;
+	return;
 }
 
 /**
@@ -138,11 +136,8 @@ SFUNC( dir_cache_t *, vfs_dir_cache_new, dir_cache_t *par, ino_t inode_id )
 	assert(dirc->inode != NULL);
 
 	/* Release the outer inode */
-	if (oi) {
-		status = vfs_inode_release( oi );
-		if ( status )
-			THROW( status, NULL );
-	}
+	if (oi) 
+		vfs_inode_release( oi );
 	
 	/*if (!dirc->inode) {
 		heapmm_free(dirc, sizeof(dir_cache_t));

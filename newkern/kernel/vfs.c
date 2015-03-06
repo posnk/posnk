@@ -233,7 +233,7 @@ SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name)
 	if (!vfs_have_permissions(inode, MODE_EXEC)) {
 
 		/* If not: return the error "Permission denied" */
-		THROW( EPERM, NULL );
+		THROW( EACCES, NULL );
 
 	}
 
@@ -950,7 +950,7 @@ int vfs_mkdir(char *path, mode_t mode)
 		return err;
 
 	/* Look up the inode for the new directory */
-	err = vfs_find_inode(path, &parent);
+	err = vfs_find_inode(path, &dir);
 
 	if (err)
 		return err;

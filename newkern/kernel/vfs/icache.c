@@ -62,7 +62,7 @@ void vfs_icache_initialize()
  * @param inode The reference to release
  */
 
-SVFUNC(vfs_inode_release, inode_t *inode)
+void vfs_inode_release(inode_t *inode)
 {
 	/* Decrease the reference count for this inode */
 	if (inode->usage_count)
@@ -70,17 +70,11 @@ SVFUNC(vfs_inode_release, inode_t *inode)
 
 	/* If the inode has no more references, destroy it */
 	if (inode->usage_count)
-		RETURNV;
-
-	/* If the inode has a mount on it, don't destroy it */
-	if (inode->mount)
-		RETURNV;
+		return;
 
 	llist_unlink((llist_t *) inode);
 	llist_add_end(inode_cache, (llist_t *) inode);
 
-	CHAINRETV( ifs_store_inode , inode );
-	//TODO: Move out of this file
 }
 
 /**
@@ -94,7 +88,8 @@ inode_t *vfs_inode_ref(inode_t *inode)
 
 	assert (inode != NULL);
 
-	if ((!inode->mount) && (!inode->usage_count)) {
+	if (!(inode->usage_count)) {
+		/* Move inode from cache to open inode list */
 		llist_unlink( (llist_t *) inode );
 		llist_add_end( open_inodes, (llist_t *) inode );
 	}
@@ -196,5 +191,17 @@ void vfs_cache_flush()
 	/* Flush inode cache */
 	llist_iterate_select(inode_cache, &vfs_cache_flush_iterator, NULL);
 
+}
+
+/**
+ * @brief Sync an inode from cache to disk
+ *
+ */
+SVFUNC(vfs_sync_inode, inode_t *inode)
+{
+	assert ( inode != NULL );
+	
+	CHAINRETV(ifs_store_inode, inode);
+	
 }
 
