@@ -69,6 +69,7 @@ kernel/vfs/icache.c \
 kernel/vfs/dcache.c \
 kernel/vfs/ifswrap.c \
 kernel/vfs/pathres.c \
+kernel/vfs/perm.c \
 kernel/vfs.c \
 kernel/elfloader.c \
 kernel/tar.c \

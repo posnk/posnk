@@ -33,112 +33,12 @@
 llist_t vfs_fs_driver_list;
 
 
-/**
- * @brief Extract the filename part of a path
- * @warning This allocates heap for the return value, free with
- *	    heapmm_free(r, strlen(r) + 1);
- * @param path The path to analyze
- * @return The file name, see warning!
- */
-SFUNC(char *, vfs_get_filename, const char *path)
-{	
-	char *separator;
-	char *name;
-	char *pathcopy;
-	size_t pathlen;
-	char *newname;
 
-	/* Check for null pointers */
-	assert(path != NULL);
-	
-	/* Make a working copy of path */
-	pathlen = strlen(path);
-	
-	/* Check path length */
-	if (pathlen > 1023)
-		THROW(ENAMETOOLONG, NULL);
-
-	/* Allocate room for copy */
-	pathcopy = heapmm_alloc(pathlen + 1);
-
-	/* Check if allocation succeeded */
-	if (!pathcopy)
-		THROW(ENOMEM, NULL);
-
-	/* Copy path */
-	strcpy(pathcopy, path);
-
-	/* Resolve the filename */
-
-	/* Find the last / in the path */
-	separator = strrchr(pathcopy, '/');
-	
-	/* Check for trailing / */
-	if (separator == (pathcopy + strlen(pathcopy) - 1)){
-
-		/* Trailing / found, remove it */		
-		pathcopy[strlen(path) - 1] = '\0';
-
-		/* Search for the real last / */
-		separator = strrchr(pathcopy, '/');
-	}
-
-	/* Check if a / was found */
-	if (separator) /* If so, the string following it is the name */
-		name = separator + 1;
-	else /* If not, the path IS the name */
-		name = pathcopy;
-
-	newname = heapmm_alloc(strlen(name) + 1);
-
-	/* Check if allocation succeeded */
-	if (!newname) {
-		heapmm_free(pathcopy, pathlen + 1);
-		THROW(ENOMEM, NULL);
-	}
-	
-	strcpy(newname, name);
-	
-	heapmm_free(pathcopy, pathlen + 1);
-
-	RETURN(newname);
-}
 
 /** @name VFS Internal
  *  Utility functions for use by VFS functions only
  */
 ///@{
-
-/**
- * @brief Returns the minimum privilege level required for access with mode
- * @param inode The file to check
- * @param req_mode The requested access mode
- * @return The required privilege class : other, group or owner
- */
-
-perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
-{
-	assert (inode != NULL);
-	if (req_mode & ((inode->mode) & 7))
-		return PERM_CLASS_OTHER;
-	if (req_mode & ((inode->mode >> 3) & 7))
-		return PERM_CLASS_GROUP;
-	if (req_mode & ((inode->mode >> 6) & 7))
-		return PERM_CLASS_OWNER;
-	return PERM_CLASS_NONE;
-}
-
-/**
- * @brief Check permissions for access with mode
- * @param inode The file to check
- * @param req_mode The requested access mode
- * @return Whether the requested access is allowed
- */
-
-int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
-	assert (inode != NULL);
-	return get_perm_class(inode->uid, inode->gid) <= vfs_get_min_permissions(inode, req_mode);
-}
 
 /**
  * @brief Get an inode by it's ID

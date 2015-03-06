@@ -594,3 +594,74 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 
 	}
 } 
+
+/**
+ * @brief Extract the filename part of a path
+ * @warning This allocates heap for the return value, free with
+ *	    heapmm_free(r, strlen(r) + 1);
+ * @param path The path to analyze
+ * @return The file name, see warning!
+ */
+SFUNC(char *, vfs_get_filename, const char *path)
+{	
+	char *separator;
+	char *name;
+	char *pathcopy;
+	size_t pathlen;
+	char *newname;
+
+	/* Check for null pointers */
+	assert(path != NULL);
+	
+	/* Make a working copy of path */
+	pathlen = strlen(path);
+	
+	/* Check path length */
+	if (pathlen > 1023)
+		THROW(ENAMETOOLONG, NULL);
+
+	/* Allocate room for copy */
+	pathcopy = heapmm_alloc(pathlen + 1);
+
+	/* Check if allocation succeeded */
+	if (!pathcopy)
+		THROW(ENOMEM, NULL);
+
+	/* Copy path */
+	strcpy(pathcopy, path);
+
+	/* Resolve the filename */
+
+	/* Find the last / in the path */
+	separator = strrchr(pathcopy, '/');
+	
+	/* Check for trailing / */
+	if (separator == (pathcopy + strlen(pathcopy) - 1)){
+
+		/* Trailing / found, remove it */		
+		pathcopy[strlen(path) - 1] = '\0';
+
+		/* Search for the real last / */
+		separator = strrchr(pathcopy, '/');
+	}
+
+	/* Check if a / was found */
+	if (separator) /* If so, the string following it is the name */
+		name = separator + 1;
+	else /* If not, the path IS the name */
+		name = pathcopy;
+
+	newname = heapmm_alloc(strlen(name) + 1);
+
+	/* Check if allocation succeeded */
+	if (!newname) {
+		heapmm_free(pathcopy, pathlen + 1);
+		THROW(ENOMEM, NULL);
+	}
+	
+	strcpy(newname, name);
+	
+	heapmm_free(pathcopy, pathlen + 1);
+
+	RETURN(newname);
+}

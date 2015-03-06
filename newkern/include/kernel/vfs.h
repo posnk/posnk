@@ -435,7 +435,7 @@ SFUNC(char *, vfs_get_filename, const char *path);
  *  Utility functions for use by VFS functions only
  */
 ///@{
-
+void vfs_inode_cache(inode_t *inode);
 inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
 
 dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
