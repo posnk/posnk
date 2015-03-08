@@ -1,4 +1,4 @@
-#define ARCH_ARM
+#define ARCH_ARMV7
 
 //4MB
 #define CONFIG_KERNEL_INITIAL_SIZE	(0x400000)

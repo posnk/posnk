@@ -11,7 +11,6 @@
 
 #ifndef _ARCH_ARMV7_CPU_
 #define _ARCH_ARMV7_CPU_
-
 /* Processor Status Register */
 
 /* ------ MODE FIELD ------ */
@@ -55,7 +54,7 @@
 #define PSR_FIQ_MASK	(0x00000040)
 
 /* Interrupt Mask bit */
-#define PSR_FIQ_MASK	(0x00000080)
+#define PSR_IRQ_MASK	(0x00000080)
 
 /* Async Abort Mask bit */
 #define PSR_ABT_MASK	(0x00000100)

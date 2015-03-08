@@ -150,3 +150,20 @@ int sercon_printf(const char* str,...){
 	va_end(args);
 	return res;
 }
+
+int debugcon_aprintf(const char* str,...){
+	va_list args;
+	va_start(args,str);
+	int res = sercon_vsprintf(sercon_printf_buffer, str, args);
+	sercon_puts(sercon_printf_buffer);
+	va_end(args);
+	return res;
+}
+
+int panic_printf(const char* str,...){
+	va_list args;
+	va_start(args,str);
+	int res = sercon_vsprintf(sercon_printf_buffer, str, args);
+	va_end(args);
+	return res;
+}

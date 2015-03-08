@@ -14,7 +14,7 @@ LD   = @echo " [  LD  ]	" $@ ; $(CROSS_COMPILE)gcc
 CPP  = @echo " [  CPP ]	" $@ ; $(CROSS_COMPILE)cpp
 OCP  = @echo " [OBJCPY]	" $@ ; $(CROSS_COMPILE)objcopy
 M4   = @echo " [  M4  ]	" $@ ; m4
-GAS  = @echo " [  AS  ]	" $@ ; $(CROSS_COMPILE)as
+GAS  = @echo " [  AS  ]	" $@ ; $(CROSS_COMPILE)gcc
 NASM = @echo " [ NASM ]	" $< ; nasm
 HCC  = @echo " [ HCC  ]	" $< ; gcc
 HLD  = @echo " [ HLD  ]	" $@ ; gcc
@@ -28,7 +28,7 @@ HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
-GASFLAGS = -g -ffreestanding
+GASFLAGS = -g
 
 MKIFLAGS = -A arm -O linux -T kernel -C none 
 
@@ -142,6 +142,8 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
 arch/armv7/loader/sercon.c \
+arch/armv7/atags.c \
+kernel/physmm.c \
 crt/string.c \
 crt/stdlib.c 
 
@@ -169,7 +171,7 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 #
 OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
-OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.o)
+OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.ao)
 
 OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho) 
 
@@ -261,8 +263,11 @@ cdrom_i386: kernel_i386 initrd
 # it uses automatic variables $<: the name of the prerequisite of
 # the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
-.c.o:
+%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+
+%.ao: %.S
+	$(GAS) $(GASFLAGS) $(INCLUDES) -c $<  -o $@
 
 %.ho: %.c
 	$(HCC) $(HCFLAGS) $(HINCLUDES) -c $<  -o $@
@@ -277,6 +282,7 @@ clean: clean_driver
 	@$(RM) driver/bus/*.o
 	@$(RM) arch/i386/*.o
 	@$(RM) arch/armv7/*.o
+	@$(RM) arch/armv7/*.so
 	@$(RM) util/*.o
 	@$(RM) crt/*.o
 	@rm _dmake

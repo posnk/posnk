@@ -28,6 +28,17 @@
 	typedef uint32_t	physaddr_t;
 #endif
 
+#ifdef ARCH_ARMV7
+	#define PHYSMM_BITMAP_SIZE		(32768)
+	#define PHYSMM_PAGE_ADDRESS_MASK	(0xFFF)
+	#define PHYSMM_PAGE_SIZE		(4096)
+
+	/**
+	 * Type guaranteed to be able to contain a physical address
+	 */
+	typedef uint32_t	physaddr_t;
+#endif
+
 #define PHYSMM_NO_FRAME	(1)
 
 void physmm_free_range(physaddr_t start, physaddr_t end);
