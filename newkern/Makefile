@@ -140,7 +140,10 @@ arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
 arch/i386/prot_asm.s
 
-SRCS_ARMV7LOADER = arch/armv7/loader/init.c
+SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
+arch/armv7/loader/sercon.c \
+crt/string.c \
+crt/stdlib.c 
 
 ASMS_ARMV7LOADER = arch/armv7/loader/start.S 
 
@@ -224,8 +227,8 @@ loader_armv7_uboot: loader_armv7.bin
 loader_armv7.bin: loader_armv7	
 	$(OCP) -I elf32-littlearm -O binary --gap-fill 0xFF --set-start 0x$(ARMV7_LOAD_ADDR) -j .setup loader_armv7 loader_armv7.bin
 
-loader_armv7: $(OBJS_ARMV7LOADER) linkarmv7.ld
-	$(LD) -T arch/armv7/loader/ldr.ld $(A7LFLAGS) $(LIBS) -o loader_armv7 $(OBJS_ARMV7LOADER)
+loader_armv7: $(OBJS_ARMV7LOADER) arch/armv7/loader/ldr.ld
+	$(LD) -T arch/armv7/loader/ldr.ld $(A7LFLAGS) $(LIBS) -o loader_armv7 $(OBJS_ARMV7LOADER) -lgcc
 	
 
 kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
@@ -274,6 +277,8 @@ clean: clean_driver
 	@$(RM) driver/bus/*.o
 	@$(RM) arch/i386/*.o
 	@$(RM) arch/armv7/*.o
+	@$(RM) util/*.o
+	@$(RM) crt/*.o
 	@rm _dmake
 	@rm loader_armv7*
 

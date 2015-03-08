@@ -1,4 +1,4 @@
-#define ARCH_I386
+#define ARCH_ARM
 
 //4MB
 #define CONFIG_KERNEL_INITIAL_SIZE	(0x400000)
@@ -20,7 +20,9 @@
 
 #undef	HAVE_LIBGCC			
 
+#ifdef ARCH_I386
 #define CONFIG_FASTCRT
+#endif
 
 #undef CONFIG_SYSCALL_DEBUG
 

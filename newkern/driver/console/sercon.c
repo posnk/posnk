@@ -36,3 +36,4 @@ void sercon_init() {
    tty_register_driver("sercon", 13, 1, &sercon_putc);
 
 }
+
