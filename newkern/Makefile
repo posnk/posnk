@@ -147,7 +147,9 @@ kernel/physmm.c \
 crt/string.c \
 crt/stdlib.c 
 
-ASMS_ARMV7LOADER = arch/armv7/loader/start.S 
+ASMS_ARMV7LOADER = arch/armv7/loader/start.S \
+arch/armv7/mode.S \
+arch/armv7/exception.S
 
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/dev.c \
