@@ -11,7 +11,10 @@
 
 #ifndef _ARCH_ARMV7_CPU_
 #define _ARCH_ARMV7_CPU_
-/* Processor Status Register */
+
+/*******************************************/
+/*          Process Status Register        */
+/*******************************************/
 
 /* ------ MODE FIELD ------ */
 
@@ -96,6 +99,23 @@
 
 /* Negative condition flag */
 #define PSR_NEGATIVE	(0x80000000)
+
+
+/*******************************************/
+/*          Exception Vector Table         */
+/*******************************************/
+#ifndef __ASSEMBLER__
+extern	uint32_t	armv7_handler_table[8];
+#endif
+
+#define	VEC_RESET		(0)
+#define	VEC_UNDEFINED		(1)
+#define	VEC_SUPERVISOR_CALL	(2)
+#define	VEC_PREFETCH_ABORT	(3)
+#define	VEC_DATA_ABORT		(4)
+#define	VEC_RESERVED		(5)
+#define	VEC_IRQ			(6)
+#define	VEC_FIQ			(7)
 
 
 #endif

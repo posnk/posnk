@@ -22,7 +22,7 @@ typedef struct page_dir		page_dir_t;
 struct page_dir {
 	//TODO: Determine what else to add here
 	void		*content;
-	phys_addr_t	 content_phys;
+	physaddr_t	 content_phys;
 };
 
 #define PAGING_PAGE_FLAG_USER		(0x1)

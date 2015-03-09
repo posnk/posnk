@@ -142,14 +142,17 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
 arch/armv7/loader/sercon.c \
+arch/armv7/loader/mmu.c \
 arch/armv7/atags.c \
 kernel/physmm.c \
+util/llist.c \
 crt/string.c \
 crt/stdlib.c 
 
 ASMS_ARMV7LOADER = arch/armv7/loader/start.S \
 arch/armv7/mode.S \
-arch/armv7/exception.S
+arch/armv7/exception.S \
+arch/armv7/mmu.S
 
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/dev.c \

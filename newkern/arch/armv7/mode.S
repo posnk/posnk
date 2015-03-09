@@ -12,6 +12,13 @@
 #include "arch/armv7/cpu.h"
 
 .section .text
+
+.global armv7_get_mode
+
+armv7_get_mode:
+	mrs	r0,	cpsr_all
+	mov	pc,	lr
+
 .global armv7_set_mode_stack
 
 # armv7_set_mode_stack: Set the stack pointer register for a different mode

@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include "arch/armv7/atags.h"
 #include "kernel/physmm.h"
+#include "arch/armv7/loader.h"
 
 /*
  * The CPU must be in SVC (supervisor) mode with both IRQ and FIQ interrupts disabled.
@@ -43,6 +44,8 @@ uint32_t armv7_start_kheap;
 
 static struct atag *params; /* used to point at the current tag */
 
+uint32_t	armv7_get_mode( void );
+
 void halt()
 {
 	for(;;);
@@ -54,7 +57,6 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 
 	sercon_init();
 
-	sercon_printf("");
 	sercon_printf("posnk armv7_loader built on %s %s\n", __DATE__,__TIME__);
 	sercon_printf("initial state:\nr0: 0x%x, r1: 0x%x, r2:0x%x\n", unused_reg, mach_type, atag_addr);
 
@@ -75,6 +77,12 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 
 	sercon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
+
+	sercon_printf("mmu: initializing, identity mapping RAM...\n");
+
+	armv7_init_mmu(0x80000000,0x90000000);
+
+	sercon_printf("mmu: initialized\n");
 
 	halt();
 	

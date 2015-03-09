@@ -31,8 +31,8 @@
 #define I386_PAGE_DIRECTORY_SIZE	(1024)
 #define I386_PAGE_TABLE_SIZE		(1024)
 
-typedef struct i386_page_dir	i386_page_dir_t;
-typedef struct i386_page_table	i386_page_table_t;
+typedef struct i386_page_dir		i386_page_dir_t;
+typedef struct i386_page_table		i386_page_table_t;
 typedef struct i386_page_dir_list	i386_page_dir_list_t;
 
 struct i386_page_dir {
