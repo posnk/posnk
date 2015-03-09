@@ -82,7 +82,7 @@ void armv7_mmu_map(void * virt_addr, physaddr_t phys_addr)
 	l2_entry = 	ARMV7_L2_TYPE_PAGE4 | 
 			ARMV7_L2_PAGE_AP(3) | 
 			ARMV7_L2_PAGE4_PA(phys_addr);
-	armv7_l1_table->entries[l1_idx] = l2_entry;
+	table->pages[l2_idx] = l2_entry;
 	armv7_mmu_flush_tlb_single((uintptr_t)virt_addr);
 }
 

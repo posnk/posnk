@@ -27,6 +27,7 @@
 #define ET_HIPROC	0xffff 	/* End ARCH specific */
 
 #define EM_386		3	/* 80386 (i386, x86) */
+#define EM_ARM		0x28	/* ARM */
 
 #define	EV_NONE		0	/* Invalid version */
 #define EV_CURRENT	1	/* Current version */

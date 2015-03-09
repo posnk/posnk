@@ -13,6 +13,8 @@
 #include "arch/armv7/atags.h"
 #include "kernel/physmm.h"
 #include "arch/armv7/loader.h"
+#include "arch/armv7/cpu.h"
+#include "arch/armv7/mmu.h"
 
 /*
  * The CPU must be in SVC (supervisor) mode with both IRQ and FIQ interrupts disabled.
@@ -40,15 +42,29 @@
 void sercon_puts(const char *string);
 void sercon_init();
 
-uint32_t armv7_start_kheap;
+extern uint32_t _armv7_start_kheap;
+extern uint32_t _binary_payload_armv7_start;
 
 static struct atag *params; /* used to point at the current tag */
 
 uint32_t	armv7_get_mode( void );
-
+void armv7_exception_init();
+extern uint32_t armv7_handler_table[8];
 void halt()
 {
 	for(;;);
+}
+
+void armv7_diepaged()
+{
+	sercon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
+	halt();
+}
+
+void armv7_diepagep()
+{
+	sercon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
+	halt();
 }
 
 void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
@@ -70,7 +86,7 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 			physmm_count_free() / 0x100000);
 
 	ldr_start = 0x80000000;
-	ldr_end = (physaddr_t) &armv7_start_kheap;
+	ldr_end = (physaddr_t) &_armv7_start_kheap;
 	ldr_end = (ldr_end + 0xfff) & 0xFFFFF000;
 
 	physmm_claim_range(ldr_start, ldr_end);
@@ -83,6 +99,11 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 	armv7_init_mmu(0x80000000,0x90000000);
 
 	sercon_printf("mmu: initialized\n");
+
+	armv7_handler_table[VEC_DATA_ABORT] = &armv7_diepaged;
+	armv7_handler_table[VEC_PREFETCH_ABORT] = &armv7_diepagep;
+	armv7_exception_init();
+	elf_load(&_binary_payload_armv7_start);
 
 	halt();
 	

@@ -24,6 +24,8 @@ void armv7_mmu_enable	( void );
 void armv7_mmu_enable	( void );
 void armv7_mmu_flush_tlb( void );
 void armv7_mmu_flush_tlb_single( uint32_t mva );
+uint32_t armv7_mmu_data_abort_addr();
+uint32_t armv7_mmu_pf_abort_addr();
 
 #define ARMV7_L1_TYPE_FAULT		(0x00000000)
 #define ARMV7_L1_TYPE_PAGE_TABLE	(0x00000001)

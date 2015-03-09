@@ -140,9 +140,18 @@ arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
 arch/i386/prot_asm.s
 
+SRCS_ARMV7KERNEL = arch/armv7/init.c \
+arch/armv7/loader/sercon.c \
+kernel/interrupt.c \
+util/llist.c \
+kernel/physmm.c \
+crt/string.c \
+crt/stdlib.c 
+
 SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
 arch/armv7/loader/sercon.c \
 arch/armv7/loader/mmu.c \
+arch/armv7/loader/elf.c \
 arch/armv7/atags.c \
 kernel/physmm.c \
 util/llist.c \
@@ -176,7 +185,8 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 #
 OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
 OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
-OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.ao)
+OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.ao) payload_armv7.bo
+OBJS_ARMV7KERNEL = $(SRCS_ARMV7KERNEL:.c=.o) $(ASMS_ARMV7KERNEL:.S=.ao)
 
 OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho) 
 
@@ -228,6 +238,13 @@ mmc_armv7: _dmake loader_armv7_uboot
 	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posnk
 	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
  	
+payload_armv7: $(OBJS_ARMV7KERNEL) arch/armv7/kern.ld
+	$(LD) -T arch/armv7/kern.ld $(A7LFLAGS) $(LIBS) -o payload_armv7 $(OBJS_ARMV7KERNEL) -lgcc
+
+payload_armv7.bo: payload_armv7
+	$(OCP) -I binary -O elf32-littlearm -B armv4t payload_armv7 payload_armv7.bo
+	
+
 loader_armv7_uboot: loader_armv7.bin
 	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot
 
@@ -288,6 +305,12 @@ clean: clean_driver
 	@$(RM) arch/i386/*.o
 	@$(RM) arch/armv7/*.o
 	@$(RM) arch/armv7/*.so
+	@$(RM) arch/armv7/*.ao
+	@$(RM) arch/armv7/*.bo
+	@$(RM) arch/armv7/loader/*.o
+	@$(RM) arch/armv7/loader/*.so
+	@$(RM) arch/armv7/loader/*.ao
+	@$(RM) *.bo
 	@$(RM) util/*.o
 	@$(RM) crt/*.o
 	@rm _dmake

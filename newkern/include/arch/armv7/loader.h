@@ -15,5 +15,5 @@
 void armv7_init_mmu(physaddr_t ram_start, physaddr_t ram_stop);
 void armv7_mmu_map(void * virt_addr, physaddr_t phys_addr);
 void armv7_mmu_unmap(void * virt_addr);
-
+int elf_load(char * file);
 #endif
