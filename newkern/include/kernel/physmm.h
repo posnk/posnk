@@ -53,6 +53,11 @@ physaddr_t physmm_count_free();
 physaddr_t physmm_alloc_frame();
 
 /**
+ * Allocates four physical frames
+ */
+physaddr_t physmm_alloc_quadframe();
+
+/**
  * Releases a frame to be used again
  */
 void physmm_free_frame(physaddr_t address);

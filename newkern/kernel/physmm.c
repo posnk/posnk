@@ -66,6 +66,31 @@ physaddr_t physmm_alloc_frame()
 	return PHYSMM_NO_FRAME;
 }
 
+physaddr_t physmm_alloc_quadframe() 
+{
+	//TODO: Lock physmm_bitmap
+	physaddr_t counter, bit_counter;
+	for (counter = 0; counter < PHYSMM_BITMAP_SIZE; counter++) {
+		if (physmm_bitmap[counter] == 0)
+			continue;
+		for (bit_counter = 0; bit_counter < 32; bit_counter+=4) {
+			if (physmm_bitmap[counter] & (0xF << bit_counter)) {
+				counter <<= 5;
+				counter |= bit_counter;
+				counter <<= 12;
+				physmm_clear_bit(counter+PHYSMM_PAGE_SIZE*0);
+				physmm_clear_bit(counter+PHYSMM_PAGE_SIZE*1);
+				physmm_clear_bit(counter+PHYSMM_PAGE_SIZE*2);
+				physmm_clear_bit(counter+PHYSMM_PAGE_SIZE*3);
+				//TODO: Release physmm_bitmap
+				return counter;
+			}
+		}
+	}
+	//TODO: Release physmm_bitmap
+	return PHYSMM_NO_FRAME;
+}
+
 physaddr_t physmm_count_free() 
 {
 	//TODO: Lock physmm_bitmap
