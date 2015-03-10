@@ -14,6 +14,7 @@
 #include "kernel/physmm.h"
 #include "kernel/elf.h"
 #include "arch/armv7/loader.h"
+#include "arch/armv7/bootargs.h"
 #include "config.h"
 #include <string.h>
 #include <assert.h>
@@ -24,26 +25,33 @@ void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 {
 	physaddr_t frame;
 	uint32_t vad;
+
+	
+
 	for (vad = vaddr; vad < (vaddr + msize); vad += 4096) {
 		frame = physmm_alloc_frame();
+		armv7_add_kmap(vaddr, frame, 4096, 0x7);
 		if (frame == PHYSMM_NO_FRAME)	{
 			sercon_printf("NO MEMORY!\n");
 			halt();
 		}
 		armv7_mmu_map((void *)vad, frame);
 	}
+
 	armv7_mmu_flush_tlb();
+
 	if (msize > csize)
 		memset((void *)(vaddr + csize), 0, msize - csize);
+
 	if (csize != 0)
 		memcpy((void *) vaddr, data, csize);
+
 }
 
 int elf_load(char * file)
 {		
 	int flags;
 	int ph_ptr = 0;
-	void (*kmain)(void);
 	Elf32_Ehdr *elf_header;
 	Elf32_Phdr aelf_pheader;
 	Elf32_Phdr *elf_pheader = &aelf_pheader;
@@ -65,12 +73,12 @@ int elf_load(char * file)
 		return ENOEXEC;
 	}
 
-	debugcon_printf("Loading ELF binary, magic: %c%c%c%c, shnum:%i, phnum:%i ...\n", elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3], 
-		elf_header->e_shnum, elf_header->e_phnum);
+	//debugcon_printf("Loading ELF binary, magic: %c%c%c%c, shnum:%i, phnum:%i ...\n", elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3], 
+	//	elf_header->e_shnum, elf_header->e_phnum);
 
 	for (ph_ptr = 0; ph_ptr < elf_header->e_phnum; ph_ptr++) {
 		memcpy(elf_pheader, &file[elf_header->e_phoff+(elf_header->e_phentsize * ph_ptr)], elf_header->e_phentsize);
-		debugcon_printf("Loading program section off:%x va:%x pa:%x sz:%x fsz:%x...\n", elf_pheader->p_offset, elf_pheader->p_vaddr, elf_pheader->p_paddr, elf_pheader->p_memsz, elf_pheader->p_filesz);
+	//	debugcon_printf("Loading program section off:%x va:%x pa:%x sz:%x fsz:%x...\n", elf_pheader->p_offset, elf_pheader->p_vaddr, elf_pheader->p_paddr, elf_pheader->p_memsz, elf_pheader->p_filesz);
 
 		switch (elf_pheader->p_type) {
 			case PT_LOAD:
@@ -99,10 +107,9 @@ int elf_load(char * file)
 	}
 	image_top += PHYSMM_PAGE_SIZE;
 	image_top &= ~PHYSMM_PAGE_ADDRESS_MASK;
-	debugcon_printf("Loaded ELF image between %x and %x\n",image_base, image_top);
-	debugcon_printf("Calling elf image entry point\n");
-	kmain = (void *)elf_header->e_entry;
-	kmain();
+	debugcon_printf("elf: loaded ELF image between VA %x and VA %x\n",image_base, image_top);
+	//debugcon_printf("Calling elf image entry point\n");
+	elf_kmain = (void *)elf_header->e_entry;
 	return 0;	
 }
 

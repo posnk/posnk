@@ -24,7 +24,7 @@
 #define CONFIG_FASTCRT
 #endif
 
-#define CONFIG_DEBUG_ATAGS
+#undef CONFIG_DEBUG_ATAGS
 
 #undef CONFIG_SYSCALL_DEBUG
 

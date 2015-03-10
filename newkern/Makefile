@@ -230,11 +230,11 @@ test: testfs testerror
 	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
 	@rm empty
 
-mmc_armv7: _dmake loader_armv7_uboot payload_armv7_uboot
+mmc_armv7: _dmake loader_armv7_uboot initrd_armv7_uboot
 	@dd if=/dev/zero of=posnk.sd bs=1024 count=100k 2> /dev/null
 	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
 	@echo " [MOUNT ] " posnk.sd ../hdd ; sudo mount -o loop -t ext2 posnk.sd ../hdd
-	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posnk
+	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posldr
 	@echo " [  CP  ] " initrd_armv7_uboot ; cp initrd_armv7_uboot ../hdd/posrd
 	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
  	

@@ -13,6 +13,10 @@
 #include "kernel/physmm.h"
 #include "config.h"
 
+uint32_t armv7_atag_initrd_pa = 0xFFFFFFFF;
+uint32_t armv7_atag_initrd_sz = 0x0;
+char *armv7_atag_cmdline = "";
+
 int sercon_printf(const char* str,...);
 
 #ifndef CONFIG_DEBUG_ATAGS
@@ -83,6 +87,8 @@ void armv7_parse_atags( void * atag_addr )
 				armv7_atag_debug("ATAG_INITRD2\n");
 				armv7_atag_debug("    start=0x%x\n", params->u.initrd2.start);
 				armv7_atag_debug("    size=0x%x\n", params->u.initrd2.size);
+				armv7_atag_initrd_pa = params->u.initrd2.start;
+				armv7_atag_initrd_sz = params->u.initrd2.size;
 				break;
 
 			case ATAG_SERIAL:
@@ -117,6 +123,7 @@ void armv7_parse_atags( void * atag_addr )
 			case ATAG_CMDLINE:
 				armv7_atag_debug("ATAG_CMDLINE\n");
 				armv7_atag_debug("    cmdline=\"%s\"\n", params->u.cmdline.cmdline);
+				armv7_atag_cmdline = params->u.cmdline.cmdline;
 				break;
 
 			case ATAG_NONE:

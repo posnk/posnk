@@ -23,25 +23,6 @@
 
 
 /**
- * Boot Arguments structure for ARMV7
- */
-
-typedef struct {
-	/** Magic number, must be equal to ARMV7_BOOTARGS_MAGIC */
-	uint32_t	 ba_magic;
-	/** Physical address of initrd image */
-	uint32_t	 ba_initrd_pa;
-	/** Size of initrd image */
-	uint32_t	 ba_initrd_sz;	
-	/** Physical memory availability bitmap */
-	uint32_t	 ba_pm_bitmap[32768];
-	/** Pointer to the command line */
-	uint8_t		*ba_cmd;
-	/** Pointer to the kernel mapping list */
-	armv7_kmap_t	*ba_kmap;
-} armv7_bootargs_t;
-
-/**
  * Boot Kernel Mapping structure for ARMV7
  */
 typedef struct {
@@ -54,6 +35,26 @@ typedef struct {
 	/** Flags */
 	uint32_t	ba_kmap_fl;
 } armv7_ba_kmap_t;
+
+/**
+ * Boot Arguments structure for ARMV7
+ */
+
+typedef struct {
+	/** Magic number, must be equal to ARMV7_BOOTARGS_MAGIC */
+	uint32_t	 ba_magic;
+	/** Physical address of initrd image */
+	uint32_t	 ba_initrd_pa;
+	/** Size of initrd image */
+	uint32_t	 ba_initrd_sz;	
+	/** Physical memory availability bitmap */
+	uint32_t	*ba_pm_bitmap;
+	/** Pointer to the command line */
+	uint8_t		*ba_cmd;
+	uint32_t	 ba_kmap_count;
+	/** Pointer to the kernel mapping list */
+	armv7_ba_kmap_t	*ba_kmap;
+} armv7_bootargs_t;
 
 
 

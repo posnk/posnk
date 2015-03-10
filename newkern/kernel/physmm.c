@@ -11,19 +11,20 @@
 
 #include "kernel/physmm.h"
 #include <assert.h>
+#include <string.h>
 
 uint32_t physmm_bitmap[PHYSMM_BITMAP_SIZE];
 
 void physmm_set_bit(physaddr_t address) 
 {
 	address >>= 12;
-	physmm_bitmap[address >> 5] |= 1 << (address & 0x1F);
+	physmm_bitmap[(address >> 5) & 0x7FFF] |= 1 << (address & 0x1F);
 }
 
 void physmm_clear_bit(physaddr_t address) 
 {
 	address >>= 12;
-	physmm_bitmap[address >> 5] &= ~(1 << (address & 0x1F));
+	physmm_bitmap[(address >> 5) & 0x7FFF] &= ~(1 << (address & 0x1F));
 }
 
 void physmm_free_range(physaddr_t start, physaddr_t end) 
@@ -74,7 +75,7 @@ physaddr_t physmm_alloc_quadframe()
 		if (physmm_bitmap[counter] == 0)
 			continue;
 		for (bit_counter = 0; bit_counter < 32; bit_counter+=4) {
-			if (physmm_bitmap[counter] & (0xF << bit_counter)) {
+			if ((physmm_bitmap[counter] & (0xF << bit_counter)) == 0xF) {
 				counter <<= 5;
 				counter |= bit_counter;
 				counter <<= 12;
@@ -86,6 +87,20 @@ physaddr_t physmm_alloc_quadframe()
 				return counter;
 			}
 		}
+	}
+	//TODO: Release physmm_bitmap
+	return PHYSMM_NO_FRAME;
+}
+
+physaddr_t physmm_alloc_bmcopy() 
+{
+	//TODO: Lock physmm_bitmap
+	physaddr_t counter, bit_counter;
+	for (counter = 0; counter < PHYSMM_BITMAP_SIZE; counter++) {
+		if (physmm_bitmap[counter] != 0xFFFFFFFF)
+			continue;
+		physmm_bitmap[counter] = 0;
+		return counter << 17;
 	}
 	//TODO: Release physmm_bitmap
 	return PHYSMM_NO_FRAME;
@@ -114,4 +129,5 @@ void physmm_free_frame(physaddr_t address)
 }
 
 void physmm_init(){
+	memset(physmm_bitmap, 0, 32768 * sizeof(uint32_t));
 }

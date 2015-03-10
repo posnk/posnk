@@ -119,5 +119,7 @@ struct atag {
 #define tag_size(type)  ((sizeof(struct tag_header) + sizeof(struct type)) >> 2)
 
 void armv7_parse_atags( void * atag_addr );
-
+extern uint32_t armv7_atag_initrd_pa;
+extern uint32_t armv7_atag_initrd_sz;
+extern char *armv7_atag_cmdline;
 #endif
