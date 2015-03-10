@@ -114,6 +114,11 @@ void armv7_parse_atags( void * atag_addr )
 				armv7_atag_debug("    rsvd_pos=0x%x\n", (int)params->u.videolfb.rsvd_pos);
 				break;
 
+			case ATAG_CMDLINE:
+				armv7_atag_debug("ATAG_CMDLINE\n");
+				armv7_atag_debug("    cmdline=\"%s\"\n", params->u.cmdline.cmdline);
+				break;
+
 			case ATAG_NONE:
 				armv7_atag_debug("ATAG_NONE\n");
 				return;

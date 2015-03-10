@@ -24,7 +24,7 @@ void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 {
 	physaddr_t frame;
 	uint32_t vad;
-	for (vad = vaddr; vad < (vaddr + csize); vad += 4096) {
+	for (vad = vaddr; vad < (vaddr + msize); vad += 4096) {
 		frame = physmm_alloc_frame();
 		if (frame == PHYSMM_NO_FRAME)	{
 			sercon_printf("NO MEMORY!\n");
@@ -54,10 +54,12 @@ int elf_load(char * file)
 	if (elf_header->e_type != ET_EXEC) {
 		return ENOEXEC;
 	}
+
 	if (elf_header->e_machine != EM_ARM) {
 		debugcon_printf("ERROR: tried to load non-ARM elf file: %x\n", elf_header->e_machine);
 		return ENOEXEC;
 	}
+
 	if (elf_header->e_phnum == 0) {
 		debugcon_printf("ERROR: tried to load object file\n");
 		return ENOEXEC;

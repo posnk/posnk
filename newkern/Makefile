@@ -30,7 +30,7 @@ NASMFLAGS = -w+orphan-labels -felf -g
 
 GASFLAGS = -g
 
-MKIFLAGS = -A arm -O linux -T kernel -C none 
+MKIFLAGS = -A arm -O linux -C none 
 
 ARMV7_LOAD_ADDR = 80008000
 ARMV7_ENTRY_POINT = 80008000
@@ -142,7 +142,6 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7KERNEL = arch/armv7/init.c \
 arch/armv7/loader/sercon.c \
-kernel/interrupt.c \
 util/llist.c \
 kernel/physmm.c \
 crt/string.c \
@@ -231,11 +230,12 @@ test: testfs testerror
 	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
 	@rm empty
 
-mmc_armv7: _dmake loader_armv7_uboot
+mmc_armv7: _dmake loader_armv7_uboot payload_armv7_uboot
 	@dd if=/dev/zero of=posnk.sd bs=1024 count=100k 2> /dev/null
 	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
 	@echo " [MOUNT ] " posnk.sd ../hdd ; sudo mount -o loop -t ext2 posnk.sd ../hdd
 	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posnk
+	@echo " [  CP  ] " initrd_armv7_uboot ; cp initrd_armv7_uboot ../hdd/posrd
 	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
  	
 payload_armv7: $(OBJS_ARMV7KERNEL) arch/armv7/kern.ld
@@ -244,9 +244,11 @@ payload_armv7: $(OBJS_ARMV7KERNEL) arch/armv7/kern.ld
 payload_armv7.bo: payload_armv7
 	$(OCP) -I binary -O elf32-littlearm -B armv4t payload_armv7 payload_armv7.bo
 	
+initrd_armv7_uboot: initrd_armv7.tar
+	@echo " [MKIMG ] " initrd_armv7_uboot ; mkimage $(MKIFLAGS) -T ramdisk -n posrd -d initrd_armv7.tar initrd_armv7_uboot
 
 loader_armv7_uboot: loader_armv7.bin
-	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot
+	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -T kernel -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot
 
 loader_armv7.bin: loader_armv7	
 	$(OCP) -I elf32-littlearm -O binary --gap-fill 0xFF --set-start 0x$(ARMV7_LOAD_ADDR) -j .setup loader_armv7 loader_armv7.bin

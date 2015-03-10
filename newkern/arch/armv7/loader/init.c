@@ -55,13 +55,13 @@ void halt()
 	for(;;);
 }
 
-void armv7_diepaged()
+void armv7_diepagep()
 {
 	sercon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
 	halt();
 }
 
-void armv7_diepagep()
+void armv7_diepaged()
 {
 	sercon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
 	halt();
