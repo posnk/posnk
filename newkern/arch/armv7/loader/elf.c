@@ -30,7 +30,9 @@ void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 
 	for (vad = vaddr; vad < (vaddr + msize); vad += 4096) {
 		frame = physmm_alloc_frame();
-		armv7_add_kmap(vaddr, frame, 4096, 0x7);
+		armv7_add_kmap(vaddr, frame, 4096, 	ARMV7_BA_KMAP_EXEC | 
+							ARMV7_BA_KMAP_READ | 
+							ARMV7_BA_KMAP_WRITE);
 		if (frame == PHYSMM_NO_FRAME)	{
 			sercon_printf("NO MEMORY!\n");
 			halt();

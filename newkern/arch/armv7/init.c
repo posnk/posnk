@@ -50,7 +50,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 			 ((physaddr_t)bootargs->ba_pm_bitmap)
 				 + 32768 * sizeof(uint32_t));
 
-	sercon_printf("physmm: %i MB available for kernel use\n",
+	sercon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
 
 	halt();
