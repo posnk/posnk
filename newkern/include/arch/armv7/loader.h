@@ -27,7 +27,8 @@ void armv7_mmu_unmap(void * virt_addr);
 
 void armv7_add_kmap(uint32_t pa, uint32_t va, uint32_t sz, uint32_t fl);
 
-void (*elf_kmain)(uint32_t);
+extern uint32_t elf_top;
+extern void (*elf_kmain)(uint32_t);
 
 int elf_load(char * file);
 #endif

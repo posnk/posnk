@@ -12,6 +12,8 @@
 #include <stdint.h>
 #include "kernel/physmm.h"
 #include "arch/armv7/bootargs.h"
+#include "arch/armv7/exception.h"
+#include "arch/armv7/cpu.h"
 void sercon_puts(const char *string);
 void sercon_init();
 
@@ -23,7 +25,17 @@ void halt()
 {
 	for(;;);
 }
+void armv7_diepagep()
+{
+	sercon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
+	halt();
+}
 
+void armv7_diepaged()
+{
+	sercon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
+	halt();
+}
 void armv7_init( armv7_bootargs_t *bootargs )
 {
 
@@ -43,7 +55,9 @@ void armv7_init( armv7_bootargs_t *bootargs )
 							armv7_initrd_end_pa);
 
 	memcpy(physmm_bitmap, bootargs->ba_pm_bitmap, 32768 * sizeof(uint32_t));
-	
+	armv7_handler_table[VEC_DATA_ABORT] = &armv7_diepaged;
+	armv7_handler_table[VEC_PREFETCH_ABORT] = &armv7_diepagep;
+	armv7_exception_init();
 	sercon_printf("physmm: initializing...\n");
 
 	physmm_free_range((physaddr_t)bootargs->ba_pm_bitmap,
@@ -52,6 +66,8 @@ void armv7_init( armv7_bootargs_t *bootargs )
 
 	sercon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
+
+	armv7_paging_init(bootargs);
 
 	halt();
 	

@@ -142,10 +142,18 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7KERNEL = arch/armv7/init.c \
 arch/armv7/loader/sercon.c \
+arch/armv7/paging.c \
 util/llist.c \
 kernel/physmm.c \
+kernel/dlmalloc.c \
+kernel/dlheapmm.c \
+kernel/paging.c \
 crt/string.c \
 crt/stdlib.c 
+
+ASMS_ARMV7KERNEL = arch/armv7/mode.S \
+arch/armv7/exception.S \
+arch/armv7/mmu.S
 
 SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
 arch/armv7/loader/sercon.c \
@@ -160,7 +168,8 @@ crt/stdlib.c
 ASMS_ARMV7LOADER = arch/armv7/loader/start.S \
 arch/armv7/mode.S \
 arch/armv7/exception.S \
-arch/armv7/mmu.S
+arch/armv7/mmu.S \
+arch/armv7/loader/chain.S
 
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/dev.c \

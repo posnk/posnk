@@ -21,6 +21,9 @@
 
 #define ENOEXEC 2
 
+uint32_t elf_top;
+
+void (*elf_kmain)(uint32_t);
 void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 {
 	physaddr_t frame;
@@ -30,7 +33,7 @@ void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 
 	for (vad = vaddr; vad < (vaddr + msize); vad += 4096) {
 		frame = physmm_alloc_frame();
-		armv7_add_kmap(vaddr, frame, 4096, 	ARMV7_BA_KMAP_EXEC | 
+		armv7_add_kmap(frame, vad, 4096, 	ARMV7_BA_KMAP_EXEC | 
 							ARMV7_BA_KMAP_READ | 
 							ARMV7_BA_KMAP_WRITE);
 		if (frame == PHYSMM_NO_FRAME)	{
@@ -109,7 +112,7 @@ int elf_load(char * file)
 	}
 	image_top += PHYSMM_PAGE_SIZE;
 	image_top &= ~PHYSMM_PAGE_ADDRESS_MASK;
-	debugcon_printf("elf: loaded ELF image between VA %x and VA %x\n",image_base, image_top);
+	elf_top = image_top;
 	//debugcon_printf("Calling elf image entry point\n");
 	elf_kmain = (void *)elf_header->e_entry;
 	return 0;	

@@ -70,6 +70,22 @@ void armv7_add_kmap(uint32_t pa, uint32_t va, uint32_t sz, uint32_t fl)
 	bootargs->ba_kmap[count].ba_kmap_fl = fl;
 }
 
+void armv7_call_kern(void *main, void *stack, void *arg);
+
+void armv7_boot_kern()
+{
+	physaddr_t frame;
+	void *vad = (void *) elf_top;
+	frame = physmm_alloc_frame();
+	armv7_add_kmap(frame, vad, 4096, ARMV7_BA_KMAP_READ | ARMV7_BA_KMAP_WRITE);
+	if (frame == PHYSMM_NO_FRAME)	{
+		sercon_printf("NO MEMORY!\n");
+		halt();
+	}
+	armv7_mmu_map((void *)vad, frame);
+	armv7_call_kern(elf_kmain, vad, bootargs);
+}
+
 void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 {
 	physaddr_t ldr_start, ldr_end;
@@ -152,7 +168,7 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 
 	sercon_printf("invoking kernel...\n\n\n");
 
-	elf_kmain((uint32_t) bootargs);
+	armv7_boot_kern();
 
 	halt();
 	
