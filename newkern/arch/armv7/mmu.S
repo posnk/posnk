@@ -23,6 +23,7 @@
 .global	armv7_mmu_flush_tlb_single
 .global	armv7_mmu_data_abort_addr
 .global	armv7_mmu_pf_abort_addr
+.global	armv7_mmu_translate
 
 armv7_mmu_pf_abort_addr:
 	mrc	p15,	0,	r0,	c6,	c0,	2
@@ -76,3 +77,39 @@ armv7_mmu_flush_tlb:
 armv7_mmu_flush_tlb_single:
 	mcr	p15,	0,	r0,	c8,	c7,	1
 	mov	pc,	lr
+
+# uint32_t armv7_mmu_translate ( uint32_t va, uint32_t op )
+armv7_mmu_translate:
+
+	cmp	r1,	#0					@If OP == 0
+	beq	amt_priv_read					@ Do a PrivRead
+	cmp	r1,	#1					@Else If OP == 1
+	beq	amt_priv_write					@ Do a PrivWrite
+	cmp	r1,	#2					@Else If OP == 2
+	beq	amt_usr_read					@ Do a UserRead
+	cmp	r1,	#3					@Else If OP == 3
+	beq	amt_usr_write					@ Do a UserWrite
+								@Else
+	mov	r0,	#0					@ Return 2^32-1
+	sub	r0,	r0,	#1				
+	mov	pc,	lr					@ Return
+
+amt_priv_read:
+	mcr	p15,	0,	r0,	c7,	c8,	0
+	b	amt_exit
+
+amt_priv_write:
+	mcr	p15,	0,	r0,	c7,	c8,	1
+	b	amt_exit
+
+amt_usr_read:
+	mcr	p15,	0,	r0,	c7,	c8,	2
+	b	amt_exit
+
+amt_usr_write:
+	mcr	p15,	0,	r0,	c7,	c8,	3
+	b	amt_exit
+
+amt_exit:
+	mrc	p15,	0,	r0,	c7,	c4,	0	@Read PAR value
+	mov	pc,	lr					@Return PAR val.
