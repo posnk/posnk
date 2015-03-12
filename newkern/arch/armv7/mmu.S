@@ -25,6 +25,14 @@
 .global	armv7_mmu_pf_abort_addr
 .global	armv7_mmu_translate
 
+armv7_mmu_pf_abort_status:
+	mrc	p15,	0,	r0,	c5,	c0,	1
+	mov	pc,	lr
+
+armv7_mmu_data_abort_status:
+	mrc	p15,	0,	r0,	c5,	c0,	0
+	mov	pc,	lr
+
 armv7_mmu_pf_abort_addr:
 	mrc	p15,	0,	r0,	c6,	c0,	2
 	mov	pc,	lr
