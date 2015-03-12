@@ -133,7 +133,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 				ARMV7_L2_TYPE_PAGE4 |
 				ARMV7_L2_PAGE4_PA(km_pa) | 
 				ARMV7_L2_PAGE4_TEX(0) | 
-				ARMV7_L2_PAGE_AP(1);
+				ARMV7_L2_PAGE_AP(ARMV7_AP_PRIV_RW_USR_NA);
 			km_pa += 4096;
 		}
 
@@ -143,17 +143,19 @@ void armv7_paging_init(armv7_bootargs_t *args)
 	for (km_pa = 0x40000000; km_pa < 0x50000000; km_pa += ARMV7_SECTION_SIZE) {
 		level1_va->entries[ARMV7_TO_L1_IDX(km_pa)] = 
 				ARMV7_L1_SECTION_PA(km_pa) 	|
-				ARMV7_L1_SECTION_AP(3)  	|
+				ARMV7_L1_SECTION_AP(ARMV7_AP_PRIV_RW_USR_NA)  |
 				ARMV7_L1_TYPE_SECTION;
 	}
 
 
 	sercon_printf("paging: l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
 	armv7_mmu_set_dacr (0xFFFFFFFF);
+
 	armv7_mmu_set_ttbr0((uint32_t)level1_pa);
 	armv7_mmu_set_ttbr1((uint32_t)level1_pa);
 	armv7_mmu_set_ttbcr(0x00000000);
 	armv7_mmu_flush_tlb();
+
 	armv7_special_l2 = (void *)ARMV7_PAGE_L2SPEC;
 	level1_va = (void *)ARMV7_INITIAL_L1;
 	sercon_printf("paging: online , l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
@@ -180,8 +182,25 @@ armv7_l2_table_t *armv7_paging_map_l2( physaddr_t table_pa )
 	return (armv7_l2_table_t *) table_va;
 }
 
-void		paging_switch_dir(page_dir_t *new_dir)
+void paging_switch_dir(page_dir_t *new_dir)
 {
+	armv7_l1_table_t *level1_va;
+	physaddr_t	  level1_pa;
+
+	level1_va = (armv7_l1_table_t *) new_dir->content;
+
+	assert ( level1_va != NULL);
+
+	level1_pa = paging_get_physical_address ( level1_va );
+
+	assert ( level1_pa != 0);
+
+	paging_active_dir = new_dir;
+
+	armv7_mmu_set_ttbr0((uint32_t)level1_pa);
+	armv7_mmu_set_ttbr1((uint32_t)level1_pa);
+	armv7_mmu_flush_tlb();
+
 }
 
 page_dir_t	*paging_create_dir()
@@ -233,7 +252,9 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 		if (flags & PAGING_PAGE_FLAG_RW) 
 			ap = ARMV7_AP_PRIV_RW_USR_NA;
 		else
-			ap = ARMV7_AP_PRIV_RO_USR_NA;
+			ap = ARMV7_AP_PRIV_RW_USR_NA;//Consistency with i386
+		//TODO: Check if this is correct
+						
 	} 
 
 	level2_va->pages[ARMV7_TO_L2_IDX(va)] = 
@@ -288,6 +309,20 @@ void		paging_tag(void * virt_addr, page_tag_t tag)
 
 uintptr_t	paging_get_physical_address(void * virt_addr)
 {
-	return 0;
+	uint32_t par;
+	uintptr_t va;
+	uintptr_t pa;
+
+	va = (uintptr_t) virt_addr;
+
+	par = armv7_mmu_translate(va, ARMV7_TRANSLATE_OP_PRIV_R);
+
+	if ( par & ARMV7_PAR_FAULT )
+		return 0;
+
+	pa  = ARMV7_PAR_PA(par);
+	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
+
+	return pa;
 }
 
