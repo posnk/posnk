@@ -142,14 +142,14 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7KERNEL = arch/armv7/init.c \
 arch/armv7/loader/sercon.c \
-arch/armv7/paging.c \
-util/llist.c \
 kernel/physmm.c \
-kernel/dlmalloc.c \
-kernel/dlheapmm.c \
-kernel/paging.c \
+util/llist.c \
 crt/string.c \
 crt/stdlib.c 
+#kernel/dlmalloc.c \
+#kernel/dlheapmm.c \
+#kernel/paging.c \
+#arch/armv7/paging.c \
 
 ASMS_ARMV7KERNEL = arch/armv7/mode.S \
 arch/armv7/exception.S \

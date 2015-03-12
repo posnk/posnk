@@ -104,9 +104,6 @@
 /*******************************************/
 /*          Exception Vector Table         */
 /*******************************************/
-#ifndef __ASSEMBLER__
-extern	uint32_t	armv7_handler_table[8];
-#endif
 
 #define	VEC_RESET		(0)
 #define	VEC_UNDEFINED		(1)
@@ -117,5 +114,18 @@ extern	uint32_t	armv7_handler_table[8];
 #define	VEC_IRQ			(6)
 #define	VEC_FIQ			(7)
 
+
+/*******************************************/
+/*      Exception Vector LR Offsets        */
+/*******************************************/
+
+#define	VEC_LRO_RESET		(0)
+#define	VEC_LRO_UNDEFINED	(4)
+#define	VEC_LRO_SUPERVISOR_CALL	(0)
+#define	VEC_LRO_PREFETCH_ABORT	(8)
+#define	VEC_LRO_DATA_ABORT	(8)
+#define	VEC_LRO_RESERVED	(0)
+#define	VEC_LRO_IRQ		(4)
+#define	VEC_LRO_FIQ		(4)
 
 #endif

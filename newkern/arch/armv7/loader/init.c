@@ -86,6 +86,20 @@ void armv7_boot_kern()
 	armv7_call_kern(elf_kmain, vad, bootargs);
 }
 
+void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
+{
+	sercon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
+	switch (vec_id) {
+		case VEC_DATA_ABORT:
+			armv7_diepaged();
+			break;
+		case VEC_PREFETCH_ABORT:
+			armv7_diepaged();
+			break;
+	}
+	halt();
+}
+
 void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 {
 	physaddr_t ldr_start, ldr_end;
@@ -130,8 +144,6 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 
 	sercon_printf("cpu: registering exception handlers...\n");
 
-	armv7_handler_table[VEC_DATA_ABORT] = &armv7_diepaged;
-	armv7_handler_table[VEC_PREFETCH_ABORT] = &armv7_diepagep;
 	armv7_exception_init();
 
 	sercon_printf("bootargs: initializing boot argument list...\n");
@@ -167,7 +179,6 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 	memcpy(bootargs->ba_pm_bitmap, physmm_bitmap, 32768 * sizeof(uint32_t));
 
 	sercon_printf("invoking kernel...\n\n\n");
-
 	armv7_boot_kern();
 
 	halt();

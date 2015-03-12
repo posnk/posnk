@@ -182,12 +182,12 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	paging_map((void *)0xBFFFE000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
 	paging_tag((void *)0xBFFFE000, PAGING_PAGE_TAG_KERNEL_DATA);
 
-	paging_map((void *)0xBFFFD000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
+	paging_map((void *)0xBFFFD000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);/* SYSTEM CALL STACK */
 	paging_tag((void *)0xBFFFD000, PAGING_PAGE_TAG_KERNEL_DATA);
 	paging_map((void *)0xBFFFC000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
 	paging_tag((void *)0xBFFFC000, PAGING_PAGE_TAG_KERNEL_DATA);
 
-	paging_map((void *)0xBFFFB000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
+	paging_map((void *)0xBFFFB000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);/* INIT STACK */
 	paging_tag((void *)0xBFFFB000, PAGING_PAGE_TAG_USER_DATA);
 	paging_map((void *)0xBFFFA000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
 	paging_tag((void *)0xBFFFA000, PAGING_PAGE_TAG_USER_DATA);
