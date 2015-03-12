@@ -59,6 +59,15 @@ uint32_t armv7_mmu_pf_abort_addr();
 #define ARMV7_L1_TABLE_SIZE		(4096)
 #define ARMV7_L2_TABLE_SIZE		(256)
 
+#define ARMV7_AP_PRIV_NA_USR_NA		(0x0)
+#define ARMV7_AP_PRIV_RW_USR_NA		(0x1)
+#define ARMV7_AP_PRIV_RW_USR_RO		(0x2)
+#define ARMV7_AP_PRIV_RW_USR_RW		(0x3)
+#define ARMV7_AP_RESERVED_4		(0x4)
+#define ARMV7_AP_PRIV_RO_USR_NA		(0x5)
+#define ARMV7_AP_DEP_PRIV_RO_USR_RO	(0x6)
+#define ARMV7_AP_PRIV_RO_USR_RO		(0x7)
+
 typedef struct armv7_l2_table		armv7_l2_table_t;
 typedef struct armv7_l1_table		armv7_l1_table_t;
 typedef struct armv7_l1_table_list	armv7_l1_table_list_t;

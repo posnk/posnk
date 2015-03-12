@@ -195,7 +195,7 @@ void		paging_free_dir(page_dir_t *dir)
 
 void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 {
-	uint32_t l1_entry;
+	uint32_t l1_entry, ap;
 	physaddr_t level2_pa;
 	uintptr_t va = (uintptr_t) virt_addr;
 	armv7_l1_table_t *level1_va;
@@ -224,23 +224,55 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 	level2_pa = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
 	level2_va = armv7_paging_map_l2(level2_pa);
 
-	//TODO: Add permissions
+	if (flags & PAGING_PAGE_FLAG_USER) {
+		if (flags & PAGING_PAGE_FLAG_RW) 
+			ap = ARMV7_AP_PRIV_RW_USR_RW;
+		else
+			ap = ARMV7_AP_PRIV_RW_USR_RO;
+	} else {
+		if (flags & PAGING_PAGE_FLAG_RW) 
+			ap = ARMV7_AP_PRIV_RW_USR_NA;
+		else
+			ap = ARMV7_AP_PRIV_RO_USR_NA;
+	} 
 
 	level2_va->pages[ARMV7_TO_L2_IDX(va)] = 
 		ARMV7_L2_TYPE_PAGE4 |
-		ARMV7_L2_PAGE4_PA(phys_addr) | 
-		ARMV7_L2_PAGE4_TEX(0) | 
-		ARMV7_L2_PAGE_AP(1);
+		ARMV7_L2_PAGE_AP(ap) |
+		ARMV7_L2_PAGE4_PA(phys_addr);
 	
 	armv7_mmu_flush_tlb_single(va);
 }
 
 void paging_unmap(void * virt_addr)
 {
-	//uintptr_t l1_idx = ARMV7_TO_L1_IDX(virt_addr);
-	//uintptr_t l2_idx = ARMV7_TO_L2_IDX(virt_addr);
-	//armv7_l2_table_t *table = (armv7_l2_table_t *) ARMV7_L1_PAGE_TABLE_PA(armv7_l1_table->entries[l1_idx]);
-	//table->pages[l2_idx] = 0;
+	uint32_t		 l1_entry, l2_entry;
+	uintptr_t		 l1_idx, l2_idx;
+	physaddr_t 		 level2_pa;
+	armv7_l1_table_t 	*level1_va;
+	armv7_l2_table_t 	*level2_va;
+
+	assert ( paging_active_dir != NULL);
+
+	level1_va = (armv7_l1_table_t *) paging_active_dir->content;
+
+	assert ( level1_va != NULL);
+
+	l1_idx = ARMV7_TO_L1_IDX(virt_addr);
+	
+	l1_entry = level1_va->entries[l1_idx];
+
+	assert ( (l1_entry & 3) != ARMV7_L1_TYPE_FAULT );	
+
+	level2_pa = ARMV7_L1_PAGE_TABLE_PA( l1_entry );
+	
+	level2_va = armv7_paging_map_l2( level2_pa );
+	
+	l2_entry = level2_va->pages[ l2_idx ];
+	l2_entry = (l2_entry & ~3) | ARMV7_L2_TYPE_FAULT;
+	level2_va->pages[ l2_idx ] = l2_entry;
+	
+	armv7_mmu_flush_tlb_single( virt_addr );
 }
 
 page_tag_t	paging_get_tag(void * virt_addr)
