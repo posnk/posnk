@@ -241,7 +241,7 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 		ARMV7_L2_PAGE_AP(ap) |
 		ARMV7_L2_PAGE4_PA(phys_addr);
 	
-	armv7_mmu_flush_tlb_single(va);
+	armv7_mmu_flush_tlb_single( va );
 }
 
 void paging_unmap(void * virt_addr)
@@ -258,7 +258,8 @@ void paging_unmap(void * virt_addr)
 
 	assert ( level1_va != NULL);
 
-	l1_idx = ARMV7_TO_L1_IDX(virt_addr);
+	l1_idx = ARMV7_TO_L1_IDX( virt_addr );
+	l2_idx = ARMV7_TO_L2_IDX( virt_addr );
 	
 	l1_entry = level1_va->entries[l1_idx];
 
@@ -272,7 +273,7 @@ void paging_unmap(void * virt_addr)
 	l2_entry = (l2_entry & ~3) | ARMV7_L2_TYPE_FAULT;
 	level2_va->pages[ l2_idx ] = l2_entry;
 	
-	armv7_mmu_flush_tlb_single( virt_addr );
+	armv7_mmu_flush_tlb_single( (uint32_t) virt_addr );
 }
 
 page_tag_t	paging_get_tag(void * virt_addr)
