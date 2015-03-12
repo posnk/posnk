@@ -34,6 +34,7 @@ uint32_t armv7_mmu_translate( uint32_t mva, uint32_t op );
 #define ARMV7_L1_TYPE_PAGE_TABLE	(0x00000001)
 #define ARMV7_L1_TYPE_SECTION		(0x00000002)
 #define ARMV7_L1_DOMAIN(Dn)		(((Dn) & 0xF) << 5)
+#define ARMV7_L1_GETDOMAIN(Dn)		(((L1t) >> 5) & 0xF)
 #define ARMV7_L1_PAGE_TABLE_PA(Pa)	((Pa) & 0xFFFFFC00)
 #define ARMV7_L1_SECTION_PA(Pa)		((Pa) & 0xFFF00000)
 #define ARMV7_L1_SECTION_NOT_GLOBAL	(0x00020000)
