@@ -51,5 +51,7 @@ doc/
 
 syscall_list.txt
 
+*.swp
+
 _dmake
 _dinit.c
