@@ -10,6 +10,7 @@
  */
 #include "arch/armv7/bootargs.h"
 #include "arch/armv7/mmu.h"
+#include "arch/armv7/exceptions.h"
 #include "util/llist.h"
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"

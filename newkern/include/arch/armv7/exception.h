@@ -12,6 +12,10 @@
 #ifndef __ARCH_ARMV7_EXCEPTION_H__
 #define __ARCH_ARMV7_EXCEPTION_H__
 
+/**
+ * The structure used for interpreting the stack contents left by the exception
+ * entry routine
+ */
 struct a7est {
 	uint32_t	usr_sp;
 	uint32_t	usr_lr;

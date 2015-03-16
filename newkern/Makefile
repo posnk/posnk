@@ -142,6 +142,7 @@ arch/i386/prot_asm.s
 
 SRCS_ARMV7KERNEL = arch/armv7/init.c \
 arch/armv7/loader/sercon.c \
+arch/armv7/isr.c \
 kernel/physmm.c \
 util/llist.c \
 crt/string.c \
@@ -335,8 +336,9 @@ clean_test:
 	$(RM) driver/bus/*.ho
 	$(RM) arch/i386/*.ho
 
-emulate:  cdrom_i386
-	clear;qemu -m 1024 -cdrom pos.iso -serial stdio -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
+emulate: 
+# cdrom_i386
+	clear;qemu -m 1024 -cdrom pos.iso -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)

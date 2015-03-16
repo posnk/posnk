@@ -87,6 +87,33 @@ uint32_t armv7_mmu_translate( uint32_t mva, uint32_t op );
 #define ARMV7_PAR_NOS			(0x00000400)
 #define ARMV7_PAR_LPAE			(0x00000800)
 #define ARMV7_PAR_PA(PaR)		(0xFFFFF000 & (PaR))
+#define ARMV7_FSR_FS(FsR)		((FsR & 0xF) | ((FsR & 0x400)>>6))
+#define ARMV7_FSR_DOMAIN(FsR)		((FsR & 0xF0)>>4)
+#define ARMV7_FSR_WNR			(0x00000800)
+#define ARMV7_FSR_EXT			(0x00001000)
+#define ARMV7_FSR_CM			(0x00002000)
+
+#define ARMV7_FS_ALIGNMENT_FAULT	(0x01)
+#define ARMV7_FS_ICACHE_MAINT_FAULT	(0x04)
+#define ARMV7_FS_EXT_SABORT_L1_TWALK	(0x0C)
+#define ARMV7_FS_EXT_SABORT_L2_TWALK	(0x0E)
+#define ARMV7_FS_SYNC_PARERR_L1_TWALK	(0x1C)
+#define ARMV7_FS_SYNC_PARERR_L2_TWALK	(0x1E)
+#define ARMV7_FS_TRANSLATION_FAULT_L1	(0x05)
+#define ARMV7_FS_TRANSLATION_FAULT_L2	(0x07)
+#define ARMV7_FS_ACCESS_FLAG_FAULT_L1	(0x03)
+#define ARMV7_FS_ACCESS_FLAG_FAULT_L2	(0x06)
+#define ARMV7_FS_DOMAIN_FAULT_L1	(0x09)
+#define ARMV7_FS_DOMAIN_FAULT_L2	(0x0B)
+#define ARMV7_FS_PERM_FAULT_L1		(0x0D)
+#define ARMV7_FS_PERM_FAULT_L2		(0x0F)
+#define ARMV7_FS_DEBUG_EVENT		(0x02)
+#define ARMV7_FS_EXT_SABORT		(0x08)
+#define ARMV7_FS_TLB_ABORT		(0x10)
+#define ARMV7_FS_SYNC_PARERR		(0x19)
+#define ARMV7_FS_EXT_AABORT		(0x16)
+#define ARMV7_FS_ASYNC_PARERR		(0x18)
+
 
 typedef struct armv7_l2_table		armv7_l2_table_t;
 typedef struct armv7_l1_table		armv7_l1_table_t;
