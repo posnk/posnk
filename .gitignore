@@ -1,6 +1,9 @@
 # Object files
 *.o
+*.ho
 *.ko
+*.ao
+*.bo
 *.obj
 *.elf
 
@@ -23,20 +26,30 @@
 *.hex
 *.bin
 
+
 # Images
 *.iso
-
+*.img
+*.sd
+*.ext2
+*_armv7_uboot
+loader_armv7*
 vmpos
-
+testfs
+empty
+payload_armv7
 *.tar
 *~
 gcc_posnk/
 initrd_gcc/
 initrd/
-
+initrd_*/
 build-*/
 cross-*/
 
+doc/
+
 syscall_list.txt
 
-
+_dmake
+_dinit.c
