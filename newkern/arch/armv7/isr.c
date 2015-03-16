@@ -31,6 +31,7 @@
 void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 {
 	uint32_t fault_addr, fault_status;
+	
 	if ( vec_id == VEC_DATA_ABORT ) {
 		fault_addr = armv7_mmu_data_abort_addr();
 		fault_status = armv7_mmu_data_abort_status();
@@ -38,30 +39,73 @@ void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 		fault_addr = armv7_mmu_pf_abort_addr();
 		fault_status = armv7_mmu_pf_abort_status();
 	}
+
+	is_user = (state->usr_psr & PSR_MODE) == PSR_MODE_USR;
+
 	switch (ARMV7_FSR_FS(fault_status)) {
-#define ARMV7_FS_ALIGNMENT_FAULT	(0x01)
-#define ARMV7_FS_ICACHE_MAINT_FAULT	(0x04)
-#define ARMV7_FS_EXT_SABORT_L1_TWALK	(0x0C)
-#define ARMV7_FS_EXT_SABORT_L2_TWALK	(0x0E)
-#define ARMV7_FS_SYNC_PARERR_L1_TWALK	(0x1C)
-#define ARMV7_FS_SYNC_PARERR_L2_TWALK	(0x1E)
-#define ARMV7_FS_TRANSLATION_FAULT_L1	(0x05)
-#define ARMV7_FS_TRANSLATION_FAULT_L2	(0x07)
-#define ARMV7_FS_ACCESS_FLAG_FAULT_L1	(0x03)
-#define ARMV7_FS_ACCESS_FLAG_FAULT_L2	(0x06)
-#define ARMV7_FS_DOMAIN_FAULT_L1	(0x09)
-#define ARMV7_FS_DOMAIN_FAULT_L2	(0x0B)
-#define ARMV7_FS_PERM_FAULT_L1		(0x0D)
-#define ARMV7_FS_PERM_FAULT_L2		(0x0F)
-#define ARMV7_FS_DEBUG_EVENT		(0x02)
-#define ARMV7_FS_EXT_SABORT		(0x08)
-#define ARMV7_FS_TLB_ABORT		(0x10)
-#define ARMV7_FS_SYNC_PARERR		(0x19)
-#define ARMV7_FS_EXT_AABORT		(0x16)
-#define ARMV7_FS_ASYNC_PARERR		(0x18)
+		/* Alignment fault */
+		case ARMV7_FS_ALIGNMENT_FAULT:	
+			exception_handle(EXCEPTION_SEG_FAULT,  
+					(void *) state->exc_lr,
+					(void *) state,
+					sizeof(armv7_exception_state_t));
+			break;			
+
+		case ARMV7_FS_ICACHE_MAINT_FAULT:
+			//TODO: Interpret the cause of this fault
+			break;
+		/* External aborts and parity errors */
+		case ARMV7_FS_EXT_SABORT_L1_TWALK:
+		case ARMV7_FS_EXT_SABORT_L2_TWALK:
+		case ARMV7_FS_SYNC_PARERR_L1_TWALK:
+		case ARMV7_FS_SYNC_PARERR_L2_TWALK:
+			//TODO: DIE!
+			break;
+		
+		/* Access flag fault: ACCESS flag not set*/
+		case ARMV7_FS_ACCESS_FLAG_FAULT_L1:
+		case ARMV7_FS_ACCESS_FLAG_FAULT_L2:
+		/* Translation fault: Entry marked as FAULT type */
+		case ARMV7_FS_TRANSLATION_FAULT_L1:
+		case ARMV7_FS_TRANSLATION_FAULT_L2:
+			paging_handle_fault( 	(void *) fault_addr,
+						(void *) state->exc_lr,
+						(void *) state,
+						sizeof(armv7_exception_state_t),
+						0, 				/* PRESENT */
+						fault_status & ARMV7_FSR_WNR, 	/* WRITE */
+						is_user ) ; 			/* USER */
+			break;
+
+		/* Domain fault: Tried to access a domain marked as NO ACCESS */
+		case ARMV7_FS_DOMAIN_FAULT_L1:
+		case ARMV7_FS_DOMAIN_FAULT_L2:
+		/* Permission fault: Tried to access a page in a manner not allowed by AS */
+		case ARMV7_FS_PERM_FAULT_L1:
+		case ARMV7_FS_PERM_FAULT_L2:
+			paging_handle_fault( 	(void *) fault_addr,
+						(void *) state->exc_lr,
+						(void *) state,
+						sizeof(armv7_exception_state_t),
+						1, 				/* PRESENT */
+						fault_status & ARMV7_FSR_WNR, 	/* WRITE */
+						is_user ); 			/* USER */
+			break;
+		
+		case ARMV7_FS_DEBUG_EVENT:
+			exception_handle(EXCEPTION_DEBUG,  
+					(void *) state->exc_lr,
+					(void *) state,
+					sizeof(armv7_exception_state_t));
+			break;
+		case ARMV7_FS_EXT_SABORT:
+		case ARMV7_FS_TLB_ABORT:
+		case ARMV7_FS_SYNC_PARERR:
+		case ARMV7_FS_EXT_AABORT:
+		case ARMV7_FS_ASYNC_PARERR:
+			//TODO: DIE!
+			break;
 	}
-		//paging_handle_fault(i386_get_page_fault_addr(), (void *)instr_ptr, &registers, sizeof(i386_pusha_registers_t)
-		//		, error_code & 1, error_code & 2, error_code & 4);
 }
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
