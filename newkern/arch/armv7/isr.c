@@ -11,18 +11,13 @@
 
 #include <stdint.h>
 #include "arch/armv7/exception.h"
+#include "arch/armv7/cpu.h"
 #include "arch/armv7/mmu.h"
 #include "arch/i386/x86.h"
 #include "kernel/exception.h"
 #include "kernel/earlycon.h"
-#include "kernel/paging.h"
-#include "kernel/process.h"
-#include "kernel/system.h"
 #include "kernel/syscall.h"
-#include "kernel/scheduler.h"
-#include "kernel/interrupt.h"
-#include "kernel/time.h"
-#include "util/debug.h"
+#include "kernel/paging.h"
 
 /**
  * Interrupt handler!
@@ -30,7 +25,7 @@
 
 void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 {
-	uint32_t fault_addr, fault_status;
+	uint32_t fault_addr, fault_status, is_user;
 	
 	if ( vec_id == VEC_DATA_ABORT ) {
 		fault_addr = armv7_mmu_data_abort_addr();

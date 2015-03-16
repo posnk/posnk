@@ -146,11 +146,11 @@ arch/armv7/isr.c \
 kernel/physmm.c \
 util/llist.c \
 crt/string.c \
-crt/stdlib.c 
-#kernel/dlmalloc.c \
-#kernel/dlheapmm.c \
-#kernel/paging.c \
-#arch/armv7/paging.c \
+crt/stdlib.c \
+kernel/dlmalloc.c \
+kernel/dlheapmm.c \
+kernel/paging.c \
+arch/armv7/paging.c \
 
 ASMS_ARMV7KERNEL = arch/armv7/mode.S \
 arch/armv7/exception.S \

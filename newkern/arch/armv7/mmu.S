@@ -22,7 +22,9 @@
 .global	armv7_mmu_flush_tlb
 .global	armv7_mmu_flush_tlb_single
 .global	armv7_mmu_data_abort_addr
+.global armv7_mmu_data_abort_status
 .global	armv7_mmu_pf_abort_addr
+.global armv7_mmu_pf_abort_status
 .global	armv7_mmu_translate
 
 armv7_mmu_pf_abort_status:
