@@ -16,7 +16,7 @@
 
 fb_device_info_t *fb_primary_device_info;
 fb_mode_info_t *fb_primary_mode_info;
-uint32_t *fb_primary_lfb;
+void *fb_primary_lfb;
 
 void fb_init()
 {	

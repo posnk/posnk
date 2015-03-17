@@ -14,7 +14,7 @@
 
 #include <sys/ioctl.h>
  
-extern uint32_t 	*fb_primary_lfb;
+extern void	 	*fb_primary_lfb;
 extern fb_device_info_t *fb_primary_device_info;
 extern fb_mode_info_t	*fb_primary_mode_info;
 
