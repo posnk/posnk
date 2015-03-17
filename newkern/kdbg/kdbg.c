@@ -34,7 +34,12 @@ void kdbg_initialize()
 
 void kdbg_enter()
 {
+#ifdef ARCH_I386
 	asm("cli;");
+#endif
+#ifndef ARCH_I386
+//#warn Unimplemented arch-specific code
+#endif
 }
 
 void kdbg_exit()

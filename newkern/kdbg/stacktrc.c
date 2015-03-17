@@ -14,10 +14,13 @@
 
 llist_t *kdbg_do_calltrace()
 {
+#ifdef ARCH_I386
 	int lvl = 0;
 	kdbg_calltrace_t *entry;
+#endif
 	llist_t *t_list = kdbgmm_alloc(sizeof(llist_t));
 	llist_create(t_list);
+#ifdef ARCH_I386
 	uintptr_t c_ebp, c_eip = &kdbg_do_calltrace;
 	__asm__("movl %%ebp, %[fp]" :  /* output */ [fp] "=r" (c_ebp));
 	for (;;) {
@@ -34,11 +37,13 @@ llist_t *kdbg_do_calltrace()
 			return t_list;
 
 	}
+#endif
 	return t_list;
 }
 
 void kdbg_p_calltrace()
 {
+#ifdef ARCH_I386
 	int lvl = 0;
 	kdbg_calltrace_t aentry;
 	kdbg_calltrace_t *entry = &aentry;
@@ -57,6 +62,7 @@ void kdbg_p_calltrace()
 		kdbg_printf("       0x%x () 0x%x\n",entry->func_addr, entry->frame_addr);
 
 	}
+#endif
 }
 
 void kdbg_free_calltrace(llist_t *st)

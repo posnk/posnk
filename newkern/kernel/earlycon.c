@@ -17,6 +17,7 @@ int earlycon_ivprintf (printf_helper_t __helper,uint32_t impl,const char* str, v
 	char strz[64];
 	int iii;
 	size_t i;
+	va_list _va_null;
 	if(!str)
 		return 0;
 	for (i=0; i<strlen(str);i++) {
@@ -35,7 +36,7 @@ int earlycon_ivprintf (printf_helper_t __helper,uint32_t impl,const char* str, v
 					/*** address of ***/
 					case 's': {
 						iii = (uint32_t) va_arg (args, uint32_t);
-						earlycon_ivprintf (__helper,impl,(const char*)iii,0);
+						earlycon_ivprintf (__helper,impl,(const char*)iii, _va_null);
 						i++;		// go to next character
 						break;
 					}
@@ -45,7 +46,7 @@ int earlycon_ivprintf (printf_helper_t __helper,uint32_t impl,const char* str, v
 					case 'i': {
 						iii = va_arg (args, int);
 						utoa_s (iii, 10, strz);
-						earlycon_ivprintf (__helper,impl,strz,0);
+						earlycon_ivprintf (__helper,impl,strz, _va_null);
 						i++;		// go to next character
 						break;
 					}
@@ -55,7 +56,7 @@ int earlycon_ivprintf (printf_helper_t __helper,uint32_t impl,const char* str, v
 					case 'x': {
 						iii = va_arg (args, int);
 						utoa (iii,16,strz);
-						earlycon_ivprintf (__helper,impl,strz,0);
+						earlycon_ivprintf (__helper,impl,strz, _va_null);
 						i++;		// go to next character
 						break;
 					}
