@@ -1,0 +1,54 @@
+kernel/earlycon.o: In function `earlycon_ivprintf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:15: multiple definition of `earlycon_conup'
+arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:24: first defined here
+kernel/earlycon.o: In function `debugcon_aprintf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:125: multiple definition of `debugcon_aprintf'
+arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:154: first defined here
+kernel/earlycon.o: In function `panic_printf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:134: multiple definition of `panic_printf'
+arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:163: first defined here
+kernel/paging.o: In function `heapmm_request_core':
+/home/peterbjornx/newkerngit/newkern/kernel/paging.c:33: undefined reference to `debugcon_aputs'
+/home/peterbjornx/newkerngit/newkern/kernel/paging.c:34: undefined reference to `earlycon_aputs'
+kernel/earlycon.o: In function `earlycon_puts':
+earlycon.c:(.text+0x2b8): undefined reference to `earlycon_aputs'
+earlycon.c:(.text+0x2fa): undefined reference to `con_puts'
+kernel/earlycon.o: In function `debugcon_aprintf':
+earlycon.c:(.text+0x330): undefined reference to `debugcon_aputs'
+kernel/earlycon.o: In function `panic_printf':
+earlycon.c:(.text+0x370): undefined reference to `panicscreen'
+kernel/earlycon.o: In function `earlycon_switchover':
+earlycon.c:(.text+0x394): undefined reference to `con_puts'
+kernel/exception.o: In function `exception_panic':
+/home/peterbjornx/newkerngit/newkern/kernel/exception.c:55: undefined reference to `debug_dump_state'
+/home/peterbjornx/newkerngit/newkern/kernel/exception.c:56: undefined reference to `debug_postmortem_hook'
+kernel/exception.o: In function `exception_handle':
+/home/peterbjornx/newkerngit/newkern/kernel/exception.c:70: undefined reference to `debug_dump_state'
+kernel/scheduler.o: In function `scheduler_fork':
+/home/peterbjornx/newkerngit/newkern/kernel/scheduler.c:114: undefined reference to `scheduler_fork_to'
+kernel/scheduler.o: In function `schedule':
+/home/peterbjornx/newkerngit/newkern/kernel/scheduler.c:162: undefined reference to `debugcon_have_data'
+/home/peterbjornx/newkerngit/newkern/kernel/scheduler.c:171: undefined reference to `scheduler_switch_task'
+/home/peterbjornx/newkerngit/newkern/kernel/scheduler.c:175: undefined reference to `scheduler_switch_task'
+/home/peterbjornx/newkerngit/newkern/kernel/scheduler.c:181: undefined reference to `scheduler_switch_task'
+kernel/process.o: In function `process_handle_signals':
+/home/peterbjornx/newkerngit/newkern/kernel/process.c:184: undefined reference to `scheduler_invoke_signal_handler'
+kernel/process.o: In function `process_exec':
+/home/peterbjornx/newkerngit/newkern/kernel/process.c:363: undefined reference to `process_user_call'
+kernel/vfs/ifsmgr.o: In function `vfs_ifsmgr_initialize':
+/home/peterbjornx/newkerngit/newkern/kernel/vfs/ifsmgr.c:54: undefined reference to `register_fs_drivers'
+kernel/sc_signals.o: In function `sys_exitsig':
+/home/peterbjornx/newkerngit/newkern/kernel/sc_signals.c:49: undefined reference to `scheduler_exit_signal_handler'
+kdbg/taskdbg.o: In function `kdbg_attach_process':
+/home/peterbjornx/newkerngit/newkern/kdbg/taskdbg.c:52: undefined reference to `debug_attach_task'
+kdbg/kdbgio.o: In function `kdbg_gets':
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:22: undefined reference to `debugcon_getc'
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:25: undefined reference to `debugcon_putc'
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:26: undefined reference to `debugcon_putc'
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:27: undefined reference to `debugcon_putc'
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:30: undefined reference to `debugcon_putc'
+/home/peterbjornx/newkerngit/newkern/kdbg/kdbgio.c:33: undefined reference to `debugcon_putc'
+/home/peterbjornx/armgcc/bin/../lib/gcc/arm-linux-gnueabi/4.7.1/libgcc.a(_dvmd_lnx.o): In function `__aeabi_ldiv0':
+(.text+0x6): undefined reference to `raise'
+collect2: error: ld returned 1 exit status
+make: *** [payload_armv7] Error 1
