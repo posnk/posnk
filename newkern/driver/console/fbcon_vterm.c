@@ -21,6 +21,9 @@
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/video/fb.h"
 
+int fbcon_bppix;
+int fbcon_bpline;
+
 extern uint32_t *fb;
 font_def_t *fbcon_font = &rnd8x13;
 int fbcon_width;
@@ -36,6 +39,16 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 
 fbcon_vc_t fbcon_all_vcs[9];
 
+#define FBCON_PIXEL_PTR(pOff) ((void *) ( \
+	((uintptr_t) fb_primary_lfb) + \
+	fbcon_bpix * (pOff) ))
+
+#define FBCON_RGBA8888_TO_RGBA8565(cOlI) ( (cOlI & 0xFF000000) | \
+					  ((cOlI & 0x00F80000) >> 8) \
+					  ((cOlI & 0x0000FC00) >> 5) \
+					  ((cOlI & 0x000000F8) >> 3) )
+
+
 int fbcon_current_vc = 0;
 
 uint32_t fbcon_colour_map[16] = {
@@ -46,20 +59,44 @@ uint32_t fbcon_colour_map[16] = {
 void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 	int _x , _y, lp, bp;
 	uint8_t line;
+	uint32_t *_fb32 = fb_primary_lfb;
+	uint16_t *_fb16 = fb_primary_lfb;	
 
 	if (c < fbcon_font->ascii_offset)
 		c = ' ';
 
 	bp = (c - fbcon_font->ascii_offset) * fbcon_font->height + fbcon_font->height - 1;
 
-	for (_y = 0; _y < fbcon_font->height; _y++) {
+	if (fbcon_bppix == 2) {
+		fg = FBCON_RGBA8888_TO_RGBA8565(fg);
+		bg = FBCON_RGBA8888_TO_RGBA8565(bg);
+		for (_y = 0; _y < fbcon_font->height; _y++) {
 
-		lp = (y + _y) * fbcon_width + x;
-		line = fbcon_font->data[bp - _y];
+			lp = (y + _y) * fbcon_width + x;
+			line = fbcon_font->data[bp - _y];
 
-		for (_x = 7; _x >= 0; _x--) {
-			fb_primary_lfb[lp] = (line & (1 << _x)) ? fg : ((bg & 0xff000000) ? bg : (fb_primary_lfb[lp]));
-			lp++;
+			for (_x = 7; _x >= 0; _x--) {
+				_fb16[lp] = 
+					(line & (1 << _x)) ? ((uint16_t)fg) : ((bg & 0xff000000) ? 
+						((uint16_t)bg): 
+						(_fb16[lp]));
+				lp++;
+			}
+		}
+	} else {
+
+		for (_y = 0; _y < fbcon_font->height; _y++) {
+
+			lp = (y + _y) * fbcon_width + x;
+			line = fbcon_font->data[bp - _y];
+
+			for (_x = 7; _x >= 0; _x--) {
+				_fb32[lp] = 
+					(line & (1 << _x)) ? fg : ((bg & 0xff000000) ? 
+						bg : 
+						(_fb32[lp]));
+				lp++;
+			}
 		}
 	}	
 }
@@ -67,8 +104,16 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 void fbcon_draw_hline(int x, int y, int w, int c) {
 	int _x, lp;
 	lp = y * fbcon_width + x;
-	for (_x = w; _x >= 0; _x--) 
-		fb_primary_lfb[lp++] = c;
+	uint32_t *_fb32 = fb_primary_lfb;
+	uint16_t *_fb16 = fb_primary_lfb;	
+	if (fbcon_bppix == 2) {
+		c = FBCON_RGBA8888_TO_RGBA8565(c);
+		for (_x = w; _x >= 0; _x--) 
+			_fb16[lp++] = (uint16)c;
+	} else {
+		for (_x = w; _x >= 0; _x--) 
+			_fb32[lp++] = c;
+	}
 }
 
 int fbcon_line_len(char *str)
@@ -199,6 +244,10 @@ void fbcon_vterm_init()
 	int vc_id;
 	fbcon_width = fb_primary_mode_info->fb_width;
 	fbcon_height = fb_primary_mode_info->fb_height;
+	fbcon_bppix = fb_primary_mode_info->fb_bpp / 8;
+	if (fbcon_bppix == 3)
+		fbcon_bppix = 4;
+	fbcon_bpline = fbcon_bppix * fbcon_width;
         for (vc_id = 0;vc_id < 9;vc_id++){
                 fbcon_all_vcs[vc_id].cursor_x = 0;
                 fbcon_all_vcs[vc_id].cursor_y = 0;  
@@ -240,12 +289,13 @@ inline uint32_t fbcon_blurpix(int x, int y)
 {
 	int rgb;
 	int s = fbcon_width * y + x;
+	uint32_t *_fb = fb_primary_lfb;
 	if (x == 0)
-		rgb = fb_primary_lfb[s];
+		rgb = _fb[s];
 	else
-		rgb = fbcon_mixpix(fb_primary_lfb[s], fb_primary_lfb[s - 1], 170);
+		rgb = fbcon_mixpix(_fb[s], _fb[s - 1], 170);
 	if (x < (fbcon_width - 1))
-		return fbcon_mixpix(rgb, fb_primary_lfb[s + 1], 150);
+		return fbcon_mixpix(rgb, _fb[s + 1], 150);
 	else
 		return rgb;
 }
@@ -253,34 +303,37 @@ inline uint32_t fbcon_blurpix(int x, int y)
 void panicscreen(const char *text){
 	uint32_t m, r, g ,b, rgb,i;
 	int x, y, lp, ml, cl, cx, cy;
+	uint32_t *_fb = fb_primary_lfb;
 	lp = 0;
 	cx = fbcon_width / 2;
 	cy = fbcon_height / 2;
 	ml = cx * cx + cy * cy;
-	for (y = 0; y < fbcon_height; y++) {
-		for (x = 0; x < fbcon_width; x++) {
-			r = fb_primary_lfb[lp];
-			if (y != 0)
-				r = fbcon_mixpix(r, fbcon_blurpix(x, y - 1), 170);
-			if (y != fbcon_height - 1)
-				r = fbcon_mixpix(r, fbcon_blurpix(x, y + 1), 150);
-			fb_primary_lfb[lp++] = r;
+	if (fbcon_bppix >= 3) {
+		for (y = 0; y < fbcon_height; y++) {
+			for (x = 0; x < fbcon_width; x++) {
+				r = _fb[lp];
+				if (y != 0)
+					r = fbcon_mixpix(r, fbcon_blurpix(x, y - 1), 170);
+				if (y != fbcon_height - 1)
+					r = fbcon_mixpix(r, fbcon_blurpix(x, y + 1), 150);
+				_fb[lp++] = r;
+			}
 		}
-	}
-	lp = 0;
-	for (y = 0; y < fbcon_height; y++) {
-		for (x = 0; x < fbcon_width; x++) {
-			cl = (x - cx) * (x - cx) + (y - cy) * (y - cy);
-			m = (uint32_t) ((cl * 255) / ml);
-			rgb = fb_primary_lfb[lp];
-			r = (rgb >> 16) & 0xff;
-			g = (rgb >> 8) & 0xff;
-			b = rgb & 0xff;
-			i = ((r * 76) + (g * 150) + (b * 29)) / 255;
-			r = fbcon_mix(r, i, m);
-			g = fbcon_mix(g, i, m);
-			b = fbcon_mix(b, i, m);
-			fb_primary_lfb[lp++] = fbcon_mkrgb(r,g,b);
+		lp = 0;
+		for (y = 0; y < fbcon_height; y++) {
+			for (x = 0; x < fbcon_width; x++) {
+				cl = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+				m = (uint32_t) ((cl * 255) / ml);
+				rgb =_fb[lp];
+				r = (rgb >> 16) & 0xff;
+					g = (rgb >> 8) & 0xff;
+				b = rgb & 0xff;
+				i = ((r * 76) + (g * 150) + (b * 29)) / 255;
+				r = fbcon_mix(r, i, m);
+				g = fbcon_mix(g, i, m);
+				b = fbcon_mix(b, i, m);
+				_fb[lp++] = fbcon_mkrgb(r,g,b);
+			}
 		}
 	}
 	fbcon_render_string(cx-1,cy-1,0xFF000000, 0x00000000, text);
