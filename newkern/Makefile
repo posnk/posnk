@@ -153,6 +153,7 @@ arch/armv7/mmu.S
 SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
 arch/armv7/loader/sercon.c \
 arch/armv7/loader/mmu.c \
+arch/armv7/loader/earlycon.c \
 arch/armv7/loader/elf.c \
 arch/armv7/atags.c \
 kernel/physmm.c \

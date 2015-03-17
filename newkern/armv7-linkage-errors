@@ -1,20 +1,33 @@
 kernel/earlycon.o: In function `earlycon_ivprintf':
-/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:15: multiple definition of `earlycon_conup'
-arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:24: first defined here
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:15: multiple definition of `earlycon_ivprintf'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:23: first defined here
+kernel/earlycon.o: In function `earlycon_sprintf_helper':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:79: multiple definition of `earlycon_sprintf_helper'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:87: first defined here
+kernel/earlycon.o: In function `earlycon_vsprintf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:87: multiple definition of `earlycon_vsprintf'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:95: first defined here
+kernel/earlycon.o: In function `earlycon_sprintf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:96: multiple definition of `earlycon_sprintf'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:104: first defined here
+kernel/earlycon.o: In function `earlycon_aprintf':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:104: multiple definition of `earlycon_aprintf'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:112: first defined here
+kernel/earlycon.o: In function `earlycon_puts':
+/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:113: multiple definition of `earlycon_puts'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:122: first defined here
 kernel/earlycon.o: In function `debugcon_aprintf':
 /home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:125: multiple definition of `debugcon_aprintf'
-arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:154: first defined here
-kernel/earlycon.o: In function `panic_printf':
-/home/peterbjornx/newkerngit/newkern/kernel/earlycon.c:134: multiple definition of `panic_printf'
-arch/armv7/loader/sercon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/sercon.c:163: first defined here
-kernel/paging.o: In function `heapmm_request_core':
-/home/peterbjornx/newkerngit/newkern/kernel/paging.c:33: undefined reference to `debugcon_aputs'
-/home/peterbjornx/newkerngit/newkern/kernel/paging.c:34: undefined reference to `earlycon_aputs'
+arch/armv7/loader/earlycon.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/loader/earlycon.c:126: first defined here
+arch/armv7/init.o: In function `armv7_init':
+/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:34: undefined reference to `sercon_printf'
+/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:36: undefined reference to `sercon_printf'
+/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:43: undefined reference to `sercon_printf'
+/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:44: undefined reference to `sercon_printf'
+/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:49: undefined reference to `sercon_printf'
+arch/armv7/init.o:/home/peterbjornx/newkerngit/newkern/arch/armv7/init.c:55: more undefined references to `sercon_printf' follow
 kernel/earlycon.o: In function `earlycon_puts':
-earlycon.c:(.text+0x2b8): undefined reference to `earlycon_aputs'
 earlycon.c:(.text+0x2fa): undefined reference to `con_puts'
-kernel/earlycon.o: In function `debugcon_aprintf':
-earlycon.c:(.text+0x330): undefined reference to `debugcon_aputs'
 kernel/earlycon.o: In function `panic_printf':
 earlycon.c:(.text+0x370): undefined reference to `panicscreen'
 kernel/earlycon.o: In function `earlycon_switchover':
