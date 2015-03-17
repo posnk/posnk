@@ -14,6 +14,7 @@
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
+#include "kernel/earlycon.h"
 #include "config.h"
 #include <string.h>
 #include <assert.h>
@@ -118,7 +119,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 		km_va	  = args->ba_kmap[kmap_ctr].ba_kmap_va;
 		km_va_end = km_va + args->ba_kmap[kmap_ctr].ba_kmap_sz;
 		km_pa 	  = args->ba_kmap[kmap_ctr].ba_kmap_pa;
-		sercon_printf("paging: mapping k: 0x%x [0x%x-0x%x]\n", km_pa,km_va,km_va_end);
+		earlycon_printf("paging: mapping k: 0x%x [0x%x-0x%x]\n", km_pa,km_va,km_va_end);
 		for (; km_va < km_va_end; km_va += 4096) {
 			
 			l1_entry = level1_va->entries[ARMV7_TO_L1_IDX(km_va)];
@@ -155,7 +156,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 	}
 
 
-	sercon_printf("paging: l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
+	earlycon_printf("paging: l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
 	armv7_mmu_set_dacr (0x55555555);
 
 	armv7_mmu_set_ttbr0((uint32_t)level1_pa);
@@ -165,7 +166,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 
 	armv7_special_l2 = (void *)ARMV7_PAGE_L2SPEC;
 	level1_va = (void *)ARMV7_INITIAL_L1;
-	sercon_printf("paging: online , l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
+	earlycon_printf("paging: online , l1table address: 0x%x [0x%x]\n", level1_pa, level1_va->entries[ARMV7_TO_L1_IDX(0xC0000000)]);
 
 	paging_active_dir = &armv7_page_dir_initial;
 	paging_active_dir->content = level1_va;
