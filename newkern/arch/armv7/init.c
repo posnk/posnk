@@ -25,34 +25,10 @@ void halt()
 {
 	for(;;);
 }
-void armv7_diepagep()
-{
-	sercon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
-	halt();
-}
 
-void armv7_diepaged()
-{
-	sercon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
-	halt();
-}
 
-void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
-{
-	sercon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
-	switch (vec_id) {
-		case VEC_DATA_ABORT:
-			armv7_diepaged();
-			break;
-		case VEC_PREFETCH_ABORT:
-			armv7_diepaged();
-			break;
-	}
-	halt();
-}
 void armv7_init( armv7_bootargs_t *bootargs )
 {
-
 	sercon_init();
 
 	sercon_printf("posnk kernel built on %s %s\n", __DATE__,__TIME__);
