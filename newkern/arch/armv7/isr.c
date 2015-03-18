@@ -105,7 +105,7 @@ void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 {
-	sercon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
+	earlycon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
 	switch (vec_id) {
 		case VEC_DATA_ABORT:
 		case VEC_PREFETCH_ABORT:
