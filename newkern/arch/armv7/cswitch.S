@@ -24,7 +24,7 @@
 armv7_context_switch:
 
 	# Push callee saved state
-	push { r4-r12, lr } # 10 int push
+	push { r4-r12, lr } 
 
 	# Grab stack pointer and stuff it in r4
 	mov	r4,	sp
@@ -65,7 +65,7 @@ armv7_context_switch:
 armv7_context_fork:
 
 	# Push callee saved state
-	push { r4-r12, lr } # 10 int push
+	push { r4-r12, lr } 
 
 	# Grab stack pointer and stuff it in r4
 	mov	r4,	sp
@@ -80,7 +80,13 @@ armv7_context_fork:
 
 	bx	lr
 
-.ltorg
+# FORK Process:
+#    call armv7_context_fork
+#!   if (returned zero)
+#	return in new task
+#    clone stack or address space (ktask vs user task)
+#    call armv7_context_postfork
+#    return in parent
 
 #void armv7_context_postfork ( void );
 armv7_context_postfork:
