@@ -10,6 +10,7 @@
  */
 
 #include <stdint.h>
+#include <assert.h>
 #include "arch/armv7/exception.h"
 #include "arch/armv7/cpu.h"
 #include "arch/armv7/mmu.h"
