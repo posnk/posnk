@@ -43,3 +43,12 @@ armv7_set_mode_stack:
 	mov	pc,		lr		@Return from subroutine
 
 .ltorg
+
+.global process_user_call
+
+process_user_call:
+	cpsie	aif,		#PSR_MODE_USR	@Switch to user mode
+	mov	sp,		r1
+	mov	pc,		r0
+
+.ltorg
