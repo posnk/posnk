@@ -20,6 +20,18 @@
 #include "kernel/paging.h"
 
 /**
+ * When compiling using a linux toolchain we need to provide a raise() function
+ * to handle division by zero errors
+ */
+int raise(int sig)
+{
+	int div_by_zero = 0;
+	assert(div_by_zero);
+	return 0;
+}
+
+
+/**
  * Interrupt handler!
  */
 
