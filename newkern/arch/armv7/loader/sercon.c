@@ -31,6 +31,21 @@ void sercon_putc(char out)
 	uart3_write_reg->data_transmit = (uint32_t) out;
 }
 
+void debugcon_putc(char out)
+{
+	sercon_putc(out);
+}
+
+int debugcon_have_data( )
+{
+	return 0;
+}
+
+char debugcon_getc()
+{
+	return 0; //TODO: Implement character input
+}
+
 char sercon_getc()
 {
 	while (!( uart3_read_reg->line_status & U16C750_LSR_DATA_AVAIL ));
