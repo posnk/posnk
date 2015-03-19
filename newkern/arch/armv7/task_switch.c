@@ -8,6 +8,7 @@
  * Changelog:
  * 19-03-2015 - Created
  */
+#include <assert.h>
 #include <string.h>
 #include <stdint.h>
 #include "kernel/heapmm.h"

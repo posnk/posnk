@@ -38,7 +38,7 @@ void armv7_context_switch ( uint32_t sp, uint32_t pdir_phys, uint32_t *sp_out );
  * @return 		When returning after creating the state: 1, when 
  *			returning as the child: 0 
  */
-uint32_t armv7_context_fork ( uint32_t *sp_out, page_directory_t **pdir_out );
+uint32_t armv7_context_fork ( uint32_t *sp_out, page_dir_t **pdir_out );
 
 
 #endif
