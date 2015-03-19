@@ -70,8 +70,8 @@ armv7_context_fork:
 
 	# Call address space cloning routine
 	mov	r4,	r1
-	# pdir * paging_clone_dir (void);
-	blx	paging_clone_dir
+	# pdir * paging_create_dir (void);
+	blx	paging_create_dir
 	
 	# Store new page directory pointer
 	str	r0,	[r4]
