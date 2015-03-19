@@ -145,6 +145,7 @@ arch/armv7/loader/sercon.c \
 arch/armv7/isr.c \
 arch/armv7/paging.c \
 arch/armv7/task_switch.c \
+arch/armv7/debug.c \
 $(SRCS) $(SRCS_DLHEAPMM)
 
 ASMS_ARMV7KERNEL = arch/armv7/mode.S \
