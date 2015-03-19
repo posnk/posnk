@@ -13,6 +13,7 @@
 #define __arch_armv7_cswitch_h__
 
 #include <stdint.h>
+#include "kernel/paging.h"
 
 /**
  * @brief Switch kernel context
@@ -33,19 +34,11 @@ void armv7_context_switch ( uint32_t sp, uint32_t pdir_phys, uint32_t *sp_out );
  * to by _sp_out_
  *
  * @param sp_out	Pointer used to store the current stack pointer
+ * @param pdir_out	Pointer used to store the new page directory
  * @return 		When returning after creating the state: 1, when 
- *			returning as the child: 0
- * @warning		This function performs stack magic and must (only if it
- *			returned 1) be followed by a call to 
- *			armv7_context_postfork in order to restore the stack.
- * @warning		This function does not clone the address space or stack
+ *			returning as the child: 0 
  */
-uint32_t armv7_context_fork ( uint32_t *sp_out );
+uint32_t armv7_context_fork ( uint32_t *sp_out, page_directory_t **pdir_out );
 
-/**
- *
- * @brief Restores the stack after a call to armv7_context_fork
- */
-void armv7_context_postfork ( void );
 
 #endif

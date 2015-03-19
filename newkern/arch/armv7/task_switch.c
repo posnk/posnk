@@ -144,17 +144,12 @@ int scheduler_fork_to(scheduler_task_t *new_task)
 	new_task->arch_state = heapmm_alloc( sizeof(uint32_t) );
 
 	/* Fork the context */
-	is_parent = armv7_context_fork( (uint32_t *) new_task->arch_state );
+	is_parent = armv7_context_fork( (uint32_t *) new_task->arch_state,
+					&new_task->page_directory ); 
 
 	/* If we are the child, return 0 */
 	if (is_parent)	
 		return 0;
-
-	/* Clone the address space */
-	new_task->page_directory = paging_create_dir();
-
-	/* Clean up the stack */
-	armv7_context_postfork();
 	
 	return 1;
 }
