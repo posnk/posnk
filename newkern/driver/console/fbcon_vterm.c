@@ -44,8 +44,8 @@ fbcon_vc_t fbcon_all_vcs[9];
 	fbcon_bpix * (pOff) ))
 
 #define FBCON_RGBA8888_TO_RGBA8565(cOlI) ( (cOlI & 0xFF000000) | \
-					  ((cOlI & 0x00F80000) >> 8) \
-					  ((cOlI & 0x0000FC00) >> 5) \
+					  ((cOlI & 0x00F80000) >> 8) | \
+					  ((cOlI & 0x0000FC00) >> 5) | \
 					  ((cOlI & 0x000000F8) >> 3) )
 
 
@@ -109,7 +109,7 @@ void fbcon_draw_hline(int x, int y, int w, int c) {
 	if (fbcon_bppix == 2) {
 		c = FBCON_RGBA8888_TO_RGBA8565(c);
 		for (_x = w; _x >= 0; _x--) 
-			_fb16[lp++] = (uint16)c;
+			_fb16[lp++] = (uint16_t)c;
 	} else {
 		for (_x = w; _x >= 0; _x--) 
 			_fb32[lp++] = c;
