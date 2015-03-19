@@ -26,11 +26,8 @@ armv7_context_switch:
 	# Push callee saved state
 	push { r4-r12, lr } 
 
-	# Grab stack pointer and stuff it in r4
-	mov	r4,	sp
-
 	# Store stackpointer in output parameter
-	str	r4,	[r3]
+	str	sp,	[r2]
 
 	# All state is now preserved, switch to new stack
 	mov	sp,	r0
@@ -38,7 +35,7 @@ armv7_context_switch:
 	# Switch page directories: 
 	# THESE FUNCTIONS MUST NOT USE STACK
 
-	mov	r1, r0
+	mov	r0,	r1
 	blx	=armv7_mmu_set_ttbr0
 	blx	=armv7_mmu_set_ttbr1
 	
@@ -61,48 +58,30 @@ armv7_context_switch:
 
 .ltorg
 
-#uint32_t armv7_context_fork( uint32_t *sp_out );
+#uint32_t armv7_context_fork( uint32_t *sp_out, page_directory_t **pdir_out );
 armv7_context_fork:
 
 	# Push callee saved state
 	push { r4-r12, lr } 
 
-	# Grab stack pointer and stuff it in r4
-	mov	r4,	sp
-
 	# Store stackpointer in output parameter
-	str	r4,	[r0]
+	str	sp,	[r0]
 
+
+	# Call address space cloning routine
+	mov	r4,	r1
+	# pdir * paging_clone_dir (void);
+	blx	paging_clone_dir
+	
+	# Store new page directory pointer
+	str	r0,	[r4]
+
+	# Restore state
+	pop { r4-r12, lr }
+	
 	# Return flag value so we know we are the parent
 	mov	r0,	#1
-
+	
 	# Return to where we came from
-
 	bx	lr
 
-# FORK Process:
-#    call armv7_context_fork
-#!   if (returned zero)
-#	return in new task
-#    clone stack or address space (ktask vs user task)
-#    call armv7_context_postfork
-#    return in parent
-
-#void armv7_context_postfork ( void );
-armv7_context_postfork:
-	
-	# Clean up stack mess created by parent end of fork
-	# Remove process state from this copy of the stack
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 } 
-	pop { r0 }
-
-	# Return
-	bx	lr	 
