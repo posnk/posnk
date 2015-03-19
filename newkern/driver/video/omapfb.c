@@ -18,14 +18,11 @@
 #include "kernel/physmm.h"
 #include "kernel/device.h"
 #include "kernel/syscall.h"
-#include "driver/video/omapfb.h"
 #include "driver/video/fb.h"
 
 fb_device_info_t	omapfb_device_info;
 fb_mode_info_t		omapfb_mode_info;
 physaddr_t		real_fb;
-
-extern vbe_mode_info_t	vbe_mode;
 
 uint32_t *omapfb_maplfb()
 {
@@ -124,10 +121,10 @@ int omapfb_mmap(	__attribute__((__unused__)) dev_t device,
 {	
 	uintptr_t d, mu;
 	offset &= ~PHYSMM_PAGE_ADDRESS_MASK;
-	if (offset >= OMAPFB_FB_SIZE)
+	if (offset >= omapfb_device_info.fb_size)
 		return EINVAL;
-	if ((offset + size) > OMAPFB_FB_SIZE)
-		size = OMAPFB_FB_SIZE - offset;
+	if ((offset + size) > omapfb_device_info.fb_size)
+		size = omapfb_device_info.fb_size - offset;
 	mu = (uintptr_t) addr;
 	for (d = 0; d < size; d += 0x1000) {
 		paging_map(	 (void *)(mu + d),

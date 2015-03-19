@@ -246,8 +246,9 @@ mmc_armv7: _dmake loader_armv7_uboot initrd_armv7_uboot
 	@echo " [  CP  ] " initrd_armv7_uboot ; cp initrd_armv7_uboot ../hdd/posrd
 	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
  	
-payload_armv7: $(OBJS_ARMV7KERNEL) arch/armv7/kern.ld
-	$(LD) -T arch/armv7/kern.ld $(A7LFLAGS) $(LIBS) -o payload_armv7 $(OBJS_ARMV7KERNEL) -lgcc
+payload_armv7: _dmake $(OBJS_ARMV7KERNEL) $(OBJS_DRIVER) arch/armv7/kern.ld
+	$(LD) -T arch/armv7/kern.ld $(A7LFLAGS) $(LIBS) -o payload_armv7 $(OBJS_ARMV7KERNEL) $(OBJS_DRIVER) -lgcc
+	@rm _dmake
 
 payload_armv7.bo: payload_armv7
 	$(OCP) -I binary -O elf32-littlearm -B armv4t payload_armv7 payload_armv7.bo
