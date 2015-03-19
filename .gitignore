@@ -53,6 +53,6 @@ doc/
 syscall_list.txt
 
 *.swp
-
+*.swo
 _dmake
 _dinit.c
