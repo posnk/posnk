@@ -117,8 +117,33 @@ int earlycon_aprintf(const char* str,...){
         va_end(args);
         return res;
 }
+#undef earlycon_printf
+#undef debugcon_printf
+int earlycon_printf(const char* str,...){
+        va_list args;
+        va_start(args,str);
+        int res = earlycon_vsprintf(earlycon_printf_buffer, str, args);
+        earlycon_puts(earlycon_printf_buffer);
+        va_end(args);
+        return res;
+}
+int debugcon_printf(const char* str,...){
+        va_list args;
+        va_start(args,str);
+        int res = earlycon_vsprintf(earlycon_printf_buffer, str, args);
+        earlycon_puts(earlycon_printf_buffer);
+        va_end(args);
+        return res;
+}
 
-
+int panic_printf(const char* str,...){
+        va_list args;
+        va_start(args,str);
+        int res = earlycon_vsprintf(earlycon_printf_buffer, str, args);
+        earlycon_puts(earlycon_printf_buffer);
+        va_end(args);
+        return res;
+}
 void earlycon_puts(const char *str){
         earlycon_aputs(str);
 }

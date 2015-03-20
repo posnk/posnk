@@ -37,7 +37,7 @@ void armv7_init_mmu(physaddr_t ram_start, physaddr_t ram_stop)
 			ARMV7_L1_SECTION_AP(3)  |
 			ARMV7_L1_TYPE_SECTION;
 	}
-	sercon_printf("mmu: l1table address: 0x%x [0x%x]\n", armv7_l1_table, armv7_l1_table->entries[ARMV7_TO_L1_IDX(0x80000000)]);
+	earlycon_printf("mmu: l1table address: 0x%x [0x%x]\n", armv7_l1_table, armv7_l1_table->entries[ARMV7_TO_L1_IDX(0x80000000)]);
 	armv7_mmu_flush_tlb();
 	armv7_mmu_set_dacr (0xFFFFFFFF);
 	armv7_mmu_set_ttbr0((uint32_t)armv7_l1_table);

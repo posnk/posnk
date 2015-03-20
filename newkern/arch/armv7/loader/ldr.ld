@@ -15,12 +15,13 @@ SECTIONS
 	   Next we'll put the .text section. */
 	.setup BLOCK(4K) : ALIGN(4K)
 	{
-		*(.setup)
+		*(setup)
 		*(.text)
 		*(.rodata)
 		*(.data)
 		*(COMMON)
 		*(.bss)
+		*(.note.gnu.build-id)
 		*(.armv7_loader_stack_top)
 		_armv7_start_kheap = .;
 	}

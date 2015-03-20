@@ -13,6 +13,7 @@
 #include "util/llist.h"
 #include "kernel/physmm.h"
 #include "kernel/elf.h"
+#include "kernel/earlycon.h"
 #include "arch/armv7/loader.h"
 #include "arch/armv7/bootargs.h"
 #include "config.h"
@@ -37,7 +38,7 @@ void elf_section(uint32_t vaddr, uint32_t msize, char * data, uint32_t csize)
 							ARMV7_BA_KMAP_READ | 
 							ARMV7_BA_KMAP_WRITE);
 		if (frame == PHYSMM_NO_FRAME)	{
-			sercon_printf("NO MEMORY!\n");
+			earlycon_printf("NO MEMORY!\n");
 			halt();
 		}
 		armv7_mmu_map((void *)vad, frame);
@@ -107,7 +108,7 @@ int elf_load(char * file)
 				break;
 			default:
 				debugcon_printf("ERROR: unknown program header type: %x\n", elf_pheader->p_type);
-				return ENOEXEC;
+				break;//	return ENOEXEC;
 		}
 	}
 	image_top += PHYSMM_PAGE_SIZE;

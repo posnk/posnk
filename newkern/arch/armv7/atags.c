@@ -29,7 +29,7 @@ int armv7_atag_debug_noop(const char* str,...)
 
 #else
 
-#define armv7_atag_debug	sercon_printf
+#define armv7_atag_debug	earlycon_printf
 
 #endif
 
@@ -38,7 +38,7 @@ void armv7_atag_mem(uint32_t _start, uint32_t size)
 	physaddr_t start, end;
 	start = (physaddr_t) _start;
 	end = start + (physaddr_t) size;
-	sercon_printf("physmm: registering ram area 0x%x-0x%x\n", start, end);
+	earlycon_printf("physmm: registering ram area 0x%x-0x%x\n", start, end);
 	physmm_free_range( start, end );
 }
 

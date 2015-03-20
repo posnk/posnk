@@ -29,6 +29,7 @@ void halt()
 
 void armv7_init( armv7_bootargs_t *bootargs )
 {
+	size_t initial_heap = 4097;
 	sercon_init();
 
 	earlycon_printf("posnk kernel built on %s %s\n", __DATE__,__TIME__);
@@ -55,8 +56,25 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	earlycon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
 
-	//armv7_paging_init(bootargs);
-
+	armv7_paging_init(bootargs);
+	
+	earlycon_printf("paging online\n");
+	kdbg_initialize();
+	earlycon_printf("heap debugger online\n");
+	initial_heap = heapmm_request_core((void *)0xd0000000, initial_heap);
+	if (initial_heap == 0) {
+		earlycon_printf("could not alloc first page of heap!\n");
+		halt();
+	}
+	earlycon_printf("initializing sched\n");
+	scheduler_init();
+	earlycon_printf("initializing drivers\n");
+	drivermgr_init();
+	device_char_init();
+	device_block_init();
+	tty_init();
+	earlycon_printf("loading builtin drivers\n");
+	register_dev_drivers();
 	halt();
 	
 }

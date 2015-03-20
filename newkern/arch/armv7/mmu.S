@@ -79,7 +79,7 @@ armv7_mmu_disable:
 
 # void armv7_mmu_flush_tlb( void );
 armv7_mmu_flush_tlb:
-	and	r0,	r0,	#0
+	mov	r0,	#0
 	mcr	p15,	0,	r0,	c8,	c7,	0
 	mov	pc,	lr
 

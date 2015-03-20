@@ -43,7 +43,7 @@
  */
 
 armv7_bootargs_t *bootargs;
-
+int raise(int a){return  a;}
 void halt()
 {
 	for(;;);
@@ -51,13 +51,13 @@ void halt()
 
 void armv7_diepagep()
 {
-	sercon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
+	earlycon_printf("mmu: i pagefault 0x%x\n", armv7_mmu_pf_abort_addr());
 	halt();
 }
 
 void armv7_diepaged()
 {
-	sercon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
+	earlycon_printf("mmu: d pagefault 0x%x\n", armv7_mmu_data_abort_addr());
 	halt();
 }
 
@@ -79,7 +79,7 @@ void armv7_boot_kern()
 	frame = physmm_alloc_frame();
 	armv7_add_kmap(frame, vad, 4096, ARMV7_BA_KMAP_READ | ARMV7_BA_KMAP_WRITE);
 	if (frame == PHYSMM_NO_FRAME)	{
-		sercon_printf("NO MEMORY!\n");
+		earlycon_printf("NO MEMORY!\n");
 		halt();
 	}
 	armv7_mmu_map((void *)vad, frame);
@@ -88,7 +88,7 @@ void armv7_boot_kern()
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 {
-	sercon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
+	earlycon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
 	switch (vec_id) {
 		case VEC_DATA_ABORT:
 			armv7_diepaged();
@@ -102,51 +102,48 @@ void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 
 void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 {
-	physaddr_t ldr_start, ldr_end;
-
+	physaddr_t ldr_start, ldr_end;;
 	sercon_init();
-
-	sercon_printf("posnk armv7_loader built on %s %s\n", __DATE__,__TIME__);
-	sercon_printf("initial state:\nr0: 0x%x, r1: 0x%x, r2:0x%x\n", 
+	earlycon_printf("posnk armv7_loader built on %s %s\n", __DATE__,__TIME__);
+	earlycon_printf("initial state:\nr0: 0x%x, r1: 0x%x, r2:0x%x\n", 
 				unused_reg, 
 				mach_type, 
 				atag_addr);
-
-	sercon_printf("physmm: initializing...\n");
+	earlycon_printf("physmm: initializing...\n");
 	physmm_init();
-
-	sercon_printf("parsing atags...\n");
+	memset(physmm_bitmap, 0, 32768*sizeof(uint32_t));
+	earlycon_printf("parsing atags...\n");
 	armv7_parse_atags( (void *) atag_addr );
 
-	sercon_printf("physmm: registered %i MB RAM\n",
+	earlycon_printf("physmm: registered %i MB RAM\n",
 			physmm_count_free() / 0x100000);
 
 	ldr_start = 0x80000000;
 	ldr_end = (physaddr_t) &_armv7_start_kheap;
 	ldr_end = (ldr_end + 0xfff) & 0xFFFFF000;
-
+	earlycon_printf("loader is between 0x%x-0x%x\n", ldr_start, ldr_end);
 	physmm_claim_range(ldr_start, ldr_end);
-	sercon_printf("initrd: found initrd from 0x%x-0x%x\n",
+	earlycon_printf("initrd: found initrd from 0x%x-0x%x\n",
 			armv7_atag_initrd_pa, 
 			   armv7_atag_initrd_pa + armv7_atag_initrd_sz);
 
 	physmm_claim_range(armv7_atag_initrd_pa, 
 			   armv7_atag_initrd_pa + armv7_atag_initrd_sz + 0xfff);
 
-	sercon_printf("physmm: %i MB available\n",
+	earlycon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
 
-	sercon_printf("mmu: initializing, identity mapping RAM...\n");
+	earlycon_printf("cpu: registering exception handlers...\n");
+
+	armv7_exception_init();
+	earlycon_printf("mmu: initializing, identity mapping RAM...\n");
 
 	armv7_init_mmu(0x80000000,0x90000000);
 
-	sercon_printf("mmu: initialized\n");
+	earlycon_printf("mmu: initialized\n");
 
-	sercon_printf("cpu: registering exception handlers...\n");
 
-	armv7_exception_init();
-
-	sercon_printf("bootargs: initializing boot argument list...\n");
+	earlycon_printf("bootargs: initializing boot argument list...\n");
 	bootargs = physmm_alloc_frame();
 
 	bootargs->ba_magic = ARMV7_BOOTARGS_MAGIC;
@@ -160,25 +157,25 @@ void armv7_entry(uint32_t unused_reg, uint32_t mach_type, uint32_t atag_addr)
 	bootargs->ba_kmap_count = 0;
 	bootargs->ba_pm_bitmap = physmm_alloc_bmcopy();
 
-	sercon_printf("bootargs: command line = %s\n", bootargs->ba_cmd);
+	earlycon_printf("bootargs: command line = %s\n", bootargs->ba_cmd);
 
-	sercon_printf("elf: loading payload...\n");
+	earlycon_printf("elf: loading payload...\n");
 
 	elf_load((char *)&_binary_payload_armv7_start);
 
-	sercon_printf("elf: payload loaded\n");
+	earlycon_printf("elf: payload loaded\n");
 
-	sercon_printf("physmm: releasing loader memory...\n");
+	earlycon_printf("physmm: releasing loader memory...\n");
 	physmm_free_range(ldr_start, ldr_end);
 
-	sercon_printf("physmm: %i MB available for kernel use\n",
+	earlycon_printf("physmm: %i MB available for kernel use\n",
 			physmm_count_free() / 0x100000);
 
-	sercon_printf("bootargs: copying physical memory usage map...\n");
+	earlycon_printf("bootargs: copying physical memory usage map...\n");
 
 	memcpy(bootargs->ba_pm_bitmap, physmm_bitmap, 32768 * sizeof(uint32_t));
 
-	sercon_printf("invoking kernel...\n\n\n");
+	earlycon_printf("invoking kernel...\n\n\n");
 	armv7_boot_kern();
 
 	halt();

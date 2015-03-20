@@ -297,10 +297,10 @@ cdrom_i386: kernel_i386 initrd
 # the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -marm -c $<  -o $@
 
 %.ao: %.S
-	$(GAS) $(GASFLAGS) $(INCLUDES) -c $<  -o $@
+	$(GAS) $(GASFLAGS) $(INCLUDES) -marm -c $<  -o $@
 
 %.ho: %.c
 	$(HCC) $(HCFLAGS) $(HINCLUDES) -c $<  -o $@

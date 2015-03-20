@@ -11,7 +11,7 @@
 
 #include "arch/armv7/cpu.h"
 
-.section .setup
+.section setup
 .global armv7_start
 
 armv7_start:
