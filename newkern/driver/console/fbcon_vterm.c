@@ -140,7 +140,7 @@ void fbcon_render_string(int x, int y, uint32_t fg, uint32_t bg, char *str)
 			y += fbcon_font->height + 2;
 		} else {
 			fbcon_render_char(x, y, fg, bg, str[n]);
-			x += 8;
+			x += 9;;
 		}
 	}
 }
@@ -165,7 +165,7 @@ uint32_t fbcon_get_bg(int attr)
 
 void vterm_draw_cursor(vterm_t *vt, int row, int col)
 {
-	int x = col * 8;
+	int x = col * 9;
 	int y = row * (fbcon_font->height + 3) + fbcon_font->height;
 	int c = ((row == vt->crow) && (col == vt->ccol)) ? 0xFF00CD00 : 0;
 	fbcon_draw_hline(x, y    , 8, c);
@@ -181,7 +181,7 @@ void vterm_invalidate_screen(vterm_t *vt)
 		return;
 	for (row = 0; row < vt->rows; row++)
 		for (col = 0; col < vt->cols; col++) {
-			fbcon_render_char(col * 8, 
+			fbcon_render_char(col * 9, 
 						row * (fbcon_font->height + 3), 
 						fbcon_get_fg(vt->cells[row][col].attr), 
 						fbcon_get_bg(vt->cells[row][col].attr),
@@ -195,7 +195,7 @@ void vterm_invalidate_cell(vterm_t *vt, int row, int col)
 	//fbcon_vc_t *vc = &fbcon_all_vcs[MINOR(vt->device_id)];
 	if (MINOR(vt->device_id) != fbcon_current_vc)
 		return;
-	fbcon_render_char(col * 8, 
+	fbcon_render_char(col * 9, 
 				row * (fbcon_font->height + 3), 
 				fbcon_get_fg(vt->cells[row][col].attr), 
 				fbcon_get_bg(vt->cells[row][col].attr),
@@ -253,7 +253,7 @@ void fbcon_vterm_init()
                 fbcon_all_vcs[vc_id].cursor_y = 0;  
                 fbcon_all_vcs[vc_id].page_id = vc_id;
         }
-	vterm_tty_setup("fbcon", 2, 9, fbcon_height / (fbcon_font->height + 3), fbcon_width / 8);
+	vterm_tty_setup("fbcon", 2, 9, fbcon_height / (fbcon_font->height + 3), fbcon_width / 9);
 	fbcon_switch_vc(0);
 	earlycon_switchover();
 }
