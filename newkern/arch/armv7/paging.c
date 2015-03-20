@@ -179,6 +179,8 @@ armv7_l2_table_t *armv7_paging_map_l2( physaddr_t table_pa )
 {
 	uintptr_t table_va = table_pa & PHYSMM_PAGE_ADDRESS_MASK;
 
+	table_va |= ARMV7_PAGE_L2TABLE;
+
 	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_L2TABLE)] = 
 				ARMV7_L2_TYPE_PAGE4 |
 				ARMV7_L2_PAGE4_PA(table_pa) | 
@@ -194,6 +196,7 @@ void *armv7_paging_map_phys( physaddr_t pa )
 {
 	uintptr_t va = pa & PHYSMM_PAGE_ADDRESS_MASK;
 
+	va |= ARMV7_PAGE_PHYSWIN;
 	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWIN)] = 
 				ARMV7_L2_TYPE_PAGE4 |
 				ARMV7_L2_PAGE4_PA(pa) | 
@@ -209,6 +212,7 @@ void *armv7_paging_map_phys2( physaddr_t pa )
 {
 	uintptr_t va = pa & PHYSMM_PAGE_ADDRESS_MASK;
 
+	va |= ARMV7_PAGE_PHYSWI2;
 	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWI2)] = 
 				ARMV7_L2_TYPE_PAGE4 |
 				ARMV7_L2_PAGE4_PA(pa) | 
