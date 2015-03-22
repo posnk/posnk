@@ -83,6 +83,12 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 				lp++;
 			}
 		}
+		lp = (y + fbcon_font->height) * fbcon_width + x;;
+		for (_x = 8; _x >= 0; _x--)
+			_fb16[lp++] = bg;
+		lp = y * fbcon_width + x+8;
+		for (_x = fbcon_font->height; _x >= 0; _x--)
+			_fb16[lp+_x*fbcon_width] = bg;
 	} else {
 
 		for (_y = 0; _y < fbcon_font->height; _y++) {
