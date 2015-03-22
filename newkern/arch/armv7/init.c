@@ -10,6 +10,7 @@
  */
 
 #include <stdint.h>
+#include <sys/stat.h>
 #include "kernel/physmm.h"
 #include "kernel/earlycon.h"
 #include "arch/armv7/bootargs.h"
@@ -75,6 +76,21 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	tty_init();
 	earlycon_printf("loading builtin drivers\n");
 	register_dev_drivers();
+	earlycon_printf("loaded drivers\n");
+	earlycon_printf("initializing vfs...");
+	if (vfs_initialize(3, "ramfs"))
+		earlycon_puts("OK\n");
+	else
+		earlycon_puts("FAIL\n");
+	earlycon_puts("Creating tty stub dev...");
+	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))
+		earlycon_printf("OK\n");
+	else
+		earlycon_printf("FAIL\n");
+	earlycon_printf("Initializing ipc...\n");
+	ipc_init();
+	earlycon_printf("Initializing system calls...\n");
+	syscall_init();
 	halt();
 	
 }
