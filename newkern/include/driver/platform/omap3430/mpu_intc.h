@@ -13,7 +13,7 @@
 #define __driver_platform_omap3430_mpu_intc__
 
 /* We need the defined size types */
-#include <stdio.h>
+#include <stdint.h>
 
 #define OMAP3430_MPU_INTC_SCFG_SOFTRESET	(0x00000002)
 #define OMAP3430_MPU_INTC_SCFG_AUTOIDLE 	(0x00000001)
@@ -101,5 +101,16 @@ struct omap3430_mpu_intc_regs {
 
 typedef struct omap3430_mpu_intc_bank	omap3430_mpu_intc_bnk_t;
 typedef struct omap3430_mpu_intc_regs	omap3430_mpu_intc_regs_t;
+
+void omap3430_mpu_intc_mask_int ( omap3430_mpu_intc_regs_t *regs, int int_num );
+void omap3430_mpu_intc_unmask_int ( omap3430_mpu_intc_regs_t *regs, int int_num );
+void omap3430_mpu_intc_config_irq ( omap3430_mpu_intc_regs_t *regs, 
+					int int_num,
+					int fiq,
+					int priority );
+int  omap3430_mpu_intc_get_active_int ( omap3430_mpu_intc_regs_t *regs, int fiq );
+void omap3430_mpu_intc_acknowledge_int ( omap3430_mpu_intc_regs_t *regs, int fiq);
+
+omap3430_mpu_intc_regs_t *omap3430_mpu_intc_initialize ( physaddr_t phys );
 
 #endif
