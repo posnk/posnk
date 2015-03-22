@@ -16,6 +16,7 @@
 #include "kernel/paging.h"
 #include "util/llist.h"
 
+void armv7_mmu_data_barrier ( void );
 void armv7_mmu_set_dacr (uint32_t dacr);
 void armv7_mmu_set_ttbr0(uint32_t ttbr0);
 void armv7_mmu_set_ttbr1(uint32_t ttbr1);
