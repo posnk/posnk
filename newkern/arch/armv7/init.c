@@ -91,6 +91,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	ipc_init();
 	earlycon_printf("Initializing system calls...\n");
 	syscall_init();
+	platform_initialize();
 	halt();
 	
 }

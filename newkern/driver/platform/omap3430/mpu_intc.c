@@ -15,6 +15,7 @@
 #include "kernel/physmm.h"
 #include "kernel/paging.h"
 #include <stdint.h>
+#include <assert.h>
 
 /**
  * @brief Prevent a specific interrupt from reaching the MPU
@@ -54,7 +55,7 @@ void omap3430_mpu_intc_config_irq ( omap3430_mpu_intc_regs_t *regs,
 	if (fiq)
 		regs->ilr[int_num] = 
 			OMAP3430_MPU_INTC_ILR_PRIORITY(priority) | 
-			OMAP3430_MPU_INTC_FIQnIRQ;
+			OMAP3430_MPU_INTC_ILR_FIQnIRQ;
 	else
 		regs->ilr[int_num] = 
 			OMAP3430_MPU_INTC_ILR_PRIORITY(priority);
@@ -105,7 +106,7 @@ omap3430_mpu_intc_regs_t *omap3430_mpu_intc_initialize ( physaddr_t phys )
 
 	assert ( regs != NULL );
 
-	frame = paging_get_physical_addr ( regs );
+	frame = paging_get_physical_address ( regs );
 
 	paging_unmap ( regs );
 

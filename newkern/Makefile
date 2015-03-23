@@ -146,6 +146,8 @@ arch/armv7/isr.c \
 arch/armv7/paging.c \
 arch/armv7/task_switch.c \
 arch/armv7/debug.c \
+driver/platform/omap3430/mpu_intc.c \
+driver/platform/omap3430/omap3430.c \
 $(SRCS) $(SRCS_DLHEAPMM)
 
 ASMS_ARMV7KERNEL = arch/armv7/mode.S \

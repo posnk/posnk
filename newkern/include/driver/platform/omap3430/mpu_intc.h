@@ -14,6 +14,7 @@
 
 /* We need the defined size types */
 #include <stdint.h>
+#include "kernel/physmm.h"
 
 #define OMAP3430_MPU_INTC_SCFG_SOFTRESET	(0x00000002)
 #define OMAP3430_MPU_INTC_SCFG_AUTOIDLE 	(0x00000001)
@@ -55,6 +56,8 @@ struct omap3430_mpu_intc_bank {
 	uint32_t	pending_fiq;
 
 } __attribute__((__packed__));
+
+typedef struct omap3430_mpu_intc_bank	omap3430_mpu_intc_bnk_t;
 
 struct omap3430_mpu_intc_regs {
 	/* 0x000 - Interrupt controller block revision */
@@ -99,7 +102,6 @@ struct omap3430_mpu_intc_regs {
 
 } __attribute__((__packed__));
 
-typedef struct omap3430_mpu_intc_bank	omap3430_mpu_intc_bnk_t;
 typedef struct omap3430_mpu_intc_regs	omap3430_mpu_intc_regs_t;
 
 void omap3430_mpu_intc_mask_int ( omap3430_mpu_intc_regs_t *regs, int int_num );

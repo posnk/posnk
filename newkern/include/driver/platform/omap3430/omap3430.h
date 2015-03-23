@@ -12,6 +12,8 @@
 #ifndef __driver_platform_omap3430_h__
 #define __driver_platform_omap3430_h__
 
+#define OMAP3430_MPU_INTC_BASE		(0x48200000)
+
 #define OMAP3430_MPU_IRQ_EMUINT		(0)
 #define OMAP3430_MPU_IRQ_COMMTX		(1)
 #define OMAP3430_MPU_IRQ_COMMRX		(2)
