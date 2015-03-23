@@ -23,7 +23,7 @@ void armv7_init_mmu(physaddr_t ram_start, physaddr_t ram_stop)
 	physaddr_t pa;
 
 	armv7_l1_table = (armv7_l1_table_t *) physmm_alloc_quadframe();
-
+	memset(armv7_l1_table, 0, sizeof(armv7_l1_table_t));
 	/* Identity map all RAM */
 	for (pa = ram_start; pa < ram_stop; pa += ARMV7_SECTION_SIZE) {
 		armv7_l1_table->entries[ARMV7_TO_L1_IDX(pa)] = 

@@ -26,7 +26,7 @@
 .global	armv7_mmu_pf_abort_addr
 .global armv7_mmu_pf_abort_status
 .global	armv7_mmu_translate
-.global armv7_mmu_data_barrier:
+.global armv7_mmu_data_barrier
 
 armv7_mmu_data_barrier:
 	mov	r0,	#0
