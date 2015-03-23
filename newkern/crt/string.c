@@ -1,5 +1,5 @@
 #include <string.h>
-
+#include <stdint.h>
 #include "config.h"
 
 /* POSIX PASS */
@@ -48,9 +48,20 @@ size_t strlen ( const char* str )
 
 void * memset ( void * ptr, int value, size_t num )
 {
+	uint32_t  expval,nint, *pint;
 	char *p = (char *) ptr;
 	unsigned char val = (unsigned char) value;
 	size_t i;
+	expval = ((value & 0xFF) << 24) | 
+		 ((value & 0xFF) << 16) | 
+		 ((value & 0xFF) << 8)  | 
+	           (value &0xFF);
+	nint = num >> 2;
+	num = num - (nint << 2);
+	pint = (uint32_t *) ptr;
+	for (i = 0;i < nint; i++)
+		*pint++ = expval;
+	p = (char *) pint;
 	for (i = 0;i < num;i++)
 		*p++ = val;
 	return ptr;
@@ -61,6 +72,15 @@ void * memcpy ( void * destination, const void * source, size_t num )
 	char *p = (char *) destination;
 	char *s = (char *) source;
 	size_t i;
+	uint32_t nint, *dint, *sint;
+	nint = num >> 2;
+	num = num - (nint << 2);
+	dint = (uint32_t *) destination;
+	sint = (uint32_t *) source;
+	for (i = 0;i < nint; i++)
+		*dint++ = *sint++;
+	p = (char *) dint;
+	s = (char *) sint;
 	for (i = 0;i < num;i++)
 		*p++ = *s++;
 	return destination;
