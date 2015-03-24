@@ -102,7 +102,7 @@ omap3430_mpu_intc_regs_t *omap3430_mpu_intc_initialize ( physaddr_t phys )
 {
 	physaddr_t frame;
 	
-	omap3430_mpu_intc_regs_t *regs = heapmm_alloc( PHYSMM_PAGE_SIZE );
+	omap3430_mpu_intc_regs_t *regs = heapmm_alloc_alligned( PHYSMM_PAGE_SIZE, PHYSMM_PAGE_SIZE );
 
 	assert ( regs != NULL );
 
