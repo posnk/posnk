@@ -55,7 +55,7 @@ struct omap3430_mpu_intc_bank {
 	/* 0x09C + 0x020 * n - BITFIELD INT STATUS AFTER FIQM */
 	uint32_t	pending_fiq;
 
-} __attribute__((__packed__));
+} __attribute__((aligned(8)));
 
 typedef struct omap3430_mpu_intc_bank	omap3430_mpu_intc_bnk_t;
 
@@ -100,7 +100,7 @@ struct omap3430_mpu_intc_regs {
 	/* 0x100 + 0x004 * m - Interrupt routing and priority */
 	uint32_t		ilr[96];
 
-} __attribute__((__packed__));
+} __attribute__((aligned(4)));
 
 typedef struct omap3430_mpu_intc_regs	omap3430_mpu_intc_regs_t;
 
