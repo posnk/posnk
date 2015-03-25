@@ -21,3 +21,14 @@ void platform_initialize( void )
 {
 	omap3430_p_intc = omap3430_mpu_intc_initialize( OMAP3430_MPU_INTC_BASE );
 }
+
+int platform_get_interrupt_id( int int_channel )
+{
+	return omap3430_mpu_intc_get_active_int ( omap3430_p_intc, int_channel );
+}
+
+void platform_end_of_interrupt( int int_channel, int int_id )
+{
+	
+	omap3430_mpu_intc_acknowledge_int ( omap3430_p_intc, int_channel );
+}
