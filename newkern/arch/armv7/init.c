@@ -27,6 +27,14 @@ void halt()
 	for(;;);
 }
 
+void tasks_init()
+{
+	pid_t pid_init, pid_idle;
+	earlycon_printf("Forking init...\n");
+	pid_init = scheduler_fork();
+	earlycon_printf("Back from fork: %i\n\n", pid_init);
+	for (;;);
+}
 
 void armv7_init( armv7_bootargs_t *bootargs )
 {
@@ -97,6 +105,9 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	platform_initialize();
 	earlycon_printf("heeapmmtest: 0x%x\n", heapmm_alloc(123));
 	armv7_enable_ints();
+	tasks_init();
 	halt();
 	
 }
+
+

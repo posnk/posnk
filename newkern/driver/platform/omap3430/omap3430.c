@@ -16,6 +16,7 @@
 #include "kernel/interrupt.h"
 #include "kernel/heapmm.h"
 #include "kernel/earlycon.h"
+#include "kernel/time.h"
 #include <string.h>
 #include <assert.h>
 
@@ -27,7 +28,7 @@ int omap3430_systick_isr( irq_id_t id, void *context )
 	assert ( id == OMAP3430_MPU_IRQ_GPTIMER1 );
 
 	if ( omap3430_gptimer_int_is_overflow ( omap3430_p_systimer ) ) {
-		debugcon_printf("tick\n");
+		timer_interrupt();
 		omap3430_gptimer_reset_overflow_int ( omap3430_p_systimer );
 	}
 	if ( omap3430_gptimer_int_is_match ( omap3430_p_systimer ) ) {
@@ -36,7 +37,6 @@ int omap3430_systick_isr( irq_id_t id, void *context )
 	if ( omap3430_gptimer_int_is_capture ( omap3430_p_systimer ) ) {
 		omap3430_gptimer_reset_capture_int ( omap3430_p_systimer );
 	}
-
 	return 1;
 }
 
@@ -52,7 +52,10 @@ void platform_initialize( void )
 
 	omap3430_gptimer_set_prescaler( omap3430_p_systimer, 0);
 	omap3430_gptimer_enable_overflow_int ( omap3430_p_systimer );
-	omap3430_gptimer_start_count ( omap3430_p_systimer, 600, 0 );
+	omap3430_gptimer_start_count ( omap3430_p_systimer, 1, 0 );
+
+	timer_freq  = 32768;
+	timer_mfreq = 33;
 
 }
 
