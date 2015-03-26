@@ -48,17 +48,43 @@ size_t strlen ( const char* str )
 
 void * memset ( void * ptr, int value, size_t num )
 {
-	uint32_t  expval,nint, *pint;
+	uint32_t  expval,nmisa, nint, *pint;
 	char *p = (char *) ptr;
 	unsigned char val = (unsigned char) value;
 	size_t i;
+	
 	expval = ((value & 0xFF) << 24) | 
 		 ((value & 0xFF) << 16) | 
 		 ((value & 0xFF) << 8)  | 
 	           (value &0xFF);
+	
+	nmisa = 4 - (((uintptr_t) ptr) & 0x3);
+
+	if (nmisa > num)
+		nmisa = num;
+
+	switch (nmisa) {
+		case 3:
+			*p++ = val;  
+			*p++ = val;
+			*p++ = val;
+			num-=3;
+			break;
+		case 2:
+			*p++ = val;
+			*p++ = val;
+			num-=2;
+			break;
+		case 1:
+			*p++ = val;
+			num--;
+			break;
+	}
+	
 	nint = num >> 2;
 	num = num - (nint << 2);
-	pint = (uint32_t *) ptr;
+
+	pint = (uint32_t *) p;
 	for (i = 0;i < nint; i++)
 		*pint++ = expval;
 	p = (char *) pint;
@@ -72,15 +98,50 @@ void * memcpy ( void * destination, const void * source, size_t num )
 	char *p = (char *) destination;
 	char *s = (char *) source;
 	size_t i;
-	uint32_t nint, *dint, *sint;
-	nint = num >> 2;
-	num = num - (nint << 2);
-	dint = (uint32_t *) destination;
-	sint = (uint32_t *) source;
-	for (i = 0;i < nint; i++)
-		*dint++ = *sint++;
-	p = (char *) dint;
-	s = (char *) sint;
+	uint32_t nint, nmisa,nmiss, *dint, *sint;
+
+	nmisa = 4 - (((uintptr_t) p) & 0x3);
+	nmiss = 4 - (((uintptr_t) s) & 0x3);
+
+	if (nmisa == nmiss) {
+
+		if (nmisa > num)
+			nmisa = num;
+
+		switch (nmisa) {
+			case 3:
+				*p++ = *s++;  
+				*p++ = *s++;
+				*p++ = *s++;
+				num-=3;
+				break;
+			case 2:
+				*p++ = *s++;
+				*p++ = *s++;
+				num-=2;
+				break;
+			case 1:
+				*p++ = *s++;
+				num--;
+				break;
+		}
+
+		nint = num >> 2;
+		num = num - (nint << 2);
+
+		dint = (uint32_t *) p;
+		sint = (uint32_t *) source;
+
+		for (i = 0;i < nint; i++)
+			*dint++ = *sint++;
+		p = (char *) dint;
+		s = (char *) sint;
+	} else {
+		
+		p = (char *) destination;
+		s = (char *) source;
+	}
+
 	for (i = 0;i < num;i++)
 		*p++ = *s++;
 	return destination;
