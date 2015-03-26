@@ -251,9 +251,13 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 		va_ctr += 4096) {
 		
 		/* If this is the first page, get the physical address */
-		if ( va_ctr == va )
+		if ( va_ctr == va ) {
 			pa = paging_get_physical_address ( (void *) va_ctr );
-		else if (paging_get_physical_address ((void *) va_ctr) != pa ) {
+			if (pa & 0x3FFF){
+				cont = 0;
+				break;
+			}
+		} else if (paging_get_physical_address ((void *) va_ctr) != pa ) {
 			/* Frame did not match expected frame */
 			cont = 0;
 			break;
@@ -401,6 +405,7 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 				continue;
 
 		}
+		clone_va->pages[page_ctr] = l2_entry;
 	}
 
 	/* Return the cloned L2 table */
@@ -429,7 +434,7 @@ page_dir_t	*paging_create_dir()
 
 	memset(nlevel1_va, 0, sizeof(armv7_l1_table_t));
 
-	for ( l1_ptr = 0; l1_ptr < ARMV7_L1_TABLE_SIZE; l1_ptr++) {
+	for ( l1_ptr = 0; l1_ptr < ARMV7_L1_TABLE_SIZE-1; l1_ptr++) {
 		l1_entry = clevel1_va->entries[ l1_ptr ];
 		switch ( l1_entry & 3 ) {
 			case ARMV7_L1_TYPE_FAULT:
@@ -447,6 +452,8 @@ page_dir_t	*paging_create_dir()
 				break;
 		}
 	}
+
+	nlevel1_va->entries[4095] = clevel1_va->entries[4095];
 
 	page_dir = heapmm_alloc(sizeof(page_dir));
 	
@@ -603,17 +610,34 @@ void		paging_tag(void * virt_addr, page_tag_t tag)
 
 uintptr_t	paging_get_physical_address(void * virt_addr)
 {
-	uint32_t par;
+	uint32_t par, l1_idx,l1_entry,l2_idx,l2_entry;
 	uintptr_t va;
 	uintptr_t pa;
-
+	armv7_l1_table_t *l1_table;
+	armv7_l2_table_t *level2_va;
+	physaddr_t level2_pa;
 	va = (uintptr_t) virt_addr;
 
 	par = armv7_mmu_translate(va, ARMV7_TRANSLATE_OP_PRIV_R);
 
 	if ( par & ARMV7_PAR_FAULT )
 		return 0;
-
+	if (par == 0) {
+		l1_table = (armv7_l1_table_t *) paging_active_dir->content;
+		l1_idx = ARMV7_TO_L1_IDX(virt_addr);
+		l2_idx = ARMV7_TO_L2_IDX(virt_addr);
+		l1_entry = l1_table->entries[l1_idx];
+		if ((l1_entry & 3) == ARMV7_L1_TYPE_FAULT)
+			return 0;
+		level2_pa = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
+		assert ( (l1_entry & 3) == ARMV7_L1_TYPE_PAGE_TABLE);
+		level2_va = armv7_paging_map_l2(level2_pa);
+		l2_entry = level2_va->pages[l2_idx];
+		if ((l2_entry & 3) == ARMV7_L2_TYPE_FAULT)
+			return 0;
+	
+		par = ARMV7_L2_PAGE4_PA(l2_entry);
+	}
 	pa  = ARMV7_PAR_PA(par);
 	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
 //	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);

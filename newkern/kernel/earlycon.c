@@ -118,6 +118,7 @@ void earlycon_puts(const char *str){
 		memcpy(&(earlycon_screen_buffer[earlycon_screen_ptr]), str, len);
 		earlycon_screen_ptr += len;
 	} else {
+		earlycon_aputs(str);
 		con_puts(str);
 	}
 }

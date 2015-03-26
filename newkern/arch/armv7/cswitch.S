@@ -36,12 +36,12 @@ armv7_context_switch:
 	# THESE FUNCTIONS MUST NOT USE STACK
 
 	mov	r0,	r1
-	blx	=armv7_mmu_set_ttbr0
-	blx	=armv7_mmu_set_ttbr1
+	bl	armv7_mmu_set_ttbr0
+	bl	armv7_mmu_set_ttbr1
 	
 	# Page directory switched, flush TLBs
 
-	blx	=armv7_mmu_flush_tlb
+	bl	armv7_mmu_flush_tlb
 
 	# We are now using the correct page directory and stack
 
@@ -66,16 +66,16 @@ armv7_context_fork:
 
 	# Store stackpointer in output parameter
 	str	sp,	[r0]
-
-
+	
 	# Call address space cloning routine
 	mov	r4,	r1
+	
 	# pdir * paging_create_dir (void);
 	blx	paging_create_dir
 	
 	# Store new page directory pointer
 	str	r0,	[r4]
-
+	
 	# Restore state
 	pop { r4-r12, lr }
 	
@@ -84,4 +84,3 @@ armv7_context_fork:
 	
 	# Return to where we came from
 	bx	lr
-

@@ -19,6 +19,8 @@
 #include "arch/armv7/cswitch.h"
 #include "arch/armv7/cpu.h"
 
+typedef struct {uint32_t entries[10];} taskstate;
+
 void scheduler_switch_task(scheduler_task_t *new_task)
 {
 	uint32_t	*new_sp, *old_sp;
@@ -138,6 +140,8 @@ void scheduler_exit_signal_handler()
 	*/
 }
 
+uint64_t forkstack[256];
+
 int scheduler_fork_to(scheduler_task_t *new_task)
 {
 	uint32_t is_parent;
@@ -146,7 +150,7 @@ int scheduler_fork_to(scheduler_task_t *new_task)
 
 	/* Fork the context */
 	is_parent = armv7_context_fork( (uint32_t *) new_task->arch_state,
-					&new_task->page_directory ); 
+					&new_task->page_directory,(uint32_t) &(forkstack[255]) ); 
 
 	/* If we are the child, return 0 */
 	if (!is_parent)	

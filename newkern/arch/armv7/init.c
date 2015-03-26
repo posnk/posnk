@@ -116,7 +116,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	syscall_init();
 	interrupt_init();
 	platform_initialize();
-	armv7_enable_ints();
+	//armv7_enable_ints();
 	earlycon_printf("Initializing task stacks...\n", heapmm_alloc(123));
 	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(), 
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
