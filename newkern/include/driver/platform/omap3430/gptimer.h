@@ -12,6 +12,9 @@
 #ifndef __driver_platform_omap3430_gptimer__
 #define __driver_platform_omap3430_gptimer__
 
+#include <stdint.h>
+#include "kernel/physmm.h"
+
 #define OMAP3430_GPT_SCFG_CLOCK_BOTHALWAYS	(0x00000300)
 #define OMAP3430_GPT_SCFG_CLOCK_L4ALWAYS	(0x00000100)
 #define OMAP3430_GPT_SCFG_CLOCK_FUNCALWAYS	(0x00000200)
