@@ -19,6 +19,12 @@ armv7_get_mode:
 	mrs	r0,	cpsr_all
 	mov	pc,	lr
 
+.global armv7_enable_ints
+
+armv7_enable_ints:
+	cpsie	if
+	mov	pc,	lr
+
 .global armv7_set_mode_stack
 
 # armv7_set_mode_stack: Set the stack pointer register for a different mode

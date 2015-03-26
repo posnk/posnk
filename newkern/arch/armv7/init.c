@@ -92,6 +92,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	earlycon_printf("Initializing system calls...\n");
 	syscall_init();
 	platform_initialize();
+	armv7_enable_ints();
 	halt();
 	
 }

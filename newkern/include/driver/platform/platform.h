@@ -16,6 +16,6 @@ void	platform_initialize( void );
 
 int	platform_get_interrupt_id ( int int_channel );
 
-int	platform_end_of_interrupt ( int int_channel, int int_id );
+void	platform_end_of_interrupt ( int int_channel, int int_id );
 
 #endif
