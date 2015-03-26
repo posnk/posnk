@@ -47,7 +47,7 @@ void platform_initialize( void )
 
 	interrupt_register_handler(OMAP3430_MPU_IRQ_GPTIMER1, &omap3430_systick_isr, NULL);	
 
-	omap3430_mpu_intc_config_irq( omap3430_p_intc, OMAP3430_MPU_IRQ_GPTIMER1, 0, 1 );
+	omap3430_mpu_intc_config_irq( omap3430_p_intc, OMAP3430_MPU_IRQ_GPTIMER1, 0, 23 );
 	omap3430_mpu_intc_unmask_int( omap3430_p_intc, OMAP3430_MPU_IRQ_GPTIMER1 );
 
 	omap3430_gptimer_set_prescaler( omap3430_p_systimer, 0);

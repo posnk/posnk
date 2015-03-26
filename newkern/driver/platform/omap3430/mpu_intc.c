@@ -81,7 +81,7 @@ int omap3430_mpu_intc_get_active_int ( 	omap3430_mpu_intc_regs_t *regs,
 	if ( sir & OMAP3430_MPU_INTC_SIR_SPURIOUSFLAG )
 		return -1;
 	else
-		return sir & OMAP3430_MPU_INTC_SIR_ACTIVEINT( sir );
+		return OMAP3430_MPU_INTC_SIR_ACTIVEINT( sir );
 }
 
 /**
