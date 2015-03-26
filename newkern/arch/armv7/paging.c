@@ -379,7 +379,7 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 						paging_handle_out_of_memory();
 						dst_pa = physmm_alloc_frame();
 					}
-	
+					earlycon_printf("cloning frame:0x%x to 0x%x\n", src_pa, dst_pa);	
 					/* Map the source and dest */
 					src_va = armv7_paging_map_phys(src_pa);
 					dst_va = armv7_paging_map_phys2(dst_pa);
@@ -409,7 +409,7 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 
 page_dir_t	*paging_create_dir()
 {
-	uint32_t	  	 l1_entry, l2_entry, l1_ptr;
+	uint32_t	  	 l1_entry, l1_ptr;
 	physaddr_t	  	 nlevel1_pa, nlevel2_pa;
 	physaddr_t	  	 clevel2_pa;
 	armv7_l1_table_t 	*nlevel1_va;
@@ -436,10 +436,11 @@ page_dir_t	*paging_create_dir()
 				nlevel1_va->entries[ l1_ptr ] = l1_entry;
 				continue;
 			case ARMV7_L1_TYPE_PAGE_TABLE:
-				clevel2_pa  = ARMV7_L1_PAGE_TABLE_PA(l2_entry);
+				clevel2_pa  = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
+				earlycon_printf("cloning ptable[%i] 0x%x at 0x%x\n",l1_ptr, l1_entry, clevel2_pa);
 				nlevel2_pa  = armv7_clone_l2(clevel2_pa);
-				l2_entry &= ~ARMV7_L1_PAGE_TABLE_PA(0xFFFFFFFF);
-				l2_entry |=  ARMV7_L1_PAGE_TABLE_PA(nlevel2_pa);
+				l1_entry &= ~ARMV7_L1_PAGE_TABLE_PA(0xFFFFFFFF);
+				l1_entry |=  ARMV7_L1_PAGE_TABLE_PA(nlevel2_pa);
 				nlevel1_va->entries[ l1_ptr ] = l1_entry;
 			case ARMV7_L1_TYPE_SECTION:
 				nlevel1_va->entries[ l1_ptr ] = l1_entry;
@@ -615,7 +616,7 @@ uintptr_t	paging_get_physical_address(void * virt_addr)
 
 	pa  = ARMV7_PAR_PA(par);
 	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
-	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);
+//	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);
 	return pa;
 }
 
