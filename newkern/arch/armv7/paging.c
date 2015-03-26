@@ -615,7 +615,7 @@ uintptr_t	paging_get_physical_address(void * virt_addr)
 
 	pa  = ARMV7_PAR_PA(par);
 	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
-
+	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);
 	return pa;
 }
 

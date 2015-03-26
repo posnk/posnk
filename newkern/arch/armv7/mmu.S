@@ -127,5 +127,6 @@ amt_usr_write:
 	b	amt_exit
 
 amt_exit:
+	isb
 	mrc	p15,	0,	r0,	c7,	c4,	0	@Read PAR value
 	mov	pc,	lr					@Return PAR val.
