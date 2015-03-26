@@ -14,9 +14,13 @@
 
 #include <stdint.h>
 #include "util/llist.h"
-
+#include "config.h"
+#ifdef ARCH_I386
 #define INTERRUPT_IRQ_COUNT	(16)
-
+#endif
+#ifdef ARCH_ARMV7
+#define INTERRUPT_IRQ_COUNT	(256)
+#endif
 typedef uint8_t irq_id_t;
 typedef int (*irq_handler_t)(irq_id_t, void*);
 

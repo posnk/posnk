@@ -30,7 +30,7 @@ void halt()
 
 void armv7_init( armv7_bootargs_t *bootargs )
 {
-	size_t initial_heap = 4097;
+	size_t initial_heap = 4096;
 	sercon_init();
 
 	earlycon_printf("posnk kernel built on %s %s\n", __DATE__,__TIME__);
@@ -67,6 +67,8 @@ void armv7_init( armv7_bootargs_t *bootargs )
 		earlycon_printf("could not alloc first page of heap!\n");
 		halt();
 	}
+	heapmm_init((void *) 0xd0000000, initial_heap);
+	earlycon_printf("heeapmmtest: 0x%x\n", heapmm_alloc(123));
 	earlycon_printf("initializing sched\n");
 	scheduler_init();
 	earlycon_printf("initializing drivers\n");
@@ -93,6 +95,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	syscall_init();
 	interrupt_init();
 	platform_initialize();
+	earlycon_printf("heeapmmtest: 0x%x\n", heapmm_alloc(123));
 	armv7_enable_ints();
 	halt();
 	

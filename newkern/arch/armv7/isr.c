@@ -120,17 +120,16 @@ void armv7_interrupt(int int_chan, armv7_exception_state_t *state)
 {
 	int pl = platform_get_interrupt_id ( int_chan );
 	interrupt_dispatch( pl );
-	earlycon_printf("interrupt %i\n", pl);
 	platform_end_of_interrupt( int_chan, pl );
 }
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 {
 	int irq;
-	earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
 	switch (vec_id) {
 		case VEC_DATA_ABORT:
 		case VEC_PREFETCH_ABORT:
+			earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
 			armv7_handle_abort(vec_id, state);
 			break;
 		case VEC_FIQ:
@@ -148,6 +147,7 @@ void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 		case VEC_UNDEFINED:
 			//TODO: Support emulation of missing processor features
 		default:
+			earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
 			exception_handle(EXCEPTION_INVALID_OPCODE, 
 					(void *) state->exc_lr,
 					(void *) state,
