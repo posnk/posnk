@@ -11,8 +11,20 @@
 
 #include <stdint.h>
 #include <sys/stat.h>
+#include "kernel/interrupt.h"
+#include "kernel/heapmm.h"
+#include "kernel/paging.h"
 #include "kernel/physmm.h"
 #include "kernel/earlycon.h"
+#include "kernel/system.h"
+#include "kernel/scheduler.h"
+#include "kernel/vfs.h"
+#include "kernel/tar.h"
+#include "kernel/ipc.h"
+#include "kernel/device.h"
+#include "kernel/tty.h"
+#include "kernel/drivermgr.h"
+#include "kdbg/dbgapi.h"
 #include "arch/armv7/bootargs.h"
 #include "arch/armv7/exception.h"
 #include "arch/armv7/cpu.h"
@@ -103,11 +115,14 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	syscall_init();
 	interrupt_init();
 	platform_initialize();
-	earlycon_printf("heeapmmtest: 0x%x\n", heapmm_alloc(123));
-	armv7_enable_ints();
-	tasks_init();
-	halt();
+	earlycon_printf("Initializing task stacks...\n", heapmm_alloc(123));
+	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(), 
+			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
+	paging_map((void *) 0xBFFFE000, physmm_alloc_frame(), 
+			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
 	
+	stack_switch_call(tasks_init, 0xBFFFFFF0);
+	halt();
 }
 
 

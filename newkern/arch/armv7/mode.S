@@ -58,3 +58,10 @@ process_user_call:
 	mov	pc,		r0
 
 .ltorg
+
+.global stack_switch_call
+
+stack_switch_call:
+	mov	sp,		r1
+	mov	pc,		r0
+.ltorg
