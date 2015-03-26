@@ -26,6 +26,7 @@ void omap3430_mpu_intc_mask_int ( omap3430_mpu_intc_regs_t *regs, int int_num )
 {
 	assert ( ( int_num >= 0 ) && ( int_num < 96 ) );
 	regs->bank[int_num >> 5].mir_set = 1 << ( int_num & 0x1F );
+	armv7_mmu_data_barrier();;	
 }
 
 /**
@@ -37,6 +38,7 @@ void omap3430_mpu_intc_unmask_int ( omap3430_mpu_intc_regs_t *regs, int int_num 
 {
 	assert ( ( int_num >= 0 ) && ( int_num < 96 ) );
 	regs->bank[int_num >> 5].mir_clear = 1 << ( int_num & 0x1F );
+	armv7_mmu_data_barrier();;	
 }
 
 /**
@@ -59,6 +61,7 @@ void omap3430_mpu_intc_config_irq ( omap3430_mpu_intc_regs_t *regs,
 	else
 		regs->ilr[int_num] = 
 			OMAP3430_MPU_INTC_ILR_PRIORITY(priority);
+	armv7_mmu_data_barrier();;	
 }
 
 /**
@@ -119,7 +122,7 @@ omap3430_mpu_intc_regs_t *omap3430_mpu_intc_initialize ( physaddr_t phys )
 		, (regs->revision & 0xF0) >> 4, regs->revision & 0xF);
 
 	regs->protection = 1;
-	regs->threshold  = 0;
+	regs->threshold  = 0xff;
 
 	regs->bank[0].isr_clear = 0xFFFFFFFF;
 	regs->bank[0].mir_set	= 0xFFFFFFFF;
@@ -128,5 +131,6 @@ omap3430_mpu_intc_regs_t *omap3430_mpu_intc_initialize ( physaddr_t phys )
 	regs->bank[2].isr_clear = 0xFFFFFFFF;
 	regs->bank[2].mir_set 	= 0xFFFFFFFF;
 
+	armv7_mmu_data_barrier();;	
 	return regs;
 }

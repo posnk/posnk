@@ -126,17 +126,18 @@ void armv7_interrupt(int int_chan, armv7_exception_state_t *state)
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 {
-	earlycon_printf("exception %i at 0x%x", vec_id, state->exc_lr);
+	int irq;
+	earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
 	switch (vec_id) {
 		case VEC_DATA_ABORT:
 		case VEC_PREFETCH_ABORT:
 			armv7_handle_abort(vec_id, state);
 			break;
 		case VEC_FIQ:
-		
+			armv7_interrupt( 1, state );	
 			break;
 		case VEC_IRQ:
-			//TODO: Implement hardware interrupt handling
+			armv7_interrupt( 0, state );	
 			break;
 		case VEC_SUPERVISOR_CALL:
 			/* System call */
