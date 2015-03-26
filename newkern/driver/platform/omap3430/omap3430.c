@@ -52,10 +52,10 @@ void platform_initialize( void )
 
 	omap3430_gptimer_set_prescaler( omap3430_p_systimer, 0);
 	omap3430_gptimer_enable_overflow_int ( omap3430_p_systimer );
-	omap3430_gptimer_start_count ( omap3430_p_systimer, 1, 0 );
+	omap3430_gptimer_start_count ( omap3430_p_systimer, 2, 0 );
 
-	timer_freq  = 32768;
-	timer_mfreq = 33;
+	timer_freq  = 32768/2;
+	timer_mfreq = 33/2;
 
 }
 

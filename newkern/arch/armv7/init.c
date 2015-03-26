@@ -45,6 +45,7 @@ void tasks_init()
 	earlycon_printf("Forking init...\n");
 	pid_init = scheduler_fork();
 	earlycon_printf("Back from fork: %i\n\n", pid_init);
+	armv7_enable_ints();
 	for (;;);
 }
 
@@ -115,6 +116,7 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	syscall_init();
 	interrupt_init();
 	platform_initialize();
+	armv7_enable_ints();
 	earlycon_printf("Initializing task stacks...\n", heapmm_alloc(123));
 	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(), 
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);

@@ -167,9 +167,9 @@ void schedule()
 	if (scheduler_current_task->state == PROCESS_RUNNING)
 		scheduler_current_task->state = PROCESS_READY;
 	if (next_task != 0) {
-		//earlycon_printf("scheduler switch from %i to %i\n", scheduler_current_task->pid, next_task->pid);
+		earlycon_printf("scheduler switch from %i to %i\n", scheduler_current_task->pid, next_task->pid);
 		scheduler_switch_task(next_task);
-		//earlycon_printf("scheduler switch to %i done, state: %i\n", scheduler_current_task->pid, scheduler_current_task->state);
+		earlycon_printf("scheduler switch to %i done, state: %i\n", scheduler_current_task->pid, scheduler_current_task->state);
 	}
 	if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->waiting_signal_bitmap != 0))
 		scheduler_switch_task(scheduler_current_task);

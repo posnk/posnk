@@ -119,6 +119,7 @@ void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 void armv7_interrupt(int int_chan, armv7_exception_state_t *state)
 {
 	int pl = platform_get_interrupt_id ( int_chan );
+	earlycon_printf("int: %i\n", pl);
 	interrupt_dispatch( pl );
 	platform_end_of_interrupt( int_chan, pl );
 }
