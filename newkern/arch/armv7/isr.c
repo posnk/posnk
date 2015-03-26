@@ -49,7 +49,7 @@ void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 	}
 
 	is_user = (state->usr_psr & PSR_MODE) == PSR_MODE_USR;
-
+	earlycon_printf("pagefault at 0x%x access to 0x%x fs:0x%x\n",state->exc_lr, fault_addr, fault_status);
 	switch (ARMV7_FSR_FS(fault_status)) {
 		/* Alignment fault */
 		case ARMV7_FS_ALIGNMENT_FAULT:	
