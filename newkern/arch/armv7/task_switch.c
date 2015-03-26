@@ -149,7 +149,7 @@ int scheduler_fork_to(scheduler_task_t *new_task)
 					&new_task->page_directory ); 
 
 	/* If we are the child, return 0 */
-	if (is_parent)	
+	if (!is_parent)	
 		return 0;
 	
 	return 1;
