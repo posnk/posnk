@@ -122,7 +122,7 @@
 #define	VEC_LRO_RESET		(0)
 #define	VEC_LRO_UNDEFINED	(4)
 #define	VEC_LRO_SUPERVISOR_CALL	(0)
-#define	VEC_LRO_PREFETCH_ABORT	(8)
+#define	VEC_LRO_PREFETCH_ABORT	(4)
 #define	VEC_LRO_DATA_ABORT	(8)
 #define	VEC_LRO_RESERVED	(0)
 #define	VEC_LRO_IRQ		(4)

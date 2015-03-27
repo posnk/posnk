@@ -118,11 +118,11 @@ void armv7_initrd_extr(physaddr_t start, physaddr_t end)
 	va = 0x80000000;
 	vap = va;
 	for (pac = pa; pac < end; pac+=4096) {
-		paging_map ((void *)va, pac, PAGING_PAGE_FLAG_RW );
+		paging_map ((void *)vap, pac, PAGING_PAGE_FLAG_RW );
 		vap+=4096;
 	}
 
-	vap = va + (pa & 0xFFF);
+	vap = va + (start & 0xFFF);
 
 	tar_extract_mem((void *)vap);
 

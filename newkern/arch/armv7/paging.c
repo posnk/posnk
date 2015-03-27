@@ -383,7 +383,7 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 						paging_handle_out_of_memory();
 						dst_pa = physmm_alloc_frame();
 					}
-					earlycon_printf("cloning frame:0x%x to 0x%x\n", src_pa, dst_pa);	
+					///earlycon_printf("cloning frame:0x%x to 0x%x\n", src_pa, dst_pa);	
 					/* Map the source and dest */
 					src_va = armv7_paging_map_phys(src_pa);
 					dst_va = armv7_paging_map_phys2(dst_pa);
@@ -442,7 +442,7 @@ page_dir_t	*paging_create_dir()
 				continue;
 			case ARMV7_L1_TYPE_PAGE_TABLE:
 				clevel2_pa  = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
-				earlycon_printf("cloning ptable[%i] 0x%x at 0x%x\n",l1_ptr, l1_entry, clevel2_pa);
+				//earlycon_printf("cloning ptable[%i] 0x%x at 0x%x\n",l1_ptr, l1_entry, clevel2_pa);
 				nlevel2_pa  = armv7_clone_l2(clevel2_pa);
 				l1_entry &= ~ARMV7_L1_PAGE_TABLE_PA(0xFFFFFFFF);
 				l1_entry |=  ARMV7_L1_PAGE_TABLE_PA(nlevel2_pa);

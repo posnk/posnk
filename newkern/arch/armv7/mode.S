@@ -53,9 +53,20 @@ armv7_set_mode_stack:
 .global process_user_call
 
 process_user_call:
-	cpsie	aif,		#PSR_MODE_USR	@Switch to user mode
+	mrs	r2,		cpsr_all	@ Load R2 with the CPSR value
+	# Calculate new CPSR
+	mvn	r3,	#(PSR_MODE|PSR_FIQ_MASK|PSR_IRQ_MASK)
+						@ Generate NOT_MODE mask
+	and	r2,	r2,	r3		@ Clear mode bits from CPSR
+	orr	r2,	r2,	#PSR_MODE_USR	@ Set mode bits on new CPSR	
+	# Load new CPSR
+	msr	spsr_all,	r2		@ Load SPSR with the new value
+	# Load new stack pointer
+	cpsid	aif,		#PSR_MODE_SYS	@Switch to system mode to set usr/sys sp
 	mov	sp,		r1
-	mov	pc,		r0
+	cpsid	aif,		#PSR_MODE_SVC	@Switch back to user mode to do the call
+	mov	lr,		r0
+	movs	pc,		lr
 
 .ltorg
 

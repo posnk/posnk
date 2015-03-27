@@ -256,8 +256,9 @@ payload_armv7: _dmake $(OBJS_ARMV7KERNEL) $(OBJS_DRIVER) arch/armv7/kern.ld
 payload_armv7.bo: payload_armv7
 	$(OCP) -I binary -O elf32-littlearm -B armv4t payload_armv7 payload_armv7.bo
 	
-initrd_armv7_uboot: initrd_armv7.tar
-	@echo " [MKIMG ] " initrd_armv7_uboot ; mkimage $(MKIFLAGS) -T ramdisk -n posrd -d initrd_armv7.tar initrd_armv7_uboot
+initrd_armv7_uboot: initrd
+	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
+	@echo " [MKIMG ] " initrd_armv7_uboot ; mkimage $(MKIFLAGS) -T ramdisk -n posrd -d cdrom_files/initrd.tar initrd_armv7_uboot
 
 loader_armv7_uboot: loader_armv7.bin
 	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -T kernel -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot

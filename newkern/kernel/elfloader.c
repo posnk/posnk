@@ -84,10 +84,10 @@ int elf_load(char * path)
 		vfs_inode_release(inode);
 		return ENOEXEC;
 	}
-	if (elf_header->e_machine != EM_386) {
-		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
-		return ENOEXEC;
-	}
+	//if (elf_header->e_machine != EM_386) {
+//		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
+//		return ENOEXEC;
+//	}
 	if (elf_header->e_phnum == 0) {
 		heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 		return ENOEXEC;
