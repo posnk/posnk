@@ -44,6 +44,7 @@ void halt()
 
 void armv7_init_stub()
 {
+	char *init_path = "/sbin/init";
         int fd = _sys_open("/faketty", O_RDWR, 0);
         if (fd < 0) {
                 earlycon_printf("Error opening tty : %i\n",syscall_errno);
@@ -61,7 +62,8 @@ void armv7_init_stub()
         char *ptr = NULL;
         void *nullaa = &ptr;
         //vgacon_clear_video();
-        int status = process_exec("/sbin/init", nullaa, nullaa);
+	earlycon_printf("kinit: executing %s\n", init_path); 
+        int status = process_exec(init_path, nullaa, nullaa);
         if (status) {
                 earlycon_printf("Error executing init : %i\n",status);
         }
@@ -86,13 +88,17 @@ void tasks_init()
 	pid_t pid_init, pid_idle;
         uint32_t wp_params[4];
 
-	earlycon_printf("Forking init...\n");
+	earlycon_printf("kinit: forking init...\n");
 	pid_init = scheduler_fork();
 	if (!pid_init)
 		armv7_init_stub();
+
+	earlycon_printf("kinit: forking idle task...\n");
 	pid_idle = scheduler_fork();
 	if (!pid_idle)
 		armv7_idle_task();
+
+	earlycon_printf("kinit: enabling interrupts...\n");
 	armv7_enable_ints();
 	
 	wp_params[0] = (uint32_t) pid_init;
@@ -137,6 +143,7 @@ void armv7_initrd_extr(physaddr_t start, physaddr_t end)
 void armv7_init( armv7_bootargs_t *bootargs )
 {
 	size_t initial_heap = 4096;
+	char * rootfs_type = "ramfs";
 	sercon_init();
 
 	earlycon_printf("posnk kernel built on %s %s\n", __DATE__,__TIME__);
@@ -163,54 +170,57 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	earlycon_printf("physmm: %i MB available\n",
 			physmm_count_free() / 0x100000);
 
+	earlycon_printf("paging: initializing virtual memory support\n");
 	armv7_paging_init(bootargs);
 	
-	earlycon_printf("paging online\n");
+	earlycon_printf("kdbg: initializing kernel debugger\n");
 	kdbg_initialize();
-	earlycon_printf("heap debugger online\n");
+	earlycon_printf("heapmm: initializing kernel heap manager\n");
 	initial_heap = heapmm_request_core((void *)0xd0000000, initial_heap);
 	if (initial_heap == 0) {
 		earlycon_printf("could not alloc first page of heap!\n");
 		halt();
 	}
 	heapmm_init((void *) 0xd0000000, initial_heap);
-	earlycon_printf("heeapmmtest: 0x%x\n", heapmm_alloc(123));
-	earlycon_printf("initializing sched\n");
+	earlycon_printf("scheduler: initializing initial task\n");
 	scheduler_init();
-	earlycon_printf("initializing drivers\n");
+	earlycon_printf("drivermgr: initializing driver manager\n");
 	drivermgr_init();
+	earlycon_printf("chardev: initialzing character device layer\n");
 	device_char_init();
+	earlycon_printf("blkdev: initializing block device layer\n");
 	device_block_init();
+	earlycon_printf("tty: initializing tty layer\n");
 	tty_init();
-	earlycon_printf("loading builtin drivers\n");
+	earlycon_printf("drivermgr: initializing builtin drivers\n");
 	register_dev_drivers();
-	earlycon_printf("loaded drivers\n");
-	earlycon_printf("initializing vfs...");
-	if (vfs_initialize(3, "ramfs"))
-		earlycon_puts("OK\n");
+	earlycon_printf("vfs: initializing and mounting rootfs \"%s\": ", rootfs_type);
+	if (vfs_initialize(3, rootfs_type))
+		earlycon_puts("ok\n");
 	else
-		earlycon_puts("FAIL\n");
+		earlycon_puts("failed\n");
 	
-	earlycon_puts("Creating tty stub dev...");
+	earlycon_puts("kinit: spawning initial tty device: ");
 	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))
-		earlycon_printf("OK\n");
+		earlycon_printf("ok\n");
 	else
-		earlycon_printf("FAIL\n");
-	earlycon_printf("Extracting initrd...\n");
+		earlycon_printf("failed\n");
+	earlycon_printf("vfs: extracting initrd archive\n");
 	armv7_initrd_extr(armv7_initrd_start_pa, armv7_initrd_end_pa);
-	earlycon_printf("Initializing ipc...\n");
+	earlycon_printf("ipc: initializing SystemV IPC support\n");
 	ipc_init();
-	earlycon_printf("Initializing system calls...\n");
+	earlycon_printf("kinit: initializing systemcall dispatcher\n");
 	syscall_init();
+	earlycon_printf("kinit: initializing interrupt dispatcher\n");
 	interrupt_init();
+	earlycon_printf("kinit: initializing platform support layer\n");
 	platform_initialize();
 	//armv7_enable_ints();
-	earlycon_printf("Initializing task stacks...\n", heapmm_alloc(123));
+	earlycon_printf("kinit: switching to service stack\n", heapmm_alloc(123));
 	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(), 
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
 	paging_map((void *) 0xBFFFE000, physmm_alloc_frame(), 
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-	
 	stack_switch_call(tasks_init, 0xBFFFFFF0);
 	halt();
 }

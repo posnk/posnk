@@ -49,7 +49,7 @@ void armv7_handle_abort(uint32_t vec_id, armv7_exception_state_t *state)
 	}
 
 	is_user = (state->usr_psr & PSR_MODE) == PSR_MODE_USR;
-	earlycon_printf("pagefault at 0x%x access to 0x%x fs:0x%x\n",state->exc_lr, fault_addr, fault_status);
+//	earlycon_printf("pagefault at 0x%x access to 0x%x fs:0x%x\n",state->exc_lr, fault_addr, fault_status);
 	switch (ARMV7_FSR_FS(fault_status)) {
 		/* Alignment fault */
 		case ARMV7_FS_ALIGNMENT_FAULT:	
@@ -130,7 +130,7 @@ void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 	switch (vec_id) {
 		case VEC_DATA_ABORT:
 		case VEC_PREFETCH_ABORT:
-			earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
+			//earlycon_printf("exception %i at 0x%x\n", vec_id, state->exc_lr);
 			armv7_handle_abort(vec_id, state);
 			break;
 		case VEC_FIQ:
@@ -155,4 +155,5 @@ void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 					sizeof(armv7_exception_state_t));
 			break;
 	}
+	process_handle_signals();
 }
