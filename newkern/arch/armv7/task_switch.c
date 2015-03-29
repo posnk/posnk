@@ -33,19 +33,20 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	}
 	old_sp = (uint32_t *) scheduler_current_task->arch_state;
 	new_sp = (uint32_t *) 		    new_task->arch_state;
-
-	/* Preset kernel state to new task */
-	paging_active_dir = new_task->page_directory;	
-	scheduler_current_task = new_task;
-
-	/* Now its time for some magic */
-	armv7_context_switch( 	*new_sp, 
-				paging_get_physical_address(
-					new_task->page_directory->content
-				),
-				old_sp
-			    );
-
+	
+	if (new_task != scheduler_current_task) {
+	
+		/* Preset kernel state to new task */
+		paging_active_dir = new_task->page_directory;	
+		scheduler_current_task = new_task;
+		/* Now its time for some magic */
+		armv7_context_switch( 	*new_sp, 
+					paging_get_physical_address(
+						new_task->page_directory->content
+					),
+					old_sp
+				    );
+	}
 	/* Back from switch */
 	process_handle_signals();
 }

@@ -122,6 +122,7 @@ void armv7_interrupt(int int_chan, armv7_exception_state_t *state)
 //	earlycon_printf("int: %i\n", pl);
 	interrupt_dispatch( pl );
 	platform_end_of_interrupt( int_chan, pl );
+	process_handle_signals();
 }
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
@@ -155,5 +156,4 @@ void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state)
 					sizeof(armv7_exception_state_t));
 			break;
 	}
-	process_handle_signals();
 }
