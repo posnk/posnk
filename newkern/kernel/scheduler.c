@@ -101,6 +101,7 @@ int scheduler_fork()
 	/* Initialize process memory info */
 	new_task->heap_start	= scheduler_current_task->heap_start;
 	new_task->heap_end	= scheduler_current_task->heap_end;
+	new_task->heap_max	= scheduler_current_task->heap_max;
 	new_task->stack_bottom	= scheduler_current_task->stack_bottom;
 	new_task->stack_top	= scheduler_current_task->stack_top;
 	new_task->child_sema	= semaphore_alloc();
