@@ -301,10 +301,10 @@ cdrom_i386: kernel_i386 initrd
 # the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -marm -c $<  -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 %.ao: %.S
-	$(GAS) $(GASFLAGS) $(INCLUDES) -marm -c $<  -o $@
+	$(GAS) $(GASFLAGS) $(INCLUDES) -c $<  -o $@
 
 %.ho: %.c
 	$(HCC) $(HCFLAGS) $(HINCLUDES) -c $<  -o $@
@@ -314,6 +314,9 @@ cdrom_i386: kernel_i386 initrd
 
 clean: clean_driver
 	@$(RM) *.o *~ $(MAIN)
+	@$(RM) fs/*.o
+	@$(RM) kernel/vfs/*.o
+	@$(RM) kdbg/*.o
 	@$(RM) kernel/*.o
 	@$(RM) driver/console/*.o
 	@$(RM) driver/bus/*.o
@@ -339,9 +342,8 @@ clean_test:
 	$(RM) driver/bus/*.ho
 	$(RM) arch/i386/*.ho
 
-emulate: 
-# cdrom_i386
-	clear;qemu -m 1024 -cdrom pos.iso -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
+emulate: cdrom_i386
+	clear;qemu -m 1024 -serial stdio -cdrom pos.iso -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
 
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)
