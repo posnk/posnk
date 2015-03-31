@@ -1,1 +1,0 @@
-../mpn/generic/sec_sqr.c

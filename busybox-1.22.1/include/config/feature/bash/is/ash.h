@@ -1,1 +1,0 @@
-#define CONFIG_FEATURE_BASH_IS_ASH 1

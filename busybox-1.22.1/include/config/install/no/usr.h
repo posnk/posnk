@@ -1,1 +1,0 @@
-#define CONFIG_INSTALL_NO_USR 1

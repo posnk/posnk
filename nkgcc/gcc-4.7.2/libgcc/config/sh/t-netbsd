@@ -1,3 +1,0 @@
-LIB1ASMFUNCS_CACHE = _ic_invalidate
-
-HOST_LIBGCC2_CFLAGS += -mieee
