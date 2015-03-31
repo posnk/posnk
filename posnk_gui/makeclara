@@ -17,4 +17,14 @@ make install
 cd ../tardis
 make clean
 make install
+cd ../smith
+make clean
+make install
+cd ../wtkterm
+make clean
+make install
+cd ../csession
+make clean
+make install
 cd ..
+

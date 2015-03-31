@@ -25,6 +25,7 @@ void start_oswin()
 	oswin_pid = fork();
 	if (oswin_pid == 0)
 		execlp("oswin", "oswin", "", NULL);
+	usleep(10000);
 }
 
 int main(int argc, char *argv[], char *envp[]){

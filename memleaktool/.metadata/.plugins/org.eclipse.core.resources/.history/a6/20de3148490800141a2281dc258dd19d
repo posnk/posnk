@@ -1,0 +1,26 @@
+package nl.peterbjornx.posnk.memleaktool;
+
+import java.util.LinkedList;
+
+public class HeapManager {
+	private LinkedList<MemoryBlock> used_blocks = new LinkedList<MemoryBlock>();
+	
+	public void alloc(long start, long size) {
+		used_blocks.add(new MemoryBlock(start, size));		
+	}
+	
+	public void free(long start, long size) {
+		MemoryBlock freed = new MemoryBlock(start, size);
+		MemoryBlock found;
+		for (MemoryBlock b : used_blocks) {
+			if (b.equals(freed)) {
+				//Successfull
+				found = b;
+			} else if (b.overlap(freed)) {
+				System.err.println("size/start mismatch freeing "+start+","+size);
+			}
+				
+		}
+	}
+
+}

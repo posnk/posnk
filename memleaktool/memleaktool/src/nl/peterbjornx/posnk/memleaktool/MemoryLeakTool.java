@@ -1,0 +1,32 @@
+package nl.peterbjornx.posnk.memleaktool;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class MemoryLeakTool {
+
+	/**
+	 * @param args
+	 * @throws IOException 
+	 */
+	public static void main(String[] args) throws IOException {
+		HeapManager m = new HeapManager();
+		BufferedReader r = new BufferedReader(new FileReader(args[0]));
+		String line;
+		while ((line = r.readLine()) != null) {
+			String t[] = line.split("\\|");
+			if (line.startsWith("A|")){
+				m.alloc(Long.parseLong(t[1], 16), Long.parseLong(t[2], 16));
+			} else if (line.startsWith("F|")){
+				m.free(Long.parseLong(t[1], 16), Long.parseLong(t[2], 16));
+			} else {
+				System.err.println(line);
+			}
+		}
+		r.close();
+		m.dump();
+	}
+
+}

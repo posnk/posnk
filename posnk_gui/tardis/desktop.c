@@ -78,10 +78,10 @@ void desktop_tv_render_item(wtk_widget_t *w, cairo_t *context, int n, int select
 	cairo_text_extents (context, desktop_item[n].name, &te);
 
 	t_x = (t_w / 2) - (te.width / 2);
-	t_y = 52 + (16 / 2) - (te.height / 2);
+	t_y = 68 + (16 / 2) - (te.height / 2);
 
 	i_x = (t_w / 2) - (i_w / 2);
-	i_y = 5;
+	i_y = 10;
 
 	if (selected) {
 		cairo_rectangle(context, 0, 2, te.width + 10, t_h - 4);	
@@ -160,7 +160,7 @@ void desktop_initialize(const char * bg_path)
 	tileview->callbacks.render_tile = &desktop_tv_render_item;
 	tileview->callbacks.on_click = &desktop_tv_on_click;
 	tileview->tile_w = 100;
-	tileview->tile_h = 79;
+	tileview->tile_h = 100;
 	tileview->gap_x = 0;
 	tileview->gap_y = 0;
 	tileview->mode = TILEVIEW_VERTICAL;

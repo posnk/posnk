@@ -1,0 +1,79 @@
+package nl.peterbjornx.posnk.memleaktool;
+
+import java.util.Collections;
+import java.util.LinkedList;
+
+public class HeapManager {
+	private LinkedList<MemoryBlock> used_blocks = new LinkedList<MemoryBlock>();
+	
+	public void alloc(long start, long size) {
+		used_blocks.add(new MemoryBlock(start, size));		
+	}
+	
+	public void free(long start, long size) {
+		MemoryBlock freed = new MemoryBlock(start, size);
+		MemoryBlock found = null;
+		MemoryBlock add = null;
+		for (MemoryBlock b : used_blocks) {
+			if (b.equals(freed)) {
+				//Successfull
+				found = b;
+				break;
+			} else if (b.overlap(freed)) {
+				if (b.getStart() == start) {
+					if (b.getSize() > size) {
+						System.err.println("freeing "+Long.toHexString(start)+","+size+" which is smaller than allocation "+ b.getSize());
+						b.setStart(start + size);
+						b.setSize(b.getSize() - size);
+						break;
+					} else {
+						found = b;
+						System.err.println("freeing "+Long.toHexString(start)+","+size+" which is larger than allocation "+ b.getSize());
+						break;
+					}
+				} else {
+					long diff = b.getStart() - start;
+					long sz = b.getSize() - diff;
+					if (diff > 0) {
+						if (sz == size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts inside allocation and fits until end "+ b.getStart());
+							b.setSize(diff);
+						} else if (sz < size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts inside allocation and reaches past its end "+ b.getStart());
+							b.setSize(diff);
+						} else if (sz > size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts and ends inside allocation "+ b.getStart());
+							b.setSize(diff);
+							add = new MemoryBlock(start+size, sz - size);
+						}
+					} else if (diff < 0) {
+						if (sz == size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts before allocation and fits until end "+ b.getStart());
+							found = b;
+						} else if (sz < size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts before allocation and reaches past its end "+ b.getStart());
+							found = b;
+						} else if (sz > size) {
+							System.err.println("freeing "+Long.toHexString(start)+","+size+" which starts before and ends inside allocation "+ b.getStart());
+							b.setSize(sz - size);
+							b.setStart(start + size);
+						}						
+					}
+				}
+			}
+				
+		}
+		if (add != null)
+			used_blocks.add(add);
+		if (found != null)
+			used_blocks.remove(found);
+	}
+
+	public void dump(){
+		Collections.sort(used_blocks);
+		for (MemoryBlock b : used_blocks) {
+			System.out.println("0x"+Long.toHexString(b.getStart())+"-\t0x"+Long.toHexString(b.getSize()+b.getStart())+" - ALLOCATED");
+		}
+	}
+	
+}

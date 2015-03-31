@@ -6,7 +6,7 @@
 *.bo
 *.obj
 *.elf
-
+3rdparty/
 armv7_linkage_errors
 # Libraries
 *.lib
