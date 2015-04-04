@@ -156,6 +156,7 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 					return ENOSPC;
 				}
 			}
+			vfs_inode_release(file);
 			break;
 		case SYMTYPE://TODO: Implement proper symlinks
 			status = vfs_symlink(header->linkname, header->name);
@@ -197,6 +198,7 @@ int tar_read_record_mem(uintptr_t tar_data, off_t *pos)
 		}
 		file->uid = (uid_t) tar_num_dec(header->uid,8);
 		file->gid = (gid_t) tar_num_dec(header->gid,8);
+		vfs_inode_release(file);
 	}
 	return 0;	
 }
@@ -300,6 +302,7 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 				}
 				heapmm_free(buf, block_size);
 			}
+			vfs_inode_release(file);
 			break;
 		case SYMTYPE://TODO: Implement proper symlinks
 		case LNKTYPE:
@@ -337,6 +340,7 @@ int tar_read_record(inode_t *tar_file, off_t *pos)
 		}
 		file->uid = (uid_t) tar_num_dec(header->uid,8);
 		file->gid = (gid_t) tar_num_dec(header->gid,8);
+			vfs_inode_release(file);
 	}
 	heapmm_free(header, sizeof(tar_header_t));
 	return 0;	
