@@ -97,6 +97,7 @@ char *syscall_names[] =
 	"msgrcv",
 	"msgctl",
 	"msgget",
+	"munmap",
 	"chroot"
 };
 
