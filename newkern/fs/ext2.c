@@ -531,7 +531,7 @@ SFUNC(uint32_t, ext2_decode_block_id, ext2_device_t *device, ext2_inode_t *inode
 			THROW(status, 0);
 		}
 		
-		RETURN(indirect_id);
+		RETURN(indirect_rd);
 	}
 
 	RETURN(inode->block[block_id]);
