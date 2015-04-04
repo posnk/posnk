@@ -213,7 +213,7 @@ void ata_initialize(ata_device_t *device)
 		}
 	}
 	ata_set_interrupts(device, 1);
-	ata_interrupt_enabled = 0;//TODO: Hook this somewhere
+	ata_interrupt_enabled = 1;//TODO: Hook this somewhere
 
 	drv = heapmm_alloc(sizeof(blk_dev_t));
 	drv->name = "ATA block driver";
@@ -275,7 +275,7 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 {
 	int st;
 	size_t byte_count = count * 512;
-	int dma =0;//(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
+	int dma =(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
 	ata_setup_lba_transfer(device, drive, lba, count);
 	*(device->int_wait) = 0;
@@ -299,7 +299,7 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 			semaphore_up(device->lock);
 			return 0;
 		}
-		scheduler_wait_micros(system_time_micros + 10);
+		//scheduler_wait_micros(system_time_micros + 10);
 		semaphore_up(device->lock);
 		return 1;
 	} else {
@@ -324,7 +324,7 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 				return 0;
 			}
 		} else {
-			if (ata_poll_wait(device) != 1) {
+			if (ata_poll_wait_resched(device) != 1) {
 				debugcon_printf("ata: device %i:%i PIO read error %i\n", device->bus_number, drive, lba);
 				semaphore_up(device->lock);
 				return 0;
@@ -340,7 +340,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 {
 	int st;
 	size_t byte_count = count * 512;
-	int dma = 0;// (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
+	int dma =  (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
 	*(device->int_wait) = 0;
 	ata_setup_lba_transfer(device, drive, lba, count);
@@ -348,8 +348,6 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 	debugcon_printf("ata: write %i:%i[%x]<-M[%x] * %i blocks, DMA:%i\n", device->bus_number, drive, (uint32_t)lba, buffer,(uint32_t) count, dma);
 #endif
 	if (dma) {
-		st = ata_read_port(device, ATA_STATUS_PORT);
-		debugcon_printf("status before command: %x\n", st);
 		if (device->drives[drive].lba_mode == ATA_MODE_LBA48)
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_WRITE_DMA_EXT);
 		else
@@ -369,7 +367,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 			semaphore_up(device->lock);
 			return 0;
 		}
-		scheduler_wait_micros(system_time_micros + 10);
+		//scheduler_wait_micros(system_time_micros + 10);
 		semaphore_up(device->lock);
 		return 1;
 	} else {
@@ -394,7 +392,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 				return 0;
 			}
 		} else {
-			if (ata_poll_wait(device) != 1) {
+			if (ata_poll_wait_resched(device) != 1) {
 				debugcon_printf("ata: device %i:%i write error %i\n", device->bus_number, drive, lba);
 				semaphore_up(device->lock);
 				return 0;

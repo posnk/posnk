@@ -64,6 +64,13 @@ SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id)
 	status = ifs_load_inode ( device, inode_id, &result );
 	if (status)
 		THROW(status, NULL);
+
+	/* If needed, allocate pipe for FIFO */
+	if (S_ISFIFO(result->mode)) {
+		result->fifo = pipe_create();
+		assert(result->fifo != NULL);
+	}
+
 	//NOTE : Schedule may have happened
 
 	RETURN(vfs_inode_ref(result));
