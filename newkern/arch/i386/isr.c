@@ -75,8 +75,8 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */
 		//earlycon_printf("Unhandled hardware interrupt %i\n", int_id - 32);
-		interrupt_dispatch(int_id - 32);
 		i386_interrupt_done (int_id - 32);
+		interrupt_dispatch(int_id - 32);
 		process_handle_signals();
 	} else if (int_id == I386_EXCEPTION_PAGE_FAULT) {
 		/* Dispatch to page fault handler */
