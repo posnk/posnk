@@ -96,7 +96,8 @@ char *syscall_names[] =
 	"msgsnd",
 	"msgrcv",
 	"msgctl",
-	"msgget"
+	"msgget",
+	"chroot"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -258,4 +259,5 @@ void syscall_init()
 	syscall_register(SYS_MSGRCV, &sys_msgrcv);
 	syscall_register(SYS_MSGCTL, &sys_msgctl);
 	syscall_register(SYS_MSGGET, &sys_msgget);
+	syscall_register(SYS_CHROOT, &sys_chroot);
 }

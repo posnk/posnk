@@ -171,4 +171,6 @@ uint32_t sys_msgctl(uint32_t param[4], __attribute__((__unused__)) uint32_t para
 
 uint32_t sys_msgget(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
 
+uint32_t sys_chroot(uint32_t param[4], uint32_t param_size[4]);
+
 #endif

@@ -173,6 +173,48 @@ int _sys_chdir(char *path)
 	return 0;
 }
 
+int _sys_chroot(char *path)
+{
+	int status;
+	dir_cache_t *dirc;
+
+	status = vfs_find_dirc(path, &dirc);
+	if (status) {
+		syscall_errno = status;
+		return -1;
+	}
+
+	status = vfs_chroot(dirc);
+
+	if (status) {
+		syscall_errno = status;
+		return -1;
+	}
+	vfs_dir_cache_release(dirc);
+
+	return 0;
+}
+
+//int chroot(char *path);
+uint32_t sys_chroot(uint32_t param[4], uint32_t param_size[4])
+{
+	char *path;
+	int status;
+	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+		syscall_errno = EFAULT;
+		return (uint32_t) -1;
+	}
+	path = heapmm_alloc(param_size[0]);
+	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+		syscall_errno = EFAULT;
+		heapmm_free(path, param_size[0]);
+		return (uint32_t) -1;
+	}
+	status = _sys_chroot(path);
+	heapmm_free(path, param_size[0]);
+	return (uint32_t) status;
+}
+
 //int chdir(char *path);
 uint32_t sys_chdir(uint32_t param[4], uint32_t param_size[4])
 {

@@ -198,13 +198,14 @@ OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
 OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.ao) payload_armv7.bo
 OBJS_ARMV7KERNEL = $(SRCS_ARMV7KERNEL:.c=.o) $(ASMS_ARMV7KERNEL:.S=.ao)
 
-OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho) 
+OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho)
+#install_h 
 
 .PHONY: depend clean
 
 default: default_$(ARCH)
 
-default_i386: cdrom_i386 install_h
+default_i386: cdrom_i386 
 
 default_armv7: mmc_armv7
 
