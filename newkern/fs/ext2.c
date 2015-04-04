@@ -888,7 +888,7 @@ SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 	if (m == 0) {
  		//Append new block to the end of the file, split_offset contains the offset of the last dirent
 		hole_size = 1024 << device->superblock.block_size_enc;
-		hole_offset = split_offset;
+		hole_offset = pos;
 		_inode->size += hole_size;
 	}
 
