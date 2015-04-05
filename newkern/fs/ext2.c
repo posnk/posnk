@@ -753,8 +753,8 @@ SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
-		if (in_blk_size > block_size)
-			in_blk_size = block_size;
+		if (in_blk_size > (block_size - in_blk))
+			in_blk_size = block_size - in_blk;
 
 		status = ext2_decode_block_id (device, &(inode->inode), in_file / block_size, &block_addr);
 		if (status)
@@ -817,8 +817,8 @@ SFUNC(aoff_t, ext2_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, 
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
-		if (in_blk_size > block_size)
-			in_blk_size = block_size;
+		if (in_blk_size > (block_size - in_blk))
+			in_blk_size = block_size - in_blk;
 
 		status = ext2_decode_block_id (device, &(inode->inode), in_file / block_size, &block_addr);
 		if (status)
