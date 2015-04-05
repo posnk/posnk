@@ -179,9 +179,6 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	params.return_val = result;
 	params.sc_errno = syscall_errno;
 	copy_kern_to_user(&params, user_param_block, sizeof(syscall_params_t));
-	process_handle_signals();
-	//debugcon_printf("im still alive, yeeaahhh\n");
-	//heapmm_free(params,sizeof(syscall_params_t));
 }
 
 void syscall_init()

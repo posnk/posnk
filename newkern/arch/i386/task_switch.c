@@ -32,7 +32,6 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	eip = i386_get_return_address();
 	if (eip == 0xFFFDCAFE) {
 		/* Back from switch */
-		process_handle_signals();
 		return;
 	}
 	/* Havent switched yet */

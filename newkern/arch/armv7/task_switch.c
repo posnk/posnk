@@ -48,7 +48,6 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 				    );
 	}
 	/* Back from switch */
-	process_handle_signals();
 }
 
 int process_push_user_data(void *data, size_t size)
