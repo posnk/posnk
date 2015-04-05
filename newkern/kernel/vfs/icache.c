@@ -66,6 +66,8 @@ void vfs_icache_initialize()
 
 void vfs_inode_release(inode_t *inode)
 {
+	errno_t status;
+
 	/* Decrease the reference count for this inode */
 	if (inode->usage_count)
 		inode->usage_count--;
@@ -73,6 +75,13 @@ void vfs_inode_release(inode_t *inode)
 	/* If the inode has no more references, destroy it */
 	if (inode->usage_count)
 		return;
+
+	/* Before moving it to cache, sync it to disk */
+	//status = ifs_store_inode( inode );
+
+	//if (status) {
+	//	debugcon_printf("vfs: failed to sync inode (%i)\n", status);
+	//}
 
 	llist_unlink((llist_t *) inode);
 	llist_add_end(inode_cache, (llist_t *) inode);
@@ -176,7 +185,7 @@ int vfs_cache_flush_iterator (llist_t *node, void *param)
 	errno_t status;
 	inode_t *inode = (inode_t *) node;
 	
-	semaphore_down( inode->lock );
+	//semaphore_down( inode->lock );
 
 	status = ifs_store_inode(inode);
 	
@@ -184,7 +193,7 @@ int vfs_cache_flush_iterator (llist_t *node, void *param)
 		debugcon_printf("vfs: error while syncing inode: %i\n", status);
 	}
 
-	semaphore_up( inode->lock );
+	//semaphore_up( inode->lock );
 
 	return 0;		
 }

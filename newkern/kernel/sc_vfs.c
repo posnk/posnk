@@ -127,6 +127,13 @@ uint32_t sys_symlink(uint32_t param[4], uint32_t param_size[4])
 	return (uint32_t) status;
 }
 
+uint32_t sys_sync( __attribute__((__unused__)) uint32_t param[4],  __attribute__((__unused__)) uint32_t param_size[4])
+{
+	vfs_cache_flush();
+	vfs_sync_filesystems();
+	return (uint32_t) device_block_flush_global();
+}
+
 //int vfs_unlink(char *path);
 uint32_t sys_unlink(uint32_t param[4], uint32_t param_size[4])
 {

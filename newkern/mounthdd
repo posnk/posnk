@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo mount -o ro,loop,offset=1048576 hdd.img ../hdd -t ext2
+sudo mount -o rw,loop,offset=1048576 hdd.img ../hdd -t ext2

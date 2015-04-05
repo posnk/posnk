@@ -1290,6 +1290,32 @@ SVFUNC(ext2_mkdir, inode_t *_inode) {
 	THROWV(st);
 }
 
+SVFUNC( ext2_sync, fs_device_t *device )
+{
+	int status;
+	aoff_t	_read_size;
+	ext2_device_t *dev;
+
+	dev = (ext2_device_t *) device;
+
+	status = device_block_write(dev->dev_id, 1024, &(dev->superblock), 1024, &_read_size);
+
+	//TODO: Update alternate superblocks
+
+	if ( status ) {
+		debugcon_printf("ext2: could not write superblock, error:%i, read:%i!\n", status, _read_size);
+		THROWV( status );
+	}
+
+	if (_read_size != 1024) {
+		debugcon_printf("ext2: could not write superblock, read:%i!\n", status, _read_size);
+		THROWV( EIO );
+	}
+
+	RETURNV;	
+
+}
+
 fs_device_operations_t ext2_ops = {
 	&ext2_load_inode,//Load inode
 	&ext2_store_inode,//Store inode
@@ -1302,7 +1328,8 @@ fs_device_operations_t ext2_ops = {
 	&ext2_mkdir,//Make directory
 	&ext2_link,//Make directory entry
 	NULL,//Remove directory entry
-	&ext2_trunc_inode //Change file length
+	&ext2_trunc_inode, //Change file length
+	&ext2_sync
 };
 
 SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
