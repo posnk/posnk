@@ -393,6 +393,6 @@ SVFUNC( ifs_sync, fs_device_t *device )
 	}
 
 	/* Call the driver */
-	CHAINRETV( device->ops->sync_inode, device );
+	CHAINRETV( device->ops->sync, device );
 }
 

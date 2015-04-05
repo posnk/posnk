@@ -1841,8 +1841,9 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 	fs_device_t *fsdevice;
 	inode_t *root_inode;
 	int status;
+	
+	vfs_mount_initialize();
 
-	//TODO: Track mounted devices
 	vfs_icache_initialize();
 	
 	vfs_ifsmgr_initialize();
@@ -1862,6 +1863,7 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 	status = driver->mount(root_device,  0, &fsdevice);
 
 	if (status) {
+
 		//TODO: Panic here  : "Could not mount rootfs"
 
 		return 0;
@@ -1874,6 +1876,8 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 	if (status)
 		return 0;
 	
+	//TODO: Register rootfs mountpoint
+
 	/* Add the root inode to it */
 	vfs_inode_cache(root_inode);
 
@@ -1930,6 +1934,103 @@ int vfs_chroot(dir_cache_t *dirc)
 	scheduler_current_task->root_directory = vfs_dir_cache_ref(dirc);
 
 	return 0;
+}
+
+/**
+ * @brief Mount a filesystem
+ * @param device The path of the block special file the fs resides on
+ * @param mountpoint The directory to mount the fs on
+ * @param fstype The filesystem driver to use e.g.: ext2, ramfs
+ * @param flags  Options for mounting the fs that are passed to the fs driver
+ * @return In case of error: a valid error code, Otherwise 0
+ *
+ * @exception EFAULT Atleast one parameter was a NULL pointer
+ * @exception ENOENT A file does not exist
+ * @exception EINVAL An error occurred mounting the filesystem
+ * @exception ENOTDIR The mount point is not a directory
+ * @exception ENOTBLK The special file is not a block special file
+ */
+
+SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
+{
+	fs_driver_t *driver;
+	inode_t	    *mp_inode;
+	inode_t	    *dev_inode;
+	errno_t	     status;
+
+	/* Check for null pointers */
+	assert (device != NULL);
+	assert (mountpoint != NULL);
+
+	/* Look up the inode for the mountpoint */
+	status = vfs_find_inode(mountpoint, &mp_inode);
+
+	/* Check if it exists */
+	if (status) 
+		THROWV( status );
+
+	/* Look up the inode for the special file */
+	status = vfs_find_inode(device, &dev_inode);
+	
+	/* Check if it exists */
+	if (status) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		THROWV( status );
+	}
+
+	/* Check if it is a block special file */
+	if (!S_ISBLK(dev_inode->mode)) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
+		THROWV( ENOTBLK );
+	}
+	
+	/* Look up the fs driver */	
+	status = vfs_get_driver ( fstype, &driver ) ;
+
+	/* Check if it exists */
+	if ( status ) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
+		THROWV( status );
+	}
+
+	/* Mount the filesystem */
+	status = vfs_do_mount( driver, dev_inode->if_dev, mp_inode, flags );
+	
+	/* Check for errors */	
+	if (status) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		/* Release the special file inode */
+		vfs_inode_release(dev_inode);
+
+		THROWV( status ); //TODO: Unmount
+	}
+
+	/* Release the mountpoint inode */
+	vfs_inode_release(mp_inode);
+
+	/* Release the special file inode */
+	vfs_inode_release(dev_inode);
+
+	/* Return success */
+	RETURNV;
 }
 
 

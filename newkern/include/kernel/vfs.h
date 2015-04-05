@@ -83,11 +83,18 @@ typedef struct fs_device fs_device_t;
  * @see fs_device_operations
  */
 typedef struct fs_device_operations fs_device_operations_t;
+
 /**
  * @brief A filesystem driver descriptor
  * @see fs_driver
  */
 typedef struct fs_driver fs_driver_t;
+
+/**
+ * @brief A filesystem mount descriptor
+ * @see fs_mount
+ */
+typedef struct fs_mount fs_mount_t;
 
 /**
  * Describes a file currently cached by the kernel
@@ -393,6 +400,26 @@ struct fs_driver {
 	SFUNCPTR(fs_device_t *, mount, dev_t, uint32_t);
 };
 
+/**
+ * @brief A mounted filesystem descriptor
+ * 
+ * This structure describes a filesystem that has been mounted at a mountpoint
+ *
+ */
+struct fs_mount {
+
+	/** Linked list node */
+	llist_t		 link;
+
+	/** Filesystem device */
+	fs_device_t	*device;
+
+	/** Mountpoint */
+	inode_t		*mountpoint;
+
+};
+
+
 /** @name VFS API
  *  Public VFS functions
  */
@@ -478,6 +505,7 @@ SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset,
 SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
+SVFUNC( ifs_sync, fs_device_t *device );
 SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
 SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
 SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir,char * path,int flags,
@@ -491,10 +519,12 @@ SFUNC(inode_t *, vfs_find_inode, char * path);
 SFUNC(inode_t *, vfs_find_symlink, char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
+SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uint32_t flags);
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
 SVFUNC( vfs_register_fs, 
 		const char *name, 
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
 void vfs_ifsmgr_initialize( void );
+void vfs_mount_initialize ( void );
 #endif
 

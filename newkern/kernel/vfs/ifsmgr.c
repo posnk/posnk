@@ -1,7 +1,7 @@
 /**
  * @file kernel/vfs/ifsmgr.c
  *
- * Provides wrappers around the filesystem driver interface.
+ * Manages IFS drivers.
  *
  * Part of P-OS kernel.
  *
@@ -27,6 +27,7 @@
 #include "kernel/heapmm.h"
 
 #include <string.h>
+
 /* Global Variables */
 
 /** Filesystem driver list */
@@ -114,7 +115,7 @@ int vfs_mount_iterator (llist_t *node, void *param) {
  * @param fstype The filesystem driver to use e.g.: ext2, ramfs
  * @return A filesystem driver descriptor
  *
- * @exception ENOENT A file does not exist
+ * @exception ENODEV Unknown driver type
  */
 
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype)
@@ -130,130 +131,9 @@ SFUNC(fs_driver_t *, vfs_get_driver, char *fstype)
 	/* Check if it exists */
 	if (!driver) {
 
-		THROW( ENOENT, NULL );
+		THROW( ENODEV, NULL );
+
 	}
 
 	RETURN(driver);
-}
-
-/**
- * @brief Mount a filesystem
- * @param device The path of the block special file the fs resides on
- * @param mountpoint The directory to mount the fs on
- * @param fstype The filesystem driver to use e.g.: ext2, ramfs
- * @param flags  Options for mounting the fs that are passed to the fs driver
- * @return In case of error: a valid error code, Otherwise 0
- *
- * @exception EFAULT Atleast one parameter was a NULL pointer
- * @exception ENOENT A file does not exist
- * @exception EINVAL An error occurred mounting the filesystem
- * @exception ENOTDIR The mount point is not a directory
- * @exception ENOTBLK The special file is not a block special file
- */
-
-SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
-{
-	fs_driver_t *driver;
-	fs_device_t *fsdevice;
-	inode_t	    *mp_inode;
-	inode_t	    *dev_inode;
-	errno_t	     status;
-
-	/* Check for null pointers */
-	assert (device != NULL);
-	assert (mountpoint != NULL);
-
-	/* Look up the inode for the mountpoint */
-	status = vfs_find_inode(mountpoint, &mp_inode);
-
-	/* Check if it exists */
-	if (status) 
-		THROWV( status );
-
-	/* Check if it is a directory */
-	if (!S_ISDIR(mp_inode->mode)) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		THROWV( status );
-	}
-
-	/* Look up the inode for the special file */
-	status = vfs_find_inode(device, &dev_inode);
-	
-	/* Check if it exists */
-	if (status) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		THROWV( status );
-	}
-
-	/* Check if it is a block special file */
-	if (!S_ISBLK(dev_inode->mode)) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
-
-		THROWV( ENOTBLK );
-	}
-	
-	/* Look up the fs driver */	
-	driver = (fs_driver_t *) llist_iterate_select(&vfs_fs_driver_list, &vfs_mount_iterator, fstype);
-
-	/* Check if it exists */
-	if (!driver) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
-
-		THROWV( ENOENT );
-	}
-
-	/* Mount the filesystem */
-	status = driver->mount(dev_inode->if_dev, flags, &fsdevice);
-	
-	/* Check for errors */
-	if (status) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
-
-		THROWV( status );
-	}
-		
-	/* Attach the filesystems root inode to the mountpoint */
-	status = ifs_load_inode(fsdevice, fsdevice->root_inode_id, &(mp_inode->mount));	
-	
-	/* Check for errors */	
-	if (status) {
-
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
-
-		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
-
-		THROWV(status ); //TODO: Unmount
-	}
-
-	/* Release the mountpoint inode */
-	vfs_inode_release(mp_inode);
-
-	/* Release the special file inode */
-	vfs_inode_release(dev_inode);
-
-	/* Return success */
-	RETURNV;
 }
