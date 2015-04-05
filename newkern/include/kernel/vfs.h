@@ -526,5 +526,6 @@ SVFUNC( vfs_register_fs,
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
 void vfs_ifsmgr_initialize( void );
 void vfs_mount_initialize ( void );
+void vfs_sync_filesystems( void );
 #endif
 

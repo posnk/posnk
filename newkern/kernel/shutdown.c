@@ -19,6 +19,8 @@ void shutdown()
 {
 	earlycon_printf("Flushing inode cache...");
 	vfs_cache_flush();
+	earlycon_printf("OK\nSynchronizing filesystems...");
+	vfs_sync_filesystems();
 	earlycon_printf("OK\nFlushing block cache...");
 	if (device_block_flush_global())
 		earlycon_printf("FAILED\n");

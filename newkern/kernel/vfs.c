@@ -2034,7 +2034,5 @@ SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
 }
 
 
-
-
 ///@}
 
