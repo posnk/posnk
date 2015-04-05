@@ -673,10 +673,10 @@ SVFUNC(ext2_shrink_inode, ext2_device_t *device, ext2_inode_t *inode, aoff_t old
 		in_blk = in_file % block_size;				
 		in_blk_size = length - count;
 
-		if (in_blk_size > block_size)
-			in_blk_size = block_size;
+		if (in_blk_size > (block_size - in_blk))
+			in_blk_size = block_size - in_blk;
 	
-		if ((in_blk || (in_blk_size != block_size)))
+		if (in_blk_size != block_size)
 			continue;
 	
 		status = ext2_decode_block_id (device, inode, in_file / block_size, &block_addr);
@@ -761,7 +761,7 @@ SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 			THROW(status, 0);
 
 		if (!block_addr) {
-			debugcon_printf("ext2: growing file!\n");
+			//debugcon_printf("ext2: growing file!\n");
 			status = ext2_alloc_block(device, p_block_addr, &block_addr);
 			if (status) 
 				THROW(status, 0);
@@ -1237,7 +1237,7 @@ SVFUNC(ext2_store_inode,inode_t *_inode) {
 
 	ext2_vfstoe2_inode(inode, _inode->id);
 
-	debugcon_printf("ext2: storing inode %i\n", _inode->id);
+	//debugcon_printf("ext2: storing inode %i\n", _inode->id);
 
 	CHAINRETV(ext2_store_e2inode, device, &(inode->inode), _inode->id);
 }
