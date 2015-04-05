@@ -372,3 +372,27 @@ SVFUNC( ifs_truncate, inode_t * inode, aoff_t size )
 	CHAINRETV( inode->device->ops->trunc_inode, inode, size);
 }
 
+/**
+ * @brief  Call on the fs driver to synchronize its metadata
+ * @see fs_device_operations
+ * 
+ * @param device	The driver instance to operate on
+ *
+ * @exception ENOTSUP This driver does not support this function.
+ */
+
+SVFUNC( ifs_sync, fs_device_t *device )
+{
+	/* This function is implemented by the FS driver */
+	assert (device != NULL);
+
+	/* Check if the driver supports truncate */
+	if (!device->ops->sync) {
+		/* If not: return the error "Operation not supported" */
+		THROWV(ENOTSUP);
+	}
+
+	/* Call the driver */
+	CHAINRETV( device->ops->sync_inode, device );
+}
+

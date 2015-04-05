@@ -1,0 +1,2 @@
+losetup hdd.img -o 1048576 --sizelimit 1073741312
+losetup -f --show hdd.img -o 1048576 --sizelimit 1073741312

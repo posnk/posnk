@@ -300,6 +300,7 @@ int process_exec(char *path, char **args, char **envs)
 	if (status) {
 		debugcon_printf("error loading elf %s\n",path);
 		process_send_signal(scheduler_current_task, SIGSYS);
+		process_handle_signals();
 		schedule();
 		return status;	//NEVER REACHED
 	}
@@ -312,6 +313,7 @@ int process_exec(char *path, char **args, char **envs)
 	if (status) {
 		debugcon_printf("error mmapping stuff\n");
 		process_send_signal(scheduler_current_task, SIGSYS);
+		process_handle_signals();
 		schedule();
 		return status;	//NEVER REACHED
 	}

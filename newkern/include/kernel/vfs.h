@@ -334,6 +334,16 @@ struct fs_device_operations {
 	 * @param size	      The new size of the file
 	 */
 	SVFUNCPTR( trunc_inode, inode_t *, aoff_t );
+
+	/**
+	 * @brief Synchronize the filesystem
+	 *
+         * Implementations must flush any global metadata to backing storage
+	 * 
+	 * @param inode       The inode for the file
+	 * @param size	      The new size of the file
+	 */
+	SVFUNCPTR( sync, fs_device_t * );
 };
 
 /** 

@@ -159,9 +159,12 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {	
 		debugcon_printf("Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x\n",scheduler_current_task->name,curpid(), instr_ptr, user_param_block);
 		process_send_signal(scheduler_current_task, SIGSEGV);
+		return;
 	}
-	if ((params.magic != SYSCALL_MAGIC) || (params.call_id > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[params.call_id] == NULL)
+	if ((params.magic != SYSCALL_MAGIC) || (params.call_id > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[params.call_id] == NULL) {
 		process_send_signal(scheduler_current_task, SIGSYS);
+		return;
+	}
 	syscall_errno = 0;
 #ifdef CONFIG_SYSCALL_DEBUG
 	call = params.call_id;
