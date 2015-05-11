@@ -6,7 +6,7 @@
 void debugcon_init() {
    i386_outb(PORT + 1, 0x00);    // Disable all interrupts
    i386_outb(PORT + 3, 0x80);    // Enable DLAB (set baud rate divisor)
-   i386_outb(PORT + 0, 0x03);    // Set divisor to 3 (lo byte) 38400 baud
+   i386_outb(PORT + 0, 0x06);    // Set divisor to 3 (lo byte) 38400 baud
    i386_outb(PORT + 1, 0x00);    //                  (hi byte)
    i386_outb(PORT + 3, 0x03);    // 8 bits, no parity, one stop bit
    i386_outb(PORT + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold

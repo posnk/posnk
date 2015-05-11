@@ -23,7 +23,7 @@ int heapdbg_up =0;
 
 void kdbg_enable_memuse()
 {
-	heapdbg_up = 1;
+	//heapdbg_up = 1;
 }
 
 void kdbg_init_memuse(){
@@ -33,6 +33,7 @@ void kdbg_init_memuse(){
 
 void dbgapi_register_memuse(void *addr, size_t size)
 {
+	asm("cli;");
 	//kdbg_printf("A|%x|%x\n",addr,size);
 	if (!heapdbg_up)
 		return;
@@ -64,7 +65,7 @@ void kdbg_print_memuse_brdr(void *addr)
 	if (!use) {
 		kdbg_printf("Address not in use: 0x%x\n",addr);
 		use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_bf_iterator, addr);
-		//return;	
+		return;	
 	}
 	kdbg_printf("  Memory region 0x%x - 0x%x used by:\n", use->start, use->start + use->size);
 	kdbg_print_calltrace(use->calltrace);
@@ -79,6 +80,7 @@ void kdbg_print_memuse_brdr(void *addr)
 
 void dbgapi_unreg_memuse(void *addr, size_t size)
 {
+	asm("cli;");
 	//kdbg_printf("F|%x|%x\n",addr,size);
 	
 	if (!heapdbg_up)

@@ -55,7 +55,9 @@ void dlheapmm_abort()
  */
 void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
 {
-	return dlmemalign((size_t) alignment, size);
+	void *address = dlmemalign((size_t) alignment, size);
+	dbgapi_register_memuse(address,size);
+	return address;
 }
 
 /**
@@ -63,7 +65,9 @@ void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
  */
 void *heapmm_alloc(size_t size) 
 {
-	return dlmalloc(size);
+	void *address = dlmalloc(size);
+	dbgapi_register_memuse(address,size);
+	return address;
 }
 
 
@@ -81,6 +85,7 @@ void *heapmm_alloc_page()
 void  heapmm_free(void *address, __attribute__((__unused__)) size_t size) 
 {
 	dlfree(address);
+	dbgapi_unreg_memuse(address,size);
 }
 
 /**

@@ -30,6 +30,7 @@ void kdbg_initialize()
 	}
 
 	kdbgmm_init((void *)0xE8000000, initial_heap);
+			kdbg_enable_memuse();
 }
 
 void kdbg_enter()
