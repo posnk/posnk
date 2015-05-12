@@ -61,6 +61,11 @@
 typedef struct inode inode_t;
 
 /**
+ * @brief Describes an open file
+ */
+typedef struct file file_t;
+
+/**
  * @brief An entry in the path element cache
  * @see dirent
  */
@@ -142,6 +147,25 @@ struct inode {
 };
 
 /**
+ * Represents an open file
+ */
+struct file {
+	
+	/** Linkedlist node */
+	llist_t		 node;
+	
+	/** Inode reference */
+	inode_t		*inode;
+
+	/** Lock */
+	semaphore_t	*lock;
+
+	/** IFS state pointer */
+	void		*state;
+
+};
+
+/**
  * Describes a directory entry in a portable FS independent format
  */
 struct dirent {
@@ -184,6 +208,32 @@ struct dir_cache {
  * fs_device
  */
 struct fs_device_operations {
+
+	/**
+	 * @brief Request a handle to a file
+	 *
+	 * REQUIRED
+	 *
+	 * Implementations of this function must provide an UNIQUE file handle
+	 * for the kernel to use.
+	 * 
+	 * @param inode		The inode to open
+	 * @param flags		Flags setting options for the created object
+	 * @return The opened file
+	 */
+	SFUNCPTR( file_t *, open, inode_t *, int flags );
+
+	/** 
+	 * @brief Close a file handle
+	 * 
+	 * REQUIRED
+	 * 
+	 * Implementations of this function must clean up all resources 
+	 * associated with the handle.
+	 *
+	 * @param file The file to close
+	 */
+	SVFUNCPTR( close, file_t * );
 
 	/**
 	 * @brief Load an inode from storage
@@ -238,13 +288,13 @@ struct fs_device_operations {
 	 * this function
          * @note The VFS will adjust count so that the whole requested area is 
 	 * in the file
-	 * @param inode       The inode for the file
+	 * @param file        The file handle to operate on
 	 * @param buffer      The buffer to store the data in
 	 * @param file_offset The offset in the file to start reading at
 	 * @param count       The number of bytes to read
 	 * @return The number of bytes read
 	 */
-	SFUNCPTR( aoff_t, read_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
+	SFUNCPTR( aoff_t, read, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
 
 	/**
 	 * @brief Write data to a file
@@ -253,13 +303,13 @@ struct fs_device_operations {
 	 * this function
          *
          * @note The VFS layer will automatically adjust file size\n
-	 * @param inode       The inode for the file
+	 * @param file	      The file handle to operate on
 	 * @param buffer      The buffer containing the data to write
 	 * @param file_offset The offset in the file to start writing at
 	 * @param count       The number of bytes to write
 	 * @return The number of bytes written
 	 */
-	SFUNCPTR( aoff_t, write_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
+	SFUNCPTR( aoff_t, write, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
 
 	/**
 	 * @brief Read directory entries from backing storage
@@ -269,13 +319,13 @@ struct fs_device_operations {
 	 * this function
 	 * @warning Implementations must only return whole directory entries
 	 * 
-	 * @param inode       The inode for the directory
+	 * @param file        The file handle to operate on
 	 * @param buffer      The buffer to store the entries in
 	 * @param file_offset The offset in the directory to start reading at
 	 * @param count       The number of bytes to read
 	 * @return The number of bytes read
 	 */
-	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
+	SFUNCPTR( aoff_t, read_dir, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
 
 	/** 
 	 * @brief Find a directory entry
@@ -284,12 +334,12 @@ struct fs_device_operations {
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
 	 * 
-	 * @param inode The directory to search
+	 * @param file  The directory to search
 	 * @param name  The filename to match
 	 * @return The directory entry matching name from the directory inode, 
 	 *          if none, NULL is returned
 	 */
-	SFUNCPTR( dirent_t *, find_dirent, inode_t *, char * );	//dir_inode_id, filename -> dirent_t  
+	SFUNCPTR( dirent_t *, find_dirent, file_t *, char * );	//dir_inode_id, filename -> dirent_t  
 
 	/**
 	 * @brief Create directory structures

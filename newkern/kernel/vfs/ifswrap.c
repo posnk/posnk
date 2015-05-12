@@ -31,6 +31,53 @@
 
 /* Public Functions */
 
+/**
+ * @brief Call on the fs driver to request a file handle
+ * @see fs_device_operations
+ * 
+ * @param inode The inode to open
+ * @param flags Flags for the created object
+ * @return The opened file 
+ *
+ * @exception ENOTSUP The driver does not support this function
+ */
+SFUNC( file_t *, ifs_open, inode_t * inode, int flags )
+{
+	/* This function is implemented by the FS driver */
+	assert ( inode != NULL );
+
+	/* Check if the driver supports open */
+	if ( inode->device->ops->open == NULL )
+		THROW( ENOTSUP, NULL );
+
+	/* Call the driver */	
+	CHAINRET( inode->device->ops->open, inode, flags );
+
+}
+
+/**
+ * @brief Call on the fs driver to close a file
+ * @see fs_device_operations
+ *
+ * @param file  The file to close
+ * 
+ * @exception ENOTSUP The driver does not support this function
+ */
+SVFUNC ( ifs_close, file_t * file )
+{
+	
+	/* This function is implemented by the FS driver */
+	assert ( inode != NULL );
+
+	/* Check if the driver supports close */
+	if ( inode->device->ops->close == NULL )
+		THROW( ENOTSUP, NULL );
+
+	/* Call the driver */	
+	CHAINRET( inode->device->ops->close, file );
+
+}
+
 /** 
  * @brief Call on the fs driver to load an inode
  * @see fs_device_operations
@@ -179,7 +226,7 @@ SVFUNC( ifs_mkdir, inode_t * inode)
  * @exception ENOTSUP This driver does not support this function.
  */
  
-SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, char * name)
+SFUNC(dirent_t *, ifs_find_dirent, file_t * inode, char * name)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -258,7 +305,7 @@ SVFUNC( ifs_unlink, inode_t * inode , char * name )
  * @brief  Call on the fs driver to read directory entries from backing storage
  * @see fs_device_operations
  * 
- * @param inode       The inode for the directory
+ * @param inode       The inode for the directo
  * @param buffer      The buffer to store the entries in
  * @param file_offset The offset in the directory to start reading at
  * @param count       The number of bytes to read
@@ -267,14 +314,14 @@ SVFUNC( ifs_unlink, inode_t * inode , char * name )
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_read_dir, file_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
-	assert ( inode != NULL );
+	assert ( file != NULL );
 	assert ( buffer != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->read_dir ) {
+	if ( ! file->inode->device->ops->read_dir ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROW( ENOTSUP, 0 );
@@ -282,7 +329,7 @@ SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset,
 	}
 
 	/* Call the driver */
-	CHAINRET( inode->device->ops->read_dir, inode, buffer, file_offset, count );
+	CHAINRET( file->inode->device->ops->read_dir, file, buffer, file_offset, count );
 }
 
 /**
