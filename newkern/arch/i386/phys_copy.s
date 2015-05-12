@@ -20,7 +20,7 @@ i386_phys_copy_frame:
 
 	pushfd ; Preserve flags
 
-	; Disable interrupts as we are going to kill the processors ability to access RAM
+	; Disable interrupts as awe are going to kill the processors ability to access RAM
 
 	cli
  

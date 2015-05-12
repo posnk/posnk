@@ -146,6 +146,10 @@ struct inode {
 	ktime_t		 ctime;
 };
 
+typedef struct file_vtab {
+	SVMDECL
+} file_vtab_t;
+
 /**
  * Represents an open file
  */
@@ -164,6 +168,10 @@ struct file {
 	void		*state;
 
 };
+
+/**
+ * 
+ */
 
 /**
  * Describes a directory entry in a portable FS independent format
