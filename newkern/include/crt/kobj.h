@@ -14,12 +14,33 @@
 #ifndef __KOBJ_H__
 #define __KOBJ_H__
 
-#include <sys/error.h>
+#include <sys/errno.h>
 
 errno_t kobj_handle_pure_call(	const char *	file,
 				int		line,
 				const char *	obj_expr,
 				const char *	mthd_name );
+
+#define class_decl(ClAsS)	typedef struct ClAsS ## _tag ClAsS
+
+#define class_defn(ClAsS)	typedef struct ClAsS ## _tag ClAsS;\
+				typedef struct ClAsS ## _vtab 
+
+#define method_end(ClAsS)	} ClAsS ## _vtab_t; \
+				struct ClAsS ## _tag { \
+					ClAsS ## _vtab_t *_vtab
+
+#define method_end_o(ClAsS, OveR)	} ClAsS ## _vtab_t; \
+				struct ClAsS ## _tag { \
+					OveR	_override; \
+					ClAsS ## _vtab_t *_vtab
+
+#define class_impl(ClAsS, NaMe) ClAsS ## _vtab_t NaMe ## _vtab = 
+#define method_impl(MeThD, ImPl)	.MeThD = ImPl
+
+#define class_init(ObJ, ImPl)	do { \
+					(ObJ)->_vtab = &ImPl ## _vtab; \
+				} while (0);
 
 #define SMCALL(ObJ, RetVal, FuNc, ...)  ( ((ObJ)->_vtab->FuNc == 0) ? \
 	(kobj_handle_pure_call(__FILE__, __LINE__, #ObJ, #FuNc)) : \
@@ -43,8 +64,14 @@ errno_t kobj_handle_pure_call(	const char *	file,
 
 #define SVMIMPL(ClAsS, NaMe, ...)  	errno_t NaMe(	ClAsS *_this, __VA_ARGS__ )
 
-#define SMDECL(TyPe, ClAsS, NaMe, ...)  errno_t (*NaMe)( ClAsS *, __VA_ARGS__, RETURN_VALUE(TyPe))
+#define SMDECL(TyPe, ClAsS, NaMe, ...)  errno_t (*NaMe)( ClAsS *, __VA_ARGS__,\
+															RETURN_VALUE(TyPe))
+
+#define SNMDECL(TyPe, ClAsS, NaMe)  errno_t (*NaMe)( ClAsS *, \
+															RETURN_VALUE(TyPe))
 
 #define SVMDECL(ClAsS, NaMe, ...)  	errno_t (*NaMe)(ClAsS *, __VA_ARGS__)
+
+#define SOMDECL(ClAsS, NaMe)  		errno_t (*NaMe)(ClAsS *)
 
 #endif

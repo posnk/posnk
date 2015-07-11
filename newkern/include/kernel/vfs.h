@@ -26,6 +26,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
+#include <kobj.h>
 
 /**
  * @defgroup vfs VFS
@@ -36,7 +37,7 @@
  */
 
 #define PATHRES_FLAG_NOSYMLINK	(1<<0)
-#define PATHRES_FLAG_PARENT	(1<<1)
+#define PATHRES_FLAG_PARENT		(1<<1)
 
 
 /**
@@ -55,111 +56,325 @@
 #define MODE_EXEC  1
 
 /**
- * @brief Describes a file currently cached by the kernel
- * @see inode
+ * @brief Type for filenames, maps to char * for now.
+ * 
  */
-typedef struct inode inode_t;
+typedef char *		fname_t;
 
 /**
- * @brief Describes an open file
+ * @brief Type for the flags parameter passed to FileHandle.read
+ * Describes any important options that should be adhered to by the impl.
  */
-typedef struct file file_t;
+typedef uint32_t	rflag_t;
 
 /**
- * @brief An entry in the path element cache
- * @see dirent
+ * @brief Type for the flags parameter passed to FileHandle.write
+ * Describes any important options that should be adhered to by the impl.
  */
-typedef struct dirent dirent_t;
+typedef uint32_t	wflag_t;
 
 /**
- * @brief An entry in the path element cache
- * @see dir_cache
+ * @brief Type for the flags parameter passed to FileHandle.map
+ * Describes any important options that should be adhered to by the impl.
  */
-typedef struct dir_cache dir_cache_t;
-
-/** 
- * @brief An instance of a filesystem driver 
- * @see fs_device
- */
-typedef struct fs_device fs_device_t;
-
-/** 
- * @brief Contains callbacks for all filesystem driver functions 
- * @see fs_device_operations
- */
-typedef struct fs_device_operations fs_device_operations_t;
+typedef uint32_t	mflag_t;
 
 /**
- * @brief A filesystem driver descriptor
- * @see fs_driver
+ * @brief Type for the flags parameter passed to pathresolution routines
+ * Describes any important options that should be adhered to by the impl.
  */
-typedef struct fs_driver fs_driver_t;
+typedef uint32_t	fflag_t;
 
 /**
- * @brief A filesystem mount descriptor
- * @see fs_mount
+ * @brief Type for the flags parameter passed to <VFSObject>.open
+ * Describes any important options that should be adhered to by the impl.
  */
-typedef struct fs_mount fs_mount_t;
+typedef uint32_t	oflag_t;
 
 /**
- * Describes a file currently cached by the kernel
+ * @brief Type for the flags parameter passed to Directory.create_*
+ * Describes any important options that should be adhered to by the impl.
  */
-struct inode {	
-	/** Linked list node */
-	llist_t		 node;
-	/* Inode */
-	/** Inode ID */
-	ino_t		 id;
-	/** Block device this inode resides on */
-	uint32_t	 device_id;
-	/** Filesystem device this inode resides on */
-	fs_device_t	*device;
-	/** Number of hard links to this file */
-	nlink_t 	 hard_link_count;
-	/* Permissions */
-	/** Owner UID */
-	uid_t	 	 uid;
-	/** Owner GID */
-	gid_t	 	 gid;
-	/** File mode, see stat.h */
-	umode_t	 	 mode;
-	/* Special file */
-	/** Device id for special files */
-	dev_t	 	 if_dev;
-	/** FIFO pipe back end */
-	pipe_info_t 	*fifo;
-	/** Mounted filesystem root inode */
-	inode_t	 	*mount;
-	/** Lock */
-	semaphore_t 	*lock;
-	/** Reference count (for GC)*/
-	uint32_t 	 usage_count;
-	/** Open stream count */
-	uint32_t	 open_count;
-	/** File size */
-	aoff_t	 	 size;	
-	/** Access time */
-	ktime_t		 atime; 
-	/** Modification time */
-	ktime_t		 mtime;
-	/** Metadata modification time */
-	ktime_t		 ctime;
+typedef uint32_t	cflag_t;
+
+/**
+ * @brief Type for the flags parameter passed to Directory.remove_file
+ * Describes any important options that should be adhered to by the impl.
+ */
+typedef uint32_t	dflag_t;
+
+/**
+ * @brief Type for the flags parameter passed to Filesystem.unmount
+ * Describes any important options that should be adhered to by the impl.
+ */
+typedef uint32_t	uflag_t;
+
+/**
+ * @brief Type for the flags parameter passed to FSDriver.mount
+ * Describes any important options that should be adhered to by the impl.
+ */
+typedef uint32_t	mflag_t;
+
+class_decl(FSDriver);
+class_decl(FSPermissions);
+class_decl(Directory);
+class_decl(File);
+class_decl(FileHandle);
+class_decl(DirHandle);
+class_decl(Filesystem);
+
+/**
+ * Describes a filesystem driver
+ */
+class_defn(FSDriver)
+{
+
+	/**
+	 * Destroy the object
+	 */
+	SOMDECL(FSDriver, destroy);	
+	
+	/**
+	 * Mount a filesystem
+	 * @param target	String specifying the filesystem to mount
+	 * @param flags		Options indicating how to mount the filesystem
+	 */
+	SMDECL(Filesystem *, FSDriver, mount_named, 
+						fname_t	/* target */,
+						mflag_t /* flags */
+			);	
+	
+	/**
+	 * Mount a filesystem
+	 * @param target	Block device id specifying the filesystem to mount
+	 * @param flags		Options indicating how to mount the filesystem
+	 */
+	SMDECL(Filesystem *, FSDriver, mount_device, 
+						dev_t	/* target */,
+						mflag_t /* flags */
+			);	
+	
+	method_end_o(Filesystem, llist_t);
+	
+	/** The name of this filesystem */
+	fname_t		 name;
+	
+	/** Implementation specific data */
+	void		*impl;
+	
+	/** Number of mounted instances of this driver */
+	int			 mntcount;
+	
 };
 
-typedef struct file_vtab {
-	SVMDECL
-} file_vtab_t;
+/**
+ * Describes a filesystem
+ */
+class_defn(Filesystem)
+{
+
+	/**
+	 * Destroy the object
+	 */
+	SOMDECL(Filesystem, destroy);	
+	
+	/**
+	 * Unmount the filesystem
+	 * @param flags	Options indicating how to unmount the filesystem
+	 */
+	SVMDECL(Filesystem, unmount, 
+						uflag_t /* flags */
+			);
+	
+	/**
+	 * Attach the filesystem
+	 * @param mountpoint	The mountpoint to attach the filesystem to
+	 */
+	SVMDECL(Filesystem, attach, 
+						Directory * /* mountpoint */
+			);	
+	
+	method_end_o(Filesystem, llist_t);
+	
+	/** Implementation specific data */
+	void		*impl;
+	
+	/** Root directory */
+	Directory	*root;
+	
+	/**
+	 * Mount point 
+	 * @note This is NULL before the file system is attached to a mountpoint
+	 * @note This is also NULL for the root file system
+	 */
+	Directory	*mountpoint;
+		
+	/** Driver reference */
+	FSDriver	*driver;
+	
+};
+
+/**
+ * Describes a file's permissions
+ */
+class_defn(FSPermissions) {
+
+	/**
+	 * Tries to access the file
+	 * @param		read	Whether to try a read access
+	 * @param		write	Whether to try a write access
+	 * @param		exec	Whether to try an execute access
+	 * @exception	EACCES	The current user does not have sufficient rights to
+	 * 						access the file
+	 */
+	SVMDECL(FSPermissions, access, int read, int write, int exec);	
+
+	/**
+	 * Set the owning user
+	 * @param		uid		The user id of the new owner
+	 */
+	SVMDECL(FSPermissions, set_owner_uid, uid_t);
+
+	/**
+	 * Set the owning group
+	 * @param		gid		The group id of the new owner
+	 */
+	SVMDECL(FSPermissions, set_owner_gid, gid_t);
+
+	/**
+	 * Set object to match the UNIX permissions field passed
+	 * @param		mode	The UNIX permissions field to be set
+	 */
+	SVMDECL(FSPermissions, set_unix_perm, umode_t);
+
+	/**
+	 * Destroy the object
+	 */
+	SOMDECL(FSPermissions, destroy);	
+	
+	method_end(FSPermissions);
+	
+	/** Implementation specific data */
+	void		*impl;
+	
+}
 
 /**
  * Represents an open file
  */
-struct file {
+class_defn(FileHandle) {
+
+	/**
+	 * Close a file handle
+	 */
+	SOMDECL(FileHandle, close);
+
+	/**
+	 * Read synchronously from a file
+	 * 
+	 * @param buffer The buffer to load the file's contents into
+	 * @param offset The offset in the file to read
+	 * @param length The number of bytes to read
+	 * @param flags	 Options for reading the file
+	 * @return The number of bytes actually read
+	 */
+	SMDECL(aoff_t, FileHandle, read, 
+					void *  /* buffer */,   
+					aoff_t  /* offset */,
+					aoff_t  /* length */,
+					rflag_t /* flags */
+				);
+				
+	/**
+	 * Write synchronously to a file
+	 * 
+	 * @param buffer The buffer to load the file's contents into
+	 * @param offset The offset in the file to read
+	 * @param length The number of bytes to read
+	 * @param flags	 Options for writing the file
+	 * @return The number of bytes actually read
+	 */
+	SMDECL(aoff_t, FileHandle, write, 
+					void *  /* buffer */,   
+					aoff_t  /* offset */,
+					aoff_t  /* length */,
+					wflag_t /* flags */
+				);
+				
+	/**
+	 * Map a file to the process memory space
+	 * @param target The address to map the file range to
+	 * @param offset The offset in the file to map there
+	 * @param length The number of bytes to map
+	 * @param flags	 Options for mapping the file
+	 */
+	SVMDECL(FileHandle,	map,
+					void *  /* target */,
+					aoff_t	/* offset */,
+					aoff_t	/* length */,
+					mflag_t	/* flags */
+				);
+
+	/**
+	 * Unmap a file from the process memory space
+	 * @param target The address the file was mapped to
+	 * @param length The number of bytes that were mapped
+	 */
+	SVMDECL(FileHandle,	unmap,
+					void *  /* target */,
+					aoff_t	/* length */,
+				);
+			
+	//TODO: Add file inspection interface (see: stat/fstat/lstat)
+
+	/**
+	 * Get a file's size
+	 * @return The size of the file
+	 */
+	SNMDECL(aoff_t, FileHandle, get_size);
 	
-	/** Linkedlist node */
-	llist_t		 node;
+	/**
+	 * Flush a file's contents to disk from the cache
+	 */
+	SOMDECL(FileHandle, sync);
 	
-	/** Inode reference */
-	inode_t		*inode;
+	method_end_o(FileHandle, llist_t);
+
+	/** File reference */
+	File		*file;
+
+	/** Lock */
+	semaphore_t	*lock;
+
+	/** IFS state pointer */
+	void		*state;
+	
+	/** Reference count */
+	int			refcount;
+
+};
+
+/**
+ * Represents an open directory
+ */
+class_defn(DirHandle) {
+
+	/**
+	 * Close a directory handle
+	 */
+	SOMDECL(DirHandle, close);
+
+	//TODO: Come up with a good readdir interface
+	
+	/**
+	 * Refresh the handle to the current directory state
+	 */
+	SOMDECL(DirHandle, sync);
+	
+	method_end_o(DirHandle, llist_t);
+
+	/** Directory reference */
+	Directory	*directory;
 
 	/** Lock */
 	semaphore_t	*lock;
@@ -170,313 +385,220 @@ struct file {
 };
 
 /**
- * 
+ * Describes a directory
  */
-
-/**
- * Describes a directory entry in a portable FS independent format
- */
-struct dirent {
-	/** The inode this entry points to */
-	ino_t	 inode_id;
-	/** The filesystem device this entry points to */
-	dev_t	device_id;
-	/** @brief The length of this dirent 
-          * dirent structures are not always sizeof(dirent) long, most of the 
-          * time they are smaller, this field indicates the actual size of the
-          * structure but do not use it to calculate name length as padding 
-          * after the name is allowed */
-	unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
-	/** The name of the file described by this entry */
-	char	 name[257];
-}  __attribute__((packed));
-
-/**
- * @brief An entry in the path element cache
- * The kernel keeps track of these to resolve the . and .. special directories
- */
-struct dir_cache {
-	/** The parent directory of this entry */
-	dir_cache_t	*parent;
-	/** The inode for this entry */
-	inode_t		*inode;
-	/** @brief The number of times this dir_cache is referenced
-          * This is used for a basic form of garbage collection, when this 
-          * hits 0 the dir_cache will be free'd */
-	uint32_t	 usage_count;
-};
-
-/** 
- * @brief Contains callbacks for all filesystem driver functions 
- *
- * This is the structure used to pass the callbacks for a filesystem driver to
- * the kernel, it is referenced by fs_device, which describes an instance of a
- * filesystem driver, implementation hints and requirements are given in the 
- * description of each callback, for more info on FS driver implementation see
- * fs_device
- */
-struct fs_device_operations {
-
-	/**
-	 * @brief Request a handle to a file
-	 *
-	 * REQUIRED
-	 *
-	 * Implementations of this function must provide an UNIQUE file handle
-	 * for the kernel to use.
-	 * 
-	 * @param inode		The inode to open
-	 * @param flags		Flags setting options for the created object
-	 * @return The opened file
-	 */
-	SFUNCPTR( file_t *, open, inode_t *, int flags );
-
+class_defn(Directory) {
+	
 	/** 
-	 * @brief Close a file handle
-	 * 
-	 * REQUIRED
-	 * 
-	 * Implementations of this function must clean up all resources 
-	 * associated with the handle.
-	 *
-	 * @param file The file to close
+	 * Gets a file from the directory
+	 * @param filename	The name of the file to find
+	 * @param flags		Options indicating how to look up the file
 	 */
-	SVFUNCPTR( close, file_t * );
-
-	/**
-	 * @brief Load an inode from storage
-	 * 
-         * REQUIRED
-         *
-	 * Implementations of this function must fill ALL inode fields relevant
-         * to the file type, this includes instance fields such as lock
-	 * @param inode The inode id to load
-         * @return The loaded inode
+	SMDECL( File *, Directory, get_file, 
+					fname_t /* filename */, 
+					fflag_t /* flags */
+			);
+	
+	/** Gets a subdirectory from the directory
+	 * @param filename	The name of the file to find
+	 * @param flags		Options indicating how to look up the file
 	 */
-	SFUNCPTR( inode_t *, load_inode, fs_device_t *, ino_t );
-
-	/**
-	 * @brief Write an inode to storage
-         *
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-	 * @param inode The inode to write 
-	 */
-	SVFUNCPTR( store_inode, inode_t * );
-
-	/**
-	 * @brief Create an inode
-         *
-         * @warning Implementations must not depend on any fields in inode
-         * being valid
-         *
-	 * Implementations must fill inode->id
-	 * @param inode The inode to create
-	 */
-	SVFUNCPTR( mknod, inode_t * );	
-
-	/**
-	 * @brief Delete an inode
-         *
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-         * Implementations are recommended to free any data associated with 
-         * the inode
-	 * @param inode The inode to delete
-	 */
-	SVFUNCPTR( rmnod, inode_t * );	
-
-	/**
-	 * @brief Read data from a file
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         * @note The VFS will adjust count so that the whole requested area is 
-	 * in the file
-	 * @param file        The file handle to operate on
-	 * @param buffer      The buffer to store the data in
-	 * @param file_offset The offset in the file to start reading at
-	 * @param count       The number of bytes to read
-	 * @return The number of bytes read
-	 */
-	SFUNCPTR( aoff_t, read, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
-
-	/**
-	 * @brief Write data to a file
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-         * @note The VFS layer will automatically adjust file size\n
-	 * @param file	      The file handle to operate on
-	 * @param buffer      The buffer containing the data to write
-	 * @param file_offset The offset in the file to start writing at
-	 * @param count       The number of bytes to write
-	 * @return The number of bytes written
-	 */
-	SFUNCPTR( aoff_t, write, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
-
-	/**
-	 * @brief Read directory entries from backing storage
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * @warning Implementations must only return whole directory entries
-	 * 
-	 * @param file        The file handle to operate on
-	 * @param buffer      The buffer to store the entries in
-	 * @param file_offset The offset in the directory to start reading at
-	 * @param count       The number of bytes to read
-	 * @return The number of bytes read
-	 */
-	SFUNCPTR( aoff_t, read_dir, file_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
-
+	SMDECL( Directory *, Directory, get_subdir, 
+					fname_t /* filename */, 
+					fflag_t /* flags */
+			);
+	
 	/** 
-	 * @brief Find a directory entry
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * 
-	 * @param file  The directory to search
-	 * @param name  The filename to match
-	 * @return The directory entry matching name from the directory inode, 
-	 *          if none, NULL is returned
+	 * Opens a reference to this directory
+	 * @param flags		Options indicating how to open the file
+	 * @return			A new handle to the directory
 	 */
-	SFUNCPTR( dirent_t *, find_dirent, file_t *, char * );	//dir_inode_id, filename -> dirent_t  
+	SMDECL( DirHandle *, Directory, open, 
+					oflag_t /* flags */
+			);	
+	
+	/** 
+	 * Creates a new regular file in the directory
+	 * @param filename	The name of the file to create
+	 * @param flags		Options indicating how to create the file
+	 * @return			The newly created file object
+	 */	
+	SMDECL( File *, Directory, create_file,
+					fname_t	/* filename */,
+					cflag_t /* flags */
+			);	
+	/** 
+	 * Creates a new device file in the directory
+	 * @param filename	The name of the file to create
+	 * @param flags		Options indicating how to create the file
+	 * @param device	The device number the new file should point to
+	 * @return			The newly created file object
+	 */
+	SMDECL( File *, Directory, create_device,
+					fname_t	/* filename */,
+					cflag_t /* flags */,
+					dev_t	/* device */
+			);	
+	/** 
+	 * Creates a new named pipe in the directory
+	 * @param filename	The name of the pipe to create
+	 * @param flags		Options indicating how to create the pipe
+	 * @return			The newly created file object
+	 */				
+	SMDECL( File *, Directory, create_pipe,
+					fname_t	/* filename */,
+					cflag_t /* flags */
+			);	
+	/** 
+	 * Creates a new symbolic link in the directory
+	 * @param filename	The name of the link to create
+	 * @param flags		Options indicating how to create the link
+	 * @param flags		Options indicating how to create the link
+	 * @return			The newly created file object
+	 */				
+	SMDECL( File *, Directory, create_link,
+					fname_t	/* filename */,
+					cflag_t /* flags */,
+					fname_t /* target */
+			);	
+			
+	/** 
+	 * Creates a new (hard) link to a file in the directory
+	 * @param filename	The name of the link to create
+	 * @param file		The file to link to
+	 */	
+	SVMDECL( Directory, link_file,
+					fname_t	/* filename */,
+					File *	/* file */
+			);
+	
+	/**
+	 * Deletes a file from the directory listing
+	 * @param filename	The name of the file to remove
+	 * @param flags		Options indicating how to delete the file
+	 * @note The file might not be truely deleted until all other links are gone
+	 * 		 and all handles to it have been closed
+	 */
+	SVMDECL( Directory, remove_file, 
+					fname_t		/* filename */,
+					dflags_t	/* flags */
+			);
+			
+	//TODO: Add file inspection interface (see: stat/fstat/lstat)
 
 	/**
-	 * @brief Create directory structures
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * 
-         * Implementations are not required to implement this function but must
-         * provide a stub to allow directories to be created
-	 * @param inode The inode for the new directory
+	 * Destroy the object in memory (does not affect the actual directory)
+	 * @warning This method should only be called by the directory caching code
 	 */
-	SVFUNCPTR( mkdir, inode_t * );		//dir_inode_id -> status
-
+	SOMDECL(Directory, destroy);
+	
 	/**
-	 * @brief Create a directory entry
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
-         * field
-	 * 
-	 * @param inode  The inode for the directory
-	 * @param name   The file name for the directory entry
-	 * @param nod_id The inode id that the directory entry will point to
+	 * Delete the directory from backing storage
+	 * @warning This method should only be called after all references (links
+	 * 			and handles) are gone.
 	 */
-
-	SVFUNCPTR( link, inode_t *, char *, ino_t );	//dir_inode_id, filename, inode_id -> status
-
+	SOMDECL(Directory, delete);
+	
+	method_end_o(Directory, llist_t);
+	
 	/**
-	 * @brief Delete a directory entry
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
-         * field
-	 * 
-	 * @param inode - The inode for the directory
-	 * @param name  - The file name of the directory entry to delete
+	 * The directory containing this directory
+	 * If this is the initial root, this will be zero
 	 */
-	SVFUNCPTR( unlink, inode_t *, char * );	//dir_inode_id, filename
-
+	Directory		*parent;
+	
 	/**
-	 * @brief Resize a file
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         * Implementations must fill the newly created space with zeroes and
-         * free any truncated space
-	 * 
-	 * @param inode       The inode for the file
-	 * @param size	      The new size of the file
+	 * The directory mounted here
 	 */
-	SVFUNCPTR( trunc_inode, inode_t *, aoff_t );
-
+	Directory		*mount;
+	
 	/**
-	 * @brief Synchronize the filesystem
-	 *
-         * Implementations must flush any global metadata to backing storage
-	 * 
-	 * @param inode       The inode for the file
-	 * @param size	      The new size of the file
+	 * The filesystem containing this directory
 	 */
-	SVFUNCPTR( sync, fs_device_t * );
-};
+	Filesystem		*fs;
+	
+	/**
+	 * The filesystem permissions object representing this directory
+	 */
+	FSPermissions	*permissions;
 
-/** 
- * @brief An instance of a filesystem driver 
- * 
- * This structure describes an instance of a filesystem driver, it is returned 
- * by a filesystem's mount function and contains information on the interface
- * provided by the driver aswell as the mounted device.
- * In order to implement a filesystem driver you must provide two things:
- * \li A mount function of the form 
- *         fs_device_t fs_mount( dev_t device, uint32_t flags);
- * \li Implementations of the callbacks in fs_device_operations
- * 
- * For more information on the callbacks see the documentation of 
- * fs_device_operations
- *
- */
-struct fs_device {
-	/** Block device this filesystem resides on */
-	uint32_t		id;
-	/** Root inode ID */
-	ino_t			root_inode_id;
-	/** Pointer to the callback list */
-	fs_device_operations_t *ops;
-	/** Filesystem lock */
-	semaphore_t	       *lock;	
-	/** @brief Inode structure size for this filesystem
-          *
-          * In memory size of the inode structures returned by the callbacks
-          * of this driver.
-          */
-	size_t 			inode_size;
+	/** Lock */
+	semaphore_t		*lock;
+
+	/** IFS state pointer */
+	void			*state;
+	
+	/** Reference count */
+	int			refcount;
+	
+	/** Handle count */
+	int			hndcount;
+	
 };
 
 /**
- * @brief A filesystem driver descriptor
- *
- * This structure describes a filesystem driver, it is used to store available
- * filesystem drivers in a table for use by vfs_mount
+ * Describes a file
  */
-struct fs_driver {
-	/** Linked list node */
-	llist_t		 link;
-	/** Filesystem name (e.g. ext2 or ramfs) */
-	char		*name;
-	/** Mount callback @see fs_device */
-	SFUNCPTR(fs_device_t *, mount, dev_t, uint32_t);
+class_defn(File) {
+	
+	/** Opens a reference to this directory
+	 * @param flags		Options indicating how to open the file
+	 */
+	SMDECL( FileHandle *, File, open, 
+					oflag_t /* flags */
+			);	
+
+	/**
+	 * Get a file's size
+	 * @return The size of the file
+	 */
+	SNMDECL(aoff_t, File, get_size);
+
+	/**
+	 * Destroy the object
+	 */
+	SOMDECL(File, destroy);
+	
+	/**
+	 * Delete the file from backing storage
+	 * @warning This method should only be called after all references (links
+	 * 			and handles) are gone.
+	 */
+	SOMDECL(File, delete);
+	
+	method_end_o(Directory, llist_t);
+	
+	/**
+	 * The directory containing this file
+	 */
+	Directory		*parent;
+	
+	/**
+	 * The filesystem containing this file
+	 */
+	Filesystem		*fs;
+	
+	/**
+	 * The filesystem permissions object representing this file
+	 */
+	FSPermissions	*permissions;
+
+	/** Lock */
+	semaphore_t		*lock;
+
+	/** IFS state pointer */
+	void			*state;
+	
+	/** Reference count */
+	int			refcount;
+	
+	/** Handle count */
+	int			hndcount;
+	
 };
 
-/**
- * @brief A mounted filesystem descriptor
- * 
- * This structure describes a filesystem that has been mounted at a mountpoint
- *
- */
-struct fs_mount {
 
-	/** Linked list node */
-	llist_t		 link;
-
-	/** Filesystem device */
-	fs_device_t	*device;
-
-	/** Mountpoint */
-	inode_t		*mountpoint;
-
-};
-
+Directory *vfs_find_directory ( fname_t	
 
 /** @name VFS API
  *  Public VFS functions
