@@ -45,10 +45,18 @@ errno_t kobj_handle_pure_call(	const char *	file,
 #define SMCALL(ObJ, RetVal, FuNc, ...)  ( ((ObJ)->_vtab->FuNc == 0) ? \
 	(kobj_handle_pure_call(__FILE__, __LINE__, #ObJ, #FuNc)) : \
 	((ObJ)->_vtab->FuNc(ObJ, __VA_ARGS__, RetVal)) );
+
+#define SNMCALL(ObJ, RetVal, FuNc)  ( ((ObJ)->_vtab->FuNc == 0) ? \
+	(kobj_handle_pure_call(__FILE__, __LINE__, #ObJ, #FuNc)) : \
+	((ObJ)->_vtab->FuNc(ObJ, RetVal)) );
 	
 #define SVMCALL(ObJ, FuNc, ...)  ( ((ObJ)->_vtab->FuNc == 0) ? \
 	(kobj_handle_pure_call(__FILE__, __LINE__, #ObJ, #FuNc)) : \
 	((ObJ)->_vtab->FuNc(ObJ, __VA_ARGS__)) );
+	
+#define SOMCALL(ObJ, FuNc)  ( ((ObJ)->_vtab->FuNc == 0) ? \
+	(kobj_handle_pure_call(__FILE__, __LINE__, #ObJ, #FuNc)) : \
+	((ObJ)->_vtab->FuNc(ObJ)) );
 	
 #define CHAINRETM(ObJ, FuNc, ...)	do { \
 	return SNCALL(ObJ, _retval, FuNc, __VA_ARGS__); \
@@ -56,6 +64,14 @@ errno_t kobj_handle_pure_call(	const char *	file,
 
 #define CHAINRETMV(ObJ, FuNc, ...)	do { \
 	return SVMCALL(ObJ, FuNc, __VA_ARGS__); \
+	} while (0)
+
+#define CHAINRETMO(ObJ, FuNc)	do { \
+	return SOMCALL(ObJ, FuNc); \
+	} while (0)
+
+#define CHAINRETMN(ObJ, FuNc)	do { \
+	return SNMCALL(ObJ, _retval, FuNc); \
 	} while (0)
 
 #define SMIMPL(TyPe, ClAsS, NaMe, ...) 	errno_t NaMe(	ClAsS *_this, \
