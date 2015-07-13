@@ -78,16 +78,21 @@ errno_t kobj_handle_pure_call(	const char *	file,
 							__VA_ARGS__, \
 							RETURN_VALUE(TyPe))
 
-#define SVMIMPL(ClAsS, NaMe, ...)  	errno_t NaMe(	ClAsS *_this, __VA_ARGS__ )
+#define SNMIMPL(TyPe, ClAsS, NaMe) 		errno_t NaMe(	ClAsS *_this, \
+							RETURN_VALUE(TyPe))
+
+#define SVMIMPL(ClAsS, NaMe, ...)  		errno_t NaMe(	ClAsS *_this, __VA_ARGS__ )
+
+#define SOMIMPL(ClAsS, NaMe)  			errno_t NaMe(	ClAsS *_this )
 
 #define SMDECL(TyPe, ClAsS, NaMe, ...)  errno_t (*NaMe)( ClAsS *, __VA_ARGS__,\
 															RETURN_VALUE(TyPe))
 
-#define SNMDECL(TyPe, ClAsS, NaMe)  errno_t (*NaMe)( ClAsS *, \
+#define SNMDECL(TyPe, ClAsS, NaMe)  	errno_t (*NaMe)( ClAsS *, \
 															RETURN_VALUE(TyPe))
 
-#define SVMDECL(ClAsS, NaMe, ...)  	errno_t (*NaMe)(ClAsS *, __VA_ARGS__)
+#define SVMDECL(ClAsS, NaMe, ...)  		errno_t (*NaMe)(ClAsS *, __VA_ARGS__)
 
-#define SOMDECL(ClAsS, NaMe)  		errno_t (*NaMe)(ClAsS *)
+#define SOMDECL(ClAsS, NaMe)  			errno_t (*NaMe)(ClAsS *)
 
 #endif
