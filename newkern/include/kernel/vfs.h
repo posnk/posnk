@@ -23,6 +23,7 @@
 #include "kernel/pipe.h"
 #include "kernel/time.h"
 #include "util/llist.h"
+#include "util/mrucache.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -124,6 +125,29 @@ class_decl(DirHandle);
 class_decl(Filesystem);
 
 /**
+ * Describes the result of a filesystem lookup
+ */
+struct fslookup {
+
+	/**
+	 * Holds the result if it was a directory
+	 */
+	Directory		*directory;
+
+	/**
+	 * Holds the result if it was a file
+	 */
+	File			*file;
+
+};
+
+/**
+ * Describes the result of a filesystem lookup
+ * @see struct fslookup
+ */
+typedef struct fslookup fslookup_t;
+
+/**
  * Describes a filesystem driver
  */
 class_defn(FSDriver)
@@ -195,7 +219,10 @@ class_defn(Filesystem)
 			);	
 	
 	method_end_o(Filesystem, llist_t);
-	
+
+	/** Lock */
+	semaphore_t	*lock;
+
 	/** Implementation specific data */
 	void		*impl;
 	
@@ -211,6 +238,9 @@ class_defn(Filesystem)
 		
 	/** Driver reference */
 	FSDriver	*driver;
+
+	/** File list */
+	llist_t		 files;
 	
 };
 
@@ -390,20 +420,11 @@ class_defn(DirHandle) {
 class_defn(Directory) {
 	
 	/** 
-	 * Gets a file from the directory
+	 * Gets a file or subdirectory from the directory
 	 * @param filename	The name of the file to find
 	 * @param flags		Options indicating how to look up the file
 	 */
-	SMDECL( File *, Directory, get_file, 
-					fname_t /* filename */, 
-					fflag_t /* flags */
-			);
-	
-	/** Gets a subdirectory from the directory
-	 * @param filename	The name of the file to find
-	 * @param flags		Options indicating how to look up the file
-	 */
-	SMDECL( Directory *, Directory, get_subdir, 
+	SMDECL( fslookup_t, Directory, get_file, 
 					fname_t /* filename */, 
 					fflag_t /* flags */
 			);
@@ -491,6 +512,18 @@ class_defn(Directory) {
 	 * @warning This method should only be called by the directory caching code
 	 */
 	SOMDECL(Directory, destroy);
+
+	/**
+	 * Release a reference to this directory
+	 * @warning This method should only be called by the caching code
+	 */
+	SOMDECL(Directory, unref);
+
+	/**
+	 * Acquire a reference to this directroy
+	 * @warning This method should only be called by the caching code
+	 */
+	SOMDECL(Directory, ref);
 	
 	/**
 	 * Delete the directory from backing storage
@@ -513,6 +546,16 @@ class_defn(Directory) {
 	Directory		*mount;
 	
 	/**
+	 * List containing subdirectories currently loaded in memory
+	 */
+	llist_t			 subdirectories;
+	
+	/**
+	 * List containing linked files currently loaded in memory
+	 */
+	llist_t			 files;
+		
+	/**
 	 * The filesystem containing this directory
 	 */
 	Filesystem		*fs;
@@ -522,17 +565,67 @@ class_defn(Directory) {
 	 */
 	FSPermissions	*permissions;
 
-	/** Lock */
+	/** 
+	 * Lock
+	 */
 	semaphore_t		*lock;
 
-	/** IFS state pointer */
+	/** 
+	 * IFS state pointer 
+	 */
 	void			*state;
 	
-	/** Reference count */
-	int			refcount;
+	/** 
+	 * Reference count 
+	 */
+	int				 refcount;
 	
-	/** Handle count */
-	int			hndcount;
+	/** 
+	 * Handle count 
+	 */
+	int				 hndcount;
+	
+};
+
+/**
+ * Represents a linkback from a file to a link
+ */
+typedef struct {
+	llist_t			 node;
+	FileLink		*link;
+} flinkback_t;
+
+/**
+ * Represents a link to a file
+ */
+class_defn(FileLink) {
+	
+	/**
+	 * Destroy this file link object
+	 */ 
+	SOMDECL(FileLink, destroy);
+	
+	method_end_o(FileLink, llist_t);
+
+	/**
+	 * The filename associated with this link
+	 */
+	fname_t		 name;
+	
+	/**
+	 * The directory containing this link
+	 */	
+	Directory	*parent;
+	
+	/**
+	 * The file this link refers to
+	 */
+	File		*file;	
+
+	/**
+	 * Linkback to this link from the target
+	 */
+	flinkback_t  linkback;
 	
 };
 
@@ -566,12 +659,7 @@ class_defn(File) {
 	 */
 	SOMDECL(File, delete);
 	
-	method_end_o(Directory, llist_t);
-	
-	/**
-	 * The directory containing this file
-	 */
-	Directory		*parent;
+	method_end_o(File, llist_t);
 	
 	/**
 	 * The filesystem containing this file
@@ -586,19 +674,35 @@ class_defn(File) {
 	/** Lock */
 	semaphore_t		*lock;
 
-	/** IFS state pointer */
+	/** 
+	 * IFS state pointer 
+	 */
 	void			*state;
 	
-	/** Reference count */
-	int			refcount;
+	/** 
+	 * Reference count 
+	 */
+	int				 refcount;
 	
-	/** Handle count */
-	int			hndcount;
+	/** 
+	 *Handle count 
+	 */
+	int				 hndcount;
+	
+	/** 
+	 * Link count
+	 */
+	int				 lnkcount;
+	
+	/**
+	 * Loaded link list
+	 */ 	
+	llist_t			 links;
 	
 };
 
 
-Directory *vfs_find_directory ( fname_t	
+Directory *vfs_find_directory ( Directory *base, fname_t filename );
 
 /** @name VFS API
  *  Public VFS functions

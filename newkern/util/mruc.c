@@ -122,18 +122,15 @@ mrunode_t *mrucache_get_lru ( mrucache_t *cache )
  */
 void mrucache_create( 	mrucache_t *cache, 
 						int max_entries, 
-						mru_evicttest_t *evict_test,
 						mru_evict_t		*evict,
 						mru_overflow_t	*overflow,
 						void			*param
 					)
 {
 	assert ( cache != NULL );
-	assert ( evict_test != NULL );	
 	assert ( evict != NULL );
 	assert ( overflow != NULL );
 	
-	cache->evict_test		= evict_test;
 	cache->evict			= evict;
 	cache->overflow			= overflow;
 	cache->param			= param;
@@ -171,11 +168,6 @@ int mrucache_add_entry( mrucache_t *cache, mrunode_t *entry )
 		
 		for ( lru = mrucache_get_lru( cache ); lru != head_lru; lru = next_lru){
 			next_lru = lru->mnext;
-			
-			/* Check if we can evict this entry */
-			if (!cache->evict_test(lru)) 
-				/* If we can't, try the next entry */
-				continue;
 			
 			/* We can, evict the entry */
 			if (!mrucache_del_entry(lru))

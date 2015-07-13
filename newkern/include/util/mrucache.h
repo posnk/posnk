@@ -25,14 +25,6 @@ typedef struct mrunode	   mrunode_t;
 typedef struct mrucache	   mrucache_t;
 
 /**
- * Eviction test function
- * Usage: int function_evicttest(mrunode_t *node);
- * node is the node which is to be evicted
- * returns nonzero if the node can be evicted
- */
-typedef int (*mru_evicttest_t)(mrunode_t *);
-
-/**
  * Eviction function
  * Usage: int function_evict(mrunode_t *node);
  * node is the node which is to be evicted
@@ -56,7 +48,6 @@ struct mrucache {
 	mrunode_t		 head;
 	int				 max_entries;
 	int				 num_entries;
-	mru_evicttest_t	*evict_test;
 	mru_evict_t		*do_evict;
 	mru_overflow_t	*overflow;
 	void			*param;
@@ -79,8 +70,6 @@ struct mrunode {
  * Initializes a new mrucache
  * @param cache			A pointer to the uninitialized cache structure
  * @param max_entries	The maximal number of entries that the cache can hold
- * @param evict_test	The function that determines whether an entry may be
- * 						evicted
  * @param evict			The function that will evict a member from the cache
  * @param overflow		The function that will be called if the cache is full 
  * 						and no entries could be evicted
@@ -89,7 +78,6 @@ struct mrunode {
  */
 void mrucache_create( 	mrucache_t		*cache, 
 						int				 max_entries, 
-						mru_evicttest_t *evict_test,
 						mru_evict_t		*evict,
 						mru_overflow_t	*overflow,
 						void			*param

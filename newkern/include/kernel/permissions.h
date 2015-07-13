@@ -31,6 +31,8 @@ gid_t get_gid();
 
 gid_t get_effective_gid();
 
+int is_superuser();
+
 perm_class_t get_perm_class(uid_t resource_uid, gid_t resource_gid);
 
 #endif

@@ -32,6 +32,14 @@ gid_t get_effective_gid()
 	return scheduler_current_task->effective_gid;
 }
 
+int is_superuser() 
+{
+	uid_t r_uid = get_uid();
+	gid_t r_gid = get_gid();
+	
+	return ((uid == 0) && (gid == 0));	
+}
+
 perm_class_t get_perm_class(uid_t resource_uid, gid_t resource_gid)
 {
 	uid_t uid = get_effective_uid();
