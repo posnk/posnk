@@ -1,14 +1,14 @@
 /**
- * @file kernel/vfs/fcache.c
+ * @file kernel/vfs/ndcache.c
  *
- * Implements the file cache and file GC
+ * Implements the directory cache and GC
  *
  * Part of P-OS kernel.
  *
  * @author Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
- * \li 13-07-2015 - Created
+ * \li 15-07-2015 - Created
  */
 
 /* Includes */
@@ -23,33 +23,29 @@
 
 /* Global Variables */
 
-mrucache_t			fcache_mru;
+mrucache_t			dcache_mru;
 
 /* Internal type definitions */
 
 /* Class implementation templates */
 
-class_impl( FileLink, flink_impl ) {
-	method_impl( destroy, flink_destroy),
-}
-
 /* Public Functions */
 
-int fcache_evict(mrunode_t *node)
+int dcache_evict(mrunode_t *node)
 {
 	
-	File *file = (File *) node;
-	FileLink *link;
-	flinkback_t *_link, *_next, *_list;
-	
-	/* If there are still references to this file, do not evict it */
-	if ( file->refcount != 0 )
+	Directory *dir = (Directory *) node;
+	FileLink *link, *next, *list;
+			
+	/* If there are still open handles to this dir, do not evict it */
+	if ( dir->hndcount != 0 )
 		return 0;
 	
-	/* If there are still open handles to this file, do not evict it */
-	if ( file->hndcount != 0 )
+	/* If there are still references to this dir, do not evict it */
+	if ( dir->refcount != 0 )
 		return 0;
-		
+	
+	
 	/* Iterate over the links to this file */
 	_list = (flinkback_t *) &(file->links);
 	_next = (flinkback_t *) _list->node.next;

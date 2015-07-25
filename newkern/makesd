@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mount $1 ../hdd -t vfat 
+cp loader_armv7_uboot ../hdd/loader_armv7_uboot
+umount ../hdd

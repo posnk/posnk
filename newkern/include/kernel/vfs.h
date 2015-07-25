@@ -547,11 +547,13 @@ class_defn(Directory) {
 	
 	/**
 	 * List containing subdirectories currently loaded in memory
+	 * Entry type llist_t:>Directory
 	 */
 	llist_t			 subdirectories;
 	
 	/**
 	 * List containing linked files currently loaded in memory
+	 * Entry type llist_t:>FileLink
 	 */
 	llist_t			 files;
 		
