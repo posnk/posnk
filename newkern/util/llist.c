@@ -133,6 +133,20 @@ int llist_size(llist_t *list)
 }
 
 /**
+ * Checks if a linked list is empty
+ * @param list Pointer to the linked list head node
+ * @return Whether the list is empty (nonzero if empty)
+ */
+int llist_is_empty(llist_t *list)
+{
+	
+	assert(list != NULL);
+	
+	return ( list->next == list );
+	
+}
+
+/**
  * Iterates over the list and calls <b>iterator</b> for
  * each node, if <b>iterator</b> returns a true condition
  * iteration will stop and the current node will be returned
