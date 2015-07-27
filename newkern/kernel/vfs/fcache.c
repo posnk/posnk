@@ -222,6 +222,46 @@ SFUNC( FileLink *, fcache_find_link, Directory *dir, hname_t *name )
 	
 }
 
+/**
+ * @note This function must never be called inside a lock on file
+ */
+File *file_ref( File *file )
+{
+	
+	assert ( file != NULL );
+	
+	/* Acquire a lock on file */
+	semaphore_down( file->lock );
+	
+	/* Bump file reference count */
+	file->refcount++;
+	
+	/* Release lock on file */	
+	semaphore_up( file->lock );
+	
+	return file;
+	
+}
+
+/**
+ * @note This function must never be called inside a lock on file
+ */
+void file_release( File *file )
+{
+	
+	assert ( file != NULL );
+	
+	/* Acquire a lock on file */
+	semaphore_down( file->lock );
+	
+	/* Decrease file reference count */
+	file->refcount--;
+	
+	/* Release lock on file */	
+	semaphore_up( file->lock );
+	
+}
+
 
 
 

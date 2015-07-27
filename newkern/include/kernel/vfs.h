@@ -425,8 +425,8 @@ class_defn(Directory) {
 	 * @param flags		Options indicating how to look up the file
 	 */
 	SMDECL( fslookup_t, Directory, get_file, 
-					fname_t /* filename */, 
-					fflag_t /* flags */
+					hname_t */* filename */, 
+					fflag_t  /* flags */
 			);
 	
 	/** 
@@ -629,18 +629,36 @@ class_defn(FileLink) {
  */
 class_defn(File) {
 	
-	/** Opens a reference to this directory
+	/** Opens a reference to this file
 	 * @param flags		Options indicating how to open the file
 	 */
 	SMDECL( FileHandle *, File, open, 
 					oflag_t /* flags */
 			);	
+	
+	/** Reads the link target from a symlink
+	 * @param buffer	The buffer to read to
+	 * @param length	How many characters to read
+	 * @param flags		Options indicating how to open the file for reading
+	 * @return			The number of characters read
+	 */
+	SMDECL( aoff_t, File, readlink, 
+					char *	/* buffer	*/
+					aoff_t	/* length	*/
+					oflag_t /* flags 	*/
+			);
 
 	/**
 	 * Get a file's size
 	 * @return The size of the file
 	 */
 	SNMDECL(aoff_t, File, get_size);
+
+	/**
+	 * Check if this file is a symbolic link
+	 * @return nonzero if the file is a symbolic link
+	 */
+	SNMDECL(aoff_t, File, is_symlink);
 
 	/**
 	 * Destroy the object
@@ -701,8 +719,11 @@ SVFUNC( dcache_add_dir, Directory *dir );
 SVFUNC( fcache_initialize, int max_entries );
 SVFUNC( fcache_add_link, Directory *parent, File *file, hname_t *name );
 SVFUNC( fcache_add_file, File *file );
-
+File *file_ref( File *file );
+void file_release( File *file );
 Directory *vfs_find_directory ( Directory *base, fname_t filename );
+Directory * directory_ref( Directory *dir );
+void directory_release( Directory *dir );
 
 /** @name VFS API
  *  Public VFS functions
@@ -790,14 +811,12 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
 SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 SVFUNC( ifs_sync, fs_device_t *device );
-SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
-SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir,char * path,int flags,
-					int recurse_level );
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, dir_cache_t *curdir,char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
+SFUNC(fslookup_t, vfs_find_parent, char * path);
+SFUNC(fslookup_t, vfs_find_parent_at, Directory *curdir, char * path);
+SFUNC(fslookup_t, vfs_find_symlink, char * path);
+SFUNC(fslookup_t, vfs_find_symlink_at, Directory *curdir, char * path);
+SFUNC(fslookup_t, vfs_find, char * path);
+SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
 SFUNC(inode_t *, vfs_find_parent, char * path);
 SFUNC(inode_t *, vfs_find_inode, char * path);
 SFUNC(inode_t *, vfs_find_symlink, char * path);

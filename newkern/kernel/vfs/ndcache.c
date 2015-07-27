@@ -163,6 +163,46 @@ SFUNC( Directory *, dcache_find_subdir, Directory *dir, hname_t *name )
 	
 }
 
+/**
+ * @note This function must never be called inside a lock on dir
+ */
+Directory * directory_ref( Directory *dir )
+{
+	
+	assert ( dir != NULL );
+	
+	/* Acquire a lock on dir */
+	semaphore_down( dir->lock );
+	
+	/* Bump directory reference count */
+	dir->refcount++;
+	
+	/* Release lock on dir */	
+	semaphore_up( dir->lock );
+	
+	return dir;
+	
+}
+
+/**
+ * @note This function must never be called inside a lock on dir
+ */
+void directory_release( Directory *dir )
+{
+	
+	assert ( dir != NULL );
+	
+	/* Acquire a lock on dir */
+	semaphore_down( dir->lock );
+	
+	/* Bump directory reference count */
+	dir->refcount--;
+	
+	/* Release lock on dir */	
+	semaphore_up( dir->lock );
+	
+}
+
 
 
 
