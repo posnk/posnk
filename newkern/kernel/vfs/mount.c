@@ -12,6 +12,7 @@
  * \li 11-07-2014 - Rewrite 1
  * \li 12-07-2014 - Commented
  * \li 05-04-2015 - Split off from ifsmgr.c
+ * \li 27-07-2015 - Adapted to OOVFS
  */
 
 /* Includes */

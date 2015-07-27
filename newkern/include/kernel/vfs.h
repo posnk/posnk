@@ -58,12 +58,6 @@
 #define MODE_EXEC  1
 
 /**
- * @brief Type for filenames, maps to char * for now.
- * 
- */
-typedef char *		fname_t;
-
-/**
  * @brief Type for the flags parameter passed to FileHandle.read
  * Describes any important options that should be adhered to by the impl.
  */
@@ -182,7 +176,7 @@ class_defn(FSDriver)
 	method_end_o(FSDriver, llist_t);
 	
 	/** The name of this filesystem */
-	fname_t		 name;
+	char *		 name;
 	
 	/** Implementation specific data */
 	void		*impl;
@@ -451,7 +445,7 @@ class_defn(Directory) {
 	 * @return			The newly created file object
 	 */	
 	SMDECL( File *, Directory, create_file,
-					fname_t	/* filename */,
+					char *	/* filename */,
 					cflag_t /* flags */
 			);	
 	/** 
@@ -462,7 +456,7 @@ class_defn(Directory) {
 	 * @return			The newly created file object
 	 */
 	SMDECL( File *, Directory, create_device,
-					fname_t	/* filename */,
+					char *	/* filename */,
 					cflag_t /* flags */,
 					dev_t	/* device */
 			);	
@@ -473,7 +467,7 @@ class_defn(Directory) {
 	 * @return			The newly created file object
 	 */				
 	SMDECL( File *, Directory, create_pipe,
-					fname_t	/* filename */,
+					char *	/* filename */,
 					cflag_t /* flags */
 			);	
 	/** 
@@ -484,9 +478,9 @@ class_defn(Directory) {
 	 * @return			The newly created file object
 	 */				
 	SMDECL( File *, Directory, create_link,
-					fname_t	/* filename */,
+					char *	/* filename */,
 					cflag_t /* flags */,
-					fname_t /* target */
+					char * /* target */
 			);	
 			
 	/** 
@@ -495,7 +489,7 @@ class_defn(Directory) {
 	 * @param file		The file to link to
 	 */	
 	SVMDECL( Directory, link_file,
-					fname_t	/* filename */,
+					char *	/* filename */,
 					File *	/* file */
 			);
 	
@@ -507,7 +501,7 @@ class_defn(Directory) {
 	 * 		 and all handles to it have been closed
 	 */
 	SVMDECL( Directory, remove_file, 
-					fname_t		/* filename */,
+					char *		/* filename */,
 					dflags_t	/* flags */
 			);
 			
@@ -748,6 +742,15 @@ SVFUNC(vfs_do_mount_named,
 						mflag_t flags
 		);
 void vfs_sync_filesystems( void );
+SFUNC(FSDriver *, vfs_get_driver, char *fstype);
+SVFUNC( vfs_register_fs, FSDriver *driver )
+void vfs_ifsmgr_initialize( void );
+SFUNC(fslookup_t, vfs_find_parent, char * path);
+SFUNC(fslookup_t, vfs_find_parent_at, Directory *curdir, char * path);
+SFUNC(fslookup_t, vfs_find_symlink, char * path);
+SFUNC(fslookup_t, vfs_find_symlink_at, Directory *curdir, char * path);
+SFUNC(fslookup_t, vfs_find, char * path);
+SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
 
 /** @name VFS API
  *  Public VFS functions
@@ -835,18 +838,7 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
 SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 SVFUNC( ifs_sync, fs_device_t *device );
-SFUNC(fslookup_t, vfs_find_parent, char * path);
-SFUNC(fslookup_t, vfs_find_parent_at, Directory *curdir, char * path);
-SFUNC(fslookup_t, vfs_find_symlink, char * path);
-SFUNC(fslookup_t, vfs_find_symlink_at, Directory *curdir, char * path);
-SFUNC(fslookup_t, vfs_find, char * path);
-SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
-SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
-SVFUNC( vfs_register_fs, 
-		const char *name, 
-		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
-void vfs_ifsmgr_initialize( void );
 #endif
 
