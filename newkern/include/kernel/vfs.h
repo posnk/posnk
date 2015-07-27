@@ -523,6 +523,11 @@ class_defn(Directory) {
 	method_end_o(Directory, llist_t);
 	
 	/**
+	 * The hashed name for the directory
+	 */
+	hname_t			*name;
+	
+	/**
 	 * The directory containing this directory
 	 * If this is a filesystem root, this will be zero
 	 */
@@ -600,7 +605,7 @@ class_defn(FileLink) {
 	/**
 	 * The filename associated with this link
 	 */
-	fname_t		 name;
+	hname_t		*name;
 	
 	/**
 	 * The directory containing this link
@@ -691,6 +696,11 @@ class_defn(File) {
 	
 };
 
+SVFUNC( dcache_initialize, int max_entries );
+SVFUNC( dcache_add_dir, Directory *dir );
+SVFUNC( fcache_initialize, int max_entries );
+SVFUNC( fcache_add_link, Directory *parent, File *file, hname_t *name );
+SVFUNC( fcache_add_file, File *file );
 
 Directory *vfs_find_directory ( Directory *base, fname_t filename );
 

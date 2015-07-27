@@ -29,6 +29,7 @@ mrucache_t			fcache_mru;
 
 /* Class implementation templates */
 
+SOMIMPL( FileLink, flink_destroy );
 class_impl( FileLink, flink_impl ) {
 	method_impl( destroy, flink_destroy),
 }
@@ -131,7 +132,7 @@ SOMIMPL( FileLink, flink_destroy )
 /**
  * @note This function must only be called inside a lock on file and parent dir
  */
-SVFUNC( fcache_add_link, Directory *parent, File *file, fname_t name )
+SVFUNC( fcache_add_link, Directory *parent, File *file, hname_t *name )
 {
 	
 	FileLink *link;
@@ -193,6 +194,33 @@ SVFUNC( fcache_add_file, File *file )
 	RETURNV;
 	
 } 
+
+/**
+ * @note This function must only be called inside a lock on dir
+ */
+SFUNC( FileLink *, fcache_find_link, Directory *dir, hname_t *name )
+{
+	llist_t *_link, *_next, *_list;
+	FileLink *link;
+	
+	assert ( dir != NULL );
+	
+	/* Iterate over all links */
+	_list = (llist_t *) &dir->files;
+	_next = (llist_t *) _list->next;
+	for (_link = _next; _link != _list; _link = _next ) {
+		_next = (llist_t *) _link->next;
+		link = (FileLink *) _link;
+
+		/* Compare names */
+		if ( hname_compare( link->name, name ) )
+			RETURN(link);
+		
+	}
+	
+	THROW(ENOENT, NULL);
+	
+}
 
 
 

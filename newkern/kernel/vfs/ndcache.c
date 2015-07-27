@@ -136,6 +136,33 @@ SVFUNC( dcache_add_dir, Directory *dir )
 	
 } 
 
+/**
+ * @note This function must only be called inside a lock on dir
+ */
+SFUNC( Directory *, dcache_find_subdir, Directory *dir, hname_t *name )
+{
+	llist_t *_sdir, *_next, *_list;
+	Directory *sdir;
+	
+	assert ( dir != NULL );
+	
+	/* Iterate over all links */
+	_list = (llist_t *) &dir->files;
+	_next = (llist_t *) _list->next;
+	for (_sdir = _next; _sdir != _list; _sdir = _next ) {
+		_next = (llist_t *) _sdir->next;
+		sdir = (Directory *) _sdir;
+
+		/* Compare names */
+		if ( hname_compare( sdir->name, name ) )
+			RETURN(sdir);
+		
+	}
+	
+	THROW(ENOENT, NULL);
+	
+}
+
 
 
 
