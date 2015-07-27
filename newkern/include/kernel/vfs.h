@@ -178,7 +178,7 @@ class_defn(FSDriver)
 						mflag_t /* flags */
 			);	
 	
-	method_end_o(Filesystem, llist_t);
+	method_end_o(FSDriver, llist_t);
 	
 	/** The name of this filesystem */
 	fname_t		 name;
@@ -514,18 +514,6 @@ class_defn(Directory) {
 	SOMDECL(Directory, destroy);
 
 	/**
-	 * Release a reference to this directory
-	 * @warning This method should only be called by the caching code
-	 */
-	SOMDECL(Directory, unref);
-
-	/**
-	 * Acquire a reference to this directroy
-	 * @warning This method should only be called by the caching code
-	 */
-	SOMDECL(Directory, ref);
-	
-	/**
 	 * Delete the directory from backing storage
 	 * @warning This method should only be called after all references (links
 	 * 			and handles) are gone.
@@ -536,7 +524,7 @@ class_defn(Directory) {
 	
 	/**
 	 * The directory containing this directory
-	 * If this is the initial root, this will be zero
+	 * If this is a filesystem root, this will be zero
 	 */
 	Directory		*parent;
 	

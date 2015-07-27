@@ -62,13 +62,14 @@ int fcache_evict(mrunode_t *node)
 		
 	}
 
-	//TODO: Check dirty flag and if set, store any changes
-
 	/* Remove the file from the filesystem file list */
 	llist_unlink ( (llist_t *) file );
 
 	/* Remove the file from the fcache */
 	mrucache_del_entry( node );
+
+	/* Destroy the file object (free its memory, store any updates) */
+	SOMCALL(file, destroy); //TODO: Handle errors
 
 }
 
@@ -87,7 +88,6 @@ SVFUNC( fcache_initialize, int max_entries )
 	
 	mrucache_create(	&fcache_mru, 
 						max_entries, 
-						fcache_evicttest, 
 						fcache_evict, 
 						fcache_overflow,
 						NULL
@@ -103,12 +103,6 @@ SOMIMPL( FileLink, flink_destroy )
 	/* Acquire lock on the file we point to so we can safely modify it's link
 	 * list and link counter */
 	semaphore_down( _this->file->lock );
-
-	/* Decrease it's link count */
-	_this->file->lnkcount--;
-	
-	/* Assert that the link count did not drop below zero */
-	assert( _this->file->lnkcount >= 0 );
 	
 	/* Remove the linkback from the file */
 	llist_unlink( &(_this->linkback) );
@@ -123,9 +117,6 @@ SOMIMPL( FileLink, flink_destroy )
 	
 	/* Remove the link from the list of our parent directory */
 	llist_unlink( (llist_t *) _this );
-
-	/* Decrease it's reference count */	
-	SOMCALL(_this->parent, unref); //TODO: Handle errors
 	
 	/* Release the lock on the parent */
 	semaphore_up ( _this->parent->lock );
@@ -160,7 +151,6 @@ SVFUNC( fcache_add_link, Directory *parent, File *file, fname_t name )
 	/* Fill link fields */
 	link->name	 = name;
 	link->file	 = file;
-	link->parent = parent;
 	link->linkback.link = link;
 	
 	/* Attach link to file's link list */
@@ -168,9 +158,6 @@ SVFUNC( fcache_add_link, Directory *parent, File *file, fname_t name )
 	
 	/* Attach link to the parent's link list */
 	llist_add_end (&(parent->files), (llist_t *) link);
-
-	/* Increase it's reference count */	
-	SOMCALL(_this->parent, ref); //TODO: Handle errors	
 	
 } 
 
@@ -184,7 +171,7 @@ SVFUNC( fcache_add_file, File *file )
 	
 	semaphore_down(file->fs->lock);
 	
-	/* Attach link to file's link list */
+	/* Attach file to filesystem's file list */
 	llist_add_end( &(file->fs->files), (llist_t *) file );
 	
 	/* Add it to the mru cache */
