@@ -12,6 +12,7 @@
  * \li 11-07-2014 - Rewrite 1
  * \li 12-07-2014 - Commented
  * \li 04-02-2015 - Split off from vfs.c
+ * \li 27-07-2015 - Adapted to OOVFS
  */
 
 /* Includes */
@@ -41,98 +42,6 @@
  *  Public VFS functions
  */
 ///@{
-
-
-/** 
- * @brief Look up the inode for the directory containing the file
- * @param path The path of the file to resolve
- * @return The file's parent directory 
- */
-
-SFUNC(inode_t *, vfs_find_parent, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the parent dir cache entry for this path */
-	status = vfs_find_dirc_parent(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
-
-/** 
- * @brief Look up the inode for the file referenced by path
- * @param path The path of the file to resolve
- * @return The file's inode
- */
-
-SFUNC(inode_t *, vfs_find_inode, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the dir cache entry for this path */
-	status = vfs_find_dirc(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
-
-/** 
- * @brief Look up the inode for the file referenced by path, not dereferencing
- * symlinks
- * @param path The path of the file to resolve
- * @return The file's inode
- */
-
-SFUNC(inode_t *, vfs_find_symlink, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the dir cache entry for this path */
-	status = vfs_find_dirc_symlink(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
 
 /** 
  * @brief Look up the parent directory of a file referred to by a path
@@ -589,6 +498,19 @@ SFUNC(fslookup_t , _vfs_find_at,
 			/* Release old element */
 			directory_release(dirc);
 			
+		}
+
+		/* Process mounts */
+		if ( lookup.directory != NULL && lookup.directory->mount != NULL ) {
+			
+			/*Retain a reference to the old directory so we can release it*/
+			dirc = lookup.directory;
+			
+			/* Reference the mounted root */
+			lookup.directory = directory_ref(lookup.directory->mount);
+			
+			/* Release the old directory */
+			directory_release(dirc);
 		}
 
 		/* Update remaining path to point to the start of the next

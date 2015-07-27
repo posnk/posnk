@@ -24,6 +24,7 @@
 #include "kernel/time.h"
 #include "util/llist.h"
 #include "util/mrucache.h"
+#include "util/hname.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -164,7 +165,7 @@ class_defn(FSDriver)
 	 * @param flags		Options indicating how to mount the filesystem
 	 */
 	SMDECL(Filesystem *, FSDriver, mount_named, 
-						fname_t	/* target */,
+						char *  /* target */,
 						mflag_t /* flags */
 			);	
 	
@@ -217,6 +218,11 @@ class_defn(Filesystem)
 	SVMDECL(Filesystem, attach, 
 						Directory * /* mountpoint */
 			);	
+	
+	/**
+	 * Sync the filesystem
+	 */
+	SOMDECL(Filesystem, sync );	
 	
 	method_end_o(Filesystem, llist_t);
 
@@ -721,9 +727,27 @@ SVFUNC( fcache_add_link, Directory *parent, File *file, hname_t *name );
 SVFUNC( fcache_add_file, File *file );
 File *file_ref( File *file );
 void file_release( File *file );
-Directory *vfs_find_directory ( Directory *base, fname_t filename );
 Directory * directory_ref( Directory *dir );
 void directory_release( Directory *dir );
+void vfs_mount_initialize ( void );
+Filesystem	*vfs_get_mount_by_mountpoint( Directory *mountpoint );
+void vfs_reg_mount( Filesystem *filesystem );
+void vfs_unreg_mount( Filesystem *filesystem );
+
+SVFUNC(vfs_do_mount_device,	
+						FSDriver *driver, 
+						dev_t device, 
+						Directory *mountpoint, 
+						mflag_t flags
+		);
+
+SVFUNC(vfs_do_mount_named,	
+						FSDriver *driver, 
+						char * target, 
+						Directory *mountpoint, 
+						mflag_t flags
+		);
+void vfs_sync_filesystems( void );
 
 /** @name VFS API
  *  Public VFS functions
@@ -817,18 +841,12 @@ SFUNC(fslookup_t, vfs_find_symlink, char * path);
 SFUNC(fslookup_t, vfs_find_symlink_at, Directory *curdir, char * path);
 SFUNC(fslookup_t, vfs_find, char * path);
 SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
-SFUNC(inode_t *, vfs_find_parent, char * path);
-SFUNC(inode_t *, vfs_find_inode, char * path);
-SFUNC(inode_t *, vfs_find_symlink, char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
-SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uint32_t flags);
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
 SVFUNC( vfs_register_fs, 
 		const char *name, 
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
 void vfs_ifsmgr_initialize( void );
-void vfs_mount_initialize ( void );
-void vfs_sync_filesystems( void );
 #endif
 
