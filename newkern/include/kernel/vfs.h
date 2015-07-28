@@ -803,6 +803,7 @@ void vfs_bump_utimes_file( File *file , tflag_t flags );
 int vfs_chroot(Directory *dirc);
 int vfs_chdir(Directory *dirc);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
+SMIMPL(aoff_t, File, psx_readlink, char * buffer, aoff_t length, oflag_t flags);
 /** @name VFS API
  *  Public VFS functions
  */

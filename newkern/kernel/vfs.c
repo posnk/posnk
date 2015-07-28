@@ -1381,7 +1381,7 @@ int vfs_symlink(char *oldpath, char *path)
 	vfs_bump_utimes_file( link, TFLAG_ATIME | TFLAG_CTIME | TFLAG_MTIME );
 
 	/* Set link permissions */
-	status = SVMCALL( set_unix_perm, 0777 );
+	status = SVMCALL( link->permissions, set_unix_perm, 0777 );
 
 	/* Check for errors */
 	if ( status ) {
