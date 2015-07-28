@@ -43,6 +43,13 @@
 
 
 /**
+ * Bit definitions for tflag_t
+ */
+#define TFLAG_ATIME		(1)
+#define TFLAG_MTIME		(2)
+#define TFLAG_CTIME		(4)
+
+/**
  * Bit definition for inode->mode, this file is readable
  */
 #define MODE_READ  4
@@ -110,6 +117,12 @@ typedef uint32_t	uflag_t;
  * Describes any important options that should be adhered to by the impl.
  */
 typedef uint32_t	mflag_t;
+
+/**
+ * @brief Type for the flags parameter passed to file access time functions
+ * Describes which time the implementation should operate on
+ */
+typedef uint32_t	tflag_t;
 
 class_decl(FSDriver);
 class_decl(FSPermissions);
@@ -442,6 +455,7 @@ class_defn(Directory) {
 	 * Creates a new regular file in the directory
 	 * @param filename	The name of the file to create
 	 * @param flags		Options indicating how to create the file
+	 * @note			Must only be called while directory is locked
 	 * @return			The newly created file object
 	 */	
 	SMDECL( File *, Directory, create_file,
@@ -453,6 +467,7 @@ class_defn(Directory) {
 	 * @param filename	The name of the file to create
 	 * @param flags		Options indicating how to create the file
 	 * @param device	The device number the new file should point to
+	 * @note			Must only be called while directory is locked
 	 * @return			The newly created file object
 	 */
 	SMDECL( File *, Directory, create_device,
@@ -464,6 +479,7 @@ class_defn(Directory) {
 	 * Creates a new named pipe in the directory
 	 * @param filename	The name of the pipe to create
 	 * @param flags		Options indicating how to create the pipe
+	 * @note			Must only be called while directory is locked
 	 * @return			The newly created file object
 	 */				
 	SMDECL( File *, Directory, create_pipe,
@@ -475,6 +491,7 @@ class_defn(Directory) {
 	 * @param filename	The name of the link to create
 	 * @param flags		Options indicating how to create the link
 	 * @param flags		Options indicating how to create the link
+	 * @note			Must only be called while directory is locked
 	 * @return			The newly created file object
 	 */				
 	SMDECL( File *, Directory, create_link,
@@ -487,6 +504,7 @@ class_defn(Directory) {
 	 * Creates a new (hard) link to a file in the directory
 	 * @param filename	The name of the link to create
 	 * @param file		The file to link to
+	 * @note			Must only be called while directory and file are locked
 	 */	
 	SVMDECL( Directory, link_file,
 					char *	/* filename */,
@@ -655,10 +673,38 @@ class_defn(File) {
 	SNMDECL(aoff_t, File, get_size);
 
 	/**
+	 * Get a file's link count
+	 * @return The link count
+	 */
+	SNMDECL(int, File, get_link_count);
+
+	/**
+	 * Increase link count
+	 */
+	SOMDECL(File, add_link);
+
+	/**
+	 * Decrease link count
+	 */
+	SOMDECL(File, del_link);
+
+	/**
 	 * Check if this file is a symbolic link
 	 * @return nonzero if the file is a symbolic link
 	 */
-	SNMDECL(aoff_t, File, is_symlink);
+	SNMDECL(int, File, is_symlink);
+
+	/**
+	 * Check if this file is a block device
+	 * @return nonzero if the file is a block device
+	 */
+	SNMDECL(int, File, is_blkdev);
+
+	/**
+	 * Gets the device this file points to
+	 * @return The device this file points to
+	 */
+	SNMDECL(dev_t, File, get_device);
 
 	/**
 	 * Destroy the object
@@ -701,11 +747,6 @@ class_defn(File) {
 	 *Handle count 
 	 */
 	int				 hndcount;
-	
-	/** 
-	 * Link count
-	 */
-	int				 lnkcount;
 	
 	/**
 	 * Loaded link list
@@ -751,6 +792,8 @@ SFUNC(fslookup_t, vfs_find_symlink, char * path);
 SFUNC(fslookup_t, vfs_find_symlink_at, Directory *curdir, char * path);
 SFUNC(fslookup_t, vfs_find, char * path);
 SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
+void vfs_bump_utimes_dir( Directory *dir , tflag_t flags );
+void vfs_bump_utimes_file( File *file , tflag_t flags );
 
 /** @name VFS API
  *  Public VFS functions

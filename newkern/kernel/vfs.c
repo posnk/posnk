@@ -1656,9 +1656,9 @@ int vfs_link(char *oldpath, char *newpath)
 {
 	int status;
 	char * name;
-	inode_t *inode;
-	inode_t *_inode;
-	inode_t *parent;
+	fslookup_t target;
+	fslookup_t trgfile;
+	fslookup_t parent;
 
 	/* Check for null pointers */
 	assert (newpath != NULL);
@@ -1668,75 +1668,91 @@ int vfs_link(char *oldpath, char *newpath)
 	status = vfs_find_parent(newpath, &parent);
 
 	/* Check if it exists, if not, return error */
-	if (status) 
+	if ( status ) 
 		return status;
 	
 	/* Look up the inode for the target */
-	status = vfs_find_inode(oldpath, &inode);
+	status = vfs_find(oldpath, &target);
 
 	/* Check if it exists, if not, return error */
-	if (!inode) {
+	if ( status ) {
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
+		/* Release the parent */
+		directory_release( parent.directory );
 
 		return status;
 
 	}
-
-	/* Aqquire a lock on the target */
-	semaphore_down(inode->lock);
 	
-	/* Aqquire a lock on the parent directory */
-	semaphore_down(parent->lock);
+	/* Check if the target is a directory */
+	if ( target.directory != NULL ) {
+
+		/* Release the parent */
+		directory_release( parent.directory );
+
+		/* Release the target */
+		directory_release( target.directory );
+
+		return EPERM;
+	}
 
 	/* Check whether the file already exists */
-	status = vfs_find_inode(newpath, &_inode);
+	status = vfs_find(newpath, &trgfile);
 
 	if (status != ENOENT) {
 		/* If so, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 
-		if (!status) {
-			vfs_inode_release(_inode);
+		if ( trgfile.file != NULl && !status) {
+			file_release( trgfile.file );
+			return EEXIST;
+		} else if ( trgfile.directory != NULl && !status) {
+			directory_release( trgfile.directory );
 			return EEXIST;
 		} else 
 			return status;
-	}
+	}	
+
+	/* Aqquire a lock on the target */
+	semaphore_down(target.file->lock);
+	
+	/* Aqquire a lock on the parent directory */
+	semaphore_down(parent.directory->lock);
 
 	/* Check permissions on parent dir */
-	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+	status = SVMCALL(parent.directory->permissions, access, 0, 1, 0);
+	
+	if ( status ) {
+		
 		/* If not, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(target.file->lock);
+		semaphore_up(parent.directory->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 
-		return EACCES;
+		return status;
 	}
 
 	/* Check for cross-device links */
-	if (parent->device_id != inode->device_id) {
+	if (parent->fs != target->fs) {
 		/* If so, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);	
+		semaphore_up(target.file->lock);
+		semaphore_up(parent.directory->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);	
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 
 		return EXDEV;
 	}
@@ -1747,14 +1763,14 @@ int vfs_link(char *oldpath, char *newpath)
 
 	if (status) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(target.file->lock);
+		semaphore_up(parent.directory->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);	
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 		
 		return status;
 	}
@@ -1762,14 +1778,14 @@ int vfs_link(char *oldpath, char *newpath)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(target.file->lock);
+		semaphore_up(parent.directory->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);	
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1778,7 +1794,7 @@ int vfs_link(char *oldpath, char *newpath)
 	}
 
 	/* Call on FS driver to create directory entry */
-	status = ifs_link(parent, name, inode->id);
+	status = SVMCALL(parent.directory, link_file, name, target.file);
 
 	/* Free filename */
 	heapmm_free(name, strlen(name) + 1);
@@ -1788,33 +1804,35 @@ int vfs_link(char *oldpath, char *newpath)
 		/* An error occurred */
 
 		/* Clean up */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);	
+		semaphore_up(target.file->lock);
+		semaphore_up(parent.directory->lock);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the target inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		file_release( target.file );
 
 		/* Pass error to caller */
 		return status;
 	}
 
 	/* Update mtime on parent */
-	parent->mtime = system_time;
+	vfs_bump_utimes_dir( parent.directory 0, 1, 0 );
 
 	/* Release lock on parent inode */
-	semaphore_up(parent->lock);
+	semaphore_up( parent.directory->lock );
 	
 	/* Update hardlink count */
-	inode->hard_link_count++;
+	status = SOMCALL( target.file, add_link );
+	
+	//TODO: Handle errors
 
 	/* Update ctime */
-	inode->ctime = system_time;
+	vfs_bump_utimes_file( target.file, 0, 0, 1 );
 
 	/* Release inode lock */
-	semaphore_up(inode->lock);
+	semaphore_up( target.file->lock );
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
@@ -1837,14 +1855,16 @@ int vfs_link(char *oldpath, char *newpath)
 
 int vfs_initialize(dev_t root_device, char *root_fs_type)
 {
-	fs_driver_t *driver;
-	fs_device_t *fsdevice;
+	FSDriver *driver;
+	Filesystem *fsdevice;
 	inode_t *root_inode;
 	int status;
 	
 	vfs_mount_initialize();
 
-	vfs_icache_initialize();
+	dcache_initialize();
+
+	fcache_initialize();
 	
 	vfs_ifsmgr_initialize();
 
@@ -1860,7 +1880,7 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 	}
 
 	/* Mount the filesystem */
-	status = driver->mount(root_device,  0, &fsdevice);
+	status = SMCALL(driver, &fsdevice, mount_device, root_device, 0 );
 
 	if (status) {
 
@@ -1868,23 +1888,15 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 
 		return 0;
 	}
-
-	/* Look up root inode */
-	status = ifs_load_inode(fsdevice, fsdevice->root_inode_id, &root_inode);
-
-	/* Check for errors */
-	if (status)
-		return 0;
 	
-	//TODO: Register rootfs mountpoint
-
-	/* Add the root inode to it */
-	vfs_inode_cache(root_inode);
+	/* Register the root filesystem */
+	vfs_reg_mount( fsdevice );
 
 	/* Fill VFS fields in the proces info */
-	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
+	scheduler_current_task->root_directory = directory_ref( fsdevice->root );
 
-	scheduler_current_task->current_directory = vfs_dir_cache_ref(scheduler_current_task->root_directory);
+	scheduler_current_task->current_directory = 
+						directory_ref(scheduler_current_task->root_directory);
 
 	/* Return success */
 	return 1;
@@ -1895,20 +1907,16 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
  * @param dirc The new working directory
  * @return An error code or 0 for success
  */
-int vfs_chdir(dir_cache_t *dirc)
+int vfs_chdir(Directory *dirc)
 {
 	/* Check for null pointers */
 	assert (dirc != NULL);
 
-	/* Check if it really is a directory */
-	if (!S_ISDIR(dirc->inode->mode)) 
-		return ENOTDIR;
-
 	/* Release the old directory */
-	vfs_dir_cache_release(scheduler_current_task->current_directory);
+	directory_release(scheduler_current_task->current_directory);
 
 	/* Update current directory */
-	scheduler_current_task->current_directory = vfs_dir_cache_ref(dirc);
+	scheduler_current_task->current_directory = directory_ref(dirc);
 
 	return 0;
 }
@@ -1918,22 +1926,20 @@ int vfs_chdir(dir_cache_t *dirc)
  * @param dirc The new root directory
  * @return An error code or 0 for success
  */
-int vfs_chroot(dir_cache_t *dirc)
+int vfs_chroot(Directory *dirc)
 {
 	/* Check for null pointers */
 	assert (dirc != NULL);
 
-	/* Check if it really is a directory */
-	if (!S_ISDIR(dirc->inode->mode)) 
-		return ENOTDIR;
-
 	/* Release the old directory */
-	vfs_dir_cache_release(scheduler_current_task->root_directory);
+	directory_release(scheduler_current_task->root_directory);
 
 	/* Update current directory */
-	scheduler_current_task->root_directory = vfs_dir_cache_ref(dirc);
+	scheduler_current_task->root_directory = directory_ref(dirc);
 
-	return 0;
+	/* Change to the new root directory */
+
+	return vfs_chdir( dirc );
 }
 
 /**
@@ -1951,46 +1957,76 @@ int vfs_chroot(dir_cache_t *dirc)
  * @exception ENOTBLK The special file is not a block special file
  */
 
-SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
+SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, mflag_t flags)
 {
-	fs_driver_t *driver;
-	inode_t	    *mp_inode;
-	inode_t	    *dev_inode;
+	FSDriver 	*driver;
+	fslookup_t	 dev_lk;
+	fslookup_t	 mp_lk;
 	errno_t	     status;
+	int			 isblk;
+	dev_t		 dev;
 
 	/* Check for null pointers */
 	assert (device != NULL);
 	assert (mountpoint != NULL);
+	assert (fstype != NULL);
 
 	/* Look up the inode for the mountpoint */
-	status = vfs_find_inode(mountpoint, &mp_inode);
+	status = vfs_find( mountpoint, &mp_lk );
 
 	/* Check if it exists */
-	if (status) 
+	if ( status ) 
 		THROWV( status );
+		
+	/* Check if it is a directory */
+	if ( mp_lk.file != NULL ) {
+		/* If not, clean up and throw ENOTDIR */
+		
+		/* Release the file */
+		file_release( mp_lk.file );
+		
+		THROWV( ENOTDIR );
+		
+	}
 
 	/* Look up the inode for the special file */
-	status = vfs_find_inode(device, &dev_inode);
+	status = vfs_find( device, &dev_lk );
 	
 	/* Check if it exists */
 	if (status) {
 
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
 
 		THROWV( status );
 	}
+		
+	/* Check if it is a directory */
+	if ( dev_lk.file == NULL ) {
+		/* If it is, clean up and throw ENOTBLK */
+
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
+		
+		/* Release the file */
+		directory_release( dev_lk.directory );
+		
+		THROWV( ENOTBLK );
+		
+	}
 
 	/* Check if it is a block special file */
-	if (!S_ISBLK(dev_inode->mode)) {
+	status = SNMCALL( dev_lk.file, &isblk, is_blkdev );
+	
+	if (status || !isblk) {
 
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
 
 		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
+		file_release( dev_lk.file );
 
-		THROWV( ENOTBLK );
+		THROWV( ((status == 0) ? ENOTBLK : status) );
 	}
 	
 	/* Look up the fs driver */	
@@ -1999,35 +2035,50 @@ SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
 	/* Check if it exists */
 	if ( status ) {
 
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
 
 		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
+		file_release( dev_lk.file );
 
 		THROWV( status );
 	}
 
+	/* Get the device for the devfile */
+	status = SNMCALL( dev_lk.file, &dev, get_device );
+	
+	/* Check if that succeeded */
+	if ( status ) {
+
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
+
+		/* Release the special file inode */
+		file_release( dev_lk.file );
+
+		THROWV( status );
+	}
+	
 	/* Mount the filesystem */
-	status = vfs_do_mount( driver, dev_inode->if_dev, mp_inode, flags );
+	status = vfs_do_mount_device( driver, dev, mp_lk.directory, flags );
 	
 	/* Check for errors */	
 	if (status) {
 
-		/* Release the mountpoint inode */
-		vfs_inode_release(mp_inode);
+		/* Release the mountpoint */
+		directory_release( mp_lk.directory );
 
 		/* Release the special file inode */
-		vfs_inode_release(dev_inode);
+		file_release( dev_lk.file );
 
 		THROWV( status ); //TODO: Unmount
 	}
 
-	/* Release the mountpoint inode */
-	vfs_inode_release(mp_inode);
+	/* Release the mountpoint */
+	directory_release( mp_lk.directory );
 
 	/* Release the special file inode */
-	vfs_inode_release(dev_inode);
+	file_release( dev_lk.file );
 
 	/* Return success */
 	RETURNV;
