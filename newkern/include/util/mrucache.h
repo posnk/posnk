@@ -42,18 +42,6 @@ typedef int (*mru_evict_t)(mrunode_t *);
 typedef int (*mru_overflow_t)(mrucache_t *, mrunode_t *);
 
 /**
- * MRU cache descriptor structure
- */
-struct mrucache {
-	mrunode_t		 head;
-	int				 max_entries;
-	int				 num_entries;
-	mru_evict_t		*do_evict;
-	mru_overflow_t	*overflow;
-	void			*param;
-};
-
-/**
  * MRU cache header structure prototype
  * To use mru caches, create a structure
  * containing a mrunode_t as its first member.
@@ -64,6 +52,18 @@ struct mrunode {
 	mrunode_t		*mnext;
 	mrunode_t		*mprev;
 	mrucache_t		*mcache;
+};
+
+/**
+ * MRU cache descriptor structure
+ */
+struct mrucache {
+	mrunode_t		 head;
+	int				 max_entries;
+	int				 num_entries;
+	mru_evict_t		*do_evict;
+	mru_overflow_t	*overflow;
+	void			*param;
 };
 
 /**

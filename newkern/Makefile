@@ -75,8 +75,9 @@ kernel/blkdev.c \
 kernel/chardev.c \
 kernel/tty.c \
 kernel/pipe.c \
+kernel/vfs/utime.c \
 kernel/vfs/icache.c \
-kernel/vfs/dcache.c \
+kernel/vfs/ndcache.c \
 kernel/vfs/ifswrap.c \
 kernel/vfs/pathres.c \
 kernel/vfs/perm.c \

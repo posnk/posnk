@@ -1479,8 +1479,9 @@ int vfs_symlink(char *oldpath, char *path)
 int vfs_unlink(char *path)
 {
 	int status;
-	inode_t *inode;
-	inode_t *parent;
+	fslookup_t target;
+	fslookup_t parent;
+	int lnkcount;
 	char * name;
 
 	/* Check for null pointers */
@@ -1488,7 +1489,7 @@ int vfs_unlink(char *path)
 	
 	/* Look up the inode for the file */
 
-	status = vfs_find_symlink(path, &inode);
+	status = vfs_find_symlink(path, &target);
 
 	/* Check if it exists, if not, return error */
 	if (status)
@@ -1500,27 +1501,38 @@ int vfs_unlink(char *path)
 	/* Check if it exists, if not, return error */
 	if (status) {
 
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
 
 		return status;
 	}
 
 	/* Check permissions on parent dir */
-	if (!vfs_have_permissions(parent, MODE_WRITE)) {
+	status = SVMCALL(parent.directory.permissions, access, MODE_WRITE);
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
+	if ( status ) {
 
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		return EACCES;
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
+
+		return status;
 	}
 
 	/* Aqquire lock on inode */
-	semaphore_down(inode->lock);
-
+	if ( target.file != NULL )
+		semaphore_down(target.file->lock);
+	else         
+		semaphore_down(target.directory->lock);
+		
 	/* Resolve the filename */
 	
 	status = vfs_get_filename(path, &name);
@@ -1528,14 +1540,19 @@ int vfs_unlink(char *path)
 	/* Check the filename length */
 	if (status) {
 		/* Length is too long, clean up and return error */	
-		semaphore_up(inode->lock);
+		if ( target.file != NULL )
+			semaphore_up(target.file->lock);
+		else         
+			semaphore_up(target.directory->lock);
+	
+		/* Release the parent */
+		directory_release( parent.directory );
 
-
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
 
 		return status;
 	}
@@ -1543,13 +1560,19 @@ int vfs_unlink(char *path)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */		
-		semaphore_up(inode->lock);
+		if ( target.file != NULL )
+			semaphore_up(target.file->lock);
+		else         
+			semaphore_up(target.directory->lock);
+		
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1558,10 +1581,10 @@ int vfs_unlink(char *path)
 	}
 
 	/* Aqquire lock on the parent dir */
-	semaphore_down(parent->lock);
+	semaphore_down(parent.directory->lock);
 
 	/* Delete directory entry */
-	status = ifs_unlink(parent, name);
+	status = SVMCALL(parent.directory, remove_file, name, 0);
 
 	/* Free filename */
 	heapmm_free(name, strlen(name) + 1);
@@ -1569,65 +1592,105 @@ int vfs_unlink(char *path)
 	/* Check for errors */
 	if (status) {
 		/* Release the lock on the inode */
-		semaphore_up(inode->lock);
-		/* Release the lock on the parent dir */
-		semaphore_up(parent->lock);
+		semaphore_up(parent.directory->lock);
+		if ( target.file != NULL )
+			semaphore_up(target.file->lock);
+		else         
+			semaphore_up(target.directory->lock);
+		
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
 
 		/* Pass error to the caller */
 		return status;
 	}
+	
+	vfs_bump_utimes_dir( parent.directory, TFLAG_MTIME );
 
 	/* Release the lock on the parent dir */
-	semaphore_up(parent->lock);
+	semaphore_up(parent.directory->lock);
 
 	/* Decrease hardlink count */
-	inode->hard_link_count--;
+	if (target.file != NULL) {
+		status = SOMCALL(target.file, del_link);
+		
+		if ( status ) {
+			
+			//TODO: Decide what to do here
+			
+		}
+		
+		status = SNMCALL( target.file, &lnkcount, get_link_count );
+		
+	} else 
+		lnkcount = 0;
 	
 	/* Update ctime */
-	inode->ctime = system_time;
+	if ( target.file != NULL )	
+		vfs_bump_utimes_file( target.file, TFLAG_CTIME );
+	else
+		vfs_bump_utimes_dir( parent.directory, TFLAG_CTIME );
 
 	/* Check for orphaned files */
-	if (inode->hard_link_count == 0) {
+	if (lnkcount == 0) {
 		/* File is orphaned */
 
 		/* Check if file is in use */
-		if (inode->open_count != 0) {
-			semaphore_up(inode->lock);
+		if ( (target.file != NULL && 
+				(target.file->hndcount + target.file->refcount) != 0
+			) || 
+			 (target.directory != NULL && 
+				(target.directory->hndcount + target.directory->refcount) != 0
+			 ) {
+				 
+			
+			if ( target.file != NULL )
+				semaphore_up(target.file->lock);
+			else         
+				semaphore_up(target.directory->lock);
+		
+			/* Release the parent */
+			directory_release( parent.directory );
 
-			/* Release the parent inode */
-			vfs_inode_release(parent);
-
-			/* Release the inode */
-			vfs_inode_release(inode);
+			/* Release the target */
+			if ( target.file != NULL )
+				file_release( target.file );
+			else
+				directory_release( target.directory );
 
 			return EBUSY;
 		}
 
 		/* Delete the file itself */
-		ifs_rmnod(inode); //This might error but there is little we can do about that anyway
-		/* Remove its inode from the cache */
-		llist_unlink((llist_t *) inode);
-		/* Free its inode */
-		heapmm_free(inode, inode->device->inode_size);	
-
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-	
+		if ( target.file != NULL )
+			status = SOMCALL( target.file, delete );
+		else
+			status = SOMCALL( target.directory, delete );
+			
+		
+		/* Release the parent */
+		directory_release( parent.directory );
+		
 	} else {
-		/* Release the lock on the inode */
-		semaphore_up(inode->lock);
+		if ( target.file != NULL )
+			semaphore_up(target.file->lock);
+		else         
+			semaphore_up(target.directory->lock);
+		
+		/* Release the parent */
+		directory_release( parent.directory );
 
-		/* Release the parent inode */
-		vfs_inode_release(parent);
-
-		/* Release the inode */
-		vfs_inode_release(inode);
+		/* Release the target */
+		if ( target.file != NULL )
+			file_release( target.file );
+		else
+			directory_release( target.directory );
 	}
 
 	/* Return success */
@@ -1834,11 +1897,11 @@ int vfs_link(char *oldpath, char *newpath)
 	/* Release inode lock */
 	semaphore_up( target.file->lock );
 
-	/* Release the parent inode */
-	vfs_inode_release(parent);
+	/* Release the parent */
+	directory_release( parent.directory );
 
-	/* Release the target inode */
-	vfs_inode_release(inode);
+	/* Release the target */
+	file_release( target.file );
 
 	/* Return success */
 	return 0;	

@@ -124,11 +124,18 @@ typedef uint32_t	mflag_t;
  */
 typedef uint32_t	tflag_t;
 
+/**
+ * @brief Type for the flags parameter passed to file access functions
+ * Describes which kind of access is requested
+ */
+typedef uint32_t	aflag_t;
+
 class_decl(FSDriver);
 class_decl(FSPermissions);
 class_decl(Directory);
 class_decl(File);
 class_decl(FileHandle);
+class_decl(FileLink);
 class_decl(DirHandle);
 class_decl(Filesystem);
 
@@ -264,13 +271,11 @@ class_defn(FSPermissions) {
 
 	/**
 	 * Tries to access the file
-	 * @param		read	Whether to try a read access
-	 * @param		write	Whether to try a write access
-	 * @param		exec	Whether to try an execute access
+	 * @param		flags	The type of access requested
 	 * @exception	EACCES	The current user does not have sufficient rights to
 	 * 						access the file
 	 */
-	SVMDECL(FSPermissions, access, int read, int write, int exec);	
+	SVMDECL(FSPermissions, access, aflag_t);	
 
 	/**
 	 * Set the owning user
@@ -300,7 +305,7 @@ class_defn(FSPermissions) {
 	/** Implementation specific data */
 	void		*impl;
 	
-}
+};
 
 /**
  * Represents an open file
@@ -365,7 +370,7 @@ class_defn(FileHandle) {
 	 */
 	SVMDECL(FileHandle,	unmap,
 					void *  /* target */,
-					aoff_t	/* length */,
+					aoff_t	/* length */
 				);
 			
 	//TODO: Add file inspection interface (see: stat/fstat/lstat)
@@ -512,7 +517,7 @@ class_defn(Directory) {
 			);
 	
 	/**
-	 * Deletes a file from the directory listing
+	 * Deletes a file or subdirectory from the directory listing
 	 * @param filename	The name of the file to remove
 	 * @param flags		Options indicating how to delete the file
 	 * @note The file might not be truely deleted until all other links are gone
@@ -520,7 +525,7 @@ class_defn(Directory) {
 	 */
 	SVMDECL( Directory, remove_file, 
 					char *		/* filename */,
-					dflags_t	/* flags */
+					dflag_t		/* flags */
 			);
 			
 	//TODO: Add file inspection interface (see: stat/fstat/lstat)
@@ -661,8 +666,8 @@ class_defn(File) {
 	 * @return			The number of characters read
 	 */
 	SMDECL( aoff_t, File, readlink, 
-					char *	/* buffer	*/
-					aoff_t	/* length	*/
+					char *	/* buffer	*/,
+					aoff_t	/* length	*/,
 					oflag_t /* flags 	*/
 			);
 
@@ -784,7 +789,7 @@ SVFUNC(vfs_do_mount_named,
 		);
 void vfs_sync_filesystems( void );
 SFUNC(FSDriver *, vfs_get_driver, char *fstype);
-SVFUNC( vfs_register_fs, FSDriver *driver )
+SVFUNC( vfs_register_fs, FSDriver *driver );
 void vfs_ifsmgr_initialize( void );
 SFUNC(fslookup_t, vfs_find_parent, char * path);
 SFUNC(fslookup_t, vfs_find_parent_at, Directory *curdir, char * path);
@@ -794,14 +799,16 @@ SFUNC(fslookup_t, vfs_find, char * path);
 SFUNC(fslookup_t, vfs_find_at, Directory *curdir, char * path);
 void vfs_bump_utimes_dir( Directory *dir , tflag_t flags );
 void vfs_bump_utimes_file( File *file , tflag_t flags );
-
+int vfs_chroot(Directory *dirc);
+int vfs_chdir(Directory *dirc);
+SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
 /** @name VFS API
  *  Public VFS functions
  */
 ///@{
-void vfs_icache_initialize();
 void vfs_cache_flush();
-
+/*
+void vfs_icache_initialize();
 inode_t *vfs_inode_ref(inode_t *inode);
 
 void vfs_inode_release(inode_t *inode);
@@ -829,13 +836,10 @@ int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, 
 int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t count, aoff_t *read_size);
 
 int vfs_truncate(inode_t * inode, aoff_t length);
+*/
 
-int vfs_chroot(dir_cache_t *dirc);
-
-int vfs_chdir(dir_cache_t *dirc);
 
 SFUNC(char *, vfs_get_filename, const char *path);
-
 ///@}
 
 
@@ -843,31 +847,19 @@ SFUNC(char *, vfs_get_filename, const char *path);
  *  Utility functions for use by VFS functions only
  */
 ///@{
-void vfs_inode_cache(inode_t *inode);
-inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
-
-dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
-
-void vfs_dir_cache_release(dir_cache_t *dirc);
-
+	/*
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode);
 
-SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id);
-
-inode_t *vfs_effective_inode(inode_t * inode);
-
-dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc);
-
-SFUNC( dir_cache_t *, vfs_dir_cache_new, dir_cache_t *par, ino_t inode_id );
+inode_t *vfs_effective_inode(inode_t * inode);*/
 
 ///@}
 
 int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
-
+/*
 SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id );
 SVFUNC( ifs_store_inode, inode_t * inode );
 SVFUNC( ifs_mknod, inode_t * inode );
@@ -882,6 +874,6 @@ SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, ao
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 SVFUNC( ifs_sync, fs_device_t *device );
 SVFUNC(vfs_sync_inode, inode_t *inode);
-SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
+*/
 #endif
 
