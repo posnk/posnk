@@ -1141,12 +1141,13 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 }
 
 /**
- * @brief Reads a symbolic link path
+ * @brief	Default implementation for readlink in POSIXlike filesystems where a 
+ * 			symbolic link is nothing but a special kind of file
+ * This will open the link, read its contents and close it again
  * @param inode The symbolic link inode to read
  * @param buffer The buffer to read the path to
  * @param size The size of the read buffer
- * @param read_size The number of characters actually read
- * @return In case of error: a valid error code, Otherwise 0
+ * @return The number of characters actually read
  *
  * @exception EFAULT Atleast one parameter was a NULL pointer
  * @exception EINVAL The file is not a symbolic link
@@ -1154,75 +1155,87 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
  * @exception EACCES User does not have read permission for the symbolic link
  * @exception ENOMEM Could not allocate kernel heap for a temporary structure 
  */
-
-int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
+SMIMPL( aoff_t, File, psx_readlink, char * buffer, aoff_t length, oflag_t flags )
 {
 
 	inode_t *inode;
-	int status;
+	int status, nstatus;
+	int islink;
 	aoff_t _read_size;
+	FileHandle *handle;
 
 	/* Check for null pointers */
-	assert (_inode != NULL);
 	assert (buffer != NULL);
-	assert (read_size != NULL);
 
-	/* Get a stable reference to the inode */
-	inode = vfs_inode_ref(_inode);
+	/* Open the file */
 
-	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+#ifdef CONFIG_SYMLINK_PERMISSION_CHECK
+	status = SMCALL( _this, &handle, open, OFLAG_READ | OFLAG_IGNPERM | flags );
+#else
+	status = SMCALL( _this, &handle, open, OFLAG_READ | flags );
+#endif
 
-	/* Verify read permission */
-	if (!vfs_have_permissions(inode, MODE_READ)) {
+	/* Check for errors */
+	if ( status ) {
 		
-		/* Release the lock on this inode */
-		semaphore_up(inode->lock);	
-
-		/* Release the dereferenced inode */
-		vfs_inode_release(inode);
-		
-		/* Return the error "Access Denied"  */
-		/* because this call might have been */
-		/* made without checking permissions */		
-		return EACCES;
+		/* Pass error on to caller */		
+		return status;
 
 	}
 
 	/* Make sure the file is a symbolic link */
-	if (!S_ISLNK(inode->mode)) {
+	status = SNMCALL( _this, &islink, is_symlink );
+	
+	if ( status || !islink ) {
 		
-		/* Release the lock on this inode */
-		semaphore_up(inode->lock);	
-
-		/* Release the dereferenced inode */
-		vfs_inode_release(inode);
+		/* Close the handle */
+		nstatus = SOMCALL( handle, close );
+		
+		//TODO: Ignore failure here or at least report an oops
 		
 		/* Return the error "Invalid Operation", */
 		/* we can not readlink() something that  */
 		/* is not a symbolic link */		
-		return EINVAL;
+		return status;
 
 	}
+	
+	/* Get the file size */
+	status = SNMCALL( handle, &_read_size, get_size );
+	
+	/* Check if an error occurred */
+	if ( status || !islink ) {
+		
+		/* Close the handle */
+		nstatus = SOMCALL( handle, close );
+		
+		/* Release the lock on this inode */
+		semaphore_up(_this->lock);	
+		
+		/* Pass the error to the caller */	
+		return status;
 
-	if (size > inode->size)
-		size = inode->size;	
+	}
+	
+	/* Truncate read size to filesize */
+	if (size > _read_size)
+		size = _read_size;	
 
 	/* Call on the FS driver to read the data */
-	status = ifs_read(inode, (void *) buffer, 0, (aoff_t) size, &_read_size);
+	status = SMCALL(handle, &_read_size, read, 
+											(void *) buffer, 
+											0, 
+											size,
+											RFLAG_ALLOWLNK);
 
-	*read_size = (size_t) _read_size;
+		
+	/* Close the handle */
+	nstatus = SOMCALL( handle, close );
 
-	/* If data was actually read, update atime */
-	if (*read_size)
-		inode->atime = system_time;
-
-	/* Release the lock on this inode */
-	semaphore_up(inode->lock);	
-
-	/* Release the dereferenced inode */
-	vfs_inode_release(inode);
-
+	if ( nstatus ) {
+		//TODO: Oops
+	}
+		
 	/* Pass any errors on the the caller */
 	return status;
 
@@ -1248,7 +1261,7 @@ int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
 
 int vfs_symlink(char *oldpath, char *path)
 {
-	int status;
+	int status, nstatus;
 	char * name;
 	File * link;
 	fslookup_t  parent;
@@ -1373,11 +1386,11 @@ int vfs_symlink(char *oldpath, char *path)
 	/* Check for errors */
 	if ( status ) {
 		/* If an error occurred, clean up */
-		status = SVMCALL( parent.directory, remove_file, name, 0);
+		nstatus = SVMCALL( parent.directory, remove_file, name, 0);
 		
 		//TODO: Handle error
 		
-		status = SOMCALL( link, delete );
+		nstatus = SOMCALL( link, delete );
 		
 		//TODO: Handle error
 				
@@ -1563,15 +1576,6 @@ int vfs_unlink(char *path)
 
 	/* Release the lock on the parent dir */
 	semaphore_up(parent.directory->lock);
-
-	/* Decrease hardlink count */
-	status = SOMCALL(target.file, del_link);
-		
-	if ( status ) {
-			
-		//TODO: Decide what to do here
-			
-	}
 		
 	status = SNMCALL( target.file, &lnkcount, get_link_count );
 	
@@ -1605,10 +1609,11 @@ int vfs_unlink(char *path)
 
 		/* Delete the file itself */
 		status = SOMCALL( target.file, delete );
-			
-		
+					
 		/* Release the parent */
 		directory_release( parent.directory );
+		
+		return status;
 		
 	} else {
 		semaphore_up(target.file->lock);
@@ -1812,9 +1817,6 @@ int vfs_link(char *oldpath, char *newpath)
 
 	/* Release lock on parent inode */
 	semaphore_up( parent.directory->lock );
-	
-	/* Update hardlink count */
-	status = SOMCALL( target.file, add_link );
 	
 	//TODO: Handle errors
 

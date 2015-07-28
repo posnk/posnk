@@ -50,6 +50,18 @@
 #define TFLAG_CTIME		(4)
 
 /**
+ * Bit definitions for oflag_t
+ */
+#define OFLAG_READ		(4)
+#define OFLAG_WRITE		(2)
+#define OFLAG_IGNPERM	(1)
+
+/**
+ * Bit definitions for rflag_t
+ */
+#define RFLAG_ALLOWLNK	(1)
+
+/**
  * Bit definition for inode->mode, this file is readable
  */
 #define MODE_READ  4
@@ -350,8 +362,7 @@ class_defn(FileHandle) {
 				);
 				
 	/**
-	 * Map a file to the process memory space
-	 * @param target The address to map the file range to
+	 * Map a file to the process memory the file range to
 	 * @param offset The offset in the file to map there
 	 * @param length The number of bytes to map
 	 * @param flags	 Options for mapping the file
@@ -495,7 +506,7 @@ class_defn(Directory) {
 	 * Creates a new symbolic link in the directory
 	 * @param filename	The name of the link to create
 	 * @param flags		Options indicating how to create the link
-	 * @param flags		Options indicating how to create the link
+	 * @param target	The path to the target
 	 * @note			Must only be called while directory is locked
 	 * @return			The newly created file object
 	 */				
@@ -682,16 +693,6 @@ class_defn(File) {
 	 * @return The link count
 	 */
 	SNMDECL(int, File, get_link_count);
-
-	/**
-	 * Increase link count
-	 */
-	SOMDECL(File, add_link);
-
-	/**
-	 * Decrease link count
-	 */
-	SOMDECL(File, del_link);
 
 	/**
 	 * Check if this file is a symbolic link
