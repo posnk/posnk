@@ -283,12 +283,22 @@ SFUNC(inode_t *, _vfs_find_at,
 				
 				/* Check whether the current directory is a mount root*/
 				if ( mt != NULL ) {
-					
+					/* If so, return to the parent of the mountpoint */
 					fnd_dev = mt->pt_dev;
 					fnd_ino = mt->pt_ino;
 					
 				}
 				
+			} else {
+				mt = vfs_get_mount_by_mountpoint( fnd_dev, fnd_ino );
+				
+				/* Check whether the current directory is a mountpoint*/
+				if ( mt != NULL ) {
+					/* If so, enter mount root */
+					fnd_dev = mt->rt_dev;
+					fnd_ino = mt->rt_ino;
+					
+				}
 			}
 			
 			/* Get the inode for the element */
