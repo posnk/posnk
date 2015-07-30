@@ -127,13 +127,17 @@ fs_mount_t	*vfs_get_mount_by_mountpoint( uint32_t dev, ino_t ino )
  * @param device The filesystem that was mounted
  * @param mountpoint The inode it was mounted on.
  */
-SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint)
+SVFUNC( vfs_reg_mount, fs_device_t *device, uint32_t mt_dev, 
+											ino_t mt_ino,
+											uint32_t pt_dev,
+											ino_t pt_ino,
+											uint32_t rt_dev,
+											ino_t rt_ino)
 {
 
 	fs_mount_t *mount;
 	
 	assert ( device != NULL );
-	assert ( mountpoint != NULL );
 		
 	mount = heapmm_alloc ( sizeof( fs_mount_t ) );
 
@@ -141,7 +145,12 @@ SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint)
 		THROWV( ENOMEM );
 
 	mount->device = device;
-	mount->mountpoint = vfs_inode_ref( mountpoint );
+	mount->mt_dev = mt_dev;
+	mount->mt_ino = mt_ino;
+	mount->rt_dev = rt_dev;
+	mount->rt_ino = rt_ino;
+	mount->pt_dev = pt_dev;
+	mount->pt_ino = pt_ino;
 
 	llist_add_end ( &vfs_mount_list, (llist_t *) mount );
 
@@ -181,14 +190,16 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 {
 	fs_device_t 	*fsdevice;
 	errno_t	     	 status;
-	inode_t		*mp_inode;
+	inode_t			*mp_inode;
+	ino_t			 pt_ino;
+	ino_t			 rt_ino;
 
 	/* Check for null pointers */
 	assert ( driver != NULL );
 	assert ( mountpoint != NULL );
 	
 	/* Check if the device has already been mounted */
-	if ( vfs_get_mount_by_dev( device ) ) {
+	if ( vfs_get_mount_by_dev( (uint32_t) device ) ) {
 		
 		THROWV( EBUSY );
 
@@ -198,7 +209,7 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	mp_inode = vfs_inode_ref ( mountpoint );
 
 	/* Check if it is a directory */
-	if (!S_ISDIR(mp_inode->mode)) {
+	if (!S_ISDIR(mp_inode->type)) {
 
 		/* Release the mountpoint inode */
 		vfs_inode_release( mp_inode );
@@ -208,7 +219,8 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	}
 	
 	/* Check if the target is already a mountpoint */
-	if ( vfs_get_mount_by_mountpoint( mp_inode ) ) {
+	if ( vfs_get_mount_by_mountpoint( mp_inode->device_id, 
+									  mp_inode->id ) ) {
 
 		/* Release the mountpoint inode */
 		vfs_inode_release(mp_inode);
@@ -229,10 +241,26 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 		THROWV( status );
 	}
 		
+	/* Look up the parent of the mountpoint */
+	status = vfs_findent( mp_inode, "..", &pt_ino );
+	
+	if ( status ) {
+
+		/* Release the mountpoint inode */
+		vfs_inode_release(mp_inode);
+
+		THROWV( status ); //TODO: Unmount
+		
+	}
+		
 	/* Attach the filesystems root inode to the mountpoint */
-	status = ifs_load_inode( fsdevice, 
-				 fsdevice->root_inode_id, 
-				 &(mp_inode->mount) );	
+	status = vfs_reg_mount( fsdevice,  
+							mp_inode->device_id, 	/* mountpoint dev */
+							mp_inode->id,			/* mountpoint ino */
+							mp_inode->device_id, 	/* mpt parent dev */
+							pt_ino,					/* mpt parent ino */
+							fsdevice->id,			/* root dir   dev */
+							fsdevice->root_inode_id);/*root dir	  ino */	
 	
 	/* Check for errors */	
 	if (status) {
@@ -242,9 +270,6 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 
 		THROWV( status ); //TODO: Unmount
 	}
-
-	/* Register the mount */
-	vfs_reg_mount ( fsdevice, mp_inode );
 
 	/* Release the mountpoint inode */
 	vfs_inode_release(mp_inode);
