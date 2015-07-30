@@ -37,7 +37,7 @@ llist_t vfs_mount_list;
 
 /* Internal type definitions */
 
-typedev struct {
+typedef struct {
 	uint32_t	dev;
 	ino_t		ino;
 } gmnt_params_t;
@@ -67,7 +67,7 @@ int vfs_gmnt_root_iterator (llist_t *node, void *param) {
 	fs_mount_t 		*mnt = (fs_mount_t *)		node;
 	gmnt_params_t	*par = (gmnt_params_t *)	param;
 
-	return mnt->rt_dev == par->dev && mnt->rt_ino == par->ino;
+	return (mnt->rt_dev == par->dev && mnt->rt_ino == par->ino);
 }
 
 /**
@@ -167,8 +167,6 @@ void vfs_unreg_mount( fs_mount_t *mount )
 {
 
 	llist_unlink ( (llist_t *) mount );
-		
-	vfs_inode_release( mount->mountpoint );
 	
 	heapmm_free( mount, sizeof( fs_mount_t ) );
 
@@ -192,7 +190,6 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	errno_t	     	 status;
 	inode_t			*mp_inode;
 	ino_t			 pt_ino;
-	ino_t			 rt_ino;
 
 	/* Check for null pointers */
 	assert ( driver != NULL );
@@ -283,7 +280,7 @@ void vfs_sync_filesystems( void )
 	int 		n_fs, n_ok;
 	llist_t 	*_mnt;
 	fs_mount_t 	*mnt;
-	errno_t		*status;
+	errno_t		 status;
 
 	n_fs = 0;
 	n_ok = 0;
