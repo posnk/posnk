@@ -96,49 +96,41 @@ typedef struct fs_driver fs_driver_t;
  */
 typedef struct fs_mount fs_mount_t;
 
+typedef struct inode_ops inode_ops_t;
+
 /**
  * Describes a file currently cached by the kernel
  */
 struct inode {	
 	/** Linked list node */
 	llist_t		 node;
+	
 	/* Inode */
 	/** Inode ID */
 	ino_t		 id;
-	/** Block device this inode resides on */
+	
+	/** Block device this inode resides on 		*/
 	uint32_t	 device_id;
+	
 	/** Filesystem device this inode resides on */
 	fs_device_t	*device;
-	/** Number of hard links to this file */
-	nlink_t 	 hard_link_count;
-	/* Permissions */
-	/** Owner UID */
-	uid_t	 	 uid;
-	/** Owner GID */
-	gid_t	 	 gid;
-	/** File mode, see stat.h */
-	umode_t	 	 mode;
-	/* Special file */
-	/** Device id for special files */
-	dev_t	 	 if_dev;
-	/** FIFO pipe back end */
-	pipe_info_t 	*fifo;
-	/** Mounted filesystem root inode */
-	inode_t	 	*mount;
-	/** Lock */
-	semaphore_t 	*lock;
+	
+	/** Mode (not necessarily fully correlated to disk, just for type */
+	mode_t		 type;
+	
 	/** Reference count (for GC)*/
 	uint32_t 	 usage_count;
+	
 	/** Open stream count */
 	uint32_t	 open_count;
-	/** File size */
-	aoff_t	 	 size;	
-	/** Access time */
-	ktime_t		 atime; 
-	/** Modification time */
-	ktime_t		 mtime;
-	/** Metadata modification time */
-	ktime_t		 ctime;
+	semaphore_t	       *lock;	
+	
+	/** Data field ( set by implementation )	*/
+	void		*data;
+	
+	/** Operations 								*/
+	inode_ops_t	*ops;
+	
 };
 
 /**
@@ -159,19 +151,170 @@ struct dirent {
 	char	 name[257];
 }  __attribute__((packed));
 
-/**
- * @brief An entry in the path element cache
- * The kernel keeps track of these to resolve the . and .. special directories
- */
-struct dir_cache {
-	/** The parent directory of this entry */
-	dir_cache_t	*parent;
-	/** The inode for this entry */
-	inode_t		*inode;
-	/** @brief The number of times this dir_cache is referenced
-          * This is used for a basic form of garbage collection, when this 
-          * hits 0 the dir_cache will be free'd */
-	uint32_t	 usage_count;
+struct inode_ops {
+	
+
+	/**
+	 * @brief Read data from a file
+	 * 
+     * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     * @note The VFS will adjust count so that the whole requested area is 
+	 * in the file
+	 * @param inode       The inode for the file
+	 * @param buffer      The buffer to store the data in
+	 * @param file_offset The offset in the file to start reading at
+	 * @param count       The number of bytes to read
+	 * @return The number of bytes read
+	 */
+	SFUNCPTR( aoff_t, read, inode_t *ino,
+							void 	*buffer, 
+							aoff_t	 offset, 
+							aoff_t	 count);
+
+	/**
+	 * @brief Write data to a file
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     *
+     * @note The VFS layer will automatically adjust file size\n
+	 * @param inode       The inode for the file
+	 * @param buffer      The buffer containing the data to write
+	 * @param file_offset The offset in the file to start writing at
+	 * @param count       The number of bytes to write
+	 * @return The number of bytes written
+	 */
+	SFUNCPTR( aoff_t, write,inode_t *ino,
+							void 	*buffer, 
+							aoff_t	 offset, 
+							aoff_t	 count);
+
+	/** 
+	 * @brief Find a directory entry
+	 * 
+     * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * 
+	 * @param inode The directory to search
+	 * @param name  The filename to match
+	 * @return The directory entry matching name from the directory inode, 
+	 *          if none, NULL is returned
+	 */
+	SFUNCPTR( ino_t, findent, inode_t *ino, const char *name );
+
+	/**
+	 * @brief Read directory entries from backing storage
+	 * 
+     * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * @warning Implementations must only return whole directory entries
+	 * 
+	 * @param inode       The inode for the directory
+	 * @param buffer      The buffer to store the entries in
+	 * @param file_offset The offset in the directory to start reading at
+	 * @param count       The number of bytes to read
+	 * @return The number of bytes read
+	 */
+	SFUNCPTR( aoff_t, readdir, inode_t *ino, void *buffer, 
+											 aoff_t offset, 
+											 aoff_t count);
+
+	/**
+	 * @brief Create a directory entry
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function, except for the size field
+	 * @warning Implementations are required to update the directory size 
+     * field
+	 * 
+	 * @param inode  The inode for the directory
+	 * @param name   The file name for the directory entry
+	 * @param nod_id The inode id that the directory entry will point to
+	 */
+
+	SVFUNCPTR( link, inode_t *ino, const char *name, ino_t ino_ptr);
+	
+	/**
+	 * @brief Delete a directory entry
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function, except for the size field
+	 * @warning Implementations are required to update the directory size 
+     * field
+	 * 
+	 * @param inode - The inode for the directory
+	 * @param name  - The file name of the directory entry to delete
+	 */
+	SVFUNCPTR( unlink, inode_t *ino, const char *name );	
+
+	/**
+	 * @brief Delete an inode
+     *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     *
+     * Implementations are recommended to free any data associated with 
+     * the inode
+	 * @param inode The inode to delete
+	 */
+	SVFUNCPTR( rmnod, inode_t *ino );	
+
+	/**
+	 * @brief Create directory structures
+	 * 
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * 
+     * Implementations are not required to implement this function but must
+     * provide a stub to allow directories to be created
+	 * @param inode The inode for the new directory
+	 */
+	SVFUNCPTR( mkdir, inode_t *ino );	
+
+	/**
+	 * @brief Write an inode to storage
+     *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     *
+	 * @param inode The inode to write 
+	 */
+	SVFUNCPTR( sync, inode_t *ino );
+
+	/**
+	 * @brief Get file information
+     *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     *
+	 * @param inode The inode to inquire about
+	 */
+	SFUNCPTR( struct stat, stat, inode_t *ino );
+
+	/**
+	 * @brief Try whether the requested access is allowed
+     *
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     *
+	 * @param inode The inode to write 
+	 */
+	SVFUNCPTR( access, inode_t *ino, mode_t mode );
+
+	/**
+	 * @brief Resize a file
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+     * Implementations must fill the newly created space with zeroes and
+     * free any truncated space
+	 * 
+	 * @param inode       The inode for the file
+	 * @param size	      The new size of the file
+	 */
+	SVFUNCPTR( truncate, inode_t *ino, aoff_t size);
 };
 
 /** 
@@ -188,159 +331,25 @@ struct fs_device_operations {
 	/**
 	 * @brief Load an inode from storage
 	 * 
-         * REQUIRED
-         *
+	 * REQUIRED
+     *
 	 * Implementations of this function must fill ALL inode fields relevant
-         * to the file type, this includes instance fields such as lock
+     * to the file type, this includes instance fields such as lock
 	 * @param inode The inode id to load
-         * @return The loaded inode
+     * @return The loaded inode
 	 */
-	SFUNCPTR( inode_t *, load_inode, fs_device_t *, ino_t );
-
-	/**
-	 * @brief Write an inode to storage
-         *
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-	 * @param inode The inode to write 
-	 */
-	SVFUNCPTR( store_inode, inode_t * );
+	SFUNCPTR( inode_t *, get_ino, fs_device_t *, ino_t );
 
 	/**
 	 * @brief Create an inode
-         *
-         * @warning Implementations must not depend on any fields in inode
-         * being valid
-         *
+     *
+     * @warning Implementations must not depend on any fields in inode
+     * being valid
+     *
 	 * Implementations must fill inode->id
 	 * @param inode The inode to create
 	 */
-	SVFUNCPTR( mknod, inode_t * );	
-
-	/**
-	 * @brief Delete an inode
-         *
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-         * Implementations are recommended to free any data associated with 
-         * the inode
-	 * @param inode The inode to delete
-	 */
-	SVFUNCPTR( rmnod, inode_t * );	
-
-	/**
-	 * @brief Read data from a file
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         * @note The VFS will adjust count so that the whole requested area is 
-	 * in the file
-	 * @param inode       The inode for the file
-	 * @param buffer      The buffer to store the data in
-	 * @param file_offset The offset in the file to start reading at
-	 * @param count       The number of bytes to read
-	 * @return The number of bytes read
-	 */
-	SFUNCPTR( aoff_t, read_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
-
-	/**
-	 * @brief Write data to a file
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         *
-         * @note The VFS layer will automatically adjust file size\n
-	 * @param inode       The inode for the file
-	 * @param buffer      The buffer containing the data to write
-	 * @param file_offset The offset in the file to start writing at
-	 * @param count       The number of bytes to write
-	 * @return The number of bytes written
-	 */
-	SFUNCPTR( aoff_t, write_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
-
-	/**
-	 * @brief Read directory entries from backing storage
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * @warning Implementations must only return whole directory entries
-	 * 
-	 * @param inode       The inode for the directory
-	 * @param buffer      The buffer to store the entries in
-	 * @param file_offset The offset in the directory to start reading at
-	 * @param count       The number of bytes to read
-	 * @return The number of bytes read
-	 */
-	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
-
-	/** 
-	 * @brief Find a directory entry
-	 * 
-         * REQUIRED
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * 
-	 * @param inode The directory to search
-	 * @param name  The filename to match
-	 * @return The directory entry matching name from the directory inode, 
-	 *          if none, NULL is returned
-	 */
-	SFUNCPTR( dirent_t *, find_dirent, inode_t *, char * );	//dir_inode_id, filename -> dirent_t  
-
-	/**
-	 * @brief Create directory structures
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-	 * 
-         * Implementations are not required to implement this function but must
-         * provide a stub to allow directories to be created
-	 * @param inode The inode for the new directory
-	 */
-	SVFUNCPTR( mkdir, inode_t * );		//dir_inode_id -> status
-
-	/**
-	 * @brief Create a directory entry
-	 * 
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
-         * field
-	 * 
-	 * @param inode  The inode for the directory
-	 * @param name   The file name for the directory entry
-	 * @param nod_id The inode id that the directory entry will point to
-	 */
-
-	SVFUNCPTR( link, inode_t *, char *, ino_t );	//dir_inode_id, filename, inode_id -> status
-
-	/**
-	 * @brief Delete a directory entry
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
-         * field
-	 * 
-	 * @param inode - The inode for the directory
-	 * @param name  - The file name of the directory entry to delete
-	 */
-	SVFUNCPTR( unlink, inode_t *, char * );	//dir_inode_id, filename
-
-	/**
-	 * @brief Resize a file
-	 * @warning Implementations must not modify the inode metadata from
-	 * this function
-         * Implementations must fill the newly created space with zeroes and
-         * free any truncated space
-	 * 
-	 * @param inode       The inode for the file
-	 * @param size	      The new size of the file
-	 */
-	SVFUNCPTR( trunc_inode, inode_t *, aoff_t );
+	SFUNCPTR( inode_t *, mknod, fs_device_t *, mode_t mode, dev_t dev);	
 
 	/**
 	 * @brief Synchronize the filesystem
@@ -377,12 +386,6 @@ struct fs_device {
 	fs_device_operations_t *ops;
 	/** Filesystem lock */
 	semaphore_t	       *lock;	
-	/** @brief Inode structure size for this filesystem
-          *
-          * In memory size of the inode structures returned by the callbacks
-          * of this driver.
-          */
-	size_t 			inode_size;
 };
 
 /**
@@ -415,7 +418,12 @@ struct fs_mount {
 	fs_device_t	*device;
 
 	/** Mountpoint */
-	inode_t		*mountpoint;
+	ino_t		 mt_ino;
+	uint32_t	 mt_dev;
+	
+	/** Rootdirectory */
+	ino_t		 rt_ino;
+	uint32_t	 rt_dev;
 
 };
 
@@ -471,10 +479,6 @@ SFUNC(char *, vfs_get_filename, const char *path);
 void vfs_inode_cache(inode_t *inode);
 inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
 
-dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode);
-
-void vfs_dir_cache_release(dir_cache_t *dirc);
-
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode);
@@ -482,10 +486,6 @@ int vfs_have_permissions(inode_t *inode, mode_t req_mode);
 SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id);
 
 inode_t *vfs_effective_inode(inode_t * inode);
-
-dir_cache_t *vfs_dir_cache_ref(dir_cache_t *dirc);
-
-SFUNC( dir_cache_t *, vfs_dir_cache_new, dir_cache_t *par, ino_t inode_id );
 
 ///@}
 
@@ -518,6 +518,8 @@ SFUNC(inode_t *, vfs_find_parent, char * path);
 SFUNC(inode_t *, vfs_find_inode, char * path);
 SFUNC(inode_t *, vfs_find_symlink, char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
+fs_mount_t	*vfs_get_mount_by_root( uint32_t dev, ino_t ino );
+fs_mount_t	*vfs_get_mount_by_mountpoint( uint32_t dev, ino_t ino );
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
 SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uint32_t flags);
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);

@@ -41,110 +41,18 @@
  *  Public VFS functions
  */
 ///@{
-
-
-/** 
- * @brief Look up the inode for the directory containing the file
- * @param path The path of the file to resolve
- * @return The file's parent directory 
- */
-
-SFUNC(inode_t *, vfs_find_parent, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the parent dir cache entry for this path */
-	status = vfs_find_dirc_parent(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
-
-/** 
- * @brief Look up the inode for the file referenced by path
- * @param path The path of the file to resolve
- * @return The file's inode
- */
-
-SFUNC(inode_t *, vfs_find_inode, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the dir cache entry for this path */
-	status = vfs_find_dirc(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
-
-/** 
- * @brief Look up the inode for the file referenced by path, not dereferencing
- * symlinks
- * @param path The path of the file to resolve
- * @return The file's inode
- */
-
-SFUNC(inode_t *, vfs_find_symlink, char * path)
-{ 
-	inode_t *ino;
-	dir_cache_t *dirc;
-	errno_t status;
-
-	/* Request the dir cache entry for this path */
-	status = vfs_find_dirc_symlink(path, &dirc);
-
-	/* If it was not found, return NULL */
-	if (status)
-		THROW(status, NULL);
-
-	/* Store it's inode */
-	ino = vfs_inode_ref(dirc->inode);
-
-	/* Release the dirc entry from the cache */
-	vfs_dir_cache_release(dirc);
-
-	/* Return the inode */
-	RETURN(ino);
-} 
-
-
+	
 /** 
  * @brief Look up the parent directory of a file referred to by a path
  * 
  * This function will also succeed if path does not exist but its parent does
  * @param path The path to resolve
- * @return A dir_cache entry on the parent of the file referred to by path
+ * @return The inode of the parent of the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path)
+SFUNC(inode_t *, vfs_find_parent, const char * path)
 {
-	CHAINRET(vfs_find_dirc_parent_at, 
+	CHAINRET(vfs_find_parent_at, 
 		scheduler_current_task->current_directory, path);
 }
 
@@ -155,22 +63,23 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path)
  * This function will also succeed if path does not exist but its parent does
  * @param curdir The directory to start resolving in
  * @param path The path to resolve
- * @return A dir_cache entry on the parent of the file referred to by path
+ * @return The inode of the parent of the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path){
-	CHAINRET(_vfs_find_dirc_at, curdir, path, PATHRES_FLAG_PARENT, 0);
+SFUNC(inode_t *, vfs_find_parent_at, inode_t *curdir, 
+									const char * path){
+	CHAINRET(_vfs_find_at, curdir, path, PATHRES_FLAG_PARENT, 0);
 }
 
 
 /** 
  * @brief Look up a file referred to by a path without resolving it as a symlink
  * @param path The path to resolve
- * @return A dir_cache entry on the file referred to by path
+ * @return The inode referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path) {
-	CHAINRET(vfs_find_dirc_symlink_at, 
+SFUNC(inode_t *, vfs_find_symlink, const char * path) {
+	CHAINRET(vfs_find_symlink_at, 
 				scheduler_current_task->current_directory, 
 				path);
 }
@@ -180,24 +89,24 @@ SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path) {
  * @brief Look up a file referred to by a path without resolving it as a symlink
  * @param path The path to resolve
  * @param curdir The directory to start resolving in
- * @return A dir_cache entry on the file referred to by path
+ * @return The inode referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, 
-						dir_cache_t *curdir, 
-						char * path) {
-	CHAINRET(_vfs_find_dirc_at, curdir, path, PATHRES_FLAG_NOSYMLINK, 0);
+SFUNC(inode_t *, vfs_find_symlink_at, 
+						inode_t *curdir, 
+						const char * path) {
+	CHAINRET(_vfs_find_at, curdir, path, PATHRES_FLAG_NOSYMLINK, 0);
 }
 
 
 /** 
  * @brief Look up a file referred to by a path
  * @param path The path to resolve
- * @return A dir_cache entry on the file referred to by path
+ * @return The inode referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc, char * path) {
-	CHAINRET(vfs_find_dirc_at, scheduler_current_task->current_directory, 
+SFUNC(inode_t *, vfs_find, const char * path) {
+	CHAINRET(vfs_find_at, scheduler_current_task->current_directory, 
 				path);
 }
 
@@ -206,11 +115,11 @@ SFUNC(dir_cache_t *, vfs_find_dirc, char * path) {
  * @brief Look up a file referred to by a path
  * @param path The path to resolve
  * @param curdir The directory to start resolving in
- * @return A dir_cache entry on the file referred to by path
+ * @return The inode referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path) {
-	CHAINRET(_vfs_find_dirc_at, curdir, path, 0, 0);
+SFUNC(inode_t *, vfs_find_at, inode_t *curdir, const char * path) {
+	CHAINRET(_vfs_find_at, curdir, path, 0, 0);
 }
 
 
@@ -223,27 +132,29 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path) {
  * current.
  * @param curdir The directory to start resolving in
  * @param path The path to resolve
- * @return A dir_cache entry on the file referred to by path
+ * @return The inode referred to by path
  */
 
-SFUNC(dir_cache_t *, _vfs_find_dirc_at, 
-					dir_cache_t *curdir, 
-					char * path, 
+SFUNC(inode_t *, _vfs_find_at, 
+					inode_t *curdir, 
+					const char * path, 
 					int flags,
 					int recurse_level )
 { 
-	dir_cache_t *dirc = vfs_dir_cache_ref(curdir);
-	dir_cache_t *newc;
-	inode_t * parent = dirc->inode;
+	inode_t *dirc = vfs_inode_ref(curdir);
+	inode_t *newc;
 	char * separator;
 	char * path_element;
 	char * remaining_path = path;
 	char * end_of_path;
 	char * target;
 	size_t element_size;
-	dirent_t *dirent;
+	ino_t  	 fnd_ino;
+	uint32_t fnd_dev;
+	struct stat	l_stat;
 	int element_count = 0;	
 	errno_t status;
+	fs_driver_t *mt;
 	aoff_t rlsize;
 
 	/* Check for NULL  */
@@ -252,7 +163,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 	/* Check for loops */
 	if ( recurse_level > CONFIG_MAX_PATH_RECURSION ){
 		/* Release current directory */
-		vfs_dir_cache_release(dirc);
+		vfs_inode_release(dirc);
 
 		/* Recursing too deep, return ELOOP */
 		THROW( ELOOP, NULL );
@@ -261,7 +172,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 	/* Check for empty path */
 	if ((*path) == '\0'){
 		/* Release current directory */
-		vfs_dir_cache_release(dirc);
+		vfs_inode_release(dirc);
 
 		/* Empty path does not exist! */
 		THROW( ENOENT, NULL );
@@ -274,7 +185,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 	if (!path_element) {
 
 		/* Release current directory */
-		vfs_dir_cache_release(dirc);
+		vfs_inode_release(dirc);
 		
 		/* Throw out of memory error */
 		THROW( ENOMEM, NULL);
@@ -300,14 +211,12 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 			/* Path is absolute */
 
 			/* Release current dirc */
-			vfs_dir_cache_release(dirc);
+			vfs_inode_release(dirc);
 
 			/* Update current element */
-			dirc = vfs_dir_cache_ref(
-					scheduler_current_task->root_directory);
-
-			/* Grab current inode */
-			parent = dirc->inode;
+			dirc = vfs_inode_ref(
+								scheduler_current_task->root_directory);
+								
 
 		} else if ( element_size == 0 ) {
 			/* Element size is 0 but not first element */
@@ -329,44 +238,6 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 				RETURN(dirc);
 			}
 
-		} else if ( (element_size == 2) &&
-					 !strncmp(remaining_path, "..", 2)) {
-			/* Element is ".." */
-
-			/* Set next current path element to the parent of
-			 * the current element */
-			newc = vfs_dir_cache_ref(dirc->parent);
-
-			/* If the new current element differs from the current*/ 
-			/* element, free the old current path element */
-			if (newc != dirc) {	
-
-				/* Release old dirc */
-				vfs_dir_cache_release(dirc);
-
-				/* Update current element */
-				parent = newc->inode;
-				dirc = newc;
-
-			} else {
-				/* It did not, this only happens if we tried */
-				/* to resolve up past root */
-
-				/* Free the duplicate reference */	
-				vfs_dir_cache_release(newc);	
-			}
-
-		} else if ((element_size == 1) && 
-					!strncmp(remaining_path, ".", 1)) {				
-			/* Element is . */
-			/* and reached the end of the path */
-			/* Because we arrived here after completing an*/
-			/* iteration of the loop we have already done */
-			/* the S_ISDIR check and made sure dirc refers*/
-			/* to a directory */
-
-			/* Ignore this */
-
 		} else {
 			/* Element is a normal path element */
 	
@@ -387,7 +258,8 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 			path_element[element_size] = '\0';
 
 			/* Find the directory entry for it */
-			status = vfs_find_dirent(parent, path_element, &dirent);
+			fnd_dev = dirc->device_id;
+			status = vfs_findent( dirc, path_element, &fnd_ino);
 
 			/* Check an error occurred */
 			if (status) {
@@ -397,16 +269,30 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 						CONFIG_FILE_MAX_NAME_LENGTH);
 
 				/* Release parent dirc */
-				vfs_dir_cache_release(dirc);
+				vfs_inode_release(dirc);
 
 				/* Pass the error to the caller */
 				THROW(status, NULL);
 			}
 			
-			/* Create new dirc entry for this element */
-			status = vfs_dir_cache_new(	dirc, 
-							dirent->inode_id, 
-							&newc);
+			/* Check whether we found a link to the current directory
+			 * and whether that link is a link to parent */
+			if ( fnd_ino == dirc->id && element_size == 2 ) {
+				
+				mt = vfs_get_mount_by_root( fnd_dev, Fnd_id );
+				
+				/* Check whether the current directory is a mount root*/
+				if ( mt != NULL ) {
+					
+					fnd_dev = mt->pt_dev;
+					fnd_ino = mt->pt_ino;
+					
+				}
+				
+			}
+			
+			/* Get the inode for the element */
+			status = vfs_get_inode(	fnd_dev, fnd_ino, &newc);
 
 			/* Check an error occurred */
 			if (status) {
@@ -416,16 +302,14 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 						CONFIG_FILE_MAX_NAME_LENGTH);
 
 				/* Release parent dirc */
-				vfs_dir_cache_release(dirc);
+				vfs_inode_release(dirc);
 
 				/* Pass the error to the caller */
 				THROW(status, NULL);
 			}
 
-			parent = newc->inode;
-
 			/* Check if the element is a symlink */
-			if ( S_ISLNK(parent->mode) ) {
+			if ( S_ISLNK(newc->type) ) {
 				/* It is a symlink */
 
 				/* Check if we should dereference it */
@@ -435,26 +319,30 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 					/* last element of the path or this is*/
 					/* not the last element */
 	
-					/* Check whether the symlink size is */
-					/* within bounds */
-					if ( parent->size >= 
+					/* stat the symlink */
+					status = ifs_stat( newc, &l_stat );
+	
+					/* Check whether stat worked and the symlink size */
+					/* was within bounds */
+					if ( status || l_stat.st_size >= 
 						CONFIG_FILE_MAX_NAME_LENGTH ) {
-						/* If so, clean up and return */
+						/* If not, clean up and return */
 						heapmm_free(path_element, 
 						   CONFIG_FILE_MAX_NAME_LENGTH);
 
 						/* Release newc */
-						vfs_dir_cache_release(newc);
+						vfs_inode_release(newc);
 
 						/* Release dirc */
-						vfs_dir_cache_release(dirc);
+						vfs_inode_release(dirc);
 
 						/* Pass the error to the callr*/
-						THROW(ENAMETOOLONG, NULL);
+						THROW((status ? status : ENAMETOOLONG), NULL);
 					}
 					
 					/* Allocate symlink target buffer */
-					target = heapmm_alloc(parent->size + 1);
+					//TODO: Use static buffer for performance reasons?
+					target = heapmm_alloc(l_stat.st_size + 1);
 
 					/* Check whether the allocation failed*/
 					if ( !target ) {
@@ -463,19 +351,19 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 						   CONFIG_FILE_MAX_NAME_LENGTH);
 
 						/* Release newc */
-						vfs_dir_cache_release(newc);
+						vfs_inode_release(newc);
 
 						/* Release dirc */
-						vfs_dir_cache_release(dirc);
+						vfs_inode_release(dirc);
 
 						/* Pass the error to the callr*/
 						THROW(ENOMEM, NULL);
 					}
 
 					/* Read link target */
-					status = vfs_readlink(	parent,
+					status = vfs_readlink( newc,
 								target,
-								parent->size,
+								l_stat.st_size,
 								&rlsize );
 
 					/* Check if an error occurred */
@@ -484,34 +372,31 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 						heapmm_free(path_element, 
 						   CONFIG_FILE_MAX_NAME_LENGTH);
 						heapmm_free(target, 
-						   parent->size + 1);
+						   l_stat.st_size + 1);
 
 						/* Release newc */
-						vfs_dir_cache_release(newc);
+						vfs_inode_release(newc);
 
 						/* Release dirc */
-						vfs_dir_cache_release(dirc);
+						vfs_inode_release(dirc);
 
 						/* Pass the error to the callr*/
 						THROW(status, NULL);
 					}
 			
 					/* Add terminator to target path */
-					target[parent->size] = 0;
+					target[l_stat->st_size] = 0;
 
-					/* Acquire a reference to the symlink */
-					parent = vfs_inode_ref( parent );
-
-					/* Release newc */
-					vfs_dir_cache_release(newc);
+					/* Release symlink */
+					vfs_inode_release(newc);
 
 					/* Resolve target path */
-					status = _vfs_find_dirc_at( 
-							dirc, 
-							target, 
-							0,
-							recurse_level + 1,
-							&newc );
+					status = _vfs_find_at( 
+								dirc, 
+								target, 
+								0,
+								recurse_level + 1,
+								&newc );
 
 					/* Check if an error occurred */
 					if (status) {
@@ -519,32 +404,23 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 						heapmm_free(path_element, 
 						   CONFIG_FILE_MAX_NAME_LENGTH);
 						heapmm_free(target, 
-						   parent->size + 1);
-
-						/* Release symlink */
-						vfs_inode_release(parent);
+						   l_stat.size + 1);
 
 						/* Release dirc */
-						vfs_dir_cache_release(dirc);
+						vfs_inode_release(dirc);
 
 						/* Pass the error to the callr*/
 						THROW(status, NULL);
 					}	
 					
 					/* Release the symlink target buffer */
-					heapmm_free(target, parent->size + 1);	
-
-					/* Release symlink */
-					vfs_inode_release(parent);
-
-					/* Update current element */
-					parent = newc->inode;
+					heapmm_free(target, l_stat.size + 1);	
 
 				}
 			}
 
 			/* Release old element */
-			vfs_dir_cache_release(dirc);
+			vfs_inode_release(dirc);
 
 			/* Update current element */
 			dirc = newc;		
@@ -579,7 +455,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 		/* There are still elements after this one */
 
 		/* Check if the current element is a directory */
-		if (!S_ISDIR(parent->mode)) {
+		if (!S_ISDIR(dirc->type)) {
 			/* If not, return NULL because we can't search inside 
                          * other kinds of files */	
 
@@ -587,7 +463,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 			heapmm_free(path_element, CONFIG_FILE_MAX_NAME_LENGTH);
 
 			/* Release old element */
-			vfs_dir_cache_release(dirc);
+			vfs_inode_release(dirc);
 
 			THROW(ENOTDIR, NULL);
 		}

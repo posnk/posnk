@@ -107,30 +107,35 @@ inode_t *vfs_effective_inode(inode_t * inode)
  *
  * @param inode The directory to search
  * @param name  The filename to match
- * @return The directory entry matching name from the directory inode, 
- *          if none, NULL is returned
+ * @return The inode number pointed to by the directory entry
  *
  * @exception ENOTSUP This driver does not support this function.
- * @exception EACCES The current user does not have permission to access the dir
+ * @exception EACCES The current user does not have search permission 
+ * 					 for the directory
  * @exception ENOENT The directory entry was not found
  */
  
-SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name)
+SFUNC(ino_t, vfs_findent, inode_t * ino, const char * name)
 {
+	errno_t	status;
+	
 	/* This function is implemented by the FS driver */
-	assert ( inode != NULL );
+	assert ( ino != NULL );
 	assert ( name != NULL );
 
 	/* Check permissions on parent dir */
-	if (!vfs_have_permissions(inode, MODE_EXEC)) {
+	status = ifs_access( ino, MODE_EXEC );
+
+	/* Check for errors */
+	if ( status ) {
 
 		/* If not: return the error "Permission denied" */
-		THROW( EACCES, NULL );
+		THROW( status, NULL );
 
 	}
 
 	/* Call the driver */
-	CHAINRET( ifs_find_dirent, inode, name );
+	CHAINRET( ifs_findent, inode, name );
 }
 
 /** @name VFS API

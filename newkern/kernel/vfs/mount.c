@@ -37,6 +37,10 @@ llist_t vfs_mount_list;
 
 /* Internal type definitions */
 
+typedev struct {
+	uint32_t	dev;
+	ino_t		ino;
+} gmnt_params_t;
 
 /* Public Functions */
 
@@ -53,10 +57,17 @@ int vfs_gmnt_dev_iterator (llist_t *node, void *param) {
 }
 
 int vfs_gmnt_mpt_iterator (llist_t *node, void *param) {
-	fs_mount_t 	*mnt = (fs_mount_t *)	node;
-	inode_t		*ino = (inode_t *)	param;
+	fs_mount_t 		*mnt = (fs_mount_t *)		node;
+	gmnt_params_t	*par = (gmnt_params_t *)	param;
 
-	return mnt->mountpoint == ino;
+	return mnt->mt_dev == par->dev && mnt->mt_ino == par->ino;
+}
+
+int vfs_gmnt_root_iterator (llist_t *node, void *param) {
+	fs_mount_t 		*mnt = (fs_mount_t *)		node;
+	gmnt_params_t	*par = (gmnt_params_t *)	param;
+
+	return mnt->rt_dev == par->dev && mnt->rt_ino == par->ino;
 }
 
 /**
@@ -77,14 +88,37 @@ fs_mount_t	*vfs_get_mount_by_dev( dev_t device )
  * @param mountpoint The mountpoint to look up
  * @return The mount descriptor or NULL if no file system was mounted.
  */
-fs_mount_t	*vfs_get_mount_by_mountpoint( inode_t *mountpoint )
+fs_mount_t	*vfs_get_mount_by_root( uint32_t dev, ino_t ino )
 {
-	assert( mountpoint != NULL );
+	gmnt_params_t par;
+	
+	par.dev = dev;
+	par.ino = ino;
+	
+	return (fs_mount_t *)
+		llist_iterate_select(	&vfs_mount_list, 
+					&vfs_gmnt_root_iterator,
+					 &par );
+}
 
+
+/**
+ * @brief Find a mounted filesystem by its mountpoint
+ * @param mountpoint The mountpoint to look up
+ * @return The mount descriptor or NULL if no file system was mounted.
+ */
+fs_mount_t	*vfs_get_mount_by_mountpoint( uint32_t dev, ino_t ino )
+{
+	gmnt_params_t par;
+	
+	par.dev = dev;
+	par.ino = ino;
+	
 	return (fs_mount_t *)
 		llist_iterate_select(	&vfs_mount_list, 
 					&vfs_gmnt_mpt_iterator,
-					 mountpoint );
+					 &par );
+					 
 }
 
 
