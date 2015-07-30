@@ -43,61 +43,35 @@
  * @return The inode with id inode_id from device.
  */
 
-SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id)
+SFUNC(inode_t *, vfs_get_inode, uint32_t device_id, ino_t inode_id)
 {
-	errno_t	 status;
-	inode_t *result;
-
-	/* Check for NULL pointers */
-	assert (device != NULL);
+	errno_t	 	 status;
+	inode_t 	*result;
+	fs_mount_t  *mount;
 
 	/* Try to get inode from cache */
-	result = vfs_get_cached_inode(device, inode_id);
+	result = vfs_get_cached_inode(device_id, inode_id);
 
 	if (result) {
 		/* inode was in cache */
 		RETURN(result);
 	}
-
+	
+	/* Get the mount for the device_id */
+	mount = vfs_get_mount_by_dev( device_id );
+	
+	if ( mount == NULL )
+		THROW(ENXIO, NULL);
+	
 	/* Cache miss, fetch it from disk */
 	//NOTE : Schedule may happen below!
-	status = ifs_load_inode ( device, inode_id, &result );
+	status = ifs_get_ino ( mount->device, inode_id, &result );
 	if (status)
 		THROW(status, NULL);
-
-	/* If needed, allocate pipe for FIFO */
-	if (S_ISFIFO(result->mode)) {
-		result->fifo = pipe_create();
-		assert(result->fifo != NULL);
-	}
 
 	//NOTE : Schedule may have happened
 
 	RETURN(vfs_inode_ref(result));
-}
-
-/**
- * @brief Get the effective inode for an inode,
- * in other words : Dereference possible symlinks and mounts
- *
- * @param inode The inode that is to be checked
- * @return The inode that the parameter points to.
- */
-
-inode_t *vfs_effective_inode(inode_t * inode)
-{
-	/* Check for null pointers */
-	if (!inode)
-		return NULL;
-
-	/* Is a filesystem mounted on this inode? */
-	if (inode->mount) {
-		/* If so: return it's root inode */
-		return vfs_inode_ref(inode->mount);
-	}
-
-	/* This is a regular inode, return it. */
-	return vfs_inode_ref(inode);
 }
 
 ///@}

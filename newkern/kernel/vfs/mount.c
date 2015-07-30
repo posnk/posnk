@@ -51,9 +51,9 @@ void vfs_mount_initialize ( void )
 
 int vfs_gmnt_dev_iterator (llist_t *node, void *param) {
 	fs_mount_t 	*mnt = (fs_mount_t *)	node;
-	dev_t		*dev = (dev_t *)	param;
+	uint32_t	*dev = (uint32_t *)	param;
 
-	return mnt->device->id == (uint32_t) *dev;
+	return mnt->device->id == *dev;
 }
 
 int vfs_gmnt_mpt_iterator (llist_t *node, void *param) {
@@ -75,7 +75,7 @@ int vfs_gmnt_root_iterator (llist_t *node, void *param) {
  * @param device The device to look up
  * @return The mount descriptor or NULL if no file system was mounted.
  */
-fs_mount_t	*vfs_get_mount_by_dev( dev_t device )
+fs_mount_t	*vfs_get_mount_by_dev( uint32_t device )
 {
 	return (fs_mount_t *)
 		llist_iterate_select(	&vfs_mount_list, 

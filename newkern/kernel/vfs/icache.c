@@ -144,16 +144,13 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
  *	   cached.
  */
 
-inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id)
+inode_t *vfs_get_cached_inode(uint32_t device_id, ino_t inode_id)
 {
 	inode_t *result;
 	vfs_cache_params_t search_params;
 
-	/* Check for NULL pointers */
-	assert ( device != NULL );
-
 	/* Setup search parameters */
-	search_params.device_id = device->id;
+	search_params.device_id = device_id;
 	search_params.inode_id = inode_id;
 
 	/* Search open inode list */
@@ -187,7 +184,7 @@ int vfs_cache_flush_iterator (llist_t *node, void *param)
 	
 	//semaphore_down( inode->lock );
 
-	status = ifs_store_inode(inode);
+	status = ifs_sync_inode(inode);
 	
 	if (status) {
 		debugcon_printf("vfs: error while syncing inode: %i\n", status);
@@ -222,7 +219,7 @@ SVFUNC(vfs_sync_inode, inode_t *inode)
 {
 	assert ( inode != NULL );
 	
-	CHAINRETV(ifs_store_inode, inode);
+	CHAINRETV(ifs_sync_inode, inode);
 	
 }
 

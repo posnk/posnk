@@ -66,12 +66,6 @@ typedef struct inode inode_t;
  */
 typedef struct dirent dirent_t;
 
-/**
- * @brief An entry in the path element cache
- * @see dir_cache
- */
-typedef struct dir_cache dir_cache_t;
-
 /** 
  * @brief An instance of a filesystem driver 
  * @see fs_device
@@ -420,6 +414,10 @@ struct fs_mount {
 	/** Mountpoint */
 	ino_t		 mt_ino;
 	uint32_t	 mt_dev;
+
+	/** Mountpoint parent */
+	ino_t		 pt_ino;
+	uint32_t	 pt_dev;
 	
 	/** Rootdirectory */
 	ino_t		 rt_ino;
@@ -439,7 +437,7 @@ inode_t *vfs_inode_ref(inode_t *inode);
 
 void vfs_inode_release(inode_t *inode);
 
-SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name);
+SFUNC(ino_t, vfs_findent, inode_t * inode, const char * name);
 
 int vfs_rmdir(char *path);
 
@@ -463,9 +461,9 @@ int vfs_getdents(inode_t * inode , aoff_t file_offset, dirent_t * buffer, aoff_t
 
 int vfs_truncate(inode_t * inode, aoff_t length);
 
-int vfs_chroot(dir_cache_t *dirc);
+//int vfs_chroot(dir_cache_t *dirc);
 
-int vfs_chdir(dir_cache_t *dirc);
+//int vfs_chdir(dir_cache_t *dirc);
 
 SFUNC(char *, vfs_get_filename, const char *path);
 
@@ -477,15 +475,14 @@ SFUNC(char *, vfs_get_filename, const char *path);
  */
 ///@{
 void vfs_inode_cache(inode_t *inode);
-inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id);
+
+inode_t *vfs_get_cached_inode(uint32_t device_id, ino_t inode_id);
 
 perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode);
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode);
 
-SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id);
-
-inode_t *vfs_effective_inode(inode_t * inode);
+SFUNC(inode_t *, vfs_get_inode, uint32_t device, ino_t inode_id);
 
 ///@}
 
@@ -493,31 +490,32 @@ int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
 
-SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id );
-SVFUNC( ifs_store_inode, inode_t * inode );
-SVFUNC( ifs_mknod, inode_t * inode );
+SFUNC( inode_t *, ifs_get_ino, fs_device_t * device, ino_t id );
+SVFUNC( ifs_sync_inode, inode_t * inode);
+SFUNC( inode_t *, ifs_mknod, fs_device_t * fs, mode_t mode, dev_t dev );
 SVFUNC( ifs_rmnod, inode_t * inode);
 SVFUNC( ifs_mkdir, inode_t * inode);
-SFUNC( dirent_t *, ifs_find_dirent, inode_t * inode, char * name);
+SFUNC(ino_t, ifs_findent, inode_t * inode, char * name);
 SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id );
+SVFUNC( ifs_access, inode_t * inode , mode_t mode);
+SFUNC( struct stat , ifs_stat, inode_t * inode );
 SVFUNC( ifs_unlink, inode_t * inode , char * name );
-SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
-SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
-SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
-SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
+SFUNC( aoff_t, ifs_readdir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
+SFUNC( aoff_t, ifs_read, inode_t * ino, void * buffer, aoff_t file_offset, aoff_t count );
+SFUNC( aoff_t, ifs_write, inode_t * ino, void * buffer, aoff_t file_offset, aoff_t count );
+SVFUNC( ifs_truncate, inode_t * inode, aoff_t size );
 SVFUNC( ifs_sync, fs_device_t *device );
-SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
-SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir,char * path,int flags,
+
+SFUNC(inode_t *, vfs_find_parent, const char * path);
+SFUNC(inode_t *, vfs_find_parent_at, inode_t *curdir, const char * path);
+SFUNC(inode_t *,_vfs_find_at, inode_t *curdir,const char * path,int flags,
 					int recurse_level );
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, dir_cache_t *curdir,char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
-SFUNC(inode_t *, vfs_find_parent, char * path);
-SFUNC(inode_t *, vfs_find_inode, char * path);
-SFUNC(inode_t *, vfs_find_symlink, char * path);
+SFUNC(inode_t *, vfs_find_symlink_at, inode_t *curdir,const char * path);
+SFUNC(inode_t *, vfs_find_symlink, const char * path);
+SFUNC(inode_t *, vfs_find, const char * path);
+SFUNC(inode_t *, vfs_find_at, inode_t *curdir, const char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
+fs_mount_t	*vfs_get_mount_by_dev( uint32_t device );
 fs_mount_t	*vfs_get_mount_by_root( uint32_t dev, ino_t ino );
 fs_mount_t	*vfs_get_mount_by_mountpoint( uint32_t dev, ino_t ino );
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);

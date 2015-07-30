@@ -91,8 +91,8 @@ struct process_info {
 	void		*entry_point;
 
 	/* VFS */
-	dir_cache_t	*root_directory;
-	dir_cache_t	*current_directory;
+	inode_t		*root_directory;
+	inode_t		*current_directory;
 	umode_t		 umask;
 	inode_t		*image_inode;
 

@@ -145,7 +145,7 @@ SFUNC(inode_t *, _vfs_find_at,
 	inode_t *newc;
 	char * separator;
 	char * path_element;
-	char * remaining_path = path;
+	const char * remaining_path = path;
 	char * end_of_path;
 	char * target;
 	size_t element_size;
@@ -154,7 +154,7 @@ SFUNC(inode_t *, _vfs_find_at,
 	struct stat	l_stat;
 	int element_count = 0;	
 	errno_t status;
-	fs_driver_t *mt;
+	fs_mount_t *mt;
 	aoff_t rlsize;
 
 	/* Check for NULL  */
@@ -279,7 +279,7 @@ SFUNC(inode_t *, _vfs_find_at,
 			 * and whether that link is a link to parent */
 			if ( fnd_ino == dirc->id && element_size == 2 ) {
 				
-				mt = vfs_get_mount_by_root( fnd_dev, Fnd_id );
+				mt = vfs_get_mount_by_root( fnd_dev, fnd_ino );
 				
 				/* Check whether the current directory is a mount root*/
 				if ( mt != NULL ) {
@@ -324,7 +324,7 @@ SFUNC(inode_t *, _vfs_find_at,
 	
 					/* Check whether stat worked and the symlink size */
 					/* was within bounds */
-					if ( status || l_stat.st_size >= 
+					if ( status || l_stat.st_size >= (off_t) 
 						CONFIG_FILE_MAX_NAME_LENGTH ) {
 						/* If not, clean up and return */
 						heapmm_free(path_element, 
@@ -385,7 +385,7 @@ SFUNC(inode_t *, _vfs_find_at,
 					}
 			
 					/* Add terminator to target path */
-					target[l_stat->st_size] = 0;
+					target[l_stat.st_size] = 0;
 
 					/* Release symlink */
 					vfs_inode_release(newc);
@@ -404,7 +404,7 @@ SFUNC(inode_t *, _vfs_find_at,
 						heapmm_free(path_element, 
 						   CONFIG_FILE_MAX_NAME_LENGTH);
 						heapmm_free(target, 
-						   l_stat.size + 1);
+						   l_stat.st_size + 1);
 
 						/* Release dirc */
 						vfs_inode_release(dirc);
@@ -414,7 +414,7 @@ SFUNC(inode_t *, _vfs_find_at,
 					}	
 					
 					/* Release the symlink target buffer */
-					heapmm_free(target, l_stat.size + 1);	
+					heapmm_free(target, l_stat.st_size + 1);	
 
 				}
 			}

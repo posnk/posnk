@@ -42,13 +42,13 @@
  * @exception ENOTSUP This driver does not support this function.
  */
  
-SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id )
+SFUNC( inode_t *, ifs_get_ino, fs_device_t * device, ino_t id )
 {
 	/* This function is implemented by the FS driver */
 	assert ( device != NULL );
 
 	/* Check if the driver supports load_inode */
-	if ( ! device->ops->load_inode ) {
+	if ( ! device->ops->get_ino ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROW( ENOTSUP, NULL );
@@ -56,26 +56,24 @@ SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id )
 	}
 
 	/* Call the driver */
-	CHAINRET( device->ops->load_inode, device, id );
+	CHAINRET( device->ops->get_ino, device, id );
 }
 
-
 /** 
- * @brief Call on the fs driver to write an inode to storage
+ * @brief Call on the fs driver to push an inode to backing storage
  * @see fs_device_operations
  *
  * @param inode The inode to store
  *
  * @exception ENOTSUP This driver does not support this function
  */
- 
-SVFUNC( ifs_store_inode, inode_t * inode )
+SVFUNC( ifs_sync_inode, inode_t * inode)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->store_inode ) {
+	if ( ! inode->ops->sync ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV( ENOTSUP );
@@ -83,26 +81,16 @@ SVFUNC( ifs_store_inode, inode_t * inode )
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->store_inode, inode );
+	CHAINRETV( inode->ops->sync, inode );
 }
 
-
-/** 
- * @brief Call on the fs driver to push a new inode to backing storage
- * @see fs_device_operations
- *
- * @param inode The inode to store
- *
- * @exception ENOTSUP This driver does not support this function
- */
-
-SVFUNC( ifs_mknod, inode_t * inode )
+SFUNC(inode_t *, ifs_mknod, fs_device_t * fs, mode_t mode, dev_t dev )
 {
 	/* This function is implemented by the FS driver */
-	assert ( inode != NULL );
+	assert ( fs != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->mknod ) {
+	if ( ! fs->ops->mknod ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV( ENOTSUP );
@@ -110,7 +98,7 @@ SVFUNC( ifs_mknod, inode_t * inode )
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->mknod, inode );
+	CHAINRET( fs->ops->mknod, fs, mode, dev );
 }
 
 
@@ -128,7 +116,7 @@ SVFUNC( ifs_rmnod, inode_t * inode)
 	assert ( inode != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->rmnod ) {
+	if ( ! inode->ops->rmnod ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV( ENOTSUP );
@@ -136,7 +124,7 @@ SVFUNC( ifs_rmnod, inode_t * inode)
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->rmnod, inode );
+	CHAINRETV( inode->ops->rmnod, inode );
 }
 
 
@@ -155,7 +143,7 @@ SVFUNC( ifs_mkdir, inode_t * inode)
 	assert ( inode != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->mkdir ) {
+	if ( ! inode->ops->mkdir ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV( ENOTSUP );
@@ -163,7 +151,7 @@ SVFUNC( ifs_mkdir, inode_t * inode)
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->mkdir, inode );
+	CHAINRETV( inode->ops->mkdir, inode );
 }
 
 
@@ -179,22 +167,22 @@ SVFUNC( ifs_mkdir, inode_t * inode)
  * @exception ENOTSUP This driver does not support this function.
  */
  
-SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, char * name)
+SFUNC(ino_t, ifs_findent, inode_t * inode, char * name)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
 	assert ( name != NULL );
 
 	/* Check if the driver supports find_dirent */
-	if ( ! inode->device->ops->find_dirent ) {
+	if ( ! inode->ops->findent ) {
 
 		/* If not: return the error "Operation not supported" */
-		THROW( ENOTSUP, NULL );
+		THROW( ENOTSUP, 0 );
 
 	}
 
 	/* Call the driver */
-	CHAINRET( inode->device->ops->find_dirent, inode, name );
+	CHAINRET( inode->ops->findent, inode, name );
 }
 
 /**
@@ -215,7 +203,7 @@ SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id )
 	assert ( name != NULL );
 
 	/* Check if the driver supports link */
-	if ( ! inode->device->ops->link ) {
+	if ( ! inode->ops->link ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV( ENOTSUP );
@@ -223,7 +211,60 @@ SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id )
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->link, inode, name, nod_id );
+	CHAINRETV( inode->ops->link, inode, name, nod_id );
+}
+
+/**
+ * @brief  Call on the fs driver to check access privileges for an inode
+ * @see fs_device_operations
+ * 
+ * @param inode - The inode to operate on
+ * @param mode  - The mode of access to attempt
+ *
+ * @exception ENOTSUP This driver does not support this function.
+ */
+
+SVFUNC( ifs_access, inode_t * inode , mode_t mode)
+{	
+	/* This function is implemented by the FS driver */
+	assert ( inode != NULL );
+
+	/* Check if the driver supports access */
+	if ( ! inode->ops->access ) {
+
+		/* If not: return the error "Operation not supported" */
+		THROWV ( ENOTSUP );
+
+	}
+
+	/* Call the driver */
+	CHAINRETV( inode->ops->access, inode, mode );
+}
+
+/**
+ * @brief  Call on the fs driver to inquire about inode metadata
+ * @see fs_device_operations
+ * 
+ * @param inode - The inode to operate on
+ *
+ * @exception ENOTSUP This driver does not support this function.
+ */
+
+SFUNC( struct stat , ifs_stat, inode_t * inode )
+{	
+	/* This function is implemented by the FS driver */
+	assert ( inode != NULL );
+
+	/* Check if the driver supports stat */
+	if ( ! inode->ops->stat ) {
+
+		/* If not: return the error "Operation not supported" */
+		THROWV ( ENOTSUP );
+
+	}
+
+	/* Call the driver */
+	CHAINRET( inode->ops->stat, inode );
 }
 
 /**
@@ -243,7 +284,7 @@ SVFUNC( ifs_unlink, inode_t * inode , char * name )
 	assert ( name != NULL );
 
 	/* Check if the driver supports unlink */
-	if ( ! inode->device->ops->unlink ) {
+	if ( ! inode->ops->unlink ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROWV ( ENOTSUP );
@@ -251,7 +292,7 @@ SVFUNC( ifs_unlink, inode_t * inode , char * name )
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->unlink, inode, name );
+	CHAINRETV( inode->ops->unlink, inode, name );
 }
 
 /**
@@ -267,14 +308,14 @@ SVFUNC( ifs_unlink, inode_t * inode , char * name )
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_readdir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
 	assert ( buffer != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->read_dir ) {
+	if ( ! inode->ops->readdir ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROW( ENOTSUP, 0 );
@@ -282,7 +323,7 @@ SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset,
 	}
 
 	/* Call the driver */
-	CHAINRET( inode->device->ops->read_dir, inode, buffer, file_offset, count );
+	CHAINRET( inode->ops->readdir, inode, buffer, file_offset, count );
 }
 
 /**
@@ -298,14 +339,14 @@ SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset,
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_read, inode_t * ino, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
-	assert ( inode != NULL );
+	assert ( ino != NULL );
 	assert ( buffer != NULL );
 
 	/* Check if the driver supports this function */
-	if ( ! inode->device->ops->read_inode ) {
+	if ( ! ino->ops->read ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROW( ENOTSUP, 0 );
@@ -313,7 +354,7 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
 	}
 
 	/* Call the driver */
-	CHAINRET( inode->device->ops->read_inode, inode, buffer, file_offset, count );
+	CHAINRET( ino->ops->read, ino, buffer, file_offset, count );
 }
 
 /**
@@ -329,14 +370,14 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_write, inode_t * ino, void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
-	assert ( inode != NULL );
+	assert ( ino != NULL );
 	assert ( buffer != NULL );
 
 	/* Check if the driver supports write */
-	if ( ! inode->device->ops->write_inode ) {
+	if ( ! ino->ops->write ) {
 
 		/* If not: return the error "Operation not supported" */
 		THROW( ENOTSUP, 0 );
@@ -344,7 +385,7 @@ SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, ao
 	}
 
 	/* Call the driver */
-	CHAINRET( inode->device->ops->write_inode, inode, buffer, file_offset, count );
+	CHAINRET( ino->ops->write, ino, buffer, file_offset, count );
 }
 
 /**
@@ -363,13 +404,13 @@ SVFUNC( ifs_truncate, inode_t * inode, aoff_t size )
 	assert (inode != NULL);
 
 	/* Check if the driver supports truncate */
-	if (!inode->device->ops->trunc_inode) {
+	if (!inode->ops->truncate) {
 		/* If not: return the error "Operation not supported" */
 		THROWV(ENOTSUP);
 	}
 
 	/* Call the driver */
-	CHAINRETV( inode->device->ops->trunc_inode, inode, size);
+	CHAINRETV( inode->ops->truncate, inode, size);
 }
 
 /**
