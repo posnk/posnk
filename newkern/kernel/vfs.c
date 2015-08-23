@@ -1328,10 +1328,10 @@ int vfs_symlink(char *oldpath, char *path)
 		vfs_inode_release(parent);
 
 		if (!status) {
-			return EEXIST;
 
 			/* Release the parent inode */
 			vfs_inode_release(_inode);
+			return EEXIST;
 		} else 
 			return status;
 	}
