@@ -167,7 +167,12 @@ SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name)
  * @exception ENOMEM Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block)
+int vfs_write(	inode_t	* _inode, 
+				aoff_t	 file_offset, 
+				void	*buffer, 
+				aoff_t	 count, 
+				aoff_t	*write_size, 
+				int non_block)
 {
 	inode_t *inode;
 	errno_t status;
@@ -222,7 +227,11 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
 					memset(zbuffer, 0, file_offset - inode->size);
 
 					/* Write the zeroes to the file */
-					status = ifs_write(inode, zbuffer, inode->size, file_offset - inode->size, &pad_size);
+					status = ifs_write(	inode, 
+										zbuffer, 
+										inode->size, 
+										file_offset - inode->size, 
+										&pad_size);
 
 					/* Free the zero pad buffer */
 					heapmm_free(zbuffer,file_offset - inode->size);		
@@ -294,7 +303,12 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
 			semaphore_up(inode->lock);
 
 			/* Call on the pipe driver to write the data */
-			status = pipe_write(inode->fifo, buffer, count, write_size, non_block);		
+			status = pipe_write(	inode->fifo, 
+									buffer, 
+									count, 
+									write_size, 
+									non_block
+								);		
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -309,7 +323,13 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
 			semaphore_up(inode->lock);	
 			
 			/* Call on the driver to write the data */			
-			status = device_char_write(inode->if_dev, file_offset, buffer, count, write_size, non_block);
+			status = device_char_write(
+										inode->if_dev, 
+										file_offset, 
+										buffer, 
+										count, 
+										write_size, 
+										non_block);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -321,7 +341,12 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
 			/* File is a block special file */
 			
 			/* Call on the driver to write the data */	
-			status = device_block_write(inode->if_dev, file_offset, buffer, count, write_size);
+			status = device_block_write(
+										inode->if_dev, 
+										file_offset, 
+										buffer, 
+										count, 
+										write_size);
 
 			/* Release the lock on this inode */			
 			semaphore_up(inode->lock);
@@ -375,7 +400,12 @@ int vfs_write(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count
  * @exception  ENOMEM Could not allocate kernel heap for a temporary structure
  */
 
-int vfs_read(inode_t * _inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block)
+int vfs_read(	inode_t	* _inode, 
+				aoff_t	 file_offset, 
+				void	*buffer,
+				aoff_t	 count, 
+				aoff_t	*read_size, 
+				int		 non_block)
 {
 	int status;
 	inode_t *inode;
