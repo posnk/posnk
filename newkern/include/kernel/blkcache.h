@@ -23,17 +23,18 @@
 #define BLKCACHE_ENOMEM			( (blkcache_entry_t *) 0xFFFFFFFF )
 
 struct blkcache_cache {
-	int	 entry_count;
-	int	 max_entries;
+	int	 	 entry_count;
+	int	 	 max_entries;
 	aoff_t	 block_size;
 	llist_t	 block_list;
+	semaphore_t *lock;
 };
 
 struct blkcache_entry {
 	llist_t	 link;
 	aoff_t	 offset;
-	int	 flags;
-	int	 access_count;
+	int	 	 flags;
+	int	 	 access_count;
 	void	*data;
 };
 

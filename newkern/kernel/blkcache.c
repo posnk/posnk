@@ -41,6 +41,9 @@ blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries )
 	cache->max_entries = max_entries;
 	cache->block_size = block_size;
 	cache->entry_count = 0;
+	cache->lock = semaphore_alloc();
+	
+	assert ( cache->lock != NULL );
 	
 	llist_create( ( llist_t * ) &( cache->block_list ) );
 
@@ -63,6 +66,9 @@ int blkcache_free( blkcache_cache_t *cache )
 	int			successful = 1;
 	
 	assert(cache != NULL);
+	
+	/* Acquire lock on cache */
+	semaphore_down( cache->lock );
 
 	/* Iterate over the blocklist */
 	for (_e = cache->block_list.next; 
@@ -94,10 +100,15 @@ int blkcache_free( blkcache_cache_t *cache )
 		heapmm_free( entry, sizeof(blkcache_entry_t) );
 
 	}
+	
+	/* Release lock */
+	semaphore_up( cache->lock );
 
 	/* If there were no dirty blocks left, release the cache */
-	if ( successful ) 
+	if ( successful ) {
+		semaphore_free ( cache->lock );		
 		heapmm_free( cache, sizeof( blkcache_cache_t ) );
+	}
 
 	/* Return whether we had any dirty blocks */
 	return successful;
@@ -172,15 +183,25 @@ int blkcache_get_iterator ( llist_t *node, void *param )
 
 blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset )
 {
+	blkcache_entry_t *entry;
+	
 	/* Look up the block in the cache which satisfies the condition for */
 	/* blkcache_get_iterator */
 
 	assert (cache != NULL);
+	
+	/* Acquire lock on cache */
+	semaphore_down( cache->lock );
 
-	return (blkcache_entry_t *) 
+	entry = (blkcache_entry_t *) 
 		llist_iterate_select(	&(cache->block_list),
 					&blkcache_get_iterator,
 					(void *) offset);
+					
+	/* Release lock */
+	semaphore_up( cache->lock );
+	
+	return entry;
 	
 }
 
@@ -199,12 +220,18 @@ void blkcache_bump( blkcache_cache_t *cache, blkcache_entry_t *entry )
 
 	assert (cache != NULL);
 	assert (entry != NULL);
+	
+	/* Acquire lock on cache */
+	semaphore_down( cache->lock );
 
 	/* Remove the block from the list */
 	llist_unlink((llist_t *) &entry);
 	
 	/* Re-add it at the end of the list */
 	llist_add_end(&(cache->block_list), (llist_t *) entry);
+	
+	/* Release lock */
+	semaphore_up( cache->lock );
 }
 
 /**
@@ -249,6 +276,9 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 		return entry;
 
 	/* Block not cached, add new block */
+	
+	/* Acquire lock on cache */
+	semaphore_down( cache->lock );
 
 	/* Enforce cache size limit */
 	if ( cache->entry_count == cache->max_entries ) {
@@ -263,6 +293,10 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 		if (entry->flags & BLKCACHE_ENTRY_FLAG_DIRTY) {
 			/* Block was dirty, return NULL to indicate a flush */
 			/* is required */
+					
+			/* Release lock */
+			semaphore_up( cache->lock );
+			
 			return NULL;
 		}
 
@@ -289,7 +323,11 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 		/* Handle out of memory errors */
 		if ( !entry ) {
 			/* TODO: Decide whether this should cause a block removal */
-			/* instead of an error */
+			/* instead of an error */			
+					
+			/* Release lock */
+			semaphore_up( cache->lock );
+			
 			return BLKCACHE_ENOMEM;
 		}
 
@@ -304,6 +342,10 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 		/* Handle out of memory errors */
 		if ( !entry->data ) {
 			heapmm_free( entry, sizeof(blkcache_entry_t) );
+					
+			/* Release lock */
+			semaphore_up( cache->lock );
+			
 			return BLKCACHE_ENOMEM;
 		}
 
@@ -315,6 +357,9 @@ blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset )
 		llist_add_end(&(cache->block_list), (llist_t *) entry);
 
 	}
+					
+	/* Release lock */
+	semaphore_up( cache->lock );
 
 	return entry;	
 }
