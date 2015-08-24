@@ -15,6 +15,7 @@
 #ifndef __KERNEL_BLKCACHE_H__
 #define __KERNEL_BLKCACHE_H__
 
+#include "kernel/synch.h"
 #include <sys/types.h>
 #include "util/llist.h"
 

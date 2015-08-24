@@ -45,6 +45,9 @@ blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries )
 	
 	assert ( cache->lock != NULL );
 	
+	/* Release lock */
+	semaphore_up( cache->lock );
+	
 	llist_create( ( llist_t * ) &( cache->block_list ) );
 
 	return cache;

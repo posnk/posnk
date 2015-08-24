@@ -85,7 +85,7 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 	subclass = pci_config_read_byte( bus, device, function, PCI_CONFIG_SUBCLASS );
 	api = pci_config_read_short( bus, device, function, PCI_CONFIG_API_ID );
 
-	if ((class == 0x06) && (subclass == 0x04)) {
+	if ((class == PCI_CLASS_BRIDGE) && (subclass == PCI_SUBCLASS_PCI2PCI)) {
 		secbus = pci_config_read_byte( bus, device, function, PCI_CONFIG_SECONDARY_BUS);
 		pci_enumerate_bus( secbus );	
 		return;	

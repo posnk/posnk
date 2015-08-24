@@ -951,7 +951,7 @@ SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aof
 			THROW(status ? status : EIO, 0);
 		}
 
-		if ((dirent->rec_len + pos) > length){
+		if ((dirent->name_len + pos + 9) > length){
 			heapmm_free(dirent, sizeof(ext2_dirent_t));
 			RETURN(pos);
 		}
