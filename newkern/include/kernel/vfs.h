@@ -174,6 +174,8 @@ struct dir_cache {
 	uint32_t	 usage_count;
 };
 
+
+
 /** 
  * @brief Contains callbacks for all filesystem driver functions 
  *
@@ -264,7 +266,7 @@ struct fs_device_operations {
 	/**
 	 * @brief Read directory entries from backing storage
 	 * 
-         * REQUIRED
+     * REQUIRED
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
 	 * @warning Implementations must only return whole directory entries
@@ -276,6 +278,23 @@ struct fs_device_operations {
 	 * @return The number of bytes read
 	 */
 	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
+
+	/**
+	 * @brief Reads a single directory entry from backing storage
+	 * 
+     * REQUIRED
+	 * @warning Implementations must not modify the inode metadata from
+	 * this function
+	 * @warning Implementations must only return whole directory entries
+	 * 
+	 * @param inode       The inode for the directory
+	 * @param buffer      The buffer to store the entry in
+	 * @param file_offset The offset in the directory to start reading at
+	 * @param count       The number of bytes to read
+	 * @param nadv		  The number of bytes the position should advance
+	 * @return The number of bytes read
+	 */
+	SFUNCPTR( aoff_t, readdir, inode_t *, void *, aoff_t, aoff_t, aoff_t * );//neard = buffer, f_offset, length, nadv
 
 	/** 
 	 * @brief Find a directory entry

@@ -918,7 +918,7 @@ SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 	
 }
 
-SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)
+SFUNC(aoff_t, ext2_preaddir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length, aoff_t *nadv)
 {///XXX: Dependent on : sizeof(vfs_dirent_t) == sizeof(ext2_dirent_t)
 	int status;
 
@@ -970,7 +970,7 @@ SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aof
 		name[dirent->name_len] = 0;
 		vfs_dir->inode_id = dirent->inode;
 		vfs_dir->device_id = _inode->device_id;
-		vfs_dir->d_reclen = dirent->rec_len;
+		vfs_dir->d_reclen = 9 + dirent->name_len;
 		
 	}
 
