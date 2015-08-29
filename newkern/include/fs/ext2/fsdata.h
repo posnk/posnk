@@ -1,5 +1,5 @@
 /**
- * fs/ext2.h
+ * fs/ext2/fsdata.h
  *
  * Part of P-OS kernel.
  *
@@ -9,12 +9,10 @@
  * 09-07-2014 - Created
  */
 
-#ifndef __FS_EXT2_H__
-#define __FS_EXT2_H__
+#ifndef __FS_EXT2_FSDATA_H__
+#define __FS_EXT2_FSDATA_H__
 
 #include <stdint.h>
-#include <sys/types.h>
-#include "kernel/vfs.h"
 
 #define EXT2_FS_STATE_CLEAN		(1)
 #define EXT2_FS_STATE_ERRORS		(2)
@@ -50,29 +48,18 @@
 #define EXT2_IFCHR			(0x2000)
 #define EXT2_IFIFO			(0x1000)
 
-#define EXT2_FT_UNKNOWN			(0)
+#define EXT2_FT_UNKNOWN		(0)
 
-#define EXT2_DEV_DECODE(dIn)		MAKEDEV( ((dIn >> 8) & 0xFF), (dIn & 0xFF) ) 
+#define EXT2_DEV_DECODE(dIn)	MAKEDEV( ((dIn >> 8) & 0xFF), (dIn & 0xFF) ) 
 
-#define EXT2_DEV_ENCODE(dIn)		((MAJOR(dIn) << 8) & 0xFF00) | (MINOR(dIn) & 0xFF)
-
-//We currently only support filetype in dirent
-#define EXT2_SUPPORTED_REQ_FEATURES	(2)
-
-#define EXT2_SUPPORTED_ROF_FEATURES	(0)
-
-#define EXT2_BITMAP_GET(V,B)		((V) &  (1 << (B)))
-#define EXT2_BITMAP_SET(V,B)		((V) |= (1 << (B)))
-#define EXT2_BITMAP_CLR(V,B)		((V) &= ~(1 << (B)))
+#define EXT2_DEV_ENCODE(dIn)	((MAJOR(dIn) << 8) & 0xFF00) | (MINOR(dIn) & 0xFF)
 
 #define EXT2_ENOSPC			(1)
 
-typedef struct ext2_superblock		ext2_superblock_t;
+typedef struct ext2_superblock			ext2_superblock_t;
 typedef struct ext2_block_group_desc	ext2_block_group_desc_t;
-typedef struct ext2_inode		ext2_inode_t;
-typedef struct ext2_dirent		ext2_dirent_t;
-typedef struct ext2_vinode		ext2_vinode_t;
-typedef struct ext2_device		ext2_device_t;
+typedef struct ext2_inode				ext2_inode_t;
+typedef struct ext2_dirent				ext2_dirent_t;
 
 struct ext2_superblock {
 	uint32_t inode_count;
@@ -143,7 +130,6 @@ struct ext2_block_group_desc {
 	uint8_t	 reserved[12];
 }  __attribute__((packed));
 
-
 struct ext2_inode {
 	uint16_t mode;
 	uint16_t uid;
@@ -171,17 +157,5 @@ struct ext2_dirent {
 	uint8_t  file_type;
 }  __attribute__((packed)); //8 long
 
-struct ext2_vinode {
-	inode_t	     vfs_ino;
-	ext2_inode_t inode;
-};
-
-struct ext2_device {
-	fs_device_t		device;
-	ext2_superblock_t	superblock;
-	dev_t			dev_id;
-	uint32_t		bgdt_block;
-	aoff_t			inode_load_size;
-};
 
 #endif

@@ -1,2 +1,2 @@
-FS_DRIVER(ext2)
-FS_DRIVER(ramfs)
+FS_DRIVER(ext2, ext2)
+FS_DRIVER(ramfs, ramfs)

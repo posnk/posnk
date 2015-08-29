@@ -1,4 +1,4 @@
-#define FS_DRIVER(NaMe) int NaMe ## _register();
+#define FS_DRIVER(NaMe, PaTh) int NaMe ## _register();
 #define PNP_DRIVER(NaMe, PaTh) int NaMe ## _register(); 
 #define DEV_DRIVER(NaMe, PaTh) int NaMe ## _init();
 
@@ -11,7 +11,7 @@
 
 void register_fs_drivers() {
 
-#define FS_DRIVER(NaMe) NaMe ## _register();
+#define FS_DRIVER(NaMe, PaTh) NaMe ## _register();
 
 #include "fs/fs.list"
 
