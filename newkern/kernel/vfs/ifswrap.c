@@ -84,6 +84,33 @@ SVFUNC( ifs_store_inode, inode_t * inode )
 
 	/* Call the driver */
 	CHAINRETV( inode->device->ops->store_inode, inode );
+
+}
+
+/** 
+ * @brief Call on the fs driver to do post-open modifications to a stream
+ * @see fs_device_operations
+ *
+ * @param inode The inode that was opened
+ * @param stream The stream that was opened
+ */
+
+SVFUNC( ifs_open, inode_t * inode, void *stream )
+{
+	/* This function is implemented by the FS driver */
+	assert ( inode != NULL );
+	assert ( stream != NULL );
+
+	/* Check if the driver supports this function */
+	if ( ! inode->device->ops->open_inode ) {
+
+		/* If not: return the error "Operation not supported" */
+		THROWV( ENOTSUP );
+
+	}
+
+	/* Call the driver */
+	CHAINRETV( inode->device->ops->open_inode, inode, stream );
 }
 
 

@@ -10,6 +10,7 @@
  */
 #include "kernel/heapmm.h"
 #include "kernel/vfs.h"
+#include "kernel/streams.h"
 #include "fs/ramfs.h"
 #include "util/llist.h"
 #include <string.h>
@@ -274,7 +275,101 @@ SVFUNC(ramfs_unlink, inode_t *_inode, char *name )	//dir_inode_id, filename
 
 uint32_t ramfs_device_ctr = 0x0F00;
 
+SFUNC( aoff_t, ramfs_dir_readwrite_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length )
+{
+	THROW(EISDIR, 0);
+}
+
+SVFUNC( ramfs_dir_close, stream_info_t *stream )
+{
+
+	stream->inode->open_count--;
+	
+	/* Release the inode */
+	vfs_inode_release(stream->inode);
+	
+	/* Release the inode */
+	vfs_dir_cache_release(stream->dirc);
+
+	RETURNV;
+
+}
+
+SFUNC( aoff_t, ramfs_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, aoff_t buflen)
+{
+	ramfs_dirent_t plholder;
+	ramfs_inode_t *inode = (ramfs_inode_t *) stream->inode;
+	aoff_t current_off;
+	
+	ramfs_dirent_t *_block;
+	
+	current_off = stream->offset;
+	
+	if ( current_off > stream->inode->size )
+		THROW(ENMFILE, 0);
+	
+	_block = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_rawdir_search_iterator, (void *) current_off);
+	
+	if (_block == NULL) {
+		_block = &plholder;
+		plholder.dir.d_reclen = sizeof(dirent_t);
+		plholder.dir.name[0] = 0;
+		plholder.dir.inode_id = 0;
+		plholder.dir.device_id = stream->inode->device_id;
+		plholder.start = current_off % (plholder.dir.d_reclen);
+	}
+	
+	if (_block->dir.d_reclen > buflen) {
+		THROW(E2BIG, _block->dir.d_reclen);
+	}
+	
+	memcpy(buffer, &_block->dir, _block->dir.d_reclen);
+	stream->offset += _block->dir.d_reclen;
+	
+	RETURN(_block->dir.d_reclen);
+}
+
 fs_device_operations_t *ramfs_ops;
+stream_ops_t ramfs_dir_ops = {
+	.close = ramfs_dir_close,
+	.read = ramfs_dir_readwrite_stub,
+	.write = ramfs_dir_readwrite_stub,
+	.readdir = ramfs_dir_readdir,
+	.ioctl = NULL,
+	.seek  = NULL,
+	.lseek = NULL,
+	.chdir = NULL,
+	.stat  = NULL,
+	.chmod = NULL,
+	.chown = NULL,
+	.truncate = NULL
+	
+};
+
+SVFUNC ( ramfs_open_inode, inode_t *inode, void *_stream )
+{
+	
+	stream_info_t *stream = _stream;
+	
+	if (S_ISDIR(inode->mode)) {
+		
+		stream->type		= STREAM_TYPE_EXTERNAL;
+		stream->ops  		= &ramfs_dir_ops;
+		stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR | 
+								STREAM_IMPL_FILE_CHMOD |
+								STREAM_IMPL_FILE_CHOWN |
+								STREAM_IMPL_FILE_FSTAT |
+								STREAM_IMPL_FILE_LSEEK |
+								STREAM_IMPL_FILE_TRUNC;
+		
+	}
+	
+	return 0;
+	
+}
 
 SFUNC(fs_device_t *, ramfs_mount, 
 			__attribute__((__unused__)) dev_t device,
@@ -295,6 +390,7 @@ SFUNC(fs_device_t *, ramfs_mount,
 		ramfs_ops->link = &ramfs_link;
 		ramfs_ops->unlink = &ramfs_unlink;
 		ramfs_ops->trunc_inode = &ramfs_trunc_inode;
+		ramfs_ops->open_inode = &ramfs_open_inode;
 	}
 	dev->inode_id_ctr = 0;
 	dev->device.id = ramfs_device_ctr;

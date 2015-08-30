@@ -176,6 +176,27 @@ uint32_t sys_read(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 	return (uint32_t) status;
 }
 
+//ssize_t readdir(int fd, void * buffer, size_t buflen);
+uint32_t sys_readdir(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+{
+	void* buf;
+	ssize_t status;
+	buf = heapmm_alloc(param[2]);
+	if (!buf) {
+		syscall_errno = ENOMEM;
+		return (uint32_t) -1;
+	}
+	memset(buf, 0, param[2]);
+	status = _sys_readdir((int) param[0], buf, (size_t) param[2]);
+	if (!copy_kern_to_user(buf, (void *)param[1], param[2])) {
+		syscall_errno = EFAULT;
+		heapmm_free(buf, param[2]);
+		return (uint32_t) -1;
+	}
+	heapmm_free(buf, param[2]);
+	return (uint32_t) status;
+}
+
 //ssize_t write(int fd, void * buffer, size_t count);
 uint32_t sys_write(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {

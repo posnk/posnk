@@ -55,6 +55,7 @@ SVFUNC( ext2_sync, fs_device_t *device )
 }
 
 fs_device_operations_t ext2_ops = {
+	NULL, //Open inode
 	&ext2_load_inode,//Load inode
 	&ext2_store_inode,//Store inode
 	&ext2_mknod,//Make inode
@@ -67,7 +68,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_link,//Make directory entry
 	NULL,//Remove directory entry
 	&ext2_trunc_inode, //Change file length
-	&ext2_sync
+	&ext2_sync,
 };
 
 SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)

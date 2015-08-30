@@ -184,6 +184,8 @@ struct dir_cache {
  * fs_device
  */
 struct fs_device_operations {
+	
+	SVFUNCPTR( open_inode, inode_t *, void * );	
 
 	/**
 	 * @brief Load an inode from storage
@@ -493,6 +495,7 @@ int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
 
+SVFUNC( ifs_open, inode_t *, void *);
 SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id );
 SVFUNC( ifs_store_inode, inode_t * inode );
 SVFUNC( ifs_mknod, inode_t * inode );

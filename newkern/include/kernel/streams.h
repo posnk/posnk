@@ -15,6 +15,7 @@
 #include "kernel/pipe.h"
 #include "util/llist.h"
 #include <sys/types.h>
+#include <sys/dirent.h>
 
 #ifndef __KERNEL_STREAMS_H__
 #define __KERNEL_STREAMS_H__
@@ -37,10 +38,20 @@
  */
 
 /** This stream refers to a file */
-#define STREAM_TYPE_FILE	(0)
+#define STREAM_TYPE_FILE		(0)
 
 /** This stream is a pipe endpoint */
-#define STREAM_TYPE_PIPE	(1)
+#define STREAM_TYPE_PIPE		(1)
+
+/** This stream is based on callbacks to an external module */
+#define STREAM_TYPE_EXTERNAL	(2)
+
+#define STREAM_IMPL_FILE_FSTAT	(1)
+#define STREAM_IMPL_FILE_CHDIR	(2)
+#define STREAM_IMPL_FILE_CHOWN	(4)
+#define STREAM_IMPL_FILE_CHMOD	(8)
+#define STREAM_IMPL_FILE_LSEEK	(16)
+#define STREAM_IMPL_FILE_TRUNC	(32)
 
 /**
  * @brief Describes a stream
@@ -55,6 +66,13 @@ typedef struct stream_info stream_info_t;
  */
 
 typedef struct stream_ptr stream_ptr_t;
+
+/**
+ * @brief Callback functions for externally implemented streams
+ * @see stream_ops
+ */
+
+typedef struct stream_ops stream_ops_t;
 
 /**
  * @brief Describes a pointer to a stream
@@ -116,6 +134,105 @@ struct stream_info {
 
 	/** The pipe referred to by this stream */
 	pipe_info_t	*pipe;
+	
+	/** Implementation flags */
+	int			 impl_flags;
+	
+	/** Implementation specific information */
+	void		*impl;
+	
+	/** Operations for external streams */
+	stream_ops_t *ops;
+};
+
+/** 
+ * Callback functions for externally implemented streams
+ */
+struct stream_ops {
+	
+	/**
+	 * @brief Performs on-close cleanup for the stream
+	 * @param stream	The pointer to the stream being closed
+	 */
+	SVFUNCPTR( close, stream_info_t * );
+	
+	/**
+	 * @brief Read information from the stream
+	 * @param stream	The stream to read from
+	 * @param buffer	The buffer to perform IO on
+	 * @param count		The number of bytes to transfer
+	 * @return			The number of bytes actually transferred
+	 */
+	SFUNCPTR( aoff_t, read, stream_info_t *, void *, aoff_t );
+	
+	/**
+	 * @brief Write information to the stream
+	 * @param stream	The stream to write to
+	 * @param buffer	The buffer to perform IO on
+	 * @param count		The number of bytes to transfer
+	 * @return			The number of bytes actually transferred
+	 */
+	SFUNCPTR( aoff_t, write, stream_info_t *, void *, aoff_t );
+	
+	/**
+	 * @brief Controls a device
+	 * @param stream	The stream to operate on
+	 * @param cmd		The function to execute
+	 * @param arg		An argument to the function.
+	 * @return 			Usually 0 on success, and -1 on error.
+	 * @exception ENOTTY fd does not refer to a special file
+	 */
+	SFUNCPTR( int, ioctl, stream_info_t *, int, void * );
+	
+	/**
+	 * @brief Seeks to a new position
+	 * @param stream	The stream to operate on
+	 * @param pos		The new position to set
+	 */
+	SVFUNCPTR( seek, stream_info_t *, aoff_t );
+	
+	/**
+	 * @brief Reposition read/write file offset
+	 * 
+	 * The way the new file offset is calculated is determined by _whence_:@n@n
+	 * Whence:@n
+	 * @li *SEEK_SET*\n The offset is set to _offset_ bytes
+	 * @li *SEEK_CUR*\n The offset is set to its current location plus _offset_ bytes
+	 * @li *SEEK_END*\n The offset is set to the size of the file plus _offset_ bytes
+	 *
+	 * Setting an offset past the end of the file will not grow the file until the
+	 * next write() to the file
+	 *
+	 * @param fd The file stream to operate on
+	 * @param offset The offset to use when repositioning the file offset
+	 * @param whence The reference offset to use
+	 * @return The new file offset or -1 in case of an error
+	 * @exception EBADF fd does not refer to an open stream
+	 * @exception ESPIPE fd does not refer to a file
+	 * @exception EINVAL New offset is negative
+	 * @exception EINVAL Invalid value for _whence_
+	 */
+	SFUNCPTR(off_t, lseek, stream_info_t *, off_t, int );
+	
+	/**
+	 * @brief Reads a directory entry from the stream
+	 * @param stream	The stream to read from
+	 * @param buffer	The buffer to read to
+	 * @param buflen	The length of the buffer
+	 * @return			The number of bytes written to the buffer
+	 * @exception E2BIG	The dirent did not fit in the buffer ( return val valid)
+	 * @exception ENMFILE The end of the directory was reached
+	 */
+	 SFUNCPTR( aoff_t, readdir, stream_info_t *, sys_dirent_t *, aoff_t );
+	 
+	SVFUNCPTR( truncate, stream_info_t *, aoff_t );
+	 
+	SVFUNCPTR( chdir, stream_info_t * );
+	SVFUNCPTR( chmod, stream_info_t *, mode_t );
+	SVFUNCPTR( chown, stream_info_t *, uid_t, gid_t );
+	SVFUNCPTR( stat, stream_info_t *, struct stat* );
+	
+	
 };
 
 stream_ptr_t *stream_get_ptr (int fd);
@@ -153,6 +270,8 @@ int _sys_open(char *path, int flags, mode_t mode);
 int _sys_close(int fd);
 
 int _sys_fstat(int fd, struct stat* buf);
+
+ssize_t _sys_readdir(int fd, void * buffer, size_t buflen);
 
 ssize_t _sys_getdents(int fd, void * buffer, size_t count);
 

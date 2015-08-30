@@ -99,7 +99,8 @@ char *syscall_names[] =
 	"msgget",
 	"munmap",
 	"chroot",
-	"sync"
+	"sync",
+	"readdir"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -263,4 +264,5 @@ void syscall_init()
 	syscall_register(SYS_MSGGET, &sys_msgget);
 	syscall_register(SYS_CHROOT, &sys_chroot);
 	syscall_register(SYS_SYNC, &sys_sync);
+	syscall_register(SYS_READDIR, &sys_readdir);
 }
