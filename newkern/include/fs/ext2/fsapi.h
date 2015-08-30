@@ -15,6 +15,7 @@
 #include "kernel/vfs.h"
 #include <sys/types.h>
 #include "fs/ext2/fsdata.h"
+#include "kernel/streams.h"
 
 #define EXT2_BITMAP_GET(V,B)		((V) &  (1 << (B)))
 #define EXT2_BITMAP_SET(V,B)		((V) |= (1 << (B)))
@@ -96,5 +97,10 @@ SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name);
 SVFUNC(ext2_mkdir, inode_t *_inode);
 SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id);
 SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
-
+SFUNC( aoff_t, ext2_dir_readwrite_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length );
+SVFUNC( ext2_dir_close, stream_info_t *stream );
+SFUNC( aoff_t, ext2_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, aoff_t buflen);
 #endif

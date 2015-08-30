@@ -21,6 +21,7 @@
 #include "kernel/device.h"
 #include "kernel/vfs.h"
 #include "kernel/earlycon.h"
+#include "kernel/streams.h"
 
 void ext2_handle_error(ext2_device_t *device)
 {
@@ -53,9 +54,46 @@ SVFUNC( ext2_sync, fs_device_t *device )
 	RETURNV;	
 
 }
+stream_ops_t ext2_dir_ops = {
+	.close = ext2_dir_close,
+	.read = ext2_dir_readwrite_stub,
+	.write = ext2_dir_readwrite_stub,
+	.readdir = ext2_dir_readdir,
+	.ioctl = NULL,
+	.seek  = NULL,
+	.lseek = NULL,
+	.chdir = NULL,
+	.stat  = NULL,
+	.chmod = NULL,
+	.chown = NULL,
+	.truncate = NULL
+	
+};
+
+SVFUNC ( ext2_open_inode, inode_t *inode, void *_stream )
+{
+	
+	stream_info_t *stream = _stream;
+	
+	if (S_ISDIR(inode->mode)) {
+		
+		stream->type		= STREAM_TYPE_EXTERNAL;
+		stream->ops  		= &ext2_dir_ops;
+		stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR | 
+								STREAM_IMPL_FILE_CHMOD |
+								STREAM_IMPL_FILE_CHOWN |
+								STREAM_IMPL_FILE_FSTAT |
+								STREAM_IMPL_FILE_LSEEK |
+								STREAM_IMPL_FILE_TRUNC;
+		
+	}
+	
+	return 0;
+	
+}
 
 fs_device_operations_t ext2_ops = {
-	NULL, //Open inode
+	&ext2_open_inode, //Open inode
 	&ext2_load_inode,//Load inode
 	&ext2_store_inode,//Store inode
 	&ext2_mknod,//Make inode

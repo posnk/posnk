@@ -21,6 +21,7 @@
 #include "fs/ext2/fsapi.h"
 #include "kernel/heapmm.h"
 #include "kernel/vfs.h"
+#include "kernel/streams.h"
 
 
 SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
@@ -224,4 +225,74 @@ SVFUNC(ext2_mkdir, inode_t *_inode) {
 	ext2_free_bgd(device, bgd);
 	
 	THROWV(st);
+}
+
+SFUNC( aoff_t, ext2_dir_readwrite_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length )
+{
+	THROW(EISDIR, 0);
+}
+
+SVFUNC( ext2_dir_close, stream_info_t *stream )
+{
+
+	stream->inode->open_count--;
+	
+	/* Release the inode */
+	vfs_inode_release(stream->inode);
+	
+	/* Release the inode */
+	vfs_dir_cache_release(stream->dirc);
+
+	RETURNV;
+
+}
+
+SFUNC( aoff_t, ext2_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, aoff_t buflen)
+{
+	ext2_dirent_t	dirent_hdr;
+	errno_t			status;
+	aoff_t			inode_nread;
+	
+	if ( sizeof(sys_dirent_t) > buflen )
+		THROW( E2BIG, sizeof(sys_dirent_t) );
+	
+	if ( ( stream->offset + sizeof(ext2_dirent_t) ) > stream->inode->size ) {
+		THROW( ENMFILE, 0 );
+	}
+		
+	status = ext2_read_inode(	stream->inode, 
+								&dirent_hdr, 
+								stream->offset, 
+								sizeof(ext2_dirent_t), 
+								&inode_nread);
+	
+	if ( status ) 
+		THROW ( status, 0 );
+		
+	if ( inode_nread < sizeof( ext2_dirent_t ) )
+		THROW ( EIO, 0 );
+
+	if ((dirent_hdr.name_len + 9) > buflen)
+		THROW( E2BIG, dirent_hdr.name_len + 9 );
+		
+	status = ext2_read_inode( 	stream->inode, 
+								buffer->d_name, 
+								stream->offset + sizeof(ext2_dirent_t), 
+								dirent_hdr.name_len, 
+								&inode_nread);
+
+	if (status || (inode_nread != dirent_hdr.name_len)) 
+		THROW(status ? status : EIO, 0);
+
+	buffer->d_name[dirent_hdr.name_len] = 0;
+	buffer->d_ino = dirent_hdr.inode;
+	buffer->d_dev = stream->inode->device_id;
+	buffer->d_reclen = 9 + dirent_hdr.name_len;
+		
+	stream->offset += dirent_hdr.rec_len;
+		
+	RETURN( dirent_hdr.name_len + 9);
 }
