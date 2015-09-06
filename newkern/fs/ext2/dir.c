@@ -166,40 +166,90 @@ SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aof
 	RETURN(pos);
 }
 
+
+
+SFUNC( aoff_t, ext2_ireaddir, 
+				inode_t *inode,
+				aoff_t *offset,
+				sys_dirent_t *buffer, 
+				aoff_t buflen)
+{
+	ext2_dirent_t	dirent_hdr;
+	errno_t			status;
+	aoff_t			inode_nread;
+	
+	if ( sizeof(sys_dirent_t) > buflen )
+		THROW( E2BIG, sizeof(sys_dirent_t) );
+	
+	if ( ( *offset + sizeof(ext2_dirent_t) ) > inode->size ) {
+		THROW( ENMFILE, 0 );
+	}
+		
+	status = ext2_read_inode(	inode, 
+								&dirent_hdr, 
+								*offset, 
+								sizeof(ext2_dirent_t), 
+								&inode_nread);
+	
+	if ( status ) 
+		THROW ( status, 0 );
+		
+	if ( inode_nread < sizeof( ext2_dirent_t ) )
+		THROW ( EIO, 0 );
+
+	if ((dirent_hdr.name_len + 9) > buflen)
+		THROW( E2BIG, dirent_hdr.name_len + 9 );
+		
+	status = ext2_read_inode( 	inode, 
+								buffer->d_name, 
+								*offset + sizeof(ext2_dirent_t), 
+								dirent_hdr.name_len, 
+								&inode_nread);
+
+	if (status || (inode_nread != dirent_hdr.name_len)) 
+		THROW(status ? status : EIO, 0);
+
+	buffer->d_name[dirent_hdr.name_len] = 0;
+	buffer->d_ino = dirent_hdr.inode;
+	buffer->d_dev = inode->device_id;
+	buffer->d_reclen = 11 + dirent_hdr.name_len;
+		
+	*offset += dirent_hdr.rec_len;
+		
+	RETURN( dirent_hdr.name_len + 11);
+}
+
 SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name)
 {
-	uint8_t *buffer = heapmm_alloc(1024);
-	int status;
-	aoff_t nread = 1;
-	aoff_t fpos = 0;
-	aoff_t pos;
-	dirent_t *dirent;
-	dirent_t *pp;
-
-	assert( _inode != NULL );
-	assert( name != NULL );
-
-	if (!buffer)
-		THROW(ENOMEM, NULL);
-	for (fpos = 0; nread != 0; fpos += nread) {
-		status = ext2_readdir(_inode, buffer, fpos, 1024, &nread);
-		if (status) {
-			heapmm_free(buffer, 1024);
-			THROW(status, NULL);
-		}
-		for (pos = 0; pos < nread; pos += dirent->d_reclen) {
-			dirent = (dirent_t *) &(buffer[pos]);
-			if (strcmp(name, dirent->name) == 0){
-				pp = heapmm_alloc(sizeof(dirent_t));	
-				dirent->d_reclen = (dirent->d_reclen > sizeof(dirent_t)) ? sizeof(dirent_t) : dirent->d_reclen;
-				memcpy(pp, dirent,dirent->d_reclen);
-				heapmm_free(buffer, 1024);
-				RETURN(pp);
-			}
-		}
+	sys_dirent_t	*dirent;
+	errno_t			status;
+	aoff_t			nread;
+	aoff_t 			offset = 0;
+	
+	dirent = heapmm_alloc( sizeof ( sys_dirent_t ) );
+	
+	if ( dirent == NULL )
+		THROW( ENOMEM, NULL );
+	
+	while ( (status = ext2_ireaddir(	_inode, 
+										&offset, 
+										dirent, 
+										sizeof(sys_dirent_t), 
+										&nread ) ) == 0 ) {
+		if ( strcmp ( dirent->d_name, name ) == 0 )
+			RETURN( ( dirent_t * ) dirent);
+											
 	}
-	heapmm_free(buffer, 1024);
-	THROW(ENOENT, NULL);
+	
+	assert ( status != E2BIG );
+	
+	if ( status == ENMFILE )
+		status = ENOENT;
+	
+	heapmm_free( dirent, sizeof ( sys_dirent_t ));
+	
+	THROW( status, NULL );
+	
 }
 
 
@@ -252,47 +302,5 @@ SVFUNC( ext2_dir_close, stream_info_t *stream )
 
 SFUNC( aoff_t, ext2_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, aoff_t buflen)
 {
-	ext2_dirent_t	dirent_hdr;
-	errno_t			status;
-	aoff_t			inode_nread;
-	
-	if ( sizeof(sys_dirent_t) > buflen )
-		THROW( E2BIG, sizeof(sys_dirent_t) );
-	
-	if ( ( stream->offset + sizeof(ext2_dirent_t) ) > stream->inode->size ) {
-		THROW( ENMFILE, 0 );
-	}
-		
-	status = ext2_read_inode(	stream->inode, 
-								&dirent_hdr, 
-								stream->offset, 
-								sizeof(ext2_dirent_t), 
-								&inode_nread);
-	
-	if ( status ) 
-		THROW ( status, 0 );
-		
-	if ( inode_nread < sizeof( ext2_dirent_t ) )
-		THROW ( EIO, 0 );
-
-	if ((dirent_hdr.name_len + 9) > buflen)
-		THROW( E2BIG, dirent_hdr.name_len + 9 );
-		
-	status = ext2_read_inode( 	stream->inode, 
-								buffer->d_name, 
-								stream->offset + sizeof(ext2_dirent_t), 
-								dirent_hdr.name_len, 
-								&inode_nread);
-
-	if (status || (inode_nread != dirent_hdr.name_len)) 
-		THROW(status ? status : EIO, 0);
-
-	buffer->d_name[dirent_hdr.name_len] = 0;
-	buffer->d_ino = dirent_hdr.inode;
-	buffer->d_dev = stream->inode->device_id;
-	buffer->d_reclen = 9 + dirent_hdr.name_len;
-		
-	stream->offset += dirent_hdr.rec_len;
-		
-	RETURN( dirent_hdr.name_len + 9);
+	CHAINRET( ext2_ireaddir, stream->inode, &stream->offset, buffer, buflen );
 }

@@ -15,7 +15,7 @@
 
 #define CONFIG_TTY_BUFFER		(4096)
 
-#define CONFIG_ATA_DEBUG		
+#undef CONFIG_ATA_DEBUG		
 
 #undef	HAVE_LIBGCC			
 
