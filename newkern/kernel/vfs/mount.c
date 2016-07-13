@@ -26,6 +26,8 @@
 
 #include "kernel/heapmm.h"
 
+#include "kernel/earlycon.h"
+
 #include <string.h>
 
 

@@ -20,6 +20,7 @@
 
 #include "fs/ext2/fsapi.h"
 #include "kernel/heapmm.h"
+#include "kernel/earlycon.h"
 #include "kernel/vfs.h"
 
 void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id)

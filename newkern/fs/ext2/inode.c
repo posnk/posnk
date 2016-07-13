@@ -21,6 +21,7 @@
 #include "fs/ext2/fsapi.h"
 #include "kernel/heapmm.h"
 #include "kernel/vfs.h"
+#include "kernel/earlycon.h"
 
 SVFUNC(ext2_shrink_inode, ext2_device_t *device, ext2_inode_t *inode, aoff_t old_size, aoff_t new_size)
 {

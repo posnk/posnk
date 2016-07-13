@@ -24,6 +24,8 @@
 
 #include "kernel/heapmm.h"
 
+#include "kernel/earlycon.h"
+
 /* Global Variables */
 
 /** The linked list serving as open inode list */
