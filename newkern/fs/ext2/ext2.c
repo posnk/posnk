@@ -137,12 +137,14 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
 
 	if (_read_size != 1024) {
 		debugcon_printf("ext2: could not read superblock, error:%i, read:%i!\n", status, _read_size);
+		semaphore_free(dev->device.lock);
 		heapmm_free(dev, sizeof(ext2_device_t));
 		THROW(status, NULL);
 	}
 
 	if (dev->superblock.signature != 0xEF53) {
 		debugcon_printf("ext2: superblock signature incorrect: %i!\n", dev->superblock.signature);
+		semaphore_free(dev->device.lock);
 		heapmm_free(dev, sizeof(ext2_device_t));
 		THROW(EINVAL, NULL);
 	}	
@@ -151,6 +153,7 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
 
 		if (dev->superblock.required_features & ~(EXT2_SUPPORTED_REQ_FEATURES)) {
 			debugcon_printf("ext2: filesystem requires unsupported features, refusing to mount!\n");
+			semaphore_free(dev->device.lock);
 			heapmm_free(dev, sizeof(ext2_device_t));
 			THROW(EINVAL, NULL);
 		}
