@@ -182,7 +182,7 @@ SFUNC( aoff_t, ext2_ireaddir,
 		THROW( E2BIG, sizeof(sys_dirent_t) );
 	
 	if ( ( *offset + sizeof(ext2_dirent_t) ) > inode->size ) {
-		THROW( ENMFILE, 0 );
+		RETURN( 0 );
 	}
 		
 	status = ext2_read_inode(	inode, 
@@ -235,7 +235,7 @@ SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name)
 										&offset, 
 										dirent, 
 										sizeof(sys_dirent_t), 
-										&nread ) ) == 0 ) {
+										&nread ) ) == 0 && nread != 0) {
 		if ( strcmp ( dirent->d_name, name ) == 0 )
 			RETURN( ( dirent_t * ) dirent);
 											
@@ -243,7 +243,7 @@ SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name)
 	
 	assert ( status != E2BIG );
 	
-	if ( status == ENMFILE )
+	if ( status == 0 )
 		status = ENOENT;
 	
 	heapmm_free( dirent, sizeof ( sys_dirent_t ));

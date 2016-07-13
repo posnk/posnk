@@ -309,7 +309,7 @@ SFUNC( aoff_t, ramfs_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, a
 	current_off = stream->offset;
 	
 	if ( current_off > stream->inode->size )
-		THROW(ENMFILE, 0);
+		RETURN(0);
 	
 	_block = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_rawdir_search_iterator, (void *) current_off);
 	
