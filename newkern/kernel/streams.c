@@ -2112,6 +2112,7 @@ int _sys_close_int(process_info_t *process, int fd)
 		}
 
 		/* Free the memory for the stream info */
+		semaphore_free(ptr->info->lock);
 		heapmm_free(ptr->info, sizeof(stream_info_t));
 
 	} else /* It was not, release the lock on the stream */

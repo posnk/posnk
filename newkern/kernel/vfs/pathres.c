@@ -375,6 +375,10 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 				( (separator + 1) >= end_of_path ) ) {
 				/* We have already determined the 
 				 * parent, return that instead */
+				 
+				/* Clean up */
+				heapmm_free(path_element,
+					 CONFIG_FILE_MAX_NAME_LENGTH);
 				
 				/* Return dirc */
 				
@@ -407,6 +411,8 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 			status = vfs_dir_cache_new(	dirc, 
 							dirent->inode_id, 
 							&newc);
+							
+			//TODO: Free dirent!!!
 
 			/* Check an error occurred */
 			if (status) {
