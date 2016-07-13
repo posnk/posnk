@@ -221,20 +221,24 @@ int vfs_write(	inode_t	* _inode,
 
 					/* Allocate a buffer for the zero pad */
 					//TODO: Make this more efficient, implement sparse files
-					zbuffer = heapmm_alloc(file_offset - inode->size);
+
+
+					pad_size = file_offset - inode->size;
+					
+					zbuffer = heapmm_alloc(pad_size);
 
 					/* Fill the buffer with zeroes */
-					memset(zbuffer, 0, file_offset - inode->size);
+					memset(zbuffer, 0, pad_size);
 
 					/* Write the zeroes to the file */
 					status = ifs_write(	inode, 
 										zbuffer, 
 										inode->size, 
-										file_offset - inode->size, 
+										pad_size, 
 										&pad_size);
 
 					/* Free the zero pad buffer */
-					heapmm_free(zbuffer,file_offset - inode->size);		
+					heapmm_free(zbuffer, pad_size);		
 
 					/* Increase the file size to include the padding */
 					inode->size += pad_size;
