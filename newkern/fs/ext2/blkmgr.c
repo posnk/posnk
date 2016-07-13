@@ -49,6 +49,7 @@ SVFUNC(ext2_free_block, ext2_device_t *device, uint32_t block_id)
 	idx -= bm_id * bm_block_bcnt;
 	nb = idx % 32;
 	idx -= nb;
+	idx /= 32;
 	
 	status = ext2_load_bgd(device, bgrp_id, &bgd);
 	if (status)
@@ -112,6 +113,7 @@ SFUNC(uint32_t, ext2_alloc_block, ext2_device_t *device, uint32_t start)
 	idx -= bm_id * bm_block_bcnt;
 	nb = idx % 32;
 	idx -= nb;
+	idx /= 32;
 	for (; bgrp_id < bgrp_count; bgrp_id++) {
 		status = ext2_load_bgd(device, bgrp_id, &bgd);
 		if (status)
