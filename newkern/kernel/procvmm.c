@@ -29,21 +29,36 @@
 void procvmm_clear_mmaps()
 {	
 	process_mmap_t *region;
-	for (	region = (process_mmap_t *) llist_get_last(scheduler_current_task->memory_map);
-		region != (process_mmap_t *) scheduler_current_task->memory_map;
-		region = (process_mmap_t *) llist_get_last(scheduler_current_task->memory_map))
+	for (	region  = (process_mmap_t *) 
+				llist_get_last( scheduler_current_task->memory_map );
+			region != NULL;
+			region  = (process_mmap_t *) 
+				llist_get_last(scheduler_current_task->memory_map))
 		procvmm_unmmap(region);
 }
 
 int procvmm_do_exec_mmaps()
 {
-	scheduler_current_task->heap_start = (void *) scheduler_current_task->image_end;     //End of program image_base
-	scheduler_current_task->heap_end   = scheduler_current_task->heap_start;	
-	scheduler_current_task->heap_max = (void *) 0x40000000;     //User mmap area starts here
-	scheduler_current_task->stack_bottom = (void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
-	scheduler_current_task->stack_top = (void *) 0xBF400000; //TODO: Implement dynamic stack size
-	procvmm_mmap_anon((void *) 0xBFBFF000, 0x1000, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(sigstack)");
-	return procvmm_mmap_anon(scheduler_current_task->stack_top, 0x7FEFFF, PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, "(stack)");
+	scheduler_current_task->heap_strt	=
+		(void *) scheduler_current_task->image_end;//End of program image_base
+	scheduler_current_task->heap_end	= scheduler_current_task->heap_start;	
+	scheduler_current_task->heap_max	= 
+				(void *) 0x40000000; //User mmap area starts here
+	scheduler_current_task->stack_bottom = 
+				(void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
+	scheduler_current_task->stack_top	= 
+				(void *) 0xBF400000; //TODO: Implement dynamic stack size
+	procvmm_mmap_anon(
+				(void *) 0xBFBFF000, 
+				0x1000,
+				PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, 
+				"(sigstack)" );
+				
+	return procvmm_mmap_anon(
+				scheduler_current_task->stack_top, 
+				0x7FEFFF, 
+				PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, 
+				"(stack)" );
 }
 
 int procvmm_check(void *dest, size_t size) {

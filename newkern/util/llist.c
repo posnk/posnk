@@ -22,8 +22,11 @@
  */
 llist_t *llist_get_first(llist_t *list)
 {
+
 	assert(list != NULL);
-	return list->next;
+	
+	return list->next == list ? NULL : list->next;
+	
 }
 
 /**
@@ -33,8 +36,11 @@ llist_t *llist_get_first(llist_t *list)
  */
 llist_t *llist_get_last(llist_t *list)
 {
+
 	assert(list != NULL);
-	return list->prev;
+	
+	return list->prev == list ? NULL : list->prev;
+	
 }
 
 /**

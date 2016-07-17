@@ -21,20 +21,44 @@
 #include "kernel/syscall.h"
 #include "kernel/streams.h"
 
-uint32_t sys_fork(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+/**
+ * @brief Syscall implementation: fork
+ * Create a copy of a 
+ */
+uint32_t sys_fork(	__attribute__((__unused__)) uint32_t param[4], 
+					__attribute__((__unused__)) uint32_t param_size[4] )
 {
+
+
+	/* Call the schedulur to actually do the fork */
 	return (uint32_t) scheduler_fork();
+	
 }
 
+/**
+ * @brief Syscall implementation: kill
+ * Sends a signal to a process.
+ */
 uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
 	process_info_t *process;
+	
+	/* The process to signal */
 	int pid = (int) param[0];
+	
+	/* The signal to send */
 	int sig = (int) param[1];
+
+	/* Do a range check on sid */	
 	if (sig < 0 || sig > 31) {
 		syscall_errno = EINVAL;
 		return (uint32_t)-1;		
-	} else if (pid == 0) {
+	} 
+	
+	/* Handle various cases for pid */
+	if (pid == 0) {		   
+	
+		/* pid = 0  -> Send signal to current process group */
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup(
 			scheduler_current_task->pgid, sig) == 0) {
@@ -42,18 +66,27 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 		} 
 		syscall_errno = 0;
 		return 0;
+		
 	} else if (pid == -1) {
+		/* pid = -1 -> Send signal to all processes except init and things we
+		   aren't allowed to signal. */
 		//TODO: Implement kill all system processes
 		syscall_errno = EINVAL;
 		return (uint32_t)-1;
+		
 	} else if (pid < -1) {
+		/* pid < -1 -> Send signal to process group -pgid */
+	
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup((pid_t) -pid, sig) == 0) {
 			return (uint32_t) -1;
 		} 
 		syscall_errno = 0;
 		return 0;
+		
 	} else {
+		/* Signal process with id pid */
+		
 		process = process_get((pid_t) pid);
 		if (process == NULL) {
 			syscall_errno = ESRCH;
@@ -196,8 +229,10 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 		}
 	} else if (pid == -1) {
 		if (options & WNOHANG) {
-			while (  (!(ev_info = (process_child_event_t *) llist_get_last(scheduler_current_task->child_events))) ||
-				 (ev_info == (process_child_event_t *) scheduler_current_task->child_events) ||
+			while (  
+				(!(ev_info = (process_child_event_t *) 
+					llist_get_last(scheduler_current_task->child_events))) ||
+				 (ev_info != NULL) ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
@@ -208,7 +243,7 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 			}
 		} else {
 			while (  (!(ev_info = (process_child_event_t *) llist_get_last(scheduler_current_task->child_events))) || 
-				 (ev_info == (process_child_event_t *) scheduler_current_task->child_events) ||
+				 (ev_info != NULL) ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
