@@ -11,5 +11,9 @@ typedef unsigned char u_char;
 typedef unsigned short ushort;
 
 #include <stdio.h>
+#include <crt/sys/error.h>
+#define ESUCCESS 0
+#define ENMFILE  424
 
 #define debugcon_aprintf	printf
+#define debugcon_printf	printf

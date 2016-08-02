@@ -71,6 +71,8 @@ SFUNC(inode_t *, vfs_get_inode, fs_device_t *device, ino_t inode_id)
 		assert(result->fifo != NULL);
 	}
 
+
+	vfs_inode_cache( result );
 	//NOTE : Schedule may have happened
 
 	RETURN(vfs_inode_ref(result));
@@ -1481,7 +1483,7 @@ int vfs_symlink(char *oldpath, char *path)
 	semaphore_up(inode->lock);
 
 	/* Add inode to cache */
-	vfs_inode_cache(inode);
+	vfs_inode_cache(inode);//TODO: Check if duplicate? see vfs.c:1451
 
 	/* Release the lock on the parent inode*/
 	semaphore_up(parent->lock);
@@ -1904,7 +1906,9 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 	}
 
 	/* Look up root inode */
-	status = ifs_load_inode(fsdevice, fsdevice->root_inode_id, &root_inode);
+	status = ifs_load_inode( 	fsdevice, 
+								fsdevice->root_inode_id, 
+								&root_inode );
 
 	/* Check for errors */
 	if (status)
@@ -1914,11 +1918,17 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 
 	/* Add the root inode to it */
 	vfs_inode_cache(root_inode);
+	
+	/* Register the root mount point */
+	status = vfs_reg_mount( fsdevice, 
+							root_inode );
 
 	/* Fill VFS fields in the proces info */
-	scheduler_current_task->root_directory = vfs_dir_cache_mkroot(root_inode);
+	scheduler_current_task->root_directory = 
+			vfs_dir_cache_mkroot(root_inode);
 
-	scheduler_current_task->current_directory = vfs_dir_cache_ref(scheduler_current_task->root_directory);
+	scheduler_current_task->current_directory = 
+			vfs_dir_cache_ref(scheduler_current_task->root_directory);
 
 	/* Return success */
 	return 1;

@@ -24,6 +24,7 @@
 #include "arch/i386/protection.h"
 #include "arch/i386/vbe.h"
 #include "driver/bus/pci.h"
+#include "driver/block/ramblk.h"
 #include "kernel/syscall.h"
 #include "kernel/streams.h"
 #include "kernel/vfs.h"
@@ -40,7 +41,7 @@
 #include <string.h>
 
 multiboot_info_t *mb_info;
-
+extern int ata_interrupt_enabled;
 
 //XXX: Dirty Hack
 vbe_mode_info_t	  vbe_mode;
@@ -80,13 +81,15 @@ void i386_init_reserve_modules(multiboot_info_t *mbt)
 {
 	unsigned int i;
 	multiboot_module_t *modules = (multiboot_module_t *) (mbt->mods_addr + 0xC0000000);
+	if ( !mbt->mods_count )
+		return;
 	physmm_claim_range((physaddr_t)mbt->mods_addr, ((physaddr_t)mbt->mods_addr) + sizeof(multiboot_module_t)*(mbt->mods_count));
 	for (i = 0; i < mbt->mods_count; i++){
 		physmm_claim_range((physaddr_t)modules[i].string, (physaddr_t)modules[i].string + 80);
 		physmm_claim_range((physaddr_t)modules[i].mod_start, (physaddr_t)modules[i].mod_end);
 	}
 }
-
+//TODO: Unify Module handling across architectures
 void i386_init_load_modules(multiboot_info_t *mbt)
 {
 	unsigned int i;
@@ -94,17 +97,24 @@ void i386_init_load_modules(multiboot_info_t *mbt)
 	size_t ptr = 0;
 	size_t mod_size;
 	multiboot_module_t *modules = (multiboot_module_t *) (mbt->mods_addr + 0xC0000000);
+	if ( !mbt->mods_count )
+		return;
 	for (i = 0; i < mbt->mods_count; i++){
 		//char *name = (char *)(modules[i].string + 0xC0000000);
 		mod_size = modules[i].mod_end - modules[i].mod_start;
+		page_ptr = (uintptr_t) heapmm_alloc_alligned( mod_size, 4096 );
 		for (ptr = 0; ptr < mod_size; ptr+=PHYSMM_PAGE_SIZE) {
+			physmm_free_frame(
+				paging_get_physical_address((void *) (page_ptr + ptr)));
+			paging_unmap((void *) (page_ptr + ptr));
 			paging_map((void *) (page_ptr + ptr), (physaddr_t)(modules[i].mod_start + ptr), I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
 		}
-		tar_extract_mem((void *) page_ptr);
-		for (ptr = 0; ptr < mod_size; ptr+=PHYSMM_PAGE_SIZE) {
-			paging_unmap((void *) (page_ptr + ptr));
-			physmm_free_frame((physaddr_t)(modules[i].mod_start + ptr));
-		}
+		ramblk_register( i, (aoff_t) mod_size, (void*) page_ptr );
+		//tar_extract_mem((void *) page_ptr);
+		//for (ptr = 0; ptr < mod_size; ptr+=PHYSMM_PAGE_SIZE) {
+		//	paging_unmap((void *) (page_ptr + ptr));
+		//	physmm_free_frame((physaddr_t)(modules[i].mod_start + ptr));
+		//}
 			
 	}
 }
@@ -310,15 +320,15 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 #endif
 
-	earlycon_puts("Initializing VFS and mounting rootfs...");
-	if (vfs_initialize(3, "ramfs"))
-		earlycon_puts("OK\n");
-	else
-		earlycon_puts("FAIL\n");
-
 	earlycon_puts("Loading module files...");
 	i386_init_load_modules(mb_info);
 	earlycon_puts("OK\n");
+
+	earlycon_puts("Initializing VFS and mounting rootfs...");
+	if (vfs_initialize(MAKEDEV(0x30,0x0), "ext2"))
+		earlycon_puts("OK\n");
+	else
+		earlycon_puts("FAIL\n");
 //DEV_DRIVER(fb, video)
 //DEV_DRIVER(mbfb, video)
 //DEV_DRIVER(fbcon_vterm, console)
@@ -348,9 +358,9 @@ void i386_kmain()
 
 	pid_init = scheduler_fork();
 	asm ("sti");
-	
 	if (!pid_init)
 		i386_init_stub();
+	ata_interrupt_enabled = 1;
 
 	pid_idle = scheduler_fork();
 	asm ("sti");

@@ -232,22 +232,20 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 			while (  
 				(!(ev_info = (process_child_event_t *) 
 					llist_get_last(scheduler_current_task->child_events))) ||
-				 (ev_info != NULL) ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (ev_info == (process_child_event_t *) scheduler_current_task->child_events)	
+				if (ev_info == NULL)	
 					return 0;	
 
 				process_absorb_event(ev_info);
 			}
 		} else {
-			while (  (!(ev_info = (process_child_event_t *) llist_get_last(scheduler_current_task->child_events))) || 
-				 (ev_info != NULL) ||
+			while (  (!(ev_info = (process_child_event_t *) llist_get_last(scheduler_current_task->child_events)))  ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (ev_info != (process_child_event_t *) scheduler_current_task->child_events)	
+				if (ev_info != NULL)	
 					process_absorb_event(ev_info);
 
 				if (semaphore_idown(scheduler_current_task->child_sema)) {

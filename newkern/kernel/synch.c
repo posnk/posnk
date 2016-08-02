@@ -19,7 +19,7 @@
 #include "kernel/heapmm.h"
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
-
+#include <assert.h>
 void semaphore_up(semaphore_t *semaphore)
 {
 	(*semaphore)++;
@@ -42,6 +42,7 @@ rw:
 			goto rw;
 			return -1;
 		}
+		assert ( scheduler_current_task->state != PROCESS_WAITING );
 	} else {
 		(*semaphore)--;
 	}
@@ -56,6 +57,7 @@ int semaphore_idown(semaphore_t *semaphore)
 			scheduler_current_task->state = PROCESS_RUNNING;
 			return -1;
 		}
+		assert ( scheduler_current_task->state != PROCESS_WAITING );
 	} else {
 		(*semaphore)--;
 	}
@@ -70,6 +72,7 @@ int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
 			scheduler_current_task->state = PROCESS_RUNNING;
 			return -1;
 		}
+		assert ( scheduler_current_task->state != PROCESS_WAITING );
 	} else {
 		(*semaphore)--;
 	}

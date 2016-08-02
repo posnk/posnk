@@ -85,7 +85,7 @@ void mruc_add( mruc_t *cache, mruc_e_t *entry, uint64_t hash )
 	entry->cache = cache;
 	entry->hash  = hash;
 	
-	bkt = &cache->table[ hash % cache->tsize ];
+	bkt = &cache->table[ hash & ( cache->tsize - 1 )  ];
 	
 	if ( *bkt ) {
 	
@@ -131,15 +131,15 @@ void mruc_remove( mruc_e_t *entry )
 	
 	if ( entry->bkt_next == entry ) {
 		
-		cache->table[ hash % cache->tsize ] = NULL;
+		cache->table[ hash & ( cache->tsize - 1 )  ] = NULL;
 		
 	} else {
 	
 		entry->bkt_next->bkt_prev = entry->bkt_prev;
 		entry->bkt_prev->bkt_next = entry->bkt_next;
 		
-		if ( cache->table[ hash % cache->tsize ] == entry )
-			cache->table[ hash % cache->tsize ] = entry->bkt_next;
+		if ( cache->table[ hash & ( cache->tsize - 1 ) ] == entry )
+			cache->table[ hash & ( cache->tsize - 1 ) ] = entry->bkt_next;
 		
 	}
 	
@@ -156,7 +156,7 @@ mruc_e_t *mruc_get( mruc_t *cache, uint64_t hash ) {
 	
 	assert( cache != NULL );
 	
-	mruc_e_t *bkt = cache->table[ hash % cache->tsize ];
+	mruc_e_t *bkt = cache->table[ hash & ( cache->tsize - 1 )  ];
 
 	entry = bkt;
 	

@@ -318,7 +318,7 @@ install_h:
 cdrom_i386: kernel_i386 initrd
 	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
 	@cp vmpos cdrom_files/vmpos
-	@echo " [ MKCD ]	pos.iso" ; grub-mkrescue -o pos.iso cdrom_files
+	@echo " [ MKCD ]	pos.iso" ; grub2-mkrescue -o pos.iso cdrom_files
 
 
 #test_heapmm: $(OBJS) tests/test_heapmm.o

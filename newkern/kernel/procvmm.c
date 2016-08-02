@@ -39,7 +39,7 @@ void procvmm_clear_mmaps()
 
 int procvmm_do_exec_mmaps()
 {
-	scheduler_current_task->heap_strt	=
+	scheduler_current_task->heap_start	=
 		(void *) scheduler_current_task->image_end;//End of program image_base
 	scheduler_current_task->heap_end	= scheduler_current_task->heap_start;	
 	scheduler_current_task->heap_max	= 

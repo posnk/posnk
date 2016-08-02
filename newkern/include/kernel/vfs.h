@@ -23,6 +23,7 @@
 #include "kernel/pipe.h"
 #include "kernel/time.h"
 #include "util/llist.h"
+#include "util/mruc.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -100,8 +101,8 @@ typedef struct fs_mount fs_mount_t;
  * Describes a file currently cached by the kernel
  */
 struct inode {	
-	/** Linked list node */
-	llist_t		 node;
+	/** Cache node */
+	mruc_e_t	 node;
 	/* Inode */
 	/** Inode ID */
 	ino_t		 id;
