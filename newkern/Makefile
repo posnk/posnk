@@ -5,7 +5,7 @@
 # 'make clean'  removes all .o and executable files
 #
 
-CROSS_COMPILE = /opt/standalone/bin/i586-elf-
+CROSS_COMPILE = i386-pc-
 ARCH = i386
 
 # define the C compiler to use
@@ -24,7 +24,7 @@ HGAS = @echo " [  HAS ]	" $@ ; as
 # define any compile-time flags
 CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer -finline-functions -finline-functions-called-once -fauto-inc-dec
 
-HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h
+HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h -mno-tbm -D_FILE_OFFSET_BITS=64
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
@@ -39,7 +39,7 @@ ARMV7_ENTRY_POINT = 80008000
 #
 INCLUDES = -I./include -I./include/crt
 
-HINCLUDES = -I./include
+HINCLUDES = -I./include -I./include/hcrt
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
@@ -47,7 +47,7 @@ HINCLUDES = -I./include
 LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
 A7LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 
-HLFLAGS = -g
+HLFLAGS = -g -lfuse
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
@@ -109,6 +109,7 @@ kdbg/kdbgmm.c \
 kdbg/stacktrc.c \
 fs/mbr.c \
 util/llist.c \
+util/mruc.c \
 crt/string.c \
 crt/stdlib.c 
 
@@ -175,12 +176,35 @@ arch/armv7/mmu.S \
 arch/armv7/loader/chain.S
 
 TEST_FS_SRCS = tests/fs/mm.c \
-tests/fs/dev.c \
 tests/fs/synch.c \
-tests/fs/vfs.c \
+tests/fs/sched.c \
+tests/fs/img.c \
+tests/fs/fuse.c \
+kernel/vfs/icache.c \
+kernel/vfs/dcache.c \
+kernel/vfs/ifswrap.c \
+kernel/vfs/pathres.c \
+kernel/vfs/perm.c \
+kernel/vfs/ifsmgr.c \
+kernel/vfs/mount.c \
+kernel/blkcache.c \
+kernel/blkdev.c \
+kernel/chardev.c \
+kernel/permissions.c \
+kernel/time.c \
+kernel/vfs.c \
+kernel/pipe.c \
+kernel/streams.c \
+kernel/sc_vfs.c \
 tests/fs/main.c \
 kernel/drivermgr.c \
+util/mruc.c \
 util/llist.c
+
+TEST_MRUC_SRCS = tests/test_mruc.c \
+util/llist.c \
+util/mruc.c
+
 
 SRCS_TESTERROR = tests/test_error.c
 
@@ -222,6 +246,8 @@ test_dmake:
 
 include _dmake
 
+OBJS_TEST_MRUC = $(TEST_MRUC_SRCS:.c=.ho)
+
 OBJS_DRIVER = $(SRCS_DRIVER:.c=.o)
 
 OBJS_HOST_FS = $(SRCS_HOST_FS:.c=.ho)
@@ -231,6 +257,9 @@ OBJS_TESTERROR = $(SRCS_TESTERROR:.c=.ho)
 testfs: test_dmake $(OBJS_TESTFS) $(OBJS_HOST_FS)
 	$(HLD) $(HLFLAGS) -o testfs $(OBJS_TESTFS) $(OBJS_HOST_FS)
 
+testmruc: $(OBJS_TEST_MRUC)
+	$(HLD) $(HLFLAGS) -o testmruc $(OBJS_TEST_MRUC)
+
 testerror: $(OBJS_TESTERROR)
 	$(HLD) $(HLFLAGS) -o testerror $(OBJS_TESTERROR)
 
@@ -238,14 +267,14 @@ test: testfs testerror
 	@echo " [ TEST ] error.h"; ./testerror
 	@touch empty
 	@dd if=/dev/zero of=ext2test.ext2 bs=1024 count=100k
-	@echo " [MKE2FS] " ext2test.ext2 ; yes | /sbin/mke2fs ./ext2test.ext2 -L posnk_e2_test -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
-	@echo " [TESTFS] " ext2 ext2test.ext2 ; ./testfs ext2 ext2test.ext2
+	@echo " [MKE2FS] " ext2test.ext2 ; yes | /sbin/mke2fs ./ext2test.ext2 -L posnk_e2_test -t ext2 -O none -b 1024 > /dev/null
+	@echo " [TESTFS] " ext2 ext2test.ext2 ; valgrind -v --leak-check=full  ./testfs ext2 ext2test.ext2
 	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
 	@rm empty
 
 mmc_armv7: _dmake loader_armv7_uboot initrd_armv7_uboot
 	@dd if=/dev/zero of=posnk.sd bs=1024 count=100k 2> /dev/null
-	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O -filetype,-sparse_super,-ext_attr,-resize_inode -b 1024 > /dev/null
+	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O none -b 1024 > /dev/null
 	@echo " [MOUNT ] " posnk.sd ../hdd ; sudo mount -o loop -t ext2 posnk.sd ../hdd
 	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posldr
 	@echo " [  CP  ] " initrd_armv7_uboot ; cp initrd_armv7_uboot ../hdd/posrd
@@ -340,6 +369,7 @@ clean_test:
 	$(RM) test/fs/*.ho
 	$(RM) fs/*.ho
 	$(RM) kernel/*.ho
+	$(RM) kernel/vfs/*.ho
 	$(RM) driver/console/*.ho
 	$(RM) driver/bus/*.ho
 	$(RM) arch/i386/*.ho
