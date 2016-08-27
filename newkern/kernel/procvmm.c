@@ -100,11 +100,12 @@ int procvmm_mmap_copy_iterator (llist_t *node, void *param)
 		return 1;
 	}
 	if ((m->flags & PROCESS_MMAP_FLAG_FILE) && m->file)		
-		m->file->usage_count++;
+		n->file = vfs_inode_ref( m->file );
+	else
+		n->file = m->file;
 	n->flags = m->flags;
 	n->start = m->start;
 	n->size = m->size;
-	n->file = m->file;
 	n->file_sz = m->file_sz;
 	n->offset = m->offset;
 	n->shm = m->shm;
@@ -247,7 +248,7 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	/* Fill region fields */
 	region->start = start;
 	region->size = size;
-	region->file = file;
+	region->file = vfs_inode_ref(file);
 	region->offset = offset;
 	region->flags = flags | PROCESS_MMAP_FLAG_FILE;
 	region->file_sz = file_sz;
@@ -258,9 +259,6 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
-
-	/* Bump file usage count */
-	file->usage_count++;
 
 	/* Add to region list */
 	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
@@ -426,7 +424,7 @@ int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t 
 	/* Fill region fields */
 	region->start = start;
 	region->size = size;
-	region->file = file;
+	region->file = vfs_inode_ref(file);
 	region->fd = fd;
 	region->offset = offset;
 	region->flags = flags | PROCESS_MMAP_FLAG_FILE | PROCESS_MMAP_FLAG_STREAM;
@@ -438,9 +436,6 @@ int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t 
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
-
-	/* Bump file usage count */
-	file->usage_count++;
 
 	/* Add to region list */
 	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
@@ -455,7 +450,7 @@ void procvmm_unmmap(process_mmap_t *region)
 	physaddr_t frame;
 	llist_unlink((llist_t *) region);
 	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
-		region->file->usage_count--;
+		vfs_inode_release( region->file );
 	}
 	//if (region->flags & PROCESS_MMAP_FLAG_SHM) {
 	//	region->shm->info.shm_nattch--;
