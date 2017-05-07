@@ -54,6 +54,8 @@ void vfs_icache_evict( mruc_e_t *entry )
 
 	errno_t status;
 	inode_t *inode = ( inode_t * ) entry;
+
+	debugcon_printf("evict inode: 0x%08x \n", entry );
 	
 	mruc_remove( entry );
 
@@ -131,7 +133,7 @@ void vfs_inode_release(inode_t *inode)
 	llist_unlink((llist_t *) inode);
 	
 	mruc_add( inode_cache, ( mruc_e_t * ) inode, INODE_HASH(inode) );
-	debugcon_printf("rel inode: 0x%x rc: %i EXIT\n",inode,inode->usage_count);
+	debugcon_printf("rel inode: 0x%x rc: %i EXITM\n",inode,inode->usage_count);
 
 }
 

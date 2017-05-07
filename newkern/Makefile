@@ -5,7 +5,7 @@
 # 'make clean'  removes all .o and executable files
 #
 
-CROSS_COMPILE = i386-pc-
+CROSS_COMPILE = i386-pc-posnk-
 ARCH = i386
 
 # define the C compiler to use
@@ -315,10 +315,10 @@ install_h:
 	@cp include/crt/sys/msg.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/msg.h
 	@cp include/crt/linux/input.h ../gcc_posnk/i386-pc-posnk/include/linux/
 
-cdrom_i386: kernel_i386 initrd
-	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
+cdrom_i386: kernel_i386 cdrom_files/ramdisk.ext2
+#	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
 	@cp vmpos cdrom_files/vmpos
-	@echo " [ MKCD ]	pos.iso" ; grub2-mkrescue -o pos.iso cdrom_files
+	@echo " [ MKCD ]	pos.iso" ; grub-mkrescue -o pos.iso cdrom_files
 
 
 #test_heapmm: $(OBJS) tests/test_heapmm.o

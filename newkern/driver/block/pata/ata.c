@@ -195,7 +195,9 @@ void ata_initialize(ata_device_t *device)
 			}
 			device->drives[drive].serial[20] = '\0';
 			debugcon_printf("ata: detected device: %i:%i which is a %s with serial %s\n", device->bus_number, drive, device->drives[drive].model, device->drives[drive].serial);
+			semaphore_up(device->lock);
 			ata_load_partition_table(device, drive);
+			semaphore_down(device->lock);
 		} else {
 			//Possibly detected an ATAPI device
 			//TODO: Handle ATAPI devices
@@ -215,6 +217,7 @@ void ata_initialize(ata_device_t *device)
 	ata_set_interrupts(device, 1);
 	ata_interrupt_enabled = 1;//TODO: Hook this somewhere
 
+
 	drv = heapmm_alloc(sizeof(blk_dev_t));
 	drv->name = "ATA block driver";
 	drv->major = 0x10 + device->bus_number;
@@ -223,8 +226,6 @@ void ata_initialize(ata_device_t *device)
 	drv->cache_size = 16;
 	drv->ops = &ata_block_driver_ops;
 	device_block_register(drv);
-
-	semaphore_up(device->lock);
 }
 
 void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint16_t count)

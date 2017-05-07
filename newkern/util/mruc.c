@@ -107,8 +107,10 @@ void mruc_add( mruc_t *cache, mruc_e_t *entry, uint64_t hash )
 	
 	cache->count++;
 	
-	if ( cache->count > cache->csize )
+	if ( cache->count > cache->csize ) {
+		debugcon_printf("evictor:0x%08x(0x%08x)\n",cache->evictor,cache);
 		cache->evictor( mruc_get_lru( cache ) );
+	}
 	
 }
 
@@ -182,6 +184,7 @@ void mruc_flush ( mruc_t *cache ) {
 	
 	while ( entry = mruc_get_lru( cache ) ) {
 		
+		debugcon_printf("evictor:0x%08x(0x%08x)\n",cache->evictor,cache);
 		cache->evictor( entry );
 		
 	}
