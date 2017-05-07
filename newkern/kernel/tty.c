@@ -13,6 +13,7 @@
 #include <sys/errno.h>
 #include <sys/termios.h>
 #include <sys/ioctl.h>
+#include <assert.h>
 #include "kernel/tty.h"
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
@@ -21,6 +22,7 @@
 #include "kernel/syscall.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
+#include "kernel/earlycon.h"
 #include "config.h"
 
 tty_info_t ***tty_list;
@@ -90,13 +92,16 @@ tty_info_t *tty_get(dev_t device)
 {
 	dev_t major = MAJOR(device);	
 	dev_t minor = MINOR(device);
-	return tty_list[major][minor];
+	tty_info_t *ttyi = tty_list[major][minor];
+	return ttyi;
 }
 
 
 int tty_open(dev_t device, __attribute__((__unused__)) int fd, int options)			//device, fd, options
 {
 	tty_info_t *tty = tty_get(device);
+	if ( !tty )
+		return ENODEV;
 	tty->ref_count++;
 	if (!(options & O_NOCTTY)) {
 		if ((scheduler_current_task->pid == scheduler_current_task->sid) && !scheduler_current_task->ctty) {
@@ -112,6 +117,7 @@ int tty_open(dev_t device, __attribute__((__unused__)) int fd, int options)			//
 int tty_close(dev_t device, __attribute__((__unused__)) int fd)
 {
 	tty_info_t *tty = tty_get(device);
+	assert(tty);
 	tty->ref_count--;
 	if (!tty->ref_count) {
 		//TODO: process_strip_ctty(device);
@@ -143,6 +149,7 @@ void tty_buf_line_char(tty_info_t *tty, char c)
 void tty_output_char(dev_t device, char c)
 {
 	tty_info_t *tty = tty_get(device);
+	assert(tty);
 	if (tty->termios.c_oflag & OPOST) { //TODO: Flow control
 		if ((tty->termios.c_oflag & ONLCR) && (c == '\n'))
 			c = '\r';
@@ -157,6 +164,7 @@ void tty_input_char(dev_t device, char c)
 {
 	aoff_t a;
 	tty_info_t *tty = tty_get(device);
+	assert(tty);
 	if (tty->termios.c_lflag & ICANON) { //TODO: Flow control
 		if ((tty->termios.c_iflag & INLCR) && (c == '\n'))
 			c = '\r';
@@ -223,12 +231,14 @@ int tty_write(dev_t device, void *buf, aoff_t count, aoff_t *write_size, __attri
 int tty_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
 {
 	tty_info_t *tty = tty_get(device);
+	assert(tty);
 	return pipe_read(tty->pipe_in, buf, count, read_size, non_block);
 }
 
 int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
 {
 	tty_info_t *tty = tty_get(device);
+	assert(tty);
 	switch(func) {
 		case TCGETS:
 			if (!copy_kern_to_user(&(tty->termios), (void *) arg, sizeof(termios_t))){
