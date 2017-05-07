@@ -13,6 +13,8 @@
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
 #include "kernel/time.h"
+#include "kernel/paging.h"
+#include "kernel/physmm.h"
 #include <sys/errno.h>
 #include <assert.h>
 #include "config.h"
@@ -74,12 +76,65 @@ int pseudo_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int
 	return 0;
 }
 
+int pseudo_mmap(	__attribute__((__unused__)) dev_t device, 
+			__attribute__((__unused__)) int fd, 
+			__attribute__((__unused__)) int flags, 
+			void *addr, 
+			aoff_t offset, 
+			aoff_t size)
+{	
+	dev_t minor = MINOR(device);	
+	if ( minor != MINOR_ZERO )
+		return ENODEV;
+	uintptr_t d,r, mu;
+	offset &= ~PHYSMM_PAGE_ADDRESS_MASK;
+	mu = (uintptr_t) addr;
+	for (d = 0; d < size; d += 0x1000) {
+		r = physmm_alloc_frame();
+		if ( r == PHYSMM_NO_FRAME )
+			goto nomem;	
+		paging_map(	 (void *)(mu + d),
+			  	 ( physaddr_t ) r,
+				 PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
+	}
+	return 0;
+nomem:
+	size = d;
+	for (d = 0; d < size; d += 0x1000) {
+		physmm_free_frame( paging_get_physical_address( (void *)(mu + d) ) );
+	}
+	return ENOMEM;
+}
+
+int pseudo_unmmap(
+			__attribute__((__unused__)) dev_t device, 
+			__attribute__((__unused__)) int fd, 
+			__attribute__((__unused__)) int flags, 
+			void *addr, 
+			__attribute__((__unused__)) aoff_t offset, 
+			aoff_t size)
+{
+	dev_t minor = MINOR(device);	
+	if ( minor != MINOR_ZERO )
+		return ENODEV;
+	uintptr_t d, mu;
+	mu = (uintptr_t) addr;
+	for (d = 0; d < size; d += 0x1000) {
+		physmm_free_frame( paging_get_physical_address( (void *)(mu + d) ) );
+		paging_unmap((void *)(mu + d));
+	}
+	return 0;
+}
+
+
 tty_ops_t pseudo_ops = {
 	.open = &pseudo_open,
 	.close = &pseudo_close,
 	.read = &pseudo_read,
 	.write = &pseudo_write,
 	.ioctl = &pseudo_ioctl,
+	.mmap = &pseudo_mmap,
+	.unmmap = &pseudo_unmmap
 };
 
 char_dev_t pseudo_driver = {
