@@ -104,7 +104,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_finddir,//Find directory entry
 	&ext2_mkdir,//Make directory
 	&ext2_link,//Make directory entry
-	NULL,//Remove directory entry
+	&ext2_unlink,//Remove directory entry
 	&ext2_trunc_inode, //Change file length
 	&ext2_sync,
 };

@@ -23,6 +23,119 @@
 #include "kernel/vfs.h"
 #include "kernel/streams.h"
 
+SVFUNC( ext2_unlink, inode_t *_inode, char *name )
+{
+	ext2_device_t *device;
+	ext2_vinode_t *inode;
+
+	size_t reclen,namelen, f_reclen;
+	ext2_dirent_t dirent;	
+	ext2_dirent_t f_dirent;	
+	
+	int status, m = 0;
+	char *namebuf;
+
+	aoff_t nread, pos, dsize, dpos = 0, lpos;
+
+	assert( _inode != NULL );
+	assert( name != NULL );
+
+	device = (ext2_device_t *) _inode->device;
+	inode = (ext2_vinode_t *) _inode;
+
+	dsize = _inode->size;
+
+	namelen = strlen(name);
+	reclen = ext2_roundup(sizeof(ext2_dirent_t) + namelen, 4);
+
+	namebuf = heapmm_alloc(namelen + 1);
+	if (!namebuf)
+		THROWV(ENOMEM);
+
+	for (pos = 0; pos < dsize; pos += f_dirent.rec_len) {
+		status = ext2_read_inode(_inode, &f_dirent, pos, sizeof(ext2_dirent_t), &nread);
+		if (status || (nread != sizeof(ext2_dirent_t))) {
+			heapmm_free( namebuf, namelen + 1 );
+			THROWV(status ? status : EIO);
+		}
+
+		if ( f_dirent.name_len != namelen ) {
+			lpos = pos;
+			dirent = f_dirent;
+			continue;
+		}
+
+		ext2_read_inode(_inode, namebuf, pos + sizeof(ext2_dirent_t), f_dirent.name_len, &nread);
+		if (status || (nread != f_dirent.name_len)) {
+			heapmm_free( namebuf, namelen + 1 );
+			THROWV(status ? status : EIO);
+		}
+
+		namebuf[namelen] = 0;
+		if ( strcmp( namebuf, name ) ) {
+			lpos = pos;
+			dirent = f_dirent;
+			continue;
+		}
+
+		/* Found the dirent to delete */
+		heapmm_free( namebuf, namelen + 1 );
+		
+		if ( pos != 0 ) {
+			/* Not the first dirent, extend the previous one */
+			dirent.rec_len += f_dirent.rec_len;
+			ext2_write_inode(_inode, &dirent, lpos, sizeof(ext2_dirent_t), &nread);
+			if (status || (nread != sizeof(ext2_dirent_t)))
+				THROWV(status ? status : EIO);
+			RETURNV;
+
+		} else {
+			dpos = f_dirent.rec_len;
+			break;
+		}
+		
+	}
+
+	if ( !dpos ) {
+		heapmm_free( namebuf, namelen + 1 );
+		THROWV(ENOENT);
+	}
+
+	/* First dirent, move next one */
+	
+	ext2_read_inode(_inode, &dirent, dpos, sizeof(ext2_dirent_t), &nread);
+	if (status || (nread != sizeof(ext2_dirent_t)))
+		THROWV(status ? status : EIO);
+
+	namelen = dirent.name_len;
+	namebuf = heapmm_alloc(namelen + 1);
+	if (!namebuf)
+		THROWV(ENOMEM);
+
+	dirent.rec_len += f_dirent.rec_len;
+
+	ext2_write_inode(_inode, &dirent, 0, sizeof(ext2_dirent_t), &nread);
+	if (status || (nread != sizeof(ext2_dirent_t))) {
+		heapmm_free( namebuf, namelen + 1 );
+		THROWV(status ? status : EIO);
+	}
+	
+	ext2_read_inode(_inode, namebuf, dpos + sizeof(ext2_dirent_t), namelen, &nread);
+	if (status || (nread != namelen)) {
+		heapmm_free( namebuf, namelen + 1 );
+		THROWV(status ? status : EIO);
+	}
+	
+	ext2_write_inode(_inode, namebuf, sizeof(ext2_dirent_t), namelen, &nread);
+	if (status || (nread != namelen)) {
+		heapmm_free( namebuf, namelen + 1 );
+		THROWV(status ? status : EIO);
+	}
+	heapmm_free( namebuf, namelen + 1 );
+
+
+	RETURNV;
+}
 
 SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 {

@@ -95,6 +95,7 @@ SVFUNC(ext2_store_e2inode, ext2_device_t *device, ext2_inode_t *ino, uint32_t in
 SVFUNC(ext2_mknod, inode_t *_inode) ;
 SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name);
 SVFUNC(ext2_mkdir, inode_t *_inode);
+SVFUNC( ext2_unlink, inode_t *_inode, char *name );
 SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id);
 SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
 SFUNC( aoff_t, ext2_dir_readwrite_stub, 	
