@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <assert.h>
+#include <poll.h>
 #include <sys/stat.h>
 #include <sys/errno.h>
 
@@ -2075,6 +2076,104 @@ SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags)
 
 	/* Return success */
 	RETURNV;
+}
+
+/**
+ * @brief Implement poll() for inodes
+ * @see _sys_poll()
+ */
+
+short int vfs_poll(	inode_t	* _inode, 
+					short int events)
+{
+	short int revents;
+	inode_t *inode;
+
+	/* Check for null pointers */
+	assert (_inode != NULL);
+
+	/* Resolve the effective inode */
+	inode = vfs_effective_inode(_inode);
+
+	/* Accuire a lock on the inode */
+	semaphore_down(inode->lock);
+	
+	//TODO: Should we check permissions here?
+
+	/* Handle read for each file type */
+	switch ((inode->mode) & S_IFMT) {
+		case S_IFREG:
+		case S_IFDIR:
+			/* The file is a regular file */
+
+			//TODO: Support poll() from ifs perspective or deprecate IFS
+			revents =  (POLLIN | POLLOUT) & events;
+
+			/* Release the lock on this inode */
+			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			return revents;
+
+		case S_IFIFO:
+			/* File is a FIFO */
+
+			revents = pipe_poll(inode->fifo, events);
+
+			/* Release the lock on this inode */
+			semaphore_up(inode->lock);
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			return revents;
+
+		case S_IFCHR:	
+			/* File is a character special file */
+			
+			/* Call on the driver to read the data */	
+			revents = device_char_poll(inode->if_dev, events);	
+
+			/* Release the lock on this inode */			
+			semaphore_up(inode->lock);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			/* Pass any errors on the the caller */			
+			return revents;	
+
+		case S_IFBLK:	
+			/* File is a block special file */
+
+			//TODO: Support poll() on block devices
+			revents =  (POLLIN | POLLOUT) & events;
+
+			/* Release the lock on this inode */			
+			semaphore_up(inode->lock);	
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			/* Pass any errors on the the caller */			
+			return revents;	
+
+		default:	
+			/* Unknown file type */
+
+			/* Release the lock on this inode */		
+			semaphore_up(inode->lock);		
+
+			/* Release the dereferenced inode */
+			vfs_inode_release(inode);
+
+			/* Return error "Invalid argument" */
+			return POLLERR;			
+
+	}
+	
 }
 
 

@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/errno.h>
 #include <string.h>
+#include <poll.h>
 
 /**
  * @brief Stores the driver descriptors for each character major device 
@@ -83,13 +84,13 @@ int device_char_ioctl(dev_t device, int fd, int func, int arg)
  * This function merely dispatches the call to the driver
  * @see _sys_open for more information
  * @param device The device this call is to be performed on
- * @param fd The fd used for the call
+ * @param fd The stream ptr used for the call
  * @param options The open flags
  * @return 0 on success, If an error occurs a valid error code will be returned
  * @exception ENXIO _device_ does not refer to a known device
  */
 
-int device_char_open(dev_t device, int fd, int options)
+int device_char_open(dev_t device, stream_ptr_t *fd, int options)
 {
 	dev_t major = MAJOR(device);
 	char_dev_t *drv = char_dev_table[major];
@@ -99,7 +100,10 @@ int device_char_open(dev_t device, int fd, int options)
 	}
 
 	/* Call the driver */
-	return drv->ops->open(device, fd, options);
+	if ( !drv->ops->open )
+		return drv->ops->open_new(device, fd, options);
+	else
+		return drv->ops->open(device, fd->id, options);
 }
 
 /**
@@ -201,4 +205,18 @@ int device_char_unmmap(dev_t device, int fd, int flags, void *addr, aoff_t offse
 	}
 	/* Call the driver */
 	return drv->ops->unmmap(device, fd, flags, addr, offset, size);
+}
+
+short int device_char_poll(dev_t device, short int events)
+{
+	dev_t major = MAJOR(device);
+	char_dev_t *drv = char_dev_table[major];
+	/* Check if the device exists */
+	if (!drv) {
+		return POLLERR;
+	}
+	if (!drv->ops->poll)
+		return POLLNVAL;
+	/* Call the driver */
+	return drv->ops->poll(device, events);
 }

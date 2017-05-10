@@ -59,9 +59,9 @@ struct process_mmap {
 	char		*name;
 	void		*start;
 	size_t		 size;
-	int		 flags;
+	int		 	 flags;
 	inode_t		*file;
-	int		 fd;
+	int		 	 fd;
 	aoff_t		 offset;
 	aoff_t		 file_sz;
 	shm_info_t	*shm;
@@ -71,7 +71,7 @@ struct process_child_event {
 	llist_t		 node;
 	pid_t		 child_pid;
 	pid_t		 child_pgid;
-	int		 event;
+	int		 	 event;
 };
 
 struct process_info {
@@ -98,19 +98,19 @@ struct process_info {
 
 	/* Streams */
 	llist_t		*fd_table;
-	int		 fd_ctr;
+	int			 fd_ctr;
 
 	/* Signal handling */
 	void 		*signal_handler_exit_func;
 	uint32_t	 waiting_signal_bitmap;
 	uint32_t	 signal_mask_bitmap;
 	void 		*signal_handler_table[32];
-	int		 last_signal;
+	int			 last_signal;
 
 	/* Proces status */
-	int		 sc_errno;
-	int		 term_cause;
-	int		 exit_status;
+	int			 sc_errno;
+	int			 term_cause;
+	int			 exit_status;
 
 	/* Process memory */
 	llist_t		*memory_map;
@@ -128,7 +128,7 @@ struct process_info {
 	/* Process state */
 	page_dir_t	*page_directory;
 	void		*arch_state;
-	int		 state;
+	int			 state;
 
 	semaphore_t	*waiting_on;
 	ktime_t		 wait_timeout_u;//In microseconds

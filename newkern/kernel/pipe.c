@@ -14,6 +14,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdint.h>
+#include <poll.h>
 #include "config.h"
 #include "kernel/heapmm.h"
 #include "kernel/synch.h"
@@ -80,6 +81,26 @@ void pipe_close_write(pipe_info_t *pipe)
 	if (pipe->write_usage_count == 0) {
 		semaphore_up(pipe->read_lock);
 	}
+}
+
+short int pipe_poll( pipe_info_t *pipe, short int events )
+{
+	short int revents = 0;
+	aoff_t ts;
+	if ( events & POLLIN ) {
+		if ( pipe->write_usage_count == 0 )
+			revents |= POLLHUP;
+		ts = pipe->write_ptr - pipe->read_ptr;
+		if ( ts > 0 )
+			revents |= POLLIN;
+	}
+	if ( events & POLLOUT ) {
+		if ( pipe->read_usage_count == 0 )
+			revents |= POLLHUP;//TODO: Is this correct?
+		if ( pipe->write_ptr < CONFIG_PIPE_BUFFER_SIZE )
+			revents |= POLLIN;
+	}
+	return revents;
 }
 
 int pipe_write(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *write_count, int non_block)

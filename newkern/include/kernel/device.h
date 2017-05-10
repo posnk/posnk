@@ -22,6 +22,7 @@
 #include <sys/types.h>
 #include "kernel/blkcache.h"
 #include "kernel/synch.h"
+#include "kernel/streams.h"
 
 /**
  * @defgroup drvapi Device driver interface
@@ -107,7 +108,8 @@ struct tty_ops {
 	 * @return An error code on failure, 0 on success
 	 */
 
-	int	(*open)		  (dev_t, int, int);			//device, fd, options
+	int	(*open)			(dev_t, int, int);				//device, fd, options
+	int	(*open_new)		(dev_t, stream_ptr_t *, int);	//device, fd, options
 
 	/**
 	 * @brief Hook function called on device close
@@ -181,6 +183,8 @@ struct tty_ops {
 	int	(*mmap)		  (dev_t, int, int, void *, aoff_t, aoff_t);
 
 	int	(*unmmap)	  (dev_t, int, int, void *, aoff_t, aoff_t);
+
+	short int	(*poll)	  (dev_t, short int);
 };
 
 /**
@@ -331,7 +335,7 @@ int device_block_flush_global();
 
 int device_char_ioctl(dev_t device, int fd, int func, int arg);
 
-int device_char_open(dev_t device, int fd, int options);
+int device_char_open(dev_t device, stream_ptr_t *fd, int options);
 
 int device_char_close(dev_t device, int fd);
 
@@ -342,6 +346,8 @@ int device_char_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t cou
 int device_char_mmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t file_sz);
 
 int device_char_unmmap(dev_t device, int fd, int flags, void *addr, aoff_t offset, aoff_t file_sz);
+
+short int device_char_poll(dev_t device, short int events);
 
 ///@}
 

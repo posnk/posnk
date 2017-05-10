@@ -36,6 +36,68 @@
 #include <assert.h>
 
 /**
+ * Processes a polled stream
+ */
+void stream_poll( stream_poll_t *poll ) {
+
+	short int rv;
+	stream_ptr_t *ptr;
+	errno_t en;
+
+	ptr = poll->stream;
+
+	if ( ptr == NULL )
+		goto exitpl;
+
+	switch ( ptr->info->type ) {
+		case STREAM_TYPE_FILE:
+			poll->revents |= vfs_poll( ptr->info->inode, poll->events );
+			break;
+		case STREAM_TYPE_PIPE:
+			poll->revents |= pipe_poll( ptr->info->pipe, poll->events );
+			break;
+		case STREAM_TYPE_EXTERNAL:
+			if ( ptr->info->ops->poll != NULL ) {
+				en = ptr->info->ops->poll( ptr->info, poll->events, &rv);	
+				if ( en )
+					poll->revents |= POLLERR;
+				else
+					poll->revents |= rv;
+			} else
+				poll->revents |= POLLNVAL;
+			break;
+		default:
+			poll->revents |= POLLNVAL;
+			break;
+	}
+
+exitpl:
+	if ( poll->revents != 0 )
+		semaphore_up( poll->notify );	
+}
+
+/**
+ * Wakes up processes polling a stream
+ * @param info The stream that changed state.
+ */
+void stream_notify_poll( stream_info_t *info )
+{
+	llist_t *_poll;
+	stream_poll_t *poll;
+
+	assert( info != NULL );
+
+	for ( _poll = info->poll.next; _poll != &info->poll; _poll = _poll->next){
+
+		poll = ( stream_poll_t * ) _poll;
+		assert( poll != NULL );
+
+		stream_poll( poll );
+		
+	}
+}
+
+/**
  * Iterator to test if stream pointer matches the fd
  */
 int stream_ptr_search_iterator (llist_t *node, void *param)
@@ -1660,6 +1722,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 	info_read->type = STREAM_TYPE_PIPE;
 	info_read->offset = 0;
 	info_read->ref_count = 1;
+	llist_create( &info_read->poll );
 
 	/* Allocate the write endpoint lock */
 	info_read->lock = semaphore_alloc();
@@ -1676,6 +1739,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 	info_write->type = STREAM_TYPE_PIPE;
 	info_write->offset = 0;
 	info_write->ref_count = 1;
+	llist_create( &info_read->poll );
 
 	/* Allocate the read endpoint lock */
 	info_write->lock = semaphore_alloc();
@@ -1898,6 +1962,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	info->flags = flags;
 	info->type = STREAM_TYPE_FILE;
 	info->offset = 0;
+	llist_create( &info->poll );
 
 	/* Allocate stream lock */
 	info->lock = semaphore_alloc();
@@ -1968,7 +2033,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	/* If the file opened is a special file, signal open to the driers */
 	//TODO: Adapt device driver interface to support new open semantics
 	if (S_ISCHR(inode->mode))
-		st = device_char_open(inode->if_dev, fd, flags);
+		st = device_char_open(inode->if_dev, ptr, flags);
 	else if (S_ISBLK(inode->mode))
 		st = device_block_open(inode->if_dev, fd, flags);
 	else if (!S_ISFIFO(inode->mode))
@@ -2123,4 +2188,107 @@ int _sys_close_int(process_info_t *process, int fd)
 
 	/* Return success */
 	return 0;
+}
+
+/**
+ *
+ *
+ * @return The number of streams selected
+ * @exception EBADF		The fd does not refer to an proper file descriptor
+ */
+int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
+{
+	semaphore_t	*sem;
+	stream_poll_t *poll;
+	stream_ptr_t *ptr;
+	nfds_t i, nsel = 0;
+	int waitstat;
+
+	assert( fds != NULL );
+
+	sem = semaphore_alloc();
+
+	if ( sem == NULL ) {
+		syscall_errno = ENOMEM;
+		goto fail_semalloc;
+	}
+
+	poll = heapmm_alloc( sizeof( stream_poll_t ) * nfds );
+	
+	if ( poll == NULL ) {
+		syscall_errno = ENOMEM;
+		goto fail_pollalloc;
+	}
+
+	for ( i = 0; i < nfds; i++ ) {
+
+		/* Link in the semaphore */
+		poll[i].notify = sem;
+
+		/* Copy over values from arguments */
+		poll[i].events  = fds[i].events;
+		poll[i].revents = fds[i].revents;
+
+		/* Check if we should ignore fds[i] */
+		if ( fds[i].fd < 0 ) {
+			poll[i].revents = 0;
+			poll[i].stream = NULL;
+			continue;
+		}
+
+		/* Get the stream pointer */
+		ptr = stream_get_ptr_o( scheduler_current_task, fds[i].fd );
+
+		/* Check if it exists */
+		if (!ptr) {
+			poll[i].revents = POLLNVAL;
+			poll[i].stream = NULL;
+			continue;
+		}
+
+		poll[i].stream = ptr;
+		llist_add_end( &ptr->info->poll, ( llist_t * ) &poll[i] );
+
+	}
+
+	for ( i = 0; i < nfds; i++ ) {
+		stream_poll( poll );
+		if ( poll[i].revents != 0 )
+			nsel++;
+	}
+	if ( (timeout != 0) && !nsel ) {
+		if ( timeout > 0 )
+			waitstat = semaphore_mdown( sem, timeout );
+		else if ( timeout < 0 )
+			waitstat = semaphore_idown( sem )-1;
+	}
+	for ( i = 0; i < nfds; i++ ) {
+		stream_poll( poll );
+		if ( poll[i].revents != 0 )
+			nsel++;
+	}
+
+	for ( i = 0; i < nfds; i++ ) {
+		fds[i].events  = poll[i].events;
+		fds[i].revents = poll[i].revents;
+		if ( poll[i].stream == NULL )
+			continue;
+		llist_unlink( ( llist_t *) &poll[i] );
+	}
+
+	heapmm_free( poll, sizeof( stream_poll_t ) );
+	semaphore_free( sem );
+
+	if ( waitstat == -2 && !nsel ) {
+		syscall_errno = EINTR;
+		return -1;
+	}
+
+	return ( int ) nsel;
+
+fail_pollalloc:
+	semaphore_free( sem );
+fail_semalloc:
+	return -1;
+	
 }

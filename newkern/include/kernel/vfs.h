@@ -528,8 +528,10 @@ SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
 SVFUNC( vfs_register_fs, 
 		const char *name, 
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
+short int vfs_poll(inode_t *inode, short int events);
 void vfs_ifsmgr_initialize( void );
 void vfs_mount_initialize ( void );
 void vfs_sync_filesystems( void );
+
 #endif
 

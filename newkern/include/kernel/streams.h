@@ -14,6 +14,7 @@
 #include "kernel/vfs.h"
 #include "kernel/pipe.h"
 #include "util/llist.h"
+#include <poll.h>
 #include <sys/types.h>
 #include <sys/dirent.h>
 
@@ -75,6 +76,13 @@ typedef struct stream_ptr stream_ptr_t;
 typedef struct stream_ops stream_ops_t;
 
 /**
+ * @brief Describes a poll call waiting on this descriptor
+ * @see stream_poll
+ */
+
+typedef struct stream_poll stream_poll_t;
+
+/**
  * @brief Describes a pointer to a stream
  *
  * A stream pointer is what is handled by most programs, it is referred to by
@@ -92,10 +100,10 @@ struct stream_ptr {
 	int 		id;
 
 	/**
-         * @brief The flags for this stream pointer 
-         * @warning These are distinct from the stream flags
-         */
-	int		fd_flags;
+	 * @brief The flags for this stream pointer 
+	 * @warning These are distinct from the stream flags
+	 */
+	int			fd_flags;
 
 	/** A pointer to the stream info object this stream_ptr refers to*/
 	stream_info_t  *info;
@@ -112,13 +120,13 @@ struct stream_ptr {
 struct stream_info {
 
 	/** The type of stream */
-	int		 type;
+	int		 	 type;
 
 	/** The amount of pointers referring to this stream */
-	int		 ref_count;
+	int			 ref_count;
 
 	/** The flags for this stream @see _sys_open */
-	int	 	 flags;
+	int	 	 	 flags;
 
 	/** The current file offset for this stream */
 	aoff_t		 offset;
@@ -143,6 +151,9 @@ struct stream_info {
 	
 	/** Operations for external streams */
 	stream_ops_t *ops;
+
+	/** List of polls waiting on this stream */
+	llist_t		 poll;
 };
 
 /** 
@@ -231,8 +242,23 @@ struct stream_ops {
 	SVFUNCPTR( chmod, stream_info_t *, mode_t );
 	SVFUNCPTR( chown, stream_info_t *, uid_t, gid_t );
 	SVFUNCPTR( stat, stream_info_t *, struct stat* );
+	SFUNCPTR( short int, poll, stream_info_t *, short int );
 	
 	
+};
+
+/** Describes a poll request on a stream */
+struct stream_poll {
+	llist_t			 node;
+	/** the file being polled */
+	stream_ptr_t	*stream;
+	/** the input event flags */
+	short int		 events;
+	/** the output event flags */
+	short int		 revents;
+	/** the semaphore this poll is locked on 
+	 * @note Owned by _sys_poll(), not this struct */
+	semaphore_t		*notify;
 };
 
 stream_ptr_t *stream_get_ptr (int fd);

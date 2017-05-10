@@ -13,12 +13,14 @@
 #include <sys/errno.h>
 #include <sys/termios.h>
 #include <sys/ioctl.h>
+#include <poll.h>
 #include <assert.h>
 #include "kernel/tty.h"
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
 #include "kernel/pipe.h"
 #include "kernel/signals.h"
+#include "kernel/streams.h"
 #include "kernel/syscall.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
@@ -79,7 +81,7 @@ void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out
 		tty->write_out = write_out;
 		tty_reset_termios(tty);
 		tty_list[major][c] = tty;
-
+		llist_create( &tty->fds );
 	}
 	dev = heapmm_alloc(sizeof(char_dev_t));
 	dev->major = major;
@@ -97,12 +99,19 @@ tty_info_t *tty_get(dev_t device)
 }
 
 
-int tty_open(dev_t device, __attribute__((__unused__)) int fd, int options)			//device, fd, options
+int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, options
 {
+	tty_fd_t *fdp;
 	tty_info_t *tty = tty_get(device);
 	if ( !tty )
 		return ENODEV;
+	fdp = heapmm_alloc(sizeof(tty_fd_t));
+	if ( fdp == NULL )
+		return ENOMEM;
 	tty->ref_count++;
+	fdp->ptr = fd;
+	fdp->proc = scheduler_current_task;
+	llist_add_end( &tty->fds, ( llist_t *) fdp );
 	if (!(options & O_NOCTTY)) {
 		if ((scheduler_current_task->pid == scheduler_current_task->sid) && !scheduler_current_task->ctty) {
 			scheduler_current_task->ctty = device; 
@@ -114,11 +123,21 @@ int tty_open(dev_t device, __attribute__((__unused__)) int fd, int options)			//
 	
 }
 
-int tty_close(dev_t device, __attribute__((__unused__)) int fd)
+int tty_close(dev_t device, int fd)
 {
+	tty_fd_t *fdp;
+	llist_t *_fdp;
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
 	tty->ref_count--;
+	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
+		assert(_fdp != NULL );
+		fdp = ( tty_fd_t *) fdp;
+		if ( fdp-> proc != scheduler_current_task || fdp->ptr->id != fd )
+			continue;
+		llist_unlink(_fdp);
+		heapmm_free(fdp,sizeof(tty_fd_t));
+	}
 	if (!tty->ref_count) {
 		//TODO: process_strip_ctty(device);
 		if (device == scheduler_current_task->ctty)
@@ -130,7 +149,14 @@ int tty_close(dev_t device, __attribute__((__unused__)) int fd)
 void tty_buf_out_char(tty_info_t *tty, char c)
 {
 	aoff_t w;
+	tty_fd_t *fdp;
+	llist_t *_fdp;
 	pipe_write(tty->pipe_in, &c, 1, &w, 1);
+	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
+		assert(_fdp != NULL );
+		fdp = ( tty_fd_t *) fdp;
+		stream_notify_poll( fdp->ptr->info );
+	}
 }
 
 void tty_flush_line_buffer(tty_info_t *tty){
@@ -235,6 +261,13 @@ int tty_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_b
 	return pipe_read(tty->pipe_in, buf, count, read_size, non_block);
 }
 
+short int tty_poll(dev_t device, short int events ){
+	tty_info_t *tty = tty_get(device);
+	assert(tty);
+	//TODO: Implement POLLHUP
+	return pipe_poll(tty->pipe_in,events) & POLLIN;
+}
+
 int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
 {
 	tty_info_t *tty = tty_get(device);
@@ -310,7 +343,8 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 void tty_init(){
 	tty_list = heapmm_alloc(sizeof(tty_info_t **) * 256);
 	tty_operations = heapmm_alloc(sizeof(tty_ops_t));
-	tty_operations->open = &tty_open;
+	tty_operations->open = NULL;
+	tty_operations->open_new = &tty_open;
 	tty_operations->close = &tty_close;
 	tty_operations->ioctl = &tty_ioctl;
 	tty_operations->read = &tty_read;
