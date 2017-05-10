@@ -241,3 +241,14 @@ void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
 	schedule();
 	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
+
+void scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros)
+{
+	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
+	scheduler_current_task->waiting_on = semaphore;
+	scheduler_current_task->wait_timeout_u = system_time_micros+micros;
+	scheduler_current_task->wait_timeout_s = 0;
+	scheduler_current_task->state = PROCESS_WAITING;
+	schedule();
+	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
+}

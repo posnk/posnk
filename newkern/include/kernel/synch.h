@@ -29,6 +29,8 @@ int semaphore_idown(semaphore_t *semaphore);
 
 int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds);
 
+int semaphore_mdown(semaphore_t *semaphore, ktime_t micros);
+
 /* FOR INTERNAL USE BY SCHEDULER ONLY */
 int  semaphore_try_down(semaphore_t *semaphore);
 

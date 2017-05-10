@@ -71,6 +71,9 @@ int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
 		if (scheduler_current_task->state == PROCESS_TIMED_OUT){
 			scheduler_current_task->state = PROCESS_RUNNING;
 			return -1;
+		} else if (scheduler_current_task->state == PROCESS_INTERRUPTED ){
+			scheduler_current_task->state = PROCESS_RUNNING;
+			return -2;
 		}
 		assert ( scheduler_current_task->state != PROCESS_WAITING );
 	} else {
@@ -79,6 +82,24 @@ int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
 	return 0;
 }
 
+
+int semaphore_mdown(semaphore_t *semaphore, ktime_t micros)
+{
+	if ((*semaphore) == 0) {
+		scheduler_wait_on_to_ms(semaphore, micros);
+		if (scheduler_current_task->state == PROCESS_TIMED_OUT){
+			scheduler_current_task->state = PROCESS_RUNNING;
+			return -1;
+		} else if (scheduler_current_task->state == PROCESS_INTERRUPTED ){
+			scheduler_current_task->state = PROCESS_RUNNING;
+			return -2;
+		}
+		assert ( scheduler_current_task->state != PROCESS_WAITING );
+	} else {
+		(*semaphore)--;
+	}
+	return 0;
+}
 int semaphore_try_down(semaphore_t *semaphore)
 {
 	if ((*semaphore) == 0)
