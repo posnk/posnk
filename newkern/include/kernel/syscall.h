@@ -177,4 +177,6 @@ uint32_t sys_sync( __attribute__((__unused__)) uint32_t param[4],  __attribute__
 
 uint32_t sys_readdir(uint32_t param[4], uint32_t param_size[4]);
 
+uint32_t sys_poll(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4]);
+
 #endif

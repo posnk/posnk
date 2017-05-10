@@ -217,6 +217,32 @@ uint32_t sys_write(uint32_t param[4], __attribute__((__unused__)) uint32_t param
 	return (uint32_t) status;
 }
 
+//int poll(struct pollfd[], nfds_t, int);
+uint32_t sys_poll(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+{
+	void* buf;
+	int no;
+	size_t bs = param[1] * sizeof(struct pollfd);
+	buf = heapmm_alloc(bs);
+	if (!buf) {
+		syscall_errno = ENOMEM;
+		return (uint32_t) -1;
+	}
+	if (!copy_user_to_kern((void *)param[0], buf, bs)) {
+		syscall_errno = EFAULT;
+		heapmm_free(buf, bs);
+		return (uint32_t) -1;
+	}
+	no = _sys_poll(buf, (nfds_t) param[1], (int) param[2]);
+	if (!copy_kern_to_user(buf, (void *)param[0], bs)) {
+		syscall_errno = EFAULT;
+		heapmm_free(buf, bs);
+		return (uint32_t) -1;
+	}
+	heapmm_free(buf, bs);
+	return (uint32_t) no;
+}
+
 //off_t lseek(int fd, off_t offset, int whence);
 uint32_t sys_lseek(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {

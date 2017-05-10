@@ -100,7 +100,8 @@ char *syscall_names[] =
 	"munmap",
 	"chroot",
 	"sync",
-	"readdir"
+	"readdir",
+	"poll"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -265,4 +266,5 @@ void syscall_init()
 	syscall_register(SYS_CHROOT, &sys_chroot);
 	syscall_register(SYS_SYNC, &sys_sync);
 	syscall_register(SYS_READDIR, &sys_readdir);
+	syscall_register(SYS_POLL, &sys_poll);
 }

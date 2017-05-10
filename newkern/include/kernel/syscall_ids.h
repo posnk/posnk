@@ -105,6 +105,7 @@ typedef struct syscall_params syscall_params_t;
 #define SYS_CHROOT	75
 #define SYS_SYNC	76   
 #define SYS_READDIR	77
+#define SYS_POLL	78
 
 uint32_t nk_do_syscall(uint32_t no, uint32_t param[4], uint32_t param_size[4]);
 #endif
