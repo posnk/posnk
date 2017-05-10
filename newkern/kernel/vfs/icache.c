@@ -112,12 +112,12 @@ void vfs_icache_initialize()
 void vfs_inode_release(inode_t *inode)
 {
 	errno_t status;
-	debugcon_printf("rel inode: 0x%x rc: %i ENTER\n",inode,inode->usage_count);
+	//debugcon_printf("rel inode: 0x%x rc: %i ENTER\n",inode,inode->usage_count);
 
 	/* Decrease the reference count for this inode */
 	if (inode->usage_count){
 		inode->usage_count--;
-		debugcon_printf("rel inode: 0x%x rc: %i EXIT\n",inode,inode->usage_count);
+		//debugcon_printf("rel inode: 0x%x rc: %i EXIT\n",inode,inode->usage_count);
 	}
 	/* If the inode has no more references, destroy it */
 	if (inode->usage_count)
@@ -133,7 +133,7 @@ void vfs_inode_release(inode_t *inode)
 	llist_unlink((llist_t *) inode);
 	
 	mruc_add( inode_cache, ( mruc_e_t * ) inode, INODE_HASH(inode) );
-	debugcon_printf("rel inode: 0x%x rc: %i EXITM\n",inode,inode->usage_count);
+	//debugcon_printf("rel inode: 0x%x rc: %i EXITM\n",inode,inode->usage_count);
 
 }
 
@@ -148,7 +148,7 @@ inode_t *vfs_inode_ref(inode_t *inode)
 
 	assert (inode != NULL);
 
-	debugcon_printf("ref inode: 0x%x rc: %i ENTER\n",inode,inode->usage_count);
+	//debugcon_printf("ref inode: 0x%x rc: %i ENTER\n",inode,inode->usage_count);
 	if (!(inode->usage_count)) {
 		/* Move inode from cache to open inode list */
 		mruc_remove( ( mruc_e_t * ) inode );
@@ -156,7 +156,7 @@ inode_t *vfs_inode_ref(inode_t *inode)
 	}
 
 	inode->usage_count++;
-	debugcon_printf("ref inode: 0x%x rc: %i EXIT\n",inode,inode->usage_count);
+	//debugcon_printf("ref inode: 0x%x rc: %i EXIT\n",inode,inode->usage_count);
 
 	return inode;
 }
