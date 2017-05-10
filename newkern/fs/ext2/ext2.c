@@ -160,7 +160,7 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
 
 		if (dev->superblock.ro_force_features & ~(EXT2_SUPPORTED_ROF_FEATURES)) {
 			debugcon_printf("ext2: filesystem requires unsupported features, mounting read-only!\n");
-			flags |= EXT2_MOUNT_FLAG_RO;
+			//flags |= EXT2_MOUNT_FLAG_RO;
 		}
 
 		debugcon_printf("ext2: mounting %s\n", dev->superblock.volume_name);

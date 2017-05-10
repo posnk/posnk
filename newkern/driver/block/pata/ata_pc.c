@@ -15,7 +15,7 @@
 
 #include "config.h"
 #include <sys/errno.h>
-
+#include "kernel/earlycon.h"
 #include "arch/i386/x86.h"
 #include "driver/block/pata/ata.h"
 
@@ -33,7 +33,6 @@ uint8_t ata_read_port(ata_device_t *device, uint16_t port)
 {
 	/* Used to store the return value before clean-up operations are done*/
 	uint8_t rv;
-
 	/* Check for LBA48 port offsets */
 	if ((port > 0x07) && (port < 0x0C))
 		/* Offset is in the LBA48 range, we need to set the HIGHORDER *
@@ -54,6 +53,7 @@ uint8_t ata_read_port(ata_device_t *device, uint16_t port)
 	 * control port */
 	if ((port > 0x07) && (port < 0x0C)) 
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
+	//debugcon_printf("ata_read_port (%x) = %x\n",port,rv);
 
 	return rv;
 }
@@ -92,6 +92,7 @@ void ata_write_port(ata_device_t *device, uint16_t port, uint8_t value)
 	 * control port */
 	if ((port > 0x07) && (port < 0x0C)) //LBA48
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
+	//debugcon_printf("ata_write_port(%x) = %x\n",port,value);
 }
 
 

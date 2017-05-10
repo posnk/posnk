@@ -226,7 +226,7 @@ void vterm_vga_init();
 
 void i386_init_stub()
 {
-	int fd = _sys_open("/faketty", O_RDWR, 0);
+	int fd = _sys_open("/dev/tty1", O_RDWR, 0);
 	if (fd < 0) {
 		earlycon_printf("Error opening tty : %i\n",syscall_errno);
 	} else {
@@ -325,7 +325,7 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
-	if (vfs_initialize(MAKEDEV(0x30,0x0), "ext2"))
+	if (vfs_initialize(MAKEDEV(0x10,0x1), "ext2"))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");
@@ -339,10 +339,11 @@ void i386_kmain()
 		earlycon_puts("FAIL\n");*/
 
 	earlycon_puts("Creating tty stub dev..");
-	if (!vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200))
+	int isd = vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200);
+	if (!isd)
 		earlycon_puts("OK\n");
 	else
-		earlycon_puts("FAIL\n");
+		earlycon_printf("FAIL %x\n",isd);
 
 	ipc_init();
 	
@@ -360,7 +361,7 @@ void i386_kmain()
 	asm ("sti");
 	if (!pid_init)
 		i386_init_stub();
-	ata_interrupt_enabled = 1;
+	//ata_interrupt_enabled = 1;
 
 	pid_idle = scheduler_fork();
 	asm ("sti");

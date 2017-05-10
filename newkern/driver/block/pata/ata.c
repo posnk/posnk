@@ -43,19 +43,14 @@ void ata_do_wait(ata_device_t *device)
 	ata_read_port(device, ATA_STATUS_PORT);
 }
 
-int ata_poll_wait_resched(ata_device_t *device)
+int ata_poll_status( ata_device_t *device )
 {
-	int _t;
 	uint8_t status;
-	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
-	for (_t = 0; _t < 4; _t++)
-		ata_read_port(device, ATA_ALTSTATUS_PORT);
 
-	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY) {
-		if (system_time > timeout_end)
-			return 0;
-		schedule();
-	}
+	ata_do_wait( device );
+
+	if ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY)
+		return 0;
 
 	if (status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR))
 		return 0;
@@ -63,6 +58,24 @@ int ata_poll_wait_resched(ata_device_t *device)
 		return 1;
 	else	
 		return 2;
+
+}
+
+int ata_poll_wait_resched(ata_device_t *device)
+{
+	int _t;
+	uint8_t status;
+	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
+
+	ata_do_wait( device );
+
+	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY) {
+		if (system_time > timeout_end)
+			return 0;
+		schedule();
+	}
+
+	return ata_poll_status( device );
 }
 
 /**
@@ -78,18 +91,15 @@ int ata_poll_wait(ata_device_t *device)
 	int _t;
 	uint8_t status;
 	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
-	for (_t = 0; _t < 4; _t++)
-		ata_read_port(device, ATA_ALTSTATUS_PORT);
+
+	ata_do_wait( device );
+
 	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY){
 		if (system_time > timeout_end)
 			return 0;
 	}
-	if (status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR))
-		return 0;
-	if (status & ATA_STATUS_FLAG_DRQ)
-		return 1;
-	else	
-		return 2;
+
+	return ata_poll_status( device );
 }
 
 /**
@@ -215,7 +225,7 @@ void ata_initialize(ata_device_t *device)
 		}
 	}
 	ata_set_interrupts(device, 1);
-	ata_interrupt_enabled = 1;//TODO: Hook this somewhere
+	semaphore_up(device->lock);
 
 
 	drv = heapmm_alloc(sizeof(blk_dev_t));
@@ -236,6 +246,7 @@ void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint
 	switch (device->drives[drive].lba_mode) {
 		case ATA_MODE_LBA48:
 			ata_write_port(device, ATA_DRIVE_HEAD_PORT, ATA_DRVSEL_LBA(drive, 0));
+			ata_do_wait( device );
 			ata_write_port(device, ATA_SECTOR_COUNT_LOW_PORT, count & 0xFF);
 			ata_write_port(device, ATA_LBA_0_PORT, lba & 0xFF);
 			ata_write_port(device, ATA_LBA_1_PORT, (lba >> 8) & 0xFF);
@@ -247,6 +258,7 @@ void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint
 			break;
 		case ATA_MODE_LBA28:
 			ata_write_port(device, ATA_DRIVE_HEAD_PORT, ATA_DRVSEL_LBA(drive, (lba >> 24) & 0xF ));
+			ata_do_wait( device );
 			ata_write_port(device, ATA_SECTOR_COUNT_LOW_PORT, count & 0xFF);
 			ata_write_port(device, ATA_LBA_0_PORT, lba & 0xFF);
 			ata_write_port(device, ATA_LBA_1_PORT, (lba >> 8) & 0xFF);
@@ -263,6 +275,7 @@ void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint
 			head = temp / device->drives[drive].sectors_per_track;
 			sector = temp % device->drives[drive].sectors_per_track + 1;
 			ata_write_port(device, ATA_DRIVE_HEAD_PORT, ATA_DRVSEL_CHS(drive, head & 0xF));
+			ata_do_wait( device );
 			ata_write_port(device, ATA_SECTOR_COUNT_LOW_PORT, count & 0xFF);
 			ata_write_port(device, ATA_CYL_LOW_PORT, cylinder & 0xFF);
 			ata_write_port(device, ATA_CYL_HIGH_PORT, (cylinder >> 8) & 0xFF);
@@ -276,13 +289,38 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 {
 	int st;
 	size_t byte_count = count * 512;
-	int dma =(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
+	int dma = 0;//(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
+
+	if ( dma ) {
+
+		if ( ata_interrupt_enabled )
+			ata_poll_wait_resched( device );
+		else
+			ata_poll_wait( device );
+
+		ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, 0x00 );
+
+		if ( ata_interrupt_enabled )
+			ata_poll_wait_resched( device );
+		else
+			ata_poll_wait( device );
+
+	}
+
 	ata_setup_lba_transfer(device, drive, lba, count);
+
+	if ( ata_interrupt_enabled )
+		ata_poll_wait_resched( device );
+	else
+		ata_poll_wait( device );
+
 	*(device->int_wait) = 0;
+
 #ifdef CONFIG_ATA_DEBUG
 	debugcon_printf("ata: read  %i:%i[%x]->M[%x] * %i blocks, DMA:%i\n", device->bus_number, drive, (uint32_t)lba, buffer,(uint32_t) count, dma);
 #endif
+
 	if (dma) {
 		if (device->drives[drive].lba_mode == ATA_MODE_LBA48)
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_READ_DMA_EXT);
@@ -312,11 +350,17 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_READ_PIO_EXT);
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_READ_PIO);
+
+		ata_do_wait( device );
+
 		if (ata_interrupt_enabled) {
 			if (semaphore_tdown(device->int_wait, 3)) {
-				debugcon_printf("ata: device %i:%i PIO read timeout\n", device->bus_number, drive);
-				semaphore_up(device->lock);
-				return 0;
+				device->int_status = ata_read_port(device, ATA_STATUS_PORT);
+				if ( device->int_status & ATA_STATUS_FLAG_BSY ) {
+					debugcon_printf("ata: device %i:%i PIO read timeout\n", device->bus_number, drive);
+					semaphore_up(device->lock);
+					return 0;
+				}
 			}
 			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
 				debugcon_printf("ata: device %i:%i PIO read error\n", device->bus_number, drive);
@@ -345,10 +389,33 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 {
 	int st;
 	size_t byte_count = count * 512;
-	int dma =  (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
+	int dma = 0;//(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
-	*(device->int_wait) = 0;
+
+	if ( dma ) {
+
+		if ( ata_interrupt_enabled )
+			ata_poll_wait_resched( device );
+		else
+			ata_poll_wait( device );
+
+		ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, 0x00 );
+
+		if ( ata_interrupt_enabled )
+			ata_poll_wait_resched( device );
+		else
+			ata_poll_wait( device );
+
+	}
+
 	ata_setup_lba_transfer(device, drive, lba, count);
+
+	if ( ata_interrupt_enabled )
+		ata_poll_wait_resched( device );
+	else
+		ata_poll_wait( device );
+
+	*(device->int_wait) = 0;
 #ifdef CONFIG_ATA_DEBUG
 	debugcon_printf("ata: write %i:%i[%x]<-M[%x] * %i blocks, DMA:%i\n", device->bus_number, drive, (uint32_t)lba, buffer,(uint32_t) count, dma);
 #endif
@@ -384,11 +451,16 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_WRITE_PIO_EXT);
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_WRITE_PIO);
+
 		if (ata_interrupt_enabled) {
-			if (semaphore_tdown(device->int_wait, 3)){
-				debugcon_printf("ata: device %i:%i PIO write timeout\n", device->bus_number, drive);
-				semaphore_up(device->lock);
-				return 0;
+			device->int_status = ata_read_port(device, ATA_STATUS_PORT);
+			if ((device->int_status & ATA_STATUS_FLAG_BSY) && semaphore_tdown(device->int_wait, 3) ) {
+				device->int_status = ata_read_port(device, ATA_STATUS_PORT);
+				if ( device->int_status & ATA_STATUS_FLAG_BSY ) {
+					debugcon_printf("ata: device %i:%i PIO write timeout\n", device->bus_number, drive);
+					semaphore_up(device->lock);
+					return 0;
+				}
 			}
 			if (device->int_status & (ATA_STATUS_FLAG_DF | ATA_STATUS_FLAG_ERR)){
 				debugcon_printf("ata: device %i:%i PIO write error\n", device->bus_number, drive);
@@ -407,12 +479,17 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 				return 0;
 			}
 		}
+
 		ata_write_data(device, ATA_DATA_PORT, buffer, byte_count);
 		if (device->drives[drive].lba_mode == ATA_MODE_LBA48)
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_CACHE_FLUSH_EXT);
 		else
 			ata_write_port(device, ATA_COMMAND_PORT, ATA_CMD_CACHE_FLUSH);
-		ata_poll_wait(device);
+
+		if ( ata_interrupt_enabled )
+			ata_poll_wait_resched( device );
+		else
+			ata_poll_wait( device );
 		semaphore_up(device->lock);
 		return 1;
 	}
