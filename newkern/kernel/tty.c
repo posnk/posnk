@@ -123,17 +123,24 @@ int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, option
 	
 }
 
-int tty_close(dev_t device, int fd)
+int tty_dup(dev_t device, stream_ptr_t *fd)			//device, fd, options
+{
+	return tty_open( device, fd, O_NOCTTY );
+	
+}
+
+int tty_close(dev_t device, stream_ptr_t *fd)
 {
 	tty_fd_t *fdp;
-	llist_t *_fdp;
+	llist_t *_fdp, *_nfp;
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
 	tty->ref_count--;
-	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
+	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _nfp ){
 		assert(_fdp != NULL );
-		fdp = ( tty_fd_t *) fdp;
-		if ( fdp-> proc != scheduler_current_task || fdp->ptr->id != fd )
+		_nfp = _fdp->next;
+		fdp = ( tty_fd_t *) _fdp;
+		if ( fdp->ptr != fd )
 			continue;
 		llist_unlink(_fdp);
 		heapmm_free(fdp,sizeof(tty_fd_t));
@@ -154,7 +161,7 @@ void tty_buf_out_char(tty_info_t *tty, char c)
 	pipe_write(tty->pipe_in, &c, 1, &w, 1);
 	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
 		assert(_fdp != NULL );
-		fdp = ( tty_fd_t *) fdp;
+		fdp = ( tty_fd_t *) _fdp;
 		stream_notify_poll( fdp->ptr->info );
 	}
 }
@@ -345,8 +352,10 @@ void tty_init(){
 	tty_operations = heapmm_alloc(sizeof(tty_ops_t));
 	tty_operations->open = NULL;
 	tty_operations->open_new = &tty_open;
-	tty_operations->close = &tty_close;
+	tty_operations->close_new = &tty_close;
 	tty_operations->ioctl = &tty_ioctl;
 	tty_operations->read = &tty_read;
 	tty_operations->write = &tty_write;
+	tty_operations->poll = &tty_poll;
+	tty_operations->dup = &tty_dup;
 }

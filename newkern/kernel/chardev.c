@@ -79,6 +79,33 @@ int device_char_ioctl(dev_t device, int fd, int func, int arg)
 }
 
 /**
+ * @brief Notifies the device of a dup(2) call
+ * 
+ * This function merely dispatches the call to the driver
+ * @see _sys_dup for more information
+ * @param device The device this call is to be performed on
+ * @param fd The stream ptr used for the call
+ * @return 0 on success, If an error occurs a valid error code will be returned
+ * @exception ENXIO _device_ does not refer to a known device
+ */
+
+int device_char_dup(dev_t device, stream_ptr_t *fd)
+{
+	dev_t major = MAJOR(device);
+	char_dev_t *drv = char_dev_table[major];
+	/* Check if the device exists */
+	if (!drv) {
+		return ENXIO;
+	}
+
+	/* Call the driver */
+	if ( drv->ops->dup )
+		return drv->ops->dup(device, fd);
+
+	return 0;
+}
+
+/**
  * @brief Notifies the device of an open(2) call
  * 
  * This function merely dispatches the call to the driver
@@ -117,7 +144,7 @@ int device_char_open(dev_t device, stream_ptr_t *fd, int options)
  * @exception ENXIO _device_ does not refer to a known device
  */
 
-int device_char_close(dev_t device, int fd)
+int device_char_close(dev_t device, stream_ptr_t *fd)
 {
 	dev_t major = MAJOR(device);
 	char_dev_t *drv = char_dev_table[major];
@@ -125,8 +152,12 @@ int device_char_close(dev_t device, int fd)
 	if (!drv) {
 		return ENXIO;
 	}
+
 	/* Call the driver */
-	return drv->ops->close(device, fd);
+	if ( !drv->ops->close )
+		return drv->ops->close_new(device, fd);
+	else
+		return drv->ops->close(device, fd->id);
 }
 
 /**

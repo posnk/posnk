@@ -110,7 +110,7 @@ struct tty_ops {
 
 	int	(*open)			(dev_t, int, int);				//device, fd, options
 	int	(*open_new)		(dev_t, stream_ptr_t *, int);	//device, fd, options
-
+	int	(*dup)			(dev_t, stream_ptr_t *);
 	/**
 	 * @brief Hook function called on device close
 	 *
@@ -124,7 +124,8 @@ struct tty_ops {
 	 * @return An error code on failure, 0 on success
 	 */
 
-	int	(*close)	  (dev_t, int);				//device, fd
+	int	(*close)		(dev_t, int);				//device, fd
+	int	(*close_new)	(dev_t, stream_ptr_t *);	//device, fd
 
 	/**
 	 * @brief Write data to device
@@ -337,7 +338,9 @@ int device_char_ioctl(dev_t device, int fd, int func, int arg);
 
 int device_char_open(dev_t device, stream_ptr_t *fd, int options);
 
-int device_char_close(dev_t device, int fd);
+int device_char_dup(dev_t device, stream_ptr_t *fd);
+
+int device_char_close(dev_t device, stream_ptr_t *fd);
 
 int device_char_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block);
 

@@ -1581,9 +1581,13 @@ int _sys_dup2(int oldfd, int newfd)
 	/* Bump stream info reference count */
 	newptr->info->ref_count++;
 	
-	
 	/* Add duplicate to the table */
 	llist_add_end(scheduler_current_task->fd_table, (llist_t *) newptr);
+
+	if ((newptr->info->type == STREAM_TYPE_FILE) && 
+			S_ISCHR(newptr->info->inode->mode))
+		device_char_dup( newptr->info->inode->if_dev, newptr );
+
 	return newfd;	
 }
 
@@ -2113,6 +2117,11 @@ int _sys_close_int(process_info_t *process, int fd)
 	/* Decrease the stream reference count */
 	ptr->info->ref_count--;
 
+	/* Signal close to drivers */
+	if ((ptr->info->type == STREAM_TYPE_FILE) && 
+			S_ISCHR(ptr->info->inode->mode))
+		device_char_close(ptr->info->inode->if_dev, ptr);
+
 	/* Check if this was the last pointer */
 	if (ptr->info->ref_count == 0) {
 		/* Close the stream */
@@ -2136,9 +2145,9 @@ int _sys_close_int(process_info_t *process, int fd)
 				}
 	
 				/* If the pointer refers to a device stream, signal the device driver */
-				else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISCHR(ptr->info->inode->mode) && (process == scheduler_current_task))
-					device_char_close(ptr->info->inode->if_dev, fd);
-				else if ((ptr->info->type == STREAM_TYPE_FILE) && S_ISBLK(ptr->info->inode->mode) && (process == scheduler_current_task))
+				else if ((ptr->info->type == STREAM_TYPE_FILE) && 
+					S_ISBLK(ptr->info->inode->mode) && 
+					(process == scheduler_current_task))
 					device_block_close(ptr->info->inode->if_dev, fd);
 				ptr->info->inode->open_count--;
 				/* Release the inode */
@@ -2245,7 +2254,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 			poll[i].stream = NULL;
 			continue;
 		}
-
+		poll[i].revents = 0;
 		poll[i].stream = ptr;
 		llist_add_end( &ptr->info->poll, ( llist_t * ) &poll[i] );
 
@@ -2262,10 +2271,13 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 		else if ( timeout < 0 )
 			waitstat = semaphore_idown( sem )-1;
 	}
+	nsel = 0;
 	for ( i = 0; i < nfds; i++ ) {
 		stream_poll( poll );
-		if ( poll[i].revents != 0 )
+		if ( poll[i].revents != 0 ) {
+			debugcon_printf("poll: revents=%x\n", poll[i].revents);
 			nsel++;
+		}
 	}
 
 	for ( i = 0; i < nfds; i++ ) {
