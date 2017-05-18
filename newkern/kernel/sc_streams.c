@@ -223,6 +223,8 @@ uint32_t sys_poll(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 	void* buf;
 	int no;
 	size_t bs = param[1] * sizeof(struct pollfd);
+	if ( param[1] > 4096 )
+		return EFAULT;
 	buf = heapmm_alloc(bs);
 	if (!buf) {
 		syscall_errno = ENOMEM;
