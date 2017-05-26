@@ -113,6 +113,12 @@ SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 	device = (ext2_device_t *) _inode->device;
 	inode = (ext2_vinode_t *) _inode;
 
+	if (S_ISLNK(_inode->mode) && (f_offset == 0) && (length < 60) ) {
+		memcpy( &(inode->inode.block), _buffer, length);
+		RETURN(length);
+	}
+
+
 	block_size = 1024 << device->superblock.block_size_enc;
 	
 	p_block_addr = 0;
@@ -178,6 +184,11 @@ SFUNC(aoff_t, ext2_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, 
 
 	if ((length + f_offset) > _inode->size)
 		length = _inode->size - f_offset;
+
+	if (S_ISLNK(_inode->mode) && (_inode->size < 60) ) {
+		memcpy(_buffer, &(inode->inode.block) + f_offset, length);
+		RETURN(length);
+	}
 
 	block_size = 1024 << device->superblock.block_size_enc;
 
