@@ -34,6 +34,14 @@ uint8_t i386_pic_read_data (uint8_t picNum) {
 	return i386_inb (reg);
 }
 
+uint8_t i386_pic_read_cmd (uint8_t picNum) {
+	uint8_t	reg = (picNum==1) ? I386_PIC2_REG_COMMAND : I386_PIC1_REG_COMMAND;
+	if (picNum > 1)
+		return 0;
+	return i386_inb (reg);
+}
+
+
 //! Initialize pic
 void i386_pic_initialize () {
 
@@ -65,6 +73,15 @@ void i386_pic_initialize () {
 
 	i386_pic_send_data (icw, 0);
 	i386_pic_send_data (icw, 1);
+}
+
+int i386_pic_read_isr( int id ) {
+	i386_pic_send_command( 0x0a,id );
+	return i386_pic_read_cmd( id );
+}
+
+int i386_read_isr() {
+	return i386_pic_read_isr(0) | (i386_pic_read_isr(1) << 8);
 }
 
 void i386_send_end_of_interrupt(int pic_id){

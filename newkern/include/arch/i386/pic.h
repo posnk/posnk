@@ -80,7 +80,7 @@
 #define		I386_IRQ_BASE					0x20
 #define		I386_PIC0_IRQ_BASE				(I386_IRQ_BASE)
 #define		I386_PIC1_IRQ_BASE				(I386_IRQ_BASE + 8)
-
+int i386_read_isr();
 void i386_pic_initialize();
 void i386_send_end_of_interrupt(int pic_id);
 void i386_interrupt_done (int id);

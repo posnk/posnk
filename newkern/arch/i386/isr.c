@@ -67,14 +67,18 @@ void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t
 		/* System call */
 		syscall_dispatch((void *)registers.eax, (void *) instr_ptr);
 	} else if (int_id == 32) {
-		i386_interrupt_done (int_id - 32);
 		timer_interrupt();
+		i386_interrupt_done (int_id - 32);
 	} else if (int_id == 35) {
 		i386_interrupt_done (int_id - 32);;
 		sercon_isr();
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */
 		//earlycon_printf("Unhandled hardware interrupt %i\n", int_id - 32);
+		if ( int_id == (39) ) {
+			if ( !( i386_read_isr() & 0x80 ) )
+				return;
+		}
 		i386_interrupt_done (int_id - 32);
 		interrupt_dispatch(int_id - 32);
 	} else if (int_id == I386_EXCEPTION_PAGE_FAULT) {
