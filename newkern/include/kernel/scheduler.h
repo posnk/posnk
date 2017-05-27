@@ -28,6 +28,8 @@ int scheduler_invoke_signal_handler(int signal);
 
 void scheduler_exit_signal_handler();
 
+int scheduler_init_task(scheduler_task_t *new_task);
+
 void scheduler_switch_task(scheduler_task_t *new_task);
 
 int scheduler_fork_to(scheduler_task_t *new_task);

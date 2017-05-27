@@ -7,6 +7,17 @@ extern "C"{
 
 #include <stdint.h>
 
+#define I386_FLAGS_CF			(1<<0)
+#define I386_FLAGS_PF			(1<<2)
+#define I386_FLAGS_AF			(1<<4)
+#define I386_FLAGS_ZF			(1<<6)
+#define I386_FLAGS_SF			(1<<7)
+#define I386_FLAGS_TF			(1<<8)
+#define I386_FLAGS_IF			(1<<9)
+#define I386_FLAGS_DF			(1<<10)
+#define I386_FLAGS_OF			(1<<11)
+#define I386_FLAGS_IOPL(Flg)	((Flg>>12)&3)
+
 #define I386_EXCEPTION_DIV_ZERO		0
 #define I386_EXCEPTION_DEBUG		1
 #define I386_EXCEPTION_BREAKPOINT	3
@@ -44,7 +55,8 @@ void i386_outl(uint16_t port,uint32_t value);
 void i386_fpu_initialize();
 
 void i386_fpu_on_cs();
-
+void i386_fpu_sigenter();
+void i386_fpu_sigexit();
 int i386_fpu_handle_ill();
 
 #ifdef __cplusplus

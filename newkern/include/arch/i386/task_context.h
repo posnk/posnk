@@ -13,15 +13,21 @@
 #define __ARCH_I386_TASK_CONTEXT_H__
 
 #include <stdint.h>
+#include "arch/i386/x86.h"
 
 struct i386_task_context {
-/* We only need these three as the ISR handles the rest */
-	uint32_t eip;
-	uint32_t esp;
-	uint32_t ebp;
-	uint32_t eflags;
-	uint8_t	 fpu_state[512];
-	int	 fpu_used;
+	uint32_t				user_cs;
+	uint32_t				user_eip;
+	uint32_t				user_ss;
+	uint32_t				user_ds;
+	i386_pusha_registers_t	user_regs;
+	/* We only need these three as the ISR handles the rest */
+	uint32_t				kern_eip;
+	uint32_t				kern_esp;
+	uint32_t				kern_ebp;
+	uint32_t				kern_eflags;
+	uint8_t					fpu_state[512];
+	int						fpu_used;
 }  __attribute__((packed));
 
 typedef struct i386_task_context i386_task_context_t;

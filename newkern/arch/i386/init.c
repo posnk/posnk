@@ -300,7 +300,7 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing system timer...");
-	i386_pit_setup(2000, 0, I386_PIT_OCW_MODE_RATEGEN);
+	i386_pit_setup(1000, 0, I386_PIT_OCW_MODE_RATEGEN);
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing driver framework...");

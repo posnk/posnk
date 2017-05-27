@@ -127,6 +127,7 @@ struct process_info {
 
 	/* Process state */
 	page_dir_t	*page_directory;
+	void		*user_state;
 	void		*arch_state;
 	int			 state;
 

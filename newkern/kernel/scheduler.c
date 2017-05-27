@@ -63,12 +63,14 @@ void scheduler_init()
 
 	scheduler_current_task->state = PROCESS_READY;
 	llist_add_end(scheduler_task_list, (llist_t *) scheduler_current_task);
+	scheduler_init_task(scheduler_current_task);//TODO: Handle errors
 }
 
 int scheduler_fork()
 {
 	scheduler_task_t *new_task = (scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
 	memset(new_task, 0, sizeof(scheduler_task_t));
+
 	/* Initialize process info */
 	new_task->pid  = scheduler_pid_counter++;
 	new_task->uid  = scheduler_current_task->uid;
@@ -111,6 +113,8 @@ int scheduler_fork()
 
 	/* Initialize process state */
 	new_task->state = PROCESS_READY;
+
+	scheduler_init_task(new_task); //TODO: Handle errors
 
 	if (scheduler_fork_to(new_task)) {
 		llist_add_end(scheduler_task_list, (llist_t *) new_task);

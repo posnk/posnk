@@ -19,7 +19,23 @@
 %macro ISR_SYSCALL 1
 	
 [global i386_isr_entry_%1]		
-	
+; Stack here
+;   SS         
+;   ESP        <-- ESP before interrupt
+;   EFLAGS
+;   CS
+;   EIP   	   <-- ESP at entry
+;   0x0BADCA11 <+- ESP at pusha
+;   EAX         |
+;   ECX         |
+;   EDX         |
+;   EBX         |
+;   ESP      ---/
+;   EBP
+;   ESI
+;   EDI        <-- ESP after pusha
+;   DS
+;   interrupt id
 i386_isr_entry_%1:	
 	
 	push dword 0x0BADCA11		; Copy error code to ISR stack	
@@ -70,7 +86,29 @@ i386_isr_entry_%1:
 %macro ISR_NOCODE 1
 	
 [global i386_isr_entry_%1]		
-	
+
+
+; Stack here
+;   SS         
+;   ESP        <-- ESP before interrupt
+;   EFLAGS
+;   CS
+;   EIP   	   <-- ESP at entry
+;   EAX        <-------------------\
+;---Switched                       |
+;   ESP         -------------------+
+;   EIP                            |
+;   0x0BADC0DE <+- ESP at pusha    |
+;   EAX  28     |                  |
+;   ECX  24     |                  |
+;   EDX  20     |                  |
+;   EBX  16     |                  |
+;   ESP  12  ---/ 1)               / 2)
+;   EBP  8
+;   ESI  4
+;   EDI  0     <-- ESP after pusha
+;   DS
+;   interrupt_no
 i386_isr_entry_%1:	
 
 	push eax
@@ -88,16 +126,16 @@ i386_isr_entry_%1:
 
 	; Hack pusha register set to contain correct value
 	clc
-	mov ebx, esp	; \/
-	add ebx, 12	; pusha_registers.esp
+	mov ebx, esp	; ebx = &pusha_registers
+	add ebx, 12	    ; ebx = &pusha_registers.esp
 	mov [ebx], eax	; pusha_registers.esp = task esp
 	mov eax, [eax]	; Load stored EAX
-	add ebx, 16	; pusha_registers.eax
+	add ebx, 16	    ; pusha_registers.eax
 	mov [ebx], eax	; pusha_registers.eax = eax
 
 	; Save data segment
-	mov ax, ds
-	push eax
+	mov  ax, ds
+	push eax        ; 
 
 	; Select kernel data segment
 	mov ax, 0x20

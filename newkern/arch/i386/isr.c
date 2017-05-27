@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include "arch/i386/pic.h"
 #include "arch/i386/x86.h"
+#include "arch/i386/isr_entry.h"
 #include "kernel/exception.h"
 #include "kernel/earlycon.h"
 #include "kernel/paging.h"
@@ -60,17 +61,53 @@ void *i386_get_page_fault_addr() {
 
 void sercon_isr();
 
-void i386_handle_interrupt(uint32_t int_id, __attribute__((__unused__)) uint32_t data_segment, i386_pusha_registers_t registers, uint32_t error_code, uint32_t instr_ptr)
+/*
+;   SS         
+;   ESP        <-- ESP before interrupt
+;   EFLAGS
+;   CS
+;   EIP   	   <-- ESP at entry
+;   EAX        <-------------------\
+;---Switched                       |
+;   ESP         -------------------+
+;   EIP                            |
+;   0x0BADC0DE <+- ESP at pusha    |
+;   EAX  28     |                  |
+;   ECX  24     |                  |
+;   EDX  20     |                  |
+;   EBX  16     |                  |
+;   ESP  12  ---/ 1)               / 2)
+;   EBP  8
+;   ESI  4
+;   EDI  0     <-- ESP a fter pusha
+;   DS
+;   interrupt_no
+2    0    0    2    4    6
+0010 0000 0000 0010 0100 0110   
+            IO ODIT SZ A  P C
+*/
+
+void i386_handle_interrupt(
+	uint32_t 								int_id, 
+	__attribute__((__unused__)) uint32_t	data_segment, 
+	i386_pusha_registers_t					registers, 
+	uint32_t								error_code,
+	uint32_t								instr_ptr)
 {	
-	//debugcon_printf("isr %i\n", int_id);
+	i386_isr_stack_t *isrstack = (i386_isr_stack_t *) registers.esp;
+	if ( isrstack->cs == 0x2B ) {
+		/* We came from userland */
+		i386_user_enter( registers, data_segment );
+	}
 	if (int_id == 0x80) {
 		/* System call */
 		syscall_dispatch((void *)registers.eax, (void *) instr_ptr);
 	} else if (int_id == 32) {
-		timer_interrupt();
+		//debugcon_printf("tick!\n");
 		i386_interrupt_done (int_id - 32);
+		timer_interrupt();
 	} else if (int_id == 35) {
-		i386_interrupt_done (int_id - 32);;
+		i386_interrupt_done (int_id - 32);
 		sercon_isr();
 	} else if (int_id > 31) {
 		/* Hardware Interrupt */
