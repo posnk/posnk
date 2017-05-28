@@ -27,20 +27,38 @@ void i386_do_context_switch(	uint32_t esp,
 								uint32_t eip, 
 								physaddr_t page_dir);
 
-void i386_user_enter ( i386_pusha_registers_t regs, uint32_t ds )
+void i386_user_enter ( i386_isr_stack_t *stack )
 {
 
-	i386_isr_stack_t *isrstack = (i386_isr_stack_t *) regs.esp;
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
-	if ( tctx == 0)
+	if ( tctx == 0 )
 		return;
-	tctx->user_regs		= regs;
-	/** The ESP in the pusha structure is the ISR stack, not the user stack */
-	tctx->user_regs.esp = isrstack->esp;
-	tctx->user_eip		= isrstack->eip;
-	tctx->user_ss		= isrstack->ss;
-	tctx->user_cs		= isrstack->cs;
-	tctx->user_ds		= ds;
+	tctx->user_regs		= stack->regs;
+	/* The ESP in the pusha structure is the ISR stack, not the user stack */
+	tctx->user_regs.esp = stack->esp;
+	tctx->user_eip		= stack->eip;
+	tctx->user_ss		= stack->ss;
+	tctx->user_cs		= stack->cs;
+	tctx->user_ds		= stack->ds;
+ 
+}
+
+void i386_user_exit ( i386_isr_stack_t *stack )
+{
+
+	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+	if ( tctx == 0 )
+		return;
+	/*This will corrupt the ESP value on the stack, but it is ignored by POPA*/
+	stack->regs			= tctx->user_regs;
+	/* Restore DS */
+	stack->ds			= tctx->user_ds;
+
+	/* Restore User Stacks */
+	stack->eip			= tctx->user_eip;
+	stack->esp			= tctx->user_regs.esp;
+	stack->ss			= tctx->user_ss;
+	stack->cs			= tctx->user_cs;
  
 }
 
@@ -90,13 +108,6 @@ int scheduler_init_task(scheduler_task_t *new_task) {
 	if (!new_task->arch_state)
 		return ENOMEM;
 	memset(new_task->arch_state, 0, sizeof(i386_task_context_t));
-
-	new_task->arch_state_pre_signal = heapmm_alloc(sizeof(i386_task_context_t));
-	if (!new_task->arch_state_pre_signal)
-		return ENOMEM;
-	memset(new_task->arch_state_pre_signal, 0, 
-			sizeof(i386_task_context_t));
-
 	return 0;
 }
 
@@ -125,13 +136,6 @@ int scheduler_fork_to(scheduler_task_t *new_task)
 
 	memcpy(nctx, tctx, sizeof(i386_task_context_t));
 
-	tctx = (i386_task_context_t *)
-		scheduler_current_task->arch_state_pre_signal;
-	nctx = (i386_task_context_t *) 
-		new_task->arch_state_pre_signal;
-
-	memcpy(nctx, tctx, sizeof(i386_task_context_t));
-
 	return 1;
 }
 
@@ -152,67 +156,80 @@ int process_push_user_data(void *data, size_t size)
 
 /**
  * Jump into signal handler.
+ * TODO: Use stack for signal exit state
+ * Push sigexit block
+ * Push ptr to sigexit block
+ * Push args
  */
 int scheduler_invoke_signal_handler(int signal)
 {
 	i386_task_context_t *tctx;
-	i386_task_context_t *sctx;
-	volatile uint32_t esp, ebp, eip;
-	asm ("cli;");
-	asm volatile("mov %%esp, %0" : "=r"(esp));
-	asm volatile("mov %%ebp, %0" : "=r"(ebp)); 
-	eip = i386_get_return_address();
-	if (eip == 0xFFFDCAFE) {
-		/* Back from switch */
-		debugcon_printf("Back from sighandler\n");
-		return 1;
-	}
-	/* Havent switched yet */
+	i386_task_context_t sctx;
+	void *info, *context, *sigret;
+
+	/* For now, set these to NULL */
+	info	= NULL;
+	context	= NULL;
 	
 	/* Store FPU state */
 	i386_fpu_sigenter();
 
 	/* Back up task state */
 	tctx = scheduler_current_task->arch_state;
-	sctx = scheduler_current_task->arch_state_pre_signal;
-	memcpy(sctx, tctx, sizeof(i386_task_context_t));
-
-	/* Store context switch state */
-	sctx->kern_eip = eip;
-	sctx->kern_esp = esp;
-	sctx->kern_ebp = ebp;
+	sctx = *tctx;
 
 	/* Create a fake call frame */
 	debugcon_printf("Pushing signal number\n");
-	if (!process_push_user_data(&(signal), 4))
+
+	if (!process_push_user_data(&sctx, 4))
+		return 0;//Parameter: process state
+
+	/* Get start address of sigret */
+	sigret = tctx->user_regs.esp;
+
+	if (!process_push_user_data(&sigret, 4))
+		return 0;//Parameter: sigret
+	if (!process_push_user_data(&context, 4))
+		return 0;//Parameter: context
+	if (!process_push_user_data(&info, 4))
+		return 0;//Parameter: info
+	if (!process_push_user_data(&signal, 4))
 		return 0;//Parameter: signal number 
+
 	debugcon_printf("Pushing return addr\n");
 	if (!process_push_user_data(&(scheduler_current_task->signal_handler_exit_func), 4))
 		return 0;//Return address: sigreturn stub
 
 	/* Set up user state */
 	tctx->user_eip = (uint32_t)
-						scheduler_current_task->signal_handler_table[signal];
-	/* Now its time for some magic */
-	debugcon_printf("Calling installed signal handler\n");
+					scheduler_current_task->signal_handler_table[signal];
 
-	i386_protection_user_call( tctx->user_eip, tctx->user_regs.esp );
 	return 1;
 }
 
-void scheduler_exit_signal_handler()
+void scheduler_exit_signal_handler( void *ctx )
 {
 	i386_task_context_t *tctx;
 	i386_task_context_t *sctx;
 
+	sctx = ctx;
 	tctx = scheduler_current_task->arch_state;
-	sctx = scheduler_current_task->arch_state_pre_signal;
+
+	/* Do not trust userland to edit kernel stack pointer and instr pointer */
+	sctx->kern_eip = tctx->kern_eip;
+	sctx->kern_esp = tctx->kern_esp;
+	sctx->kern_ebp = tctx->kern_ebp;
+
+	/* Do not trust userland to hand correct segments to prevent priv escal */
+	sctx->user_cs = tctx->user_cs;
+	sctx->user_ds = tctx->user_ds;
+	sctx->user_ss = tctx->user_ss;
+		
+
 	memcpy(tctx, sctx, sizeof(i386_task_context_t));
 
 	i386_fpu_sigexit();
-	debugcon_printf("sigexit switch\n");
-	i386_do_context_switch( tctx->kern_esp, tctx->kern_ebp, tctx->kern_eip,
-				paging_get_physical_address(scheduler_current_task->page_directory->content));	
+
 }
 
 void i386_cs_debug_attach(uint32_t esp, uint32_t ebp, uint32_t eip, physaddr_t page_dir);

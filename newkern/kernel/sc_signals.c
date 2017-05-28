@@ -44,9 +44,9 @@ uint32_t sys_ssigex(uint32_t param[4], __attribute__((__unused__)) uint32_t para
 	return 0;
 }
 
-uint32_t sys_exitsig(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_exitsig( uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
-	scheduler_exit_signal_handler();
+	scheduler_exit_signal_handler( (void *) param[0] );
 	return 0;
 }
 

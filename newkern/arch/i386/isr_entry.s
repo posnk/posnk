@@ -16,68 +16,76 @@
 
 [extern i386_handle_interrupt]
 
+; This code segment is invoked by the interrupt handler stubs
+; it will push the processor state and call the C interrupt handler
+; which can then either return or branch out to another process.
+; Expected stack contents: 
+;	C	(SS)
+;	C	(ESP)
+;	C	EFLAGS
+;	C	CS
+;	C	EIP
+;	C/K	Error Code
+;	K	Interrrupt Id
+i386_entry_core:
+
+	; Store registers ( pushes 8 dwords )
+	pusha
+
+	; Store data segment
+	xor	eax, eax
+	mov	ax, ds
+	push	eax
+	
+	; Switch to supervisor segment for data access
+	mov	ax, 0x20
+	mov	ds, ax
+	mov	es, ax
+	mov	fs, ax
+	mov	gs, ax
+
+	; Set magic base pointer to stop kernel stacktraces
+	mov	ebp, 0xCAFE57AC
+
+	; Push the stack address
+	push	esp
+
+	; Call the interrupt handler
+	call	i386_handle_interrupt
+
+	; "Pop" the stack address
+	add	esp, 4
+	
+	; Restore data segment
+	pop	eax
+	mov	ds, ax
+	mov	es, ax
+	mov	fs, ax
+	mov	gs, ax
+
+	; Restore registers
+	popa
+
+	; Pop error code and interrupt number
+	add	esp, 8
+
+	; Exit interrupt handler
+	iret
+
 %macro ISR_SYSCALL 1
 	
 [global i386_isr_entry_%1]		
-; Stack here
-;   SS         
-;   ESP        <-- ESP before interrupt
-;   EFLAGS
-;   CS
-;   EIP   	   <-- ESP at entry
-;   0x0BADCA11 <+- ESP at pusha
-;   EAX         |
-;   ECX         |
-;   EDX         |
-;   EBX         |
-;   ESP      ---/
-;   EBP
-;   ESI
-;   EDI        <-- ESP after pusha
-;   DS
-;   interrupt id
 i386_isr_entry_%1:	
 	
-	push dword 0x0BADCA11		; Copy error code to ISR stack	
+	; Push fake error code
+	push	dword 0x0BADCA11
 
-	; Save all registers on the stack
-	pusha 
-	mov ebp, 0xCAFE57AC	; set ebp as a token for the tracer
-
-	; Save data segment
-	mov ax, ds
-	push eax
-
-	; Select kernel data segment
-	mov ax, 0x20
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
-	; Tell the OS which interrupt was called
-	push dword %1
+	; Push interrupt id
+	push	dword %1
 	
-	; Call C language part of ISR
-	call i386_handle_interrupt
-	
-	; "Pop" the ISR number
-	add esp, 4
+	; Jump to common entry code
+	jmp	i386_entry_core
 
-	; Restore previous data segment
-	pop eax
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	
-	; Restore all registers
-	popa
-
-	add esp, 4 ; Skip error code and EIP
-	
-	; Resume execution
-	iret
 %endmacro
 
 
@@ -86,168 +94,31 @@ i386_isr_entry_%1:
 %macro ISR_NOCODE 1
 	
 [global i386_isr_entry_%1]		
-
-
-; Stack here
-;   SS         
-;   ESP        <-- ESP before interrupt
-;   EFLAGS
-;   CS
-;   EIP   	   <-- ESP at entry
-;   EAX        <-------------------\
-;---Switched                       |
-;   ESP         -------------------+
-;   EIP                            |
-;   0x0BADC0DE <+- ESP at pusha    |
-;   EAX  28     |                  |
-;   ECX  24     |                  |
-;   EDX  20     |                  |
-;   EBX  16     |                  |
-;   ESP  12  ---/ 1)               / 2)
-;   EBP  8
-;   ESI  4
-;   EDI  0     <-- ESP after pusha
-;   DS
-;   interrupt_no
 i386_isr_entry_%1:	
-
-	push eax
-
-	mov eax, esp
-	mov esp, dword 0xBFFFFFFF
 	
-	push eax			; Push esp to ISR stack
-	push dword [eax+4]		; Copy EIP to ISR stack
-	push dword 0x0BADC0DE		; Copy error code to ISR stack	
+	; Push fake error code
+	push	dword 0x0BADC0D3
 
-	; Save all registers on the stack
-	pusha 
-	mov ebp, 0xCAFE57AC	; set ebp as a token for the tracer
-
-	; Hack pusha register set to contain correct value
-	clc
-	mov ebx, esp	; ebx = &pusha_registers
-	add ebx, 12	    ; ebx = &pusha_registers.esp
-	mov [ebx], eax	; pusha_registers.esp = task esp
-	mov eax, [eax]	; Load stored EAX
-	add ebx, 16	    ; pusha_registers.eax
-	mov [ebx], eax	; pusha_registers.eax = eax
-
-	; Save data segment
-	mov  ax, ds
-	push eax        ; 
-
-	; Select kernel data segment
-	mov ax, 0x20
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
-	; Tell the OS which interrupt was called
-	push dword %1
+	; Push interrupt id
+	push	dword %1
 	
-	; Call C language part of ISR
-	call i386_handle_interrupt
-	
-	; "Pop" the ISR number
-	add esp, 4
+	; Jump to common entry code
+	jmp	i386_entry_core
 
-	; Restore previous data segment
-	pop eax
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	
-	; Restore all registers
-	popa
 
-	add esp, 8 ; Skip error code and EIP
-	
-	; Restore task stack
-	pop esp
-	
-	; Restore EAX
-	pop eax
-
-	; Resume execution
-	iret
 %endmacro
 
 ; ISR macro for interrupts and exceptions that post an error code
 %macro ISR_CODE 1
 
 [global i386_isr_entry_%1]	
-
-i386_isr_entry_%1:
-
-	push eax
-
-	mov eax, esp
-	mov esp, dword 0xBFFFFFFF
-		
-
-	push eax			; Push esp to ISR stack
-	push dword [eax+8]		; Copy EIP to ISR stack
-	push dword [eax+4]		; Copy error code to ISR stack	
-
-	; Save all registers on the stack
-	pusha 
-
-	; Hack pusha register set to contain correct value
-	clc
-	mov ebx, esp	; \/
-	add ebx, 12	; pusha_registers.esp
-	mov [ebx], eax	; pusha_registers.esp = task esp
-	mov eax, [eax]	; Load stored EAX
-	add ebx, 16	; pusha_registers.eax
-	mov [ebx], eax	; pusha_registers.eax = eax
-	mov ebp, 0xCAFE57AC	; set ebp as a token for the tracer
-
-	; Save data segment
-	mov ax, ds
-	push eax
-
-	; Select kernel data segment
-	mov ax, 0x20
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
-	; Tell the OS which interrupt was called
-	push dword %1
+i386_isr_entry_%1:	
 	
-	; Call C language part of ISR
-	call i386_handle_interrupt
+	; Push interrupt id
+	push	dword %1
 	
-	; "Pop" the ISR number
-	add esp, 4
-
-	; Restore previous data segment
-	pop eax
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	
-	; Restore all registers
-	popa
-
-	add esp, 8 ; Skip error code and EIP
-	
-	; Restore task stack
-	pop esp
-	
-	; Restore EAX
-	pop eax
-
-	; "Pop" the error code
-	add esp, 4
-
-	; Resume execution
-	iret
+	; Jump to common entry code
+	jmp	i386_entry_core
 
 %endmacro
 

@@ -13,15 +13,21 @@
 #define __ARCH_I386_ISR_ENTRY_H__
 
 #include <stdint.h>
+#include "arch/i386/x86.h"
 
-typedef struct {
-	uint32_t	eax;
-	uint32_t	eip;
-	uint32_t	cs;
-	uint32_t	eflags;
-	uint32_t	esp;
-	uint32_t	ss;
-} i386_isr_stack_t;
+struct i386_isr_stack {
+	uint32_t				ds;
+	i386_pusha_registers_t	regs;
+	uint32_t				int_id;
+	uint32_t				error_code;
+	uint32_t				eip;
+	uint32_t				cs;
+	uint32_t				eflags;
+	uint32_t				esp;
+	uint32_t				ss;
+}  __attribute__((packed));
+
+typedef struct i386_isr_stack i386_isr_stack_t;
 
  void i386_isr_entry_0();
  void i386_isr_entry_1();
