@@ -46,6 +46,10 @@ uint32_t sys_ssigex(uint32_t param[4], __attribute__((__unused__)) uint32_t para
 
 uint32_t sys_exitsig( uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
+	if (!procvmm_check(param[0],1)){
+		syscall_errno = EFAULT;
+		return (uint32_t) -1;
+	}
 	scheduler_exit_signal_handler( (void *) param[0] );
 	return 0;
 }

@@ -181,12 +181,14 @@ int scheduler_invoke_signal_handler(int signal)
 	/* Create a fake call frame */
 	debugcon_printf("Pushing signal number\n");
 
-	if (!process_push_user_data(&sctx, 4))
+	if (!process_push_user_data(&sctx, sizeof(i386_task_context_t)))
 		return 0;//Parameter: process state
 
 	/* Get start address of sigret */
 	sigret = tctx->user_regs.esp;
 
+	if (!process_push_user_data(&sigret, 4))
+		return 0;//Parameter: sigret
 	if (!process_push_user_data(&sigret, 4))
 		return 0;//Parameter: sigret
 	if (!process_push_user_data(&context, 4))

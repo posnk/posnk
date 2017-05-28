@@ -180,8 +180,10 @@ void process_handle_signals()
 						process_signal_handler_default(bit_counter);
 					else if (scheduler_current_task->signal_handler_table[bit_counter] == (void *) 1)
 						continue;
-					else
+					else {
 						scheduler_invoke_signal_handler(bit_counter);
+						return;
+					}
 					if (scheduler_current_task->state == PROCESS_KILLED) {
 						debugcon_printf("killedby: %i\n", sig_active);
 						process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
