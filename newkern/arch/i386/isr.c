@@ -114,7 +114,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 							sizeof(i386_pusha_registers_t));
 	} 
 
-	process_handle_signals();
+	do_signals();
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_exit( stack );

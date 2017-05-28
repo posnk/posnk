@@ -101,7 +101,11 @@ char *syscall_names[] =
 	"chroot",
 	"sync",
 	"readdir",
-	"poll"
+	"poll",
+	"sigaction",
+	"sigaltstack",
+	"sigpending",
+	"sigsuspend"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -267,4 +271,8 @@ void syscall_init()
 	syscall_register(SYS_SYNC, &sys_sync);
 	syscall_register(SYS_READDIR, &sys_readdir);
 	syscall_register(SYS_POLL, &sys_poll);
+	syscall_register(SYS_SIGACTION, &sys_sigaction);
+	syscall_register(SYS_SIGALTSTACK, &sys_sigaltstack);
+	syscall_register(SYS_SIGPENDING, &sys_sigpending);
+	syscall_register(SYS_SIGSUSPEND, &sys_sigsuspend);
 }

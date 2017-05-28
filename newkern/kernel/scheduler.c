@@ -53,6 +53,9 @@ void scheduler_init()
 	scheduler_current_task->heap_end	= (void *) 0x12345678;// TOTALLY NOT RELEVANT ON PROCESS ZERO
 	scheduler_current_task->stack_bottom	= (void *) 0xBFFFDFFF;
 	scheduler_current_task->stack_top	= (void *) 0xBFFFD000;
+
+	signal_init_task( scheduler_current_task );
+
 	/* Initialize process state */
 	scheduler_current_task->page_directory = paging_active_dir;
 
@@ -98,8 +101,11 @@ int scheduler_fork()
 	new_task->root_directory->usage_count++;
 	new_task->current_directory->usage_count++;
 	/* Initialize proces signal handling */
-	memcpy(new_task->signal_handler_table, scheduler_current_task->signal_handler_table, sizeof(void *[32]));
-	new_task->signal_mask_bitmap = scheduler_current_task->signal_mask_bitmap;
+	memcpy( new_task->signal_actions,
+			scheduler_current_task->signal_actions, 
+			sizeof(struct sigaction[32]));
+	new_task->signal_mask = scheduler_current_task->signal_mask;
+
 	/* Initialize process memory info */
 	new_task->heap_start	= scheduler_current_task->heap_start;
 	new_task->heap_end	= scheduler_current_task->heap_end;
@@ -176,7 +182,7 @@ void schedule()
 		scheduler_switch_task(next_task);
 	//	earlycon_printf("scheduler switch to %i done, state: %i\n", scheduler_current_task->pid, scheduler_current_task->state);
 	}
-	if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->waiting_signal_bitmap != 0))
+	if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->signal_pending != 0))
 		scheduler_switch_task(scheduler_current_task);
 	if (scheduler_current_task->state == PROCESS_READY) {
 		scheduler_current_task->state = PROCESS_RUNNING;

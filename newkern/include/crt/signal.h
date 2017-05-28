@@ -15,7 +15,7 @@
 #define SIG_IGN			( ( void (*)(int) ) 0xFFFFFFFC)
 
 /** Type that can be accessed atomically */
-typedef volatile int	sig_atomic_t
+typedef volatile int	sig_atomic_t;
 
 /** Integer type used to represent sets of signals */
 typedef uint32_t		sigset_t;
@@ -213,11 +213,11 @@ struct siginfo {
 
 void	(*bsd_signal(int, void (*)(int)))(int);
 
-int		kill( pid_t, int );
+int		kill		( pid_t, int );
 
-int		killpg( pid_t, int );
+int		killpg		( pid_t, int );
 
-int		raise( int );
+int		raise		( int );
 
 int		sigaction(int, const struct sigaction *, const struct sigaction *);
 

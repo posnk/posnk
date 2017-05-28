@@ -24,10 +24,6 @@ typedef struct process_info scheduler_task_t;
 
 extern scheduler_task_t *scheduler_current_task;
 
-int scheduler_invoke_signal_handler( int signal );
-
-void scheduler_exit_signal_handler( void *ctx );
-
 int scheduler_init_task(scheduler_task_t *new_task);
 
 void scheduler_switch_task(scheduler_task_t *new_task);

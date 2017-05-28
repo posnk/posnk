@@ -14,6 +14,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <signal.h>
 #include <sys/types.h>
 
 #include "kernel/paging.h"
@@ -31,12 +32,6 @@
 #define PROCESS_KILLED		4
 #define PROCESS_INTERRUPTED	5
 #define PROCESS_TIMED_OUT	6
-
-#define SIGNAL_ACTION_ABORT	0
-#define SIGNAL_ACTION_TERM	1
-#define SIGNAL_ACTION_CONT	2
-#define SIGNAL_ACTION_IGNORE	3
-#define SIGNAL_ACTION_STOP	4
 
 #define PROCESS_TERM_EXIT	0
 #define PROCESS_TERM_SIGNAL	1
@@ -101,10 +96,11 @@ struct process_info {
 	int			 fd_ctr;
 
 	/* Signal handling */
+	sigset_t	 signal_mask;
+	sigset_t	 signal_pending;
+	struct sigaction	signal_actions[32];
+	stack_t		 signal_altstack;
 	void 		*signal_handler_exit_func;
-	uint32_t	 waiting_signal_bitmap;
-	uint32_t	 signal_mask_bitmap;
-	void 		*signal_handler_table[32];
 	int			 last_signal;
 
 	/* Proces status */
@@ -138,10 +134,6 @@ struct process_info {
 	semaphore_t	*child_sema;
 	llist_t		*child_events;
 	uint32_t	 in_syscall;
-
-	void		*arch_state_pre_signal;
-	void		*isr_stack_pre_signal;
-	size_t		 isr_stack_pre_signal_size;
 };
 
 typedef struct process_info process_info_t;
@@ -156,19 +148,15 @@ process_info_t *process_get(pid_t pid);
 
 int process_push_user_data(void *data, size_t size);
 
-void process_send_signal(process_info_t *process, int signal);
-
-void process_set_signal_mask(process_info_t *process, int mask);
-
 int process_was_interrupted(process_info_t *process);
-
-void process_handle_signals();
 
 void process_reap(process_info_t *);
 
 process_child_event_t *process_get_event(pid_t pid);
 
 process_child_event_t *process_get_event_pg(pid_t pid);
+
+void process_send_signal(process_info_t *process, int signal);
 
 void process_absorb_event(process_child_event_t *ev_info);
 

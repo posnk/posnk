@@ -24,85 +24,11 @@
 #include "kernel/heapmm.h"
 #include "config.h"
 
-int signal_default_actions[] = 
-{
-	SIGNAL_ACTION_IGNORE,	//UNDEFINED
-	SIGNAL_ACTION_TERM,		//SIGHUP
-	SIGNAL_ACTION_TERM,		//SIGINT
-	SIGNAL_ACTION_ABORT,	//SIGQUIT
-	SIGNAL_ACTION_ABORT,	//SIGILL
-	SIGNAL_ACTION_ABORT,	//SIGTRAP
-	SIGNAL_ACTION_ABORT,	//SIGABRT
-	SIGNAL_ACTION_IGNORE,	//UNDEFINED
-	SIGNAL_ACTION_ABORT,	//SIGFPE
-	SIGNAL_ACTION_TERM,		//SIGKILL
-	SIGNAL_ACTION_ABORT,	//SIGBUS
-	SIGNAL_ACTION_ABORT,	//SIGSEGV
-	SIGNAL_ACTION_ABORT,	//SIGSYS
-	SIGNAL_ACTION_TERM,		//SIGPIPE
-	SIGNAL_ACTION_TERM,		//SIGALRM
-	SIGNAL_ACTION_TERM,		//SIGTERM
-	SIGNAL_ACTION_TERM,		//SIGUSR1
-	SIGNAL_ACTION_TERM,		//SIGUSR2
-	SIGNAL_ACTION_IGNORE,	//SIGCHLD 18
-	SIGNAL_ACTION_IGNORE,	//UNDEFINED 19
-	SIGNAL_ACTION_IGNORE,	//UNDEFINED 20
-	SIGNAL_ACTION_IGNORE,	//SIGURG 21
-	SIGNAL_ACTION_TERM,		//SIGPOLL
-	SIGNAL_ACTION_STOP,		//SIGSTOP
-	SIGNAL_ACTION_STOP,		//SIGTSTP
-	SIGNAL_ACTION_CONT,		//SIGCONT
-	SIGNAL_ACTION_STOP,		//SIGTTIN
-	SIGNAL_ACTION_STOP,		//SIGTTOU
-	SIGNAL_ACTION_TERM,		//SIGVTALRM
-	SIGNAL_ACTION_TERM,		//SIGPROF
-	SIGNAL_ACTION_ABORT,	//SIGXCPU
-	SIGNAL_ACTION_ABORT,	//SIGXFSZ
-};
-
 int curpid()
 {
 	if (scheduler_current_task)
 		return scheduler_current_task->pid;
 	return -1;
-}
-
-void process_send_signal(process_info_t *process, int signal)
-{
-	debugcon_printf("sending signal to pid %i : %i\n",process->pid, signal);
-	if (signal == 0)
-		return;
-	process->waiting_signal_bitmap |= (1 << signal);
-}
-
-void process_set_signal_mask(process_info_t *process, int mask)
-{
-	process->signal_mask_bitmap = mask & CONFIG_MASKABLE_SIGNAL_BITMAP;
-}
-
-void process_signal_handler_default(int signal)
-{
-	//debugcon_printf("sigrecv: %i\n", scheduler_current_task->pid);
-	scheduler_current_task->last_signal = signal;
-	switch (signal_default_actions[signal]) {
-		case SIGNAL_ACTION_ABORT:
-		case SIGNAL_ACTION_TERM:
-			scheduler_current_task->term_cause = PROCESS_TERM_SIGNAL;	
-			scheduler_current_task->state = PROCESS_KILLED;
-			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
-			break;
-		case SIGNAL_ACTION_CONT:
-			scheduler_current_task->state = PROCESS_RUNNING;
-			break;
-		case SIGNAL_ACTION_STOP:
-			if (scheduler_current_task->state != PROCESS_WAITING)
-				scheduler_current_task->waiting_on = NULL;
-			scheduler_current_task->state = PROCESS_WAITING;
-			break;
-		case SIGNAL_ACTION_IGNORE:
-		default:
-			return;			
-	}
 }
 
 /** 
@@ -156,49 +82,6 @@ void process_child_event(process_info_t *process, int event)
 	llist_add_end(parent->child_events, (llist_t *) ev_info);
 	semaphore_up(parent->child_sema);
 }
-
-int process_was_interrupted(process_info_t *process)
-{
-	uint32_t sig_active = process->waiting_signal_bitmap & ~process->signal_mask_bitmap;
-	return sig_active;
-}
-
-void process_handle_signals()
-{
-	
-	uint32_t bit_counter;
-	uint32_t sig_active = scheduler_current_task->waiting_signal_bitmap & ~scheduler_current_task->signal_mask_bitmap;
-	//debugcon_printf("sigactive: %i\n", sig_active);
-	if (sig_active != 0) {
-		debugcon_printf("sighandle: %i\n", scheduler_current_task->pid);
-		if (scheduler_current_task->state != PROCESS_INTERRUPTED) {
-			for (bit_counter = 0; bit_counter < 32; bit_counter++) {
-				if (sig_active & (1 << bit_counter)) {
-					scheduler_current_task->waiting_signal_bitmap &= ~ (1 << bit_counter);
-					debugcon_printf("handling signal: %i\n", sig_active);
-					if (scheduler_current_task->signal_handler_table[bit_counter] == NULL)
-						process_signal_handler_default(bit_counter);
-					else if (scheduler_current_task->signal_handler_table[bit_counter] == (void *) 1)
-						continue;
-					else {
-						scheduler_invoke_signal_handler(bit_counter);
-						return;
-					}
-					if (scheduler_current_task->state == PROCESS_KILLED) {
-						debugcon_printf("killedby: %i\n", sig_active);
-						process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
-
-						stream_do_close_all (scheduler_current_task);
-						procvmm_clear_mmaps();
-						schedule();
-						return;
-					}
-				}
-			}
-		}
-	}
-}
-
 void process_reap(process_info_t *process)
 {
 	//TODO: Implement
@@ -295,14 +178,13 @@ int process_exec(char *path, char **args, char **envs)
 
 	procvmm_clear_mmaps();
 
-	scheduler_current_task->signal_mask_bitmap = 0;
-	memset(scheduler_current_task->signal_handler_table,0 , 32*sizeof(void *));
+	signal_init_task( scheduler_current_task );
 	/* Load image */
 	status = elf_load(path);
 	if (status) {
 		debugcon_printf("error loading elf %s\n",path);
 		process_send_signal(scheduler_current_task, SIGSYS);
-		process_handle_signals();
+		do_signals();
 		schedule();
 		return status;	//NEVER REACHED
 	}
@@ -315,7 +197,7 @@ int process_exec(char *path, char **args, char **envs)
 	if (status) {
 		debugcon_printf("error mmapping stuff\n");
 		process_send_signal(scheduler_current_task, SIGSYS);
-		process_handle_signals();
+		do_signals();
 		schedule();
 		return status;	//NEVER REACHED
 	}

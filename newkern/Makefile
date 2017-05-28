@@ -69,6 +69,7 @@ kernel/interrupt.c \
 kernel/scheduler.c \
 kernel/synch.c \
 kernel/process.c \
+kernel/signal.c \
 kernel/procvmm.c \
 kernel/permissions.c \
 kernel/blkdev.c \
@@ -120,6 +121,7 @@ arch/i386/isr.c \
 arch/i386/idt.c \
 arch/i386/pic.c \
 arch/i386/pit.c \
+arch/i386/signal.c \
 arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
