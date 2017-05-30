@@ -86,6 +86,7 @@ kernel/vfs/mount.c \
 kernel/vfs.c \
 kernel/elfloader.c \
 kernel/tar.c \
+kernel/version.c \
 kernel/syscall.c \
 kernel/streams.c \
 kernel/ipc.c \
@@ -305,7 +306,7 @@ loader_armv7: $(OBJS_ARMV7LOADER) arch/armv7/loader/ldr.ld
 
 kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
 	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
-	@rm _dmake
+	@rm _dmake kernel/version.o
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h

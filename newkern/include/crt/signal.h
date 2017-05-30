@@ -29,6 +29,7 @@ typedef struct siginfo	siginfo_t;
 #define	SIGTRAP	5		/* trace trap (not reset when caught) */
 #define	SIGIOT	6		/* IOT instruction */
 #define	SIGABRT 6		/* used by abort, replace SIGIOT in the future */
+#define SIGWINCH 7
 #define	SIGFPE	8		/* floating point exception */
 #define	SIGKILL	9		/* kill (cannot be caught or ignored) */
 #define	SIGBUS	10		/* bus error */
@@ -48,12 +49,12 @@ typedef struct siginfo	siginfo_t;
 #define	SIGTSTP 24		/* user stop requested from tty */
 #define	SIGCONT 25		/* stopped process has been continued */
 #define	SIGTTIN 26		/* background tty read attempted */
-#define	SIGTTOU 2	7	/* background tty write attempted */
+#define	SIGTTOU 27		/* background tty write attempted */
 #define	SIGVTALRM 28	/* virtual timer expired */
 #define	SIGPROF 29		/* profiling timer expired */
 #define	SIGXCPU 30		/* exceeded cpu limit */
 #define	SIGXFSZ 31		/* exceeded file size limit */
-
+#define NSIG	32
 struct sigaction {
 	union {
 		/** Pointer to a signal-catching function or one of the macros
@@ -219,7 +220,7 @@ int		killpg		( pid_t, int );
 
 int		raise		( int );
 
-int		sigaction(int, const struct sigaction *, const struct sigaction *);
+int		sigaction(int, const struct sigaction *, struct sigaction *);
 
 int		sigaddset	( sigset_t *set, int sig );
 
@@ -254,5 +255,14 @@ int		sigprocmask	( int, const sigset_t *, sigset_t * );
 int		sigsuspend	( const sigset_t * );
 
 int		sigwait		( const sigset_t *, int * );
+
+int		sigblock(int mask);
+
+int		siggetmask(void);
+
+int		sigsetmask(int mask);
+
+int		sigmask(int signum);
+
 
 #endif
