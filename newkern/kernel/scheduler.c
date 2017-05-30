@@ -185,14 +185,13 @@ void schedule()
 	if (next_task != 0) {
 	//	earlycon_printf("scheduler switch from %i to %i\n", scheduler_current_task->pid, next_task->pid);
 		scheduler_switch_task(next_task);
-	//	earlycon_printf("scheduler switch to %i done, state: %i\n", scheduler_current_task->pid, scheduler_current_task->state);
-	}
-	if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->signal_pending != 0))
-		scheduler_switch_task(scheduler_current_task);
-	if (scheduler_current_task->state == PROCESS_READY) {
-		scheduler_current_task->state = PROCESS_RUNNING;
+		if (scheduler_current_task->state == PROCESS_READY) 
+			scheduler_current_task->state = PROCESS_RUNNING;
 		return;
 	}
+	//TODO: Figure out why this was here
+	//if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->signal_pending != 0))
+	//	scheduler_switch_task(scheduler_current_task);
 	if (scheduler_idle_task != 0)
 		scheduler_switch_task(scheduler_idle_task);	
 	else 

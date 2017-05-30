@@ -30,7 +30,9 @@ char * kdbg_procstates[] = {
 	"READY",
 	"NO_SCHED",
 	"KILLED",
-	"INTERRUPTED"	
+	"INTERRUPTED",
+	"TIMED_OUT",
+	"STOPPED"
 };
 
 void kdbg_dump_processes()
