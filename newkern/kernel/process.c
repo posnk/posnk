@@ -81,6 +81,8 @@ void process_child_event(process_info_t *process, int event)
 	ev_info->event = event;
 	llist_add_end(parent->child_events, (llist_t *) ev_info);
 	semaphore_up(parent->child_sema);
+	//TODO: Generate SIGCHLD
+
 }
 void process_reap(process_info_t *process)
 {

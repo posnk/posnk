@@ -143,9 +143,14 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 		return 1;
 	else if (task->state == PROCESS_TIMED_OUT)
 		return 1;
-	else if (task->state == PROCESS_WAITING) {
+	else if (task->state == PROCESS_STOPPED) {
+		return process_was_continued( task );
+	} else if (task->state == PROCESS_WAITING) {
 		//earlycon_printf("pid %i is waiting on %x\n",task->pid, task->waiting_on);
 		if (process_was_interrupted(task)) {
+			//TODO: Figure out a less ugly way of doing this
+			if ( task->state == PROCESS_STOPPED )
+				return 0;
 			task->state = PROCESS_INTERRUPTED;
 			task->waiting_on = NULL;
 			return 1;

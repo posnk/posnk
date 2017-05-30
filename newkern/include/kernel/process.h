@@ -32,13 +32,14 @@
 #define PROCESS_KILLED		4
 #define PROCESS_INTERRUPTED	5
 #define PROCESS_TIMED_OUT	6
+#define PROCESS_STOPPED		7
 
 #define PROCESS_TERM_EXIT	0
 #define PROCESS_TERM_SIGNAL	1
 
 #define PROCESS_CHILD_KILLED	0
 #define PROCESS_CHILD_STOPPED	1
-#define PROCESS_CHILD_CONTD	2
+#define PROCESS_CHILD_CONTD		2
 
 #define PROCESS_MMAP_FLAG_WRITE		(1<<1)
 #define PROCESS_MMAP_FLAG_FILE		(1<<2)
@@ -102,6 +103,7 @@ struct process_info {
 	stack_t		 signal_altstack;
 	void 		*signal_handler_exit_func;
 	int			 last_signal;
+	int			 old_state;
 
 	/* Proces status */
 	int			 sc_errno;
@@ -149,6 +151,8 @@ process_info_t *process_get(pid_t pid);
 int process_push_user_data(void *data, size_t size);
 
 int process_was_interrupted(process_info_t *process);
+
+int process_was_continued(process_info_t *process);
 
 void process_reap(process_info_t *);
 

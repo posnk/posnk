@@ -108,25 +108,56 @@ inline int sigismember( const sigset_t *set, int sig )
 	return *set & (1 << sig);
 }
 
+/**
+ * Fill the signal set
+ */
 inline int sigfillset( sigset_t *set )
 {
 	*set = ~0;
 	return 0;
 }
 
+/**
+ * Clear the signal set
+ */
 inline int sigemptyset( sigset_t *set )
 {
 	*set = 0;
 	return 0;
 }
 
+/**
+ * Send a signal to a process
+ */
 void process_send_signal(process_info_t *process, int signal)
 {
 	assert( signal >= 0 && signal < 32 );
+
 	debugcon_printf("sending signal to pid %i : %i\n",process->pid, signal);
+	
 	if (signal == 0)
 		return;
+
+
 	sigaddset( &process->signal_pending, signal );
+
+	/* SIGCONT will discard all stopping signals */
+	if ( signal == SIGCONT ) {
+		sigdelset( &process->signal_pending, SIGSTOP );
+		sigdelset( &process->signal_pending, SIGTSTP );
+		sigdelset( &process->signal_pending, SIGTTIN );
+		sigdelset( &process->signal_pending, SIGTTOU );
+	}
+
+	/* Stopping signals will discard SIGCONT */
+	if (	signal == SIGSTOP ||
+			signal == SIGTSTP ||
+			signal == SIGTTIN ||
+			signal == SIGTTOU ) {
+		sigdelset( &process->signal_pending, SIGCONT );
+	}
+		
+
 }
 
 int process_signal_handler_default(int signal)
@@ -147,14 +178,10 @@ int process_signal_handler_default(int signal)
 			ctask->state = PROCESS_KILLED;
 			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
 			break;
-		case SIGNAL_ACTION_CONT:
-			ctask->state = PROCESS_RUNNING;
-			return 1;
 		case SIGNAL_ACTION_STOP:
-			if ( ctask->state != PROCESS_WAITING )
-				ctask->waiting_on = NULL;
-			ctask->state = PROCESS_WAITING;
-			//TODO: Fix handling of stop signal
+			ctask->state = PROCESS_STOPPED;
+			process_child_event( ctask, PROCESS_CHILD_STOPPED );			
+			schedule();
 			return 1;
 		case SIGNAL_ACTION_IGNORE:
 		default:
@@ -174,10 +201,70 @@ int process_signal_handler_default(int signal)
 
 }
 
+/**
+ * Called by the scheduler to poll whether a process needs to resume
+ * after being stopped.
+ *
+ * If a process is continued, this will also restore the old state of
+ * that process.
+ *
+ * @param process	The process to check
+ * @return Whether the process may continue.
+ */
+int process_was_continued( process_info_t *process )
+{	
+	
+	/* SIGKILL and SIGCONT resume the process regardless of the mask value */
+	sigset_t sig_active = process->signal_pending;
+
+	if ( sig_active == 0 )
+		return 0;
+
+	if ( 	sigismember( &sig_active, SIGCONT ) ||
+			sigismember( &sig_active, SIGKILL ) ) {
+		//TODO: Should SIGKILL interrupt the syscall currently being executed?
+		process->state = process->old_state;
+		return 1;
+	}
+
+	return 0;
+
+}
+
 int process_was_interrupted(process_info_t *process)
 {
+	int sig;
+	struct sigaction *act;
 	//TODO: Figure out whether to interrupt calls on an SIG_IGN action
-	uint32_t sig_active = process->signal_pending & ~process->signal_mask;
+	sigset_t sig_active = process->signal_pending & ~process->signal_mask;
+
+	if ( sig_active == 0 )
+		return 0;
+
+	for ( sig = 0; sig < 32; sig++ ) {
+
+
+		if ( !sigismember( &sig_active, sig ) )
+			continue;
+		
+		act = &process->signal_actions[sig];
+
+		if ( act->sa_handler == SIG_IGN )
+			continue;
+
+		if ( act->sa_handler != SIG_DFL )
+			return 1;
+
+		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
+			sigdelset( &process->signal_pending, sig );
+			process->old_state = process->state;
+			process->state = PROCESS_STOPPED;
+			process_child_event( process, PROCESS_CHILD_STOPPED );			
+			return 0;
+		}
+	}
+	
+	
 	return sig_active;
 }
 
