@@ -1991,7 +1991,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	}
 
 	/* Is the truncate flag set? */
-	if (flags & O_TRUNC) {
+	if ((flags & O_TRUNC) && S_ISREG(info->inode->mode)) {
 		st = vfs_truncate(inode, 0);
 		if (st) {
 			semaphore_free(info->lock);
@@ -2006,7 +2006,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	
 	/* Is the append flag set? */
 	if (flags & O_APPEND) {
-	
+		//TODO: Implement O_APPEND
 	}
 	
 	/* Check if file is a FIFO */
