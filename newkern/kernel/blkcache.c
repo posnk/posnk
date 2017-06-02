@@ -127,7 +127,8 @@ int blkcache_free( blkcache_cache_t *cache )
  * @return TRUE when node starts at the specified offset, FALSE otherwise
  */
 
-int blkcache_dirty_iterator ( llist_t *node, void *param )
+int blkcache_dirty_iterator ( llist_t *node, __attribute__(( unused ))
+											void *param )
 {
 	blkcache_entry_t *block = (blkcache_entry_t *) node;
 

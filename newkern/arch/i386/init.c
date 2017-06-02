@@ -264,7 +264,7 @@ void i386_idle_task()
 	for (;;)
 		asm ("hlt;");
 }
-
+void sercon_init();
 void register_dev_drivers();
 /**
  * Once we are here everything is set up properly

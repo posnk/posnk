@@ -20,6 +20,7 @@ void earlycon_init();
 void debugcon_init();
 
 void earlycon_putc(char c);
+void debugcon_putc(char c);
 
 void earlycon_aputs(const char *string);
 
@@ -41,7 +42,7 @@ int debugcon_have_data();
 
 void panicscreen(const char *text);
 
-void con_puts(char *b);
+void con_puts(const char *b);
 
 void earlycon_switchover();
 

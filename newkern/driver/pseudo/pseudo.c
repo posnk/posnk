@@ -18,6 +18,7 @@
 #include <sys/errno.h>
 #include <assert.h>
 #include "config.h"
+#include <string.h>
 
 #define PSEUDO_MAJOR (42)
 #define MINOR_ZERO (0)
@@ -50,7 +51,11 @@ int pseudo_write(dev_t device, __attribute__((__unused__)) void *buf, __attribut
 	return 0;
 }
 
-int pseudo_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
+int pseudo_read(dev_t device,
+				void *buf,
+				aoff_t count,
+				aoff_t *read_size,
+				__attribute__((__unused__)) int non_block)	//device, buf, count, rd_size, non_block
 {
 	dev_t minor = MINOR(device);	
 	switch ( minor ) {
@@ -66,7 +71,10 @@ int pseudo_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int no
 	}
 }
 
-int pseudo_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
+int pseudo_ioctl(	__attribute__((__unused__)) dev_t device,	
+					__attribute__((__unused__)) int fd,
+					__attribute__((__unused__)) int func,
+					__attribute__((__unused__)) int arg)			//device, fd, func, arg
 {
 	switch (func) {
 		

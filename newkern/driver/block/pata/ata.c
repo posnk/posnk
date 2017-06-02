@@ -63,7 +63,6 @@ int ata_poll_status( ata_device_t *device )
 
 int ata_poll_wait_resched(ata_device_t *device)
 {
-	int _t;
 	uint8_t status;
 	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
 
@@ -88,7 +87,6 @@ int ata_poll_wait_resched(ata_device_t *device)
  */
 int ata_poll_wait(ata_device_t *device)
 {
-	int _t;
 	uint8_t status;
 	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
 
@@ -287,7 +285,6 @@ void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint
 
 int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)
 {
-	int st;
 	size_t byte_count = count * 512;
 	int dma = 0;//(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
@@ -387,7 +384,6 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 
 int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)
 {
-	int st;
 	size_t byte_count = count * 512;
 	int dma = 0;//(device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);

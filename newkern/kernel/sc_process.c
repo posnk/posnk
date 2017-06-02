@@ -11,6 +11,7 @@
  * 07-04-2014 - Created
  */
 #include <sys/errno.h>
+#include <string.h>
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
 #include "kernel/paging.h"

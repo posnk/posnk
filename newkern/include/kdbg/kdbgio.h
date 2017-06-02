@@ -17,6 +17,7 @@
 
 char *kdbg_gets(char *buf, size_t size);
 uintptr_t kdbg_parsehex(char *str);
+uintptr_t kdbg_parsedec(char *str);
 #define kdbg_printf debugcon_aprintf
 
 #endif

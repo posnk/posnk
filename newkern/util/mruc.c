@@ -182,7 +182,7 @@ void mruc_flush ( mruc_t *cache ) {
 
 	mruc_e_t *entry;
 	
-	while ( entry = mruc_get_lru( cache ) ) {
+	while ( ( entry = mruc_get_lru( cache ) ) ) {
 		
 		debugcon_printf("evictor:0x%08x(0x%08x)\n",cache->evictor,cache);
 		cache->evictor( entry );

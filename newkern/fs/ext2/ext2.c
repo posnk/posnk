@@ -23,7 +23,7 @@
 #include "kernel/earlycon.h"
 #include "kernel/streams.h"
 
-void ext2_handle_error(ext2_device_t *device)
+void ext2_handle_error( __attribute__((unused)) ext2_device_t *device)
 {
 	assert(0/* EXT2 ERROR */);
 
@@ -109,7 +109,7 @@ fs_device_operations_t ext2_ops = {
 	&ext2_sync,
 };
 
-SFUNC(fs_device_t *, ext2_mount, dev_t device, uint32_t flags)
+SFUNC(fs_device_t *, ext2_mount, dev_t device, __attribute__((unused)) uint32_t flags)
 {
 	int status;
 	aoff_t	_read_size;

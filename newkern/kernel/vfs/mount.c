@@ -226,7 +226,7 @@ void vfs_sync_filesystems( void )
 	int 		n_fs, n_ok;
 	llist_t 	*_mnt;
 	fs_mount_t 	*mnt;
-	errno_t		*status;
+	errno_t		 status;
 
 	n_fs = 0;
 	n_ok = 0;

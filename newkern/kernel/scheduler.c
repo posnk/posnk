@@ -13,6 +13,7 @@
 #include "kernel/heapmm.h"
 #include "kernel/process.h"
 #include "kernel/synch.h"
+#include "kernel/signals.h"
 #include "kernel/streams.h"
 #include "kernel/scheduler.h"
 #include "kernel/earlycon.h"

@@ -16,8 +16,10 @@
 #include "kdbg/dbgapi.h"
 #include "kdbg/heapdbg.h"
 #include "kernel/system.h"
+#include "kernel/heapmm.h"
 #include <string.h>
 
+void kdbg_shell();
 void kdbg_initialize()
 {
 	size_t initial_heap = 8192;	
@@ -47,7 +49,8 @@ void kdbg_exit()
 
 }
 void kdbg_dump_processes();
-void dbgapi_invoke_kdbg(int crash)
+void kdbg_attach_process(int pid);
+void dbgapi_invoke_kdbg( __attribute__((unused)) int crash)
 {
 	kdbg_enter();
 	kdbg_shell();
@@ -62,7 +65,7 @@ void kdbg_shell()
 		kdbg_printf("debug#");
 		kdbg_gets(buf, 80);
 		if (!strncmp(buf, "memuse", 6)) {
-			kdbg_print_memuse_brdr(kdbg_parsehex(buf));
+			kdbg_print_memuse_brdr((void*)kdbg_parsehex(buf));
 		} 
 		if (!strncmp(buf, "smu", 3)) {
 			kdbg_enable_memuse();

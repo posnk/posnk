@@ -111,7 +111,6 @@ void vfs_icache_initialize()
 
 void vfs_inode_release(inode_t *inode)
 {
-	errno_t status;
 	//debugcon_printf("rel inode: 0x%x rc: %i ENTER\n",inode,inode->usage_count);
 
 	/* Decrease the reference count for this inode */
@@ -232,7 +231,7 @@ inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id)
  * Iterator function that flushes the inode caches
  */
 
-int vfs_cache_flush_iterator (llist_t *node, void *param)
+int vfs_cache_flush_iterator (llist_t *node, __attribute__((unused)) void *param)
 {
 	errno_t status;
 	inode_t *inode = (inode_t *) node;

@@ -43,7 +43,6 @@ int ramblk_close(__attribute__((__unused__)) dev_t device, __attribute__((__unus
 int ramblk_write(dev_t device, aoff_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
-	dev_t minor = MINOR(device);
 	ramblk_device_t *_dev = &ramblk_devs[major-0x30];
 
 	if (_dev->data == NULL)
@@ -59,7 +58,6 @@ int ramblk_write(dev_t device, aoff_t file_offset, void * buffer )
 int ramblk_read(dev_t device, aoff_t file_offset, void * buffer )
 {
 	dev_t major = MAJOR(device);
-	dev_t minor = MINOR(device);
 	ramblk_device_t *_dev = &ramblk_devs[major-0x30];
 
 	if (_dev->data == NULL)

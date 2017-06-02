@@ -19,6 +19,7 @@
 #include "kernel/paging.h"
 #include "kernel/process.h"
 #include "kernel/system.h"
+#include "kernel/signals.h"
 #include "kernel/syscall.h"
 #include "kernel/scheduler.h"
 #include "kernel/interrupt.h"
@@ -51,7 +52,7 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 		case I386_EXCEPTION_DEBUG:
 			sig = SIGTRAP;
 			info.si_code = TRAP_TRACE;
-			info.si_addr = stack->eip;
+			info.si_addr = (void*) stack->eip;
 			break;
 		case I386_EXCEPTION_BREAKPOINT:
 			sig = SIGTRAP;

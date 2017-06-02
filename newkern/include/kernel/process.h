@@ -189,7 +189,7 @@ int procvmm_do_exec_mmaps();
 
 void procvmm_clear_mmaps();
 
-int procvmm_check(void *dest, size_t size);
+int procvmm_check( const void *dest, size_t size);
 
 void process_user_call(void *entry, void *stack);
 

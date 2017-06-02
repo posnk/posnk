@@ -68,7 +68,7 @@ int vterm_putc(dev_t dev, char c)
 
 void con_puts(char *b)
 {
-	int c;
+	size_t c;
 	size_t size = strlen(b);
 	for (c = 0; c < size; c++)
 		vterm_putc(vterm_minor_terms[0].device_id, b[c]);

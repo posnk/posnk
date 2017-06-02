@@ -495,7 +495,7 @@ SFUNC( dir_cache_t *, vfs_dir_cache_new, dir_cache_t *par, ino_t inode_id );
 int vfs_initialize(dev_t root_device, char *root_fs_type);
 
 ///@}
-
+SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint);
 SVFUNC( ifs_open, inode_t *, void *);
 SFUNC( inode_t *, ifs_load_inode, fs_device_t * device, ino_t id );
 SVFUNC( ifs_store_inode, inode_t * inode );

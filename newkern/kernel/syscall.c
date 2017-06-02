@@ -13,6 +13,7 @@
 #include <stddef.h>
 #include <signal.h>
 #include "kernel/heapmm.h"
+#include "kernel/system.h"
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
 #include "kernel/signals.h"

@@ -25,14 +25,12 @@
 
 SVFUNC( ext2_unlink, inode_t *_inode, char *name )
 {
-	ext2_device_t *device;
-	ext2_vinode_t *inode;
 
-	size_t reclen,namelen, f_reclen;
+	size_t namelen;
 	ext2_dirent_t dirent;	
 	ext2_dirent_t f_dirent;	
 	
-	int status, m = 0;
+	int status;
 	char *namebuf;
 
 	aoff_t nread, pos, dsize, dpos = 0, lpos;
@@ -40,13 +38,9 @@ SVFUNC( ext2_unlink, inode_t *_inode, char *name )
 	assert( _inode != NULL );
 	assert( name != NULL );
 
-	device = (ext2_device_t *) _inode->device;
-	inode = (ext2_vinode_t *) _inode;
-
 	dsize = _inode->size;
 
 	namelen = strlen(name);
-	reclen = ext2_roundup(sizeof(ext2_dirent_t) + namelen, 4);
 
 	namebuf = heapmm_alloc(namelen + 1);
 	if (!namebuf)
@@ -140,7 +134,6 @@ SVFUNC( ext2_unlink, inode_t *_inode, char *name )
 SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 {
 	ext2_device_t *device;
-	ext2_vinode_t *inode;
 
 	size_t reclen,namelen, f_reclen;
 	ext2_dirent_t dirent;	
@@ -154,7 +147,6 @@ SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
 	assert( name != NULL );
 
 	device = (ext2_device_t *) _inode->device;
-	inode = (ext2_vinode_t *) _inode;
 
 	dsize = _inode->size;
 
@@ -310,7 +302,7 @@ SFUNC( aoff_t, ext2_ireaddir,
 	if ( inode_nread < sizeof( ext2_dirent_t ) )
 		THROW ( EIO, 0 );
 
-	if ((dirent_hdr.name_len + 9) > buflen)
+	if ((((aoff_t)dirent_hdr.name_len + 9)) > buflen)
 		THROW( E2BIG, dirent_hdr.name_len + 9 );
 		
 	status = ext2_read_inode( 	inode, 

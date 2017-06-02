@@ -95,7 +95,7 @@ physaddr_t physmm_alloc_quadframe()
 physaddr_t physmm_alloc_bmcopy() 
 {
 	//TODO: Lock physmm_bitmap
-	physaddr_t counter, bit_counter;
+	physaddr_t counter;
 	for (counter = 0; counter < PHYSMM_BITMAP_SIZE; counter++) {
 		if (physmm_bitmap[counter] != 0xFFFFFFFF)
 			continue;

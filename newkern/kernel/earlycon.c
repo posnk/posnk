@@ -18,6 +18,7 @@ int earlycon_ivprintf (printf_helper_t __helper,uint32_t impl,const char* str, v
 	int iii;
 	size_t i;
 	va_list _va_null;
+	memset( &_va_null, 0, sizeof( va_list ) );
 	if(!str)
 		return 0;
 	for (i=0; i<strlen(str);i++) {

@@ -11,6 +11,7 @@
 
 #include "kdbg/kdbgio.h"
 #include <string.h>
+#include "kernel/earlycon.h"
 
 char debugcon_getc();
 
@@ -34,6 +35,7 @@ char *kdbg_gets(char *buf, size_t size)
 			buf[i++] = c;
 		}
 	}
+	return NULL;
 }
 
 uintptr_t kdbg_parsehex(char *str)

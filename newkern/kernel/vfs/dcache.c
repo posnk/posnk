@@ -61,7 +61,6 @@ dir_cache_t *vfs_dir_cache_mkroot(inode_t *root_inode)
 
 void vfs_dir_cache_release( dir_cache_t *dirc )
 {
-	errno_t status;
 
 	assert (dirc != NULL);
 

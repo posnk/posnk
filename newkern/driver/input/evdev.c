@@ -120,7 +120,9 @@ int evdev_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non
 	return 0;
 }
 
-int evdev_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
+int evdev_ioctl(dev_t device, __attribute__((__unused__)) int fd,
+								int func,
+								__attribute((__unused__)) int arg)			//device, fd, func, arg
 {
 	evdev_device_t *dev = evdev_get(device);
 	if (!dev)

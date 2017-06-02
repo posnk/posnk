@@ -2184,6 +2184,10 @@ int _sys_close_int(process_info_t *process, int fd)
 				status = ptr->info->ops->close( ptr->info );
 				
 				//TODO: Figure out what to do here
+				if ( status ) {
+					syscall_errno = status;
+					return -1;
+				}
 				
 				break;
 		}

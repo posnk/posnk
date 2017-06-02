@@ -63,6 +63,7 @@ int pty_putc(dev_t device, char a)
 {
 	aoff_t w;
 	pipe_write(ptys[MINOR(device)], &a, 1, &w, 1);
+	return 0;
 }
 
 int pty_ioctl(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, int func, __attribute__((__unused__)) int arg)
@@ -76,11 +77,11 @@ int pty_ioctl(__attribute__((__unused__)) dev_t device, __attribute__((__unused_
 }
 
 tty_ops_t pty_ops = {
-	&pty_open,
-	&pty_close,
-	&pty_write,
-	&pty_read,
-	&pty_ioctl
+	.open = &pty_open,
+	.close = &pty_close,
+	.write = &pty_write,
+	.read = &pty_read,
+	.ioctl = &pty_ioctl
 };
 
 char_dev_t pty_desc = {

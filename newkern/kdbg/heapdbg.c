@@ -12,11 +12,13 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "util/llist.h"
+#include "util/debug.h"
 
 #include "kdbg/stacktrc.h"
 #include "kdbg/kdbgmm.h"
 #include "kdbg/kdbgio.h"
 #include "kdbg/heapdbg.h"
+#include "kdbg/dbgapi.h"
 
 llist_t kdbg_heap_use_list;
 int heapdbg_up =0;
@@ -48,7 +50,7 @@ int kdbg_find_bf_iterator(llist_t *node, void *param) {
 	return (((kdbg_heap_use_t *)node)->start + ((kdbg_heap_use_t *)node)->size) == (uintptr_t) param;
 }
 
-int kdbg_find_in_iterator(llist_t *node, void *param) {
+int kdbg_find_in_iterator(llist_t *node, __attribute__((unused)) void *param) {
 	kdbg_heap_use_t *use = (kdbg_heap_use_t *) node;
 	uintptr_t p = (uintptr_t) p;
 	return (p >= use->start) && (p < (use->start + use->size));
@@ -68,7 +70,7 @@ void kdbg_print_memuse_brdr(void *addr)
 	}
 	kdbg_printf("  Memory region 0x%x - 0x%x used by:\n", use->start, use->start + use->size);
 	kdbg_print_calltrace(use->calltrace);
-	use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_bf_iterator, use->start);
+	use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_bf_iterator, (void*) use->start);
 	if (!use) {
 		kdbg_printf("No bordering region: 0x%x\n",addr);
 		return;	
@@ -87,7 +89,7 @@ void dbgapi_unreg_memuse(void *addr, size_t size)
 	if (!use) {
 		kdbg_printf("Detected double-free of address 0x%x\n",addr);
 		//dbgapi_invoke_kdbg(1);
-		return 0;
+		return;
 	} else if (use->size != size) {
 		kdbg_printf("Size mismatch at address 0x%x  %u != %u\n",addr,use->size, size);
 		dbgapi_invoke_kdbg(1);

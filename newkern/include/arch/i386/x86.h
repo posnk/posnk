@@ -57,6 +57,7 @@ void i386_fpu_initialize();
 void i386_fpu_on_cs();
 void i386_fpu_sigenter();
 void i386_fpu_sigexit();
+void i386_fpu_fork();
 int i386_fpu_handle_ill();
 
 #ifdef __cplusplus

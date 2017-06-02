@@ -15,6 +15,7 @@
 #include "kernel/syscall.h"
 #include "kernel/vfs.h"
 #include "kernel/heapmm.h"
+#include "kernel/device.h"
 #include <sys/errno.h>
 #include <sys/stat.h>
 #include <string.h>
