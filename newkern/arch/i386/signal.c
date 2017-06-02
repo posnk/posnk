@@ -55,7 +55,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	i386_sigrest_t restore;
 	struct sigaction act;
 	stack_t *altstack;
-	void *sigret;
+	void *sigret, *usrinfo;
 
 	ctask = scheduler_current_task;
 	act = ctask->signal_actions[signal];
@@ -108,6 +108,12 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	/* Create a fake call frame */
 	debugcon_printf("Pushing signal number\n");
 
+	if (!process_push_user_data( info, sizeof( struct siginfo ) ) )
+		return 0;
+
+	/* Get start address of siginfo */
+	usrinfo = ( void * ) tctx->user_regs.esp;
+
 	if (!process_push_user_data(&restore, sizeof( i386_sigrest_t ) ) )
 		return 0;
 
@@ -120,7 +126,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 		return 0;//Parameter: dummy ( to patch shift by ret )
 	if (!process_push_user_data(&context, 4)) 
 		return 0;//Parameter: context
-	if (!process_push_user_data(&info, 4))
+	if (!process_push_user_data(&usrinfo, 4))
 		return 0;//Parameter: info
 	
 	if (!process_push_user_data(&signal, 4))

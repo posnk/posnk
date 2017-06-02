@@ -100,6 +100,7 @@ struct process_info {
 	sigset_t	 signal_mask;
 	sigset_t	 signal_pending;
 	struct sigaction	signal_actions[32];
+	struct siginfo		signal_info[32];
 	stack_t		 signal_altstack;
 	void 		*signal_handler_exit_func;
 	int			 last_signal;
@@ -125,8 +126,8 @@ struct process_info {
 
 	/* Process state */
 	page_dir_t	*page_directory;
-	void		*user_state;
 	void		*arch_state;
+	void		*intr_state;
 	int			 state;
 
 	semaphore_t	*waiting_on;
@@ -160,13 +161,15 @@ process_child_event_t *process_get_event(pid_t pid);
 
 process_child_event_t *process_get_event_pg(pid_t pid);
 
-void process_send_signal(process_info_t *process, int signal);
+void process_send_signal(	process_info_t *process,
+							int signal,
+							struct siginfo info );
 
 void process_absorb_event(process_child_event_t *ev_info);
 
 void process_child_event(process_info_t *process, int event);
 
-int process_signal_pgroup(pid_t pid, int signal);
+int process_signal_pgroup(pid_t pid, int signal, struct siginfo info);
 
 process_mmap_t *procvmm_get_memory_region(void *address);
 

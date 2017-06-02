@@ -129,7 +129,9 @@ inline int sigemptyset( sigset_t *set )
 /**
  * Send a signal to a process
  */
-void process_send_signal(process_info_t *process, int signal)
+void process_send_signal(	process_info_t *process,
+							int signal,
+							struct siginfo info )
 {
 	assert( signal >= 0 && signal < 32 );
 
@@ -138,6 +140,10 @@ void process_send_signal(process_info_t *process, int signal)
 	if (signal == 0)
 		return;
 
+	//TODO: Possible race condition
+	/* If we are the first to raise this signal, set siginfo */
+	if ( ! sigismember( &process->signal_pending, signal ) )
+		process->signal_info[ signal ] = info;
 
 	sigaddset( &process->signal_pending, signal );
 

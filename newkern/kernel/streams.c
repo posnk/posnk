@@ -655,6 +655,9 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 	aoff_t read_count;
 	int st;
 	stream_ptr_t *ptr;
+	struct siginfo sigi;
+
+	memset( &sigi, 0, sizeof( struct siginfo ) );
 
 	/* Check for null pointers */
 	assert(buffer != NULL);
@@ -733,7 +736,7 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 				/* In case of EPIPE the process should also be
 				 * sent SIGPIPE */
 				if (st == EPIPE)
-					process_send_signal(scheduler_current_task, SIGPIPE);
+					process_send_signal(scheduler_current_task, SIGPIPE, sigi);
 
 				/* Pass error code to userland */
 				syscall_errno = st;

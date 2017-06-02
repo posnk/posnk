@@ -21,6 +21,10 @@ struct i386_task_context {
 	uint32_t				user_ss;
 	uint32_t				user_ds;
 	i386_pusha_registers_t	user_regs;
+	uint32_t				intr_cs;
+	uint32_t				intr_eip;
+	uint32_t				intr_ds;
+	i386_pusha_registers_t	intr_regs;
 	/* We only need these three as the ISR handles the rest */
 	uint32_t				kern_eip;
 	uint32_t				kern_esp;

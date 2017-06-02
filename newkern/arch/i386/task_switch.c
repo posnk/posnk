@@ -27,14 +27,33 @@ void i386_do_context_switch(	uint32_t esp,
 								uint32_t eip, 
 								physaddr_t page_dir);
 
+void i386_kern_enter ( i386_isr_stack_t *stack )
+{
+
+	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+
+	if ( tctx == 0 )
+		return;
+	
+	tctx->intr_regs		= stack->regs;
+	tctx->intr_eip		= stack->eip;
+	tctx->intr_cs		= stack->cs;
+	tctx->intr_ds		= stack->ds;
+	/* The ESP in the pusha structure is the ISR stack, not the user stack */
+	tctx->intr_regs.esp = ( (uint32_t) stack ) + sizeof( i386_isr_stack_t ) - 8; 
+  
+}
+
 void i386_user_enter ( i386_isr_stack_t *stack )
 {
 
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	if ( tctx == 0 )
 		return;
+	tctx->intr_regs		= stack->regs;
 	tctx->user_regs		= stack->regs;
 	/* The ESP in the pusha structure is the ISR stack, not the user stack */
+	tctx->intr_regs.esp = stack->esp;
 	tctx->user_regs.esp = stack->esp;
 	tctx->user_eip		= stack->eip;
 	tctx->user_ss		= stack->ss;

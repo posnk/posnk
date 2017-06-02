@@ -15,6 +15,8 @@
 #include <sys/ioctl.h>
 #include <poll.h>
 #include <assert.h>
+#include <signal.h>
+#include <string.h>
 #include "kernel/tty.h"
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
@@ -195,9 +197,11 @@ void tty_output_char(dev_t device, char c)
 
 void tty_input_char(dev_t device, char c)
 {
+	struct siginfo info;
 	aoff_t a;
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
+	memset( &info, 0, sizeof( struct siginfo ) );
 	if (tty->termios.c_lflag & ICANON) { //TODO: Flow control
 		if ((tty->termios.c_iflag & INLCR) && (c == '\n'))
 			c = '\r';
@@ -233,11 +237,11 @@ void tty_input_char(dev_t device, char c)
 			tty->line_buffer_pos = 0;			
 		} else if (tty->termios.c_lflag & ISIG) {
 			if (c == tty->termios.c_cc[VQUIT]) {
-				process_signal_pgroup(tty->fg_pgid, SIGQUIT);
+				process_signal_pgroup( tty->fg_pgid, SIGQUIT, info );
 			} else if (c == tty->termios.c_cc[VINTR]) {
-				process_signal_pgroup(tty->fg_pgid, SIGINT);
+				process_signal_pgroup( tty->fg_pgid, SIGINT, info );
 			} else if (c == tty->termios.c_cc[VSUSP]) {
-				process_signal_pgroup(tty->fg_pgid, SIGTSTP);
+				process_signal_pgroup( tty->fg_pgid, SIGTSTP, info );
 			} else 
 				tty_buf_line_char(tty, c);
 		} else {
@@ -277,8 +281,10 @@ short int tty_poll(dev_t device, short int events ){
 
 int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
 {
+	struct siginfo info;
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
+	memset( &info, 0, sizeof( struct siginfo ) );
 	switch(func) {
 		case TCGETS:
 			if (!copy_kern_to_user(&(tty->termios), (void *) arg, sizeof(termios_t))){
@@ -321,8 +327,8 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 				return 0;
 			scheduler_current_task->ctty = 0;
 			if (scheduler_current_task->pid == scheduler_current_task->sid) {
-				process_signal_pgroup(tty->fg_pgid, SIGCONT);
-				process_signal_pgroup(tty->fg_pgid, SIGHUP);
+				process_signal_pgroup(tty->fg_pgid, SIGCONT, info);
+				process_signal_pgroup(tty->fg_pgid, SIGHUP, info);
 				//TODO: Strip pgrp of ctty
 			}
 

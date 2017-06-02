@@ -58,7 +58,7 @@ void		paging_init();
 
 void		paging_handle_out_of_memory();
 
-void		paging_handle_fault(void *virt_addr, void * instr_ptr, void *state, size_t state_size
+void		paging_handle_fault(void *virt_addr, void * instr_ptr
 								, int present, int write, int user);
 
 int		paging_soft_check(void *virt_addr, size_t size);

@@ -184,9 +184,9 @@ struct siginfo {
 #define BUS_OBJERR	(2)
 
 /** Breakpoint */
-#define TRP_BRKPT	(0)
+#define TRAP_BRKPT	(0)
 /** Tracepoint */
-#define TRP_TRACE	(1)
+#define TRAP_TRACE	(1)
 
 /** Data available */
 #define POLL_IN		(0)

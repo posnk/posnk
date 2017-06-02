@@ -10,6 +10,7 @@
  */
 
 #include <stddef.h>
+#include <string.h>
 
 #include "kernel/paging.h"
 #include "kernel/physmm.h"
@@ -46,20 +47,19 @@ void paging_handle_out_of_memory()
 	earlycon_printf("OOM NOH\n");
 }
 
-void paging_handle_fault(void *virt_addr, void * instr_ptr, void *state, size_t state_size, int present, int write, int user)
+void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int write, int user)
 {
+	struct siginfo info;
 	uintptr_t addr = (uintptr_t) virt_addr;
 	physaddr_t phys_addr;
+
+	memset( &info, 0, sizeof( struct siginfo ) );
 	//earlycon_printf("\n PF: 0x%x at IP:0x%x\n", virt_addr, instr_ptr);
 	//debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
 	/* Handle page fault here */
 	if (user && (addr > 0xC0000000)) {
-		//TODO: Dispatch exception, usermode program tried to access kernel space
-		//debugcon_printf("umode violation!");
-		debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
-		exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
-	}
-	if (!present) {
+		/* Bad user access: exception */
+	} else if (!present) {
 		if ((addr >= 0xBFFF0000) && (addr < 0xBFFFB000)) {
 			/* Task stack area, add more stack */
 			virt_addr = (void *)(addr & ~PHYSMM_PAGE_ADDRESS_MASK);
@@ -70,28 +70,25 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, void *state, size_t 
 			}
 			//TODO: Assess potential for race conditions
 			paging_map(virt_addr, phys_addr, PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-			paging_tag(virt_addr, PAGING_PAGE_TAG_USER_DATA);		
+			paging_tag(virt_addr, PAGING_PAGE_TAG_USER_DATA);
+			return;
 		} else if ((addr >= 0xE0000000) && (addr < 0xFFC00000)) {
 			/* Kernel heap, check whether we have previously swapped out this page */
 			//TODO: Swapping, for now: PANIC!!!
-			//TODO: PANIC!
-			debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
-			exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
 		} else if (addr < 0xC0000000){
 			/* Application space page fault */
-			//TODO: Check for dynamic libraries, mmapped files and swapped out pages
-			//TODO: If no fix was found, dispatch exception
-			if (!procvmm_handle_fault(virt_addr)){
-				debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
-				exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
-			}
-		} else {
-			exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
-			debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+			if (procvmm_handle_fault(virt_addr))
+				return;
 		}
 	} else if (write) {
 		//TODO: Copy on write, 
-		debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
-		exception_handle(EXCEPTION_PAGE_FAULT, instr_ptr, state, state_size);
 	}
+	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+	if ( !present )
+		info.si_code = SEGV_MAPERR;
+	else
+		info.si_code = SEGV_ACCERR;
+	info.si_addr = virt_addr;
+	exception_handle( SIGSEGV, info, instr_ptr );
+	
 }

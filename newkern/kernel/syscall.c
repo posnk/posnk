@@ -11,6 +11,7 @@
 
 #include <string.h>
 #include <stddef.h>
+#include <signal.h>
 #include "kernel/heapmm.h"
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
@@ -159,6 +160,10 @@ uint32_t sys_dbgdrop( __attribute__((__unused__)) uint32_t param[4],  __attribut
 int curpid();
 void syscall_dispatch(void *user_param_block, void *instr_ptr)
 {
+
+	struct siginfo sigi;
+
+	memset( &sigi, 0, sizeof( struct siginfo ) );
 	int result;
 #ifdef CONFIG_SYSCALL_DEBUG
 	int call;
@@ -166,11 +171,13 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	syscall_params_t params;
 	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {	
 		debugcon_printf("Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x\n",scheduler_current_task->name,curpid(), instr_ptr, user_param_block);
-		process_send_signal(scheduler_current_task, SIGSEGV);
+		sigi.si_code = SEGV_MAPERR;
+		sigi.si_addr = user_param_block;
+		process_send_signal(scheduler_current_task, SIGSEGV, sigi);
 		return;
 	}
 	if ((params.magic != SYSCALL_MAGIC) || (params.call_id > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[params.call_id] == NULL) {
-		process_send_signal(scheduler_current_task, SIGSYS);
+		process_send_signal(scheduler_current_task, SIGSYS, sigi);
 		return;
 	}
 	syscall_errno = 0;

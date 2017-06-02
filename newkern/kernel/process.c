@@ -123,6 +123,7 @@ process_info_t *process_get(pid_t pid)
 typedef struct sig_pgrp_param {
 	pid_t	group;
 	int	signal;	
+	struct siginfo info;
 } sig_pgrp_param_t;
 
 uint32_t  process_signal_pgroup_numdone = 0;
@@ -130,7 +131,7 @@ uint32_t  process_signal_pgroup_numdone = 0;
 /** 
  * Iterator function that signals up processes with the given pgid
  */
-int process_sig_pgrp_iterator (llist_t *node, void *param)
+int process_sig_pgrp_iterator (llist_t *node, void *param )
 {
 	sig_pgrp_param_t *p = (sig_pgrp_param_t *) param;
 	process_info_t *process = (process_info_t *) node;
@@ -139,18 +140,19 @@ int process_sig_pgrp_iterator (llist_t *node, void *param)
 			syscall_errno = EPERM;
 			return 0;
 		}
-		process_send_signal(process, p->signal);
+		process_send_signal(process, p->signal, p->info);
 		process_signal_pgroup_numdone++;	
 	}
 	return 0;
 }
 
 /* TODO: Add some checks for existence to signal to caller */
-int process_signal_pgroup(pid_t pid, int signal)
+int process_signal_pgroup(pid_t pid, int signal, struct siginfo info)
 {
 	sig_pgrp_param_t param;
 	param.group = pid;
 	param.signal = signal;
+	param.info = info;
 	process_signal_pgroup_numdone = 0;
 	llist_iterate_select(scheduler_task_list, &process_sig_pgrp_iterator, (void *) &param);
 	debugcon_printf(" sent %i to %i tasks in group %i\n", signal, process_signal_pgroup_numdone, pid);
@@ -173,6 +175,10 @@ int process_exec(char *path, char **args, char **envs)
 	char **n_args;
 	char **n_envs;
 
+	struct siginfo sigi;
+
+	memset( &sigi, 0, sizeof( struct siginfo ) );
+
 	if (scheduler_current_task->image_inode) {
 		scheduler_current_task->image_inode->open_count--;
 		vfs_inode_release(scheduler_current_task->image_inode);
@@ -185,7 +191,7 @@ int process_exec(char *path, char **args, char **envs)
 	status = elf_load(path);
 	if (status) {
 		debugcon_printf("error loading elf %s\n",path);
-		process_send_signal(scheduler_current_task, SIGSYS);
+		process_send_signal(scheduler_current_task, SIGSYS, sigi);
 		do_signals();
 		schedule();
 		return status;	//NEVER REACHED
@@ -198,7 +204,7 @@ int process_exec(char *path, char **args, char **envs)
 	status = procvmm_do_exec_mmaps();
 	if (status) {
 		debugcon_printf("error mmapping stuff\n");
-		process_send_signal(scheduler_current_task, SIGSYS);
+		process_send_signal(scheduler_current_task, SIGSYS, sigi);
 		do_signals();
 		schedule();
 		return status;	//NEVER REACHED

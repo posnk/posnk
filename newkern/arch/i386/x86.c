@@ -1,5 +1,7 @@
 #include "arch/i386/x86.h"
+#include "arch/i386/task_context.h"
 #include "kernel/earlycon.h"
+#include "kernel/scheduler.h"
 #include "kdbg/dbgapi.h"
 #include <stddef.h>
 
@@ -45,13 +47,17 @@ void halt()
 	__asm__("cli;hlt");
 }
 
-void debug_dump_state(void *state, size_t state_size)
+void debug_dump_state()
 {	
-	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) state;
-	if (state_size != sizeof(i386_pusha_registers_t)) {
-		earlycon_puts("CORRUPT STATE STRUCT\n");
-		return;
-	}
+	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->user_regs;
+	earlycon_printf(" User Registers: EIP: 0x%x",tctx->user_eip);
+	earlycon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
+		regs->eax, regs->ebx, regs->ecx, regs->edx);
+	earlycon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
+		regs->esp, regs->ebp, regs->esi, regs->edi);
+	earlycon_printf(" Interrupt Registers: EIP: 0x%x",tctx->intr_eip);
+	regs = (i386_pusha_registers_t *) &tctx->intr_regs;
 	earlycon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
 	earlycon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
@@ -59,14 +65,11 @@ void debug_dump_state(void *state, size_t state_size)
 		
 }
 
-void debug_postmortem_hook(void *state, size_t state_size, void *instr_addr)
+void debug_postmortem_hook()
 {
-	uint32_t eip = (uint32_t) instr_addr;
-	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) state;
-	if (state_size != sizeof(i386_pusha_registers_t)) {
-		earlycon_puts("CORRUPT STATE STRUCT\n");
-		return;
-	}
+	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+	uint32_t eip = (uint32_t) tctx->intr_eip;
+	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->intr_regs;
 	asm("movl %0, %%esp;push %1;push %2;mov %%esp, %%ebp;cli;push $1;call dbgapi_invoke_kdbg"::"r"(regs->esp), "r"(eip), "r"(regs->ebp));
 	
 	dbgapi_invoke_kdbg(1);

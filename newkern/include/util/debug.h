@@ -14,6 +14,6 @@
  
  #include <stddef.h>
  
- void debug_dump_state(void *state, size_t state_size);
- void debug_postmortem_hook(void *state, size_t state_size, void *instr_addr);
+ void debug_dump_state();
+ void debug_postmortem_hook();
  #endif

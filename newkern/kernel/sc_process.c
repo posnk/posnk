@@ -41,8 +41,11 @@ uint32_t sys_fork(	__attribute__((__unused__)) uint32_t param[4],
  */
 uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
+	struct siginfo info;
 	process_info_t *process;
 	
+	memset( &info, 0, sizeof( struct siginfo ) );
+
 	/* The process to signal */
 	int pid = (int) param[0];
 	
@@ -54,6 +57,11 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 		syscall_errno = EINVAL;
 		return (uint32_t)-1;		
 	} 
+
+	/* Fill info */
+	info.si_code = SI_USER;
+	info.si_pid  = scheduler_current_task->pid;
+	info.si_uid  = scheduler_current_task->uid;
 	
 	/* Handle various cases for pid */
 	if (pid == 0) {		   
@@ -61,7 +69,7 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 		/* pid = 0  -> Send signal to current process group */
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup(
-			scheduler_current_task->pgid, sig) == 0) {
+			scheduler_current_task->pgid, sig, info ) == 0) {
 			return (uint32_t) -1;
 		} 
 		syscall_errno = 0;
@@ -78,7 +86,7 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 		/* pid < -1 -> Send signal to process group -pgid */
 	
 		syscall_errno = ESRCH;
-		if (process_signal_pgroup((pid_t) -pid, sig) == 0) {
+		if (process_signal_pgroup((pid_t) -pid, sig, info) == 0) {
 			return (uint32_t) -1;
 		} 
 		syscall_errno = 0;
@@ -96,7 +104,7 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 			syscall_errno = EPERM;
 			return (uint32_t) -1;
 		}	
-		process_send_signal(process, sig);
+		process_send_signal(process, sig, info);
 		return 0;
 	}		
 }

@@ -261,6 +261,8 @@ struct stream_poll {
 	semaphore_t		*notify;
 };
 
+void stream_notify_poll( stream_info_t *info );
+
 stream_ptr_t *stream_get_ptr (int fd);
 
 int stream_copy_fd_table (llist_t *target);
