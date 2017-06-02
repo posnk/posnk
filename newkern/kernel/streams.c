@@ -2113,9 +2113,8 @@ int _sys_close_int(process_info_t *process, int fd)
 
 	/* Free the fd handle */
 	stream_free_fd(fd);
-	
-	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+
+	//TODO: Lock on counter
 
 	/* Decrease the stream reference count */
 	ptr->info->ref_count--;
@@ -2128,6 +2127,9 @@ int _sys_close_int(process_info_t *process, int fd)
 	/* Check if this was the last pointer */
 	if (ptr->info->ref_count == 0) {
 		/* Close the stream */
+	
+		/* Acquire a lock on the stream */
+		semaphore_down(ptr->info->lock);
 
 		/* Handle the various stream types */
 		switch (ptr->info->type) {
@@ -2196,8 +2198,7 @@ int _sys_close_int(process_info_t *process, int fd)
 		semaphore_free(ptr->info->lock);
 		heapmm_free(ptr->info, sizeof(stream_info_t));
 
-	} else /* It was not, release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+	}
 
 	/* Free the memory for the pointer */
 	heapmm_free(ptr, sizeof(stream_ptr_t));
