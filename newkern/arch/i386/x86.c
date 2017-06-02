@@ -51,12 +51,12 @@ void debug_dump_state()
 {	
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->user_regs;
-	earlycon_printf(" User Registers: EIP: 0x%x",tctx->user_eip);
+	earlycon_printf(" User Registers: EIP: 0x%x\n",tctx->user_eip);
 	earlycon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
 	earlycon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
-	earlycon_printf(" Interrupt Registers: EIP: 0x%x",tctx->intr_eip);
+	earlycon_printf(" Interrupt Registers: EIP: 0x%x\n",tctx->intr_eip);
 	regs = (i386_pusha_registers_t *) &tctx->intr_regs;
 	earlycon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
