@@ -80,7 +80,7 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 	vterm_minor_terms = heapmm_alloc(sizeof(vterm_t) * minor_count);
 	for (minor = 0; minor < (dev_t) minor_count; minor++) {
 		vterm_minor_terms[minor].device_id = MAKEDEV(major, minor);
-		vterm_init(&(vterm_minor_terms[minor]), VTERM_FLAG_VT100, rows, cols);
+		vterm_init(&(vterm_minor_terms[minor]), 0, rows, cols);
 		//vterm_minor_terms[minor].ttyname   = "console";
 	}
 	tty_register_driver(name, major, minor_count, &vterm_putc);
