@@ -22,7 +22,25 @@
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
 
-int elf_load(char * path)
+int elf_verify( const char *hdr, size_t size )
+{
+	const Elf32_Ehdr *elf_header = ( Elf32_Ehdr *) hdr;
+
+	if ( size < sizeof( Elf32_Ehdr ) )
+		return 0;
+
+	if (elf_header->e_type != ET_EXEC) {
+		return 0;
+	}
+	//if (elf_header->e_machine != EM_386) {
+//		return 0;
+//	}
+	if (elf_header->e_phnum == 0)
+		return 0;
+
+}
+
+int elf_load( inode_t *inode )
 {	
 	char * name;
 	aoff_t rd_count;
@@ -33,35 +51,11 @@ int elf_load(char * path)
 	Elf32_Phdr *elf_pheader;
 	uintptr_t image_base = 0xc0000000;
 	uintptr_t image_top = 0;
-	inode_t *inode;
 
-	status = vfs_find_inode(path, &inode);
-
-	if (status) {
-		return status;
-	}
-
-	if (!S_ISREG(inode->mode)) {
-		vfs_inode_release(inode);
-		return EACCES;
-	} 
-	if (!vfs_have_permissions(inode, MODE_EXEC)) {
-		vfs_inode_release(inode);
-		return EACCES;
-	}
-
-	status = vfs_get_filename( path, &name );
-
-	if (status) {
-		vfs_inode_release(inode);
-		return status;
-	}
-
-	strcpy(scheduler_current_task->name, name);
-
-	heapmm_free(name, strlen(name) + 1);
+	inode = vfs_inode_ref( inode );
 
 	elf_header = (Elf32_Ehdr *) heapmm_alloc(sizeof(Elf32_Ehdr));
+
 	if (!elf_header) {
 		vfs_inode_release(inode);
 		return ENOMEM;

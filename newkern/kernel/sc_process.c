@@ -524,6 +524,10 @@ uint32_t sys_execve(uint32_t param[4], uint32_t param_size[4])
 		}		
 	}
 	status = process_exec(path, argv, envp);
+	if ( status != 0 ) {
+		syscall_errno = status;
+		status = -1;
+	}
 	heapmm_free(path , param_size[0]);
 	heapmm_free(argv , param_size[1]);
 	heapmm_free(argvs, param_size[1]);

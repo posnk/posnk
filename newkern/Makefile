@@ -94,6 +94,7 @@ kernel/shm.c \
 kernel/sem.c \
 kernel/msg.c \
 kernel/time.c \
+kernel/exec.c \
 kernel/drivermgr.c \
 kernel/sc_process.c \
 kernel/sc_perm.c \
