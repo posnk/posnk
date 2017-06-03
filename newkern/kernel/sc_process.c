@@ -174,8 +174,9 @@ uint32_t sys_setpgid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 	return 0;
 }
 
-uint32_t sys_exit(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_exit( uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
 {
+	scheduler_current_task->exit_status = param[0];
 	scheduler_current_task->state = PROCESS_KILLED;
 	process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
 	stream_do_close_all (scheduler_current_task);
