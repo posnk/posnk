@@ -147,10 +147,6 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_enter( stack );
-		if ( scheduler_current_task->pid == 679 ) {
-			debugcon_printf("ISR ENTER\n");
-			dumpisrstack(stack);
-		}
 	}
 	i386_kern_enter( stack );
 	if (int_id == 0x80) {
@@ -193,9 +189,5 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_exit( stack );
-		if ( scheduler_current_task->pid == 679 ) {
-			debugcon_printf("ISR EXIT\n");
-			dumpisrstack(stack);
-		}
 	}
 }
