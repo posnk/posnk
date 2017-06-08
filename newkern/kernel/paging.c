@@ -55,7 +55,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 
 	memset( &info, 0, sizeof( struct siginfo ) );
 	//earlycon_printf("\n PF: 0x%x at IP:0x%x\n", virt_addr, instr_ptr);
-	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, U:%i, W:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+//	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, U:%i, W:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
 	/* Handle page fault here */
 	if (user && (addr > 0xC0000000)) {
 		/* Bad user access: exception */
