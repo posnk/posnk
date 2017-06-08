@@ -215,8 +215,9 @@ exec_start:
 	
 	args_size = 0;
 
-	for (c = 0; c < argl_size; c++)
+	for (c = 0; c < argl_size; c++) {
 		args_size += strlen(args[c]) + 1;
+	}
 
 	arg_size = (argl_size + 1) * sizeof(char *) + args_size;
 

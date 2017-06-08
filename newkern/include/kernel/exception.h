@@ -15,6 +15,6 @@
 #include <stddef.h>
 #include <signal.h>
 
-void exception_handle( int sig, struct siginfo info, void *instr );
+void exception_handle( int sig, struct siginfo info, void *instr,int forceusr );
 
 #endif

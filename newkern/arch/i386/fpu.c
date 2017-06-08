@@ -102,6 +102,11 @@ void i386_fpu_sigexit()
 	i386_fpu_load(tctx);
 }
 
+void i386_fpu_del_task(process_info_t *task) {
+	if ( task == i386_fpu_process )
+		i386_fpu_process=NULL;
+}
+
 int i386_fpu_handle_ill()
 {
 	if(!i386_fpu_enabled)

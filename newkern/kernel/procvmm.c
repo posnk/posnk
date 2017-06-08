@@ -37,6 +37,17 @@ void procvmm_clear_mmaps()
 		procvmm_unmmap(region);
 }
 
+void procvmm_clear_mmaps_other( process_info_t *info )
+{	
+	process_mmap_t *region;
+	for (	region  = (process_mmap_t *) 
+				llist_get_last( info->memory_map );
+			region != NULL;
+			region  = (process_mmap_t *) 
+				llist_get_last(info->memory_map))
+		procvmm_unmmap_other(region, info);
+}
+
 int procvmm_do_exec_mmaps()
 {
 	scheduler_current_task->heap_start	=
@@ -442,6 +453,37 @@ int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t 
 	
 	return 0;
 }
+
+void procvmm_unmmap_other(process_info_t *task, process_mmap_t *region)
+{//TODO: Enable writeback
+	uintptr_t start = (uintptr_t) region->start;
+	uintptr_t page;
+	physaddr_t frame;
+	llist_unlink((llist_t *) region);
+	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
+		vfs_inode_release( region->file );
+	}
+	//if (region->flags & PROCESS_MMAP_FLAG_SHM) {
+	//	region->shm->info.shm_nattch--;
+	//}
+	if (region->flags & PROCESS_MMAP_FLAG_DEVICE) {
+		//TODO: Should the driver know it was unmapped?
+		heapmm_free(region->name, strlen(region->name) + 1);
+		heapmm_free(region, sizeof(process_mmap_t));	
+		return;
+	}
+	for (page = start; page < (start +region->size); page += PHYSMM_PAGE_SIZE) {
+		frame = paging_get_physical_address_other(task->page_directory,
+												  (void *)page);
+		if (frame) {
+			if (!(region->flags & PROCESS_MMAP_FLAG_SHM))
+				physmm_free_frame(frame);
+		}
+	}
+	heapmm_free(region->name, strlen(region->name) + 1);
+	heapmm_free(region, sizeof(process_mmap_t));		
+}
+
 
 void procvmm_unmmap(process_mmap_t *region)
 {//TODO: Enable writeback

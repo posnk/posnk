@@ -26,8 +26,8 @@ size_t heapmm_request_core ( void *address, size_t size )
 	physaddr_t frame;
 	if (paging_active_dir == NULL)
 		return 0;
-
-	//debugcon_printf("[0x%x] %i morecore \n", address, size);
+	if ( ((uintptr_t)(address  + size)) > 0xF0000000 )
+		debugcon_printf("[0x%x] %i morecore \n", address, size);
 	for (size_counter = 0; size_counter < size; size_counter += PHYSMM_PAGE_SIZE) {
 		frame = physmm_alloc_frame();
 		if (frame == PHYSMM_NO_FRAME){
@@ -55,7 +55,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 
 	memset( &info, 0, sizeof( struct siginfo ) );
 	//earlycon_printf("\n PF: 0x%x at IP:0x%x\n", virt_addr, instr_ptr);
-	//debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, U:%i, W:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
 	/* Handle page fault here */
 	if (user && (addr > 0xC0000000)) {
 		/* Bad user access: exception */
@@ -89,6 +89,6 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 	else
 		info.si_code = SEGV_ACCERR;
 	info.si_addr = virt_addr;
-	exception_handle( SIGSEGV, info, instr_ptr );
+	exception_handle( SIGSEGV, info, instr_ptr, user );
 	
 }

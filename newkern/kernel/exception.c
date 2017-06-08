@@ -30,9 +30,9 @@ void exception_panic( int sig, void *instr_pointer )
 	halt();
 }
  
-void exception_handle( int sig, struct siginfo info, void *instr )
+void exception_handle( int sig, struct siginfo info, void *instr, int forceusr )
 {
-	if (((uintptr_t)instr) > 0xC0000000) {
+	if ((!forceusr) &&((uintptr_t)instr) > 0xC0000000) {
 		//TODO: Kernel mode exception
 		exception_panic(sig,instr);
 	} else {

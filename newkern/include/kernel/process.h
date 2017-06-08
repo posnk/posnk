@@ -147,6 +147,8 @@ typedef struct process_child_event process_child_event_t;
 
 int curpid();
 
+void procvmm_clear_mmaps_other( process_info_t *info );
+
 process_info_t *process_get(pid_t pid);	
 
 int process_push_user_data(void *data, size_t size);

@@ -130,6 +130,12 @@ int scheduler_init_task(scheduler_task_t *new_task) {
 	return 0;
 }
 
+int scheduler_free_task(scheduler_task_t *new_task) {
+	i386_fpu_del_task( new_task );
+	heapmm_free(new_task->arch_state,sizeof(i386_task_context_t));
+	return 0;
+}
+
 int scheduler_fork_to(scheduler_task_t *new_task)
 {
 	i386_task_context_t *tctx;

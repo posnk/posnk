@@ -16,6 +16,7 @@
 #include "kernel/scheduler.h"
 #include "config.h"
 #include <string.h>
+#include <assert.h>
 
 llist_t			i386_page_directory_list;
 i386_page_dir_list_t	i386_page_dir_list_initial;
@@ -122,9 +123,33 @@ page_dir_t *paging_create_dir()
 	llist_add_end(&i386_page_directory_list, (llist_t *) list_node);
 	list_node->dir = dir_w;
 	dir_w->content = (void *) dir;
+	dir_w->content_phys = paging_get_physical_address(dir);
 	return dir_w;
 }
-void paging_free_dir(page_dir_t *dir); //TODO: Implement
+void paging_free_dir(page_dir_t *dir) //TODO: Implement
+{
+	i386_page_dir_t *pdir = (i386_page_dir_t *) dir->content;
+	i386_page_dir_list_t *list;
+	physaddr_t table_phys;
+	uintptr_t copy_counter;
+
+	for (copy_counter = 1; copy_counter < 0x300; copy_counter++) {
+		if ( !( pdir->directory[copy_counter] & I386_PAGE_FLAG_PRESENT ) )
+			continue;
+		physmm_free_frame( pdir->directory[copy_counter] & 0xFFFFF000 );
+	}
+
+	for (	list = (i386_page_dir_list_t*)i386_page_directory_list.next;
+			list != &i386_page_directory_list;
+			list = (i386_page_dir_list_t*) list->node.next )
+		if ( list->dir == dir )
+			break;
+	assert ( list != &i386_page_directory_list );
+	llist_unlink( (llist_t*) list);
+	heapmm_free( pdir, sizeof(i386_page_dir_t) );
+	heapmm_free( dir, sizeof(page_dir_t));
+	heapmm_free( list, sizeof(i386_page_dir_list_t));
+}
 
 typedef struct i386_set_pd_param {
 	uintptr_t	   index;
@@ -260,6 +285,30 @@ void paging_init()
 	/* Undo GDT trick */
 	i386_init_switch_gdt();
 	pdir->content = (void *)0xFFFFF000;
+}
+
+uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr) {
+	i386_page_dir_t *page_dir = (i386_page_dir_t *) dir->content;
+	uintptr_t pd_idx = I386_ADDR_TO_PD_IDX(virt_addr);
+	uintptr_t pt_idx = I386_ADDR_TO_PT_IDX(virt_addr);
+	uint32_t pd_entry = page_dir->directory[pd_idx];
+	physaddr_t pt_o;
+	i386_page_table_t *pt;	
+	uint32_t pt_v;
+	if (pd_entry & I386_PAGE_FLAG_PRESENT) {
+		pt = heapmm_alloc_page();	
+		pt_o = paging_get_physical_address( pt );
+		paging_map( pt, pd_entry & 0xFFFFF000, I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
+		pt_v = pt->pages[pt_idx];
+	
+		paging_map( pt, pt_o, I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
+		heapmm_free( pt, 4096);
+		if (pt_v & I386_PAGE_FLAG_PRESENT)
+			return (pt_v & 0xFFFFF000) | ((uintptr_t) virt_addr & 0xFFF);
+		else
+			return 0;
+	} else
+		return 0;
 }
 
 uintptr_t paging_get_physical_address(void * virt_addr) {
