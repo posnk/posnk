@@ -76,7 +76,6 @@ void i386_fpu_sigenter()
 		return;
 	if (i386_fpu_process != scheduler_current_task)
 		return;
-	debugcon_printf("sigenter fpu\n");
 	i386_fpu_save(tctx);
 }
 
@@ -87,7 +86,6 @@ void i386_fpu_fork()
 		return;
 	if (i386_fpu_process != scheduler_current_task)
 		return;
-	debugcon_printf("fork fpu\n");
 	i386_fpu_save(tctx);
 }
 
@@ -98,7 +96,6 @@ void i386_fpu_sigexit()
 		return;
 	if (i386_fpu_process != scheduler_current_task)
 		return;
-	debugcon_printf("sigexit fpu\n");
 	i386_fpu_load(tctx);
 }
 
@@ -111,7 +108,6 @@ int i386_fpu_handle_ill()
 {
 	if(!i386_fpu_enabled)
 		return 0;
-	debugcon_printf("enabling fpu\n");
 	i386_enable_fpu();
 	if (i386_fpu_process == scheduler_current_task)
 		return 1;
@@ -120,7 +116,6 @@ int i386_fpu_handle_ill()
 	}
 	i386_fpu_process = scheduler_current_task;
 	if (!((i386_task_context_t *)i386_fpu_process->arch_state)->fpu_used) {
-	debugcon_printf("initializing fpu\n");
 		i386_init_fpu();
 		((i386_task_context_t *)i386_fpu_process->arch_state)->fpu_used = 1;
 		return 1;		
