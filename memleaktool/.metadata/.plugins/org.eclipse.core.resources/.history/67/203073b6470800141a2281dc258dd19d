@@ -1,9 +1,0 @@
-package nl.peterbjornx.posnk.memleaktool;
-
-import java.util.LinkedList;
-
-public class HeapManager {
-	private LinkedList<MemoryBlock> used_blocks = new LinkedList<MemoryBlock>();
-	private LinkedList<MemoryBlock> free_blocks = new LinkedList<MemoryBlock>();
-
-}

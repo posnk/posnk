@@ -1,7 +1,0 @@
-/* XPM */
-static char * taskbuttonactive_xpm[] = {
-"1 2 2 1",
-" 	c #403F3B",
-".	c #2A2A28",
-" ",
-"."};

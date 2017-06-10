@@ -1,7 +1,0 @@
-/* XPM */
-static char * menusel_xpm[] = {
-"1 2 2 1",
-" 	c #F98751",
-".	c #EC7337",
-" ",
-"."};
