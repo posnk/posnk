@@ -300,7 +300,7 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing system timer...");
-	i386_pit_setup(100, 0, I386_PIT_OCW_MODE_RATEGEN);
+	i386_pit_setup(1000, 0, I386_PIT_OCW_MODE_RATEGEN);
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing driver framework...");
@@ -362,7 +362,7 @@ void i386_kmain()
 	asm ("sti");
 	if (!pid_init)
 		i386_init_stub();
-	//ata_interrupt_enabled = 1;
+	ata_interrupt_enabled = 1;
 
 	pid_idle = scheduler_fork();
 	asm ("sti");
