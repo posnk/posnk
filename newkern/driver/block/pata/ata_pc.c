@@ -19,6 +19,77 @@
 #include "arch/i386/x86.h"
 #include "driver/block/pata/ata.h"
 
+char *ataport_names[] = {
+	"ATA_DATA      ",// 0
+	"ATA_FEATURE   ",// 1
+	"ATA_SCOUNT_L  ",// 2
+	"ATA_SECTOR_NO ",// 3
+	"ATA_CYL_L     ",// 4
+	"ATA_CYL_H     ",// 5
+	"ATA_DRIVE_HEAD",// 6
+	"ATA_CMD_STATUS",// 7
+	"ATA_SCOUNT_H  ",// 8
+	"ATA_LBA3      ",// 9
+	"ATA_LBA4      ",//10
+	"ATA_LBA5      ",//11
+	"ATA_CTRL_ASTAT",//12
+	"ATA_DEVADDR   ",//13
+	"ATA_BM_COMMAND",//14
+	"ATA_PORT15    ",//15
+	"ATA_BM_STATUS ",//16
+	"ATA_PORT16    ",//17
+	"ATA_BM_PRDT_PT"//18
+};
+
+void ata_dump_port(char *func, uint16_t port, uint32_t val)
+{
+	debugcon_printf("%s(%s) = ",func,ataport_names[port]);
+	if ( port == ATA_BUSMASTER_STATUS_PORT ) {
+		if ( val & ATA_BM_STATUS_FLAG_DMAGO )
+			debugcon_printf("DGO ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_BM_STATUS_FLAG_ERR )
+			debugcon_printf("ERR ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_BM_STATUS_FLAG_IREQ )
+			debugcon_printf("IRQ ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_BM_STATUS_FLAG_SIMPLEX )
+			debugcon_printf("SPX\n");
+		else
+			debugcon_printf("   \n");
+	} else if ( port == ATA_STATUS_PORT ) {
+		if ( val & ATA_STATUS_FLAG_ERR )
+			debugcon_printf("ERR ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_STATUS_FLAG_DRQ )
+			debugcon_printf("DRQ ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_STATUS_FLAG_SRV )
+			debugcon_printf("SRV ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_STATUS_FLAG_DF )
+			debugcon_printf("DF ");
+		else
+			debugcon_printf("   ");
+		if ( val & ATA_STATUS_FLAG_RDY )
+			debugcon_printf("RDY ");
+		else
+			debugcon_printf("    ");
+		if ( val & ATA_STATUS_FLAG_BSY )
+			debugcon_printf("BSY\n");
+		else
+			debugcon_printf("   \n");
+	} else
+		debugcon_printf("0x%x\n",val);
+}
+
 /**
  * @brief 	Reads from an ATA control port
  *
@@ -53,7 +124,7 @@ uint8_t ata_read_port(ata_device_t *device, uint16_t port)
 	 * control port */
 	if ((port > 0x07) && (port < 0x0C)) 
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-	//debugcon_printf("ata_read_port (%x) = %x\n",port,rv);
+	//ata_dump_port("ata_read_port",port,rv);
 
 	return rv;
 }
@@ -92,7 +163,7 @@ void ata_write_port(ata_device_t *device, uint16_t port, uint8_t value)
 	 * control port */
 	if ((port > 0x07) && (port < 0x0C)) //LBA48
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
-	//debugcon_printf("ata_write_port(%x) = %x\n",port,value);
+	//ata_dump_port("ata_write_prt",port,value);
 }
 
 
@@ -128,6 +199,8 @@ void ata_write_port_long(ata_device_t *device, uint16_t port, uint32_t value)
 	 * control port */
 	if ((port > 0x07) && (port < 0x0C)) //LBA48
 		ata_write_port(device, ATA_CONTROL_PORT, device->ctrl_reg);
+	//ata_dump_port("ata_write_prl",port,value);
+	
 }
 
 

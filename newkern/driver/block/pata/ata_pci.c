@@ -46,6 +46,7 @@ int ata_pci_probe(uint32_t bus_addr) {
 								14 );
 		irq = 14;
 	}
+	pci_config_write_byte( bus, device, function, PCI_CONFIG_COMMAND,0x5); 
 
 	dev_p->pio_base = (bar0 > 1) ? bar0 : 0x1F0;
 	dev_p->ctrl_base = (bar1 > 1) ? bar1 : 0x3F4;
