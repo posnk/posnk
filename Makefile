@@ -8,7 +8,7 @@
 export
 
 CROSS_COMPILE = $(TARGET)-
-ARCH = `scripts/getarch "$(TARGET)"`
+ARCH = $(shell scripts/getarch $(TARGET))
 BUILDDIR = ./
 ARCHCAP = `echo $(ARCH) | tr a-z A-Z`
 ARCHDEF = -DARCH_$(ARCHCAP) -DARCH_NAME=\"$(ARCH)\"
@@ -191,12 +191,10 @@ OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 
 # build tree creation 
 
-$(BUILDDIR):
-	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \; 2> /dev/null
-
 # dynamic makefile and source generation
 
-$(BUILDDIR)_dmake: $(BUILDDIR) build/driverinit.c build/drivermake.m4 fs/fs.list
+$(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
+	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \; 2> /dev/null
 	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
 	$(CPP) -I . build/driverinit.c > _dinit.c
 
@@ -220,7 +218,7 @@ $(BUILDDIR)vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
 install: $(BUILDDIR)vmpos
 	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos
 	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos_unstripped
-	strip $(DESTDIR) /boot/vmpos
+	strip $(DESTDIR)/boot/vmpos
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
