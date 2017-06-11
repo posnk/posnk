@@ -4,22 +4,23 @@
 # 'make'        build executable file 'mycc'
 # 'make clean'  removes all .o and executable files
 #
-
+export
 CROSS_COMPILE = i386-pc-posnk-
 ARCH = i386
 
 # define the C compiler to use
-CC   = @echo " [  CC  ]	" $< ; $(CROSS_COMPILE)gcc
-LD   = @echo " [  LD  ]	" $@ ; $(CROSS_COMPILE)gcc
-CPP  = @echo " [  CPP ]	" $@ ; $(CROSS_COMPILE)cpp
-OCP  = @echo " [OBJCPY]	" $@ ; $(CROSS_COMPILE)objcopy
-M4   = @echo " [  M4  ]	" $@ ; m4
-GAS  = @echo " [  AS  ]	" $@ ; $(CROSS_COMPILE)gcc
-NASM = @echo " [ NASM ]	" $< ; nasm
-HCC  = @echo " [ HCC  ]	" $< ; gcc
-HLD  = @echo " [ HLD  ]	" $@ ; gcc
-HCPP = @echo " [ HCPP ]	" $@ ; cpp
-HGAS = @echo " [  HAS ]	" $@ ; as
+CC   = @echo " [   CC    ]	" $< ; $(CROSS_COMPILE)gcc
+LD   = @echo " [   LD    ]	" $@ ; $(CROSS_COMPILE)gcc
+RLD  = @echo " [   LD    ]	" $@ ; $(CROSS_COMPILE)ld
+CPP  = @echo " [   CPP   ]	" $@ ; $(CROSS_COMPILE)cpp
+OCP  = @echo " [ OBJCPY  ]	" $@ ; $(CROSS_COMPILE)objcopy
+M4   = @echo " [   M4    ]	" $@ ; m4
+GAS  = @echo " [   AS    ]	" $@ ; $(CROSS_COMPILE)gcc
+NASM = @echo " [  NASM   ]	" $< ; nasm
+HCC  = @echo " [ HOSTCC  ]	" $< ; gcc
+HLD  = @echo " [ HOSTLD  ]	" $@ ; gcc
+HCPP = @echo " [ HOSTCPP ]	" $@ ; cpp
+HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 
 # define any compile-time flags
 CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer -finline-functions -finline-functions-called-once -fauto-inc-dec
@@ -30,11 +31,6 @@ NASMFLAGS = -w+orphan-labels -felf -g
 
 GASFLAGS = -g
 
-MKIFLAGS = -A arm -O linux -C none 
-
-ARMV7_LOAD_ADDR = 80008000
-ARMV7_ENTRY_POINT = 80008000
-
 # define any directories containing header files other than /usr/include
 #
 INCLUDES = -I./include -I./include/crt
@@ -44,7 +40,7 @@ HINCLUDES = -I./include -I./include/hcrt
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-LFLAGS = -g -T linker.ld -ffreestanding -O2 -nostdlib -static-libgcc
+LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 A7LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 
 HLFLAGS = -g -lfuse
@@ -116,69 +112,6 @@ util/mruc.c \
 crt/string.c \
 crt/stdlib.c 
 
-SRCS_I386 = arch/i386/x86.c \
-arch/i386/paging.c \
-arch/i386/init.c \
-arch/i386/isr.c \
-arch/i386/idt.c \
-arch/i386/pic.c \
-arch/i386/pit.c \
-arch/i386/signal.c \
-arch/i386/fpu.c \
-arch/i386/task_switch.c \
-arch/i386/protection.c \
-driver/console/vgacon.c \
-driver/console/sercon.c \
-driver/console/vgacon_early.c \
-driver/console/sercon_debug.c \
-driver/bus/pci.c \
-driver/bus/pci_intel_host.c \
-arch/i386/fastcrt/memcpy.S \
-arch/i386/fastcrt/memchr.S \
-arch/i386/fastcrt/memmove.S \
-arch/i386/fastcrt/memset.S \
-arch/i386/fastcrt/strchr.S \
-arch/i386/fastcrt/strlen.S 
-
-ASMS_I386 = arch/i386/start.s \
-arch/i386/isr_entry.s \
-arch/i386/phys_copy.s \
-arch/i386/contextswitch.s \
-arch/i386/prot_asm.s
-
-SRCS_ARMV7KERNEL = arch/armv7/init.c \
-arch/armv7/loader/sercon.c \
-arch/armv7/isr.c \
-arch/armv7/paging.c \
-arch/armv7/task_switch.c \
-arch/armv7/debug.c \
-driver/platform/omap3430/mpu_intc.c \
-driver/platform/omap3430/omap3430.c \
-driver/platform/omap3430/gptimer.c \
-$(SRCS) $(SRCS_DLHEAPMM)
-
-ASMS_ARMV7KERNEL = arch/armv7/mode.S \
-arch/armv7/exception.S \
-arch/armv7/mmu.S \
-arch/armv7/cswitch.S
-
-SRCS_ARMV7LOADER = arch/armv7/loader/init.c \
-arch/armv7/loader/sercon.c \
-arch/armv7/loader/mmu.c \
-arch/armv7/loader/earlycon.c \
-arch/armv7/loader/elf.c \
-arch/armv7/atags.c \
-kernel/physmm.c \
-util/llist.c \
-crt/string.c \
-crt/stdlib.c 
-
-ASMS_ARMV7LOADER = arch/armv7/loader/start.S \
-arch/armv7/mode.S \
-arch/armv7/exception.S \
-arch/armv7/mmu.S \
-arch/armv7/loader/chain.S
-
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/synch.c \
 tests/fs/sched.c \
@@ -222,91 +155,43 @@ TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 # Below we are replacing the suffix .c of all words in the macro SRCS
 # with the .o suffix
 #
-OBJS = $(SRCS:.c=.o) $(SRCS_DLHEAPMM:.c=.o)
-OBJS_I386 = $(SRCS_I386:.c=.o) $(ASMS_I386:.s=.o)
-OBJS_ARMV7LOADER = $(SRCS_ARMV7LOADER:.c=.o) $(ASMS_ARMV7LOADER:.S=.ao) payload_armv7.bo
-OBJS_ARMV7KERNEL = $(SRCS_ARMV7KERNEL:.c=.o) $(ASMS_ARMV7KERNEL:.S=.ao)
 
-OBJS_TESTFS = $(TEST_FS_SRCS:.c=.ho)
+include arch/$(ARCH)/Makefile
+
+OBJS          = $(addprefix $(BUILDDIR),$(SRCS:.c=.o))
+OBJS_DRIVER   = $(addprefix $(BUILDDIR),$(SRCS_DRIVER:.c=.o))
+OBJS_DLHEAPMM = $(addprefix $(BUILDDIR),$(SRCS_DLHEAPMM:.c=.o))
+
+$(OBJS): $(BUILDDIR)%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJS_PHEAPMM): $(BUILDDIR)%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
+
 #install_h 
 
 .PHONY: depend clean
 
 default: default_$(ARCH)
 
-default_i386: kernel_i386 
-
-default_armv7: mmc_armv7
-
 all:	default 
 
-_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
-	$(M4) -I . build/drivermake.m4 > _dmake
-	$(CPP) -I . build/driverinit.c > _dinit.c
+$(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
+	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
+	$(CPP) -I . build/driverinit.c > $(BUILDDIR)_dinit.c
 
-test_dmake:	
-	$(HCPP) -DHOSTED_TEST -I . build/driverinit.c > _dinit.c
-	$(M4) -I . build/drivermake.m4 > _dmake
+include $(BUILDDIR)_dmake
 
-include _dmake
+$(OBJS_DRIVER): $(BUILDDIR)%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-OBJS_TEST_MRUC = $(TEST_MRUC_SRCS:.c=.ho)
-
-OBJS_DRIVER = $(SRCS_DRIVER:.c=.o)
-
-OBJS_HOST_FS = $(SRCS_HOST_FS:.c=.ho)
-
-OBJS_TESTERROR = $(SRCS_TESTERROR:.c=.ho)
-
-testfs: test_dmake $(OBJS_TESTFS) $(OBJS_HOST_FS)
-	$(HLD) $(HLFLAGS) -o testfs $(OBJS_TESTFS) $(OBJS_HOST_FS)
-
-testmruc: $(OBJS_TEST_MRUC)
-	$(HLD) $(HLFLAGS) -o testmruc $(OBJS_TEST_MRUC)
-
-testerror: $(OBJS_TESTERROR)
-	$(HLD) $(HLFLAGS) -o testerror $(OBJS_TESTERROR)
-
-test: testfs testerror
-	@echo " [ TEST ] error.h"; ./testerror
-	@touch empty
-	@dd if=/dev/zero of=ext2test.ext2 bs=1024 count=100k
-	@echo " [MKE2FS] " ext2test.ext2 ; yes | /sbin/mke2fs ./ext2test.ext2 -L posnk_e2_test -t ext2 -O none -b 1024 > /dev/null
-	@echo " [TESTFS] " ext2 ext2test.ext2 ; valgrind -v --leak-check=full  ./testfs ext2 ext2test.ext2
-	@echo " [E2FSCK] " ext2test.ext2 ; /sbin/e2fsck -f ./ext2test.ext2
-	@rm empty
-
-mmc_armv7: _dmake loader_armv7_uboot initrd_armv7_uboot
-	@dd if=/dev/zero of=posnk.sd bs=1024 count=100k 2> /dev/null
-	@echo " [MKE2FS] " posnk.sd ; yes | /sbin/mke2fs ./posnk.sd -L posnk_sd -t ext2 -O none -b 1024 > /dev/null
-	@echo " [MOUNT ] " posnk.sd ../hdd ; sudo mount -o loop -t ext2 posnk.sd ../hdd
-	@echo " [  CP  ] " loader_armv7_uboot ; cp loader_armv7_uboot ../hdd/posldr
-	@echo " [  CP  ] " initrd_armv7_uboot ; cp initrd_armv7_uboot ../hdd/posrd
-	@echo " [UMOUNT] " ../hdd ; sleep 0.2; sudo umount ../hdd
- 	
-payload_armv7: _dmake $(OBJS_ARMV7KERNEL) $(OBJS_DRIVER) arch/armv7/kern.ld
-	$(LD) -T arch/armv7/kern.ld $(A7LFLAGS) $(LIBS) -o payload_armv7 $(OBJS_ARMV7KERNEL) $(OBJS_DRIVER) -lgcc
-	@rm _dmake
-
-payload_armv7.bo: payload_armv7
-	$(OCP) -I binary -O elf32-littlearm -B armv4t payload_armv7 payload_armv7.bo
-	
-initrd_armv7_uboot: initrd
-	@echo " [  TAR ]	initrd.tar" ; ./scripts/mkinitrd_pos
-	@echo " [MKIMG ] " initrd_armv7_uboot ; mkimage $(MKIFLAGS) -T ramdisk -n posrd -d cdrom_files/initrd.tar initrd_armv7_uboot
-
-loader_armv7_uboot: loader_armv7.bin
-	@echo " [MKIMG ] " loader_armv7_uboot ; mkimage $(MKIFLAGS) -T kernel -a $(ARMV7_LOAD_ADDR) -e $(ARMV7_ENTRY_POINT) -n posnk_loader -d loader_armv7.bin loader_armv7_uboot
-
-loader_armv7.bin: loader_armv7	
-	$(OCP) -I elf32-littlearm -O binary --gap-fill 0xFF --set-start 0x$(ARMV7_LOAD_ADDR) -j .setup loader_armv7 loader_armv7.bin
-
-loader_armv7: $(OBJS_ARMV7LOADER) arch/armv7/loader/ldr.ld
-	$(LD) -T arch/armv7/loader/ldr.ld $(A7LFLAGS) $(LIBS) -o loader_armv7 $(OBJS_ARMV7LOADER) -lgcc
-	
-
-kernel_i386: _dmake $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
-	$(LD) $(LFLAGS) $(LIBS) -o vmpos $(OBJS) $(OBJS_I386) $(OBJS_DRIVER)
+vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
+	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o vmpos $(OBJS_KERN)
 	@rm _dmake kernel/version.o
 
 install_h:
@@ -319,11 +204,6 @@ install_h:
 	@cp include/crt/sys/msg.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/msg.h
 	@cp include/crt/linux/input.h ../gcc_posnk/i386-pc-posnk/include/linux/
 
-cdrom_i386: kernel_i386 cdrom_files/ramdisk.ext2
-#	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
-	@cp vmpos cdrom_files/vmpos
-	@echo " [ MKCD ]	pos.iso" ; grub-mkrescue -o pos.iso cdrom_files
-
 
 #test_heapmm: $(OBJS) tests/test_heapmm.o
 #	$(CC) $(CFLAGS) $(INCLUDES) -o test_heapmm $(OBJS) tests/test_heapmm.o $(LFLAGS) $(LIBS)
@@ -335,17 +215,6 @@ cdrom_i386: kernel_i386 cdrom_files/ramdisk.ext2
 # it uses automatic variables $<: the name of the prerequisite of
 # the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
-
-%.ao: %.S
-	$(GAS) $(GASFLAGS) $(INCLUDES) -c $<  -o $@
-
-%.ho: %.c
-	$(HCC) $(HCFLAGS) $(HINCLUDES) -c $<  -o $@
-
-.s.o:
-	$(NASM) $(NASMFLAGS) $< -o $@ 
 
 clean: clean_driver
 	@$(RM) *.o *~ $(MAIN)
@@ -377,10 +246,6 @@ clean_test:
 	$(RM) driver/console/*.ho
 	$(RM) driver/bus/*.ho
 	$(RM) arch/i386/*.ho
-
-emulate: cdrom_i386
-	clear;qemu -m 1024 -serial stdio -cdrom pos.iso -hda hdd.img -s -boot order=dca -vga std $(EMUFLAGS)
-
 
 depend: $(SRCS) $(TESTSRCS) $(SRCS_I386)
 	makedepend $(INCLUDES) $^
