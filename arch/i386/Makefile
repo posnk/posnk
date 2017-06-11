@@ -49,7 +49,7 @@ ARCHOBJ=$(BUILDDIR)arch/i386.o
 $(ARCHOBJ): $(OBJS_I386)
 	$(RLD) $(RLDFLAGS) -r $(OBJS_I386) -o $@
 
-default_i386: vmpos
+default_i386: $(BUILDDIR)vmpos
 
 cdrom_i386: vmpos cdrom_files/ramdisk.ext2
 #	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos

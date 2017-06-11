@@ -7,6 +7,7 @@
 export
 CROSS_COMPILE = i386-pc-posnk-
 ARCH = i386
+BUILDDIR = ./
 
 # define the C compiler to use
 CC   = @echo " [   CC    ]	" $< ; $(CROSS_COMPILE)gcc
@@ -175,13 +176,16 @@ OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 
 #install_h 
 
+$(BUILDDIR):
+	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \;
+
 .PHONY: depend clean
 
 default: default_$(ARCH)
 
 all:	default 
 
-$(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
+$(BUILDDIR)_dmake: $(BUILDDIR) build/driverinit.c build/drivermake.m4 fs/fs.list
 	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
 	$(CPP) -I . build/driverinit.c > $(BUILDDIR)_dinit.c
 
@@ -190,9 +194,9 @@ include $(BUILDDIR)_dmake
 $(OBJS_DRIVER): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
-	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o vmpos $(OBJS_KERN)
-	@rm _dmake kernel/version.o
+$(BUILDDIR)vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
+	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o $@ $(OBJS_KERN)
+	@rm $(BUILDDIR)_dmake $(BUILDDIR)kernel/version.o
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
