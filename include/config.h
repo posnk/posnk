@@ -1,6 +1,11 @@
 //4MB
 #define CONFIG_KERNEL_INITIAL_SIZE		(0x400000)
-
+#define CONFIG_CMDLINE_MAX_LENGTH		(256)
+#define CONFIG_CMDLINE_DEFAULT			("root=3000")
+#define CONFIG_CONSOLE_DEFAULT			("/dev/console")
+#define CONFIG_INIT_DEFAULT				("/sbin/init")
+#define CONFIG_ROOT_DEFAULT				(0x3000)
+#define CONFIG_ROOT_FS_DEFAULT			("ext2")
 #define CONFIG_PROCESS_MAX_NAME_LENGTH	((size_t)128)
 #define CONFIG_SYSTEM_PROCESS_NAME		("system task")
 #define CONFIG_MASKABLE_SIGNAL_BITMAP   (0xFFFFF7FF)

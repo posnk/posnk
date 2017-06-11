@@ -34,6 +34,7 @@
 #include "kernel/tty.h"
 #include "kernel/drivermgr.h"
 #include "kernel/interrupt.h"
+#include "kernel/version.h"
 #include "kdbg/dbgapi.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -131,6 +132,16 @@ void i386_init_handle_vbe(multiboot_info_t *mbt)
 	debugcon_printf("Bootloader VBE info @%x : {mode: %i,  lfb: %x, w:%i, h: %i, bpp: %i}\n", (mbt->vbe_mode_info), (int)mbt->vbe_mode, (int)vbe_mode.physbase, (int)vbe_mode.Xres, (int)vbe_mode.Yres, (int)vbe_mode.bpp);	
 }
 
+void i386_init_handle_cmdline(multiboot_info_t *mbt)
+{
+	/* Check if we had a command line */
+	if ( (~mbt->flags & MULTIBOOT_INFO_CMDLINE) || (!mbt->cmdline) )
+		return;
+	memcpy( kernel_cmdline, (char *)(mbt->cmdline| 0xC0000000), 
+			CONFIG_CMDLINE_MAX_LENGTH );
+	kernel_cmdline[CONFIG_CMDLINE_MAX_LENGTH-1] = 0;
+}
+
 void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 {
 	size_t initial_heap = 4096;
@@ -154,16 +165,17 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 
 
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-		earlycon_puts("WARN: Not loaded by multiboot\nAssuming 8MB of RAM and trying again...");
+		earlycon_puts("WARN: Not loaded by multiboot\n");
+		earlycon_puts("Assuming 8MB of RAM and trying again...");
 		physmm_free_range(0x100000, 0x800000);
 		mem_avail = 0x700000;
 	} else {
 		mem_avail = i386_init_multiboot_memprobe(mbd);
 		i386_init_reserve_modules(mbd);
 		i386_init_handle_vbe(mbd);
+		i386_init_handle_cmdline(mbd);
 	}
-	physmm_claim_range(0x100000, 0x400000);//((physaddr_t)&i386_start_kheap) - 0xC0000000);
-
+	physmm_claim_range(0x100000, 0x400000);
 	earlycon_puts("OK\n");
 	earlycon_printf("Detected %i MB of RAM.\n", (mem_avail/0x100000));
 	earlycon_puts("Enabling paging...");
@@ -284,7 +296,12 @@ void i386_kmain()
 
 	earlycon_puts("OK\n\n");
 
-	earlycon_printf("P-OS Kernel v0.01 built on %s %s. %i MB free\n",__DATE__,__TIME__,physmm_count_free()/0x100000);
+	earlycon_printf("P-OS Release %s Version %s. %i MB free\n",
+		posnk_release, posnk_version, physmm_count_free()/0x100000);
+
+	earlycon_printf("kernel commandline:\n%s\n",kernel_cmdline);
+
+	cmdline_parse();
 
 	earlycon_puts("Initializing exception handlers...");
 	i386_idt_initialize();
@@ -326,7 +343,7 @@ void i386_kmain()
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing VFS and mounting rootfs...");
-	if (vfs_initialize(MAKEDEV(0x10,0x1), "ext2"))
+	if (vfs_initialize( root_dev, root_fs ))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");
@@ -338,13 +355,6 @@ void i386_kmain()
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");*/
-
-	earlycon_puts("Creating tty stub dev..");
-	int isd = vfs_mknod("/faketty", S_IFCHR | 0777, 0x0200);
-	if (!isd)
-		earlycon_puts("OK\n");
-	else
-		earlycon_printf("FAIL %x\n",isd);
 
 	ipc_init();
 	

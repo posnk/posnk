@@ -106,6 +106,7 @@ kernel/sc_streams.c \
 kernel/sc_time.c \
 kernel/sc_signals.c \
 kernel/shutdown.c \
+kernel/cmdline.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \
