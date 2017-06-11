@@ -1,0 +1,16 @@
+#!/bin/bash
+# Target triplet to ARCH value utility
+
+case "$1" in
+	i386-pc-posnk)
+		echo "i386"
+		;;
+	arm-none-posnk)
+		echo "armv7"
+		;;
+	*)
+		echo "unknown"
+		echo "Invalid target triplet $1 specified to getarch!"
+		exit 255
+esac
+exit 0

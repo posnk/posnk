@@ -1,5 +1,3 @@
-#define ARCH_I386
-#define ARCH_NAME						"i386"
 //4MB
 #define CONFIG_KERNEL_INITIAL_SIZE		(0x400000)
 

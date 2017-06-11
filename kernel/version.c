@@ -4,7 +4,7 @@
 #include "kernel/scheduler.h"
 #include <string.h>
 
-const char *posnk_version = __DATE__ " " __TIME__;
+const char *posnk_version = __DATE__ " " __TIME__ " " BUILD_MACHINE;
 const char *posnk_release = "git master";
 const char *posnk_machine = ARCH_NAME;
 const char *posnk_sysname = "posnk";

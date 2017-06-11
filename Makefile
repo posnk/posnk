@@ -4,10 +4,16 @@
 # 'make'        build executable file 'mycc'
 # 'make clean'  removes all .o and executable files
 #
+
 export
-CROSS_COMPILE = i386-pc-posnk-
-ARCH = i386
+
+CROSS_COMPILE = $(TARGET)-
+ARCH = `scripts/getarch "$(TARGET)"`
 BUILDDIR = ./
+ARCHCAP = `echo $(ARCH) | tr a-z A-Z`
+ARCHDEF = -DARCH_$(ARCHCAP) -DARCH_NAME=\"$(ARCH)\"
+VERDEF = -DBUILD_MACHINE=\"`whoami`@`uname -n`\"
+DEFS = $(ARCHDEF) $(VERDEF)
 
 # define the C compiler to use
 CC   = @echo " [   CC    ]	" $< ; $(CROSS_COMPILE)gcc
@@ -23,40 +29,39 @@ HLD  = @echo " [ HOSTLD  ]	" $@ ; gcc
 HCPP = @echo " [ HOSTCPP ]	" $@ ; cpp
 HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 
-# define any compile-time flags
-CFLAGS = -Wall -g -Wextra -fno-exceptions -ffreestanding -fno-omit-frame-pointer -finline-functions -finline-functions-called-once -fauto-inc-dec
+# Set the compiler and assembler flags
+CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
+	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
+	-fauto-inc-dec
 
-HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h -mno-tbm -D_FILE_OFFSET_BITS=64
+HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h \
+	-mno-tbm -D_FILE_OFFSET_BITS=64
 
 NASMFLAGS = -w+orphan-labels -felf -g
 
 GASFLAGS = -g
 
-# define any directories containing header files other than /usr/include
-#
+# Set the correct include paths
 INCLUDES = -I./include -I./include/crt
 
 HINCLUDES = -I./include -I./include/hcrt
 
-# define library paths in addition to /usr/lib
-#   if I wanted to include libraries not in /usr/lib I'd specify
-#   their path using -Lpath, something like:
+# Set the required linker flags
 LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
-A7LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 
 HLFLAGS = -g -lfuse
 
-# define any libraries to link into executable:
-#   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
-#   option, something like (this will link in libmylib.so and libm.so:
+# define any libraries to link into executable
 LIBS = 
 
+# define the source files for using Peter's kernel heap manager
 SRCS_PHEAPMM = kernel/heapmm.c
 
+# define the source files for using Doug Lea's malloc as kernel heap manager
 SRCS_DLHEAPMM = kernel/dlmalloc.c \
 		kernel/dlheapmm.c
 
-# define the C source files
+# define the platform-independent source files
 SRCS = kernel/physmm.c \
 kernel/paging.c \
 kernel/blkcache.c \
@@ -113,6 +118,7 @@ util/mruc.c \
 crt/string.c \
 crt/stdlib.c 
 
+# define the source files for the hosted filesystem test
 TEST_FS_SRCS = tests/fs/mm.c \
 tests/fs/synch.c \
 tests/fs/sched.c \
@@ -139,32 +145,39 @@ kernel/drivermgr.c \
 util/mruc.c \
 util/llist.c
 
+# define the sources for the hosted MRU cache tests
 TEST_MRUC_SRCS = tests/test_mruc.c \
 util/llist.c \
 util/mruc.c
 
-
+# define the sources for the hosted error passing test
 SRCS_TESTERROR = tests/test_error.c
 
+# define the standalone test sources
 TESTSRCS = tests/test_heapmm.c tests/test_physmm.c
 
-# define the C object files 
-#
-# This uses Suffix Replacement within a macro:
-#   $(name:string1=string2)
-#         For each word in 'name' replace 'string1' with 'string2'
-# Below we are replacing the suffix .c of all words in the macro SRCS
-# with the .o suffix
-#
+# define the default targets
+
+.PHONY: depend clean
+
+default: default_$(ARCH)
+
+all:	default
+
+# include the architecture makefile
 
 include arch/$(ARCH)/Makefile
+
+# generate object file lists for arch-independent parts of the kernel
 
 OBJS          = $(addprefix $(BUILDDIR),$(SRCS:.c=.o))
 OBJS_DRIVER   = $(addprefix $(BUILDDIR),$(SRCS_DRIVER:.c=.o))
 OBJS_DLHEAPMM = $(addprefix $(BUILDDIR),$(SRCS_DLHEAPMM:.c=.o))
 
+# rules to compile those objects
+
 $(OBJS): $(BUILDDIR)%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $ -c $< -o $@
 
 $(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -172,31 +185,42 @@ $(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
 $(OBJS_PHEAPMM): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# generate full kernel object list
+
 OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 
-#install_h 
+# build tree creation 
 
 $(BUILDDIR):
-	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \;
+	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \; 2> /dev/null
 
-.PHONY: depend clean
-
-default: default_$(ARCH)
-
-all:	default 
+# dynamic makefile and source generation
 
 $(BUILDDIR)_dmake: $(BUILDDIR) build/driverinit.c build/drivermake.m4 fs/fs.list
 	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
-	$(CPP) -I . build/driverinit.c > $(BUILDDIR)_dinit.c
+	$(CPP) -I . build/driverinit.c > _dinit.c
+
+# include dynamic makefile
 
 include $(BUILDDIR)_dmake
+
+# driver compilation rule
 
 $(OBJS_DRIVER): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+# kernel linking rule
+
 $(BUILDDIR)vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
 	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o $@ $(OBJS_KERN)
 	@rm $(BUILDDIR)_dmake $(BUILDDIR)kernel/version.o
+
+# kernel install rule
+
+install: $(BUILDDIR)vmpos
+	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos
+	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos_unstripped
+	strip $(DESTDIR) /boot/vmpos
 
 install_h:
 	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
