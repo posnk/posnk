@@ -1,5 +1,5 @@
 /**
- * kernel/process.c
+ * kernel/exec.c
  *
  * Part of P-OS kernel.
  *
@@ -7,6 +7,7 @@
  *
  * Changelog:
  * 07-04-2014 - Created
+ *    05-2017 - Split off from process.c
  */
 #include <string.h>
 #include <stddef.h>
