@@ -21,6 +21,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 */
 
 #include <string.h>
+#include "kernel/earlycon.h"
 
 #include "driver/console/vterm/vterm.h"
 #include "driver/console/vterm/vterm_private.h"
@@ -153,10 +154,8 @@ void vterm_interpret_csi(vterm_t *vterm)
          interpret_csi_RESTORECUR(vterm,csiparam,param_count);
          break;
       }
-#ifdef DEBUG
       default:
-         //TODO: fprintf(stderr, "Unrecogized CSI: <%s>\n", rt->pd->esbuf); break;
-#endif
+         debugcon_printf("Unrecogized CSI: <%s>\n", vterm->esbuf); break;
    }
 }
 

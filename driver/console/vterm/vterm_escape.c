@@ -44,6 +44,28 @@ void vterm_escape_cancel(vterm_t *vterm)
    return;
 }
 
+void vterm_DECALN(vterm_t *vterm)
+{
+   int   cell_count;
+   int   x,y;
+   int   i;
+
+   if(vterm == NULL) return;
+
+   cell_count=vterm->rows*vterm->cols;
+
+   for(i=0;i < cell_count;i++)
+   {
+      x=i%vterm->cols;
+      y=(int)(i/vterm->cols);
+      vterm->cells[y][x].ch='E';
+      //vterm->cells[y][x].attr=vterm->colors & A_COLOR;
+      vterm_invalidate_cell(vterm, y, x);
+   }
+
+   return;
+}
+
 void try_interpret_escape_seq(vterm_t *vterm)
 {
    char  firstchar=vterm->esbuf[0];
@@ -53,14 +75,34 @@ void try_interpret_escape_seq(vterm_t *vterm)
    if(!firstchar) return;
 
    /* interpret ESC-M as reverse line-feed */
-   if(firstchar=='M')
+   if(firstchar=='M') // RI  Reverse Index
    {
       vterm_scroll_up(vterm);
       vterm_escape_cancel(vterm);
       return;
    }
 
-   if(firstchar != '[' && firstchar != ']')
+   if(firstchar=='D') // IND Index
+   {
+      vterm_scroll_down(vterm);
+      vterm_escape_cancel(vterm);
+      return;
+   }
+   if(firstchar=='E') // NEL Next Line
+   {
+      vterm->ccol=0;
+      vterm_scroll_down(vterm);
+      vterm_escape_cancel(vterm);
+   }
+   if( firstchar=='#' && vterm->esbuf_len == 2 ) // DEC escape sequence
+   {
+      switch ( lastchar ) {
+          case '8':
+              vterm_DECALN(vterm);
+              break;
+      }
+   }
+   if(firstchar != '[' && firstchar != ']' && firstchar != '#' )
    {
       vterm_escape_cancel(vterm);
       return;

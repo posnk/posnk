@@ -21,7 +21,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 */
 
 #include <string.h>
-
+#include "kernel/earlycon.h"
 #include "driver/console/vterm/vterm.h"
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_csi.h"
@@ -59,6 +59,7 @@ void vterm_put_char(vterm_t *vterm,chtype c)
 
 void vterm_render_ctrl_char(vterm_t *vterm,char c)
 {
+   //debugcon_printf("render: %i\n");
    switch(c)
    {
       /* carriage return */
@@ -71,7 +72,7 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c)
       /* line-feed */
       case '\n':
       {
-         vterm->ccol=0;
+         //vterm->ccol=0;//TODO: Check new line mode
          vterm_scroll_down(vterm);
          break;
       }
@@ -134,11 +135,9 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c)
          break;
       }
 
-#ifdef DEBUG
       default:
-         //TODO: fprintf(stderr, "Unrecognized control char: %d (^%c)\n", c, c + '@');
+         debugcon_printf("Unrecognized control char: %d (^%c)\n", c, c + '@');
          break;
-#endif
    }
 }
 
@@ -162,7 +161,7 @@ void vterm_render(vterm_t *vterm,const char *data,int len)
          /* append character to ongoing escape sequence */
          vterm->esbuf[vterm->esbuf_len]=*data;
          vterm->esbuf[++vterm->esbuf_len]=0;
-
+		 //debugcon_printf("try escape:%s\n",vterm->esbuf);
          try_interpret_escape_seq(vterm);
       }
       else

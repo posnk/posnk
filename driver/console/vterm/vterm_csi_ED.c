@@ -56,6 +56,18 @@ void interpret_csi_ED(vterm_t *vterm, int param[], int pcount)
    /* clean range */
    for(r=start_row;r <= end_row;r++)
    {
+      start_col = 0;
+      end_col = vterm->cols-1;
+      if ( r == vterm->crow )
+      {
+         if ( pcount && param[0] == 1 )
+         {
+             end_col = vterm->crow+1;
+         } else if ( pcount && param[0] == 2 )
+         {
+             start_col = vterm->crow;
+         }
+      }
       for(c=start_col;c <= end_col;c++)
       {
          vterm->cells[r][c].ch=0x20;               // erase with blanks.
