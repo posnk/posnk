@@ -226,7 +226,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	asm ("movl %%esp, %%eax; movl %1, %%esp; call i386_kmain;movl %%eax, %%esp;"
 	     :"=r"(init_sp)        /* output */
 	     :"r"(new_sp)         /* input */
-	     :"%eax"         /* clobbered register */
+	     :"%eax"        /* clobbered register */
 	     );
 
 	
@@ -238,7 +238,7 @@ void vterm_vga_init();
 
 void i386_init_stub()
 {
-	int fd = _sys_open("/dev/tty1", O_RDWR, 0);
+	int fd = _sys_open( console_path, O_RDWR, 0 );
 	if (fd < 0) {
 		earlycon_printf("Error opening tty : %i\n",syscall_errno);
 	} else {
@@ -255,7 +255,7 @@ void i386_init_stub()
 	char *ptr = NULL;
 	void *nullaa = &ptr;
 	//vgacon_clear_video();
-	int status = process_exec("/sbin/init", nullaa, nullaa);
+	int status = process_exec( init_path, nullaa, nullaa );
 	if (status) {
 		earlycon_printf("Error executing init : %i\n",status);
 	}
