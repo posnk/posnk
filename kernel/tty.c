@@ -45,7 +45,7 @@ tty_ops_t *tty_operations;
 void tty_reset_termios(tty_info_t *tty)
 {
 	tty->termios.c_iflag = ICRNL | IXON | BRKINT;
-	tty->termios.c_oflag = OPOST | NL0 | CR0 | TAB0 | BS0 | VT0 | FF0;
+	tty->termios.c_oflag = OPOST | ONLCR | NL0 | CR0 | TAB0 | BS0 | VT0 | FF0;
 	tty->termios.c_lflag = ECHO | ECHOE | ECHOK | ISIG | ICANON;
 	tty->termios.c_cflag = CS8 | CREAD;
 	tty->termios.c_ispeed = B9600;
@@ -186,9 +186,10 @@ void tty_output_char(dev_t device, char c)
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
 	if (tty->termios.c_oflag & OPOST) { //TODO: Flow control
-		if ((tty->termios.c_oflag & ONLCR) && (c == '\n'))
-			c = '\r';
-		else if ((tty->termios.c_oflag & OCRNL) && (c == '\r'))
+		if ((tty->termios.c_oflag & ONLCR) && (c == '\n')) {
+			tty->write_out(device, '\r');
+			
+		} else if ((tty->termios.c_oflag & OCRNL) && (c == '\r'))
 			c = '\n';
 		tty->write_out(device, c);
 	} else
