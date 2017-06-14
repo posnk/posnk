@@ -154,6 +154,11 @@ void vterm_interpret_csi(vterm_t *vterm)
          interpret_csi_RESTORECUR(vterm,csiparam,param_count);
          break;
       }
+      case 'c':
+      {
+         interpret_csi_DA1(vterm,csiparam,param_count);
+         break;
+      }
       default:
          debugcon_printf("Unrecogized CSI: <%s>\n", vterm->esbuf); break;
    }

@@ -39,6 +39,7 @@ void  interpret_csi_ED(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_EL(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_ICH(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_DCH(vterm_t *vterm,int param[],int pcount);
+void  interpret_csi_DA1(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_IL(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_DL(vterm_t *vterm,int param[],int pcount);
 void  interpret_csi_ECH(vterm_t *vterm,int param[],int pcount);

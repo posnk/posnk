@@ -38,11 +38,22 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #define STATE_CHILD_EXITED    (1<<4)
 #define STATE_CURSOR_INVIS    (1<<5)
 #define STATE_SCROLL_SHORT    (1<<6)      // scrolling region is not full height
+#define STATE_LNM             (1<<7)
+#define STATE_CKM             (1<<8)
+#define STATE_ANM             (1<<9)
+#define STATE_COLM            (1<<10)
+#define STATE_SCLM            (1<<11)
+#define STATE_SCNM            (1<<12)
+#define STATE_OM              (1<<13)
+#define STATE_AWM             (1<<14)
+#define STATE_ARM             (1<<15)
+#define STATE_INLM            (1<<16)
 
 #define IS_MODE_ESCAPED(x)    (x->state & STATE_ESCAPE_MODE)
 #define IS_MODE_ACS(x)        (x->state & STATE_ALT_CHARSET)
 
 typedef struct _vterm_cell_s vterm_cell_t;
+typedef guint vterm_state_t;
 
 struct _vterm_cell_s
 {
@@ -70,7 +81,7 @@ struct _vterm_s
                                                    always kept:
                                                    esbuf[esbuf_len] == '\0' 	*/
 	guint	         flags;						      // user options
-	guint            state;                        // internal state control
+	vterm_state_t    state;                        // internal state control
 	dev_t		 device_id;
 	void             (*write) (vterm_t*,guint32);
 };
@@ -80,6 +91,6 @@ struct _vterm_s
 void vterm_invalidate_screen(vterm_t *vt);
 void vterm_invalidate_cursor(vterm_t *vt);
 void vterm_invalidate_cell(vterm_t *vt, int row, int col);
-
+void vterm_mode_change( vterm_t *vt, vterm_state_t dstate );
 #endif
 

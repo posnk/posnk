@@ -30,12 +30,18 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 
 void vterm_put_char(vterm_t *vterm,chtype c)
 {
+    int wouldwrap = 0;
 	static char		vt100_acs[]="`afgjklmnopqrstuvwxyz{|}~";
 
    if(vterm->ccol >= vterm->cols)
    {
-      vterm->ccol=0;
-      vterm_scroll_down(vterm);
+      if ( vterm->state & STATE_AWM )
+      {
+         vterm->ccol=0;
+         vterm_scroll_down(vterm);
+      }
+      else
+         wouldwrap = 1;
    }
 
    if(IS_MODE_ACS(vterm))
@@ -53,6 +59,8 @@ void vterm_put_char(vterm_t *vterm,chtype c)
    vterm->cells[vterm->crow][vterm->ccol].attr=vterm->curattr;
    vterm->ccol++;
    vterm_invalidate_cell(vterm, vterm->crow, vterm->ccol - 1);
+   if (wouldwrap)
+       vterm->ccol--;
 
    return;
 }
@@ -72,7 +80,8 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c)
       /* line-feed */
       case '\n':
       {
-         //vterm->ccol=0;//TODO: Check new line mode
+         if ( vterm->state & STATE_LNM )
+             vterm->ccol=0;
          vterm_scroll_down(vterm);
          break;
       }

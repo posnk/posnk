@@ -88,7 +88,14 @@ void vterm_write_vt100(vterm_t *vterm,guint32 keycode)
 
    switch(keycode)
    {
-      case '\n':           buffer="\r";      break;
+      case '\n':
+      {
+        if ( vterm->state & STATE_LNM )
+           buffer="\r\n";
+        else
+           buffer="\r";
+        break;
+      }
       case KEY_UP:         buffer="\033[A";    break;
       case KEY_DOWN:       buffer="\033[B";    break;
       case KEY_RIGHT:      buffer="\033[C";    break;
