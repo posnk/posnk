@@ -31,7 +31,6 @@ void vterm_mode_change( vterm_t *vt, vterm_state_t dstate )
     debugcon_printf("Modechange: dmode: %x\n", dstate);
     if ( dstate & STATE_COLM )
     {
-       debugcon_printf("Modechange: erase screen\n", dstate);
        vt->crow=0;
        vt->ccol=0;
        vt->scroll_min = 0;
@@ -41,11 +40,14 @@ void vterm_mode_change( vterm_t *vt, vterm_state_t dstate )
     }
     if ( dstate & STATE_OM )
     {
-        debugcon_printf("Modechange: home cursor\n", dstate);
         if ( vt->state & STATE_OM )
           vt->crow=vt->scroll_min;
         else
           vt->crow=0;
         vt->ccol=0;
+    }
+    if ( dstate & STATE_SCNM )
+    {
+        vterm_invalidate_screen(vt);
     }
 }

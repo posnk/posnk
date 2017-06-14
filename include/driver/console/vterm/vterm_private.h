@@ -48,6 +48,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #define STATE_AWM             (1<<14)
 #define STATE_ARM             (1<<15)
 #define STATE_INLM            (1<<16)
+#define STATE_SAVED_ACS       (1<<17)
 
 #define IS_MODE_ESCAPED(x)    (x->state & STATE_ESCAPE_MODE)
 #define IS_MODE_ACS(x)        (x->state & STATE_ALT_CHARSET)
@@ -67,6 +68,7 @@ struct _vterm_s
 	vterm_cell_t     **cells;
 	gchar            ttyname[96];                  // populated with ttyname_r()
 	guint            curattr;                      // current attribute set
+	guint            savedattr;
 	gint	         crow,ccol;			            // current cursor column & row
 	gint	         scroll_min;					      // top of scrolling region
 	gint	         scroll_max;					      // bottom of scrolling region

@@ -93,6 +93,31 @@ void try_interpret_escape_seq(vterm_t *vterm)
       vterm->ccol=0;
       vterm_scroll_down(vterm);
       vterm_escape_cancel(vterm);
+      return;
+   }
+   if(firstchar=='7') // DECSC Save cursor, graphics rendition and charset
+   {
+      vterm->savedattr = vterm->curattr;
+      vterm->saved_x = vterm->ccol;
+      vterm->saved_y = vterm->crow;
+      if ( vterm->state & STATE_ALT_CHARSET )
+        vterm->state |= STATE_SAVED_ACS;
+      else
+        vterm->state &= ~STATE_SAVED_ACS;
+      vterm_escape_cancel(vterm);
+      return;
+   }
+   if(firstchar=='8') // DECRC Restore cursor, graphics rendition and charset
+   {
+      vterm->curattr = vterm->savedattr;
+      vterm->ccol = vterm->saved_x;
+      vterm->crow = vterm->saved_y;
+      if ( vterm->state & STATE_SAVED_ACS )
+        vterm->state |= STATE_ALT_CHARSET;
+      else
+        vterm->state &= ~STATE_ALT_CHARSET;
+      vterm_escape_cancel(vterm);
+      return;
    }
    if( firstchar=='#' && vterm->esbuf_len == 2 ) // DEC escape sequence
    {
@@ -101,8 +126,26 @@ void try_interpret_escape_seq(vterm_t *vterm)
               vterm_DECALN(vterm);
               break;
       }
+      vterm_escape_cancel(vterm);
+      return;
    }
-   if(firstchar != '[' && firstchar != ']' && firstchar != '#' )
+   if( firstchar=='(' && vterm->esbuf_len == 2 ) // Set G0 character set
+   {
+      //TODO: Implement
+      vterm_escape_cancel(vterm);
+      return;
+   }
+   if( firstchar==')' && vterm->esbuf_len == 2 ) // Set G1 character set
+   {
+      //TODO: Implement
+      vterm_escape_cancel(vterm);
+      return;
+   }
+   if(  firstchar != '[' && 
+        firstchar != ']' && 
+        firstchar != '#' &&
+        firstchar != '(' &&
+        firstchar != ')' )
    {
       vterm_escape_cancel(vterm);
       return;

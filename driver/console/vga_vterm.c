@@ -39,15 +39,20 @@ void vterm_vga_write_crtc_register(char id,char val){
 	i386_outb(0x3D5,val);
 }
 
-inline char vga_vterm_map_attr(int attr)
+inline char vga_vterm_map_attr(vterm_t *vt, int attr)
 {
 	char fg, bg;
 	fg = (char) vga_vterm_colour_map[attr & 0xF];
 	bg = (char) vga_vterm_colour_map[(attr & 0xF0) >> 4];
-	if (attr & A_BOLD)
-		fg |= 8;
 	//if (attr & A_BOLD)
 	//	bg |= 8;
+	if ( (!(attr & A_REVERSE )) != !( vt->state & STATE_SCNM ) ) {
+	    bg ^= fg;
+	    fg ^= bg;// ( fg = fg ^ ( bg ^ fg ) = bg )
+	    bg ^= fg;// ( bg = bg ^ ( bg ^ fg ) = fg )
+	}
+	if (attr & A_BOLD)
+		fg |= 8;
 	return fg | (bg << 4);
 }
 
@@ -60,7 +65,7 @@ void vterm_invalidate_screen(vterm_t *vt)
 		for (col = 0; col < vt->cols; col++) {
 			cpt = (void *)(((uintptr_t)vc->video_buffer) + (col + row * 80)*2);
 			cpt->character = (char) vt->cells[row][col].ch;
-			cpt->attribute = (char) vga_vterm_map_attr(vt->cells[row][col].attr);
+			cpt->attribute = (char) vga_vterm_map_attr(vt,vt->cells[row][col].attr);
 		}
 	vterm_vga_position(vc, vt->ccol, vt->crow, 1);
 }
@@ -71,15 +76,12 @@ void vterm_invalidate_cell(vterm_t *vt, int row, int col)
 	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
 	cpt = (void *)(((uintptr_t)vc->video_buffer) + (col + row * 80)*2);
 	cpt->character = (char) vt->cells[row][col].ch;
-	cpt->attribute = (char) vga_vterm_map_attr(vt->cells[row][col].attr);
+	cpt->attribute = (char) vga_vterm_map_attr(vt,vt->cells[row][col].attr);
 }
 
 void vterm_invalidate_cursor(vterm_t *vt)
 {
-	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];	
-	volatile vga_vterm_screen_character_t *cpt = vc->video_buffer;
-	cpt = (void *)(((uintptr_t)vc->video_buffer) + (vt->ccol + vt->crow * 80)*2);
-	cpt->attribute = (char) vga_vterm_map_attr(vt->curattr);
+	vga_vterm_vc_t *vc = &vterm_vga_all_vcs[MINOR(vt->device_id)];
 	if (MINOR(vt->device_id) == vterm_vga_current_vc)
 		vterm_vga_position(vc, vt->ccol, vt->crow, 1);
 }
