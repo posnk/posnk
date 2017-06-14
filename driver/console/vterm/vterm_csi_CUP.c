@@ -31,14 +31,27 @@ void interpret_csi_CUP(vterm_t *vterm, int param[], int pcount)
    if (pcount == 0)
    {
       /* special case */
-      vterm->crow=0;
+      if ( vterm->state & STATE_OM )
+          vterm->crow=vterm->scroll_min;
+      else
+          vterm->crow=0;
       vterm->ccol=0;
       return;
    }
    else if (pcount < 2) return;  // malformed
 
-   vterm->crow=param[0]-1;       // convert from 1-based to 0-based.
-   vterm->ccol=param[1]-1;       // convert from 1-based to 0-based.
+   param[0]--;// convert from 1-based to 0-based.
+   param[1]--;// convert from 1-based to 0-based.
+
+   if ( vterm->state & STATE_OM )
+   {
+       param[0] += vterm->scroll_min;
+       if ( param[0] > vterm->scroll_max )
+           param[0] = vterm->scroll_max;
+   }
+
+   vterm->crow=param[0];       
+   vterm->ccol=param[1];
 
    // vterm->state |= STATE_DIRTY_CURSOR;
 

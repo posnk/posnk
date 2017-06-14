@@ -63,7 +63,7 @@ void interpret_csi_ED(vterm_t *vterm, int param[], int pcount)
          if ( pcount && param[0] == 1 )
          {
              end_col = vterm->crow+1;
-         } else if ( pcount && param[0] == 2 )
+         } else if ( pcount && param[0] == 0 )
          {
              start_col = vterm->crow;
          }

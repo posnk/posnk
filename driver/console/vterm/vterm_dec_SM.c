@@ -78,6 +78,7 @@ void interpret_dec_SM(vterm_t *vterm,int param[],int pcount)
           case 6:       //DECOM   Origin mode
           {
               vterm->state |= STATE_OM;
+              ostate &= ~STATE_OM;// Always signal change
               break;
           }
           case 7:       //DECAWM  Auto wrap mode

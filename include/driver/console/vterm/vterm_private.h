@@ -41,10 +41,10 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #define STATE_LNM             (1<<7)
 #define STATE_CKM             (1<<8)
 #define STATE_ANM             (1<<9)
-#define STATE_COLM            (1<<10)
-#define STATE_SCLM            (1<<11)
-#define STATE_SCNM            (1<<12)
-#define STATE_OM              (1<<13)
+#define STATE_COLM            (1<<10)//x0400
+#define STATE_SCLM            (1<<11)//x0800
+#define STATE_SCNM            (1<<12)//x1000
+#define STATE_OM              (1<<13)//x2000
 #define STATE_AWM             (1<<14)
 #define STATE_ARM             (1<<15)
 #define STATE_INLM            (1<<16)

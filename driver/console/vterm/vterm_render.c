@@ -40,8 +40,9 @@ void vterm_put_char(vterm_t *vterm,chtype c)
          vterm->ccol=0;
          vterm_scroll_down(vterm);
       }
-      else
-         wouldwrap = 1;
+      else {
+         vterm->ccol--;
+      }
    }
 
    if(IS_MODE_ACS(vterm))
@@ -59,8 +60,8 @@ void vterm_put_char(vterm_t *vterm,chtype c)
    vterm->cells[vterm->crow][vterm->ccol].attr=vterm->curattr;
    vterm->ccol++;
    vterm_invalidate_cell(vterm, vterm->crow, vterm->ccol - 1);
-   if (wouldwrap)
-       vterm->ccol--;
+   if ( vterm->ccol == vterm->cols && c == ' ' )
+       vterm->ccol--; //TODO: Is this correct?
 
    return;
 }
@@ -78,6 +79,8 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c)
       }
 
       /* line-feed */
+      case 013:
+      case 014:
       case '\n':
       {
          if ( vterm->state & STATE_LNM )
@@ -96,7 +99,8 @@ void vterm_render_ctrl_char(vterm_t *vterm,char c)
       /* tab */
       case '\t':
       {
-         while(vterm->ccol%8) vterm_put_char(vterm,' ');
+         vterm->ccol = ((vterm->ccol + 7)/8)*8;
+         clamp_cursor_to_bounds(vterm);
          break;
       }
 
