@@ -53,6 +53,35 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #define IS_MODE_ESCAPED(x)    (x->state & STATE_ESCAPE_MODE)
 #define IS_MODE_ACS(x)        (x->state & STATE_ALT_CHARSET)
 
+#define MOD_SHIFT             (1<<0)
+#define MOD_CTRL              (1<<1)
+#define MOD_CAPS              (1<<2)
+#define MOD_ALT               (1<<3)
+
+#define VTKEY_F1              (256)
+#define VTKEY_F2              (257)
+#define VTKEY_F3              (258)
+#define VTKEY_F4              (259)
+#define VTKEY_F5              (260)
+#define VTKEY_F6              (261)
+#define VTKEY_F7              (262)
+#define VTKEY_F8              (263)
+#define VTKEY_F9              (264)
+#define VTKEY_F10             (265)
+#define VTKEY_F11             (266)
+#define VTKEY_LEFT            (267)
+#define VTKEY_RIGHT           (268)
+#define VTKEY_UP              (269)
+#define VTKEY_DOWN            (270)
+#define VTKEY_F12             (271)
+#define VTKEY_F13             (272)
+#define VTKEY_NUL             (273)
+#define VTKEY_PUP             (274)
+#define VTKEY_PDOWN           (275)
+#define VTKEY_HOME            (276)
+#define VTKEY_END             (277)
+#define VTKEY_INS             (278)
+
 typedef struct _vterm_cell_s vterm_cell_t;
 typedef guint vterm_state_t;
 

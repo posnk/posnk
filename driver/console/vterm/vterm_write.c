@@ -22,15 +22,13 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 
 #include <string.h>
 
-#include <glib.h>
-
 #include "driver/console/vterm/vterm.h"
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_write.h"
 
 void vterm_write_tty(vterm_t *vterm, void *buffer, int size);
 
-void vterm_write_pipe(vterm_t *vterm,guint32 keycode)
+void vterm_write_pipe(vterm_t *vterm, int keycode)
 {
    if(vterm == NULL) return;
 
@@ -39,50 +37,7 @@ void vterm_write_pipe(vterm_t *vterm,guint32 keycode)
    return;
 }
 
-
-
-void vterm_write_rxvt(vterm_t *vterm,guint32 keycode)
-{
-   gchar *buffer=NULL;
-
-   switch(keycode)
-   {
-      case '\n':           buffer="\r";      break;
-      case KEY_UP:         buffer="\033[A";    break;
-      case KEY_DOWN:       buffer="\033[B";    break;
-      case KEY_RIGHT:      buffer="\033[C";    break;
-      case KEY_LEFT:       buffer="\033[D";    break;
-      case KEY_BACKSPACE:  buffer="\b";      break;
-      case KEY_IC:         buffer="\033[2~";   break;
-      case KEY_DC:         buffer="\033[3~";   break;
-      case KEY_HOME:       buffer="\033[7~";   break;
-      case KEY_END:        buffer="\033[8~";   break;
-      case KEY_PPAGE:      buffer="\033[5~";   break;
-      case KEY_NPAGE:      buffer="\033[6~";   break;
-      case KEY_SUSPEND:    buffer="\x1A";    break;      // ctrl-z
-      case KEY_F(1):       buffer="\033[11~";  break;
-      case KEY_F(2):       buffer="\033[12~";  break;
-      case KEY_F(3):       buffer="\033[13~";  break;
-      case KEY_F(4):       buffer="\033[14~";  break;
-      case KEY_F(5):       buffer="\033[15~";  break;
-      case KEY_F(6):       buffer="\033[17~";  break;
-      case KEY_F(7):       buffer="\033[18~";  break;
-      case KEY_F(8):       buffer="\033[19~";  break;
-      case KEY_F(9):       buffer="\033[20~";  break;
-      case KEY_F(10):      buffer="\033[21~";  break;
-      case KEY_F(11):      buffer="\033[23~";  break;
-      case KEY_F(12):      buffer="\033[24~";  break;
-   }
-
-   if(buffer==NULL)
-	   vterm_write_tty(vterm, &keycode,sizeof(char));
-   else
-	   vterm_write_tty(vterm, buffer,strlen(buffer));
-
-   return;
-}
-
-void vterm_write_vt100(vterm_t *vterm,guint32 keycode)
+void vterm_write_vt100(vterm_t *vterm,int keycode)
 {
    gchar *buffer=NULL;
 
@@ -96,18 +51,59 @@ void vterm_write_vt100(vterm_t *vterm,guint32 keycode)
            buffer="\r";
         break;
       }
-      case KEY_UP:         buffer="\033[A";    break;
-      case KEY_DOWN:       buffer="\033[B";    break;
-      case KEY_RIGHT:      buffer="\033[C";    break;
-      case KEY_LEFT:       buffer="\033[D";    break;
-      case KEY_BACKSPACE:  buffer="\b";      break;
-      case KEY_IC:         buffer="\033[2~";   break;
+      case VTKEY_UP:
+      {
+          if ( ~vterm->state & STATE_ANM ) {
+             buffer = "\033A";
+          } else if ( ~vterm->state & STATE_CKM ) {
+             buffer = "\033[A";
+          } else {
+             buffer = "\033OA";
+          }
+          break;
+      }
+      case VTKEY_DOWN:
+      {
+          if ( ~vterm->state & STATE_ANM ) {
+             buffer = "\033B";
+          } else if ( ~vterm->state & STATE_CKM ) {
+             buffer = "\033[B";
+          } else {
+             buffer = "\033OB";
+          }
+          break;
+      }
+      case VTKEY_RIGHT:
+      {
+          if ( ~vterm->state & STATE_ANM ) {
+             buffer = "\033C";
+          } else if ( ~vterm->state & STATE_CKM ) {
+             buffer = "\033[C";
+          } else {
+             buffer = "\033OC";
+          }
+          break;
+      }
+      case VTKEY_LEFT:
+      {
+          if ( ~vterm->state & STATE_ANM ) {
+             buffer = "\033D";
+          } else if ( ~vterm->state & STATE_CKM ) {
+             buffer = "\033[D";
+          } else {
+             buffer = "\033OD";
+          }
+          break;
+      }
+      case VTKEY_NUL:
+        keycode = 0;
+        break;
+      /*case KEY_IC:         buffer="\033[2~";   break;
       case KEY_DC:         buffer="\033[3~";   break;
       case KEY_HOME:       buffer="\033[7~";   break;
       case KEY_END:        buffer="\033[8~";   break;
       case KEY_PPAGE:      buffer="\033[5~";   break;
       case KEY_NPAGE:      buffer="\033[6~";   break;
-      case KEY_SUSPEND:    buffer="\x1A";    break;      // ctrl-z
       case KEY_F(1):       buffer="\033[[A";   break;
       case KEY_F(2):       buffer="\033[[B";   break;
       case KEY_F(3):       buffer="\033[[C";   break;
@@ -117,7 +113,7 @@ void vterm_write_vt100(vterm_t *vterm,guint32 keycode)
       case KEY_F(7):       buffer="\033[18~";  break;
       case KEY_F(8):       buffer="\033[19~";  break;
       case KEY_F(9):       buffer="\033[20~";  break;
-      case KEY_F(10):      buffer="\033[21~";  break;
+      case KEY_F(10):      buffer="\033[21~";  break;*/
    }
 
    if(buffer==NULL)

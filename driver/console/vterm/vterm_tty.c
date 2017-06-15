@@ -47,11 +47,6 @@ void vterm_tty_invalidate_screen(dev_t dev)
 	vterm_invalidate_screen(&(vterm_minor_terms[MINOR(dev)]));
 }
 
-void vterm_post_key_tty(dev_t dev, int keycode)
-{
-	vterm_write_pipe(&(vterm_minor_terms[MINOR(dev)]), keycode);
-}
-
 void vterm_write_tty(vterm_t *vterm, void *buffer, int size)
 {
 	int c;
@@ -70,8 +65,11 @@ void con_puts(char *b)
 {
 	size_t c;
 	size_t size = strlen(b);
-	for (c = 0; c < size; c++)
+	for (c = 0; c < size; c++) {
+	    if ( b[c] == '\n' )
+		    vterm_putc(vterm_minor_terms[0].device_id, '\r');
 		vterm_putc(vterm_minor_terms[0].device_id, b[c]);
+	}
 }
 
 void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int cols)

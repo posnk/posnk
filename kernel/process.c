@@ -89,28 +89,20 @@ void process_reap(process_info_t *process)
 {
 	assert( process != scheduler_current_task );
 	//TODO: Implement
-	debugcon_printf("Unlink process! %i\n",process->pid);
 	llist_unlink ((llist_t *) process);
 	heapmm_free(process->name, CONFIG_PROCESS_MAX_NAME_LENGTH);
-	debugcon_printf("Free arch task!\n");
 	scheduler_free_task( process );
-	debugcon_printf("Clear mmaps!\n");
 	procvmm_clear_mmaps_other( process );
-	debugcon_printf("Clear pagedir!\n");
 	paging_free_dir( process->page_directory );
-	debugcon_printf("Release directory caches!\n");
 	vfs_dir_cache_release(process->root_directory);
 	vfs_dir_cache_release(process->current_directory);
-	debugcon_printf("Release inode!\n");
 
 	if (process->image_inode) {
 		process->image_inode->open_count--;
 		vfs_inode_release(process->image_inode);
 	}
-	debugcon_printf("Close streams!\n");
 
 	stream_do_close_all (process);
-	debugcon_printf("Free semaphore!\n");
 	semaphore_free(process->child_sema);
 	
 }

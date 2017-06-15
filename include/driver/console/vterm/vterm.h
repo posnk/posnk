@@ -39,7 +39,7 @@ void           vterm_destroy(vterm_t *vterm);
 const gchar*   vterm_get_ttyname(vterm_t *vterm);
 
 ssize_t        vterm_read_pipe(vterm_t *vterm);
-void           vterm_write_pipe(vterm_t *vterm,guint32 keycode);
+void           vterm_write_pipe(vterm_t *vterm,int keycode);
 
 int            vterm_set_colors(vterm_t *vterm,short fg,short bg);
 short          vterm_get_colors(vterm_t *vterm);

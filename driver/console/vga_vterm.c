@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <sys/types.h>
+#include <linux/input.h>
 #include "kernel/tty.h"
 #include "kernel/earlycon.h"
 #include "driver/console/vterm/vterm.h"
@@ -102,13 +103,20 @@ void vterm_vga_switch_vc(int vc)
 
 }
 
-void vterm_post_key_tty(dev_t dev, int keycode);
-void con_handle_key(int keycode)
+void vterm_post_key_tty(dev_t dev, int keycode, int val);
+
+int vt_mod_ctrl = 0, vt_mod_alt = 0;
+
+void con_handle_key(int keycode, int val)
 {
-	if (keycode > KEY_VT0){
-		vterm_vga_switch_vc(keycode - KEY_VT(1));
+    if ( keycode == KEY_LEFTCTRL || keycode == KEY_RIGHTCTRL )
+        vt_mod_ctrl = val;
+    else if ( keycode == KEY_LEFTALT || keycode == KEY_RIGHTALT )
+        vt_mod_alt = val;
+	if ( vt_mod_ctrl && vt_mod_alt && keycode >= KEY_F1 && keycode <= KEY_F10 ){
+		vterm_vga_switch_vc( keycode - KEY_F1 );
 	} else
-		vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode);
+		vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode, val);
 }
 
 void vga_vterm_init(){

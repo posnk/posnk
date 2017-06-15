@@ -155,6 +155,19 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 	return 0;
 }
 
+void tty_buf_out_str(tty_info_t *tty, char *c)
+{
+	aoff_t w;
+	tty_fd_t *fdp;
+	llist_t *_fdp;
+	pipe_write(tty->pipe_in, c, strlen(c), &w, 1);
+	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
+		assert(_fdp != NULL );
+		fdp = ( tty_fd_t *) _fdp;
+		stream_notify_poll( fdp->ptr->info );
+	}
+}
+
 void tty_buf_out_char(tty_info_t *tty, char c)
 {
 	aoff_t w;
@@ -194,6 +207,17 @@ void tty_output_char(dev_t device, char c)
 		tty->write_out(device, c);
 	} else
 		tty->write_out(device, c);
+}
+void tty_input_str(dev_t device, const char *c)
+{
+	tty_info_t *tty = tty_get(device);
+	assert(tty);
+    if (tty->termios.c_lflag & ICANON) {
+        while (*c)
+            tty_input_char( device, *c++ );
+    } else {
+        tty_buf_out_str( tty, c );
+    }
 }
 
 void tty_input_char(dev_t device, char c)

@@ -52,6 +52,8 @@ struct tty_info {
 void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out_t);
 
 void tty_input_char(dev_t device, char c);
+void tty_input_str(dev_t device, const char *c);
+
 
 void tty_init();
 

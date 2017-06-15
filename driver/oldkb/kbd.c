@@ -52,17 +52,16 @@ void kb_pressed(uint8_t scan){
         kb_typed(scan);
 }
 
-void con_handle_key(int keycode);
+void con_handle_key(int keycode, int val);
 
 void kb_typed(uint8_t scan){
-        int t = decode_keystroke(scan, modifiers);
 	evkbd_send_btn(scan, 1);
-	if (t)		
-		con_handle_key(t);
+	con_handle_key(scan, 1);
 }
 
 void kb_released(__attribute__((__unused__)) uint8_t scan){
 	evkbd_send_btn(scan, 0);
+	con_handle_key(scan, 0);
 }
 
 void ps2kbd_handle_data(uint8_t scancode)
@@ -87,7 +86,7 @@ void ps2kbd_handle_data(uint8_t scancode)
 			case 0x2A:
 			case 0x36:
 				if (!extended)
-                                        kb_clear_modifier(KBD_SHIFT_BIT);
+                    kb_clear_modifier(KBD_SHIFT_BIT);
 				break;
 			case 0x5B:
 			case 0x5C:

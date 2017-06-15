@@ -49,7 +49,7 @@ void vterm_init(vterm_t *vterm, guint flags, int rows, int cols)
    // initialization of other public fields
    vterm->crow=0;
    vterm->ccol=0;
-   vterm->state = 0;
+   vterm->state = STATE_ANM;
    // default active colors
    //TODO:vterm->curattr=COLOR_PAIR(vterm->colors);
    // initial scrolling area is the whole window
@@ -61,10 +61,10 @@ void vterm_init(vterm_t *vterm, guint flags, int rows, int cols)
 
    vterm->flags=flags;
 
-   if(flags & VTERM_FLAG_VT100)
+   //if(flags & VTERM_FLAG_VT100)
 	   vterm->write=vterm_write_vt100;
-   else
-	   vterm->write=vterm_write_rxvt;
+   //else
+   //  vterm->write=vterm_write_rxvt;
 }
 
 void vterm_destroy(vterm_t *vterm)
