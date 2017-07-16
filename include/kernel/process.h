@@ -194,8 +194,7 @@ void procvmm_clear_mmaps();
 int procvmm_check( const void *dest, size_t size);
 int procvmm_check_string( const char *dest, size_t size_max );
 int procvmm_check_stringlist(	const char **dest, 
-				size_t len_max,
-				size_t str_max );
+				size_t len_max );
 
 void process_user_call(void *entry, void *stack);
 

@@ -79,9 +79,10 @@ int procvmm_check( const void *dest, size_t size)
 	if (scheduler_current_task->pid == 0)
 		return 1;
 	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE) {
-		debugcon_printf("chk b=%x p=%x bp=%x\n",b,p,b+p);
-		if (!procvmm_get_memory_region((void *) (b + p)))
+		if (!procvmm_get_memory_region((void *) (b + p))) {
+			debugcon_printf("chk b=%x p=%x bp=%x FAIL\n",b,p,b+p);
 			return 0;
+		}
 	}
 	return 1;
 }
@@ -91,7 +92,7 @@ int procvmm_check_string( const char *dest, size_t size_max )
 	uintptr_t p,lp,cp,b;
 	
 	if (scheduler_current_task->pid == 0)
-		return strlen( dest );
+		return strlen( dest ) + 1;
 	
 	lp = 1;
 	b = ( uintptr_t ) dest;
@@ -99,10 +100,12 @@ int procvmm_check_string( const char *dest, size_t size_max )
 	for (p = 0; p < size_max; p++) {
 		cp = (b + p) & PHYSMM_PAGE_ADDRESS_MASK;
 		if ( lp != cp ) {
-			if (!procvmm_get_memory_region(dest))
+			if (!procvmm_get_memory_region(dest)) {
 				return -1;
+			}
 			lp = cp;
-		} else if ( !*dest ) {
+		}
+		if ( !*dest ) {
 			return p + 1;
 		}
 		dest++;
@@ -111,13 +114,12 @@ int procvmm_check_string( const char *dest, size_t size_max )
 }
 
 int procvmm_check_stringlist(	const char **dest, 
-				size_t len_max,
-				size_t str_max )
+				size_t len_max )
 {
 	uintptr_t p,lp,cp,b;
 	
 	if (scheduler_current_task->pid == 0)
-		return strlistlen( dest );
+		return strlistlen( dest ) + 1;
 	
 	lp = 1;
 	b = ( uintptr_t ) dest;
@@ -128,10 +130,10 @@ int procvmm_check_stringlist(	const char **dest,
 			if (!procvmm_get_memory_region(dest))
 				return -1;
 			lp = cp;
-		} else if ( !*dest ) {
+		}
+		if ( !*dest ) {
 			return p + 1;
-		} else if ( procvmm_check_string( dest, str_max ) < 0 )
-			return -3;
+		};
 		dest++;
 	}
 	return -2;
@@ -146,7 +148,7 @@ int procvmm_get_mmap_iterator (llist_t *node, void *param)
 	uintptr_t p = (uintptr_t) param;
 	uintptr_t b_s = (uintptr_t) m->start;
 	uintptr_t b_e = b_s + m->size;
-	debugcon_printf("dgm %x>=%x=%i %x<%x=%i\n",b_s,p,p>=b_s,p,b_e,p<b_e);
+	//debugcon_printf("dgm %x>=%x=%i %x<%x=%i\n",b_s,p,p>=b_s,p,b_e,p<b_e);
 	return (p >= b_s) && (p < b_e);
 }
 

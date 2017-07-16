@@ -33,8 +33,8 @@ uint32_t syscall_dispatch_new( int call,
 				uint32_t d,
 				uint32_t e,
 				uint32_t f );
-int copy_user_to_kern(void *src, void *dest, size_t size);
-int copy_kern_to_user(void *src, void *dest, size_t size);
+int copy_user_to_kern(const void *src, void *dest, size_t size);
+int copy_kern_to_user(const void *src, void *dest, size_t size);
 
 
 uint32_t sys_fork(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f);

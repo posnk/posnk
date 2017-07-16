@@ -17,6 +17,7 @@
 #include "kernel/paging.h"
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
+#include "kernel/earlycon.h"
 #include "kernel/permissions.h"
 #include "kernel/synch.h"
 #include "kernel/syscall.h"
@@ -369,33 +370,100 @@ int strlistlen(char **list);
 //int execve(char *path, char **argv, char **envp);
 uint32_t sys_execve(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
-	int pl,argvc, envpc;
-	const char  *path;
-	const char **argv;
-	const char **envp;
+	int pl,argvc, envpc,sc,ct;
+	const char  *patho;
+	const char **argvo;
+	const char **envpo;
+	char  *path;
+	char **argv;
+	char **envp;
+	char  *user_str;
 	ssize_t status;
-	path = ( const char * ) a;
-	argv = ( const char ** ) b;
-	envp = ( const char ** ) c;
+	patho = ( const char * ) a;
+	argvo = ( const char ** ) b;
+	envpo = ( const char ** ) c;
 	
-	pl = procvmm_check_string( path, CONFIG_FILE_MAX_NAME_LENGTH );
+	pl = procvmm_check_string( patho, CONFIG_FILE_MAX_NAME_LENGTH );
 	if ( pl < 0 ) {
 		syscall_errno = EFAULT;
-		return (uint32_t) -1;
+		goto fault_a;
 	}
 	
-	argvc = procvmm_check_stringlist( argv, CONFIG_MAX_ARG_COUNT,
-						CONFIG_MAX_ARG_LENGTH );
+	argvc = procvmm_check_stringlist( argvo, CONFIG_MAX_ARG_COUNT );
 	if ( argvc < 0 ) {
 		syscall_errno = EFAULT;
-		return (uint32_t) -1;
+		goto fault_a;
 	}
 	
-	envpc = procvmm_check_stringlist( envp, CONFIG_MAX_ENV_COUNT,
-						CONFIG_MAX_ENV_LENGTH );
+	envpc = procvmm_check_stringlist( envpo, CONFIG_MAX_ENV_COUNT );
 	if ( envpc < 0 ) {
 		syscall_errno = EFAULT;
-		return (uint32_t) -1;
+		goto fault_a;
+	}
+	
+	path = heapmm_alloc( pl * sizeof( char ) );
+	if (!path) {
+		syscall_errno = ENOMEM;
+		goto fault_a;
+	}
+	argv = heapmm_alloc( argvc * sizeof ( char * ) );
+	if (!argv) {
+		syscall_errno = ENOMEM;
+		goto fault_b;
+	}
+	envp = heapmm_alloc( envpc * sizeof ( char * ) );
+	if (!envp) {
+		syscall_errno = ENOMEM;
+		goto fault_c;
+	}
+	
+	if (!copy_user_to_kern(patho, path, pl)) {
+		syscall_errno = EFAULT;
+		goto fault_d;
+	}
+	if (!copy_user_to_kern(argvo, argv, argvc * sizeof(char *))) {
+		syscall_errno = EFAULT;
+		goto fault_d;
+	}
+	if (!copy_user_to_kern(envpo, envp, envpc * sizeof ( char * ))) {
+		syscall_errno = EFAULT;
+		goto fault_d;
+	}
+	
+	for (ct = 0; ct < argvc - 1; ct++) {
+		user_str = argv[ct];
+		sc = procvmm_check_string( user_str, CONFIG_MAX_ARG_LENGTH );
+		if (( sc < 0 ) || !(argv[ct] = heapmm_alloc(sc))) {
+			debugcon_printf("alloc %x %i\n",user_str,sc);
+			argvc = ct;
+			syscall_errno = EFAULT;
+			goto fault_e;		
+		}
+		if (!copy_user_to_kern(user_str, argv[ct], sc)) {
+			debugcon_printf("copy\n");
+			argvc = ct + 1;
+			memset ( argv[ct], ' ', sc );
+			argv[ct][sc - 1] = 0;
+			syscall_errno = EFAULT;
+			goto fault_e;
+		}		
+	}
+	
+	for (ct = 0; ct < envpc - 1; ct++) {
+		user_str = envp[ct];
+		sc = procvmm_check_string( user_str, CONFIG_MAX_ENV_LENGTH );
+		if (( sc < 0 ) || !(envp[ct] = heapmm_alloc(sc))) {
+			envpc = ct;
+			syscall_errno = EFAULT;
+			goto fault_f;		
+		}
+		if (!copy_user_to_kern(user_str, envp[ct], sc)) {
+			envpc = ct + 1;
+			memset ( envp[ct], ' ', sc );
+			envp[ct][sc - 1] = 0;
+			syscall_errno = EFAULT;
+			goto fault_f;
+		}		
 	}
 	
 	status = process_exec( ( char * ) path, ( char ** ) argv, ( char ** ) envp);
@@ -405,6 +473,26 @@ uint32_t sys_execve(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint
 	}
 	
 	return (uint32_t) status;
+fault_f:
+	debugcon_printf("Fault f\n");
+	for (ct = 0; ct < envpc; ct++) 
+		heapmm_free(envp[ct], strlen(envp[ct])+1);
+fault_e:
+	debugcon_printf("Fault e\n");
+	for (ct = 0; ct < argvc; ct++) 
+		heapmm_free(argv[ct], strlen(argv[ct])+1);
+fault_d:
+	debugcon_printf("Fault d\n");
+	heapmm_free(envp , envpc * sizeof ( char * ));
+fault_c:
+	debugcon_printf("Fault c\n");
+	heapmm_free(argv , argvc * sizeof ( char * ));
+fault_b:
+	debugcon_printf("Fault b\n");
+	heapmm_free(path , pl * sizeof( char ));
+fault_a:
+	debugcon_printf("Fault a\n");
+	return (uint32_t) -1;
 }
 
 //void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);

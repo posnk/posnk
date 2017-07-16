@@ -120,7 +120,7 @@ void syscall_register(int call_id, syscall_func_t func)
 	syscall_table[call_id] = func;
 }
 
-int copy_user_to_kern(void *src, void *dest, size_t size)
+int copy_user_to_kern(const void *src, void *dest, size_t size)
 {
 	if (!procvmm_check(src,size))
 		return 0;
@@ -128,7 +128,7 @@ int copy_user_to_kern(void *src, void *dest, size_t size)
 	return 1;
 }
 
-int copy_kern_to_user(void *src, void *dest, size_t size)
+int copy_kern_to_user(const void *src, void *dest, size_t size)
 {
 	if (!procvmm_check(dest,size))
 		return 0;
