@@ -140,6 +140,8 @@ struct inode {
 	ktime_t		 mtime;
 	/** Metadata modification time */
 	ktime_t		 ctime;
+	/** Deletion time */
+	ktime_t		 dtime;
 };
 
 /**

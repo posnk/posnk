@@ -151,3 +151,4 @@ ISR_NOCODE 16; Coprocessor Error
 ; Software ISRS
 
 ISR_SYSCALL 80h ; Syscall Interrupt
+ISR_SYSCALL 81h ; Syscall Interrupt

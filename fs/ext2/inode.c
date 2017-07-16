@@ -68,7 +68,6 @@ SVFUNC(ext2_shrink_inode, ext2_device_t *device, ext2_inode_t *inode, aoff_t old
 	}
 
 	//TODO: Dealloc indirect blocks
-
 	RETURNV;
 }
 

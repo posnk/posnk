@@ -26,8 +26,7 @@
  * @brief Syscall implementation: fork
  * Create a copy of a 
  */
-uint32_t sys_fork(	__attribute__((__unused__)) uint32_t param[4], 
-					__attribute__((__unused__)) uint32_t param_size[4] )
+uint32_t sys_fork(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 
 
@@ -40,7 +39,7 @@ uint32_t sys_fork(	__attribute__((__unused__)) uint32_t param[4],
  * @brief Syscall implementation: kill
  * Sends a signal to a process.
  */
-uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_kill(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	struct siginfo info;
 	process_info_t *process;
@@ -48,10 +47,10 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 	memset( &info, 0, sizeof( struct siginfo ) );
 
 	/* The process to signal */
-	int pid = (int) param[0];
+	int pid = (int) a;
 	
 	/* The signal to send */
-	int sig = (int) param[1];
+	int sig = (int) b;
 
 	/* Do a range check on sid */	
 	if (sig < 0 || sig > 31) {
@@ -110,27 +109,27 @@ uint32_t sys_kill(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 	}		
 }
 
-uint32_t sys_getpid(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_getpid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	return (pid_t) scheduler_current_task->pid;
 }
 
-uint32_t sys_getppid(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_getppid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	return (pid_t) scheduler_current_task->parent_pid;
 }
 
-uint32_t sys_getpgrp(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_getpgrp(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	return (pid_t) scheduler_current_task->pgid;
 }
 
-uint32_t sys_getsid(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_getsid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	return (pid_t) scheduler_current_task->sid;
 }
 
-uint32_t sys_setsid(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_setsid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
 		syscall_errno = EPERM;
@@ -142,7 +141,7 @@ uint32_t sys_setsid(__attribute__((__unused__)) uint32_t param[4], __attribute__
 	return (pid_t) scheduler_current_task->sid;
 }
 
-uint32_t sys_setpgrp(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_setpgrp(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
 		syscall_errno = EPERM;
@@ -152,11 +151,11 @@ uint32_t sys_setpgrp(__attribute__((__unused__)) uint32_t param[4], __attribute_
 	return 0;
 }
 
-uint32_t sys_setpgid(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_setpgid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	process_info_t *task;
-	pid_t pid = (pid_t) param[0];//TODO: FIX PERMS
-	pid_t pgid = (pid_t) param[1];
+	pid_t pid = (pid_t) a;//TODO: FIX PERMS
+	pid_t pgid = (pid_t) b;
 	if (pid == 0)
 		pid = scheduler_current_task->pid;
 	if (pgid == 0)
@@ -174,9 +173,9 @@ uint32_t sys_setpgid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 	return 0;
 }
 
-uint32_t sys_exit( uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_exit(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
-	scheduler_current_task->exit_status = param[0];
+	scheduler_current_task->exit_status = a;
 	scheduler_current_task->state = PROCESS_KILLED;
 	process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
 	stream_do_close_all (scheduler_current_task);
@@ -185,7 +184,7 @@ uint32_t sys_exit( uint32_t param[4], __attribute__((__unused__)) uint32_t param
 	return 0; // NEVER REACHED
 }
 
-uint32_t sys_yield(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_yield(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	schedule();
 	return 0;
@@ -195,18 +194,18 @@ uint32_t sys_yield(__attribute__((__unused__)) uint32_t param[4], __attribute__(
 #define WUNTRACED 2
 
 //pid_t pid, int *status, int options
-uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_waitpid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	int status, options;
 	pid_t pid;
 	process_child_event_t *ev_info;
 	process_info_t *chld;
-	if (!copy_user_to_kern((void *)param[1], &status, sizeof(int))) {
+	if (!copy_user_to_kern((void *)b, &status, sizeof(int))) {
 		syscall_errno = EFAULT;
 		return -1;
 	}
-	pid = (pid_t) param[0];
-	options = (int) param[2];
+	pid = (pid_t) a;
+	options = (int) c;
 
 	if (pid == 0)
 		pid = -(scheduler_current_task->pid);
@@ -321,20 +320,20 @@ uint32_t sys_waitpid(uint32_t param[4], __attribute__((__unused__)) uint32_t par
 			//break;
 	}
 	process_absorb_event(ev_info);
-	if (!copy_kern_to_user(&status, (void *)param[1], sizeof(int))) {
+	if (!copy_kern_to_user(&status, (void *)b, sizeof(int))) {
 		syscall_errno = EFAULT;
 		return -1;
 	}
 	return pid;	
 }
 
-uint32_t sys_sbrk(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sbrk(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
 	uintptr_t old_brk   = (uintptr_t) scheduler_current_task->heap_end;
 	uintptr_t heap_max = (uintptr_t) scheduler_current_task->heap_max;
 	uintptr_t base = (uintptr_t) scheduler_current_task->heap_start;
 	uintptr_t old_size = old_brk - base;
-	int incr = param[0];
+	int incr = a;
 	if (incr > 0) {	
 		if (incr & PHYSMM_PAGE_ADDRESS_MASK)
 			incr = (incr & ~PHYSMM_PAGE_ADDRESS_MASK) + PHYSMM_PAGE_SIZE;
@@ -368,185 +367,61 @@ uint32_t sys_sbrk(uint32_t param[4], __attribute__((__unused__)) uint32_t param_
 int strlistlen(char **list);
 
 //int execve(char *path, char **argv, char **envp);
-uint32_t sys_execve(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_execve(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
 {
-	int c,argvc, envpc;
-	char* path;
-	char **argv;
-	char **envp;
-	char *user_str;
-	uintptr_t *argvs; // These are uintptr_t because they have to have the same size as the pointer lists
-	uintptr_t *envps;
+	int pl,argvc, envpc;
+	const char  *path;
+	const char **argv;
+	const char **envp;
 	ssize_t status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	path = ( const char * ) a;
+	argv = ( const char ** ) b;
+	envp = ( const char ** ) c;
+	
+	pl = procvmm_check_string( path, CONFIG_FILE_MAX_NAME_LENGTH );
+	if ( pl < 0 ) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!path) {
-		syscall_errno = ENOMEM;
-		return (uint32_t) -1;
-	}
-	argv = heapmm_alloc(param_size[1]);
-	if (!argv) {
-		syscall_errno = ENOMEM;
-		heapmm_free(path, param_size[0]);
-		return (uint32_t) -1;
-	}
-	envp = heapmm_alloc(param_size[2]);
-	if (!envp) {
-		syscall_errno = ENOMEM;
-		heapmm_free(path, param_size[0]);
-		heapmm_free(argv, param_size[1]);
-		return (uint32_t) -1;
-	}
-	argvs = heapmm_alloc(param_size[1]);
-	if (!argv) {
-		syscall_errno = ENOMEM;
-		heapmm_free(path, param_size[0]);
-		heapmm_free(argv, param_size[1]);
-		heapmm_free(envp, param_size[2]);
-		return (uint32_t) -1;
-	}
-	envps = heapmm_alloc(param_size[2]);
-	if (!envp) {
-		syscall_errno = ENOMEM;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		return (uint32_t) -1;
-	}
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	
+	argvc = procvmm_check_stringlist( argv, CONFIG_MAX_ARG_COUNT,
+						CONFIG_MAX_ARG_LENGTH );
+	if ( argvc < 0 ) {
 		syscall_errno = EFAULT;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		heapmm_free(envps, param_size[2]);
 		return (uint32_t) -1;
 	}
-	if (!copy_user_to_kern((void *)param[1], argv, param_size[1])) {
+	
+	envpc = procvmm_check_stringlist( envp, CONFIG_MAX_ENV_COUNT,
+						CONFIG_MAX_ENV_LENGTH );
+	if ( envpc < 0 ) {
 		syscall_errno = EFAULT;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		heapmm_free(envps, param_size[2]);
 		return (uint32_t) -1;
 	}
-	if (!copy_user_to_kern((void *)param[2], envp, param_size[2])) {
-		syscall_errno = EFAULT;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		heapmm_free(envps, param_size[2]);
-		return (uint32_t) -1;
-	}
-	if (!copy_user_to_kern((void *)param[3], argvs, param_size[1])) {
-		syscall_errno = EFAULT;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		heapmm_free(envps, param_size[2]);
-		return (uint32_t) -1;
-	}
-	if (!copy_user_to_kern((void *)param_size[3], envps, param_size[2])) {
-		syscall_errno = EFAULT;
-		heapmm_free(path , param_size[0]);
-		heapmm_free(argv , param_size[1]);
-		heapmm_free(argvs, param_size[1]);
-		heapmm_free(envp , param_size[2]);
-		heapmm_free(envps, param_size[2]);
-		return (uint32_t) -1;
-	}
-	if (param_size[0] != 0)
-		path[param_size[0] - 1] = 0;
-	if (param_size[1] >= sizeof(char *))
-		argv[(param_size[1] / sizeof(char *)) - 1] = 0;
-	if (param_size[2] >= sizeof(char *))
-		envp[(param_size[2] / sizeof(char *)) - 1] = 0;
-	argvc = strlistlen(argv);
-	for (c = 0; c < argvc; c++) {
-		user_str = argv[c];
-		if ((argvs[c] > CONFIG_MAX_ARGV_LEN) || !(argv[c] = heapmm_alloc(argvs[c]))) {
-			argvc = c;
-			for (c = 0; c < argvc; c++) 
-				heapmm_free(argv[c], argvs[c]);
-			syscall_errno = EFAULT;
-			heapmm_free(path , param_size[0]);
-			heapmm_free(argv , param_size[1]);
-			heapmm_free(argvs, param_size[1]);
-			heapmm_free(envp , param_size[2]);
-			heapmm_free(envps, param_size[2]);
-			return (uint32_t) -1;			
-		}
-		if (!copy_user_to_kern(user_str, argv[c], argvs[c])) {
-			argvc = c + 1;
-			for (c = 0; c < argvc; c++) 
-				heapmm_free(argv[c], argvs[c]);
-			syscall_errno = EFAULT;
-			heapmm_free(path , param_size[0]);
-			heapmm_free(argv , param_size[1]);
-			heapmm_free(argvs, param_size[1]);
-			heapmm_free(envp , param_size[2]);
-			heapmm_free(envps, param_size[2]);
-			return (uint32_t) -1;
-		}		
-	}
-	envpc = strlistlen(envp);
-	for (c = 0; c < envpc; c++) {
-		user_str = envp[c];
-		if ((envps[c] > CONFIG_MAX_ENV_LEN) || !(envp[c] = heapmm_alloc(envps[c]))) {
-			envpc = c;
-			for (c = 0; c < envpc; c++) 
-				heapmm_free(envp[c], envps[c]);
-			syscall_errno = EFAULT;
-			heapmm_free(path , param_size[0]);
-			heapmm_free(argv , param_size[1]);
-			heapmm_free(argvs, param_size[1]);
-			heapmm_free(envp , param_size[2]);
-			heapmm_free(envps, param_size[2]);
-			return (uint32_t) -1;			
-		}
-		if (!copy_user_to_kern(user_str, envp[c], envps[c])) {
-			envpc = c + 1;
-			for (c = 0; c < envpc; c++) 
-				heapmm_free(envp[c], envps[c]);
-			syscall_errno = EFAULT;
-			heapmm_free(path , param_size[0]);
-			heapmm_free(argv , param_size[1]);
-			heapmm_free(argvs, param_size[1]);
-			heapmm_free(envp , param_size[2]);
-			heapmm_free(envps, param_size[2]);
-			return (uint32_t) -1;
-		}		
-	}
-	status = process_exec(path, argv, envp);
+	
+	status = process_exec( ( char * ) path, ( char ** ) argv, ( char ** ) envp);
 	if ( status != 0 ) {
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(path , param_size[0]);
-	heapmm_free(argv , param_size[1]);
-	heapmm_free(argvs, param_size[1]);
-	heapmm_free(envp , param_size[2]);
-	heapmm_free(envps, param_size[2]);
+	
 	return (uint32_t) status;
 }
 
 //void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 
-uint32_t sys_mmap(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_mmap(	uint32_t a,
+			uint32_t b,
+			uint32_t c,
+			uint32_t d,
+			uint32_t e,
+			uint32_t f)
 {
-	return (uint32_t) _sys_mmap(	(void *) param[0], 
-					(size_t) param[1], 
-					(int)    param[2], 
-					(int)    param[3],
-					(int)    param_size[0],
-					(int)    param_size[1]);
+	return (uint32_t) _sys_mmap(	(void *) a, 
+					(size_t) b, 
+					(int)    c, 
+					(int)    d,
+					(int)    e,
+					(int)    f);
 }
 
 

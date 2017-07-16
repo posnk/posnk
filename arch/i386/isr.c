@@ -142,7 +142,7 @@ void dumpisrstack( i386_isr_stack_t *stack ) {
 
 void i386_handle_interrupt( i386_isr_stack_t *stack )
 {	
-
+	uint32_t scpf;
 	int int_id = stack->int_id;
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
@@ -152,6 +152,28 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	if (int_id == 0x80) {
 		/* System call */
 		syscall_dispatch((void *)stack->regs.eax, (void *) stack->eip);
+	} else if (int_id == 0x81) {
+		/* System call ( new ABI )*/
+		if (!procvmm_check((uint32_t *) stack->esp, sizeof(uint32_t))) {
+			paging_handle_fault(
+				(void *)stack->esp, 
+				(void *)stack->eip,
+				0,
+				0,
+				1);
+		} else {
+			scpf = *( (uint32_t *) stack->esp );
+			stack->regs.eax =
+				syscall_dispatch_new(
+						stack->regs.eax,
+						stack->regs.ecx,
+						stack->regs.edx,
+						stack->regs.esi,
+						stack->regs.edi,
+						stack->regs.ebx,
+						scpf );
+			stack->regs.ecx = syscall_errno;
+		}
 	} else if (int_id == 32) {
 		//debugcon_printf("tick!\n");
 		i386_interrupt_done (int_id - 32);

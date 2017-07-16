@@ -32,7 +32,7 @@ HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 # Set the compiler and assembler flags
 CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
-	-fauto-inc-dec
+	-fauto-inc-dec 
 
 HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h \
 	-mno-tbm -D_FILE_OFFSET_BITS=64

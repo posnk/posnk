@@ -17,33 +17,33 @@
 #include "kernel/syscall.h"
 #include "kernel/permissions.h"
 
-uint32_t sys_time(__attribute__((__unused__)) uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_time(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	return (uint32_t) system_time;
 }
 
-uint32_t sys_sleep(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	if (!scheduler_wait_time(system_time + (ktime_t) param[0])) {
+	if (!scheduler_wait_time(system_time + (ktime_t) a)) {
 		syscall_errno = EINTR;
 		return (uint32_t) -1;
 	}
 	return 0;
 }
 
-uint32_t sys_usleep(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_usleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	if (!scheduler_wait_micros(system_time_micros + (ktime_t) param[0])) {
+	if (!scheduler_wait_micros(system_time_micros + (ktime_t) a)) {
 		syscall_errno = EINTR;
 		return (uint32_t) -1;
 	}
 	return 0;
 }
 
-uint32_t sys_stime(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_stime(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	time_t t;
-	if (!copy_user_to_kern((void *)param[0], &t, sizeof(time_t)))
+	if (!copy_user_to_kern((void *)a, &t, sizeof(time_t)))
 	{
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;

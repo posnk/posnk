@@ -16,6 +16,10 @@
 
 #define CONFIG_MAX_ARGV_LEN				(4096)
 #define CONFIG_MAX_ENV_LEN				(4096)
+#define CONFIG_MAX_ARG_LENGTH				(4096)
+#define CONFIG_MAX_ENV_LENGTH				(4096)
+#define CONFIG_MAX_ARG_COUNT				(256)
+#define CONFIG_MAX_ENV_COUNT				(256)
 
 #define CONFIG_TTY_BUFFER				(4096)
 

@@ -65,5 +65,6 @@ void i386_user_exit ( i386_isr_stack_t *stack );
  void i386_isr_entry_46();
  void i386_isr_entry_47();
  void i386_isr_entry_80h();
+ void i386_isr_entry_81h();
  
  #endif

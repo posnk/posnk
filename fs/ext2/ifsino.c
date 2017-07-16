@@ -77,6 +77,7 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 	vfs_ino->atime = (ktime_t) ino->atime;
 	vfs_ino->ctime = (ktime_t) ino->ctime;
 	vfs_ino->mtime = (ktime_t) ino->mtime;
+	vfs_ino->dtime = (ktime_t) ino->dtime;
 }
 
 void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
@@ -129,6 +130,7 @@ void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 	ino->atime = vfs_ino->atime;
 	ino->ctime = vfs_ino->ctime;
 	ino->mtime = vfs_ino->mtime;
+	ino->dtime = vfs_ino->dtime;
 
 	//semaphore_up(vfs_ino->lock);
 }

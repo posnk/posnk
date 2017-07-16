@@ -18,50 +18,50 @@
 #include "kernel/permissions.h"
 #include "kernel/signals.h"
 
-uint32_t sys_signal(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_signal(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return (uint32_t) _sys_signal( param[0], ( void * ) param [1] );
+	return (uint32_t) _sys_signal( a, ( void * ) b );
 }
 
-uint32_t sys_ssigex(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_ssigex(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	scheduler_current_task->signal_handler_exit_func = (void *) param[0];
+	scheduler_current_task->signal_handler_exit_func = (void *) a;
 	return 0;
 }
 
-uint32_t sys_exitsig( uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_exitsig( uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	if (!procvmm_check( (void *) param[0],1)){
+	if (!procvmm_check( (void *) a,1)){
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	exit_signal_handler( (void *) param[0] );
+	exit_signal_handler( (void *) a );
 	return 0;
 }
 
-uint32_t sys_sigprocmask(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sigprocmask(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return _sys_sigprocmask( param[0], (void *) param[1], (void *) param[2]);
+	return _sys_sigprocmask( a, (void *) b, (void *) c);
 }
 
-uint32_t sys_sigaction(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sigaction(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return _sys_sigaction( param[0], (void *) param[1], (void *) param[2]);
+	return _sys_sigaction( a, (void *) b, (void *) c);
 }
 
-uint32_t sys_sigaltstack(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sigaltstack(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return _sys_sigaltstack( (void *) param[0], (void *) param[1]);
+	return _sys_sigaltstack( (void *) a, (void *) b);
 }
 
-uint32_t sys_sigsuspend(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sigsuspend(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return _sys_sigsuspend( (void *) param[0] );
+	return _sys_sigsuspend( (void *) a );
 }
 
-uint32_t sys_sigpending(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sigpending(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
-	return _sys_sigpending( (void *) param[0] );
+	return _sys_sigpending( (void *) a );
 }
 
 

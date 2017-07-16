@@ -21,26 +21,29 @@
 #include <string.h>
 
 //int vfs_link(char *oldpath, char *newpath);
-uint32_t sys_link(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_link(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *oldpath;
 	char *newpath;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH) || (param_size[1] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza, szb;
+	sza = procvmm_check_string( a, CONFIG_FILE_MAX_NAME_LENGTH );
+	szb = procvmm_check_string( b, CONFIG_FILE_MAX_NAME_LENGTH );
+	if (( sza < 0 ) || ( szb < 0 )) { 
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	oldpath = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], oldpath, param_size[0])) {
+	oldpath = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, oldpath, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
+		heapmm_free(oldpath, sza);
 		return (uint32_t) -1;
 	}
-	newpath = heapmm_alloc(param_size[1]);
-	if (!copy_user_to_kern((void *)param[1], newpath, param_size[1])) {
+	newpath = heapmm_alloc(szb);
+	if (!copy_user_to_kern((void *)b, newpath, szb)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
-		heapmm_free(newpath, param_size[1]);
+		heapmm_free(oldpath, sza);
+		heapmm_free(newpath, szb);
 		return (uint32_t) -1;
 	}	
 	status = vfs_link(oldpath, newpath);
@@ -48,74 +51,81 @@ uint32_t sys_link(uint32_t param[4], uint32_t param_size[4])
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(oldpath, param_size[0]);
-	heapmm_free(newpath, param_size[1]);
+	heapmm_free(oldpath, sza);
+	heapmm_free(newpath, szb);
 	return (uint32_t) status;
 }
 
-uint32_t sys_mount(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_mount(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *oldpath;
 	char *newpath;
 	char *fs;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH) || (param_size[1] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza,szb,szc;
+	sza = procvmm_check_string( (char *)a, CONFIG_FILE_MAX_NAME_LENGTH );
+	szb = procvmm_check_string( (char *)b, CONFIG_FILE_MAX_NAME_LENGTH );
+	szc = procvmm_check_string( (char *)c, 8 );
+	if (( sza < 0 ) || ( szb < 0 ) || (szc < 0) ) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	oldpath = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], oldpath, param_size[0])) {
+	oldpath = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, oldpath, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
+		heapmm_free(oldpath, sza);
 		return (uint32_t) -1;
 	}
-	newpath = heapmm_alloc(param_size[1]);
-	if (!copy_user_to_kern((void *)param[1], newpath, param_size[1])) {
+	newpath = heapmm_alloc(szb);
+	if (!copy_user_to_kern((void *)b, newpath, szb)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
-		heapmm_free(newpath, param_size[1]);
+		heapmm_free(oldpath, sza);
+		heapmm_free(newpath, szb);
 		return (uint32_t) -1;
 	}
-	fs = heapmm_alloc(param_size[2]);
-	if (!copy_user_to_kern((void *)param[2], fs, param_size[2])) {
+	fs = heapmm_alloc(szc);
+	if (!copy_user_to_kern((void *)c, fs, szc)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
-		heapmm_free(newpath, param_size[1]);
-		heapmm_free(fs, param_size[2]);
+		heapmm_free(oldpath, sza);
+		heapmm_free(newpath, szb);
+		heapmm_free(fs, szc);
 		return (uint32_t) -1;
 	}	
-	status = vfs_mount(oldpath, newpath, fs, param[3]);
+	status = vfs_mount(oldpath, newpath, fs, d);
 	if (status != 0) {
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(oldpath, param_size[0]);
-	heapmm_free(newpath, param_size[1]);
-	heapmm_free(fs, param_size[2]);
+	heapmm_free(oldpath, sza);
+	heapmm_free(newpath, szb);
+	heapmm_free(fs, szc);
 	return (uint32_t) status;
 }
 
 //int vfs_symlink(char *oldpath, char *newpath);
-uint32_t sys_symlink(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_symlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *oldpath;
 	char *newpath;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH) || (param_size[1] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza,szb;
+	sza = procvmm_check_string( (char *)a, CONFIG_FILE_MAX_NAME_LENGTH );
+	szb = procvmm_check_string( (char *)b, CONFIG_FILE_MAX_NAME_LENGTH );
+	if (( sza < 0 ) || ( szb < 0 )) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	oldpath = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], oldpath, param_size[0])) {
+	oldpath = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, oldpath, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
+		heapmm_free(oldpath, sza);
 		return (uint32_t) -1;
 	}
-	newpath = heapmm_alloc(param_size[1]);
-	if (!copy_user_to_kern((void *)param[1], newpath, param_size[1])) {
+	newpath = heapmm_alloc(szb);
+	if (!copy_user_to_kern((void *)b, newpath, szb)) {
 		syscall_errno = EFAULT;
-		heapmm_free(oldpath, param_size[0]);
-		heapmm_free(newpath, param_size[1]);
+		heapmm_free(oldpath, sza);
+		heapmm_free(newpath, szb);
 		return (uint32_t) -1;
 	}	
 	status = vfs_symlink(oldpath, newpath);
@@ -123,12 +133,12 @@ uint32_t sys_symlink(uint32_t param[4], uint32_t param_size[4])
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(oldpath, param_size[0]);
-	heapmm_free(newpath, param_size[1]);
+	heapmm_free(oldpath, sza);
+	heapmm_free(newpath, szb);
 	return (uint32_t) status;
 }
 
-uint32_t sys_sync( __attribute__((__unused__)) uint32_t param[4],  __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_sync(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	vfs_cache_flush();
 	vfs_sync_filesystems();
@@ -136,18 +146,20 @@ uint32_t sys_sync( __attribute__((__unused__)) uint32_t param[4],  __attribute__
 }
 
 //int vfs_unlink(char *path);
-uint32_t sys_unlink(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_unlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	status = vfs_unlink(path);
@@ -155,7 +167,7 @@ uint32_t sys_unlink(uint32_t param[4], uint32_t param_size[4])
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
@@ -204,42 +216,46 @@ int _sys_chroot(char *path)
 }
 
 //int chroot(char *path);
-uint32_t sys_chroot(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_chroot(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	status = _sys_chroot(path);
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
 //int chdir(char *path);
-uint32_t sys_chdir(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_chdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	status = _sys_chdir(path);
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
@@ -268,22 +284,24 @@ int _sys_chmod(char *path, mode_t mode)
 }
 
 //int chmod(char *path, mode_t mode);
-uint32_t sys_chmod(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_chmod(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	status = _sys_chmod(path, (mode_t) param[1]);
-	heapmm_free(path, param_size[0]);
+	status = _sys_chmod(path, (mode_t) b);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
@@ -314,22 +332,24 @@ int _sys_chown(char *path, uid_t owner, gid_t group)
 }
 
 //int chown(char *path, uid_t owner, gid_t group);
-uint32_t sys_chown(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_chown(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	status = _sys_chown(path, (uid_t) param[1], (uid_t) param[2]);
-	heapmm_free(path, param_size[0]);
+	status = _sys_chown(path, (uid_t) b, (uid_t) c);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
@@ -352,77 +372,83 @@ int _sys_truncate(char *path, off_t length)
 }
 
 //int truncate(char *path, off_t length);
-uint32_t sys_truncate(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_truncate(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	status = _sys_truncate(path, (off_t) param[1]);
-	heapmm_free(path, param_size[0]);
+	status = _sys_truncate(path, (off_t) b);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
-uint32_t sys_umask(uint32_t param[4], __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_umask(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	mode_t old = scheduler_current_task->umask;
-	scheduler_current_task->umask = param[0] & 0777;
+	scheduler_current_task->umask = a & 0777;
 	return (uint32_t) old;
 }
 
 //int vfs_mknod(char *path, mode_t mode, dev_t dev)
-uint32_t sys_mknod(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_mknod(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	status = vfs_mknod(path, (mode_t) param[1], (dev_t) param[2]);
+	status = vfs_mknod(path, (mode_t) b, (dev_t) c);
 	if (status != 0) {
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
 //int vfs_mkdir(char *path, mode_t mode)
-uint32_t sys_mkdir(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_mkdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	status = vfs_mkdir(path, (mode_t) param[1]);
+	status = vfs_mkdir(path, (mode_t) b);
 	if (status != 0) {
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }
 
@@ -454,19 +480,21 @@ int _sys_stat(char *path, struct stat* buf)
 }
 
 //int stat(char *path, struct stat* buf);
-uint32_t sys_stat(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_stat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	struct stat* buf;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	buf = heapmm_alloc(sizeof(struct stat));
@@ -475,13 +503,13 @@ uint32_t sys_stat(uint32_t param[4], uint32_t param_size[4])
 		return (uint32_t) -1;
 	}
 	status = _sys_stat(path, buf);
-	if (!copy_kern_to_user(buf, (void *)param[1], sizeof(struct stat))) {
+	if (!copy_kern_to_user(buf, (void *)b, sizeof(struct stat))) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		heapmm_free(buf, sizeof(struct stat));
 		return (uint32_t) -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	heapmm_free(buf, sizeof(struct stat));
 	return (uint32_t) status;
 }
@@ -509,23 +537,25 @@ int _sys_readlink(char *path, char *buf, size_t bufsiz)
 }
 
 //int stat(char *path, struct stat* buf);
-uint32_t sys_readlink(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_readlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	char* buf;
 	size_t bufsiz;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
-	bufsiz = param[2];
+	bufsiz = c;
 	if (bufsiz > CONFIG_FILE_MAX_NAME_LENGTH)
 		bufsiz = CONFIG_FILE_MAX_NAME_LENGTH;
 	buf = heapmm_alloc(bufsiz);
@@ -534,13 +564,13 @@ uint32_t sys_readlink(uint32_t param[4], uint32_t param_size[4])
 		return (uint32_t) -1;
 	}
 	status = _sys_readlink(path, buf, bufsiz);
-	if (!copy_kern_to_user(buf, (void *)param[1], bufsiz)) {
+	if (!copy_kern_to_user(buf, (void *)b, bufsiz)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		heapmm_free(buf, bufsiz);
 		return (uint32_t) -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	heapmm_free(buf, bufsiz);
 	return (uint32_t) status;
 }
@@ -573,19 +603,21 @@ int _sys_lstat(char *path, struct stat* buf)
 }
 
 //int lstat(char *path, struct stat* buf);
-uint32_t sys_lstat(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_lstat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	struct stat* buf;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	buf = heapmm_alloc(sizeof(struct stat));
@@ -594,29 +626,31 @@ uint32_t sys_lstat(uint32_t param[4], uint32_t param_size[4])
 		return (uint32_t) -1;
 	}
 	status = _sys_lstat(path, buf);
-	if (!copy_kern_to_user(buf, (void *)param[1], sizeof(struct stat))) {
+	if (!copy_kern_to_user(buf, (void *)b, sizeof(struct stat))) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		heapmm_free(buf, sizeof(struct stat));
 		return (uint32_t) -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	heapmm_free(buf, sizeof(struct stat));
 	return (uint32_t) status;
 }
 
-uint32_t sys_rmdir(uint32_t param[4], uint32_t param_size[4])
+uint32_t sys_rmdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
 {
 	char *path;
 	int status;
-	if ((param_size[0] > CONFIG_FILE_MAX_NAME_LENGTH)) {
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
-	path = heapmm_alloc(param_size[0]);
-	if (!copy_user_to_kern((void *)param[0], path, param_size[0])) {
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
 		syscall_errno = EFAULT;
-		heapmm_free(path, param_size[0]);
+		heapmm_free(path, sza);
 		return (uint32_t) -1;
 	}
 	status = vfs_rmdir(path);
@@ -624,6 +658,6 @@ uint32_t sys_rmdir(uint32_t param[4], uint32_t param_size[4])
 		syscall_errno = status;
 		status = -1;
 	}
-	heapmm_free(path, param_size[0]);
+	heapmm_free(path, sza);
 	return (uint32_t) status;
 }

@@ -70,6 +70,7 @@ void i386_idt_initialize(){
 	ADD_ISR_ENTRY(47)
 
 	i386_idt_set_descriptor(0x80, &i386_isr_entry_80h, 0xEE, I386_KERNEL_CODE_SEGMENT);
+	i386_idt_set_descriptor(0x81, &i386_isr_entry_81h, 0xEE, I386_KERNEL_CODE_SEGMENT);
 
 	i386_load_idt();
 }

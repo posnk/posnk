@@ -72,14 +72,67 @@ int procvmm_do_exec_mmaps()
 				"(stack)" );
 }
 
-int procvmm_check( const void *dest, size_t size) {
-	uintptr_t p = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
+int procvmm_check( const void *dest, size_t size)
+{
+	uintptr_t b = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
+	uintptr_t p;
 	if (scheduler_current_task->pid == 0)
 		return 1;
-	for (; p < size; p += PHYSMM_PAGE_SIZE)
-		if (!procvmm_get_memory_region((void *) p))
+	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE)
+		if (!procvmm_get_memory_region((void *) (b + p)))
 			return 0;
 	return 1;
+}
+
+int procvmm_check_string( const char *dest, size_t size_max )
+{
+	uintptr_t p,lp,cp,b;
+	
+	if (scheduler_current_task->pid == 0)
+		return strlen( dest );
+	
+	lp = 1;
+	b = ( uintptr_t ) dest;
+	
+	for (p = 0; p < size_max; p++) {
+		cp = (b + p) & PHYSMM_PAGE_ADDRESS_MASK;
+		if ( lp != cp ) {
+			if (!procvmm_get_memory_region(dest))
+				return -1;
+			lp = cp;
+		} else if ( !*dest ) {
+			return p + 1;
+		}
+		dest++;
+	}
+	return -2;
+}
+
+int procvmm_check_stringlist(	const char **dest, 
+				size_t len_max,
+				size_t str_max )
+{
+	uintptr_t p,lp,cp,b;
+	
+	if (scheduler_current_task->pid == 0)
+		return strlistlen( dest );
+	
+	lp = 1;
+	b = ( uintptr_t ) dest;
+	
+	for (p = 0; p < len_max; p++) {
+		cp = (b + 4*p) & PHYSMM_PAGE_ADDRESS_MASK;
+		if ( lp != cp ) {
+			if (!procvmm_get_memory_region(dest))
+				return -1;
+			lp = cp;
+		} else if ( !*dest ) {
+			return p + 1;
+		} else if ( procvmm_check_string( dest, str_max ) < 0 )
+			return -3;
+		dest++;
+	}
+	return -2;
 }
 
 /** 
@@ -94,11 +147,11 @@ int procvmm_get_mmap_iterator (llist_t *node, void *param)
 	return (p >= b_s) && (p < b_e);
 }
 
-process_mmap_t *procvmm_get_memory_region(void *address)
+process_mmap_t *procvmm_get_memory_region(const void *address)
 {
 	if (!scheduler_current_task)
 		return 0;
-	return (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_get_mmap_iterator, address);
+	return (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_get_mmap_iterator, (void*) address);
 }
 
 int procvmm_mmap_copy_iterator (llist_t *node, void *param)

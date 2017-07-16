@@ -26,6 +26,8 @@ void shutdown()
 		earlycon_printf("FAILED\n");
 	else
 		earlycon_printf("OK\n");
+	earlycon_printf("Halting...");
+	halt();
 	//earlycon_printf("Bringing down system using a panic...");
 	//*((uint32_t *)0xF0000000) = 0;
 }

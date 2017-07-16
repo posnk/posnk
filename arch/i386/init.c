@@ -292,7 +292,6 @@ void i386_kmain()
 {
 	pid_t pid_init, pid_idle;
 	int init_status, rv;
-	uint32_t wp_params[4];
 
 	earlycon_puts("OK\n\n");
 
@@ -380,10 +379,7 @@ void i386_kmain()
 	if (!pid_idle)
 		i386_idle_task();
 
-	wp_params[0] = (uint32_t) pid_init;
-	wp_params[1] = (uint32_t) &init_status;
-	wp_params[2] = 0;
-	rv = sys_waitpid(wp_params,wp_params);
+	rv = sys_waitpid((uint32_t) pid_init,(uint32_t) &init_status,0,0,0,0);
 
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 

@@ -28,7 +28,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 
 void interpret_csi_DA1(vterm_t *vterm, int param[], int pcount)
 {
-   const char *buffer = "\033[?1;2c";
+   const char *buffer = "\033[?63;1;2;7;8c";//"\033[?1;2c";
    vterm_write_tty(vterm, buffer, strlen(buffer));
    return;
 }

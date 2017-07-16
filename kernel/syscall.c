@@ -152,7 +152,12 @@ uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 	return 1;	
 }
 
-uint32_t sys_dbgdrop( __attribute__((__unused__)) uint32_t param[4],  __attribute__((__unused__)) uint32_t param_size[4])
+uint32_t sys_dbgdrop(uint32_t a, 
+				uint32_t b,
+				uint32_t c,
+				uint32_t d,
+				uint32_t e,
+				uint32_t f )
 {
 	dbgapi_invoke_kdbg(0);
 	return 1;	
@@ -190,7 +195,12 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 #endif
 	scheduler_current_task->in_syscall = params.call_id;
-	result = syscall_table[params.call_id]((uint32_t*)params.param, (uint32_t*)params.param_size);
+	result = syscall_table[params.call_id]( params.param[0],
+						params.param[1],
+						params.param[2],
+						params.param[3],
+						params.param_size[0],
+						params.param_size[1] );
 	scheduler_current_task->in_syscall = 0xFFFFFFFF;
 #ifdef CONFIG_SYSCALL_DEBUG
 	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
@@ -199,6 +209,41 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	params.sc_errno = syscall_errno;
 	copy_kern_to_user(&params, user_param_block, sizeof(syscall_params_t));
 }
+
+uint32_t syscall_dispatch_new( int call,
+				uint32_t a, 
+				uint32_t b,
+				uint32_t c,
+				uint32_t d,
+				uint32_t e,
+				uint32_t f )
+{
+
+	struct siginfo sigi;
+
+	memset( &sigi, 0, sizeof( struct siginfo ) );
+	uint32_t result;
+	
+	if (( call > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[call] == NULL) {
+		process_send_signal(scheduler_current_task, SIGSYS, sigi);
+		return;
+	}
+	syscall_errno = 0;
+#ifdef CONFIG_SYSCALL_DEBUG
+	if ((call == SYS_OPEN) || (call == SYS_STAT))
+		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], a, b, c, d, e, f);
+	else
+		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], a, b, c, d, e, f);
+#endif
+	scheduler_current_task->in_syscall = call;
+	result = syscall_table[call]( a, b, c, d, e, f );
+	scheduler_current_task->in_syscall = 0xFFFFFFFF;
+#ifdef CONFIG_SYSCALL_DEBUG
+	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
+#endif
+	return result;
+}
+
 
 void syscall_init()
 {

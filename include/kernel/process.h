@@ -173,7 +173,7 @@ void process_child_event(process_info_t *process, int event);
 
 int process_signal_pgroup(pid_t pid, int signal, struct siginfo info);
 
-process_mmap_t *procvmm_get_memory_region(void *address);
+process_mmap_t *procvmm_get_memory_region(const void *address);
 
 int procvmm_copy_memory_map (llist_t *target);
 
@@ -192,6 +192,10 @@ int procvmm_do_exec_mmaps();
 void procvmm_clear_mmaps();
 
 int procvmm_check( const void *dest, size_t size);
+int procvmm_check_string( const char *dest, size_t size_max );
+int procvmm_check_stringlist(	const char **dest, 
+				size_t len_max,
+				size_t str_max );
 
 void process_user_call(void *entry, void *stack);
 
