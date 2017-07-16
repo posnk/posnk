@@ -78,9 +78,11 @@ int procvmm_check( const void *dest, size_t size)
 	uintptr_t p;
 	if (scheduler_current_task->pid == 0)
 		return 1;
-	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE)
+	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE) {
+		debugcon_printf("chk b=%x p=%x bp=%x\n",b,p,b+p);
 		if (!procvmm_get_memory_region((void *) (b + p)))
 			return 0;
+	}
 	return 1;
 }
 
@@ -144,6 +146,7 @@ int procvmm_get_mmap_iterator (llist_t *node, void *param)
 	uintptr_t p = (uintptr_t) param;
 	uintptr_t b_s = (uintptr_t) m->start;
 	uintptr_t b_e = b_s + m->size;
+	debugcon_printf("dgm %x>=%x=%i %x<%x=%i\n",b_s,p,p>=b_s,p,b_e,p<b_e);
 	return (p >= b_s) && (p < b_e);
 }
 
@@ -184,8 +187,8 @@ int procvmm_copy_memory_map (llist_t *target)
 	return llist_iterate_select(scheduler_current_task->memory_map, &procvmm_mmap_copy_iterator, (void *) target) == NULL;
 }
 
-//A         b                C             d
-//b           A              d            C
+//A           b              C             d
+//b           A              d             C
 //b           A              C		   d
 
 /** 

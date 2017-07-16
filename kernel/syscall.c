@@ -122,7 +122,7 @@ void syscall_register(int call_id, syscall_func_t func)
 
 int copy_user_to_kern(void *src, void *dest, size_t size)
 {
-	if (!procvmm_check(dest,size))
+	if (!procvmm_check(src,size))
 		return 0;
 	memcpy(dest,src,size);	
 	return 1;
