@@ -27,7 +27,8 @@
  * @brief Syscall implementation: fork
  * Create a copy of a 
  */
-uint32_t sys_fork(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+
+SYSCALL_DEF0(fork)
 {
 
 
@@ -40,7 +41,8 @@ uint32_t sys_fork(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32
  * @brief Syscall implementation: kill
  * Sends a signal to a process.
  */
-uint32_t sys_kill(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+
+SYSCALL_DEF2(kill)
 {
 	struct siginfo info;
 	process_info_t *process;
@@ -110,27 +112,27 @@ uint32_t sys_kill(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32
 	}		
 }
 
-uint32_t sys_getpid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getpid)
 {
 	return (pid_t) scheduler_current_task->pid;
 }
 
-uint32_t sys_getppid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getppid)
 {
 	return (pid_t) scheduler_current_task->parent_pid;
 }
 
-uint32_t sys_getpgrp(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getpgrp)
 {
 	return (pid_t) scheduler_current_task->pgid;
 }
 
-uint32_t sys_getsid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getsid)
 {
 	return (pid_t) scheduler_current_task->sid;
 }
 
-uint32_t sys_setsid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(setsid)
 {
 	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
 		syscall_errno = EPERM;
@@ -142,7 +144,7 @@ uint32_t sys_setsid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint
 	return (pid_t) scheduler_current_task->sid;
 }
 
-uint32_t sys_setpgrp(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(setpgrp)
 {
 	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
 		syscall_errno = EPERM;
@@ -152,7 +154,7 @@ uint32_t sys_setpgrp(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uin
 	return 0;
 }
 
-uint32_t sys_setpgid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF2(setpgid)
 {
 	process_info_t *task;
 	pid_t pid = (pid_t) a;//TODO: FIX PERMS
@@ -174,7 +176,8 @@ uint32_t sys_setpgid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uin
 	return 0;
 }
 
-uint32_t sys_exit(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+
+SYSCALL_DEF1(exit)
 {
 	scheduler_current_task->exit_status = a;
 	scheduler_current_task->state = PROCESS_KILLED;
@@ -185,7 +188,8 @@ uint32_t sys_exit(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32
 	return 0; // NEVER REACHED
 }
 
-uint32_t sys_yield(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+
+SYSCALL_DEF0(yield)
 {
 	schedule();
 	return 0;
@@ -195,7 +199,8 @@ uint32_t sys_yield(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint3
 #define WUNTRACED 2
 
 //pid_t pid, int *status, int options
-uint32_t sys_waitpid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+
+SYSCALL_DEF3(waitpid)
 {
 	int status, options;
 	pid_t pid;
@@ -328,7 +333,7 @@ uint32_t sys_waitpid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uin
 	return pid;	
 }
 
-uint32_t sys_sbrk(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF1(sbrk)
 {
 	uintptr_t old_brk   = (uintptr_t) scheduler_current_task->heap_end;
 	uintptr_t heap_max = (uintptr_t) scheduler_current_task->heap_max;
@@ -368,7 +373,7 @@ uint32_t sys_sbrk(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32
 int strlistlen(char **list);
 
 //int execve(char *path, char **argv, char **envp);
-uint32_t sys_execve(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(execve)
 {
 	int pl,argvc, envpc,sc,ct;
 	const char  *patho;
@@ -497,12 +502,7 @@ fault_a:
 
 //void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
 
-uint32_t sys_mmap(	uint32_t a,
-			uint32_t b,
-			uint32_t c,
-			uint32_t d,
-			uint32_t e,
-			uint32_t f)
+SYSCALL_DEF6(mmap)
 {
 	return (uint32_t) _sys_mmap(	(void *) a, 
 					(size_t) b, 

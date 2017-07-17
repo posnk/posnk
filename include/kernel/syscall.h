@@ -16,6 +16,62 @@
 #include "kernel/scheduler.h"
 #include "kernel/syscall_ids.h"
 
+#define SYSCALL_DEF0(Name)	uint32_t sys_ ## Name ( \
+	__attribute__(( unused )) uint32_t a,	\
+	__attribute__(( unused )) uint32_t b,	\
+	__attribute__(( unused )) uint32_t c,	\
+	__attribute__(( unused )) uint32_t d,	\
+	__attribute__(( unused )) uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+	
+#define SYSCALL_DEF1(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+	__attribute__(( unused )) uint32_t b,	\
+	__attribute__(( unused )) uint32_t c,	\
+	__attribute__(( unused )) uint32_t d,	\
+	__attribute__(( unused )) uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+
+#define SYSCALL_DEF2(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+				  uint32_t b,	\
+	__attribute__(( unused )) uint32_t c,	\
+	__attribute__(( unused )) uint32_t d,	\
+	__attribute__(( unused )) uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+	
+#define SYSCALL_DEF3(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+				  uint32_t b,	\
+				  uint32_t c,	\
+	__attribute__(( unused )) uint32_t d,	\
+	__attribute__(( unused )) uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+	
+#define SYSCALL_DEF4(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+				  uint32_t b,	\
+				  uint32_t c,	\
+				  uint32_t d,	\
+	__attribute__(( unused )) uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+	
+#define SYSCALL_DEF5(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+				  uint32_t b,	\
+				  uint32_t c,	\
+				  uint32_t d,	\
+	                          uint32_t e,	\
+	__attribute__(( unused )) uint32_t f )
+	
+#define SYSCALL_DEF6(Name)	uint32_t sys_ ## Name ( \
+				  uint32_t a,	\
+				  uint32_t b,	\
+				  uint32_t c,	\
+				  uint32_t d,	\
+	                          uint32_t e,	\
+	                          uint32_t f )
+
 typedef uint32_t (*syscall_func_t)(	uint32_t a,
 					uint32_t b,
 					uint32_t c,

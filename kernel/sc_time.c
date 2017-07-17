@@ -17,12 +17,12 @@
 #include "kernel/syscall.h"
 #include "kernel/permissions.h"
 
-uint32_t sys_time(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF0(time)
 {
 	return (uint32_t) system_time;
 }
 
-uint32_t sys_sleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(sleep)
 {
 	if (!scheduler_wait_time(system_time + (ktime_t) a)) {
 		syscall_errno = EINTR;
@@ -31,7 +31,7 @@ uint32_t sys_sleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32
 	return 0;
 }
 
-uint32_t sys_usleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(usleep)
 {
 	if (!scheduler_wait_micros(system_time_micros + (ktime_t) a)) {
 		syscall_errno = EINTR;
@@ -40,7 +40,7 @@ uint32_t sys_usleep(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint3
 	return 0;
 }
 
-uint32_t sys_stime(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(stime)
 {
 	time_t t;
 	if (!copy_user_to_kern((void *)a, &t, sizeof(time_t)))

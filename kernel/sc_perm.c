@@ -21,27 +21,27 @@
 #include "kernel/syscall.h"
 #include <sys/errno.h>
 
-uint32_t sys_getuid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getuid)
 {
 	return (uid_t) scheduler_current_task->uid;
 }
 
-uint32_t sys_geteuid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(geteuid)
 {
 	return (uid_t) scheduler_current_task->effective_uid;
 }
 
-uint32_t sys_getgid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getgid)
 {
 	return (gid_t) scheduler_current_task->gid;
 }
 
-uint32_t sys_getegid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF0(getegid)
 {
 	return (gid_t) scheduler_current_task->effective_gid;
 }
 
-uint32_t sys_setuid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF1(setuid)
 {
 	if ((a != scheduler_current_task->uid) && (scheduler_current_task->uid != 0)) {
 		syscall_errno = EPERM;
@@ -52,7 +52,7 @@ uint32_t sys_setuid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint
 	return 0;
 }
 
-uint32_t sys_setgid(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF1(setgid)
 {
 	if ((a != scheduler_current_task->gid) && (scheduler_current_task->gid != 0)) {
 		syscall_errno = EPERM;

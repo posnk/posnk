@@ -10,7 +10,7 @@ const char *posnk_machine = ARCH_NAME;
 const char *posnk_sysname = "posnk";
 const char *posnk_nodename = "";
 
-uint32_t sys_uname(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF1(uname)
 {
 	struct utsname *out;
 

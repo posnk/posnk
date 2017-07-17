@@ -23,31 +23,31 @@
 #include "kernel/syscall.h"
 
 //void *shmat(int shmid, void *shmaddr, int shmflg);
-uint32_t sys_shmat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(shmat)
 {
 	return (uint32_t) _sys_shmat((int) a, (void *) b, (int) c);
 }
 
 //int shmdt(void *shmaddr);
-uint32_t sys_shmdt(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF1(shmdt)
 {
 	return (uint32_t) _sys_shmdt((void *) a);
 }
 
 //int shmctl(int id, int cmd, struct shmid_ds *buf);
-uint32_t sys_shmctl(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(shmctl)
 {
 	return (uint32_t) _sys_shmctl((int) a, (int) b, (struct shmid_ds *) c);
 }
 
 //int shmget(key_t key, size_t size, int flags);
-uint32_t sys_shmget(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(shmget)
 {
 	return (uint32_t) _sys_shmget((key_t) a, (size_t) b, (int) c);
 }
 
 //int semop(int semid, struct sembuf *sops, size_t nsops);
-uint32_t sys_semop(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(semop)
 {
 	struct sembuf * buf;
 	int status;
@@ -68,19 +68,19 @@ uint32_t sys_semop(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint3
 
 
 //int semctl(int id, int semnum, int cmd, void *buf);
-uint32_t sys_semctl(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF4(semctl)
 {
 	return (uint32_t) _sys_semctl((int) a, (int) b, (int) c, (void *) d);
 }
 
 //int semget(key_t key, int nsems, int flags);
-uint32_t sys_semget(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(semget)
 {
 	return (uint32_t) _sys_semget((key_t) a, (int) b, (int) c);
 }
 
 //ssize_t   msgrcv(int, void *, size_t, long int, int);
-uint32_t sys_msgrcv(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF5(msgrcv)
 {
 	void *buf;
 	ssize_t status;
@@ -100,7 +100,7 @@ uint32_t sys_msgrcv(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint
 }
 
 //int       msgsnd(int, const void *, size_t, int);
-uint32_t sys_msgsnd(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF4(msgsnd)
 {
 	void *buf;
 	int status;
@@ -120,13 +120,13 @@ uint32_t sys_msgsnd(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint
 }
 
 //int       msgctl(int, int, struct msqid_ds *);
-uint32_t sys_msgctl(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF3(msgctl)
 {
 	return (uint32_t) _sys_msgctl((int) a, (int) b, (void *) c);
 }
 
 //int       msgget(key_t, int);
-uint32_t sys_msgget(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f)
+SYSCALL_DEF2(msgget)
 {
 	return (uint32_t) _sys_msgget((key_t) a, (int) b);
 }

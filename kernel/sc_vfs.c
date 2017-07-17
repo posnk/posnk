@@ -21,14 +21,14 @@
 #include <string.h>
 
 //int vfs_link(char *oldpath, char *newpath);
-uint32_t sys_link(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(link)
 {
 	char *oldpath;
 	char *newpath;
 	int status;
 	int sza, szb;
-	sza = procvmm_check_string( a, CONFIG_FILE_MAX_NAME_LENGTH );
-	szb = procvmm_check_string( b, CONFIG_FILE_MAX_NAME_LENGTH );
+	sza = procvmm_check_string( (char *)a, CONFIG_FILE_MAX_NAME_LENGTH );
+	szb = procvmm_check_string( (char *)b, CONFIG_FILE_MAX_NAME_LENGTH );
 	if (( sza < 0 ) || ( szb < 0 )) { 
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
@@ -56,7 +56,7 @@ uint32_t sys_link(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_
 	return (uint32_t) status;
 }
 
-uint32_t sys_mount(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF4(mount)
 {
 	char *oldpath;
 	char *newpath;
@@ -103,7 +103,7 @@ uint32_t sys_mount(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32
 }
 
 //int vfs_symlink(char *oldpath, char *newpath);
-uint32_t sys_symlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(symlink)
 {
 	char *oldpath;
 	char *newpath;
@@ -138,7 +138,7 @@ uint32_t sys_symlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint
 	return (uint32_t) status;
 }
 
-uint32_t sys_sync(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF0(sync)
 {
 	vfs_cache_flush();
 	vfs_sync_filesystems();
@@ -146,7 +146,7 @@ uint32_t sys_sync(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_
 }
 
 //int vfs_unlink(char *path);
-uint32_t sys_unlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(unlink)
 {
 	char *path;
 	int status;
@@ -216,7 +216,7 @@ int _sys_chroot(char *path)
 }
 
 //int chroot(char *path);
-uint32_t sys_chroot(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(chroot)
 {
 	char *path;
 	int status;
@@ -238,7 +238,7 @@ uint32_t sys_chroot(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint3
 }
 
 //int chdir(char *path);
-uint32_t sys_chdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(chdir)
 {
 	char *path;
 	int status;
@@ -284,7 +284,7 @@ int _sys_chmod(char *path, mode_t mode)
 }
 
 //int chmod(char *path, mode_t mode);
-uint32_t sys_chmod(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(chmod)
 {
 	char *path;
 	int status;
@@ -332,7 +332,7 @@ int _sys_chown(char *path, uid_t owner, gid_t group)
 }
 
 //int chown(char *path, uid_t owner, gid_t group);
-uint32_t sys_chown(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF3(chown)
 {
 	char *path;
 	int status;
@@ -372,7 +372,7 @@ int _sys_truncate(char *path, off_t length)
 }
 
 //int truncate(char *path, off_t length);
-uint32_t sys_truncate(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(truncate)
 {
 	char *path;
 	int status;
@@ -393,7 +393,7 @@ uint32_t sys_truncate(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uin
 	return (uint32_t) status;
 }
 
-uint32_t sys_umask(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(umask)
 {
 	mode_t old = scheduler_current_task->umask;
 	scheduler_current_task->umask = a & 0777;
@@ -401,7 +401,7 @@ uint32_t sys_umask(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32
 }
 
 //int vfs_mknod(char *path, mode_t mode, dev_t dev)
-uint32_t sys_mknod(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF3(mknod)
 {
 	char *path;
 	int status;
@@ -427,7 +427,7 @@ uint32_t sys_mknod(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32
 }
 
 //int vfs_mkdir(char *path, mode_t mode)
-uint32_t sys_mkdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(mkdir)
 {
 	char *path;
 	int status;
@@ -480,7 +480,7 @@ int _sys_stat(char *path, struct stat* buf)
 }
 
 //int stat(char *path, struct stat* buf);
-uint32_t sys_stat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(stat)
 {
 	char *path;
 	struct stat* buf;
@@ -537,7 +537,7 @@ int _sys_readlink(char *path, char *buf, size_t bufsiz)
 }
 
 //int stat(char *path, struct stat* buf);
-uint32_t sys_readlink(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF3(readlink)
 {
 	char *path;
 	char* buf;
@@ -603,7 +603,7 @@ int _sys_lstat(char *path, struct stat* buf)
 }
 
 //int lstat(char *path, struct stat* buf);
-uint32_t sys_lstat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF2(lstat)
 {
 	char *path;
 	struct stat* buf;
@@ -637,7 +637,7 @@ uint32_t sys_lstat(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32
 	return (uint32_t) status;
 }
 
-uint32_t sys_rmdir(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e,uint32_t f)
+SYSCALL_DEF1(rmdir)
 {
 	char *path;
 	int status;
