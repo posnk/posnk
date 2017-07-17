@@ -127,7 +127,7 @@ SYSCALL_DEF0(getpgrp)
 	return (pid_t) scheduler_current_task->pgid;
 }
 
-SYSCALL_DEF0(getsid)
+SYSCALL_DEF0(getsid) //TODO: Not compliant, fix this
 {
 	return (pid_t) scheduler_current_task->sid;
 }

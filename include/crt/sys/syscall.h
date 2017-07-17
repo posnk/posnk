@@ -28,6 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef __SYS_SYSCALL_H__
 #define __SYS_SYSCALL_H__
 
+#include <stdint.h>
+
 #define SYS_FORK	1
 #define SYS_KILL	2
 #define SYS_GETPID	3
