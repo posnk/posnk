@@ -29,9 +29,13 @@ arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
 arch/i386/prot_asm.s
 
+SRCS_ULN_I386 = userlib/i386/syscall.s
+
 OBJS_C_I386 = $(addprefix $(BUILDDIR),$(SRCS_C_I386:.c=.o))
 OBJS_N_I386 = $(addprefix $(BUILDDIR),$(SRCS_N_I386:.s=.o))
 OBJS_A_I386 = $(addprefix $(BUILDDIR),$(SRCS_A_I386:.S=.o))
+
+OBJS_ULN_I386 = $(addprefix $(BUILDDIR),$(SRCS_ULN_I386:.s=.o))
 
 OBJS_I386 = $(OBJS_C_I386) $(OBJS_N_I386) $(OBJS_A_I386)
 
@@ -44,12 +48,17 @@ $(OBJS_N_I386): $(BUILDDIR)%.o: %.s
 $(OBJS_A_I386): $(BUILDDIR)%.o: %.S
 	$(GAS) $(GASFLAGS) -c $< -o $@
 
+$(OBJS_ULN_I386): $(BUILDDIR)%.o: %.s
+	$(NASM) $(ULNASMFLAGS) $< -o $@
+
+OBJS_ULARCH = $(OBJS_ULN_I386)
+
 ARCHOBJ=$(BUILDDIR)arch/i386.o
 
 $(ARCHOBJ): $(OBJS_I386)
 	$(RLD) $(RLDFLAGS) -r $(OBJS_I386) -o $@
 
-default_i386: $(BUILDDIR)vmpos
+default_i386: $(BUILDDIR)vmpos $(BUILDDIR)libposnk.a
 
 cdrom_i386: vmpos cdrom_files/ramdisk.ext2
 #	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos

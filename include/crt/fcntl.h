@@ -55,5 +55,5 @@
 #define F_GETLK         7       /* Get record-locking information */
 #define F_SETLK         8       /* Set or Clear a record-lock (Non-Blocking) */
 #define F_SETLKW        9       /* Set or Clear a record-lock (Blocking) */
-
+//TODO: F_GETOWN, F_SETOWN
 #endif

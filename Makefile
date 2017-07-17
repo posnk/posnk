@@ -14,6 +14,7 @@ ARCHCAP = `echo $(ARCH) | tr a-z A-Z`
 ARCHDEF = -DARCH_$(ARCHCAP) -DARCH_NAME=\"$(ARCH)\"
 VERDEF = -DBUILD_MACHINE=\"`whoami`@`uname -n`\"
 DEFS = $(ARCHDEF) $(VERDEF)
+ULDEFS = $(VERDEF) $(ARCHDEF)
 
 # define the C compiler to use
 CC   = @echo " [   CC    ]	" $< ; $(CROSS_COMPILE)gcc
@@ -21,6 +22,8 @@ LD   = @echo " [   LD    ]	" $@ ; $(CROSS_COMPILE)gcc
 RLD  = @echo " [   LD    ]	" $@ ; $(CROSS_COMPILE)ld
 CPP  = @echo " [   CPP   ]	" $@ ; $(CROSS_COMPILE)cpp
 OCP  = @echo " [ OBJCPY  ]	" $@ ; $(CROSS_COMPILE)objcopy
+AR   = @echo " [   AR    ]	" $@ ; $(CROSS_COMPILE)ar
+RL   = @echo " [ RANLIB  ]	" $@ ; $(CROSS_COMPILE)ranlib
 M4   = @echo " [   M4    ]	" $@ ; m4
 GAS  = @echo " [   AS    ]	" $@ ; $(CROSS_COMPILE)gcc
 NASM = @echo " [  NASM   ]	" $< ; nasm
@@ -33,11 +36,18 @@ HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
 	-fauto-inc-dec 
+	
+ULCFLAGS = $(ULDEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
+	-finline-functions -finline-functions-called-once
+
+ULARFLAGS = rcs
 
 HCFLAGS = -Wall -g -Wextra -DHOSTED_TEST -include hostedtest.h \
 	-mno-tbm -D_FILE_OFFSET_BITS=64
 
 NASMFLAGS = -w+orphan-labels -felf -g
+
+ULNASMFLAGS = -w+orphan-labels -felf -g
 
 GASFLAGS = -g
 
@@ -45,6 +55,8 @@ GASFLAGS = -g
 INCLUDES = -I./include -I./include/crt
 
 HINCLUDES = -I./include -I./include/hcrt
+
+ULINCLUDES = -I./include/crt
 
 # Set the required linker flags
 LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
@@ -165,6 +177,10 @@ default: default_$(ARCH)
 
 all:	default
 
+# include the userlib makefile
+
+include userlib/Makefile
+
 # include the architecture makefile
 
 include arch/$(ARCH)/Makefile
@@ -174,11 +190,15 @@ include arch/$(ARCH)/Makefile
 OBJS          = $(addprefix $(BUILDDIR),$(SRCS:.c=.o))
 OBJS_DRIVER   = $(addprefix $(BUILDDIR),$(SRCS_DRIVER:.c=.o))
 OBJS_DLHEAPMM = $(addprefix $(BUILDDIR),$(SRCS_DLHEAPMM:.c=.o))
+OBJS_USERLIB  = $(addprefix $(BUILDDIR),$(SRCS_USERLIB:.c=.o))
 
 # rules to compile those objects
 
 $(OBJS): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) $ -c $< -o $@
+
+$(OBJS_USERLIB): $(BUILDDIR)%.o: %.c
+	$(CC) $(ULCFLAGS) $(ULINCLUDES) $ -c $< -o $@
 
 $(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -214,6 +234,11 @@ $(BUILDDIR)vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
 	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o $@ $(OBJS_KERN)
 	@rm $(BUILDDIR)_dmake $(BUILDDIR)kernel/version.o
 
+# userlib archiving rule
+$(BUILDDIR)libposnk.a: $(BUILDDIR)_dmake $(OBJS_USERLIB) $(OBJS_ULARCH)
+	$(AR) $(ULARFLAGS) $(BUILDDIR)libposnk.a $(OBJS_USERLIB) $(OBJS_ULARCH)	
+	$(RL) $(BUILDDIR)libposnk.a
+	
 # kernel install rule
 
 install: $(BUILDDIR)vmpos

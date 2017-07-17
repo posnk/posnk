@@ -25,8 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  */
  
- #ifndef __SYS_SYSCALL_H__
- #define __SYS_SYSCALL_H__
+#ifndef __SYS_SYSCALL_H__
+#define __SYS_SYSCALL_H__
 
 #define SYS_FORK	1
 #define SYS_KILL	2
@@ -112,4 +112,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SYS_SIGSUSPEND	82
 #define SYS_UNAME	83
  
- #endif
+uint32_t syscall( int,	uint32_t a, 
+			uint32_t b,
+			uint32_t c,
+			uint32_t d,
+			uint32_t e,
+			uint32_t f);
+ 
+#endif
