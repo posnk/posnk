@@ -3,7 +3,7 @@
  *
  * Part of P-OS kernel.
  *
- * Contains process related syscalls
+ * Contains time related syscalls
  *
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
