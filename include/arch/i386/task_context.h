@@ -21,6 +21,7 @@ struct i386_task_context {
 	uint32_t				user_ss;
 	uint32_t				user_ds;
 	i386_pusha_registers_t	user_regs;
+	uint32_t				user_eflags;
 	uint32_t				intr_cs;
 	uint32_t				intr_eip;
 	uint32_t				intr_ds;

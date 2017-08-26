@@ -59,6 +59,7 @@ void i386_user_enter ( i386_isr_stack_t *stack )
 	tctx->user_ss		= stack->ss;
 	tctx->user_cs		= stack->cs;
 	tctx->user_ds		= stack->ds;
+	tctx->user_eflags	= stack->eflags;
  
 }
 
@@ -78,6 +79,7 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 	stack->esp			= tctx->user_regs.esp;
 	stack->ss			= tctx->user_ss;
 	stack->cs			= tctx->user_cs;
+	stack->eflags		= tctx->user_eflags;
  
 }
 
