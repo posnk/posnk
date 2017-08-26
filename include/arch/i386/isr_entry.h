@@ -33,6 +33,8 @@ void i386_kern_enter ( i386_isr_stack_t *stack );
 void i386_user_enter ( i386_isr_stack_t *stack );
 void i386_user_exit ( i386_isr_stack_t *stack );
 
+void i386_fork_exit( void );
+
  void i386_isr_entry_0();
  void i386_isr_entry_1();
  void i386_isr_entry_3();

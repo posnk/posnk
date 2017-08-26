@@ -72,6 +72,43 @@ i386_entry_core:
 	; Exit interrupt handler
 	iret
 
+[global i386_fork_exit]
+[extern i386_user_exit]
+; Simulate interrupt return to duplicate user state
+i386_fork_exit:
+
+	; alloca( sizeof( i386_isr_stack_t ) )
+	
+	sub esp, 64
+
+	; Set magic base pointer to stop kernel stacktraces
+	mov	ebp, 0xCAFE57AC
+
+	; Push the stack address
+	push	esp
+
+	; Call the user state restore function
+	call	i386_user_exit
+
+	; "Pop" the stack address
+	add	esp, 4
+	
+	; Restore data segment
+	pop	eax
+	mov	ds, ax
+	mov	es, ax
+	mov	fs, ax
+	mov	gs, ax
+
+	; Restore registers
+	popa
+
+	; Pop error code and interrupt number
+	add	esp, 8
+
+	; Exit interrupt handler
+	iret
+
 %macro ISR_SYSCALL 1
 	
 [global i386_isr_entry_%1]		
