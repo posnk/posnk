@@ -102,7 +102,8 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 	if (drivermgr_enumerate_interface(DEVICE_TYPE_PCI, busaddr, interface))
 		return;
 
-	debugcon_printf("%i:%i.%i - %s %s NO DRIVER FOUND!!!\n", bus, device, function,
+	debugcon_printf("%i:%i.%i - %x:%x %s %s NO DRIVER FOUND!!!\n", bus, device, function,
+			vid, pid,
 			pci_vendor_lookup(vid),
 			pci_device_lookup(vid, pid));
 }
