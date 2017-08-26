@@ -27,7 +27,8 @@ SRCS_N_I386 = arch/i386/start.s \
 arch/i386/isr_entry.s \
 arch/i386/phys_copy.s \
 arch/i386/contextswitch.s \
-arch/i386/prot_asm.s
+arch/i386/prot_asm.s \
+arch/i386/synch.s
 
 SRCS_ULN_I386 = userlib/i386/syscall.s
 
