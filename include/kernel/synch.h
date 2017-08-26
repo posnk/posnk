@@ -19,6 +19,18 @@
 
 typedef uint32_t semaphore_t;
 
+typedef volatile int spinlock_t;
+
+void spinlock_enter( spinlock_t *lock );
+
+void spinlock_exit( spinlock_t *lock );
+
+int enable();
+
+int disable();
+
+void restore( int );
+
 void semaphore_up(semaphore_t *semaphore);
 
 void semaphore_add(semaphore_t *semaphore, unsigned int n);

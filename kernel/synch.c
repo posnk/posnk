@@ -20,6 +20,26 @@
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
 #include <assert.h>
+
+void spinlock_enter( spinlock_t *lock )
+{
+	int s;
+	
+	s = disable();
+	
+	while ( *lock );
+	
+	*lock = 1;
+	
+	restore( s );
+}
+
+void spinlock_exit( spinlock_t *lock );
+{
+
+	*lock = 0;
+
+}
 void semaphore_up(semaphore_t *semaphore)
 {
 	(*semaphore)++;
