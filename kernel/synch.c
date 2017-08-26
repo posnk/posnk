@@ -34,7 +34,7 @@ void spinlock_enter( spinlock_t *lock )
 	restore( s );
 }
 
-void spinlock_exit( spinlock_t *lock );
+void spinlock_exit( spinlock_t *lock )
 {
 
 	*lock = 0;
