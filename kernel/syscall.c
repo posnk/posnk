@@ -195,7 +195,11 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 #endif
 	scheduler_current_task->in_syscall = params.call_id;
-	params.return_val = 0;
+	if ( call == SYS_FORK ) {
+		params.return_val = 0;
+		params.sc_errno = 0;
+		copy_kern_to_user(&params, user_param_block, sizeof(syscall_params_t));
+	}
 	result = syscall_table[params.call_id]( params.param[0],
 						params.param[1],
 						params.param[2],
