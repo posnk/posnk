@@ -20,17 +20,6 @@
 #include "arch/i386/protection.h"
 #include "arch/i386/x86.h"
 
-struct csstack {
-	i386_pusha_registers_t	regs;
-	uint32_t				eip;
-	uint32_t				arg;
-}  __attribute__((packed));
-
-struct csstack2 {
-	i386_pusha_registers_t	regs;
-	uint32_t				eip;
-}  __attribute__((packed));
-
 void i386_do_context_switch(	uint32_t esp, 
 								uint32_t page_dir,
 								uint32_t *old_esp );
@@ -137,7 +126,7 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	/* If we want to switch to the current task, NOP */
 	if (new_task != scheduler_current_task) {
 	
-		struct csstack2 *ess = (void*)(nctx->kern_esp);
+		csstack_t *ess = (void*)(nctx->kern_esp);
 		
 		/* Preset kernel state to new task */
 		paging_active_dir = new_task->page_directory;	
@@ -261,20 +250,21 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 	i386_fpu_fork();	
 	
 	/* Set up kernel state */
-	nctx->kern_eip = ( uint32_t ) callee;
 	nctx->kern_esp = ( uint32_t ) new_task->kernel_stack;
 	nctx->kern_esp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
 	nctx->tss_esp  = nctx->kern_esp;
-	nctx->kern_ebp = 0xCBADCA11;
+	
+	/* Push the arguments for the entry point */
+	nctx->kern_esp -= 4;
+	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) arg;
 	
 	/* Push the new task state */
-	nctx->kern_esp -= sizeof(struct csstack);
+	nctx->kern_esp -= sizeof( csstack_t );
 	nstate = ( struct csstack * ) nctx->kern_esp;
-	memset( nstate, 0, sizeof( struct csstack ) );
+	memset( nstate, 0, sizeof( csstack_t ) );
 	
-	nstate->eip = nctx->kern_eip;
-	nstate->arg = ( uint32_t ) arg;
-	nstate->regs.ebp = nctx->kern_ebp;
+	nstate->eip = ( uint32_t ) callee;
+	nstate->regs.ebp = 0xCBADCA11;
 	
 	/* Switch to new process ? */
 	
@@ -291,11 +281,12 @@ void debug_attach_task(process_info_t *new_task)
 {
 	i386_task_context_t *nctx;
 	nctx = new_task->arch_state;
-	i386_cs_debug_attach(
+	/*i386_cs_debug_attach(
 				nctx->kern_esp,
 				nctx->kern_ebp,
 				nctx->kern_eip,
-				paging_get_physical_address(new_task->page_directory->content));	
+				paging_get_physical_address(new_task->page_directory->content));*/
+	//TODO: Implement	
 }
 
 
