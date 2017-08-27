@@ -1,4 +1,7 @@
 #include "arch/i386/protection.h"
+#include "arch/i386/task_context.h"
+#include "kernel/scheduler.h"
+#include "kernel/earlycon.h"
 #include <string.h>
 
 extern i386_gdt_descriptor_t i386_tss_descriptor;
@@ -28,8 +31,18 @@ void i386_protection_init()
    i386_tss_entry.cs	= 0x28 | I386_RPL_USERMODE_MASK;
    i386_tss_entry.ss	= i386_tss_entry.ds = i386_tss_entry.es = i386_tss_entry.fs = i386_tss_entry.gs = 0x30 | I386_RPL_USERMODE_MASK;
    i386_tss_flush();
-} 
+}
+
+void i386_tss_update( void )
+{
+	i386_task_context_t *tctx;
+	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
+	//debugcon_printf("switching esp0=%x\n",tctx->tss_esp);
+	i386_tss_entry.esp0	= tctx->tss_esp;
+}
+
 void process_user_call(void *entry, void *stack)
 {
+	i386_tss_update();
 	i386_protection_user_call((uint32_t) entry, (uint32_t) stack);
 }

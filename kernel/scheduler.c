@@ -31,7 +31,8 @@ void scheduler_init()
 {
 	scheduler_task_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
 	llist_create(scheduler_task_list);
-	scheduler_current_task = (scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
+	scheduler_current_task = 
+		(scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
 	memset(scheduler_current_task, 0, sizeof(scheduler_task_t));
 	/* Initialize process info */
 	scheduler_current_task->uid  = 0;
@@ -51,9 +52,11 @@ void scheduler_init()
 	strcpy(scheduler_current_task->name, CONFIG_SYSTEM_PROCESS_NAME);
 	/* Initialize process memory info */
 	scheduler_current_task->heap_start	= (void *) 0xE0000000;
-	scheduler_current_task->heap_end	= (void *) 0x12345678;// TOTALLY NOT RELEVANT ON PROCESS ZERO
-	scheduler_current_task->stack_bottom	= (void *) 0xBFFFDFFF;
-	scheduler_current_task->stack_top	= (void *) 0xBFFFD000;
+	scheduler_current_task->heap_end	= (void *) 0x12345678;
+		// TOTALLY NOT RELEVANT ON PROCESS ZERO
+	scheduler_current_task->stack_bottom	= (void *) 0x12345678;
+	scheduler_current_task->stack_top	= (void *) 0x12345678;
+	scheduler_current_task->kernel_stack = (void *) 0x12345678;
 
 	signal_init_task( scheduler_current_task );
 
@@ -70,7 +73,7 @@ void scheduler_init()
 	scheduler_init_task(scheduler_current_task);//TODO: Handle errors
 }
 
-int scheduler_fork()
+int scheduler_spawn( void *callee, void *arg )
 {
 	scheduler_task_t *new_task = (scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
 	memset(new_task, 0, sizeof(scheduler_task_t));
@@ -123,11 +126,17 @@ int scheduler_fork()
 
 	scheduler_init_task(new_task); //TODO: Handle errors
 
-	if (scheduler_fork_to(new_task)) {
+	if (!scheduler_do_spawn( new_task, callee, arg )) {
 		llist_add_end(scheduler_task_list, (llist_t *) new_task);
 		return new_task->pid;
 	}
-	return 0;
+
+	return -1;
+}
+
+int scheduler_fork()
+{
+	return scheduler_spawn( scheduler_fork_main, NULL );
 }
 
 /**

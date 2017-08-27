@@ -189,12 +189,13 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	syscall_errno = 0;
 #ifdef CONFIG_SYSCALL_DEBUG
 	call = params.call_id;
-	if ((call == SYS_OPEN) || (call == SYS_STAT))
+	if ((call == SYS_OPEN) || (call == SYS_STAT)|| (call == SYS_EXECVE))
 		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else
 		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", scheduler_current_task->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 #endif
 	scheduler_current_task->in_syscall = params.call_id;
+	params.return_val = 0;
 	result = syscall_table[params.call_id]( params.param[0],
 						params.param[1],
 						params.param[2],

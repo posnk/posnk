@@ -105,7 +105,7 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 			info.si_code = ILL_ILLTRP;
 			break;
 	};
-
+	dumpisrstack( stack );
 	exception_handle( sig, info, (void*) stack->eip,0 );
 	
 }
@@ -144,6 +144,8 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 {	
 	uint32_t scpf;
 	int int_id = stack->int_id;
+	
+	
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_enter( stack );
@@ -163,6 +165,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 				1);
 		} else {
 			scpf = *( (uint32_t *) stack->esp );
+			stack->regs.eax = 0;
 			stack->regs.eax =
 				syscall_dispatch_new(
 						stack->regs.eax,

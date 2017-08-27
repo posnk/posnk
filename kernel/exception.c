@@ -21,7 +21,7 @@
 void exception_panic( int sig, void *instr_pointer )
 {
 	panic_printf("PANIC! Unhandled kernelmode exception: (%i)\n",sig);
-	earlycon_printf("PANIC! Unhandled kernelmode exception: %s(%i)\n", sig);
+	earlycon_printf("PANIC! Unhandled kernelmode exception: (%i)\n", sig);
 	earlycon_printf("Exception occurred at 0x%x\n", instr_pointer);
 	earlycon_printf("Register dump: \n");
 	debug_dump_state();

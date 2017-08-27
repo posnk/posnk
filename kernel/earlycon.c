@@ -113,6 +113,7 @@ int earlycon_aprintf(const char* str,...){
 
 void earlycon_puts(const char *str){
 	size_t len;
+	debugcon_aputs(str);
 	if (!earlycon_conup) {
 		len = strlen(str);
 		earlycon_aputs(str);

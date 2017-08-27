@@ -141,12 +141,10 @@ void i386_init_handle_cmdline(multiboot_info_t *mbt)
 			CONFIG_CMDLINE_MAX_LENGTH );
 	kernel_cmdline[CONFIG_CMDLINE_MAX_LENGTH-1] = 0;
 }
-
+void i386_kmain();
 void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 {
 	size_t initial_heap = 4096;
-	uint32_t init_sp = 0;
-	uint32_t new_sp = 0xBFFFBFFF;
 	uint32_t mem_avail = 0;
 	void *pdir_ptr;
 	
@@ -198,36 +196,12 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	paging_map(pdir_ptr, paging_get_physical_address((void *)0xFFFFF000), PAGING_PAGE_FLAG_RW);
 	paging_active_dir->content = pdir_ptr;
 	earlycon_puts("OK\nInitializing kernel stack...");
-
-	paging_map((void *)0xBFFFF000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
-	paging_tag((void *)0xBFFFF000, PAGING_PAGE_TAG_KERNEL_DATA);
-	paging_map((void *)0xBFFFE000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
-	paging_tag((void *)0xBFFFE000, PAGING_PAGE_TAG_KERNEL_DATA);
-
-	paging_map((void *)0xBFFFD000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);/* SYSTEM CALL STACK */
-	paging_tag((void *)0xBFFFD000, PAGING_PAGE_TAG_KERNEL_DATA);
-	paging_map((void *)0xBFFFC000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW);
-	paging_tag((void *)0xBFFFC000, PAGING_PAGE_TAG_KERNEL_DATA);
-
-	paging_map((void *)0xBFFFB000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);/* INIT STACK */
-	paging_tag((void *)0xBFFFB000, PAGING_PAGE_TAG_USER_DATA);
-	paging_map((void *)0xBFFFA000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-	paging_tag((void *)0xBFFFA000, PAGING_PAGE_TAG_USER_DATA);
-	paging_map((void *)0xBFFF9000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-	paging_tag((void *)0xBFFF9000, PAGING_PAGE_TAG_USER_DATA);
-	paging_map((void *)0xBFFF8000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-	paging_tag((void *)0xBFFF8000, PAGING_PAGE_TAG_USER_DATA);
-	paging_map((void *)0xBFFF7000, physmm_alloc_frame(), PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
-	paging_tag((void *)0xBFFF7000, PAGING_PAGE_TAG_USER_DATA);
-
-
+	
 	earlycon_puts("OK\nCalling kmain...");
 	mb_info = mbd;
-	asm ("movl %%esp, %%eax; movl %1, %%esp; call i386_kmain;movl %%eax, %%esp;"
-	     :"=r"(init_sp)        /* output */
-	     :"r"(new_sp)         /* input */
-	     :"%eax"        /* clobbered register */
-	     );
+	paging_unmap( 0 );
+	
+	i386_kmain();
 
 	
 } 
@@ -363,21 +337,22 @@ void i386_kmain()
 	
 	syscall_init();
 
-	earlycon_puts("Enabling interrupts...");
-	asm ("sti");
-	earlycon_puts("OK\n");
 
-	pid_init = scheduler_fork();
-	asm ("sti");
-	if (!pid_init)
-		i386_init_stub();
+	pid_init = scheduler_spawn( i386_init_stub, NULL );
+	
+	if ( pid_init < 0 )
+		earlycon_puts("FAIL\n");
+
+	pid_idle = scheduler_spawn( i386_idle_task, NULL );
+	
+	if ( pid_idle < 0 )
+		earlycon_puts("FAIL\n");
+		
 	ata_interrupt_enabled = 1;
 
-	pid_idle = scheduler_fork();
-	asm ("sti");
-	
-	if (!pid_idle)
-		i386_idle_task();
+	earlycon_puts("Enabling interrupts...");
+	enable();
+	earlycon_puts("OK\n");
 
 	rv = sys_waitpid((uint32_t) pid_init,(uint32_t) &init_status,0,0,0,0);
 

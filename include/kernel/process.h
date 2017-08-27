@@ -120,6 +120,7 @@ struct process_info {
 	void		*heap_max;
 	void		*stack_bottom;// Actually a higher address than top
 	void		*stack_top;
+	void		*kernel_stack;
 
 	/* Process statistics */
 	ticks_t		 cpu_ticks;

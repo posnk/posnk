@@ -31,6 +31,7 @@ struct i386_task_context {
 	uint32_t				kern_esp;
 	uint32_t				kern_ebp;
 	uint32_t				kern_eflags;
+	uint32_t				tss_esp;
 	uint8_t					fpu_state[512];
 	int						fpu_used;
 }  __attribute__((packed));
