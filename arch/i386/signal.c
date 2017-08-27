@@ -165,9 +165,7 @@ void exit_signal_handler( void *ctx )
 		scheduler_current_task->signal_altstack.ss_flags &= ~SS_ONSTACK;
 
 	/* Do not trust userland to edit kernel stack pointer and instr pointer */
-	sctx->kern_eip = tctx->kern_eip;
 	sctx->kern_esp = tctx->kern_esp;
-	sctx->kern_ebp = tctx->kern_ebp;
 
 	/* Do not trust userland to hand correct segments to prevent priv escal */
 	sctx->user_cs = tctx->user_cs;

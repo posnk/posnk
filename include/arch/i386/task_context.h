@@ -53,4 +53,9 @@ struct i386_task_context {
 typedef struct i386_task_context i386_task_context_t;
 typedef struct csstack csstack_t;
 
+/**
+ * Switch kernel stacks and registers
+ */
+void i386_context_switch(	uint32_t esp, uint32_t *old_esp );
+
 #endif

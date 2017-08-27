@@ -7,6 +7,7 @@
  *
  * Changelog:
  * 03-04-2014 - Created
+ * 27-08-2017 - Re-implemented context switching
  */
 #include <string.h>
 #include <stdint.h>
@@ -20,9 +21,6 @@
 #include "arch/i386/protection.h"
 #include "arch/i386/x86.h"
 
-void i386_do_context_switch(	uint32_t esp, 
-								uint32_t page_dir,
-								uint32_t *old_esp );
 /**
  * Entry point for fork() processes
  */
@@ -128,8 +126,10 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	
 		csstack_t *ess = (void*)(nctx->kern_esp);
 		
-		/* Preset kernel state to new task */
-		paging_active_dir = new_task->page_directory;	
+		/* Switch page tables */
+		paging_switch_dir( new_task->page_directory );
+		
+		/* Update task pointer */
 		scheduler_current_task = new_task;
 		
 		/* Flag context switch to the FPU */
@@ -137,10 +137,7 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 		
 	//	debugcon_printf("cswitch to %i, esp=%x eip=%x\n", new_task->pid, nctx->kern_esp, ess->eip); 
 		/* Switch kernel threads */
-		i386_do_context_switch( nctx->kern_esp, 
-								paging_get_physical_address(
-									new_task->page_directory->content
-								),
+		i386_context_switch( nctx->kern_esp, 
 								&tctx->kern_esp
 				    			);
 	}

@@ -15,17 +15,15 @@
 ; ESI    4
 ; EDI    0
 ; May clobber: EAX, ECX, EDX
-; void i386_do_context_switch( uint32_t esp, uint32_t pagedir, uint32_t *old_esp)
-[global i386_do_context_switch]
-i386_do_context_switch:
+; void i386_context_switch( uint32_t esp, uint32_t *old_esp )
+[global i386_context_switch]
+i386_context_switch:
 	pusha                     ; Save caller state
 	mov    ebp  , esp         ; Set base pointer
 	mov    eax  , [ebp+0x24]  ; eax=param0
 	mov    ecx  , [ebp+0x28]  ; ecx=param1
-	mov    edx  , [ebp+0x2C]  ; edx=param2
-	mov    [edx], esp         ; *param2 = esp
+	mov    [ecx], esp         ; *param1 = esp
 	mov    esp  , eax         ; esp = param0
-	mov    cr3  , ecx         ; cr3 = param1
 	popa                      ; Restore caller state
 	ret                       ; Return
 	
