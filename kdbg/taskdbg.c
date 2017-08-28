@@ -40,12 +40,13 @@ void kdbg_dump_processes()
 	process_info_t *p;
 	scheduler_task_t *t;
 	llist_t *_p,*_t;
-	for (_p = scheduler_task_list->next; _p != scheduler_task_list; _p = _p->next) {
+	for (_p = process_list->next; _p != process_list; _p = _p->next) {
 		p = (process_info_t *) _p;
 		kdbg_printf("[%i] %s : %s\n", p->pid, p->name, kdbg_procstates[p->state]);
 		for (_t  = p->tasks.next;
 			 _t != &p->tasks;
 			 _t  = _t->next) {
+			 t = (scheduler_task_t *)_t;
 			 kdbg_printf("    [%i] %s", t->tid, kdbg_procstates[t->state]);
 		if (t->in_syscall != 0xFFFFFFFF)
 			kdbg_printf(" sc: %s\n", syscall_names[t->in_syscall]);

@@ -77,6 +77,8 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 		
 	memset(new_task, 0, sizeof(scheduler_task_t));
 
+	new_task->tid = scheduler_tid_counter++;
+
 	/* Initialize task signal handling */
 	new_task->signal_altstack = scheduler_current_task->signal_altstack;
 	new_task->signal_mask = scheduler_current_task->signal_mask;

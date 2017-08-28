@@ -49,7 +49,7 @@ typedef struct process_child_event process_child_event_t;
 #define PROCESS_MMAP_FLAG_SHM		(1<<8)
 
 #define current_process (scheduler_current_task->process)
-
+extern llist_t *process_list;
 struct process_mmap {
 	llist_t		 node;
 	char		*name;
