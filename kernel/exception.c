@@ -40,6 +40,6 @@ void exception_handle( int sig, struct siginfo info, void *instr, int forceusr )
 		debugcon_printf("Exception occurred at 0x%x\n", instr);
 		debugcon_printf("Register dump: \n");
 		debug_dump_state();
-		process_send_signal(scheduler_current_task, sig, info ); //TODO: Look up appropriate signal for exception
+		process_send_signal(current_process, sig, info ); //TODO: Look up appropriate signal for exception
 	}
 }
