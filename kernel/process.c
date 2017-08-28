@@ -166,7 +166,6 @@ void process_init()
 	process_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
 	llist_create( process_list );
 	create_kprocess();
-	current_process = kernel_process;
 }
 
 int curpid()

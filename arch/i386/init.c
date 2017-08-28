@@ -287,6 +287,7 @@ void i386_kmain()
 
 	earlycon_puts("Initializing scheduler...");
 	scheduler_init();
+	process_init();
 	earlycon_puts("OK\n");
 
 	earlycon_puts("Initializing interrupt controller...");
