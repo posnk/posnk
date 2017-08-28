@@ -23,43 +23,43 @@
 
 SYSCALL_DEF0(getuid)
 {
-	return (uid_t) scheduler_current_task->uid;
+	return (uid_t) current_process->uid;
 }
 
 SYSCALL_DEF0(geteuid)
 {
-	return (uid_t) scheduler_current_task->effective_uid;
+	return (uid_t) current_process->effective_uid;
 }
 
 SYSCALL_DEF0(getgid)
 {
-	return (gid_t) scheduler_current_task->gid;
+	return (gid_t) current_process->gid;
 }
 
 SYSCALL_DEF0(getegid)
 {
-	return (gid_t) scheduler_current_task->effective_gid;
+	return (gid_t) current_process->effective_gid;
 }
 
 SYSCALL_DEF1(setuid)
 {
-	if ((a != scheduler_current_task->uid) && (scheduler_current_task->uid != 0)) {
+	if ((a != current_process->uid) && (current_process->uid != 0)) {
 		syscall_errno = EPERM;
 		return -1;
 	}
-	scheduler_current_task->effective_uid = (uid_t) a;
-	scheduler_current_task->uid = (uid_t) a;
+	current_process->effective_uid = (uid_t) a;
+	current_process->uid = (uid_t) a;
 	return 0;
 }
 
 SYSCALL_DEF1(setgid)
 {
-	if ((a != scheduler_current_task->gid) && (scheduler_current_task->gid != 0)) {
+	if ((a != current_process->gid) && (current_process->gid != 0)) {
 		syscall_errno = EPERM;
 		return -1;
 	}
-	scheduler_current_task->effective_gid = (gid_t) a;
-	scheduler_current_task->gid = (gid_t) a;
+	current_process->effective_gid = (gid_t) a;
+	current_process->gid = (gid_t) a;
 	return 0;
 }
 

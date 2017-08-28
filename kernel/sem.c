@@ -96,14 +96,14 @@ inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __attribu
 	} else if (semop > 0) {
 		info->sems[semnum].semval += semop;
 		semaphore_add(info->nwaitsem, info->sems[semnum].semncnt);
-		info->sems[semnum].sempid = scheduler_current_task->pid;
+		info->sems[semnum].sempid = current_process->pid;
 		return 0;
 	} else if (semop < 0) {
 		assert (info->sems[semnum].semval >= (-semop));
 		info->sems[semnum].semval -= (-semop);
 		if (!info->sems[semnum].semval) 
 			semaphore_add(info->zwaitsem, info->sems[semnum].semzcnt);
-		info->sems[semnum].sempid = scheduler_current_task->pid;
+		info->sems[semnum].sempid = current_process->pid;
 		return 0;
 	}
 	assert(0);

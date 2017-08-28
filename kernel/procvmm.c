@@ -28,12 +28,16 @@
 
 void procvmm_clear_mmaps()
 {	
+	process_info_t *cproc;
 	process_mmap_t *region;
+	
+	cproc = current_process;
+	
 	for (	region  = (process_mmap_t *) 
-				llist_get_last( scheduler_current_task->memory_map );
+				llist_get_last( cproc->memory_map );
 			region != NULL;
 			region  = (process_mmap_t *) 
-				llist_get_last(scheduler_current_task->memory_map))
+				llist_get_last(cproc->memory_map))
 		procvmm_unmmap(region);
 }
 
@@ -50,14 +54,18 @@ void procvmm_clear_mmaps_other( process_info_t *info )
 
 int procvmm_do_exec_mmaps()
 {
-	scheduler_current_task->heap_start	=
-		(void *) scheduler_current_task->image_end;//End of program image_base
-	scheduler_current_task->heap_end	= scheduler_current_task->heap_start;	
-	scheduler_current_task->heap_max	= 
+	process_info_t *cproc;
+	
+	cproc = scheduler_current_task->process;
+	
+	cproc->heap_start	=
+		(void *) cproc->image_end;//End of program image_base
+	cproc->heap_end	= cproc->heap_start;	
+	cproc->heap_max	= 
 				(void *) 0x40000000; //User mmap area starts here
-	scheduler_current_task->stack_bottom = 
+	cproc->stack_bottom = 
 				(void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
-	scheduler_current_task->stack_top	= 
+	cproc->stack_top	= 
 				(void *) 0xBF400000; //TODO: Implement dynamic stack size
 	procvmm_mmap_anon(
 				(void *) 0xBFBFF000, 
@@ -66,7 +74,7 @@ int procvmm_do_exec_mmaps()
 				"(sigstack)" );
 				
 	return procvmm_mmap_anon(
-				scheduler_current_task->stack_top, 
+				cproc->stack_top, 
 				0x7FEFFF, 
 				PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, 
 				"(stack)" );
@@ -76,7 +84,8 @@ int procvmm_check( const void *dest, size_t size)
 {
 	uintptr_t b = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
 	uintptr_t p;
-	if (scheduler_current_task->pid == 0)
+	if ((!current_process) ||
+		current_process->pid == 0)
 		return 1;
 	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE) {
 		if (!procvmm_get_memory_region((void *) (b + p))) {
@@ -91,7 +100,8 @@ int procvmm_check_string( const char *dest, size_t size_max )
 {
 	uintptr_t p,lp,cp,b;
 	
-	if (scheduler_current_task->pid == 0)
+	if ((!current_process) ||
+		current_process->pid == 0)
 		return strlen( dest ) + 1;
 	
 	lp = 1;
@@ -118,7 +128,8 @@ int procvmm_check_stringlist(	const char **dest,
 {
 	uintptr_t p,lp,cp,b;
 	
-	if (scheduler_current_task->pid == 0)
+	if ((!current_process) ||
+		current_process->pid == 0)
 		return strlistlen( dest ) + 1;
 	
 	lp = 1;
@@ -154,9 +165,11 @@ int procvmm_get_mmap_iterator (llist_t *node, void *param)
 
 process_mmap_t *procvmm_get_memory_region(const void *address)
 {
-	if (!scheduler_current_task)
-		return 0;
-	return (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_get_mmap_iterator, (void*) address);
+	
+	if ((!current_process) ||
+		current_process->pid == 0)
+		return NULL;
+	return (process_mmap_t *) llist_iterate_select( current_process->memory_map, &procvmm_get_mmap_iterator, (void*) address);
 }
 
 int procvmm_mmap_copy_iterator (llist_t *node, void *param)
@@ -186,7 +199,9 @@ int procvmm_mmap_copy_iterator (llist_t *node, void *param)
 
 int procvmm_copy_memory_map (llist_t *target)
 {
-	return llist_iterate_select(scheduler_current_task->memory_map, &procvmm_mmap_copy_iterator, (void *) target) == NULL;
+	return llist_iterate_select( current_process->memory_map,
+								 &procvmm_mmap_copy_iterator, 
+								 (void *) target) == NULL;
 }
 
 //A           b              C             d
@@ -218,7 +233,8 @@ int procvmm_resize_map(void *start, size_t newsize)
 		return 1;
 	oldsize = region->size;
 	region->size = newsize;
-	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+	if (llist_iterate_select( current_process->memory_map,
+		 &procvmm_collcheck_iterator, (void *) region)) {
 		region->size = oldsize;
 		return EINVAL;
 	}
@@ -246,12 +262,13 @@ int procvmm_mmap_anon(void *start, size_t size, int flags, char *name)
 	region->start = start;
 	region->size = size;
 	region->flags = flags & ~PROCESS_MMAP_FLAG_FILE;
-	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+	if (llist_iterate_select( current_process->memory_map,
+	 &procvmm_collcheck_iterator, (void *) region)) {
 		heapmm_free(region->name, strlen(name)+1);
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
-	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	llist_add_end( current_process->memory_map, (llist_t *)region);
 	return 0;
 }
 
@@ -323,14 +340,15 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 	region->file_sz = file_sz;
 
 	/* Test for region collisions */
-	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+	if (llist_iterate_select( current_process->memory_map,
+		 &procvmm_collcheck_iterator, (void *) region)) {
 		heapmm_free(region->name, strlen(name)+1);
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
 
 	/* Add to region list */
-	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	llist_add_end( current_process->memory_map, (llist_t *)region );
 	
 	return 0;
 }
@@ -379,7 +397,7 @@ int procvmm_mmap_shm(void *start, shm_info_t *shm, int flags, char *name)
 	//debugcon_printf("tcol\n");
 
 	/* Test for region collisions */
-	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+	if (llist_iterate_select( current_process->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
 		heapmm_free(region->name, strlen(name)+1);
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
@@ -391,7 +409,7 @@ int procvmm_mmap_shm(void *start, shm_info_t *shm, int flags, char *name)
 	//debugcon_printf("alist\n");
 
 	/* Add to region list */
-	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	llist_add_end( current_process->memory_map, (llist_t *)region);
 	
 	return 0;
 }
@@ -500,14 +518,14 @@ int procvmm_mmap_stream(void *start, size_t size, int fd, aoff_t offset, aoff_t 
 	region->file_sz = file_sz;
 
 	/* Test for region collisions */
-	if (llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
+	if (llist_iterate_select( current_process->memory_map, &procvmm_collcheck_iterator, (void *) region)) {
 		heapmm_free(region->name, strlen(name)+1);
 		heapmm_free(region, sizeof(process_mmap_t));
 		return EINVAL;
 	}
 
 	/* Add to region list */
-	llist_add_end(scheduler_current_task->memory_map, (llist_t *)region);
+	llist_add_end( current_process->memory_map, (llist_t *)region);
 	
 	return 0;
 }
@@ -635,10 +653,12 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 	uintptr_t in_page;
 	process_mmap_t region, *_r;
 	if (addr == NULL) {
-		region.start = (void *) scheduler_current_task->heap_max;
+		region.start = (void *) current_process->heap_max;
 		region.size = shm->info.shm_segsz;
 		while (1) {
-			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
+			_r = (process_mmap_t *) llist_iterate_select( 
+				current_process->memory_map, 
+				&procvmm_collcheck_iterator, (void *) &region);
 			if (!_r)
 				break;
 			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);
@@ -665,7 +685,7 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 
 int procvmm_detach_shm(void *shmaddr)
 {
-	process_mmap_t *region = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_get_mmap_iterator, shmaddr);
+	process_mmap_t *region = (process_mmap_t *) llist_iterate_select(current_process->memory_map, &procvmm_get_mmap_iterator, shmaddr);
 	if (!region) {
 		syscall_errno = EINVAL;
 		return -1;
@@ -685,10 +705,10 @@ void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offse
 	if (flags & MAP_SHARED)
 		flags |= PROCESS_MMAP_FLAG_PUBLIC;
 	if (!(flags & MAP_FIXED)) {
-		region.start = (void *) scheduler_current_task->heap_max;
+		region.start = (void *) current_process->heap_max;
 		region.size = len;
 		while (1) {
-			_r = (process_mmap_t *) llist_iterate_select(scheduler_current_task->memory_map, &procvmm_collcheck_iterator, (void *) &region);
+			_r = (process_mmap_t *) llist_iterate_select(current_process->memory_map, &procvmm_collcheck_iterator, (void *) &region);
 			if (!_r)
 				break;
 			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);

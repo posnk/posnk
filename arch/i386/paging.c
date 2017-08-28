@@ -42,6 +42,8 @@ static inline void i386_native_write_cr3(physaddr_t val)
 
 void paging_switch_dir(page_dir_t *new_dir)
 { 
+	if ( paging_active_dir == new_dir )
+		return;
 	paging_active_dir = new_dir;	
 	i386_native_write_cr3(paging_get_physical_address(new_dir->content));
 }
@@ -130,7 +132,6 @@ void paging_free_dir(page_dir_t *dir) //TODO: Implement
 {
 	i386_page_dir_t *pdir = (i386_page_dir_t *) dir->content;
 	i386_page_dir_list_t *list;
-	physaddr_t table_phys;
 	uintptr_t copy_counter;
 
 	for (copy_counter = 1; copy_counter < 0x300; copy_counter++) {
@@ -140,11 +141,11 @@ void paging_free_dir(page_dir_t *dir) //TODO: Implement
 	}
 
 	for (	list = (i386_page_dir_list_t*)i386_page_directory_list.next;
-			list != &i386_page_directory_list;
+			( (llist_t *) list ) != &i386_page_directory_list;
 			list = (i386_page_dir_list_t*) list->node.next )
 		if ( list->dir == dir )
 			break;
-	assert ( list != &i386_page_directory_list );
+	assert ( ( (llist_t *) list ) != &i386_page_directory_list );
 	llist_unlink( (llist_t*) list);
 	heapmm_free( pdir, sizeof(i386_page_dir_t) );
 	heapmm_free( dir, sizeof(page_dir_t));

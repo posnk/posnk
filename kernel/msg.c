@@ -150,7 +150,7 @@ ssize_t _sys_msgrcv(int msqid, void *msgp, size_t msgsz, long int msgtyp, int ms
 	heapmm_free(msg->mtext, msg->msize);
 	heapmm_free(msg, sizeof(sysv_msg_t));
 
-	info->info.msg_lrpid = scheduler_current_task->pid;
+	info->info.msg_lrpid = current_process->pid;
 	info->info.msg_rtime = (time_t) system_time;
 
 	semaphore_up(info->swaitsem);
@@ -231,7 +231,7 @@ int _sys_msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg)
 
 	info->info.msg_qnum++;
 	info->used_bytes += sendsz;
-	info->info.msg_lspid = scheduler_current_task->pid;
+	info->info.msg_lspid = current_process->pid;
 	info->info.msg_stime = (time_t) system_time;
 	llist_add_end(&(info->msgs), (llist_t *) msg);
 	

@@ -26,6 +26,7 @@
  */
 void scheduler_fork_main( void * arg )
 {
+	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg ); 
 	i386_fork_exit();
 }
 
@@ -126,8 +127,11 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	
 		csstack_t *ess = (void*)(nctx->kern_esp);
 		
-		/* Switch page tables */
-		paging_switch_dir( new_task->page_directory );
+		if ( new_task->process && (TASK_GLOBAL & ~new_task->flags) ) {
+		
+			/* Switch page tables */
+			paging_switch_dir( new_task->process->page_directory );
+		}
 		
 		/* Update task pointer */
 		scheduler_current_task = new_task;
@@ -217,8 +221,10 @@ int scheduler_free_task(scheduler_task_t *new_task) {
 	heapmm_free(new_task->arch_state,sizeof(i386_task_context_t));
 	
 	/* Release its stack */
-	return scheduler_free_kstack( new_task );
+	if ( new_task->kernel_stack )
+		return scheduler_free_kstack( new_task );
 	
+	return 0;
 }
 
 /**
@@ -232,10 +238,7 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 	
 	/* Allocate its kernel stack */
 	if ( scheduler_alloc_kstack( new_task ) )
-		return -1;
-	
-	/* fork the user pages */
-	new_task->page_directory = paging_create_dir();
+		return ENOMEM;
 	
 	nctx = (i386_task_context_t *) new_task->arch_state;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
@@ -276,8 +279,8 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 void i386_cs_debug_attach(uint32_t esp, uint32_t ebp, uint32_t eip, physaddr_t page_dir);
 void debug_attach_task(process_info_t *new_task)
 {
-	i386_task_context_t *nctx;
-	nctx = new_task->arch_state;
+	//i386_task_context_t *nctx;
+	//nctx = new_task->arch_state;
 	/*i386_cs_debug_attach(
 				nctx->kern_esp,
 				nctx->kern_ebp,

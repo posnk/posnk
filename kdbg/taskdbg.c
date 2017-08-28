@@ -38,14 +38,20 @@ char * kdbg_procstates[] = {
 void kdbg_dump_processes()
 {
 	process_info_t *p;
-	llist_t *_p;
+	scheduler_task_t *t;
+	llist_t *_p,*_t;
 	for (_p = scheduler_task_list->next; _p != scheduler_task_list; _p = _p->next) {
 		p = (process_info_t *) _p;
-		kdbg_printf("[%i] %s : %s", p->pid, p->name, kdbg_procstates[p->state]);
-		if (p->in_syscall != 0xFFFFFFFF)
-			kdbg_printf(" sc: %s\n", syscall_names[p->in_syscall]);
+		kdbg_printf("[%i] %s : %s\n", p->pid, p->name, kdbg_procstates[p->state]);
+		for (_t  = p->tasks.next;
+			 _t != &p->tasks;
+			 _t  = _t->next) {
+			 kdbg_printf("    [%i] %s", t->tid, kdbg_procstates[t->state]);
+		if (t->in_syscall != 0xFFFFFFFF)
+			kdbg_printf(" sc: %s\n", syscall_names[t->in_syscall]);
 		else
 			kdbg_printf("\n");
+			}
 	}
 }
 void debug_attach_task(process_info_t *new_task);

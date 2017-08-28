@@ -212,6 +212,12 @@ void vterm_vga_init();
 
 void i386_init_stub()
 {
+	process_info_t *proc;
+	
+	proc = fork_process();
+	
+	scheduler_reown_task( scheduler_current_task, proc );
+	
 	int fd = _sys_open( console_path, O_RDWR, 0 );
 	if (fd < 0) {
 		earlycon_printf("Error opening tty : %i\n",syscall_errno);
@@ -244,7 +250,6 @@ void i386_init_stub()
 void i386_idle_task()
 {	
 	scheduler_set_as_idle();	
-	strcpy(scheduler_current_task->name, "idle task");
 	asm ("sti");
 		
 	for (;;)
@@ -338,12 +343,12 @@ void i386_kmain()
 	syscall_init();
 
 
-	pid_init = scheduler_spawn( i386_init_stub, NULL );
+	pid_init = scheduler_spawn( i386_init_stub, NULL, NULL );
 	
 	if ( pid_init < 0 )
 		earlycon_puts("FAIL\n");
 
-	pid_idle = scheduler_spawn( i386_idle_task, NULL );
+	pid_idle = scheduler_spawn( i386_idle_task, NULL, NULL );
 	
 	if ( pid_idle < 0 )
 		earlycon_puts("FAIL\n");

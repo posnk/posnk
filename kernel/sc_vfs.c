@@ -395,8 +395,8 @@ SYSCALL_DEF2(truncate)
 
 SYSCALL_DEF1(umask)
 {
-	mode_t old = scheduler_current_task->umask;
-	scheduler_current_task->umask = a & 0777;
+	mode_t old = current_process->umask;
+	current_process->umask = a & 0777;
 	return (uint32_t) old;
 }
 

@@ -14,17 +14,78 @@
 
 #include <stddef.h>
 #include <stdint.h>
+
+typedef uint32_t    tid_t;
+
+typedef struct task scheduler_task_t;
+
 #include "kernel/paging.h"
 #include "kernel/process.h"
 #include "kernel/synch.h"
 #include "kernel/time.h"
 #include "util/llist.h"
 
-typedef struct process_info scheduler_task_t;
+#define PROCESS_RUNNING 	0
+#define PROCESS_WAITING 	1
+#define PROCESS_READY		2
+#define PROCESS_NO_SCHED	3
+#define PROCESS_KILLED		4
+#define PROCESS_INTERRUPTED	5
+#define PROCESS_TIMED_OUT	6
+#define PROCESS_STOPPED		7
+
+#define TASK_GLOBAL         (1<<0)
+
+/**
+ * Describes a thread
+ */
+struct task {
+
+	llist_t         node;
+	
+	/** Previous task in the scheduling queue */
+	struct task    *prev;
+	
+	/** Next task in the scheduling queue */
+	struct task    *next;
+
+    /** The task id */
+	tid_t           tid;
+	
+	/** The task flags */
+	int             flags;
+	
+	/* Scheduling state */
+	int			    state;
+	
+	sigset_t        signal_mask;
+	stack_t         signal_altstack;
+	
+	ticks_t		 cpu_ticks;
+	
+	/** The process this task belongs to */
+	process_info_t *process;
+	
+	/** Processor state */
+	void		   *arch_state;
+	
+	/** The kernel stack */
+	void           *kernel_stack;
+	
+	uint32_t	 in_syscall;
+
+	/** Wait target */
+	semaphore_t    *waiting_on;
+	ktime_t         wait_timeout_u;//In microseconds
+	ktime_t         wait_timeout_s;//In microseconds
+
+};
 
 extern scheduler_task_t *scheduler_current_task;
 
 int scheduler_init_task(scheduler_task_t *new_task);
+
+void scheduler_reown_task( scheduler_task_t *task, process_info_t *process );
 
 void scheduler_switch_task(scheduler_task_t *new_task);
 
@@ -32,7 +93,9 @@ void scheduler_fork_main( void * arg );
 
 int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg );
 
-int scheduler_spawn( void *callee, void *arg );
+int scheduler_free_task ( scheduler_task_t *task );
+
+int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t );
 
 void scheduler_init();
 

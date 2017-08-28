@@ -16,7 +16,7 @@
 
 #define SYSCALL_MAGIC	(0xCAFECA11)
 
-#define syscall_errno	(scheduler_current_task->sc_errno)
+#define syscall_errno	(scheduler_current_task->process->sc_errno)
 
 struct syscall_params {
 	volatile uint32_t	magic;

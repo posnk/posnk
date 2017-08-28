@@ -126,11 +126,14 @@ void sercon_isr();
 	uint32_t				esp;
 	uint32_t				ss;
 void dumpisrstack( i386_isr_stack_t *stack ) {
+	int pid = -1;
 	i386_pusha_registers_t	*regs = &stack->regs;
 	debugcon_printf("DS: 0x%x\t CS: 0x%x\t EIP: 0x%x\t EFLAGS:0x%x\n",
 					stack->ds, stack->cs, stack->eip, stack->eflags );
-	debugcon_printf("int: %i\t ECODE: 0x%x pid:%x\n",
-					stack->int_id, stack->error_code, scheduler_current_task->pid);
+	if ( scheduler_current_task->process )
+		pid = scheduler_current_task->process->pid;
+	debugcon_printf("int: %i\t ECODE: 0x%x tid:%x\n pid:%x\n",
+					stack->int_id, stack->error_code, scheduler_current_task->tid,pid);
 	if ( stack->cs == 0x2B )
 		debugcon_printf("SS: 0x%x\tESP:0x%x\n",
 						stack->ss, stack->esp );

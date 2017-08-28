@@ -112,13 +112,13 @@ int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, option
 		return ENOMEM;
 	tty->ref_count++;
 	fdp->ptr = fd;
-	fdp->proc = scheduler_current_task;
+	fdp->proc = current_process;
 	llist_add_end( &tty->fds, ( llist_t *) fdp );
 	if (!(options & O_NOCTTY)) {
-		if ((scheduler_current_task->pid == scheduler_current_task->sid) && !scheduler_current_task->ctty) {
-			scheduler_current_task->ctty = device; 
-			tty->ct_pid = scheduler_current_task->pid;
-			tty->fg_pgid = scheduler_current_task->pgid;
+		if (( current_process->pid == current_process->sid) && !current_process->ctty) {
+			current_process->ctty = device; 
+			tty->ct_pid = current_process->pid;
+			tty->fg_pgid = current_process->pgid;
 		}
 	}
 	return 0;
@@ -149,8 +149,8 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 	}
 	if (!tty->ref_count) {
 		//TODO: process_strip_ctty(device);
-		if (device == scheduler_current_task->ctty)
-			scheduler_current_task->ctty = 0;
+		if (device == current_process->ctty)
+			current_process->ctty = 0;
 	}	
 	return 0;
 }
@@ -341,17 +341,17 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 			return 0;
 
 		case TIOCSCTTY:
-			if ((scheduler_current_task->pid == scheduler_current_task->sid) && ((scheduler_current_task->ctty == device) || !scheduler_current_task->ctty)) {
-				scheduler_current_task->ctty = device; 
-				tty->ct_pid = scheduler_current_task->pid;
-				tty->fg_pgid = scheduler_current_task->pgid;
+			if ((current_process->pid == current_process->sid) && ((current_process->ctty == device) || !current_process->ctty)) {
+				current_process->ctty = device; 
+				tty->ct_pid = current_process->pid;
+				tty->fg_pgid = current_process->pgid;
 			}
 			return 0;
 		case TIOCNOTTY:
-			if (scheduler_current_task->ctty != device) 
+			if (current_process->ctty != device) 
 				return 0;
-			scheduler_current_task->ctty = 0;
-			if (scheduler_current_task->pid == scheduler_current_task->sid) {
+			current_process->ctty = 0;
+			if (current_process->pid == current_process->sid) {
 				process_signal_pgroup(tty->fg_pgid, SIGCONT, info);
 				process_signal_pgroup(tty->fg_pgid, SIGHUP, info);
 				//TODO: Strip pgrp of ctty

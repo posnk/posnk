@@ -10,6 +10,7 @@
  */
 #include <string.h>
 #include <stddef.h>
+#include <assert.h>
 #include "kernel/heapmm.h"
 #include "kernel/process.h"
 #include "kernel/synch.h"
@@ -22,144 +23,146 @@
 #include "util/llist.h"
 #include "config.h"
 
-pid_t		  scheduler_pid_counter = 0;
+tid_t		  scheduler_tid_counter = 0;
 scheduler_task_t *scheduler_current_task;
 scheduler_task_t *scheduler_idle_task;
-llist_t		 *scheduler_task_list;
+scheduler_task_t *scheduler_task_list;
 
 void scheduler_init()
 {
-	scheduler_task_list = (llist_t *) heapmm_alloc(sizeof(llist_t));
-	llist_create(scheduler_task_list);
+	scheduler_task_list = NULL;
 	scheduler_current_task = 
 		(scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
 	memset(scheduler_current_task, 0, sizeof(scheduler_task_t));
+	
+	scheduler_current_task->next = scheduler_current_task;
+	scheduler_current_task->prev = scheduler_current_task;
+	
 	/* Initialize process info */
-	scheduler_current_task->uid  = 0;
-	scheduler_current_task->gid  = 0;
-	scheduler_current_task->pgid = scheduler_pid_counter;
-	scheduler_current_task->sid = scheduler_pid_counter;
-	scheduler_current_task->pid = scheduler_pid_counter++;
-	scheduler_current_task->parent_pid = 0;
-	scheduler_current_task->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);
+	scheduler_current_task->kernel_stack = NULL;
 
-	scheduler_current_task->fd_table = heapmm_alloc(sizeof(llist_t));
-	llist_create(scheduler_current_task->fd_table);
-
-	scheduler_current_task->memory_map = heapmm_alloc(sizeof(llist_t));
-	llist_create(scheduler_current_task->memory_map);
-
-	strcpy(scheduler_current_task->name, CONFIG_SYSTEM_PROCESS_NAME);
-	/* Initialize process memory info */
-	scheduler_current_task->heap_start	= (void *) 0xE0000000;
-	scheduler_current_task->heap_end	= (void *) 0x12345678;
-		// TOTALLY NOT RELEVANT ON PROCESS ZERO
-	scheduler_current_task->stack_bottom	= (void *) 0x12345678;
-	scheduler_current_task->stack_top	= (void *) 0x12345678;
-	scheduler_current_task->kernel_stack = (void *) 0x12345678;
+	scheduler_current_task->tid = scheduler_tid_counter++;
 
 	signal_init_task( scheduler_current_task );
-
-	/* Initialize process state */
-	scheduler_current_task->page_directory = paging_active_dir;
-
-	scheduler_current_task->child_sema	= semaphore_alloc();
-
-	scheduler_current_task->child_events = heapmm_alloc(sizeof(llist_t));
-	llist_create(scheduler_current_task->child_events);
-
+	
 	scheduler_current_task->state = PROCESS_READY;
-	llist_add_end(scheduler_task_list, (llist_t *) scheduler_current_task);
+	
+	scheduler_task_list = scheduler_current_task;
+	
 	scheduler_init_task(scheduler_current_task);//TODO: Handle errors
 }
 
-int scheduler_spawn( void *callee, void *arg )
+void scheduler_reown_task( scheduler_task_t *task, process_info_t *process )
 {
-	scheduler_task_t *new_task = (scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
+	if ( task->process ) {
+		llist_unlink( ( llist_t * ) task );
+	}
+	
+	task->process = process;
+	
+	llist_add_end( &process->tasks, ( llist_t * ) task );
+}
+
+int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
+{
+	int status;
+
+	scheduler_task_t *new_task = (scheduler_task_t *) 
+		heapmm_alloc(sizeof(scheduler_task_t));
+		
+	if ( !new_task ) {
+		status = ENOMEM;
+		goto exitfail_a;
+	}
+		
 	memset(new_task, 0, sizeof(scheduler_task_t));
 
-	/* Initialize process info */
-	new_task->pid  = scheduler_pid_counter++;
-	new_task->uid  = scheduler_current_task->uid;
-	new_task->gid  = scheduler_current_task->gid;
-	new_task->effective_uid  = scheduler_current_task->effective_uid;
-	new_task->effective_gid  = scheduler_current_task->effective_gid;
-	new_task->pgid = scheduler_current_task->pgid;
-	new_task->sid = scheduler_current_task->sid;
-	new_task->parent_pid = scheduler_current_task->pid;
-
-	new_task->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);
-	strcpy(new_task->name, scheduler_current_task->name);
-
-	new_task->fd_table = heapmm_alloc(sizeof(llist_t));
-	llist_create(new_task->fd_table);
-	stream_copy_fd_table (new_task->fd_table);
-	new_task->fd_ctr = scheduler_current_task->fd_ctr;
-
-	new_task->memory_map = heapmm_alloc(sizeof(llist_t));
-	llist_create(new_task->memory_map);
-	procvmm_copy_memory_map (new_task->memory_map);
-
-	new_task->current_directory = vfs_dir_cache_ref(scheduler_current_task->current_directory);
-	new_task->root_directory = vfs_dir_cache_ref(scheduler_current_task->root_directory);
-	new_task->root_directory->usage_count++;
-	new_task->current_directory->usage_count++;
-	/* Initialize proces signal handling */
-	memcpy( new_task->signal_actions,
-			scheduler_current_task->signal_actions, 
-			sizeof(struct sigaction[32]));
+	/* Initialize task signal handling */
+	new_task->signal_altstack = scheduler_current_task->signal_altstack;
 	new_task->signal_mask = scheduler_current_task->signal_mask;
-
-	/* Initialize process memory info */
-	new_task->heap_start	= scheduler_current_task->heap_start;
-	new_task->heap_end	= scheduler_current_task->heap_end;
-	new_task->heap_max	= scheduler_current_task->heap_max;
-	new_task->stack_bottom	= scheduler_current_task->stack_bottom;
-	new_task->stack_top	= scheduler_current_task->stack_top;
-	new_task->child_sema	= semaphore_alloc();
-
-	new_task->child_events = heapmm_alloc(sizeof(llist_t));
-	llist_create(new_task->child_events);
 
 	/* Initialize process state */
 	new_task->state = PROCESS_READY;
 
-	scheduler_init_task(new_task); //TODO: Handle errors
+	status = scheduler_init_task( new_task );
 
-	if (!scheduler_do_spawn( new_task, callee, arg )) {
-		llist_add_end(scheduler_task_list, (llist_t *) new_task);
-		return new_task->pid;
-	}
+	if ( status )
+		goto exitfail_0;
 
-	return -1;
+	status = scheduler_do_spawn( new_task, callee, arg );
+	
+	if ( status )
+		goto exitfail_1;
+
+	
+	new_task->prev = scheduler_task_list->prev;
+	new_task->next = scheduler_task_list;
+	new_task->next->prev = new_task;
+	new_task->prev->next = new_task;
+		
+	if ( t )
+		*t = new_task;
+			
+	return 0;
+
+exitfail_1:
+	scheduler_free_task( new_task );
+
+exitfail_0:
+	heapmm_free( new_task, sizeof( scheduler_current_task ) );
+
+exitfail_a:
+	return status;
+	
 }
 
-int scheduler_fork()
+void scheduler_reap( scheduler_task_t *task )
 {
-	return scheduler_spawn( scheduler_fork_main, NULL );
+	//TODO: Lock onto the task list
+	assert( task != scheduler_task_list );
+	
+	task->next->prev = task->prev;
+	task->prev->next = task->next;
+	
+	assert( task != scheduler_current_task );
+	
+	if ( task->process ) {
+		llist_unlink ((llist_t *) task);
+	}
+	
+	scheduler_free_task( task );
+	
+	//TODO: Should this function check whether the process is still alive?
+	
 }
 
 /**
  * Iterator function that tests for running tasks that are not the current
  */
-int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) void *param)
+int scheduler_may_run ( scheduler_task_t *task )
 {
-	scheduler_task_t *task = (scheduler_task_t *) node;
-	if (task == scheduler_current_task)
-		return 0;
-	else if (task->state == PROCESS_READY)
+
+	if ( task->process ) {
+		if ( task->process->state == PROCESS_STOPPED ) {
+			if ( !process_was_continued( task->process ) )
+				return 0;
+		} else if ( task->process->state != PROCESS_READY ) {
+			return 0;
+		}
+	} 
+
+	if (task->state == PROCESS_READY)
 		return 1;
 	else if (task->state == PROCESS_INTERRUPTED)
 		return 1;
 	else if (task->state == PROCESS_TIMED_OUT)
 		return 1;
-	else if (task->state == PROCESS_STOPPED) {
-		return process_was_continued( task );
-	} else if (task->state == PROCESS_WAITING) {
+	else if (task->state == PROCESS_WAITING) {
 		//earlycon_printf("pid %i is waiting on %x\n",task->pid, task->waiting_on);
-		if (process_was_interrupted(task)) {
+		if ( process_was_interrupted(task) ) {
 			//TODO: Figure out a less ugly way of doing this
-			if ( task->state == PROCESS_STOPPED )
+			if ( task->process && 
+				task->process->state == PROCESS_STOPPED )
 				return 0;
 			task->state = PROCESS_INTERRUPTED;
 			task->waiting_on = NULL;
@@ -183,16 +186,39 @@ int scheduler_next_task_iterator (llist_t *node, __attribute__((__unused__)) voi
 
 void schedule()
 {
-	//TODO: Increment ticks only on preemptive scheduler calls
+	
+	scheduler_task_t *next_task;
 #ifdef CONFIG_SERIAL_DEBUGGER_TRIG	
 	if (debugcon_have_data())
 		dbgapi_invoke_kdbg(0);
 #endif
+	
 	scheduler_current_task->cpu_ticks++;
-	scheduler_task_t *next_task = (scheduler_task_t *) llist_iterate_select(scheduler_task_list, &scheduler_next_task_iterator, NULL);
+	if ( scheduler_current_task->process )
+		scheduler_current_task->process->cpu_ticks++;
+
+	//TODO: Increment ticks only on preemptive scheduler calls
+	
+	next_task = scheduler_current_task->next;
+	
+	do {
+		if ( scheduler_may_run( next_task ) )
+			break;
+		next_task = next_task->next;
+	} while ( next_task != scheduler_current_task );
+	
 	if (scheduler_current_task->state == PROCESS_RUNNING)
 		scheduler_current_task->state = PROCESS_READY;
-	if (next_task != 0) {
+	
+	
+	if ( ( scheduler_current_task == next_task )
+		&& scheduler_may_run( next_task ) ) {
+		
+		if (scheduler_current_task->state == PROCESS_READY) 
+			scheduler_current_task->state = PROCESS_RUNNING;
+			
+		return;
+	} else if (next_task != scheduler_current_task ) {
 	//	earlycon_printf("scheduler switch from %i to %i\n", scheduler_current_task->pid, next_task->pid);
 		scheduler_switch_task(next_task);
 		if (scheduler_current_task->state == PROCESS_READY) 

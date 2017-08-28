@@ -26,7 +26,7 @@ SYSCALL_DEF2(signal)
 
 SYSCALL_DEF1(ssigex)
 {
-	scheduler_current_task->signal_handler_exit_func = (void *) a;
+	current_process->signal_handler_exit_func = (void *) a;
 	return 0;
 }
 

@@ -274,7 +274,7 @@ int _sys_shmget(key_t key, size_t size, int flags)
 		info->info.shm_perm.cgid = info->info.shm_perm.gid = get_effective_gid();
 		info->info.shm_perm.mode = flags & 0x1FF;
 		info->info.shm_segsz = size;
-		info->info.shm_cpid = scheduler_current_task->pid;
+		info->info.shm_cpid = current_process->pid;
 		info->info.shm_lpid = 0;
 		info->info.shm_nattch = 0;
 		info->info.shm_atime = 0;

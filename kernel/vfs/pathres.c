@@ -145,7 +145,7 @@ SFUNC(inode_t *, vfs_find_symlink, char * path)
 SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path)
 {
 	CHAINRET(vfs_find_dirc_parent_at, 
-		scheduler_current_task->current_directory, path);
+		current_process->current_directory, path);
 }
 
 
@@ -171,7 +171,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path){
 
 SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path) {
 	CHAINRET(vfs_find_dirc_symlink_at, 
-				scheduler_current_task->current_directory, 
+				current_process->current_directory, 
 				path);
 }
 
@@ -197,7 +197,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at,
  */
 
 SFUNC(dir_cache_t *, vfs_find_dirc, char * path) {
-	CHAINRET(vfs_find_dirc_at, scheduler_current_task->current_directory, 
+	CHAINRET(vfs_find_dirc_at, current_process->current_directory, 
 				path);
 }
 
@@ -304,7 +304,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 
 			/* Update current element */
 			dirc = vfs_dir_cache_ref(
-					scheduler_current_task->root_directory);
+					current_process->root_directory);
 
 			/* Grab current inode */
 			parent = dirc->inode;

@@ -33,7 +33,7 @@ SYSCALL_DEF0(fork)
 
 
 	/* Call the schedulur to actually do the fork */
-	return (uint32_t) scheduler_fork();
+	return (uint32_t) posix_fork();
 	
 }
 
@@ -63,8 +63,8 @@ SYSCALL_DEF2(kill)
 
 	/* Fill info */
 	info.si_code = SI_USER;
-	info.si_pid  = scheduler_current_task->pid;
-	info.si_uid  = scheduler_current_task->uid;
+	info.si_pid  = current_process->pid;
+	info.si_uid  = current_process->uid;
 	
 	/* Handle various cases for pid */
 	if (pid == 0) {		   
@@ -72,7 +72,7 @@ SYSCALL_DEF2(kill)
 		/* pid = 0  -> Send signal to current process group */
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup(
-			scheduler_current_task->pgid, sig, info ) == 0) {
+			current_process->pgid, sig, info ) == 0) {
 			return (uint32_t) -1;
 		} 
 		syscall_errno = 0;
@@ -114,43 +114,43 @@ SYSCALL_DEF2(kill)
 
 SYSCALL_DEF0(getpid)
 {
-	return (pid_t) scheduler_current_task->pid;
+	return (pid_t) current_process->pid;
 }
 
 SYSCALL_DEF0(getppid)
 {
-	return (pid_t) scheduler_current_task->parent_pid;
+	return (pid_t) current_process->parent_pid;
 }
 
 SYSCALL_DEF0(getpgrp)
 {
-	return (pid_t) scheduler_current_task->pgid;
+	return (pid_t) current_process->pgid;
 }
 
 SYSCALL_DEF0(getsid) //TODO: Not compliant, fix this
 {
-	return (pid_t) scheduler_current_task->sid;
+	return (pid_t) current_process->sid;
 }
 
 SYSCALL_DEF0(setsid)
 {
-	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
+	if (current_process->pgid == current_process->pid) {
 		syscall_errno = EPERM;
 		return (uint32_t) -1;	
 	}
-	scheduler_current_task->pgid = scheduler_current_task->pid;
-	scheduler_current_task->sid = scheduler_current_task->pid;
-	scheduler_current_task->ctty = 0;
-	return (pid_t) scheduler_current_task->sid;
+	current_process->pgid = current_process->pid;
+	current_process->sid = current_process->pid;
+	current_process->ctty = 0;
+	return (pid_t) current_process->sid;
 }
 
 SYSCALL_DEF0(setpgrp)
 {
-	if (scheduler_current_task->pgid == scheduler_current_task->pid) {
+	if (current_process->pgid == current_process->pid) {
 		syscall_errno = EPERM;
 		return (uint32_t) -1;	
 	}
-	scheduler_current_task->pgid = scheduler_current_task->pid;
+	current_process->pgid = current_process->pid;
 	return 0;
 }
 
@@ -160,7 +160,7 @@ SYSCALL_DEF2(setpgid)
 	pid_t pid = (pid_t) a;//TODO: FIX PERMS
 	pid_t pgid = (pid_t) b;
 	if (pid == 0)
-		pid = scheduler_current_task->pid;
+		pid = current_process->pid;
 	if (pgid == 0)
 		pgid = pid;
 	if (pgid < 0) {
@@ -179,10 +179,10 @@ SYSCALL_DEF2(setpgid)
 
 SYSCALL_DEF1(exit)
 {
-	scheduler_current_task->exit_status = a;
-	scheduler_current_task->state = PROCESS_KILLED;
-	process_child_event(scheduler_current_task, PROCESS_CHILD_KILLED);
-	stream_do_close_all (scheduler_current_task);
+	current_process->exit_status = a;
+	current_process->state = PROCESS_KILLED;
+	process_child_event(current_process, PROCESS_CHILD_KILLED);
+	stream_do_close_all (current_process);
 	procvmm_clear_mmaps();
 	schedule();
 	return 0; // NEVER REACHED
@@ -214,7 +214,7 @@ SYSCALL_DEF3(waitpid)
 	options = (int) c;
 
 	if (pid == 0)
-		pid = -(scheduler_current_task->pid);
+		pid = -(current_process->pid);
 	if (pid < -1) {
 		//TODO: Determine whether pgroup exists
 		if (options & WNOHANG) {
@@ -236,7 +236,7 @@ SYSCALL_DEF3(waitpid)
 				if (ev_info)		
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(scheduler_current_task->child_sema)) {
+				if (semaphore_idown(current_process->child_sema)) {
 					syscall_errno = EINTR;
 					return -1;
 				}
@@ -246,7 +246,7 @@ SYSCALL_DEF3(waitpid)
 		if (options & WNOHANG) {
 			while (  
 				(!(ev_info = (process_child_event_t *) 
-					llist_get_last(scheduler_current_task->child_events))) ||
+					llist_get_last(current_process->child_events))) ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
@@ -256,14 +256,14 @@ SYSCALL_DEF3(waitpid)
 				process_absorb_event(ev_info);
 			}
 		} else {
-			while (  (!(ev_info = (process_child_event_t *) llist_get_last(scheduler_current_task->child_events)))  ||
+			while (  (!(ev_info = (process_child_event_t *) llist_get_last(current_process->child_events)))  ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
 				if (ev_info != NULL)	
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(scheduler_current_task->child_sema)) {
+				if (semaphore_idown(current_process->child_sema)) {
 					syscall_errno = EINTR;
 					return -1;
 				}
@@ -291,7 +291,7 @@ SYSCALL_DEF3(waitpid)
 				if (ev_info)		
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(scheduler_current_task->child_sema)) {
+				if (semaphore_idown(current_process->child_sema)) {
 					syscall_errno = EINTR;
 					return -1;
 				}
@@ -335,9 +335,9 @@ SYSCALL_DEF3(waitpid)
 
 SYSCALL_DEF1(sbrk)
 {
-	uintptr_t old_brk   = (uintptr_t) scheduler_current_task->heap_end;
-	uintptr_t heap_max = (uintptr_t) scheduler_current_task->heap_max;
-	uintptr_t base = (uintptr_t) scheduler_current_task->heap_start;
+	uintptr_t old_brk   = (uintptr_t) current_process->heap_end;
+	uintptr_t heap_max = (uintptr_t) current_process->heap_max;
+	uintptr_t base = (uintptr_t) current_process->heap_start;
 	uintptr_t old_size = old_brk - base;
 	int incr = a;
 	if (incr > 0) {	
@@ -359,7 +359,7 @@ SYSCALL_DEF1(sbrk)
 			}
 	
 		}
-		scheduler_current_task->heap_end = (void *) (old_brk + incr);
+		current_process->heap_end = (void *) (old_brk + incr);
 		return (uint32_t) old_brk;
 	} else if (incr == 0) {
 		return (uint32_t) old_brk;

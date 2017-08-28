@@ -17,22 +17,20 @@
 #include <signal.h>
 #include <sys/types.h>
 
+typedef struct process_info process_info_t;
+
+typedef struct process_mmap process_mmap_t;
+
+typedef struct process_child_event process_child_event_t;
+
 #include "kernel/paging.h"
+#include "kernel/scheduler.h"
 #include "kernel/synch.h"
 #include "kernel/time.h"
 #include "kernel/sem.h"
 #include "kernel/shm.h"
 #include "kernel/vfs.h"
 #include "util/llist.h"
-
-#define PROCESS_RUNNING 	0
-#define PROCESS_WAITING 	1
-#define PROCESS_READY		2
-#define PROCESS_NO_SCHED	3
-#define PROCESS_KILLED		4
-#define PROCESS_INTERRUPTED	5
-#define PROCESS_TIMED_OUT	6
-#define PROCESS_STOPPED		7
 
 #define PROCESS_TERM_EXIT	0
 #define PROCESS_TERM_SIGNAL	1
@@ -49,6 +47,8 @@
 #define PROCESS_MMAP_FLAG_DEVICE	(1<<6)
 #define PROCESS_MMAP_FLAG_STREAM	(1<<7)
 #define PROCESS_MMAP_FLAG_SHM		(1<<8)
+
+#define current_process (scheduler_current_task->process)
 
 struct process_mmap {
 	llist_t		 node;
@@ -97,7 +97,6 @@ struct process_info {
 	int			 fd_ctr;
 
 	/* Signal handling */
-	sigset_t	 signal_mask;
 	sigset_t	 signal_pending;
 	struct sigaction	signal_actions[32];
 	struct siginfo		signal_info[32];
@@ -105,7 +104,8 @@ struct process_info {
 	void 		*signal_handler_exit_func;
 	int			 last_signal;
 	int			 old_state;
-
+	int			 state;
+	
 	/* Proces status */
 	int			 sc_errno;
 	int			 term_cause;
@@ -124,27 +124,14 @@ struct process_info {
 
 	/* Process statistics */
 	ticks_t		 cpu_ticks;
-
+	llist_t		 tasks;
 	/* Process state */
 	page_dir_t	*page_directory;
-	void		*arch_state;
-	void		*intr_state;
-	int			 state;
-
-	semaphore_t	*waiting_on;
-	ktime_t		 wait_timeout_u;//In microseconds
-	ktime_t		 wait_timeout_s;//In microseconds
 
 	semaphore_t	*child_sema;
 	llist_t		*child_events;
-	uint32_t	 in_syscall;
 };
 
-typedef struct process_info process_info_t;
-
-typedef struct process_mmap process_mmap_t;
-
-typedef struct process_child_event process_child_event_t;
 
 int curpid();
 
@@ -154,7 +141,7 @@ process_info_t *process_get(pid_t pid);
 
 int process_push_user_data(void *data, size_t size);
 
-int process_was_interrupted(process_info_t *process);
+int process_was_interrupted( scheduler_task_t *task );
 
 int process_was_continued(process_info_t *process);
 
@@ -191,6 +178,8 @@ int procvmm_handle_fault(void *address);
 int procvmm_do_exec_mmaps();
 
 void procvmm_clear_mmaps();
+
+process_info_t *fork_process( void );
 
 int procvmm_check( const void *dest, size_t size);
 int procvmm_check_string( const char *dest, size_t size_max );

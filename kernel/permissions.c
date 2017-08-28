@@ -14,22 +14,22 @@
 
 uid_t get_uid()
 {
-	return scheduler_current_task->uid;
+	return current_process->uid;
 }
 
 uid_t get_effective_uid()
 {
-	return scheduler_current_task->effective_uid;
+	return current_process->effective_uid;
 }
 
 gid_t get_gid()
 {
-	return scheduler_current_task->uid;
+	return current_process->uid;
 }
 
 gid_t get_effective_gid()
 {
-	return scheduler_current_task->effective_gid;
+	return current_process->effective_gid;
 }
 
 perm_class_t get_perm_class(uid_t resource_uid, gid_t resource_gid)

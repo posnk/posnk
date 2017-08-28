@@ -115,7 +115,7 @@ int stream_ptr_search_iterator (llist_t *node, void *param)
 stream_ptr_t *stream_get_ptr (int fd)
 {
 	/* Look it up using stream_ptr_search_iterator */
-	return (stream_ptr_t *) llist_iterate_select(scheduler_current_task->fd_table, &stream_ptr_search_iterator, (void *) fd);
+	return (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_ptr_search_iterator, (void *) fd);
 }
 
 /** 
@@ -186,7 +186,7 @@ int stream_copy_fd_table (llist_t *target)
 {
 	assert(target != NULL);
 	/* Run stream_ptr_copy_iterator over the current process's ptr table */
-	return llist_iterate_select(scheduler_current_task->fd_table, &stream_ptr_copy_iterator, (void *) target) == NULL;
+	return llist_iterate_select(current_process->fd_table, &stream_ptr_copy_iterator, (void *) target) == NULL;
 }
 
 /**
@@ -216,8 +216,8 @@ void stream_do_close_on_exec ()
 {
 	stream_ptr_t *ptr;
 	/* Loop until there are no more ptrs left that are to be closed */
-	for (ptr = (stream_ptr_t *) llist_iterate_select(scheduler_current_task->fd_table, &stream_exec_iterator, NULL); ptr != NULL; 
-	     ptr = (stream_ptr_t *) llist_iterate_select(scheduler_current_task->fd_table, &stream_exec_iterator, NULL))
+	for (ptr = (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_exec_iterator, NULL); ptr != NULL; 
+	     ptr = (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_exec_iterator, NULL))
 		/* Close the pointer that was found */
 		_sys_close(ptr->id);
 }
@@ -252,9 +252,9 @@ void stream_do_close_all (process_info_t *process)
  */
 int stream_alloc_fd()
 {
-	int fd = scheduler_current_task->fd_ctr++;
-	if(scheduler_current_task->fd_ctr == 0) {
-		scheduler_current_task->fd_ctr--;
+	int fd = current_process->fd_ctr++;
+	if(current_process->fd_ctr == 0) {
+		current_process->fd_ctr--;
 		syscall_errno = EMFILE;
 		return -1;
 	}
@@ -269,8 +269,8 @@ int stream_alloc_fd()
 void stream_claim_fd(int fd)
 {
 	/* Keep track of the open fds */
-	if (fd >= scheduler_current_task->fd_ctr)
-		scheduler_current_task->fd_ctr = fd + 1;
+	if (fd >= current_process->fd_ctr)
+		current_process->fd_ctr = fd + 1;
 }
 
 /**
@@ -736,7 +736,7 @@ ssize_t _sys_write(int fd, void * buffer, size_t count)
 				/* In case of EPIPE the process should also be
 				 * sent SIGPIPE */
 				if (st == EPIPE)
-					process_send_signal(scheduler_current_task, SIGPIPE, sigi);
+					process_send_signal(current_process, SIGPIPE, sigi);
 
 				/* Pass error code to userland */
 				syscall_errno = st;
@@ -1585,7 +1585,7 @@ int _sys_dup2(int oldfd, int newfd)
 	newptr->info->ref_count++;
 	
 	/* Add duplicate to the table */
-	llist_add_end(scheduler_current_task->fd_table, (llist_t *) newptr);
+	llist_add_end(current_process->fd_table, (llist_t *) newptr);
 
 	if ((newptr->info->type == STREAM_TYPE_FILE) && 
 			S_ISCHR(newptr->info->inode->mode))
@@ -1766,8 +1766,8 @@ int _sys_pipe2(int pipefd[2], int flags)
 	semaphore_up(info_write->lock);	
 
 	/* Add the endpoints to the fd table */
-	llist_add_end(scheduler_current_task->fd_table, (llist_t *) ptr_read);
-	llist_add_end(scheduler_current_task->fd_table, (llist_t *) ptr_write);		
+	llist_add_end(current_process->fd_table, (llist_t *) ptr_read);
+	llist_add_end(current_process->fd_table, (llist_t *) ptr_write);		
 
 	/* Return success */
 	return 0;
@@ -2035,7 +2035,7 @@ int _sys_open(char *path, int flags, mode_t mode)
 	semaphore_up(info->lock);
 
 	/* Add the pointer to the fd table */
-	llist_add_end(scheduler_current_task->fd_table, (llist_t *) ptr);
+	llist_add_end(current_process->fd_table, (llist_t *) ptr);
 
 	/* If the file opened is a special file, signal open to the driers */
 	//TODO: Adapt device driver interface to support new open semantics
@@ -2077,7 +2077,7 @@ int _sys_open(char *path, int flags, mode_t mode)
  */
 int _sys_close(int fd)
 {
-	return _sys_close_int(scheduler_current_task, fd);
+	return _sys_close_int(current_process, fd);
 }
 
 /**
@@ -2152,7 +2152,7 @@ int _sys_close_int(process_info_t *process, int fd)
 				/* If the pointer refers to a device stream, signal the device driver */
 				else if ((ptr->info->type == STREAM_TYPE_FILE) && 
 					S_ISBLK(ptr->info->inode->mode) && 
-					(process == scheduler_current_task))
+					(process == current_process))
 					device_block_close(ptr->info->inode->if_dev, fd);
 				ptr->info->inode->open_count--;
 				/* Release the inode */
@@ -2254,7 +2254,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 		}
 
 		/* Get the stream pointer */
-		ptr = stream_get_ptr_o( scheduler_current_task, fds[i].fd );
+		ptr = stream_get_ptr_o( current_process, fds[i].fd );
 
 		/* Check if it exists */
 		if (!ptr) {

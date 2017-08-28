@@ -36,7 +36,9 @@ int		invoke_signal_handler( int signal, siginfo_t *info, void *context );
 
 void	exit_signal_handler( void *ctx );
 
-void	signal_init_task( process_info_t *task );
+void	signal_init_process( process_info_t *task );
+
+void	signal_init_task( scheduler_task_t *task );
 
 void (*_sys_signal(	int sig, void (*disp)(int) ))( int );
 

@@ -67,13 +67,17 @@ struct sigaction sig_action_default = {
 };
 
 
-void	signal_init_task( process_info_t *task ) {
+void	signal_init_process( process_info_t *task ) {
 	int i;
-	task->signal_mask = 0;
 	task->signal_pending = 0;
-	task->signal_altstack.ss_flags = SS_DISABLE;
 	for ( i = 0; i < 32; i++ )
 		task->signal_actions[i] = sig_action_default;
+}
+
+
+void	signal_init_task( scheduler_task_t *task ) {
+	task->signal_mask = 0;
+	task->signal_altstack.ss_flags = SS_DISABLE;
 }
 
 /**
@@ -169,24 +173,28 @@ void process_send_signal(	process_info_t *process,
 int process_signal_handler_default(int signal)
 {
 
-	process_info_t *ctask;
+	process_info_t *cproc;
+	scheduler_task_t *ctask;
 
 	ctask = scheduler_current_task;
-
+	cproc = ctask->process;
+	
+	assert( ctask != NULL );
+	
 	//debugcon_printf("sigrecv: %i\n", scheduler_current_task->pid);
-	ctask->last_signal = signal;
+	cproc->last_signal = signal;
 
 	switch (signal_default_actions[signal]) {
 		case SIGNAL_ACTION_ABORT:
 			//TODO: Dump core
 		case SIGNAL_ACTION_TERM:
-			ctask->term_cause = PROCESS_TERM_SIGNAL;	
-			ctask->state = PROCESS_KILLED;
+			cproc->term_cause = PROCESS_TERM_SIGNAL;	
+			cproc->state = PROCESS_KILLED;
 			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
 			break;
 		case SIGNAL_ACTION_STOP:
-			ctask->state = PROCESS_STOPPED;
-			process_child_event( ctask, PROCESS_CHILD_STOPPED );			
+			cproc->state = PROCESS_STOPPED;
+			process_child_event( cproc, PROCESS_CHILD_STOPPED );			
 			schedule();
 			return 1;
 		case SIGNAL_ACTION_IGNORE:
@@ -194,10 +202,10 @@ int process_signal_handler_default(int signal)
 			return 1;			
 	}
 	
-	if ( ctask->state == PROCESS_KILLED ) {
+	if ( cproc->state == PROCESS_KILLED ) {
 		debugcon_printf( "killedby: %i\n", signal );
-		process_child_event( ctask, PROCESS_CHILD_KILLED);	
-		stream_do_close_all( ctask );
+		process_child_event( cproc, PROCESS_CHILD_KILLED);	
+		stream_do_close_all( cproc );
 		procvmm_clear_mmaps();
 		schedule();
 		return 0;
@@ -237,12 +245,18 @@ int process_was_continued( process_info_t *process )
 
 }
 
-int process_was_interrupted(process_info_t *process)
+int process_was_interrupted(scheduler_task_t *task)
 {
 	int sig;
 	struct sigaction *act;
+	
 	//TODO: Figure out whether to interrupt calls on an SIG_IGN action
-	sigset_t sig_active = process->signal_pending & ~process->signal_mask;
+	sigset_t sig_active;
+	
+	if ( !task->process )
+		return 0;
+	
+	sig_active = task->process->signal_pending & ~task->signal_mask;
 
 	if ( sig_active == 0 )
 		return 0;
@@ -253,7 +267,7 @@ int process_was_interrupted(process_info_t *process)
 		if ( !sigismember( &sig_active, sig ) )
 			continue;
 		
-		act = &process->signal_actions[sig];
+		act = &task->process->signal_actions[sig];
 
 		if ( act->sa_handler == SIG_IGN )
 			continue;
@@ -262,10 +276,10 @@ int process_was_interrupted(process_info_t *process)
 			return 1;
 
 		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
-			sigdelset( &process->signal_pending, sig );
-			process->old_state = process->state;
-			process->state = PROCESS_STOPPED;
-			process_child_event( process, PROCESS_CHILD_STOPPED );			
+			sigdelset( &task->process->signal_pending, sig );
+			task->process->old_state = task->process->state;
+			task->process->state = PROCESS_STOPPED;
+			process_child_event( task->process, PROCESS_CHILD_STOPPED );			
 			return 0;
 		}
 	}
@@ -283,13 +297,17 @@ int process_was_interrupted(process_info_t *process)
 int process_handle_signal( int sig )
 {
 
-	process_info_t *ctask;
+	process_info_t *cproc;
+	scheduler_task_t *ctask;
 	struct sigaction *act;
 
 	ctask = scheduler_current_task;
+	cproc = ctask->process;
+	
+	assert( cproc != NULL );
 	
 	/* Get the sigaction for the signal */
-	act = &ctask->signal_actions[ sig ];
+	act = &cproc->signal_actions[ sig ];
 
 	/* Check for the magic dispositions */
 	if ( act->sa_handler == SIG_IGN ) {
@@ -325,18 +343,26 @@ int process_handle_signal( int sig )
  */
 void do_signals()
 {
-	process_info_t *ctask = scheduler_current_task;
+	process_info_t *cproc;
+	scheduler_task_t *ctask;
+
 	int sig;
 	sigset_t sig_active;
 
+	ctask = scheduler_current_task;
+	cproc = ctask->process;
+	
+	if ( !cproc )
+		return;
+		
 	/* Determine which signals we need to handle */
-	sig_active = ctask->signal_pending & ~ctask->signal_mask;
+	sig_active = cproc->signal_pending & ~ctask->signal_mask;
 
 	/* If there are none, we have nothing to do */
 	if (sig_active == 0)
 		return;
 	
-	debugcon_printf("sighandle: %i\n", scheduler_current_task->pid);
+	debugcon_printf("sighandle: %i\n", cproc->pid);
 
 	//TODO: Find out why i thought this was important
 	//Hunch: Interrupting a system call might not immediately return to userland
@@ -353,7 +379,7 @@ void do_signals()
 			continue;
 		
 		/* Remove the signal from the pending set */
-		sigdelset( &ctask->signal_pending, sig );
+		sigdelset( &cproc->signal_pending, sig );
 
 		debugcon_printf( "handling signal: %i\n", sig );
 		
@@ -375,10 +401,12 @@ void (*_sys_signal(	int sig, void (*disp)(int) ))( int )
 		return SIG_ERR;
 	}
 
-	old = scheduler_current_task->signal_actions[sig].sa_handler;
+	old = scheduler_current_task->process->signal_actions[sig].sa_handler;
 
-	scheduler_current_task->signal_actions[sig] = sig_action_default;
-	scheduler_current_task->signal_actions[sig].sa_handler = disp;
+	scheduler_current_task->process->signal_actions[sig] 
+		= sig_action_default;
+	scheduler_current_task->process->signal_actions[sig].sa_handler
+		= disp;
 
 	return old;
 }
@@ -401,7 +429,7 @@ int _sys_sigaction(	int sig,
 			return -1;
 		}
 		memcpy( oact,
-				&scheduler_current_task->signal_actions[sig],
+				&scheduler_current_task->process->signal_actions[sig],
 				sizeof( struct sigaction ) );
 	}
 
@@ -411,7 +439,7 @@ int _sys_sigaction(	int sig,
 			syscall_errno = EFAULT;
 			return -1;
 		}
-		memcpy( &scheduler_current_task->signal_actions[sig],
+		memcpy( &scheduler_current_task->process->signal_actions[sig],
 				 act,
 				sizeof( struct sigaction ) );
 	}
@@ -552,7 +580,7 @@ int _sys_sigpending( sigset_t *set )
 	}
 
 	*set =	scheduler_current_task->signal_mask &
-			scheduler_current_task->signal_pending;
+			scheduler_current_task->process->signal_pending;
 
 	return 0;
 

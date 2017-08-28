@@ -153,11 +153,11 @@ int elf_load( inode_t *inode )
 	image_top += PHYSMM_PAGE_SIZE;
 	image_top &= ~PHYSMM_PAGE_ADDRESS_MASK;
 	//debugcon_printf("Loaded ELF image between %x and %x\n",image_base, image_top);
-	scheduler_current_task->image_start = (void *) image_base;
-	scheduler_current_task->image_end   = (void *) image_top;
-	scheduler_current_task->entry_point = (void *) elf_header->e_entry;
-	scheduler_current_task->image_inode = vfs_inode_ref(inode);
-	scheduler_current_task->image_inode->open_count++;
+	current_process->image_start = (void *) image_base;
+	current_process->image_end   = (void *) image_top;
+	current_process->entry_point = (void *) elf_header->e_entry;
+	current_process->image_inode = vfs_inode_ref(inode);
+	current_process->image_inode->open_count++;
 	heapmm_free(elf_pheader, elf_header->e_phentsize);
 	heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 	vfs_inode_release(inode);

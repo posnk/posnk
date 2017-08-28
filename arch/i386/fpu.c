@@ -20,7 +20,7 @@
 
 uint8_t i386_fpu_cs_buf[512] __attribute__((aligned(16)));
 
-process_info_t *i386_fpu_process = NULL;
+scheduler_task_t *i386_fpu_thread = NULL;
 
 int i386_fpu_enabled = 0;
 
@@ -74,7 +74,7 @@ void i386_fpu_sigenter()
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	if (!i386_fpu_enabled)
 		return;
-	if (i386_fpu_process != scheduler_current_task)
+	if (i386_fpu_thread != scheduler_current_task )
 		return;
 	i386_fpu_save(tctx);
 }
@@ -84,7 +84,7 @@ void i386_fpu_fork()
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	if (!i386_fpu_enabled)
 		return;
-	if (i386_fpu_process != scheduler_current_task)
+	if (i386_fpu_thread != scheduler_current_task)
 		return;
 	i386_fpu_save(tctx);
 }
@@ -94,14 +94,14 @@ void i386_fpu_sigexit()
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	if (!i386_fpu_enabled)
 		return;
-	if (i386_fpu_process != scheduler_current_task)
+	if (i386_fpu_thread != scheduler_current_task)
 		return;
 	i386_fpu_load(tctx);
 }
 
 void i386_fpu_del_task(process_info_t *task) {
-	if ( task == i386_fpu_process )
-		i386_fpu_process=NULL;
+	if ( task == i386_fpu_thread )
+		i386_fpu_thread=NULL;
 }
 
 int i386_fpu_handle_ill()
@@ -109,17 +109,17 @@ int i386_fpu_handle_ill()
 	if(!i386_fpu_enabled)
 		return 0;
 	i386_enable_fpu();
-	if (i386_fpu_process == scheduler_current_task)
+	if (i386_fpu_thread == scheduler_current_task)
 		return 1;
-	if (i386_fpu_process) {
-		i386_fpu_save((i386_task_context_t *)i386_fpu_process->arch_state);
+	if (i386_fpu_thread) {
+		i386_fpu_save((i386_task_context_t *)i386_fpu_thread->arch_state);
 	}
-	i386_fpu_process = scheduler_current_task;
-	if (!((i386_task_context_t *)i386_fpu_process->arch_state)->fpu_used) {
+	i386_fpu_thread = scheduler_current_task;
+	if (!((i386_task_context_t *)i386_fpu_thread->arch_state)->fpu_used) {
 		i386_init_fpu();
-		((i386_task_context_t *)i386_fpu_process->arch_state)->fpu_used = 1;
+		((i386_task_context_t *)i386_fpu_thread->arch_state)->fpu_used = 1;
 		return 1;		
 	}
-	i386_fpu_load((i386_task_context_t *)i386_fpu_process->arch_state);
+	i386_fpu_load((i386_task_context_t *)i386_fpu_thread->arch_state);
 	return 1;
 }

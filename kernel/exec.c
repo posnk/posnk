@@ -173,17 +173,19 @@ exec_start:
 		return status;
 	}
 
-	strcpy(scheduler_current_task->name, name);
+	strcpy(current_process->name, name);
 
 	heapmm_free(name, strlen(name) + 1);
 
-	if (scheduler_current_task->image_inode) {
-		scheduler_current_task->image_inode->open_count--;
-		vfs_inode_release(scheduler_current_task->image_inode);
+	if (current_process->image_inode) {
+		current_process->image_inode->open_count--;
+		vfs_inode_release(current_process->image_inode);
 	}
 
 	procvmm_clear_mmaps();
 
+	signal_init_process( current_process );
+	
 	signal_init_task( scheduler_current_task );
 
 	status = elf_load( inode );
@@ -192,7 +194,7 @@ exec_start:
 
 	if (status) {
 		debugcon_printf("error loading elf %s\n",path);
-		process_send_signal(scheduler_current_task, SIGSYS, sigi);
+		process_send_signal(current_process, SIGSYS, sigi);
 		do_signals();
 		schedule();
 		return status;	//NEVER REACHED
@@ -205,7 +207,7 @@ exec_start:
 	status = procvmm_do_exec_mmaps();
 	if (status) {
 		debugcon_printf("error mmapping stuff\n");
-		process_send_signal(scheduler_current_task, SIGSYS, sigi);
+		process_send_signal(current_process, SIGSYS, sigi);
 		do_signals();
 		schedule();
 		return status;	//NEVER REACHED
@@ -256,7 +258,7 @@ exec_start:
 	n_envs[envl_size] = (char *) 0;
 	//debugcon_printf("calling program\n");
 
-	process_user_call(scheduler_current_task->entry_point, scheduler_current_task->stack_bottom);
+	process_user_call(current_process->entry_point, current_process->stack_bottom);
 	return 0;//NEVER REACHED
 
 }

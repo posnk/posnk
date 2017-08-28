@@ -826,7 +826,7 @@ int vfs_rmdir(char *path)
 	/* If a file system is currently mounted on this directory or if it */
 	/* is the root directory for the current process, return error : */
 	/* "Resource busy" */
-	if (inode->mount || (scheduler_current_task->root_directory->inode == inode))
+	if (inode->mount || (current_process->root_directory->inode == inode))
 		return EBUSY;
 
 	/* Release the inode */
@@ -1096,10 +1096,10 @@ int vfs_mknod(char *path, mode_t mode, dev_t dev)
 	}
 
 	/* Fill other inode fields */
-	inode->mode = mode & ~(scheduler_current_task->umask);
+	inode->mode = mode & ~(current_process->umask);
 	inode->if_dev = dev;
-	inode->uid = scheduler_current_task->uid;
-	inode->gid = scheduler_current_task->gid;
+	inode->uid = current_process->uid;
+	inode->gid = current_process->gid;
 
 	/* Allocate inode lock */
 	inode->lock = semaphore_alloc();
@@ -1400,8 +1400,8 @@ int vfs_symlink(char *oldpath, char *path)
 	/* Fill other inode fields */
 	inode->mode = S_IFLNK | 0777;
 	inode->if_dev = 0;
-	inode->uid = scheduler_current_task->uid; 
-	inode->gid = scheduler_current_task->gid; 
+	inode->uid = current_process->uid; 
+	inode->gid = current_process->gid; 
 
 	/* Allocate inode lock */
 	inode->lock = semaphore_alloc();
@@ -1925,11 +1925,11 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 							root_inode );
 
 	/* Fill VFS fields in the proces info */
-	scheduler_current_task->root_directory = 
+	current_process->root_directory = 
 			vfs_dir_cache_mkroot(root_inode);
 
-	scheduler_current_task->current_directory = 
-			vfs_dir_cache_ref(scheduler_current_task->root_directory);
+	current_process->current_directory = 
+			vfs_dir_cache_ref(current_process->root_directory);
 
 	/* Return success */
 	return 1;
@@ -1950,10 +1950,10 @@ int vfs_chdir(dir_cache_t *dirc)
 		return ENOTDIR;
 
 	/* Release the old directory */
-	vfs_dir_cache_release(scheduler_current_task->current_directory);
+	vfs_dir_cache_release(current_process->current_directory);
 
 	/* Update current directory */
-	scheduler_current_task->current_directory = vfs_dir_cache_ref(dirc);
+	current_process->current_directory = vfs_dir_cache_ref(dirc);
 
 	return 0;
 }
@@ -1973,10 +1973,10 @@ int vfs_chroot(dir_cache_t *dirc)
 		return ENOTDIR;
 
 	/* Release the old directory */
-	vfs_dir_cache_release(scheduler_current_task->root_directory);
+	vfs_dir_cache_release(current_process->root_directory);
 
 	/* Update current directory */
-	scheduler_current_task->root_directory = vfs_dir_cache_ref(dirc);
+	current_process->root_directory = vfs_dir_cache_ref(dirc);
 
 	return 0;
 }

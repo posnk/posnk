@@ -10,6 +10,7 @@
  */
 #include <string.h>
 #include <stdint.h>
+#include <assert.h>
 #include "kernel/heapmm.h"
 #include "kernel/paging.h"
 #include "kernel/scheduler.h"
@@ -50,7 +51,8 @@ typedef struct {
  */
 int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 {
-	process_info_t *ctask;
+	process_info_t *cproc;
+	scheduler_task_t *ctask;
 	i386_task_context_t *tctx;
 	i386_sigrest_t restore;
 	struct sigaction act;
@@ -58,7 +60,11 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	void *sigret, *usrinfo;
 
 	ctask = scheduler_current_task;
-	act = ctask->signal_actions[signal];
+	cproc = ctask->process;
+
+	assert( cproc != NULL );
+
+	act = cproc->signal_actions[signal];
 	altstack = &ctask->signal_altstack;
 	
 	/* Store FPU state */
@@ -85,7 +91,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 
 	/* If SA_RESETHAND is set, reset the handler to SIG_DFL */
 	if ( act.sa_flags & SA_RESETHAND )
-		ctask->signal_actions[signal].sa_handler = SIG_DFL;
+		cproc->signal_actions[signal].sa_handler = SIG_DFL;
 
 	/* Apply sa_mask */
 	ctask->signal_mask |= act.sa_mask;
@@ -133,7 +139,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 		return 0;//Parameter: signal number 
 
 	debugcon_printf("Pushing return addr\n");
-	if (!process_push_user_data(&(ctask->signal_handler_exit_func), 4))
+	if (!process_push_user_data(&(cproc->signal_handler_exit_func), 4))
 		return 0;//Return address: sigreturn stub
 
 	/* Set up user state */
