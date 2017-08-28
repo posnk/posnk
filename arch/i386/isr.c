@@ -153,7 +153,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	uint32_t scpf;
 	int int_id = stack->int_id;
 	
-	dumpisrstack( stack );
+	//dumpisrstack( stack );
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_enter( stack );

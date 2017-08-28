@@ -359,7 +359,7 @@ void i386_kmain()
 	enable();
 	earlycon_puts("OK\n");
 
-	rv = sys_waitpid((uint32_t) pid_init,(uint32_t) &init_status,0,0,0,0);
+	rv = sys_waitpid((uint32_t) 1,(uint32_t) &init_status,0,0,0,0);
 
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 
