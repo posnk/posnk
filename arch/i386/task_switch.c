@@ -182,6 +182,8 @@ int scheduler_alloc_kstack(scheduler_task_t *task)
 	/* Unmap and release the lowest frame of the stack */
 	/* to guard against stack overflow */
 	frame = paging_get_physical_address( task->kernel_stack );
+	debugcon_printf( "Setting up stack overflow guard: %x to %x\n",
+						task->kernel_stack, task->kernel_stack + PHYSMM_PAGE_SIZE );
 	paging_unmap( task->kernel_stack );
 	physmm_free_frame( frame );
 	
@@ -257,6 +259,10 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 	/* Push the arguments for the entry point */
 	nctx->kern_esp -= 4;
 	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) arg;
+	
+	/* Push the return address */
+	nctx->kern_esp -= 4;
+	*((uint32_t *)nctx->kern_esp) = 0x0;
 	
 	/* Push the new task state */
 	nctx->kern_esp -= sizeof( csstack_t );

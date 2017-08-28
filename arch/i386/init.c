@@ -210,11 +210,10 @@ void vgacon_clear_video();
 
 void vterm_vga_init();
 
-void i386_init_stub()
+void i386_init_stub( process_info_t *proc )
 {
-	process_info_t *proc;
-	
-	proc = fork_process();
+
+	debugcon_printf("init_stub entry:%x\n", proc);
 	
 	scheduler_reown_task( scheduler_current_task, proc );
 	
@@ -344,7 +343,7 @@ void i386_kmain()
 	syscall_init();
 
 
-	pid_init = scheduler_spawn( i386_init_stub, NULL, NULL );
+	pid_init = scheduler_spawn( i386_init_stub, fork_process(), NULL );
 	
 	if ( pid_init < 0 )
 		earlycon_puts("FAIL\n");

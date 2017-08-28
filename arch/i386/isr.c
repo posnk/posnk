@@ -128,19 +128,24 @@ void sercon_isr();
 void dumpisrstack( i386_isr_stack_t *stack ) {
 	int pid = -1;
 	i386_pusha_registers_t	*regs = &stack->regs;
-	debugcon_printf("DS: 0x%x\t CS: 0x%x\t EIP: 0x%x\t EFLAGS:0x%x\n",
-					stack->ds, stack->cs, stack->eip, stack->eflags );
-	if ( scheduler_current_task->process )
-		pid = scheduler_current_task->process->pid;
-	debugcon_printf("int: %i\t ECODE: 0x%x tid:%x\n pid:%x\n",
-					stack->int_id, stack->error_code, scheduler_current_task->tid,pid);
-	if ( stack->cs == 0x2B )
-		debugcon_printf("SS: 0x%x\tESP:0x%x\n",
-						stack->ss, stack->esp );
-	debugcon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
+	debugcon_printf("\n\nEAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
+	if ( stack->cs == 0x2B )
+		debugcon_printf("\n\nSS: 0x%x\tESP:0x%x\n",
+						stack->ss, stack->esp );
 	debugcon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
+	debugcon_printf("DS: 0x%x\t CS: 0x%x\t EIP: 0x%x\t EFLAGS:0x%x\n",
+					stack->ds, stack->cs, stack->eip, stack->eflags );
+	debugcon_printf("int: %i\t ECODE: 0x%x sctp:%x cpp: %x\n",
+					stack->int_id, stack->error_code,
+					scheduler_current_task, 
+					scheduler_current_task->process
+					);
+	if ( scheduler_current_task->process )
+		pid = scheduler_current_task->process->pid;
+	debugcon_printf("tid:%x\n pid:%x\n\n\n",
+					scheduler_current_task->tid,pid);
 }
 
 void i386_handle_interrupt( i386_isr_stack_t *stack )
@@ -148,7 +153,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	uint32_t scpf;
 	int int_id = stack->int_id;
 	
-	
+	dumpisrstack( stack );
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_enter( stack );

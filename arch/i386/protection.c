@@ -37,7 +37,7 @@ void i386_tss_update( void )
 {
 	i386_task_context_t *tctx;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
-	//debugcon_printf("switching esp0=%x\n",tctx->tss_esp);
+	debugcon_printf("switching esp0=%x\n",tctx->tss_esp);
 	i386_tss_entry.esp0	= tctx->tss_esp;
 }
 
