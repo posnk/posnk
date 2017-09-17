@@ -63,6 +63,8 @@ struct task {
 	
 	ticks_t		 cpu_ticks;
 	
+	int				active;
+	
 	/** The process this task belongs to */
 	process_info_t *process;
 	
@@ -91,7 +93,9 @@ void scheduler_switch_task(scheduler_task_t *new_task);
 
 void scheduler_fork_main( void * arg );
 
-int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg );
+void scheduler_spawnentry( void (*callee)(void *), void *arg, int s );
+
+int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int s );
 
 int scheduler_free_task ( scheduler_task_t *task );
 

@@ -355,12 +355,8 @@ void i386_kmain()
 		
 	ata_interrupt_enabled = 1;
 
-	earlycon_puts("Enabling interrupts...");
-	enable();
-	earlycon_puts("OK\n");
-
 	rv = sys_waitpid((uint32_t) 1,(uint32_t) &init_status,0,0,0,0);
-
+	
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 
 	earlycon_puts("\n\nkernel main exited... halting!");

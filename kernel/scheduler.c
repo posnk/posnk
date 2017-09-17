@@ -28,6 +28,8 @@ scheduler_task_t *scheduler_current_task;
 scheduler_task_t *scheduler_idle_task;
 scheduler_task_t *scheduler_task_list;
 
+spinlock_t scheduling_lock = 0;
+
 void scheduler_init()
 {
 	scheduler_task_list = NULL;
@@ -42,6 +44,8 @@ void scheduler_init()
 	scheduler_current_task->kernel_stack = NULL;
 
 	scheduler_current_task->tid = scheduler_tid_counter++;
+
+	scheduler_current_task->active = 0;
 
 	signal_init_task( scheduler_current_task );
 	
@@ -65,8 +69,7 @@ void scheduler_reown_task( scheduler_task_t *task, process_info_t *process )
 
 int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 {
-	int status;
-
+	int status, s;
 	scheduler_task_t *new_task = (scheduler_task_t *) 
 		heapmm_alloc(sizeof(scheduler_task_t));
 		
@@ -91,16 +94,19 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 	if ( status )
 		goto exitfail_0;
 
-	status = scheduler_do_spawn( new_task, callee, arg );
+	s = spinlock_enter( &scheduling_lock );
+
+	status = scheduler_do_spawn( new_task, callee, arg, s );
 	
 	if ( status )
 		goto exitfail_1;
-
-	
+		
 	new_task->prev = scheduler_task_list->prev;
 	new_task->next = scheduler_task_list;
 	new_task->next->prev = new_task;
 	new_task->prev->next = new_task;
+	
+	spinlock_exit( &scheduling_lock, s );
 		
 	if ( t )
 		*t = new_task;
@@ -118,15 +124,33 @@ exitfail_a:
 	
 }
 
+void scheduler_set_task_state( scheduler_task_t *task, int state )
+{
+	int s;
+	
+	s = spinlock_enter( &scheduling_lock );
+	
+	task->state = state;
+	
+	spinlock_exit( &scheduling_lock, s );
+}
+
 void scheduler_reap( scheduler_task_t *task )
 {
+
+	int s;
+
 	//TODO: Lock onto the task list
 	assert( task != scheduler_task_list );
+
+	s = spinlock_enter( &scheduling_lock );
+	
+	assert( task != scheduler_current_task );
 	
 	task->next->prev = task->prev;
 	task->prev->next = task->next;
 	
-	assert( task != scheduler_current_task );
+	spinlock_exit( &scheduling_lock, s );
 	
 	if ( task->process ) {
 		llist_unlink ((llist_t *) task);
@@ -143,6 +167,9 @@ void scheduler_reap( scheduler_task_t *task )
  */
 int scheduler_may_run ( scheduler_task_t *task )
 {
+
+	if ( task->active )
+		return 0;
 
 	if ( task->process ) {
 		if ( task->process->state == PROCESS_STOPPED ) {
@@ -189,17 +216,22 @@ int scheduler_may_run ( scheduler_task_t *task )
 void schedule()
 {
 	
+	int s, swd;
 	scheduler_task_t *next_task;
+	
 #ifdef CONFIG_SERIAL_DEBUGGER_TRIG	
 	if (debugcon_have_data())
 		dbgapi_invoke_kdbg(0);
 #endif
 	
 	scheduler_current_task->cpu_ticks++;
+	
 	if ( scheduler_current_task->process )
 		scheduler_current_task->process->cpu_ticks++;
 
 	//TODO: Increment ticks only on preemptive scheduler calls
+	
+	s = spinlock_enter( &scheduling_lock );
 	
 	next_task = scheduler_current_task->next;
 	
@@ -212,28 +244,41 @@ void schedule()
 	if (scheduler_current_task->state == PROCESS_RUNNING)
 		scheduler_current_task->state = PROCESS_READY;
 	
+	scheduler_current_task->active = 0;
 	
-	if ( ( scheduler_current_task == next_task )
-		&& scheduler_may_run( next_task ) ) {
-		
-		if (scheduler_current_task->state == PROCESS_READY) 
-			scheduler_current_task->state = PROCESS_RUNNING;
-			
-		return;
-	} else if (next_task != scheduler_current_task ) {
-	//	earlycon_printf("scheduler switch from %i to %i\n", scheduler_current_task->pid, next_task->pid);
-		scheduler_switch_task(next_task);
-		if (scheduler_current_task->state == PROCESS_READY) 
-			scheduler_current_task->state = PROCESS_RUNNING;
-		return;
+	if ( !scheduler_may_run( next_task ) ) {
+		next_task = scheduler_idle_task;
 	}
+	
 	//TODO: Figure out why this was here
 	//if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->signal_pending != 0))
 	//	scheduler_switch_task(scheduler_current_task);
-	if (scheduler_idle_task != 0)
-		scheduler_switch_task(scheduler_idle_task);	
-	else 
-		return;
+	
+		
+	assert ( next_task != NULL );
+		
+	if ( next_task->state == PROCESS_READY ) 
+		next_task->state = PROCESS_RUNNING;
+		
+	next_task->active = 1;
+	
+	swd = next_task != scheduler_current_task;
+	
+	if ( swd )
+		scheduler_switch_task( next_task );	
+
+	spinlock_exit( &scheduling_lock, s );
+	
+	
+}
+
+void scheduler_spawnentry( void (*callee)(void *), void *arg, int s )
+{
+
+	spinlock_exit( &scheduling_lock, s );
+	
+	callee( arg );
+
 }
 
 void scheduler_set_as_idle()

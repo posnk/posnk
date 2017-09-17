@@ -21,23 +21,28 @@
 #include "kernel/process.h"
 #include <assert.h>
 
-void spinlock_enter( spinlock_t *lock )
+int spinlock_enter( spinlock_t *lock )
 {
 	int s;
 	
 	s = disable();
 	
+	//TODO: Make this SMP friendly ( atomic )
+	
 	while ( *lock );
 	
 	*lock = 1;
 	
-	restore( s );
+	return s;
+	
 }
 
-void spinlock_exit( spinlock_t *lock )
+void spinlock_exit( spinlock_t *lock, int s )
 {
 
 	*lock = 0;
+	
+	restore( s );
 
 }
 void semaphore_up(semaphore_t *semaphore)

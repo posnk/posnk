@@ -50,12 +50,17 @@ void dlheapmm_abort()
 	halt();
 }
 
+semaphore_t heap_lock = 1;
 /**
  * Allocates an alligned block of RAM
  */
 void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
 {
-	return dlmemalign((size_t) alignment, size);
+	void *r;
+	semaphore_down( &heap_lock );
+	r = dlmemalign((size_t) alignment, size);
+	semaphore_up( &heap_lock );
+	return r;
 }
 
 /**
@@ -63,7 +68,11 @@ void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
  */
 void *heapmm_alloc(size_t size) 
 {
-	return dlmalloc(size);
+	void *r;
+	semaphore_down( &heap_lock );
+	r = dlmalloc(size);
+	semaphore_up( &heap_lock );
+	return r;
 }
 
 

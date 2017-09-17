@@ -109,7 +109,7 @@ void i386_user_exit ( i386_isr_stack_t *stack )
  * Switch to new task
  * @param new_task	The target of the switch
  */
-void scheduler_switch_task(scheduler_task_t *new_task)
+void scheduler_switch_task( scheduler_task_t *new_task )
 {
 	int s;
 	i386_task_context_t *tctx;
@@ -123,7 +123,7 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 	nctx = new_task->arch_state;
 	
 	/* If we want to switch to the current task, NOP */
-	if (new_task != scheduler_current_task) {
+	if ( new_task != scheduler_current_task ) {
 	
 		csstack_t *ess = (void*)(nctx->kern_esp);
 		
@@ -141,13 +141,13 @@ void scheduler_switch_task(scheduler_task_t *new_task)
 		
 	//	debugcon_printf("cswitch to %i, esp=%x eip=%x\n", new_task->pid, nctx->kern_esp, ess->eip); 
 		/* Switch kernel threads */
-		i386_context_switch( nctx->kern_esp, 
+		i386_context_switch(     nctx->kern_esp, 
 								&tctx->kern_esp
 				    			);
 	}
 	
 	/* Restore interrupt flag */
-	restore(s);
+	restore( s );
 }
 
 /**
@@ -232,7 +232,7 @@ int scheduler_free_task(scheduler_task_t *new_task) {
 /**
  * Spawn a new task
  */
-int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
+int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int s )
 {
 	i386_task_context_t *tctx;
 	i386_task_context_t *nctx;
@@ -255,10 +255,18 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 	nctx->kern_esp = ( uint32_t ) new_task->kernel_stack;
 	nctx->kern_esp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
 	nctx->tss_esp  = nctx->kern_esp;
+	/* Push the arguments for the entry shim */
+	nctx->kern_esp -= 4;
+	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) s;
 	
 	/* Push the arguments for the entry point */
 	nctx->kern_esp -= 4;
 	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) arg;
+
+	
+	/* Push the arguments for the entry shim */
+	nctx->kern_esp -= 4;
+	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) callee;
 	
 	/* Push the return address */
 	nctx->kern_esp -= 4;
@@ -269,8 +277,8 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg )
 	nstate = ( struct csstack * ) nctx->kern_esp;
 	memset( nstate, 0, sizeof( csstack_t ) );
 	
-	nstate->eip = ( uint32_t ) callee;
-	nstate->regs.ebp = 0xCBADCA11;
+	nstate->eip = ( uint32_t ) &scheduler_spawnentry;
+	nstate->regs.ebp = 0xCAFE57AC;
 	
 	/* Switch to new process ? */
 	
