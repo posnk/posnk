@@ -14,6 +14,7 @@
 
 #include "util/llist.h"
 #include <stdint.h>
+#include "kernel/scheduler.h"
 
 typedef struct kdbg_calltrace {
 	llist_t		link;
@@ -22,6 +23,8 @@ typedef struct kdbg_calltrace {
 } kdbg_calltrace_t;
 
 llist_t *kdbg_do_calltrace();
+
+void kdbg_pt_calltrace(scheduler_task_t *t);
 
 void kdbg_free_calltrace(llist_t *st);
 
