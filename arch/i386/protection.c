@@ -43,6 +43,7 @@ void i386_tss_update( void )
 
 void process_user_call(void *entry, void *stack)
 {
+	disable();
 	i386_tss_update();
 	i386_protection_user_call((uint32_t) entry, (uint32_t) stack);
 }
