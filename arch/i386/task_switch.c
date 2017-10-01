@@ -236,12 +236,13 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 {
 	i386_task_context_t *tctx;
 	i386_task_context_t *nctx;
+	int s2;
 	struct csstack *nstate;
 	
 	/* Allocate its kernel stack */
 	if ( scheduler_alloc_kstack( new_task ) )
 		return ENOMEM;
-	
+	s = disable();
 	nctx = (i386_task_context_t *) new_task->arch_state;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
 
@@ -279,6 +280,8 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	
 	nstate->eip = ( uint32_t ) &scheduler_spawnentry;
 	nstate->regs.ebp = 0xCAFE57AC;
+	
+	restore(s2);
 	
 	/* Switch to new process ? */
 	

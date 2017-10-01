@@ -97,9 +97,10 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 	if ( status )
 		goto exitfail_0;
 
-	s = spinlock_enter( &scheduling_lock );
 
 	status = scheduler_do_spawn( new_task, callee, arg, s );
+	
+	s = spinlock_enter( &scheduling_lock );
 	
 	if ( status )
 		goto exitfail_1;
