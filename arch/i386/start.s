@@ -57,7 +57,7 @@ i386_init_higherhalf:
 	; by adding the base 0x40000000
  
 	mov esp, i386_sys_stack ; set up a new stack for our kernel
-	mov ebp, 0xCAFE57AC	; set ebp as a token for the tracer
+	mov ebp, 0xCAFE8007	; set ebp as a token for the tracer
 	; push the multiboot parameters
 	
 	push edx
