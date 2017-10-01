@@ -19,12 +19,12 @@
 extern char i386_strtab;
 extern char i386_symtab;
 extern char i386_symtab_end;
-Elf32_Sym *kdbg_symtab = &i386_symtab;
+Elf32_Sym *kdbg_symtab = NULL;//&i386_symtab;
 #endif
 
 char *kdbg_symbol_name(uintptr_t addr)
 {
-	int i,f = 0;
+	/*int i,f = 0;
 	ptrdiff_t ssz = &i386_symtab_end - &i386_symtab;
 	int sc = ssz / sizeof ( Elf32_Sym );
 	//kdbg_printf("%i %i\n", sc,ssz);
@@ -36,7 +36,7 @@ char *kdbg_symbol_name(uintptr_t addr)
 			f = i;
 	}
 	if ( f != 0 )
-		return (char *) (kdbg_symtab[f].st_name + &i386_strtab);
+		return (char *) (kdbg_symtab[f].st_name + &i386_strtab);*/
 	return "";
 }
 

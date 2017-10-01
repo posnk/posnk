@@ -97,6 +97,7 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 	if ( status )
 		goto exitfail_0;
 
+	s = disable();restore(s);
 
 	status = scheduler_do_spawn( new_task, callee, arg, s );
 	
