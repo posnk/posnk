@@ -64,6 +64,9 @@ void scheduler_reown_task( scheduler_task_t *task, process_info_t *process )
 	
 	task->process = process;
 	
+	if ( task == scheduler_current_task )
+		paging_switch_dir( task->process->page_directory );
+	
 	llist_add_end( &process->tasks, ( llist_t * ) task );
 }
 
