@@ -261,9 +261,12 @@ void i386_init_stub( process_info_t *proc )
  * This function implements the idle task that runs when there are no other running processes
  */
 
-void i386_idle_task()
+void i386_idle_task( process_info_t *proc )
 {	
 	scheduler_set_as_idle();	
+	
+	scheduler_reown_task( scheduler_current_task, proc );
+	
 	asm ("sti");
 		
 	for (;;)
@@ -363,7 +366,7 @@ void i386_kmain()
 	if ( pid_init < 0 )
 		earlycon_puts("FAIL\n");
 
-	pid_idle = scheduler_spawn( i386_idle_task, NULL, NULL );
+	pid_idle = scheduler_spawn( i386_idle_task, current_process, NULL );
 	
 	if ( pid_idle < 0 )
 		earlycon_puts("FAIL\n");
