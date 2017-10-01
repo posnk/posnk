@@ -155,5 +155,18 @@ typedef struct {
 	Elf32_Word	p_flags;
 	Elf32_Word	p_align;
 } Elf32_Phdr;
+
+
+typedef struct {
+	Elf32_Word		st_name;
+	Elf32_Addr		st_value;
+	Elf32_Word		st_size;
+	unsigned char	st_info;
+	unsigned char	st_other;
+	Elf32_Half		st_shndx;
+} Elf32_Sym;
+
+
+
 #endif
 

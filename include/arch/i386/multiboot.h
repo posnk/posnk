@@ -42,6 +42,8 @@
      
      #define MULTIBOOT_INFO_VIDEO_INFO               0x00000800
      #define MULTIBOOT_INFO_BOOT_LOADER_NAME         0x00000200
+     #define MULTIBOOT_INFO_ELFSYM                   0x00000020
+     #define MULTIBOOT_INFO_AOUTSYM                  0x00000010
      #define MULTIBOOT_INFO_CMDLINE                  0x00000004
      
      #ifndef ASM

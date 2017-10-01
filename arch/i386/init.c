@@ -90,6 +90,20 @@ void i386_init_reserve_modules(multiboot_info_t *mbt)
 		physmm_claim_range((physaddr_t)modules[i].mod_start, (physaddr_t)modules[i].mod_end);
 	}
 }
+
+void i386_init_handle_elf(multiboot_info_t *mbt)
+{
+	unsigned int i;
+	earlycon_printf("multiboot: flags=0x%x\n",mbt->flags);
+	if ( MULTIBOOT_INFO_ELFSYM & ~mbt->flags )
+		return;
+	earlycon_printf("multiboot: elf symbol header"
+	                "num:%i size:%i addr:%x shndx:%x\n",
+	                mbt->u.elf_sec.num,
+	                mbt->u.elf_sec.size,
+	                mbt->u.elf_sec.addr,
+	                mbt->u.elf_sec.shndx);
+}
 //TODO: Unify Module handling across architectures
 void i386_init_load_modules(multiboot_info_t *mbt)
 {
@@ -172,6 +186,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 		i386_init_reserve_modules(mbd);
 		i386_init_handle_vbe(mbd);
 		i386_init_handle_cmdline(mbd);
+		i386_init_handle_elf(mbd);
 	}
 	physmm_claim_range(0x100000, 0x400000);
 	earlycon_puts("OK\n");
