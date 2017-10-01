@@ -48,6 +48,7 @@ void kdbg_dump_processes()
 			 _t  = _t->next) {
 			 t = (scheduler_task_t *)_t;
 			 kdbg_printf("    [%i] %s", t->tid, kdbg_procstates[t->state]);
+			 if(t->state != 0)
 			 kdbg_pt_calltrace(t);
 		if (t->in_syscall != 0xFFFFFFFF)
 			kdbg_printf(" sc: %s\n", syscall_names[t->in_syscall]);
