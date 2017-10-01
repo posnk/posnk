@@ -11,10 +11,34 @@
 #include "kdbg/stacktrc.h"
 #include "kdbg/kdbgio.h"
 #include "kdbg/kdbgmm.h"
+#include "kernel/elf.h"
+
 #ifdef ARCH_I386
 #include "arch/i386/task_context.h"
 #include "arch/i386/isr_entry.h"
+extern char i386_strtab;
+extern char i386_symtab;
+extern char i386_symtab_end;
+Elf32_Sym *kdbg_symtab = &i386_symtab;
 #endif
+
+char *kdbg_symbol_name(uintptr_t addr)
+{
+	int i,f = 0;
+	ptrdiff_t ssz = &i386_symtab_end - &i386_symtab;
+	int sc = ssz / sizeof ( Elf32_Sym );
+	//kdbg_printf("%i %i\n", sc,ssz);
+	for ( i = 0; i < sc; i++ ) {
+//	kdbg_printf("%x %i\n", kdbg_symtab[i].st_value,i);
+		if ( kdbg_symtab[i].st_value <= addr &&
+		     (kdbg_symtab[i].st_value +
+		      kdbg_symtab[i].st_size) > addr )
+			f = i;
+	}
+	if ( f != 0 )
+		return (char *) (kdbg_symtab[f].st_name + &i386_strtab);
+	return "";
+}
 
 llist_t *kdbg_do_calltrace()
 {
@@ -85,7 +109,8 @@ Interrupt Stack
 	
 	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
 */
-			kdbg_printf("       Interrupt {\n");
+			kdbg_printf("       Interrupt In:%s\n",
+						kdbg_symbol_name(entry->func_addr));
 			isrst = (i386_isr_stack_t*) (l_ebp+12);
 			c_eip = isrst->eip;
 			c_ebp = isrst->regs.ebp;
@@ -117,10 +142,15 @@ Interrupt Stack
 			}
 		} else {
 			l_ebp = c_ebp;
+			if ( c_ebp < 0xc0000000 ) {
+				kdbg_printf("        STACK CORRUPT\n");
+				return;          
+			}
 			c_eip = *((uintptr_t *) (c_ebp + 4));
 			c_ebp = *((uintptr_t *)  c_ebp);
-			kdbg_printf("       0x%x () 0x%x\n", 
+			kdbg_printf("       0x%x %s() 0x%x\n", 
 						entry->func_addr,
+						kdbg_symbol_name(entry->func_addr),
 						entry->frame_addr);
 		}
 	}
