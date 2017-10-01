@@ -250,7 +250,7 @@ void tty_input_char(dev_t device, char c)
 			}				
 		} else if ((tty->termios.c_lflag & ECHO) || 
 		    ((c == '\n') && (tty->termios.c_lflag & ECHONL)))
-			tty->write_out(device, c);		
+			tty_output_char(device, c);		
 	
 		if ((c == '\n') || (c == tty->termios.c_cc[VEOL])) {
 			tty_buf_line_char(tty, c);
