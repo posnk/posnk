@@ -29,7 +29,6 @@ multiboot_header:
 [global i386_start]  ; make 'start' function global
 [global i386_init_switch_gdt]  ; make 'start' function global
 [extern i386_init_mm]  ; our C kernel main
-
 ; the kernel entry point
 i386_start:
 
@@ -174,6 +173,11 @@ i386_init_gdt_end:
 
 
 [section .bss]
-
+align 4096
+[global i386_resvmem_start]
+i386_resvmem_start:
+resb 0x4000
+[global	 i386_resvmem_end]
+i386_resvmem_end:
 resb 0x1000
 i386_sys_stack:	; our kernel stack
