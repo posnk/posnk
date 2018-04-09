@@ -61,12 +61,38 @@ int ata_poll_status( ata_device_t *device )
 
 }
 
+/**
+ * @brief Waits for the ATA device to become available
+ * @param device ATA device to wait on
+ * @return If successful and DRQ was set, the function will return 1, if DRQ
+ * 	   was not set the function will return 2 unless an error occurred, in which case
+ *         the function will return 0
+ *
+ */
+int ata_poll_mtwait(ata_device_t *device)
+{
+	uint8_t status;
+	int a = 0x10000000;//TODO: CONSTANT
+
+	ata_do_wait( device );
+
+	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY){
+		if (--a <= 0)
+			return 0;
+	}
+
+	return ata_poll_status( device );
+}
+
 int ata_poll_wait_resched(ata_device_t *device)
 {
 	uint8_t status;
 	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
 
 	ata_do_wait( device );
+
+	if ( device->ctrl_reg & ATA_DCR_FLAG_INT_DIS )
+		return ata_poll_mtwait( device );
 
 	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY) {
 		if (system_time > timeout_end)
@@ -91,6 +117,9 @@ int ata_poll_wait(ata_device_t *device)
 	ktime_t timeout_end = system_time + 2;//TODO: CONSTANT
 
 	ata_do_wait( device );
+
+	if ( device->ctrl_reg & ATA_DCR_FLAG_INT_DIS )
+		return ata_poll_mtwait( device );
 
 	while ((status = ata_read_port(device, ATA_STATUS_PORT)) & ATA_STATUS_FLAG_BSY){
 		if (system_time > timeout_end)
