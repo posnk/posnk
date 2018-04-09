@@ -1,0 +1,12 @@
+MAJOR	MINOR		NAME	DESC
+2		0..9		vterm	Virtual console
+4		i			evdev	Event device i
+12      0..4		sercon	VGA console
+13		0			vgacon	Serial port 0
+23		0			mbfb	Multiboot framebuffer
+24		0			omapfb	TI OMAP3430 framebuffer
+42		0			pseudo	/dev/zero
+42		1			pseudo	/dev/null
+48+i    j			ramblk	RAM block device i partition j
+16+i    16*j + k	ata*	ATA bus i device j partition k
+
