@@ -261,14 +261,16 @@ void paging_init()
 	i386_page_table_t *initial_table = (i386_page_table_t *) i386_alloc_page();
 
 	llist_create(&i386_page_directory_list);
+	debugcon_printf("\nInitial table: %x\n", initial_table);
 	
 	pdir = paging_create_dir();
 	dir = (i386_page_dir_t *) pdir->content;
+	debugcon_printf("\nInitial dir: %x\n", dir);
+	debugcon_printf("\nInitial dir: %x\n", dir->directory);
 
 	dir->directory[0x3FF] = (((uint32_t) dir) - 0xC0000000) | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_NOCACHE | I386_PAGE_FLAG_PRESENT;
 	
 	memset(initial_table, 0, sizeof(i386_page_table_t));
-	
 	
 	for ( map_addr = 0; map_addr < 0x400000;map_addr += 4096 ) { //Map the first 4MB
 		initial_table->pages[I386_ADDR_TO_PT_IDX(map_addr)] 
@@ -313,6 +315,8 @@ uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr) {
 }
 
 uintptr_t paging_get_physical_address(void * virt_addr) {
+	if ( paging_active_dir == NULL )
+		return paging_active_dir - 0xc0000000;
 	i386_page_dir_t *page_dir = (i386_page_dir_t *) paging_active_dir->content;
 	uintptr_t pd_idx = I386_ADDR_TO_PD_IDX(virt_addr);
 	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);

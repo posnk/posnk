@@ -5,7 +5,7 @@ MULTIBOOT_PAGE_ALIGN	equ 1<<0
 MULTIBOOT_MEMORY_INFO	equ 1<<1
 MULTIBOOT_GRAPHICS	equ 1<<2
 MULTIBOOT_HEADER_MAGIC	equ 0x1BADB002
-MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_GRAPHICS
+MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO
 MULTIBOOT_CHECKSUM	equ -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
 
 
@@ -38,19 +38,30 @@ i386_start:
 	mov ecx, ebx
 	mov edx, eax
 
-	; here's the trick: we load a GDT with a base address
-	; of 0x40000000 for the code (0x08) and data (0x10) segments
+	; load sane descriptors
 
-	lgdt [i386_init_trick_gdt]
-	mov ax, 0x10
+	lgdt [i386_init_gdt_ptr]
+	mov ax, 0x20
 	mov ds, ax
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
 	mov ss, ax
  
+	; load the page directory
+
+	mov eax, i386_init_pdir
+	mov cr3, eax
+
+	; enable paging
+
+	mov eax, cr0
+	or  eax, 0x80000001
+	mov cr0, eax
+	
+
 	; jump to the higher half kernel
-	jmp 0x08:i386_init_higherhalf
+	jmp 0x18:i386_init_higherhalf
  
 i386_init_higherhalf:
 	; from now the CPU will translate automatically every address
@@ -83,15 +94,40 @@ i386_init_switch_gdt_ret:
 	ret
 
 [section .setup]
+align   4096,db 0
+i386_init_pts:
 
-i386_init_trick_gdt:
+%assign i 0
+%rep 2048
+	dd 0x10B + i
+	%assign i i + 4096
+%endrep
+
+align   4096,db 0
+
+; page directory mapping the first 8MB of physical addresses to both 0 and 3GB
+
+i386_init_pdir:
+	dd i386_init_pts + 0x10B
+	dd i386_init_pts + 0x10B + 4096
+%rep 766
+	dd 0x0
+%endrep
+	dd i386_init_pts + 0x10B
+	dd i386_init_pts + 0x10B + 4096
+%rep 254
+	dd 0x0
+%endrep
+
+ALIGN 4
+i386_init_gdt_ptr:
 	dw i386_init_gdt_end - i386_init_gdt - 1 ; size of the GDT
 	dd i386_init_gdt ; linear address of GDT
- 
+
 i386_init_gdt:
 	dd 0, 0							; null gate
-	db 0xFF, 0xFF, 0, 0, 0, 10011010b, 11001111b, 0x40	; code selector 0x08: base 0x40000000, limit 0xFFFFFFFF, type 0x9A, granularity 0xCF
-	db 0xFF, 0xFF, 0, 0, 0, 10010010b, 11001111b, 0x40	; data selector 0x10: base 0x40000000, limit 0xFFFFFFFF, type 0x92, granularity 0xCF
+	db 0xFF, 0xFF, 0, 0, 0, 10011010b, 11001111b, 0x40	; code selector 0x08: base 0x00000000, limit 0xFFFFFFFF, type 0x9A, granularity 0xCF
+	db 0xFF, 0xFF, 0, 0, 0, 10010010b, 11001111b, 0x40	; data selector 0x10: base 0x00000000, limit 0xFFFFFFFF, type 0x92, granularity 0xCF
 
 ; Kernel Space code (Offset: 24 0x18 bytes)
  	dw 0FFFFh 			; limit low
@@ -136,8 +172,8 @@ i386_tss_descriptor:
 	db 0				; base high
 i386_init_gdt_end:
 
-[section .bss]
 
+[section .bss]
 
 resb 0x1000
 i386_sys_stack:	; our kernel stack
