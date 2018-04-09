@@ -105,6 +105,8 @@ void i386_user_exit ( i386_isr_stack_t *stack )
  	i386_tss_update();
 }
 
+void i386_fpu_del_task(scheduler_task_t *task);
+
 /**
  * Switch to new task
  * @param new_task	The target of the switch
@@ -125,7 +127,7 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 	/* If we want to switch to the current task, NOP */
 	if ( new_task != scheduler_current_task ) {
 	
-		csstack_t *ess = (void*)(nctx->kern_esp);
+		//csstack_t *ess = (void*)(nctx->kern_esp);
 		
 		if ( new_task->process && (TASK_GLOBAL & ~new_task->flags) ) {
 		
@@ -139,7 +141,7 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 		/* Flag context switch to the FPU */
 		i386_fpu_on_cs();
 		
-	//	debugcon_printf("cswitch to %i, esp=%x eip=%x\n", new_task->pid, nctx->kern_esp, ess->eip); 
+		//debugcon_printf("cswitch to %i, esp=%x eip=%x\n", new_task->pid, nctx->kern_esp, ess->eip); 
 		/* Switch kernel threads */
 		i386_context_switch(     nctx->kern_esp, 
 								&tctx->kern_esp
@@ -242,7 +244,7 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	/* Allocate its kernel stack */
 	if ( scheduler_alloc_kstack( new_task ) )
 		return ENOMEM;
-	s = disable();
+	s2 = disable();
 	nctx = (i386_task_context_t *) new_task->arch_state;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
 

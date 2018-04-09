@@ -26,7 +26,7 @@
 #include "kernel/heapmm.h"
 #include "config.h"
 
-int strlistlen(char **list)
+int strlistlen(const char **list)
 {
 	int len = 0;
 	while (list[len] != 0)
@@ -34,7 +34,7 @@ int strlistlen(char **list)
 	return len;
 }
 
-int process_exec( char *path, char **args, char **envs )
+int process_exec( char *path, const char **args, char **envs )
 {
 	char *sb_sp, *sb_nl, *sb_path, *sb_arg, *name;
 	char *header;

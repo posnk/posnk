@@ -65,4 +65,6 @@ int		paging_soft_check(void *virt_addr, size_t size);
 
 uintptr_t	paging_get_physical_address(void * virt_addr);
 
+uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr);
+
 #endif

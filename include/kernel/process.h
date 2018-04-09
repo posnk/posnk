@@ -171,6 +171,8 @@ int procvmm_mmap_anon(void *start, size_t size, int flags, char *name);
 
 int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, char *name);
 
+void procvmm_unmmap_other(process_info_t *task, process_mmap_t *region);
+
 void procvmm_unmmap(process_mmap_t *region);
 
 int procvmm_handle_fault(void *address);
@@ -178,6 +180,8 @@ int procvmm_handle_fault(void *address);
 int procvmm_do_exec_mmaps();
 
 void procvmm_clear_mmaps();
+
+void process_init();
 
 process_info_t *fork_process( void );
 
@@ -187,8 +191,8 @@ int procvmm_check_stringlist(	const char **dest,
 				size_t len_max );
 
 void process_user_call(void *entry, void *stack);
-
-int process_exec(char *path, char **args, char **envs);
+int posix_fork();
+int process_exec(char *path, const char **args, char **envs);
 
 void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags);
 

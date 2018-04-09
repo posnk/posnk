@@ -19,7 +19,7 @@ extern char init_path      [ CONFIG_FILE_MAX_NAME_LENGTH ];
 extern char console_path   [ CONFIG_FILE_MAX_NAME_LENGTH ];
 extern char root_fs        [ 32 ];
 extern dev_t root_dev;
-int cmdline_parse();
+void cmdline_parse();
 
 void halt();
  

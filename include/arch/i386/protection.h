@@ -94,6 +94,8 @@ typedef struct i386_tss_entry
 
 void i386_protection_init();
 
+void i386_tss_update( void );
+
 void i386_protection_user_call(uint32_t eip, uint32_t esp);
 
 void process_user_call(void *entry, void *stack);

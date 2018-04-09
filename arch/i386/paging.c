@@ -315,12 +315,17 @@ uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr) {
 }
 
 uintptr_t paging_get_physical_address(void * virt_addr) {
-	if ( paging_active_dir == NULL )
-		return paging_active_dir - 0xc0000000;
-	i386_page_dir_t *page_dir = (i386_page_dir_t *) paging_active_dir->content;
+	i386_page_dir_t *page_dir;
+	uint32_t pd_entry;
 	uintptr_t pd_idx = I386_ADDR_TO_PD_IDX(virt_addr);
 	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);
-	uint32_t pd_entry = page_dir->directory[pd_idx];
+
+	if ( paging_active_dir == NULL )
+		return ( uint32_t) paging_active_dir - 0xc0000000;
+
+	page_dir = (i386_page_dir_t *) paging_active_dir->content;
+	pd_entry = page_dir->directory[pd_idx];
+
 	if ((pd_entry) & I386_PAGE_FLAG_PRESENT) {
 		if ((*pt_entry) & I386_PAGE_FLAG_PRESENT)
 			return ((*pt_entry) & 0xFFFFF000) | ((uintptr_t) virt_addr & 0xFFF);

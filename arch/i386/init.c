@@ -35,6 +35,7 @@
 #include "kernel/drivermgr.h"
 #include "kernel/interrupt.h"
 #include "kernel/version.h"
+#include "kernel/process.h"
 #include "kdbg/dbgapi.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -93,7 +94,6 @@ void i386_init_reserve_modules(multiboot_info_t *mbt)
 
 void i386_init_handle_elf(multiboot_info_t *mbt)
 {
-	unsigned int i;
 	earlycon_printf("multiboot: flags=0x%x\n",mbt->flags);
 	if ( MULTIBOOT_INFO_ELFSYM & ~mbt->flags )
 		return;
@@ -190,7 +190,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 		i386_init_handle_elf(mbd);
 	}
 	physmm_claim_range(0x100000, 0x400000);
-	physmm_free_range(&i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
+	physmm_free_range((physaddr_t)&i386_resvmem_start - 0xc0000000,(physaddr_t)&i386_resvmem_end - 0xc0000000);
 	earlycon_puts("OK\n");
 	earlycon_printf("Reserved memory: %x %x\n", &i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
 	earlycon_printf("Detected %i MB of RAM.\n", (mem_avail/0x100000));

@@ -114,14 +114,15 @@ struct _vterm_s
 	guint	         flags;						      // user options
 	vterm_state_t    state;                        // internal state control
 	dev_t		 device_id;
-	void             (*write) (vterm_t*,guint32);
+	void             (*write) (vterm_t*,int);
 };
 
 #define VTERM_CELL(vterm_ptr,x,y)               (vterm_ptr->cols[y][x])
-
+void vterm_write_tty(vterm_t *vterm, const void *buffer, int size);
 void vterm_invalidate_screen(vterm_t *vt);
 void vterm_invalidate_cursor(vterm_t *vt);
 void vterm_invalidate_cell(vterm_t *vt, int row, int col);
 void vterm_mode_change( vterm_t *vt, vterm_state_t dstate );
+void clamp_cursor_to_bounds(vterm_t *);
 #endif
 

@@ -26,8 +26,6 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_write.h"
 
-void vterm_write_tty(vterm_t *vterm, void *buffer, int size);
-
 void vterm_write_pipe(vterm_t *vterm, int keycode)
 {
    if(vterm == NULL) return;

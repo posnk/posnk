@@ -37,12 +37,12 @@ int elf_verify( const char *hdr, size_t size )
 //	}
 	if (elf_header->e_phnum == 0)
 		return 0;
+	return 1;
 
 }
 
 int elf_load( inode_t *inode )
 {	
-	char * name;
 	aoff_t rd_count;
 	int status;	
 	int flags;

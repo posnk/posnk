@@ -44,7 +44,7 @@ void pipe_close_write(pipe_info_t *pipe);
 
 short int pipe_poll(pipe_info_t *pipe, short int events);
 
-int pipe_write(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *write_count, int non_block);
+int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *write_count, int non_block);
 
 int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count, int non_block);
 

@@ -25,7 +25,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <assert.h>
-
+int strlistlen(const char **list);
 void procvmm_clear_mmaps()
 {	
 	process_info_t *cproc;
@@ -49,7 +49,7 @@ void procvmm_clear_mmaps_other( process_info_t *info )
 			region != NULL;
 			region  = (process_mmap_t *) 
 				llist_get_last(info->memory_map))
-		procvmm_unmmap_other(region, info);
+		procvmm_unmmap_other(info, region);
 }
 
 int procvmm_do_exec_mmaps()

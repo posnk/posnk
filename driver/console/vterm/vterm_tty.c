@@ -47,7 +47,7 @@ void vterm_tty_invalidate_screen(dev_t dev)
 	vterm_invalidate_screen(&(vterm_minor_terms[MINOR(dev)]));
 }
 
-void vterm_write_tty(vterm_t *vterm, void *buffer, int size)
+void vterm_write_tty(vterm_t *vterm, const void *buffer, int size)
 {
 	int c;
 	char *b = (char *) buffer;

@@ -103,7 +103,7 @@ short int pipe_poll( pipe_info_t *pipe, short int events )
 	return revents;
 }
 
-int pipe_write(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *write_count, int non_block)
+int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *write_count, int non_block)
 {
 	uintptr_t wbuf = (uintptr_t) buffer;
 	uintptr_t pbuf = (uintptr_t) pipe->buffer;

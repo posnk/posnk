@@ -128,17 +128,17 @@ void vterm_post_key_tty(dev_t dev, int keycode, int val)
             return;
     }
 
-    if ( keycode >= ( sizeof vkbus_reg / sizeof vkbus_reg[0] ) )
+    if ( keycode >= (int) ( sizeof vkbus_reg / sizeof vkbus_reg[0] ) )
         return;
         
     vtk = vkbus_reg[ keycode ];
      
     if ( ( vterm_mods & MOD_CTRL ) &&
-         ( keycode < ( sizeof vkbus_ctrl / sizeof vkbus_ctrl[0] ) ) )
+         ( keycode < (int) ( sizeof vkbus_ctrl / sizeof vkbus_ctrl[0] ) ) )
         vtk = vkbus_ctrl[ keycode ];
      
     if ( ( vterm_mods & MOD_SHIFT ) &&
-         ( keycode < ( sizeof vkbus_shift / sizeof vkbus_shift[0] ) ) )
+         ( keycode < (int) ( sizeof vkbus_shift / sizeof vkbus_shift[0] ) ) )
         vtk = vkbus_shift[ keycode ];
 
     if ( vterm_mods & MOD_CAPS )

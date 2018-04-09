@@ -49,7 +49,7 @@ llist_t *kdbg_do_calltrace()
 	llist_t *t_list = kdbgmm_alloc(sizeof(llist_t));
 	llist_create(t_list);
 #ifdef ARCH_I386
-	uintptr_t c_ebp, c_eip = &kdbg_do_calltrace;
+	uintptr_t c_ebp, c_eip = (uintptr_t)&kdbg_do_calltrace;
 	__asm__("movl %%ebp, %[fp]" :  /* output */ [fp] "=r" (c_ebp));
 	for (;;) {
 		entry = kdbgmm_alloc(sizeof(kdbg_calltrace_t));
@@ -72,7 +72,6 @@ llist_t *kdbg_do_calltrace()
 void kdbg_pt_calltrace(scheduler_task_t *t)
 {
 #ifdef ARCH_I386
-	int lvl = 0;
 	struct csstack *nstate;
 	i386_isr_stack_t *isrst;
 	kdbg_calltrace_t aentry;
@@ -114,7 +113,7 @@ Interrupt Stack
 			isrst = (i386_isr_stack_t*) (l_ebp+12);
 			c_eip = isrst->eip;
 			c_ebp = isrst->regs.ebp;
-			l_ebp = isrst + sizeof(i386_isr_stack_t)-24;
+			l_ebp =(uintptr_t)isrst + sizeof(i386_isr_stack_t)-24;
 			kdbg_printf("           ds: 0x%x\tint: 0x%x\terr: 0x%x\n",
 							isrst->ds,
 							isrst->int_id,
@@ -161,11 +160,10 @@ Interrupt Stack
 void kdbg_p_calltrace()
 {
 #ifdef ARCH_I386
-	int lvl = 0;
 	kdbg_calltrace_t aentry;
 	kdbg_calltrace_t *entry = &aentry;
 	//llist_create(t_list);
-	uintptr_t c_ebp, c_eip = &kdbg_p_calltrace;
+	uintptr_t c_ebp, c_eip = (uintptr_t)&kdbg_p_calltrace;
 	__asm__("movl %%ebp, %[fp]" :  /* output */ [fp] "=r" (c_ebp));
 	for (;;) {
 		//entry = kdbgmm_alloc(sizeof(kdbg_calltrace_t));

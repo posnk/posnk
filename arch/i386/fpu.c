@@ -99,7 +99,7 @@ void i386_fpu_sigexit()
 	i386_fpu_load(tctx);
 }
 
-void i386_fpu_del_task(process_info_t *task) {
+void i386_fpu_del_task(scheduler_task_t *task) {
 	if ( task == i386_fpu_thread )
 		i386_fpu_thread=NULL;
 }

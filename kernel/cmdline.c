@@ -61,9 +61,8 @@ int cmdline_do_field( char *field, char *value )
 	return 0;
 }
 
-int cmdline_parse()
+void cmdline_parse()
 {
-	char  val;
 	char *pos, *field, *value, *work;
 	pos = kernel_cmdline;
 	for (;;) {

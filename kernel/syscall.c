@@ -135,7 +135,7 @@ int copy_kern_to_user(const void *src, void *dest, size_t size)
 	memcpy(dest,src,size);	
 	return 1;
 }
-
+/*
 uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 {
 	char *buffer;
@@ -150,14 +150,9 @@ uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
 	heapmm_free(buffer, param_size[0]);
 	shutdown();
 	return 1;	
-}
+}*/
 
-uint32_t sys_dbgdrop(uint32_t a, 
-				uint32_t b,
-				uint32_t c,
-				uint32_t d,
-				uint32_t e,
-				uint32_t f )
+SYSCALL_DEF0(dbgdrop)
 {
 	dbgapi_invoke_kdbg(0);
 	return 1;	
@@ -252,7 +247,7 @@ uint32_t syscall_dispatch_new( int call,
 
 void syscall_init()
 {
-	syscall_register(0,&debug_uputs);
+	//syscall_register(0,&debug_uputs);
 	syscall_register(SYS_FORK, &sys_fork);
 	syscall_register(SYS_KILL, &sys_kill);
 	syscall_register(SYS_GETPID, &sys_getpid);

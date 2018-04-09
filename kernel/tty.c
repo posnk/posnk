@@ -155,7 +155,7 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 	return 0;
 }
 
-void tty_buf_out_str(tty_info_t *tty, char *c)
+void tty_buf_out_str(tty_info_t *tty, const char *c)
 {
 	aoff_t w;
 	tty_fd_t *fdp;

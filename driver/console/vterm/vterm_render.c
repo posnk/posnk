@@ -30,7 +30,7 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 
 void vterm_put_char(vterm_t *vterm,chtype c)
 {
-    int wouldwrap = 0;
+    //int wouldwrap = 0;
 	static char		vt100_acs[]="`afgjklmnopqrstuvwxyz{|}~";
 
    if(vterm->ccol >= vterm->cols)

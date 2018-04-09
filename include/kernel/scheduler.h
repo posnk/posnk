@@ -103,6 +103,8 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t );
 
 void scheduler_init();
 
+void scheduler_reap( scheduler_task_t *task );
+
 void scheduler_wait_on(semaphore_t *semaphore);
 
 void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds);
