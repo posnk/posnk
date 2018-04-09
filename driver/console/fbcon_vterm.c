@@ -246,9 +246,9 @@ void con_handle_key(int keycode, int val)
     else if ( keycode == KEY_LEFTALT || keycode == KEY_RIGHTALT )
         vt_mod_alt = val;
 	if ( vt_mod_ctrl && vt_mod_alt && keycode >= KEY_F1 && keycode <= KEY_F10 ){
-		vterm_vga_switch_vc( keycode - KEY_F1 );
+		fbcon_switch_vc( keycode - KEY_F1 );
 	} else
-		vterm_post_key_tty(MAKEDEV(2,vterm_vga_current_vc), keycode, val);
+		vterm_post_key_tty(MAKEDEV(2,fbcon_current_vc), keycode, val);
 }
 
 void fbcon_vterm_init()
