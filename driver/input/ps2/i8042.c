@@ -22,13 +22,13 @@ inline uint8_t i8042_read_status()
 
 inline void i8042_wait_read()
 {
-	int to;
+	int to=0;
 	while ((~i8042_read_status() & I8042_STATUS_FLAG_IN_FULL) && (to++ < 0x100000));
 }
 
 inline void i8042_wait_write()
 {
-	int to;
+	int to=0;
 	while ((i8042_read_status() & I8042_STATUS_FLAG_OUT_FULL) && (to++ < 0x100000));
 }
 
