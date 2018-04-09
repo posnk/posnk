@@ -162,7 +162,7 @@ tty_ops_t omapfb_ops = {
 
 char_dev_t omapfb_desc = {
 	"omap framebuffer",
-	23,
+	24,
 	&omapfb_ops
 };
 
