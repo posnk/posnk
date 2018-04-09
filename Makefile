@@ -217,7 +217,7 @@ OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 $(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
 	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \; 2> /dev/null
 	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
-	$(CPP) -I . build/driverinit.c > _dinit.c
+	$(CPP) -I . -I ./include build/driverinit.c > _dinit.c
 
 # include dynamic makefile
 

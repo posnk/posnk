@@ -17,10 +17,11 @@ void register_fs_drivers() {
 
 }
 #ifndef HOSTED_TEST
+#include "kernel/earlycon.h"
 void register_dev_drivers() {
 
-#define DEV_DRIVER(NaMe, PaTh) NaMe ## _init();
-#define PNP_DRIVER(NaMe, PaTh) NaMe ## _register();
+#define DEV_DRIVER(NaMe, PaTh) debugcon_printf("\n%s: init();\r\n", #NaMe);NaMe ## _init();
+#define PNP_DRIVER(NaMe, PaTh) debugcon_printf("\n%s: register();\r\n", #NaMe);NaMe ## _register();
 #include "driver/dev.list"
 
 }
