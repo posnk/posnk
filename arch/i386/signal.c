@@ -25,7 +25,7 @@
 /**	
  * Push data onto process stack
  */
-int process_push_user_data(void *data, size_t size)
+int process_push_user_data(const void *data, size_t size)
 {
 	i386_task_context_t *tctx = (i386_task_context_t *)
 			scheduler_current_task->arch_state;

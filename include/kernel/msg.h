@@ -38,7 +38,7 @@ typedef struct {
 	msglen_t	 used_bytes;
 } msg_info_t;
 
-void msg_init();
+void msg_init(void);
 void msg_do_delete(msg_info_t *info);
 
 ssize_t _sys_msgrcv(int msqid, void *msgp, size_t msgsz, long int msgtyp, int msgflg);

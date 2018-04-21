@@ -43,12 +43,12 @@ void  heapmm_init(void *heap_start, size_t size);
 /**
  * Allocates a new page of heap space to the caller
  */
-void *heapmm_alloc_page();
+void *heapmm_alloc_page(void);
 
 /**
  * Allocates a page alligned block of RAM,no call to morecore
  */
-void *heapmm_alloc_table();
+void *heapmm_alloc_table(void);
 
 /**
  * Allocates a page alligned block of RAM

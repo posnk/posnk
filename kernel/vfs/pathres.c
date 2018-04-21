@@ -49,7 +49,7 @@
  * @return The file's parent directory 
  */
 
-SFUNC(inode_t *, vfs_find_parent, char * path)
+SFUNC(inode_t *, vfs_find_parent, const char * path)
 { 
 	inode_t *ino;
 	dir_cache_t *dirc;
@@ -79,7 +79,7 @@ SFUNC(inode_t *, vfs_find_parent, char * path)
  * @return The file's inode
  */
 
-SFUNC(inode_t *, vfs_find_inode, char * path)
+SFUNC(inode_t *, vfs_find_inode, const char * path)
 { 
 	inode_t *ino;
 	dir_cache_t *dirc;
@@ -110,7 +110,7 @@ SFUNC(inode_t *, vfs_find_inode, char * path)
  * @return The file's inode
  */
 
-SFUNC(inode_t *, vfs_find_symlink, char * path)
+SFUNC(inode_t *, vfs_find_symlink, const char * path)
 { 
 	inode_t *ino;
 	dir_cache_t *dirc;
@@ -142,7 +142,7 @@ SFUNC(inode_t *, vfs_find_symlink, char * path)
  * @return A dir_cache entry on the parent of the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path)
+SFUNC(dir_cache_t *, vfs_find_dirc_parent, const char * path)
 {
 	CHAINRET(vfs_find_dirc_parent_at, 
 		current_process->current_directory, path);
@@ -158,7 +158,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path)
  * @return A dir_cache entry on the parent of the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path){
+SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, const char * path){
 	CHAINRET(_vfs_find_dirc_at, curdir, path, PATHRES_FLAG_PARENT, 0);
 }
 
@@ -169,7 +169,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path){
  * @return A dir_cache entry on the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path) {
+SFUNC(dir_cache_t *, vfs_find_dirc_symlink, const char * path) {
 	CHAINRET(vfs_find_dirc_symlink_at, 
 				current_process->current_directory, 
 				path);
@@ -185,7 +185,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path) {
 
 SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, 
 						dir_cache_t *curdir, 
-						char * path) {
+						const char * path) {
 	CHAINRET(_vfs_find_dirc_at, curdir, path, PATHRES_FLAG_NOSYMLINK, 0);
 }
 
@@ -196,7 +196,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at,
  * @return A dir_cache entry on the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc, char * path) {
+SFUNC(dir_cache_t *, vfs_find_dirc, const char * path) {
 	CHAINRET(vfs_find_dirc_at, current_process->current_directory, 
 				path);
 }
@@ -209,7 +209,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc, char * path) {
  * @return A dir_cache entry on the file referred to by path
  */
 
-SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path) {
+SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, const char * path) {
 	CHAINRET(_vfs_find_dirc_at, curdir, path, 0, 0);
 }
 
@@ -228,7 +228,7 @@ SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path) {
 
 SFUNC(dir_cache_t *, _vfs_find_dirc_at, 
 					dir_cache_t *curdir, 
-					char * path, 
+					const char * path, 
 					int flags,
 					int recurse_level )
 { 
@@ -237,7 +237,7 @@ SFUNC(dir_cache_t *, _vfs_find_dirc_at,
 	inode_t * parent = dirc->inode;
 	char * separator;
 	char * path_element;
-	char * remaining_path = path;
+	const char * remaining_path = path;
 	char * end_of_path;
 	char * target;
 	size_t element_size;

@@ -650,7 +650,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
  * @see vfs_write for other errors that might occur
  */
 
-ssize_t _sys_write(int fd, void * buffer, size_t count)
+ssize_t _sys_write(int fd, const void * buffer, size_t count)
 {
 	aoff_t read_count;
 	int st;
@@ -1853,7 +1853,7 @@ _bailout_A:
  * @exception EFAULT Path is a null pointer
  */
 
-int _sys_open(char *path, int flags, mode_t mode)
+int _sys_open(const char *path, int flags, mode_t mode)
 {
 	int st;
 	int fd;

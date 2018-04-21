@@ -375,7 +375,7 @@ int device_block_close(dev_t device, int fd)
  * @exception ENXIO _device_ does not refer to a known device
  */
 
-int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size)
+int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, aoff_t count, aoff_t *write_size)
 {
 
 	int rv;

@@ -30,7 +30,7 @@ struct pipe_info {
 	semaphore_t	*read_lock;
 };
 
-pipe_info_t *pipe_create();
+pipe_info_t *pipe_create(void);
 
 int pipe_free(pipe_info_t *pipe);
 

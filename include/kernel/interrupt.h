@@ -36,6 +36,6 @@ void interrupt_dispatch(irq_id_t irq_id);
 
 void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler, void *context);
 
-void interrupt_init();
+void interrupt_init(void);
 
 #endif

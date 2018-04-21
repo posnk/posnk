@@ -264,7 +264,7 @@ struct fs_device_operations {
 	 * @param count       The number of bytes to write
 	 * @return The number of bytes written
 	 */
-	SFUNCPTR( aoff_t, write_inode, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
+	SFUNCPTR( aoff_t, write_inode, inode_t *, const void *, aoff_t, aoff_t );//buffer, f_offset, length, nwritten
 
 	/**
 	 * @brief Read directory entries from backing storage
@@ -294,7 +294,7 @@ struct fs_device_operations {
 	 * @return The directory entry matching name from the directory inode, 
 	 *          if none, NULL is returned
 	 */
-	SFUNCPTR( dirent_t *, find_dirent, inode_t *, char * );	//dir_inode_id, filename -> dirent_t  
+	SFUNCPTR( dirent_t *, find_dirent, inode_t *, const char * );	//dir_inode_id, filename -> dirent_t  
 
 	/**
 	 * @brief Create directory structures
@@ -321,7 +321,7 @@ struct fs_device_operations {
 	 * @param nod_id The inode id that the directory entry will point to
 	 */
 
-	SVFUNCPTR( link, inode_t *, char *, ino_t );	//dir_inode_id, filename, inode_id -> status
+	SVFUNCPTR( link, inode_t *, const char *, ino_t );	//dir_inode_id, filename, inode_id -> status
 
 	/**
 	 * @brief Delete a directory entry
@@ -333,7 +333,7 @@ struct fs_device_operations {
 	 * @param inode - The inode for the directory
 	 * @param name  - The file name of the directory entry to delete
 	 */
-	SVFUNCPTR( unlink, inode_t *, char * );	//dir_inode_id, filename
+	SVFUNCPTR( unlink, inode_t *, const char * );	//dir_inode_id, filename
 
 	/**
 	 * @brief Resize a file
@@ -436,23 +436,23 @@ inode_t *vfs_inode_ref(inode_t *inode);
 
 void vfs_inode_release(inode_t *inode);
 
-SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name);
+SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, const char * name);
 
-int vfs_rmdir(char *path);
+int vfs_rmdir(const char *path);
 
-int vfs_mkdir(char *path, mode_t mode);
+int vfs_mkdir(const char *path, mode_t mode);
 
-int vfs_mknod(char *path, mode_t mode, dev_t dev);
+int vfs_mknod(const char *path, mode_t mode, dev_t dev);
 
-int vfs_unlink(char *path);
+int vfs_unlink(const char *path);
 
-int vfs_link(char *oldpath, char *newpath);
+int vfs_link(const char *oldpath, const char *newpath);
 
-int vfs_symlink(char *oldpath, char *newpath);
+int vfs_symlink(const char *oldpath, const char *newpath);
 
 int vfs_readlink(inode_t *inode, char * buffer, size_t size, size_t *read_size);
 
-int vfs_write(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
+int vfs_write(inode_t * inode , aoff_t file_offset, const void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
 int vfs_read(inode_t * inode , aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 
@@ -504,31 +504,31 @@ SVFUNC( ifs_store_inode, inode_t * inode );
 SVFUNC( ifs_mknod, inode_t * inode );
 SVFUNC( ifs_rmnod, inode_t * inode);
 SVFUNC( ifs_mkdir, inode_t * inode);
-SFUNC( dirent_t *, ifs_find_dirent, inode_t * inode, char * name);
-SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id );
-SVFUNC( ifs_unlink, inode_t * inode , char * name );
+SFUNC( dirent_t *, ifs_find_dirent, inode_t * inode, const char * name);
+SVFUNC( ifs_link, inode_t * inode , const char * name , ino_t nod_id );
+SVFUNC( ifs_unlink, inode_t * inode , const char * name );
 SFUNC( aoff_t, ifs_read_dir, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
 SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
-SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count );
+SFUNC( aoff_t, ifs_write, inode_t * inode, const void * buffer, aoff_t file_offset, aoff_t count );
 SVFUNC( ifs_truncate, inode_t * inode, aoff_t size);
 SVFUNC( ifs_sync, fs_device_t *device );
-SFUNC(dir_cache_t *, vfs_find_dirc_parent, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, char * path);
-SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir,char * path,int flags,
+SFUNC(dir_cache_t *, vfs_find_dirc_parent, const char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_parent_at, dir_cache_t *curdir, const char * path);
+SFUNC(dir_cache_t *,_vfs_find_dirc_at,dir_cache_t *curdir, const char * path,int flags,
 					int recurse_level );
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, dir_cache_t *curdir,char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_symlink, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc, char * path);
-SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, char * path);
-SFUNC(inode_t *, vfs_find_parent, char * path);
-SFUNC(inode_t *, vfs_find_inode, char * path);
-SFUNC(inode_t *, vfs_find_symlink, char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_symlink_at, dir_cache_t *curdir, const char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_symlink, const char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc, const char * path);
+SFUNC(dir_cache_t *, vfs_find_dirc_at, dir_cache_t *curdir, const char * path);
+SFUNC(inode_t *, vfs_find_parent, const char * path);
+SFUNC(inode_t *, vfs_find_inode, const char * path);
+SFUNC(inode_t *, vfs_find_symlink, const char * path);
 SVFUNC(vfs_sync_inode, inode_t *inode);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
 SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uint32_t flags);
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
 SVFUNC( vfs_register_fs, 
-		const char *name, 
+		const const char *name, 
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
 short int vfs_poll(inode_t *inode, short int events);
 void vfs_ifsmgr_initialize( void );

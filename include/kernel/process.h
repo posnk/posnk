@@ -139,7 +139,7 @@ void procvmm_clear_mmaps_other( process_info_t *info );
 
 process_info_t *process_get(pid_t pid);	
 
-int process_push_user_data(void *data, size_t size);
+int process_push_user_data(const void *data, size_t size);
 
 int process_was_interrupted( scheduler_task_t *task );
 
@@ -177,11 +177,11 @@ void procvmm_unmmap(process_mmap_t *region);
 
 int procvmm_handle_fault(void *address);
 
-int procvmm_do_exec_mmaps();
+int procvmm_do_exec_mmaps(void);
 
-void procvmm_clear_mmaps();
+void procvmm_clear_mmaps(void);
 
-void process_init();
+void process_init(void);
 
 process_info_t *fork_process( void );
 
@@ -191,8 +191,8 @@ int procvmm_check_stringlist(	const char **dest,
 				size_t len_max );
 
 void process_user_call(void *entry, void *stack);
-int posix_fork();
-int process_exec(char *path, const char **args, char **envs);
+int posix_fork(void);
+int process_exec(const char *path, char * const args[], char * const envs[] );
 
 void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags);
 

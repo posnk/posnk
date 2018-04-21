@@ -143,7 +143,7 @@ struct tty_ops {
 	 * @exception EINVAL The device is not suitable for writing
 	 */
 
-	int	(*write)	  (dev_t, void *, aoff_t, aoff_t *, int); //device, buf, count, wr_size, non_block
+	int	(*write)	  (dev_t, void *, aoff_t, const aoff_t *, int); //device, buf, count, wr_size, non_block
 
 	/**
 	 * @brief Read data from device
@@ -277,7 +277,7 @@ struct blk_ops {
 	 * @exception EINVAL The device is not suitable for writing
 	 */
 
-	int	(*write)	  (dev_t, aoff_t, void *);		//device, offset, buf
+	int	(*write)	  (dev_t, aoff_t, const void *);		//device, offset, buf
 
 	/**
 	 * @brief Read block from storage
@@ -312,9 +312,9 @@ struct blk_ops {
 
 };
 
-void device_char_init();
+void device_char_init(void);
 
-void device_block_init();
+void device_block_init(void);
 
 int device_char_register(char_dev_t *driver);
 
@@ -326,13 +326,13 @@ int device_block_open(dev_t device, int fd, int options);
 
 int device_block_close(dev_t device, int fd);
 
-int device_block_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size);
+int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, aoff_t count, aoff_t *write_size);
 
 int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size);
 
 int device_block_flush_all(dev_t device);
 
-int device_block_flush_global();
+int device_block_flush_global(void);
 
 int device_char_ioctl(dev_t device, int fd, int func, int arg);
 
@@ -342,7 +342,7 @@ int device_char_dup(dev_t device, stream_ptr_t *fd);
 
 int device_char_close(dev_t device, stream_ptr_t *fd);
 
-int device_char_write(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block);
+int device_char_write(dev_t device, aoff_t file_offset, const void * buffer, aoff_t count, aoff_t *write_size, int non_block);
 
 int device_char_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t count, aoff_t *read_size, int non_block);
 

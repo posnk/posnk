@@ -42,7 +42,7 @@ extern page_dir_t *paging_active_dir;
 
 void		paging_switch_dir(page_dir_t *new_dir);
 
-page_dir_t	*paging_create_dir();
+page_dir_t	*paging_create_dir(void);
 
 void		paging_free_dir(page_dir_t *dir);
 
@@ -50,11 +50,11 @@ void		paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags);
 
 void		paging_unmap(void * virt_addr);
 
-page_tag_t	paging_get_tag(void * virt_addr);
+page_tag_t	paging_get_tag(const void * virt_addr);
 
 void		paging_tag(void * virt_addr, page_tag_t tag);
 
-void		paging_init();
+void		paging_init(void);
 
 void		paging_handle_out_of_memory();
 
@@ -63,8 +63,8 @@ void		paging_handle_fault(void *virt_addr, void * instr_ptr
 
 int		paging_soft_check(void *virt_addr, size_t size);
 
-uintptr_t	paging_get_physical_address(void * virt_addr);
+uintptr_t	paging_get_physical_address(const void * virt_addr);
 
-uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr);
+uintptr_t paging_get_physical_address_other(page_dir_t *dir,const void * virt_addr);
 
 #endif

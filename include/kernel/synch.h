@@ -25,9 +25,9 @@ int spinlock_enter( spinlock_t *lock );
 
 void spinlock_exit( spinlock_t *lock, int s );
 
-int enable();
+int enable(void);
 
-int disable();
+int disable(void);
 
 void restore( int );
 

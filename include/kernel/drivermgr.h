@@ -19,6 +19,11 @@
 
 typedef int dev_type_t ;
 
+
+/**
+ * @brief Describes a device driver that has been registered for plug&play use
+ * with a single device type.
+ */
 struct drivermgr_device_driver {
 	llist_t		link;
 	dev_type_t	type;
@@ -27,6 +32,10 @@ struct drivermgr_device_driver {
 	int		(*probe)	(uint32_t bus_addr);
 };
 
+/**
+ * @brief Describes a device driver that has been registered for plug&play use
+ * with a group of devices sharing the same interface protocol.
+ */
 struct drivermgr_interface_driver {
 	llist_t		link;
 	dev_type_t	type;
@@ -47,6 +56,6 @@ void drivermgr_register_device_driver( drivermgr_device_driver_t *driver );
 
 void drivermgr_register_interface_driver( drivermgr_interface_driver_t *driver );
 
-void drivermgr_init();
+void drivermgr_init(void);
 
 #endif

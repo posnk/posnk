@@ -471,7 +471,7 @@ SYSCALL_DEF3(execve)
 		}		
 	}
 	
-	status = process_exec( ( char * ) path, ( char ** ) argv, ( char ** ) envp);
+	status = process_exec( path,  argv, envp );
 	if ( status != 0 ) {
 		syscall_errno = status;
 		status = -1;

@@ -47,17 +47,17 @@ void physmm_free_range(physaddr_t start, physaddr_t end);
 
 void physmm_claim_range(physaddr_t start, physaddr_t end);
 
-physaddr_t physmm_count_free();
+physaddr_t physmm_count_free(void);
 physaddr_t physmm_alloc_bmcopy() ;
 /**
  * Allocates a physical frame
  */
-physaddr_t physmm_alloc_frame();
+physaddr_t physmm_alloc_frame(void);
 
 /**
  * Allocates four physical frames
  */
-physaddr_t physmm_alloc_quadframe();
+physaddr_t physmm_alloc_quadframe(void);
 
 /**
  * Releases a frame to be used again
@@ -68,6 +68,6 @@ void physmm_free_frame(physaddr_t address);
  * Initializes the physical memory manager
  * NOTE: Depends on the heap memory manager!
  */
-void physmm_init();
+void physmm_init(void);
 
 #endif

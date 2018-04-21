@@ -118,7 +118,7 @@ inode_t *vfs_effective_inode(inode_t * inode)
  * @exception ENOENT The directory entry was not found
  */
  
-SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name)
+SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, const char * name)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -172,7 +172,7 @@ SFUNC(dirent_t *, vfs_find_dirent, inode_t * inode, char * name)
 
 int vfs_write(	inode_t	* _inode, 
 				aoff_t	 file_offset, 
-				void	*buffer, 
+				const void	*buffer, 
 				aoff_t	 count, 
 				aoff_t	*write_size, 
 				int non_block)
@@ -795,7 +795,7 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
  *                   allowed number of characters for a file name
  */
 
-int vfs_rmdir(char *path)
+int vfs_rmdir(const char *path)
 {
 
 	inode_t *inode;
@@ -856,7 +856,7 @@ int vfs_rmdir(char *path)
  *                   allowed number of characters for a file name
  */
 
-int vfs_mkdir(char *path, mode_t mode)
+int vfs_mkdir(const char *path, mode_t mode)
 {
 	inode_t *dir;
 	inode_t *parent;
@@ -987,7 +987,7 @@ int vfs_mkdir(char *path, mode_t mode)
  *                   allowed number of characters for a file name
  */
 
-int vfs_mknod(char *path, mode_t mode, dev_t dev)
+int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 {
 	int status;
 	char * name;
@@ -1283,7 +1283,7 @@ int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
  *                   allowed number of characters for a file name
  */
 
-int vfs_symlink(char *oldpath, char *path)
+int vfs_symlink(const char *oldpath, const char *path)
 {
 	aoff_t write_size_rv, write_size;
 	int status;
@@ -1513,7 +1513,7 @@ int vfs_symlink(char *oldpath, char *path)
  */
 
 
-int vfs_unlink(char *path)
+int vfs_unlink(const char *path)
 {
 	int status;
 	inode_t *inode;
@@ -1689,7 +1689,7 @@ int vfs_unlink(char *path)
  *                   allowed number of characters for a file name
  */
 
-int vfs_link(char *oldpath, char *newpath)
+int vfs_link(const char *oldpath, const char *newpath)
 {
 	int status;
 	char * name;

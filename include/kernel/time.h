@@ -28,6 +28,6 @@ extern ktime_t system_time;
 
 extern ktime_t system_time_micros;
 
-void timer_interrupt();
+void timer_interrupt(void);
 
  #endif

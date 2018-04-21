@@ -60,6 +60,6 @@ typedef struct tar_header tar_header_t;
                                    next file in the archive */
 #define XGLTYPE  'g'            /* Global extended header */
 
-int tar_extract(char * path);
+int tar_extract(const char * path);
 int tar_extract_mem(void *data);
 #endif

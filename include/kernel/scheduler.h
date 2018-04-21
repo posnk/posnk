@@ -101,7 +101,7 @@ int scheduler_free_task ( scheduler_task_t *task );
 
 int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t );
 
-void scheduler_init();
+void scheduler_init(void);
 
 void scheduler_reap( scheduler_task_t *task );
 
@@ -115,10 +115,10 @@ int scheduler_wait_time(ktime_t time);
 
 int scheduler_wait_micros(ktime_t microtime);
 
-int scheduler_fork();
+int scheduler_fork(void);
 
-void schedule();
+void schedule(void);
 
-void scheduler_set_as_idle();
+void scheduler_set_as_idle(void);
 
 #endif

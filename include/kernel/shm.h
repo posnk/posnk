@@ -40,5 +40,5 @@ int _sys_shmctl(int id, int cmd, struct shmid_ds *buf);
 void shm_do_delete(shm_info_t *info);
 
 int _sys_shmget(key_t key, size_t size, int flags);
-void shm_init();
+void shm_init(void);
 #endif

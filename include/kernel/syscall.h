@@ -79,7 +79,7 @@ typedef uint32_t (*syscall_func_t)(	uint32_t a,
 					uint32_t e,
 					uint32_t f);
 
-void syscall_init();
+void syscall_init(void);
 void syscall_register(int call_id, syscall_func_t func);
 void syscall_dispatch(void *user_param_block, void *instr_ptr);
 uint32_t syscall_dispatch_new( int call,

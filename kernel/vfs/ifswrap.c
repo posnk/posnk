@@ -206,7 +206,7 @@ SVFUNC( ifs_mkdir, inode_t * inode)
  * @exception ENOTSUP This driver does not support this function.
  */
  
-SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, char * name)
+SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, const char * name)
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -235,7 +235,7 @@ SFUNC(dirent_t *, ifs_find_dirent, inode_t * inode, char * name)
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id )
+SVFUNC( ifs_link, inode_t * inode , const char * name , ino_t nod_id )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -263,7 +263,7 @@ SVFUNC( ifs_link, inode_t * inode , char * name , ino_t nod_id )
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SVFUNC( ifs_unlink, inode_t * inode , char * name )
+SVFUNC( ifs_unlink, inode_t * inode , const char * name )
 {	
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );
@@ -356,7 +356,7 @@ SFUNC( aoff_t, ifs_read, inode_t * inode, void * buffer, aoff_t file_offset, aof
  * @exception ENOTSUP This driver does not support this function.
  */
 
-SFUNC( aoff_t, ifs_write, inode_t * inode, void * buffer, aoff_t file_offset, aoff_t count )
+SFUNC( aoff_t, ifs_write, inode_t * inode, const void * buffer, aoff_t file_offset, aoff_t count )
 {
 	/* This function is implemented by the FS driver */
 	assert ( inode != NULL );

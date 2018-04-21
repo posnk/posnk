@@ -23,7 +23,7 @@
 int tar_read_record(inode_t *tar_file, off_t *pos);
 int tar_read_record_mem(uintptr_t tar_data, off_t *pos);
 
-int tar_extract(char * path)
+int tar_extract(const char * path)
 {	
 	off_t pos = 0;
 	inode_t *inode;

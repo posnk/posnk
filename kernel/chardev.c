@@ -175,7 +175,7 @@ int device_char_close(dev_t device, stream_ptr_t *fd)
  * @exception ENXIO _device_ does not refer to a known device
  */
 
-int device_char_write(dev_t device, __attribute__((__unused__)) aoff_t file_offset, void * buffer, aoff_t count, aoff_t *write_size, int non_block)
+int device_char_write(dev_t device, __attribute__((__unused__)) aoff_t file_offset, const void * buffer, aoff_t count, aoff_t *write_size, int non_block)
 {
 	dev_t major = MAJOR(device);
 	char_dev_t *drv = char_dev_table[major];

@@ -183,7 +183,7 @@ struct stream_ops {
 	 * @param count		The number of bytes to transfer
 	 * @return			The number of bytes actually transferred
 	 */
-	SFUNCPTR( aoff_t, write, stream_info_t *, void *, aoff_t );
+	SFUNCPTR( aoff_t, write, stream_info_t *, const void *, aoff_t );
 	
 	/**
 	 * @brief Controls a device
@@ -267,13 +267,13 @@ stream_ptr_t *stream_get_ptr (int fd);
 
 int stream_copy_fd_table (llist_t *target);
 
-void stream_do_close_on_exec ();
+void stream_do_close_on_exec (void);
 
 void stream_do_close_all (process_info_t *process);
 
 ssize_t _sys_read(int fd, void * buffer, size_t count);
 
-ssize_t _sys_write(int fd, void * buffer, size_t count);
+ssize_t _sys_write(int fd, const void * buffer, size_t count);
 
 off_t _sys_lseek(int fd, off_t offset, int whence);
 
@@ -293,7 +293,7 @@ int _sys_dup(int oldfd);
 
 int _sys_pipe2(int pipefd[2], int flags);
 
-int _sys_open(char *path, int flags, mode_t mode);
+int _sys_open(const char *path, int flags, mode_t mode);
 
 int _sys_close(int fd);
 

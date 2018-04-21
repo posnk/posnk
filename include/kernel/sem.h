@@ -41,6 +41,6 @@ typedef struct {
 int _sys_semop(int semid, struct sembuf *sops, size_t nsops);
 int _sys_semctl(int id, int semnum, int cmd, void *buf);
 int _sys_semget(key_t key, int nsems, int flags);
-void sem_init();
+void sem_init(void);
 void sem_do_delete(sem_info_t *info);
 #endif

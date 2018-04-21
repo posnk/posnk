@@ -237,7 +237,7 @@ void paging_tag(void * virt_addr, page_tag_t tag)
 	*pt_entry |= ( ((uint32_t)tag) << 9) & 0xE00;	
 }
 
-page_tag_t paging_get_tag(void * virt_addr)
+page_tag_t paging_get_tag( const void * virt_addr )
 {
 	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);	
 	return (page_tag_t) (((*pt_entry) & 0xE00) >> 9);	
@@ -290,7 +290,7 @@ void paging_init()
 	pdir->content = (void *)0xFFFFF000;
 }
 
-uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr) {
+uintptr_t paging_get_physical_address_other(page_dir_t *dir,const void * virt_addr) {
 	i386_page_dir_t *page_dir = (i386_page_dir_t *) dir->content;
 	uintptr_t pd_idx = I386_ADDR_TO_PD_IDX(virt_addr);
 	uintptr_t pt_idx = I386_ADDR_TO_PT_IDX(virt_addr);
@@ -314,7 +314,7 @@ uintptr_t paging_get_physical_address_other(page_dir_t *dir,void * virt_addr) {
 		return 0;
 }
 
-uintptr_t paging_get_physical_address(void * virt_addr) {
+uintptr_t paging_get_physical_address(const void * virt_addr) {
 	i386_page_dir_t *page_dir;
 	uint32_t pd_entry;
 	uintptr_t pd_idx = I386_ADDR_TO_PD_IDX(virt_addr);
