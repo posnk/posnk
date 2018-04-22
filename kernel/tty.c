@@ -280,10 +280,10 @@ void tty_input_char(dev_t device, char c)
 	}
 }
 
-int tty_write(dev_t device, void *buf, aoff_t count, aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
+int tty_write(dev_t device, const void *buf, aoff_t count, aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
 {
 	aoff_t c;
-	char *b = buf;
+	const char *b = buf;
 	for (c = 0; c < count; c++)
 		tty_output_char(device, b[c]);
 	(*write_size) = count;

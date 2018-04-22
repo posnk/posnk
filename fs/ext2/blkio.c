@@ -42,7 +42,7 @@ SFUNC(aoff_t, ext2_write_block,
 					ext2_device_t *dev, 
 					uint32_t block_ptr, 
 					uint32_t in_block, 
-					void *buffer, 
+					const void *buffer, 
 					aoff_t count)
 {
 	aoff_t	block_addr;	

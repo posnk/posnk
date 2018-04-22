@@ -125,7 +125,7 @@ SFUNC(aoff_t, ramfs_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 		RETURN(length - remaining_length);
 }
 
-SFUNC(aoff_t, ramfs_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)//buffer, f_offset, length -> numbytes
+SFUNC(aoff_t, ramfs_write_inode, inode_t *_inode, const void *_buffer, aoff_t f_offset, aoff_t length)//buffer, f_offset, length -> numbytes
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	uintptr_t buffer = (uintptr_t) _buffer;
@@ -200,7 +200,7 @@ int ramfs_dirent_search_iterator (llist_t *node, void *param)
 	return strcmp(dirent->dir.name, (char *) param) == 0;
 }
 
-SFUNC(dirent_t *, ramfs_find_dirent, inode_t *_inode, char *name )	//dir_inode_id, filename -> dirent_t 
+SFUNC(dirent_t *, ramfs_find_dirent, inode_t *_inode, const char *name )	//dir_inode_id, filename -> dirent_t 
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_dirent_search_iterator, (void *) name);
@@ -243,7 +243,7 @@ SFUNC(inode_t *, ramfs_load_inode, fs_device_t *device, ino_t id)
 	THROW(ENOTSUP, NULL);
 }//inode id -> inode
 
-SVFUNC(ramfs_link, inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, filename, inode_id -> status
+SVFUNC(ramfs_link, inode_t * _dir, const char *_name, ino_t inode_id)	//dir_inode_id, filename, inode_id -> status
 {
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) heapmm_alloc(sizeof(ramfs_dirent_t));
 	ramfs_inode_t *_d_inode = (ramfs_inode_t *) _dir;
@@ -262,7 +262,7 @@ SVFUNC(ramfs_link, inode_t * _dir, char *_name, ino_t inode_id)	//dir_inode_id, 
 	RETURNV;	
 }
 
-SVFUNC(ramfs_unlink, inode_t *_inode, char *name )	//dir_inode_id, filename
+SVFUNC(ramfs_unlink, inode_t *_inode, const char *name )	//dir_inode_id, filename
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->block_list, &ramfs_dirent_search_iterator, (char *) name);
@@ -275,9 +275,17 @@ SVFUNC(ramfs_unlink, inode_t *_inode, char *name )	//dir_inode_id, filename
 
 uint32_t ramfs_device_ctr = 0x0F00;
 
-SFUNC( aoff_t, ramfs_dir_readwrite_stub, 	
+SFUNC( aoff_t, ramfs_dir_read_stub, 	
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length )
+{
+	THROW(EISDIR, 0);
+}
+
+SFUNC( aoff_t, ramfs_dir_write_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) const void *buffer,
 					__attribute__((__unused__)) aoff_t length )
 {
 	THROW(EISDIR, 0);
@@ -335,8 +343,8 @@ SFUNC( aoff_t, ramfs_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, a
 fs_device_operations_t *ramfs_ops;
 stream_ops_t ramfs_dir_ops = {
 	.close = ramfs_dir_close,
-	.read = ramfs_dir_readwrite_stub,
-	.write = ramfs_dir_readwrite_stub,
+	.read = ramfs_dir_read_stub,
+	.write = ramfs_dir_write_stub,
 	.readdir = ramfs_dir_readdir,
 	.ioctl = NULL,
 	.seek  = NULL,

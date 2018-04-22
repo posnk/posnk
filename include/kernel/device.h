@@ -143,7 +143,7 @@ struct tty_ops {
 	 * @exception EINVAL The device is not suitable for writing
 	 */
 
-	int	(*write)	  (dev_t, void *, aoff_t, const aoff_t *, int); //device, buf, count, wr_size, non_block
+	int	(*write)	  (dev_t, const void *, aoff_t, aoff_t *, int); //device, buf, count, wr_size, non_block
 
 	/**
 	 * @brief Read data from device

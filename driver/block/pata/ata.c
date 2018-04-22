@@ -250,7 +250,7 @@ void ata_initialize(ata_device_t *device)
 	if (dmacap) {
 		ata_prd_list = heapmm_alloc_alligned(ATA_PRD_LIST_SIZE * sizeof(ata_prd_t), 8);
 		if (ata_prd_list) {
-			ata_write_port_long(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address(ata_prd_list));
+			ata_write_port_long(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address( (void *) ata_prd_list));
 			debugcon_printf("ata: allocated DMA prd list at %x\n", ata_prd_list);
 		} else {
 			device->drives[drive].capabilities &= ~ATA_IDENT_CAP_FLAG_DMA;
@@ -332,12 +332,12 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 			ata_poll_wait( device );
 
 		ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, 0x00 );
-		ata_prd_list[0].buffer_phys = paging_get_physical_address(buffer);
+		ata_prd_list[0].buffer_phys = paging_get_physical_address( (void *) buffer);
 		ata_prd_list[0].byte_count = byte_count;
 		ata_prd_list[0].end_of_list = ATA_PRD_END_OF_LIST;
 //		debugcon_printf("bufferphys: %x\t bytecount: %i\n",ata_prd_list[0].buffer_phys,
 //			ata_prd_list[0].byte_count);
-		ata_write_port_long(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address(ata_prd_list));
+		ata_write_port_long(device, ATA_BUSMASTER_PRDT_PTR_PORT, paging_get_physical_address( (void *) ata_prd_list));
 		ata_write_port(device, ATA_BUSMASTER_STATUS_PORT, 0x06 );
 		ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, 0x08 );
 
@@ -555,7 +555,7 @@ int ata_blk_open(__attribute__((__unused__)) dev_t device, __attribute__((__unus
 
 int ata_blk_close(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd) {return 0;}
 
-int ata_blk_write(dev_t device, aoff_t file_offset, void * buffer )
+int ata_blk_write(dev_t device, aoff_t file_offset, const void * buffer )
 {
 	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);

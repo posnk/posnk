@@ -56,8 +56,8 @@ SVFUNC( ext2_sync, fs_device_t *device )
 }
 stream_ops_t ext2_dir_ops = {
 	.close = ext2_dir_close,
-	.read = ext2_dir_readwrite_stub,
-	.write = ext2_dir_readwrite_stub,
+	.read = ext2_dir_read_stub,
+	.write = ext2_dir_write_stub,
 	.readdir = ext2_dir_readdir,
 	.ioctl = NULL,
 	.seek  = NULL,

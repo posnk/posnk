@@ -40,7 +40,7 @@ int ramblk_close(__attribute__((__unused__)) dev_t device, __attribute__((__unus
 	return 0;
 }
 
-int ramblk_write(dev_t device, aoff_t file_offset, void * buffer )
+int ramblk_write(dev_t device, aoff_t file_offset, const void * buffer )
 {
 	dev_t major = MAJOR(device);
 	ramblk_device_t *_dev = &ramblk_devs[major-0x30];

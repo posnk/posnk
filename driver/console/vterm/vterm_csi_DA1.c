@@ -26,7 +26,8 @@ This library is based on ROTE written by Bruno Takahashi C. de Oliveira
 #include "driver/console/vterm/vterm_private.h"
 #include "driver/console/vterm/vterm_csi.h"
 
-void interpret_csi_DA1(vterm_t *vterm, int param[], int pcount)
+void interpret_csi_DA1(vterm_t *vterm, __attribute__((unused)) int param[], 
+								__attribute__((unused)) int pcount)
 {
    const char *buffer = "\033[?63;1;2;7;8c";//"\033[?1;2c";
    vterm_write_tty(vterm, buffer, strlen(buffer));

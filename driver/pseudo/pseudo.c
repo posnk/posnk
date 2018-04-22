@@ -42,7 +42,7 @@ int pseudo_close(dev_t device, __attribute__((__unused__)) int fd)
 	return 0;
 }
 
-int pseudo_write(dev_t device, __attribute__((__unused__)) void *buf, __attribute__((__unused__)) aoff_t count, __attribute__((__unused__)) aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
+int pseudo_write(dev_t device, __attribute__((__unused__)) const void *buf, __attribute__((__unused__)) aoff_t count, __attribute__((__unused__)) aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
 {
 	dev_t minor = MINOR(device);	
 	if ( minor > 1 )

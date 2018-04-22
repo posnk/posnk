@@ -78,7 +78,7 @@ int evdev_close(dev_t device, __attribute__((__unused__)) int fd)
 	return 0;
 }
 
-int evdev_write(dev_t device, __attribute__((__unused__)) void *buf, __attribute__((__unused__)) aoff_t count, __attribute__((__unused__)) aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
+int evdev_write(dev_t device, __attribute__((__unused__)) const void *buf, __attribute__((__unused__)) aoff_t count, __attribute__((__unused__)) aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
 {
 	evdev_device_t *dev = evdev_get(device);
 	if (!dev)

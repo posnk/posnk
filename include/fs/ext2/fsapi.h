@@ -55,7 +55,7 @@ SFUNC(aoff_t, ext2_write_block,
 					ext2_device_t *dev, 
 					uint32_t block_ptr, 
 					uint32_t in_block, 
-					void *buffer, 
+					const void *buffer, 
 					aoff_t count);
 SFUNC(ext2_block_group_desc_t *, ext2_load_bgd, 
 									ext2_device_t *device, 
@@ -88,19 +88,23 @@ SFUNC(inode_t *, ext2_load_inode, fs_device_t *device, ino_t id);
 SVFUNC(ext2_store_inode,inode_t *_inode);
 SVFUNC(ext2_shrink_inode, ext2_device_t *device, ext2_inode_t *inode, aoff_t old_size, aoff_t new_size);
 SVFUNC(ext2_trunc_inode, inode_t *_inode, aoff_t size);
-SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
+SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, const void *_buffer, aoff_t f_offset, aoff_t length);
 SFUNC(aoff_t, ext2_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
 SVFUNC(ext2_load_e2inode, ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id);
 SVFUNC(ext2_store_e2inode, ext2_device_t *device, ext2_inode_t *ino, uint32_t ino_id);
 SVFUNC(ext2_mknod, inode_t *_inode) ;
-SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name);
+SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, const char * name);
 SVFUNC(ext2_mkdir, inode_t *_inode);
-SVFUNC( ext2_unlink, inode_t *_inode, char *name );
-SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id);
+SVFUNC( ext2_unlink, inode_t *_inode, const char *name );
+SVFUNC( ext2_link, inode_t *_inode, const char *name, ino_t ino_id);
 SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
-SFUNC( aoff_t, ext2_dir_readwrite_stub, 	
+SFUNC( aoff_t, ext2_dir_read_stub, 	
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length );
+SFUNC( aoff_t, ext2_dir_write_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) const void *buffer,
 					__attribute__((__unused__)) aoff_t length );
 SVFUNC( ext2_dir_close, stream_info_t *stream );
 SFUNC( aoff_t, ext2_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, aoff_t buflen);

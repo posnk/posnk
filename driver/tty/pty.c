@@ -36,14 +36,14 @@ int pty_close( __attribute__((__unused__)) dev_t device, __attribute__((__unused
 }
 
 int pty_write(	dev_t device, 
-		void *buf, 
+		const void *buf, 
 		aoff_t count,
 		aoff_t *write_size,
 		__attribute__((__unused__)) int non_block)
 {
 	dev_t other_end = MAKEDEV(0x78, MINOR(device));
 	aoff_t ptr;
-	char *_buf = buf;
+	const char *_buf = buf;
 	for (ptr = 0; ptr < count; ptr++)
 		tty_input_char(other_end, _buf[ptr]);
 	*write_size = count;

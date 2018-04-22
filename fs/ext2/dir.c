@@ -23,7 +23,7 @@
 #include "kernel/vfs.h"
 #include "kernel/streams.h"
 
-SVFUNC( ext2_unlink, inode_t *_inode, char *name )
+SVFUNC( ext2_unlink, inode_t *_inode, const char *name )
 {
 
 	size_t namelen;
@@ -131,7 +131,7 @@ SVFUNC( ext2_unlink, inode_t *_inode, char *name )
 	RETURNV;
 }
 
-SVFUNC( ext2_link, inode_t *_inode, char *name, ino_t ino_id)
+SVFUNC( ext2_link, inode_t *_inode, const char *name, ino_t ino_id)
 {
 	ext2_device_t *device;
 
@@ -324,7 +324,7 @@ SFUNC( aoff_t, ext2_ireaddir,
 	RETURN( dirent_hdr.name_len + 11);
 }
 
-SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, char * name)
+SFUNC(dirent_t *, ext2_finddir, inode_t *_inode, const char * name)
 {
 	sys_dirent_t	*dirent;
 	errno_t			status;
@@ -382,9 +382,17 @@ SVFUNC(ext2_mkdir, inode_t *_inode) {
 	THROWV(st);
 }
 
-SFUNC( aoff_t, ext2_dir_readwrite_stub, 	
+SFUNC( aoff_t, ext2_dir_read_stub, 	
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) void *buffer,
+					__attribute__((__unused__)) aoff_t length )
+{
+	THROW(EISDIR, 0);
+}
+
+SFUNC( aoff_t, ext2_dir_write_stub, 	
+					__attribute__((__unused__)) stream_info_t *stream,
+					__attribute__((__unused__)) const void *buffer,
 					__attribute__((__unused__)) aoff_t length )
 {
 	THROW(EISDIR, 0);

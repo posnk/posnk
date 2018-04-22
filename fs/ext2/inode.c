@@ -92,7 +92,7 @@ SVFUNC(ext2_trunc_inode, inode_t *_inode, aoff_t size)//buffer, f_offset, length
 	RETURNV;	
 }
 
-SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length)
+SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, const void *_buffer, aoff_t f_offset, aoff_t length)
 {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
@@ -103,7 +103,7 @@ SFUNC(aoff_t, ext2_write_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 	aoff_t in_blk;
 	aoff_t in_file;
 	uint32_t block_addr, p_block_addr;	
-	uint8_t *buffer = _buffer;
+	const uint8_t *buffer = _buffer;
 	int status;
 
 	assert( _inode != NULL );
