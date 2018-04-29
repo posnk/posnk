@@ -18,7 +18,7 @@
 #include "kernel/system.h"
 #include "kernel/heapmm.h"
 #include <string.h>
-
+void gdbstub();
 void kdbg_shell();
 void kdbg_initialize()
 {
@@ -78,6 +78,8 @@ void kdbg_shell()
 			shutdown();
 		} else if (!strncmp(buf, "ps", 2)) {
 			kdbg_dump_processes();
+		}  else if (!strncmp(buf, "gdb", 3)) {
+			gdbstub();
 		} else {
 			kdbg_printf("Unknown command: %s\n", buf);
 		}

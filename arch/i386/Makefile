@@ -9,6 +9,7 @@ arch/i386/signal.c \
 arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
+arch/i386/gdbstub.c \
 driver/console/vgacon.c \
 driver/console/sercon.c \
 driver/console/vgacon_early.c \
