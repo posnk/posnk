@@ -47,7 +47,7 @@ typedef struct siginfo	siginfo_t;
 #define	SIGIO	SIGPOLL	/* socket I/O possible (SIGPOLL alias) */
 #define	SIGSTOP 23		/* stop (cannot be caught or ignored) */
 #define	SIGTSTP 24		/* user stop requested from tty */
-#define	SIGCONT 25		/* stopped process has been continued */
+#define	SIGCONT 19		/* stopped process has been continued */
 #define	SIGTTIN 26		/* background tty read attempted */
 #define	SIGTTOU 27		/* background tty write attempted */
 #define	SIGVTALRM 28	/* virtual timer expired */

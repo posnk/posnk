@@ -136,9 +136,9 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 			info.si_addr = (void*) stack->eip;
 			info.si_code = ILL_ILLTRP;
 			break;
-	};
+	}; 
 	dumpisrstack( stack );
-	exception_handle( sig, info, (void*) stack->eip,0 );
+	exception_handle( sig, info, (void*) stack->eip,0,stack->cs == 0x2B );
 	
 }
 

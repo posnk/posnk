@@ -238,7 +238,8 @@ void process_handle_signal_scheduling( process_info_t *process )
 	if ( 	sigismember( &sig_active, SIGCONT ) ||
 			sigismember( &sig_active, SIGKILL ) ) {
 		//TODO: Should SIGKILL interrupt the syscall currently being executed?
-		process_continue( process );
+		if ( process->state == PROCESS_STOPPED )
+			process_continue( process );
 	}
 	 
 	h = &process->tasks;
@@ -280,12 +281,12 @@ void thread_handle_signal_scheduling( scheduler_task_t *task )
 			return;
 		}
 
-		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
+/*		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
 			sigdelset( &task->process->signal_pending, sig );
 			process_stop( task->process );
 			process_child_event( task->process, PROCESS_CHILD_STOPPED );			
 			return;
-		}
+		}*/
 	}
 	
 	/* This would imply resuming a task even if a signal was ignored */

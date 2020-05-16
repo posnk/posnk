@@ -347,7 +347,7 @@ void scheduler_stop_task( scheduler_task_t *task ) {
 
 void scheduler_continue_task( scheduler_task_t *task ) {
 	/* TODO: Do we need to acquire the scheduler lock here? */
-	task->state |= TASK_STATE_STOPPED;
+	task->state &= ~TASK_STATE_STOPPED;
 }
 
 void scheduler_interrupt_task( scheduler_task_t *task ) {

@@ -301,13 +301,14 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 void i386_cs_debug_attach(uint32_t esp, uint32_t ebp, uint32_t eip, physaddr_t page_dir);
 void debug_attach_task(process_info_t *new_task)
 {
-	//i386_task_context_t *nctx;
-	//nctx = new_task->arch_state;
-	/*i386_cs_debug_attach(
-				nctx->kern_esp,
-				nctx->kern_ebp,
-				nctx->kern_eip,
-				paging_get_physical_address(new_task->page_directory->content));*/
+	i386_task_context_t *nctx;
+	scheduler_task_t *thetask = (void*) new_task->tasks.next;
+	nctx = thetask->arch_state;
+	i386_cs_debug_attach(
+				nctx->user_regs.esp,
+				nctx->user_regs.ebp,
+				nctx->user_eip,
+				paging_get_physical_address(new_task->page_directory->content));
 	//TODO: Implement	
 }
 
