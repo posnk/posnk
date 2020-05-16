@@ -206,10 +206,6 @@ $(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
 $(OBJS_PHEAPMM): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# generate full kernel object list
-
-OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
-
 # build tree creation 
 
 # dynamic makefile and source generation
@@ -227,6 +223,9 @@ include $(BUILDDIR)_dmake
 
 $(OBJS_DRIVER): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# generate full kernel object list
+OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 
 # kernel linking rule
 

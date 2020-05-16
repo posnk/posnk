@@ -32,6 +32,15 @@ typedef struct process_child_event process_child_event_t;
 #include "kernel/vfs.h"
 #include "util/llist.h"
 
+#define PROCESS_RUNNING 	0
+#define PROCESS_WAITING 	1
+#define PROCESS_READY		2
+#define PROCESS_NO_SCHED	3
+#define PROCESS_KILLED		4
+#define PROCESS_INTERRUPTED	5
+#define PROCESS_TIMED_OUT	6
+#define PROCESS_STOPPED		7
+
 #define PROCESS_TERM_EXIT	0
 #define PROCESS_TERM_SIGNAL	1
 
@@ -199,4 +208,13 @@ void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags);
 int procvmm_detach_shm(void *shmaddr);
 
 void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+
+void process_interrupt_all( process_info_t *process );
+
+void process_stop( process_info_t *process );
+
+void process_continue( process_info_t *process );
+
+void process_deschedule( process_info_t *process );
+
 #endif

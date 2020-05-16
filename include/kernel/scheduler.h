@@ -25,14 +25,20 @@ typedef struct task scheduler_task_t;
 #include "kernel/time.h"
 #include "util/llist.h"
 
-#define PROCESS_RUNNING 	0
-#define PROCESS_WAITING 	1
-#define PROCESS_READY		2
-#define PROCESS_NO_SCHED	3
-#define PROCESS_KILLED		4
-#define PROCESS_INTERRUPTED	5
-#define PROCESS_TIMED_OUT	6
-#define PROCESS_STOPPED		7
+#define TASK_STATE_RUNNING	(1 << 0)
+#define TASK_STATE_READY	(1 << 1)
+#define TASK_STATE_STOPPED	(1 << 2)
+#define TASK_STATE_TIMEDWAIT_US	(1 << 3)
+#define TASK_STATE_TIMEDWAIT_S	(1 << 4)
+#define TASK_STATE_TIMEDWAIT	(3 << 3)
+#define TASK_STATE_BLOCKED	(1 << 5)
+#define TASK_STATE_INTERRUPT	(1 << 6)
+#define TASK_STATE_INTERRUPTED	(1 << 8)
+#define TASK_STATE_TIMED_OUT	(1 << 9)
+
+#define SCHED_WAIT_OK		(0)
+#define SCHED_WAIT_INTR		(-2)
+#define SCHED_WAIT_TIMEOUT	(-1)
 
 #define TASK_GLOBAL         (1<<0)
 
@@ -56,14 +62,14 @@ struct task {
 	int             flags;
 	
 	/* Scheduling state */
-	int			    state;
+	int		state;
 	
 	sigset_t        signal_mask;
 	stack_t         signal_altstack;
 	
 	ticks_t         cpu_ticks;
 	
-	int				active;
+	int		active;
 	
 	/** The process this task belongs to */
 	process_info_t *process;
@@ -91,6 +97,12 @@ void scheduler_reown_task( scheduler_task_t *task, process_info_t *process );
 
 void scheduler_switch_task(scheduler_task_t *new_task);
 
+void scheduler_stop_task( scheduler_task_t *task );
+
+void scheduler_continue_task( scheduler_task_t *task );
+
+void scheduler_interrupt_task( scheduler_task_t *task );
+
 void scheduler_fork_main( void * arg );
 
 void scheduler_spawnentry( void (*callee)(void *), void *arg, int s );
@@ -105,11 +117,11 @@ void scheduler_init(void);
 
 void scheduler_reap( scheduler_task_t *task );
 
-void scheduler_wait_on(semaphore_t *semaphore);
+int scheduler_wait_on(semaphore_t *semaphore);
 
-void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds);
+int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds);
 
-void scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros);
+int scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros);
 
 int scheduler_wait_time(ktime_t time);
 

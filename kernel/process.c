@@ -234,6 +234,66 @@ void process_child_event(process_info_t *process, int event)
 	//TODO: Generate SIGCHLD
 
 }
+
+/**
+ * Interrupts all threads in the process
+ */
+void process_interrupt_all( process_info_t *process ) {
+	llist_t *c, *n, *h;
+	
+	h = &process->tasks;
+	
+	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+		scheduler_interrupt_task( ( scheduler_task_t * ) c );
+	}
+}
+
+/**
+ * Stops all threads in the process
+ */
+void process_stop( process_info_t *process ) {
+	llist_t *c, *n, *h;
+	
+	h = &process->tasks;
+	
+	process->old_state = process->state;
+	process->state = PROCESS_STOPPED;
+	
+	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+		scheduler_stop_task( ( scheduler_task_t * ) c );
+	}
+}
+
+/**
+ * Stops all threads in the process
+ */
+void process_deschedule( process_info_t *process ) {
+	llist_t *c, *n, *h;
+	
+	h = &process->tasks;
+	
+	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+		scheduler_stop_task( ( scheduler_task_t * ) c );
+	}
+}
+
+/**
+ * Continues all threads in the process
+ */
+void process_continue( process_info_t *process ) {
+	llist_t *c, *n, *h;
+	
+	h = &process->tasks;
+	
+	assert( process->state == PROCESS_STOPPED );
+	
+	process->state = process->old_state;
+	
+	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+		scheduler_continue_task( ( scheduler_task_t * ) c );
+	}
+}
+
 void process_reap(process_info_t *process)
 {
 

@@ -129,6 +129,7 @@ inline int sigemptyset( sigset_t *set )
 	*set = 0;
 	return 0;
 }
+void process_handle_signal_scheduling( process_info_t *process );
 
 /**
  * Send a signal to a process
@@ -167,6 +168,7 @@ void process_send_signal(	process_info_t *process,
 		sigdelset( &process->signal_pending, SIGCONT );
 	}
 		
+	process_handle_signal_scheduling( process ); 
 
 }
 
@@ -190,10 +192,11 @@ int process_signal_handler_default(int signal)
 		case SIGNAL_ACTION_TERM:
 			cproc->term_cause = PROCESS_TERM_SIGNAL;	
 			cproc->state = PROCESS_KILLED;
+			process_deschedule( cproc );
 			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
 			break;
 		case SIGNAL_ACTION_STOP:
-			cproc->state = PROCESS_STOPPED;
+			process_stop( cproc );
 			process_child_event( cproc, PROCESS_CHILD_STOPPED );			
 			schedule();
 			return 1;
@@ -214,38 +217,38 @@ int process_signal_handler_default(int signal)
 	return 0;
 
 }
+void thread_handle_signal_scheduling( scheduler_task_t *task );
 
 /**
- * Called by the scheduler to poll whether a process needs to resume
- * after being stopped.
- *
- * If a process is continued, this will also restore the old state of
- * that process.
+ * This function handles process-wide signal scheduling updates,
+ * such as continue.
  *
  * @param process	The process to check
- * @return Whether the process may continue.
  */
-int process_was_continued( process_info_t *process )
+void process_handle_signal_scheduling( process_info_t *process )
 {	
+	llist_t *c, *n, *h;
 	
 	/* SIGKILL and SIGCONT resume the process regardless of the mask value */
 	sigset_t sig_active = process->signal_pending;
 
 	if ( sig_active == 0 )
-		return 0;
+		return;
 
 	if ( 	sigismember( &sig_active, SIGCONT ) ||
 			sigismember( &sig_active, SIGKILL ) ) {
 		//TODO: Should SIGKILL interrupt the syscall currently being executed?
-		process->state = process->old_state;
-		return 1;
+		process_continue( process );
 	}
-
-	return 0;
+	 
+	h = &process->tasks;
+	
+	for ( c = h->next, n = c->next; c != h; c = n, n = c->next )
+		thread_handle_signal_scheduling( c );
 
 }
 
-int process_was_interrupted(scheduler_task_t *task)
+void thread_handle_signal_scheduling( scheduler_task_t *task )
 {
 	int sig;
 	struct sigaction *act;
@@ -263,7 +266,6 @@ int process_was_interrupted(scheduler_task_t *task)
 
 	for ( sig = 0; sig < 32; sig++ ) {
 
-
 		if ( !sigismember( &sig_active, sig ) )
 			continue;
 		
@@ -272,20 +274,23 @@ int process_was_interrupted(scheduler_task_t *task)
 		if ( act->sa_handler == SIG_IGN )
 			continue;
 
-		if ( act->sa_handler != SIG_DFL )
-			return 1;
+		if ( act->sa_handler != SIG_DFL ) {
+			/* Signal had a handler registered, interrupt any waits */
+			scheduler_interrupt_task( task );
+			return;
+		}
 
 		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
 			sigdelset( &task->process->signal_pending, sig );
-			task->process->old_state = task->process->state;
-			task->process->state = PROCESS_STOPPED;
+			process_stop( task->process );
 			process_child_event( task->process, PROCESS_CHILD_STOPPED );			
-			return 0;
+			return;
 		}
 	}
 	
-	
-	return sig_active;
+	/* This would imply resuming a task even if a signal was ignored */
+	if ( sig_active )
+		scheduler_interrupt_task( task );
 }
 
 /**
@@ -368,7 +373,7 @@ void do_signals()
 	//Hunch: Interrupting a system call might not immediately return to userland
 	//		 hence, we should hold off processing signals any further until it
 	//		 has handled the interrupted state.
-	if (ctask->state == PROCESS_INTERRUPTED)
+	if ( ctask->state & TASK_STATE_INTERRUPTED )
 		return;
 
 	/* Iterate over the signal set */

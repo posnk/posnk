@@ -29,7 +29,12 @@ int spinlock_enter( spinlock_t *lock )
 	
 	//TODO: Make this SMP friendly ( atomic )
 	
-	while ( *lock );
+	while ( *lock )  {
+#ifdef CONFIG_SERIAL_DEBUGGER_TRIG	
+	if (debugcon_have_data())
+		dbgapi_invoke_kdbg(0);
+#endif
+};
 	
 	*lock = 1;
 	
@@ -59,72 +64,72 @@ void semaphore_add(semaphore_t *semaphore, unsigned int n)
 
 int semaphore_down(semaphore_t *semaphore)
 {
-	if ((*semaphore) == 0) {
-rw:
-		scheduler_wait_on(semaphore);
-		if (scheduler_current_task->state == PROCESS_INTERRUPTED){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			goto rw;
-			return -1;
-		}
-		assert ( scheduler_current_task->state != PROCESS_WAITING );
-	} else {
-		(*semaphore)--;
-	}
-	return 0;
+
+	/* Try to decrement the semaphore */
+	if ( semaphore_try_down( semaphore ) )
+		return SCHED_WAIT_OK;
+	
+	/* Wait uninterruptably */
+	//TODO: Should we handle process kills here?
+	while ( scheduler_wait_on( semaphore ) != SCHED_WAIT_OK );
+	
+	return SCHED_WAIT_OK;
+	
 }
 
 int semaphore_idown(semaphore_t *semaphore)
 {
-	if ((*semaphore) == 0) {
-		scheduler_wait_on(semaphore);
-		if (scheduler_current_task->state == PROCESS_INTERRUPTED){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			return -1;
-		}
-		assert ( scheduler_current_task->state != PROCESS_WAITING );
-	} else {
-		(*semaphore)--;
-	}
-	return 0;
+ 
+	/* Try to decrement the semaphore */
+	if ( semaphore_try_down( semaphore ) )
+		return SCHED_WAIT_OK;
+		
+	/* Ask the scheduler to block the thread */
+	return scheduler_wait_on(semaphore );
+	
 }
 
+/**
+ * Tries to decrement a semaphore with a fixed timeout
+ * If the timeout is reached before the semaphore became available this 
+ * function will return SCHED_WAIT_TIMEOUT. If the wait was interrupted for
+ * any reason, this function will return SCHED_WAIT_INTR.
+ */
 int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
 {
-	if ((*semaphore) == 0) {
-		scheduler_wait_on_timeout(semaphore, seconds);
-		if (scheduler_current_task->state == PROCESS_TIMED_OUT){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			return -1;
-		} else if (scheduler_current_task->state == PROCESS_INTERRUPTED ){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			return -2;
-		}
-		assert ( scheduler_current_task->state != PROCESS_WAITING );
-	} else {
-		(*semaphore)--;
-	}
-	return 0;
+
+	/* Try to decrement the semaphore */
+	if ( semaphore_try_down( semaphore ) )
+		return SCHED_WAIT_OK;
+	
+	/* Ask the scheduler to block the thread */
+	return scheduler_wait_on_timeout(semaphore, seconds);
+	
 }
 
-
+/**
+ * Tries to decrement a semaphore with a fixed timeout
+ * If the timeout is reached before the semaphore became available this 
+ * function will return SCHED_WAIT_TIMEOUT. If the wait was interrupted for
+ * any reason, this function will return SCHED_WAIT_INTR.
+ */
 int semaphore_mdown(semaphore_t *semaphore, ktime_t micros)
 {
-	if ((*semaphore) == 0) {
-		scheduler_wait_on_to_ms(semaphore, micros);
-		if (scheduler_current_task->state == PROCESS_TIMED_OUT){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			return -1;
-		} else if (scheduler_current_task->state == PROCESS_INTERRUPTED ){
-			scheduler_current_task->state = PROCESS_RUNNING;
-			return -2;
-		}
-		assert ( scheduler_current_task->state != PROCESS_WAITING );
-	} else {
-		(*semaphore)--;
-	}
-	return 0;
+	
+	/* Try to decrement the semaphore */
+	if ( semaphore_try_down( semaphore ) )
+		return SCHED_WAIT_OK;
+	
+	/* Ask the scheduler to block the thread */
+	return scheduler_wait_on_to_ms(semaphore, micros);
+	
 }
+
+/**
+ * Tries to decrement the semaphore, fails if it is already zero.
+ * @param semaphore The semaphore to decrement
+ * @return True if successful.
+ */
 int semaphore_try_down(semaphore_t *semaphore)
 {
 	if ((*semaphore) == 0)
@@ -133,6 +138,9 @@ int semaphore_try_down(semaphore_t *semaphore)
 	return 1;	
 }
 
+/**
+ * Allocates a semaphore
+ */
 semaphore_t *semaphore_alloc()
 {
 	semaphore_t *semaphore = (semaphore_t *) heapmm_alloc(sizeof(semaphore_t));
@@ -140,6 +148,9 @@ semaphore_t *semaphore_alloc()
 	return semaphore;
 }
 
+/**
+ * Frees a semaphore
+ */
 void semaphore_free(semaphore_t *semaphore)
 {
 	heapmm_free(semaphore, sizeof(semaphore_t));

@@ -47,11 +47,9 @@ void scheduler_init()
 	scheduler_current_task->tid = scheduler_tid_counter++;
 
 	/* Task is not yet active */
-	scheduler_current_task->active = 0;
-
-	signal_init_task( scheduler_current_task );
+	scheduler_current_task->state = TASK_STATE_READY;
 	
-	scheduler_current_task->state = PROCESS_READY;
+	signal_init_task( scheduler_current_task );
 	
 	scheduler_task_list = scheduler_current_task;
 	
@@ -196,94 +194,74 @@ void scheduler_reap( scheduler_task_t *task )
 	
 }
 
+void scheduler_handle_resume( scheduler_task_t *task ) {
+
+	/* Nothing to do if task is already ready to run */
+	if ( task->state & TASK_STATE_READY )
+		return; 
+
+	/* Check if task was blocking on a semaphore */
+	if ( task->state & TASK_STATE_BLOCKED ) {
+		
+		/* Check if it became available */
+		if ( semaphore_try_down(task->waiting_on) ) {
+			task->state |= TASK_STATE_READY;
+			task->state &= ~TASK_STATE_BLOCKED;
+		}
+		
+	}
+	
+	/* Check if we just took an interrupt */
+	if ( task->state & TASK_STATE_INTERRUPT ) {
+		task->state |= TASK_STATE_READY | TASK_STATE_INTERRUPTED;
+		task->state &= ~TASK_STATE_INTERRUPT;
+	}
+	
+	
+	/* Check if task had a seconds timer running */
+	if ( task->state & TASK_STATE_TIMEDWAIT_S ) {
+		
+		/* Check if the timer elapsed */
+		if ( task->wait_timeout_s <= system_time ) {
+			task->state |= TASK_STATE_READY | TASK_STATE_TIMED_OUT;
+			task->state &= ~TASK_STATE_TIMEDWAIT_S;
+		}
+		
+	}
+	
+	/* Check if task had a microtimer running */
+	if ( task->state & TASK_STATE_TIMEDWAIT_US ) {
+	
+		
+		/* Check if the timer elapsed */
+		if ( task->wait_timeout_u <= system_time_micros ) {
+			task->state |= TASK_STATE_READY | TASK_STATE_TIMED_OUT;
+			task->state &= ~TASK_STATE_TIMEDWAIT_US;
+		}
+	
+	}
+	
+}
+
 /**
  * Iterator function that tests for running tasks that are not the current
  */
 int scheduler_may_run ( scheduler_task_t *task )
 {
 
-	if ( task->active )
+	if ( task->state & ( TASK_STATE_RUNNING | TASK_STATE_STOPPED ) )
 		return 0;
-    
-	/* If the task belongs to a process */
-	if ( task->process ) {
 
-		/* Check if that process was stopped, and not immediately continued */
-		if ( task->process->state == PROCESS_STOPPED ) {
-			if ( !process_was_continued( task->process ) )
-				return 0;
-		} else if ( task->process->state != PROCESS_READY ) {
-			return 0;
-		}
-	} 
-
-	if (task->state == PROCESS_READY)
-		return 1; /* Process is ready to run, select it */
-	else if (task->state == PROCESS_INTERRUPTED)
-		return 1; /* Process was waiting, but got interrupt, select it */
-	else if (task->state == PROCESS_TIMED_OUT)
-		return 1; /* Process was waiting, but timed out */
-	else if (task->state == PROCESS_WAITING) {
-		/* Task is waiting on something */
-
-		/* Check if anything interrupted the wait */
-		if ( process_was_interrupted(task) ) {
-			
-			/* TODO: Why are we re-checking this ? */
-			if ( task->process && 
-				 task->process->state == PROCESS_STOPPED )
-				return 0;
-
-			/* Update task state */
-			task->state = PROCESS_INTERRUPTED;
-			task->waiting_on = NULL;
-
-			/* Select it for running */
-			return 1;
-
-		/* Check if the microsecond timeout was hit */
-		} else if ( 
-				(task->wait_timeout_u != 0) && 
-				(task->wait_timeout_u <= system_time_micros) ) {
-
-			/* Update task state */
-			task->state = PROCESS_TIMED_OUT;
-			task->waiting_on = NULL;
-
-			/* Select it for running */
-			return 1;//TODO: Signal timeout
-        
-		/* Check if the second timeout was hit */
-		} else if (
-				(task->wait_timeout_s != 0) && 
-				(task->wait_timeout_s <= system_time) ) {
-
-			/* Update task state */
-			task->state = PROCESS_TIMED_OUT;
-			task->waiting_on = NULL;            
-
-			/* Select it for running */
-			return 1;//TODO: Signal timeout
-        
-		/* If the task is waiting on a semaphore, try to acquire it.
-		 * If it is not, or if the semaphore could not be acquired, the 
-		 * process should keep waiting. */
-		} else if ( 
-				( task->waiting_on == NULL ) || 
-				!semaphore_try_down(task->waiting_on) )
-			return 0;
-
-		task->state = PROCESS_READY;
-		return 1;		
-	} else
-		return 0;
+	scheduler_handle_resume( task ); /* TODO: Find a better place to put this */
+		
+	return task->state & TASK_STATE_READY;
 		
 }
 
 void schedule()
 {
 	
-	int s, swd;
+	int s;
 	scheduler_task_t *next_task;
 	
 #ifdef CONFIG_SERIAL_DEBUGGER_TRIG	
@@ -312,15 +290,9 @@ void schedule()
 	} while ( next_task != scheduler_current_task );
 	
 	/* current_task refers to the previous task now */
-
-	/* schedule() calls can be divided into two main classes:
-	 *    pre-emptive: Current task is RUNNING, but a timer interrupt
-	 *                 came. In this case, the task is still READY to run.
-	 *    cooperative: The task became blocked, and is already marked with the
-	 *                 applicable state. */
-	if (scheduler_current_task->state == PROCESS_RUNNING)
-		scheduler_current_task->state = PROCESS_READY;
-	scheduler_current_task->active = 0;
+	
+	/* Mark it as no longer running */
+	scheduler_current_task->state &= ~TASK_STATE_RUNNING;
 	
 	/* The only way the selected task is not runnable, is if there were no
 	 * runnable tasks at all. In that case we select the idle task. */
@@ -334,17 +306,11 @@ void schedule()
 		
 	assert ( next_task != NULL );
 	
-	/* If the next_task is not READY, we should not set it to RUNNING yet. */	
-	if ( next_task->state == PROCESS_READY ) 
-		next_task->state = PROCESS_RUNNING;
-	
 	/* Set selected task active */
-	next_task->active = 1;
+	next_task->state |= TASK_STATE_RUNNING;
 	
-	/* If we switched to a new task, perform a context switch */
-	swd = next_task != scheduler_current_task;
-	
-	if ( swd ) { 
+	/* If we switched to a new task, perform a context switch */	
+	if ( next_task != scheduler_current_task ) { 
     	scheduler_switch_task( next_task );	/* ------------------------- */
     }
 
@@ -371,73 +337,107 @@ void scheduler_spawnentry( void (*callee)(void *), void *arg, int s )
 void scheduler_set_as_idle()
 {
 	scheduler_idle_task = scheduler_current_task;
-	scheduler_idle_task->state = PROCESS_NO_SCHED;
+	scheduler_idle_task->state = TASK_STATE_STOPPED;
+}
+
+void scheduler_stop_task( scheduler_task_t *task ) {
+	/* TODO: Do we need to acquire the scheduler lock here? */
+	task->state |= TASK_STATE_STOPPED;
+}
+
+void scheduler_continue_task( scheduler_task_t *task ) {
+	/* TODO: Do we need to acquire the scheduler lock here? */
+	task->state |= TASK_STATE_STOPPED;
+}
+
+void scheduler_interrupt_task( scheduler_task_t *task ) {
+	/* TODO: Do we need to acquire the scheduler lock here? */
+	task->state |= TASK_STATE_INTERRUPT;
+}
+
+/**
+ * Blocks task until condition is hit
+ */
+int scheduler_block_on( int state ) {
+	int result_state;
+	/* TODO: Do we need to acquire the scheduler lock here? */
+	scheduler_current_task->state &= ~TASK_STATE_READY;
+	scheduler_current_task->state |= state;
+	
+	/* Yield control */
+	schedule();
+	
+	/* Find out why we were resumed */
+	result_state = scheduler_current_task->state;
+	
+	/* If interrupted, we need to clear the resume flags */
+	state |= TASK_STATE_INTERRUPTED | TASK_STATE_TIMED_OUT;
+	scheduler_current_task->state &= ~state;
+	
+	if ( (state & ~result_state) & TASK_STATE_BLOCKED )
+		return SCHED_WAIT_OK;
+	else if (~state & TASK_STATE_INTERRUPTED )
+		return SCHED_WAIT_INTR;
+	else if ( state & TASK_STATE_TIMED_OUT )
+		return SCHED_WAIT_TIMEOUT;
+	assert(!"Unknown reason for thread wakeup!");
+	return -1;/*never reached*/
 }
 
 int scheduler_wait_micros(ktime_t microtime)
 {
+	
 	/* Setup wait deadline */
-	scheduler_current_task->waiting_on = NULL;
 	scheduler_current_task->wait_timeout_u = microtime;
-	scheduler_current_task->wait_timeout_s = 0;
-	scheduler_current_task->state = PROCESS_WAITING;
-
-	/* Yield control */
-	schedule();
+	
+	/* Unschedule ourselves until timeout reached */
+	scheduler_block_on( TASK_STATE_TIMEDWAIT_US );
 
 	/* When we get back here, we either got interrupted or timed out */
-	if (scheduler_current_task->state == PROCESS_INTERRUPTED) {
-		scheduler_current_task->state = PROCESS_RUNNING;
-		return 0;
-	}
-	scheduler_current_task->state = PROCESS_RUNNING;
-	return 1;
+	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S ) != SCHED_WAIT_INTR;
 }
 
 int scheduler_wait_time(ktime_t time)
 {
-	scheduler_current_task->waiting_on = NULL;
+
+	/* Setup wait deadline */
 	scheduler_current_task->wait_timeout_s = time;
-	scheduler_current_task->wait_timeout_u = 0;
-	scheduler_current_task->state = PROCESS_WAITING;
-	schedule();
-	if (scheduler_current_task->state == PROCESS_INTERRUPTED) {
-		scheduler_current_task->state = PROCESS_RUNNING;
-		return 0;
-	}
-	scheduler_current_task->state = PROCESS_RUNNING;
-	return 1;
+	
+	/* Unschedule ourselves until timeout reached */
+	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S ) != SCHED_WAIT_INTR;
 }
 
-void scheduler_wait_on(semaphore_t *semaphore)
+int scheduler_wait_on(semaphore_t *semaphore)
 {
 	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
 	scheduler_current_task->waiting_on = semaphore;
-	scheduler_current_task->wait_timeout_u = 0;
-	scheduler_current_task->wait_timeout_s = 0;
-	scheduler_current_task->state = PROCESS_WAITING;
-	schedule();
+	
+	/* Unschedule ourselves until semaphore ready */
+	return scheduler_block_on( TASK_STATE_BLOCKED );
+	
 	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
 
-void scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
+int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
 {
 	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
 	scheduler_current_task->waiting_on = semaphore;
-	scheduler_current_task->wait_timeout_u = 0;
 	scheduler_current_task->wait_timeout_s = system_time + seconds;
-	scheduler_current_task->state = PROCESS_WAITING;
-	schedule();
+	
+	/* Unschedule ourselves until timeout reached or semaphore ready */
+	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S | TASK_STATE_BLOCKED );
+	
 	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
 
-void scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros)
+int scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros)
 {
 	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
 	scheduler_current_task->waiting_on = semaphore;
 	scheduler_current_task->wait_timeout_u = system_time_micros+micros;
-	scheduler_current_task->wait_timeout_s = 0;
-	scheduler_current_task->state = PROCESS_WAITING;
-	schedule();
+	
+	/* Unschedule ourselves until timeout reached or semaphore ready */
+	return scheduler_block_on( TASK_STATE_TIMEDWAIT_US | TASK_STATE_BLOCKED );
+
 	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
