@@ -54,11 +54,11 @@ void create_kprocess()
 
 	strcpy(kernel_process->name, CONFIG_SYSTEM_PROCESS_NAME);
 	/* Initialize process memory info */
-	kernel_process->heap_start	= (void *) 0xE0000000;
-	kernel_process->heap_end	= (void *) 0x12345678;
+	kernel_process->heap_start	 = (void *) 0xE0000000;
+	kernel_process->heap_end  	 = (void *) 0x12345678;
 		// TOTALLY NOT RELEVANT ON PROCESS ZERO
-	kernel_process->stack_bottom	= (void *) 0x12345678;
-	kernel_process->stack_top	= (void *) 0x12345678;
+	kernel_process->stack_bottom = (void *) 0x12345678;
+	kernel_process->stack_top	 = (void *) 0x12345678;
 
 	signal_init_process( kernel_process );
 
@@ -140,8 +140,8 @@ process_info_t *fork_process( void )
 
 	/* Initialize process memory info */
 	child->heap_start	= current_process->heap_start;
-	child->heap_end	= current_process->heap_end;
-	child->heap_max	= current_process->heap_max;
+	child->heap_end	    = current_process->heap_end;
+	child->heap_max	    = current_process->heap_max;
 	child->stack_bottom	= current_process->stack_bottom;
 	child->stack_top	= current_process->stack_top;
 	child->child_sema	= semaphore_alloc();
