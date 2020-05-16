@@ -32,7 +32,7 @@ disable:
 [global restore]
 restore:
 	push  ebx
-	mov   ebx, [esp + 4]
+	mov   ebx, [esp + 8] 
 	pushf
 	pop   eax
 	and   ebx, 0x200
