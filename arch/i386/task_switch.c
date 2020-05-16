@@ -141,7 +141,6 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 		/* Flag context switch to the FPU */
 		i386_fpu_on_cs();
 		
-		//debugcon_printf("cswitch to %i, esp=%x eip=%x\n", new_task->pid, nctx->kern_esp, ess->eip); 
 		/* Switch kernel threads */
 		i386_context_switch(     nctx->kern_esp, 
 								&tctx->kern_esp
@@ -231,6 +230,11 @@ int scheduler_free_task(scheduler_task_t *new_task) {
 	return 0;
 }
 
+static void push_32( uint32_t *ptr, uint32_t val ) {
+	*ptr -= 4;
+	*((uint32_t *)*ptr) = ( uint32_t ) val;
+}
+
 /**
  * Spawn a new task
  */
@@ -244,7 +248,10 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	/* Allocate its kernel stack */
 	if ( scheduler_alloc_kstack( new_task ) )
 		return ENOMEM;
+
+	/* Disable interrupts and get interrupt flag */
 	s2 = disable();
+
 	nctx = (i386_task_context_t *) new_task->arch_state;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
 
@@ -258,22 +265,18 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	nctx->kern_esp = ( uint32_t ) new_task->kernel_stack;
 	nctx->kern_esp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
 	nctx->tss_esp  = nctx->kern_esp;
+
 	/* Push the arguments for the entry shim */
-	nctx->kern_esp -= 4;
-	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) s;
+	push_32( &nctx->kern_esp, (uint32_t) s );
 	
 	/* Push the arguments for the entry point */
-	nctx->kern_esp -= 4;
-	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) arg;
+	push_32( &nctx->kern_esp, (uint32_t) arg );
 
-	
 	/* Push the arguments for the entry shim */
-	nctx->kern_esp -= 4;
-	*((uint32_t *)nctx->kern_esp) = ( uint32_t ) callee;
+	push_32( &nctx->kern_esp, (uint32_t) callee );
 	
 	/* Push the return address */
-	nctx->kern_esp -= 4;
-	*((uint32_t *)nctx->kern_esp) = 0x0;
+	push_32( &nctx->kern_esp, 0x0 );
 	
 	/* Push the new task state */
 	nctx->kern_esp -= sizeof( csstack_t );

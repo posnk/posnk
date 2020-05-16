@@ -15,15 +15,55 @@
 #include <stdint.h>
 #include "arch/i386/x86.h"
 
+/**
+ * The stack as seen by the kernel i386_handle_interrupt function
+ */
 struct i386_isr_stack {
+    /**
+     * The DS register value before this interrupt was taken
+     */
 	uint32_t				ds;
+
+    /**
+     * The general purpose register set as pushed by pusha after int entry
+     */
 	i386_pusha_registers_t	regs;
+
+    /**
+     * The interrupt vector number that was taken
+     */
 	uint32_t				int_id;
+
+    /**
+     * The error code pushed by the CPU, or a magic value if none was pushed
+     */
 	uint32_t				error_code;
+    
+    /**
+     * The instruction pointer before taking the interrupt
+     */
 	uint32_t				eip;
+
+    /**
+     * The CS selector before taking the interrupt
+     */
 	uint32_t				cs;
+    
+    /**
+     * The flags register before taking the interrupt
+     */
 	uint32_t				eflags;
+
+    /**
+     * The user stack pointer before taking the interrupt, only valid
+     * if interrupt came from a higher ring.
+     */
 	uint32_t				esp;
+
+    /**
+     * The user stack segment before taking the interrupt, only valid
+     * if interrupt came from a higher ring.
+     */
 	uint32_t				ss;
 }  __attribute__((packed));
 
