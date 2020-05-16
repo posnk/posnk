@@ -43,8 +43,10 @@ void scheduler_init()
 	/* Initialize process info */
 	scheduler_current_task->kernel_stack = NULL;
 
+	/* Generate thread id */
 	scheduler_current_task->tid = scheduler_tid_counter++;
 
+	/* Task is not yet active */
 	scheduler_current_task->active = 0;
 
 	signal_init_task( scheduler_current_task );
@@ -56,26 +58,41 @@ void scheduler_init()
 	scheduler_init_task(scheduler_current_task);//TODO: Handle errors
 }
 
+/**
+ * Changes the process a task belongs to
+ */
 void scheduler_reown_task( scheduler_task_t *task, process_info_t *process )
 {
+	/* If the task already belonged to a process */
 	if ( task->process ) {
+		/* Remove it from that processes thread list */
 		llist_unlink( ( llist_t * ) task );
 	}
 	
+	/* Set the tasks owner process */
 	task->process = process;
 	
+	/* If the task is currently active, we need to switch the MMU
+	 * over to the new process's address space */
 	if ( task == scheduler_current_task )
 		paging_switch_dir( task->process->page_directory );
 	
+	/* Finally, add the task to the owner's thread list */
 	llist_add_end( &process->tasks, ( llist_t * ) task );
 }
 
+/**
+ * Create a new task within the current address space, and
+ * set it up to start executing the callee func with argument arg
+ */
 int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 {
 	int status, s;
-	scheduler_task_t *new_task = (scheduler_task_t *) 
-		heapmm_alloc(sizeof(scheduler_task_t));
-		
+	scheduler_task_t *new_task;
+
+	/* Allocate task info block */
+	new_task = (scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
+	
 	if ( !new_task ) {
 		status = ENOMEM;
 		goto exitfail_a;
@@ -83,36 +100,44 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 		
 	memset(new_task, 0, sizeof(scheduler_task_t));
 
+	/* Allocate a task ID */
 	new_task->tid = scheduler_tid_counter++;
 
 	/* Initialize task signal handling */
 	new_task->signal_altstack = scheduler_current_task->signal_altstack;
-	new_task->signal_mask = scheduler_current_task->signal_mask;
+	new_task->signal_mask     = scheduler_current_task->signal_mask;
 
 	/* Initialize process state */
 	new_task->state = PROCESS_READY;
 
+	/* Initialize task fields */
 	status = scheduler_init_task( new_task );
 
 	if ( status )
 		goto exitfail_0;
 
+	/* Get interrupt flag */
 	s = disable();restore(s);
 
+	/* Do architecture specific tasks (copy state, setup stack etc) */
 	status = scheduler_do_spawn( new_task, callee, arg, s );
-	
-	s = spinlock_enter( &scheduling_lock );
 	
 	if ( status )
 		goto exitfail_1;
-		
+	
+	/* Get a lock on the global scheduler state */
+	s = spinlock_enter( &scheduling_lock );
+	
+	//TODO: Any reason we're not using the llist function here?
 	new_task->prev = scheduler_task_list->prev;
 	new_task->next = scheduler_task_list;
 	new_task->next->prev = new_task;
 	new_task->prev->next = new_task;
 	
+	/* Release lock on the scheduler state */
 	spinlock_exit( &scheduling_lock, s );
 		
+	/* If the caller wanted a reference to the task, fill it */
 	if ( t )
 		*t = new_task;
 			
@@ -129,6 +154,9 @@ exitfail_a:
 	
 }
 
+/**
+ * Sets a task's state
+ */
 void scheduler_set_task_state( scheduler_task_t *task, int state )
 {
 	int s;
@@ -145,7 +173,6 @@ void scheduler_reap( scheduler_task_t *task )
 
 	int s;
 
-	//TODO: Lock onto the task list
 	assert( task != scheduler_task_list );
 
 	s = spinlock_enter( &scheduling_lock );
@@ -157,6 +184,8 @@ void scheduler_reap( scheduler_task_t *task )
 	
 	spinlock_exit( &scheduling_lock, s );
 	
+    /* If this task belonged to a process, remove it from that processes
+     * list. */
 	if ( task->process ) {
 		llist_unlink ((llist_t *) task);
 	}
@@ -175,8 +204,11 @@ int scheduler_may_run ( scheduler_task_t *task )
 
 	if ( task->active )
 		return 0;
-
+    
+	/* If the task belongs to a process */
 	if ( task->process ) {
+
+		/* Check if that process was stopped, and not immediately continued */
 		if ( task->process->state == PROCESS_STOPPED ) {
 			if ( !process_was_continued( task->process ) )
 				return 0;
@@ -186,31 +218,61 @@ int scheduler_may_run ( scheduler_task_t *task )
 	} 
 
 	if (task->state == PROCESS_READY)
-		return 1;
+		return 1; /* Process is ready to run, select it */
 	else if (task->state == PROCESS_INTERRUPTED)
-		return 1;
+		return 1; /* Process was waiting, but got interrupt, select it */
 	else if (task->state == PROCESS_TIMED_OUT)
-		return 1;
+		return 1; /* Process was waiting, but timed out */
 	else if (task->state == PROCESS_WAITING) {
-		//earlycon_printf("pid %i is waiting on %x\n",task->pid, task->waiting_on);
+		/* Task is waiting on something */
+
+		/* Check if anything interrupted the wait */
 		if ( process_was_interrupted(task) ) {
-			//TODO: Figure out a less ugly way of doing this
+			
+			/* TODO: Why are we re-checking this ? */
 			if ( task->process && 
-				task->process->state == PROCESS_STOPPED )
+				 task->process->state == PROCESS_STOPPED )
 				return 0;
+
+			/* Update task state */
 			task->state = PROCESS_INTERRUPTED;
 			task->waiting_on = NULL;
+
+			/* Select it for running */
 			return 1;
-		} else if ( (task->wait_timeout_u != 0) && (task->wait_timeout_u <= system_time_micros) ) {
+
+		/* Check if the microsecond timeout was hit */
+		} else if ( 
+				(task->wait_timeout_u != 0) && 
+				(task->wait_timeout_u <= system_time_micros) ) {
+
+			/* Update task state */
 			task->state = PROCESS_TIMED_OUT;
 			task->waiting_on = NULL;
+
+			/* Select it for running */
 			return 1;//TODO: Signal timeout
-		} else if ( (task->wait_timeout_s != 0) && (task->wait_timeout_s <= system_time) ) {
+        
+		/* Check if the second timeout was hit */
+		} else if (
+				(task->wait_timeout_s != 0) && 
+				(task->wait_timeout_s <= system_time) ) {
+
+			/* Update task state */
 			task->state = PROCESS_TIMED_OUT;
-			task->waiting_on = NULL;
+			task->waiting_on = NULL;            
+
+			/* Select it for running */
 			return 1;//TODO: Signal timeout
-		} else if ( (task->waiting_on == NULL) || (!semaphore_try_down(task->waiting_on)) )
+        
+		/* If the task is waiting on a semaphore, try to acquire it.
+		 * If it is not, or if the semaphore could not be acquired, the 
+		 * process should keep waiting. */
+		} else if ( 
+				( task->waiting_on == NULL ) || 
+				!semaphore_try_down(task->waiting_on) )
 			return 0;
+
 		task->state = PROCESS_READY;
 		return 1;		
 	} else
@@ -229,6 +291,7 @@ void schedule()
 		dbgapi_invoke_kdbg(0);
 #endif
 	
+	/* Account task activations */
 	scheduler_current_task->cpu_ticks++;
 	
 	if ( scheduler_current_task->process )
@@ -236,21 +299,31 @@ void schedule()
 
 	//TODO: Increment ticks only on preemptive scheduler calls
 	
+	/* Acquire a lock on the scheduler state */
 	s = spinlock_enter( &scheduling_lock );
 	
 	next_task = scheduler_current_task->next;
-	
+
+	/* Iterate over all tasks until we find one that may run */	
 	do {
 		if ( scheduler_may_run( next_task ) )
 			break;
 		next_task = next_task->next;
 	} while ( next_task != scheduler_current_task );
 	
+	/* current_task refers to the previous task now */
+
+	/* schedule() calls can be divided into two main classes:
+	 *    pre-emptive: Current task is RUNNING, but a timer interrupt
+	 *                 came. In this case, the task is still READY to run.
+	 *    cooperative: The task became blocked, and is already marked with the
+	 *                 applicable state. */
 	if (scheduler_current_task->state == PROCESS_RUNNING)
 		scheduler_current_task->state = PROCESS_READY;
-	
 	scheduler_current_task->active = 0;
 	
+	/* The only way the selected task is not runnable, is if there were no
+	 * runnable tasks at all. In that case we select the idle task. */
 	if ( !scheduler_may_run( next_task ) ) {
 		next_task = scheduler_idle_task;
 	}
@@ -258,19 +331,22 @@ void schedule()
 	//TODO: Figure out why this was here
 	//if ((scheduler_current_task->state != PROCESS_KILLED ) &&(scheduler_current_task->signal_pending != 0))
 	//	scheduler_switch_task(scheduler_current_task);
-	
 		
 	assert ( next_task != NULL );
-		
+	
+	/* If the next_task is not READY, we should not set it to RUNNING yet. */	
 	if ( next_task->state == PROCESS_READY ) 
 		next_task->state = PROCESS_RUNNING;
-		
+	
+	/* Set selected task active */
 	next_task->active = 1;
 	
+	/* If we switched to a new task, perform a context switch */
 	swd = next_task != scheduler_current_task;
 	
-	if ( swd )
-		scheduler_switch_task( next_task );	
+	if ( swd ) { 
+    	scheduler_switch_task( next_task );	/* ------------------------- */
+    }
 
 	spinlock_exit( &scheduling_lock, s );
 	
@@ -279,13 +355,19 @@ void schedule()
 
 void scheduler_spawnentry( void (*callee)(void *), void *arg, int s )
 {
-
+	/* We came here from a context switch, which can only originate
+	 * in schedule(). This means that we still have a lock on the scheduler
+	 * state that has to be released. */
 	spinlock_exit( &scheduling_lock, s );
 	
+	/* Now that the scheduler is in a sane state, defer control to the callee */
 	callee( arg );
 
 }
 
+/**
+ * Mark the current task as the idle task.
+ */
 void scheduler_set_as_idle()
 {
 	scheduler_idle_task = scheduler_current_task;
@@ -294,11 +376,16 @@ void scheduler_set_as_idle()
 
 int scheduler_wait_micros(ktime_t microtime)
 {
+	/* Setup wait deadline */
 	scheduler_current_task->waiting_on = NULL;
 	scheduler_current_task->wait_timeout_u = microtime;
 	scheduler_current_task->wait_timeout_s = 0;
 	scheduler_current_task->state = PROCESS_WAITING;
+
+	/* Yield control */
 	schedule();
+
+	/* When we get back here, we either got interrupted or timed out */
 	if (scheduler_current_task->state == PROCESS_INTERRUPTED) {
 		scheduler_current_task->state = PROCESS_RUNNING;
 		return 0;

@@ -49,7 +49,7 @@ struct task {
 	/** Next task in the scheduling queue */
 	struct task    *next;
 
-    /** The task id */
+	/** The task id */
 	tid_t           tid;
 	
 	/** The task flags */
@@ -61,7 +61,7 @@ struct task {
 	sigset_t        signal_mask;
 	stack_t         signal_altstack;
 	
-	ticks_t		 cpu_ticks;
+	ticks_t         cpu_ticks;
 	
 	int				active;
 	
@@ -74,7 +74,7 @@ struct task {
 	/** The kernel stack */
 	void           *kernel_stack;
 	
-	uint32_t	 in_syscall;
+	uint32_t        in_syscall;
 
 	/** Wait target */
 	semaphore_t    *waiting_on;
