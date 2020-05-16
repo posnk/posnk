@@ -15,48 +15,48 @@
 #include <stdint.h>
 #include <stddef.h>
 
-inline uint8_t i8042_read_status()
+static inline uint8_t i8042_read_status()
 {
 	return i386_inb(I8042_STATUS_PORT);
 }
 
-inline void i8042_wait_read()
+static inline void i8042_wait_read()
 {
 	int to=0;
 	while ((~i8042_read_status() & I8042_STATUS_FLAG_IN_FULL) && (to++ < 0x100000));
 }
 
-inline void i8042_wait_write()
+void i8042_wait_write()
 {
 	int to=0;
 	while ((i8042_read_status() & I8042_STATUS_FLAG_OUT_FULL) && (to++ < 0x100000));
 }
 
-inline void i8042_write_command(uint8_t cmd)
+void i8042_write_command(uint8_t cmd)
 {
 	i8042_wait_write();
 	i386_outb(I8042_CMD_PORT, cmd);
 }
 
-inline void i8042_write_data(uint8_t data)
+static inline void i8042_write_data(uint8_t data)
 {
 	i8042_wait_write();
 	i386_outb(I8042_DATA_PORT, data);
 }
 
-inline uint8_t i8042_read_data()
+static inline uint8_t i8042_read_data()
 {
 	i8042_wait_read();
 	return i386_inb(I8042_DATA_PORT);
 }
 
-inline void i8042_write_ram(uint8_t addr, uint8_t data)
+void i8042_write_ram(uint8_t addr, uint8_t data)
 {
 	i8042_write_command(I8042_CMD_WRITE_RAM(addr));
 	i8042_write_data(data);
 }
 
-inline uint8_t i8042_read_ram(uint8_t addr)
+uint8_t i8042_read_ram(uint8_t addr)
 {
 	i8042_write_command(I8042_CMD_READ_RAM(addr));
 	return i8042_read_data();
@@ -69,7 +69,7 @@ void i8042_write(int port, uint8_t data)
 	i8042_write_data(data);		
 }
 
-inline void i8042_toggle_port(int port, int enabled)
+static inline void i8042_toggle_port(int port, int enabled)
 {
 	if (enabled)
 		i8042_write_command(port ? I8042_CMD_ENABLE_PORT_2 : I8042_CMD_ENABLE_PORT_1);
@@ -77,7 +77,7 @@ inline void i8042_toggle_port(int port, int enabled)
 		i8042_write_command(port ? I8042_CMD_DISABLE_PORT_2 : I8042_CMD_DISABLE_PORT_1);
 }
 
-inline void i8042_write_ccr(uint8_t ccr)
+static inline void i8042_write_ccr(uint8_t ccr)
 {
 	ccr = (i8042_read_ram(I8042_RAM_CCR) & I8042_CCR_UNK) | (ccr & ~I8042_CCR_UNK);
 	i8042_write_ram(I8042_RAM_CCR, ccr);

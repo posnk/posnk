@@ -46,12 +46,12 @@ int sem_key_search_iterator (llist_t *node, void *param)
 	return ptr->key == key;
 }
 
-inline sem_info_t *sem_get_by_key(key_t key)
+static inline sem_info_t *sem_get_by_key(key_t key)
 {
 	return (sem_info_t *) llist_iterate_select(&sem_list, &sem_key_search_iterator, (void *) key);
 }
 
-inline sem_info_t *sem_get_by_id(int id)
+static inline sem_info_t *sem_get_by_id(int id)
 {
 	return (sem_info_t *) llist_iterate_select(&sem_list, &sem_id_search_iterator, (void *) id);
 }
@@ -68,7 +68,7 @@ int sem_alloc_id()
 	return id;
 }
 
-inline int sysv_sem_checkblock_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
+static inline int sysv_sem_checkblock_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
 {
 	assert(info != NULL);
 	assert(semnum >= 0);
@@ -83,7 +83,7 @@ inline int sysv_sem_checkblock_int(sem_info_t *info, short semnum, short semop, 
 	return -1;
 }
 
-inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
+static inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
 {
 	assert(info != NULL);
 	if ((semnum < 0) || (semnum >= info->info.sem_nsems)) {

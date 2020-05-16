@@ -36,7 +36,7 @@ int evdev_register_device(evdev_device_info_t *info)
 	return 0;
 }
 
-inline evdev_device_t *evdev_get(dev_t device)
+static inline evdev_device_t *evdev_get(dev_t device)
 {	
 	dev_t minor = MINOR(device);
 	return evdev_list[minor];

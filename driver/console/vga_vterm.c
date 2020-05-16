@@ -40,7 +40,7 @@ void vterm_vga_write_crtc_register(char id,char val){
 	i386_outb(0x3D5,val);
 }
 
-inline char vga_vterm_map_attr(vterm_t *vt, int attr)
+static inline char vga_vterm_map_attr(vterm_t *vt, int attr)
 {
 	char fg, bg;
 	fg = (char) vga_vterm_colour_map[attr & 0xF];

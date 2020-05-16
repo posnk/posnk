@@ -47,12 +47,12 @@ int msg_key_search_iterator (llist_t *node, void *param)
 	return ptr->key == key;
 }
 
-inline msg_info_t *msg_get_by_key(key_t key)
+static inline msg_info_t *msg_get_by_key(key_t key)
 {
 	return (msg_info_t *) llist_iterate_select(&msg_list, &msg_key_search_iterator, (void *) key);
 }
 
-inline msg_info_t *msg_get_by_id(int id)
+static inline msg_info_t *msg_get_by_id(int id)
 {
 	return (msg_info_t *) llist_iterate_select(&msg_list, &msg_id_search_iterator, (void *) id);
 }
