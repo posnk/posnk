@@ -1901,8 +1901,8 @@ int vfs_initialize(dev_t root_device, char *root_fs_type)
 
 	if (status) {
 
-		//TODO: Panic here  : "Could not mount rootfs"
-
+		panic_printf("Failed to mount root filesystem");
+		halt();
 		return 0;
 	}
 
