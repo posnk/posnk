@@ -23,7 +23,7 @@
 
 void gdb_sendregs ( void )
 {
-    static char buf[113];
+    static char buf[113];/*
 
     if ( gdb_debug_user == 0 ) {
         gdb_enc32 ( buf +   0, state->intr_regs.eax );
@@ -59,7 +59,7 @@ void gdb_sendregs ( void )
 
     buf[112] = 0;
 
-    gdbout_pkt ( buf );
+    gdbout_pkt ( buf );*/
 }
 
 
@@ -70,10 +70,10 @@ void gdb_notif()
 }
 void gdbstub ( void )
 {
-    state = scheduler_current_task->arch_state;
+    //state = scheduler_current_task->arch_state;
 
     for ( ;; ) {
-        gdbhandle ( gdbport_in() );
+        //gdbhandle ( gdbport_in() );
     }
 }
 
