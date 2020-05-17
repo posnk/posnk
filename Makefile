@@ -103,10 +103,10 @@ kernel/tar.c \
 kernel/version.c \
 kernel/syscall.c \
 kernel/streams.c \
-kernel/ipc.c \
-kernel/shm.c \
-kernel/sem.c \
-kernel/msg.c \
+kernel/svipc/ipc.c \
+kernel/svipc/shm.c \
+kernel/svipc/sem.c \
+kernel/svipc/msg.c \
 kernel/time.c \
 kernel/exec.c \
 kernel/drivermgr.c \

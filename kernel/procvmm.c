@@ -25,7 +25,12 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <assert.h>
+
 int strlistlen(const char **list);
+
+/**
+ * Unmap all regions from the current process
+ */
 void procvmm_clear_mmaps()
 {	
 	process_info_t *cproc;
@@ -41,6 +46,9 @@ void procvmm_clear_mmaps()
 		procvmm_unmmap(region);
 }
 
+/**
+ * Unmap all regions for a specific process
+ */
 void procvmm_clear_mmaps_other( process_info_t *info )
 {	
 	process_mmap_t *region;
@@ -71,7 +79,7 @@ int procvmm_do_exec_mmaps()
 				(void *) 0xBFBFF000, 
 				0x1000,
 				PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK, 
-				"(sigstack)" );
+				"(sigstack)" );//TODO: Handle errors
 				
 	return procvmm_mmap_anon(
 				cproc->stack_top, 
@@ -82,17 +90,25 @@ int procvmm_do_exec_mmaps()
 
 int procvmm_check( const void *dest, size_t size)
 {
-	uintptr_t b = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
+	uintptr_t b;
 	uintptr_t p;
-	if ((!current_process) ||
-		current_process->pid == 0)
+	
+	/* Compute the start of the first page of the area */
+	b = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
+	
+	/* If there is no current proces or the current process is the kernel 
+	 * init process, we always allow creating the mapping */ //TODO: WHY?
+	if ( (!current_process) || current_process->pid == 0 )
 		return 1;
-	for (p = 0; p < size; p += PHYSMM_PAGE_SIZE) {
+	
+	/* Check if a mapping exists for any of the pages in the range */
+	for ( p = 0; p < size; p += PHYSMM_PAGE_SIZE ) {
 		if (!procvmm_get_memory_region((void *) (b + p))) {
-			debugcon_printf("chk b=%x p=%x bp=%x FAIL\n",b,p,b+p);
 			return 0;
 		}
 	}
+	
+	/* No overlap found, allow creating the mapping */
 	return 1;
 }
 
@@ -100,8 +116,7 @@ int procvmm_check_string( const char *dest, size_t size_max )
 {
 	uintptr_t p,lp,cp,b;
 	
-	if ((!current_process) ||
-		current_process->pid == 0)
+	if ( (!current_process) || current_process->pid == 0 )
 		return strlen( dest ) + 1;
 	
 	lp = 1;

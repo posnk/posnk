@@ -26,7 +26,7 @@
  * @return The required privilege class : other, group or owner
  */
 
-perm_class_t ipc_get_min_permissions(struct ipc_perm *ipc, mode_t req_mode)
+perm_class_t ipc_get_min_permissions(const struct ipc_perm *ipc, mode_t req_mode)
 {
 	assert (ipc != NULL);
 	if (req_mode & ((ipc->mode) & 7))
@@ -45,9 +45,12 @@ perm_class_t ipc_get_min_permissions(struct ipc_perm *ipc, mode_t req_mode)
  * @return Whether the requested access is allowed
  */
 
-int ipc_have_permissions(struct ipc_perm *ipc, mode_t req_mode) {
+int ipc_have_permissions(const struct ipc_perm *ipc, mode_t req_mode)
+{
 	assert (ipc != NULL);
-	return get_perm_class(ipc->uid, ipc->gid) <= ipc_get_min_permissions(ipc, req_mode);
+	return
+			get_perm_class(ipc->uid, ipc->gid) <= 
+			ipc_get_min_permissions(ipc, req_mode);
 }
 
 /**
@@ -56,9 +59,28 @@ int ipc_have_permissions(struct ipc_perm *ipc, mode_t req_mode) {
  * @return Whether the current user is the owner
  */
  
-int ipc_is_creator(struct ipc_perm *ipc) {
+int ipc_is_creator(const struct ipc_perm *ipc) {
 	assert (ipc != NULL);
 	return get_perm_class(ipc->cuid, ipc->cgid) == PERM_CLASS_OWNER;
+}
+
+/**
+ * @brief Check if the current user is the owner of the ipc_perm object
+ * @param ipc IPC permission object to check
+ * @return Whether the current user is the owner
+ */
+ 
+int ipc_is_owner(const struct ipc_perm *ipc) {
+	assert (ipc != NULL);
+	return get_perm_class(ipc->uid, ipc->gid) == PERM_CLASS_OWNER;
+}
+
+/**
+ * @brief Returns true if the process has special (root) privliges with
+ * regard to IPC.
+ */
+int ipc_is_privileged() {
+	return get_effective_uid() == 0; //TODO: Something more sophisticated here
 }
 
 /**

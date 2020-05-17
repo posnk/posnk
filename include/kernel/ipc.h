@@ -18,12 +18,14 @@
 
 #define IPC_PERM_READ	4
 #define IPC_PERM_WRITE	2
+#define IPC_PERM_OPER	1
 
 perm_class_t ipc_get_min_permissions(const struct ipc_perm *ipc, mode_t req_mode);
 
 int ipc_have_permissions(const struct ipc_perm *ipc, mode_t req_mode);
 
 int ipc_is_creator(const struct ipc_perm *ipc);
-
+int ipc_is_owner(const struct ipc_perm *ipc);
+int ipc_is_privileged();
 void ipc_init( void );
 #endif

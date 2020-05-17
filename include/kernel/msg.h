@@ -12,11 +12,13 @@
 #ifndef __KERNEL_MSG_H__
 #define __KERNEL_MSG_H__
 
-#include "util/llist.h"
 #include <stdint.h>
 #include <sys/types.h>
 #include <sys/msg.h>
 #include "kernel/synch.h"
+#include "util/llist.h"
+
+#define MSG_BAD_ID	(-1)
 
 typedef struct {
 	llist_t		 link;
@@ -26,16 +28,16 @@ typedef struct {
 } sysv_msg_t;
 
 typedef struct {
-	llist_t		 link;
-	key_t		 key;
-	int		 id;
-	int		 del;
-	int		 refs;
-	semaphore_t	*swaitsem;
-	semaphore_t	*rwaitsem;
+	llist_t      link;
+	key_t        key;
+	int          id;
+	int          del;
+	int          refs;
+	semaphore_t *swaitsem;
+	semaphore_t *rwaitsem;
 	struct msqid_ds	 info;
-	llist_t		 msgs;
-	msglen_t	 used_bytes;
+	llist_t      msgs;
+	msglen_t     used_bytes;
 } msg_info_t;
 
 void msg_init(void);
