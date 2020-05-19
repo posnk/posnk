@@ -27,7 +27,7 @@ static int pc_systick_isr( irq_id_t id, void *context )
 	return 1;
 }
 
-void platform_initialize( void )
+void legacypc_init()
 {
 
 	/* Initialize the interrupt controllers */
@@ -106,5 +106,3 @@ void platform_end_of_interrupt( int int_channel, int int_id )
 	pic_send_end_of_interrupt(0);
 }
 
-void legacypc_init() {
-}

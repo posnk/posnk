@@ -21,6 +21,8 @@ extern char root_fs        [ 32 ];
 extern dev_t root_dev;
 void cmdline_parse();
 
+void wait_int();
+
 void halt();
  
 void shutdown();

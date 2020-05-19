@@ -12,8 +12,6 @@
 #ifndef __driver_platform_platform_h__
 #define __driver_platform_platform_h__
 
-void	platform_initialize( void );
-
 int	platform_get_interrupt_id ( int int_channel );
 
 void	platform_end_of_interrupt ( int int_channel, int int_id );

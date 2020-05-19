@@ -46,6 +46,12 @@ void halt()
 	__asm__("cli;hlt");
 }
 
+void wait_int() 
+{
+	__asm__("sti;hlt");
+}
+
+
 void debug_dump_state()
 {	
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;

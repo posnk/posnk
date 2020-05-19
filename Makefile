@@ -118,7 +118,10 @@ kernel/sc_streams.c \
 kernel/sc_time.c \
 kernel/sc_signals.c \
 kernel/shutdown.c \
-kernel/cmdline.c \
+kernel/init/cmdline.c \
+kernel/init/kinit.c \
+kernel/init/uinit.c \
+kernel/init/idle.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \

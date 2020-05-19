@@ -21,19 +21,7 @@
 #include "arch/i386/multiboot.h"
 #include "arch/i386/protection.h"
 #include "arch/i386/vbe.h"
-#include "driver/bus/pci.h"
 #include "driver/block/ramblk.h"
-#include "kernel/syscall.h"
-#include "kernel/streams.h"
-#include "kernel/vfs.h"
-#include "kernel/tar.h"
-#include "kernel/ipc.h"
-#include "kernel/device.h"
-#include "kernel/tty.h"
-#include "kernel/drivermgr.h"
-#include "kernel/interrupt.h"
-#include "kernel/version.h"
-#include "kernel/process.h"
 #include "kdbg/dbgapi.h"
 #include <sys/stat.h>
 #include <sys/errno.h>
@@ -41,7 +29,6 @@
 #include <string.h>
 
 multiboot_info_t *mb_info;
-extern int ata_interrupt_enabled;
 
 //XXX: Dirty Hack
 vbe_mode_info_t	  vbe_mode;
@@ -153,7 +140,7 @@ void i386_init_handle_cmdline(multiboot_info_t *mbt)
 			CONFIG_CMDLINE_MAX_LENGTH );
 	kernel_cmdline[CONFIG_CMDLINE_MAX_LENGTH-1] = 0;
 }
-void i386_kmain();
+
 extern char i386_resvmem_start;
 extern char i386_resvmem_end;
 void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
@@ -164,6 +151,8 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	
 	mbd= (multiboot_info_t*) (((uintptr_t)mbd) + 0xC0000000);
 	
+	/* Before setting up kernel memory we want to be able to produce debug 
+	 * output. Here we set up the debugger output */
 	earlycon_init();
 	debugcon_init();
 	debugcon_puts("Debugger console up on ttyS0\n");
@@ -213,171 +202,31 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	paging_active_dir->content = pdir_ptr;
 	earlycon_puts("OK\nInitializing kernel stack...");
 	
-	earlycon_puts("OK\nCalling kmain...");
+	earlycon_puts("OK\nCalling kmain...\n\n");
 	mb_info = mbd;
 	paging_unmap( 0 );
-	
-	i386_kmain();
+	/**
+	 * Once we are here everything is set up properly
+	 * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
+	 * Task Stack	is at 0xBFFF DFFF downwards
+	 * ISR Stack	is at 0xBFFF E000
+	 * --------- KERNEL RAM BOUNDARY ----------
+	 * Code    	is at 0xC000 0000
+	 * Heap		is at 0xD000 0000
+	 * Pagedir	is at 0xFFC0 0000
+	 */
+	kmain();
 
 	
 } 
 
-void vgacon_clear_video();
-
-void vterm_vga_init();
-
-void i386_init_stub( process_info_t *proc )
-{
-
-	debugcon_printf("init_stub entry:%x\n", proc);
-	
-	scheduler_reown_task( scheduler_current_task, proc );
-	
-	int fd = _sys_open( console_path, O_RDWR, 0 );
-	if (fd < 0) {
-		earlycon_printf("Error opening tty : %i\n",syscall_errno);
-	} else {
-		fd = _sys_dup(fd);
-		if (fd < 0) {
-			earlycon_printf("Error dupping stdin : %i\n",syscall_errno);
-		} else {
-			fd = _sys_dup(fd);
-			if (fd < 0) {
-				earlycon_printf("Error dupping stderr : %i\n",syscall_errno);
-			}
-		}
-	}
-	char *ptr = NULL;
-	void *nullaa = &ptr;
-	//vgacon_clear_video();
-	int status = process_exec( init_path, nullaa, nullaa );
-	if (status) {
-		earlycon_printf("Error executing init : %i\n",status);
-	}
-	for (;;)
-		asm ("hlt;");
-}
-
-/**
- * This function implements the idle task that runs when the scheduler had
- * no real processes to run.
- */
-
-void i386_idle_task( process_info_t *proc )
-{	
-	scheduler_set_as_idle();	
-	
-	scheduler_reown_task( scheduler_current_task, proc );
-	
-	enable();
-		
-	for (;;)
-		asm ("hlt;");
-}
-
-void sercon_init();
-void register_dev_drivers();
-/**
- * Once we are here everything is set up properly
- * First 4 MB are both at 0xC000 0000 and 0x0000 0000 to support GDT trick!
- * Task Stack	is at 0xBFFF DFFF downwards
- * ISR Stack	is at 0xBFFF E000
- * --------- KERNEL RAM BOUNDARY ----------
- * Code    	is at 0xC000 0000
- * Heap		is at 0xD000 0000
- * Pagedir	is at 0xFFC0 0000
- */
-void i386_kmain()
-{
-	pid_t pid_init, pid_idle;
-	int init_status, rv;
-
-	earlycon_puts("OK\n\n");
-
-	earlycon_printf("P-OS Release %s Version %s. %i MB free\n",
-		posnk_release, posnk_version, physmm_count_free()/0x100000);
-
-	earlycon_printf("kernel commandline:\n%s\n",kernel_cmdline);
-
-	cmdline_parse();
-
+void arch_init_early() {
 	earlycon_puts("kinit: loading exception handlers\n");
 	i386_idt_initialize();
 	i386_protection_init();
+}
 
-	earlycon_printf("kinit: initializing initial task\n");
-	scheduler_init();
-	process_init();
-
-	earlycon_printf("kinit: initializing driver manager\n");
-	drivermgr_init();
-
-	earlycon_printf("kinit: initializing character device layer\n");
-	device_char_init();
-
-	earlycon_printf("kinit: initializing block device layer\n");
-	device_block_init();
-
-	earlycon_printf("kinit: initializing tty layer\n");
-	tty_init();
-
-	earlycon_printf("kinit: initializing systemcall dispatcher\n");
-	syscall_init();
-
-	earlycon_printf("kinit: initializing interrupt dispatcher\n");
-	interrupt_init();
-
-	earlycon_printf("kinit: initializing builtin drivers\n");
-	register_dev_drivers();
-
-	earlycon_printf("kinit: initializing platform support layer\n");
-	platform_initialize();
-
-#ifndef CONFIG_i386_NO_PCI
-	earlycon_puts("kinit: enumerating PCI devices\n");
-	pci_enumerate_all();
-#endif
-
+void arch_init_late() {
 	earlycon_puts("kinit: loading module files\n");
 	i386_init_load_modules(mb_info);
-
-	earlycon_printf("kinit: initializing SystemV IPC support\n");
-	ipc_init();
-
-//DEV_DRIVER(fb, video)
-//DEV_DRIVER(mbfb, video)
-//DEV_DRIVER(fbcon_vterm, console)
-
-	/*earlycon_puts("Extracting initrd..");
-	if (!tar_extract("/initrd.tar"))
-		earlycon_puts("OK\n");
-	else
-		earlycon_puts("FAIL\n");*/
-
-	earlycon_printf("kinit: spinning up the idle task\n");
-	pid_idle = scheduler_spawn( i386_idle_task, current_process, NULL );
-	
-	if ( pid_idle < 0 )
-		earlycon_puts("FAIL\n");
-
-	earlycon_printf("kinit: mounting root device %X as %s\n", 
-		root_dev, root_fs);
-	if (!vfs_initialize( root_dev, root_fs )) {
-		earlycon_puts("kinit: failed to mount root filesystem, halting...\n");
-		halt();
-	}
-
-	pid_init = scheduler_spawn( i386_init_stub, fork_process(), NULL );
-	
-	if ( pid_init < 0 )
-		earlycon_puts("FAIL\n");
-		
-	ata_interrupt_enabled = 1;
-
-	rv = sys_waitpid((uint32_t) 1,(uint32_t) &init_status,0,0,0,0);
-	
-	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
-
-	earlycon_puts("\n\nkernel main exited... halting!");
-
 }

@@ -40,7 +40,7 @@ int omap3430_systick_isr( irq_id_t id, void *context )
 	return 1;
 }
 
-void platform_initialize( void )
+void omap3430_init( void )
 {
 	omap3430_p_intc = omap3430_mpu_intc_initialize( OMAP3430_MPU_INTC_BASE );
 	omap3430_p_systimer = omap3430_gptimer_initialize ( OMAP3430_GPTIMER0_BASE );
