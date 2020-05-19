@@ -18,4 +18,6 @@ int	platform_get_interrupt_id ( int int_channel );
 
 void	platform_end_of_interrupt ( int int_channel, int int_id );
 
+#define INT_SPURIOUS		(-1)
+
 #endif

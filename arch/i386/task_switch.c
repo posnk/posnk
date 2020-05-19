@@ -26,8 +26,19 @@
  */
 void scheduler_fork_main( void * arg )
 {
+	/* Assign the newly created task to the forked process */
 	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg ); 
+
+	/* Creates a fake user-to-kernel interrupt entry that solely invokes
+	 * i386_user_exit before using iret to return to ring 3 in the newly created
+	 * process. 
+	 * 
+	 * This is done to simplify logic elsewhere in the kernel: because of this 
+	 * code, all kernel<>user mode code can assume there is an interrupt entry
+	 * structure at top of stack. */
 	i386_fork_exit();
+
+	/* never reached*/
 }
 
 /**
@@ -102,6 +113,8 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 	stack->ss			= tctx->user_ss;
 	stack->cs			= tctx->user_cs;
 	stack->eflags		= tctx->user_eflags;
+
+	/* Update the TSS to point to the correct supervisor stack for this task */
  	i386_tss_update();
 }
 

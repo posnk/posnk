@@ -3,8 +3,6 @@ arch/i386/paging.c \
 arch/i386/init.c \
 arch/i386/isr.c \
 arch/i386/idt.c \
-arch/i386/pic.c \
-arch/i386/pit.c \
 arch/i386/signal.c \
 arch/i386/fpu.c \
 arch/i386/task_switch.c \

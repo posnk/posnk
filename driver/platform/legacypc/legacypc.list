@@ -1,0 +1,3 @@
+DRIVER_SRC(platform/legacypc/legacypc)
+DRIVER_SRC(platform/legacypc/pic)
+DRIVER_SRC(platform/legacypc/pit)

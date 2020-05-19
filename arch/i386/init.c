@@ -15,8 +15,6 @@
 #include "kernel/earlycon.h"
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
-#include "arch/i386/pic.h"
-#include "arch/i386/pit.h"
 #include "arch/i386/x86.h"
 #include "arch/i386/idt.h"
 #include "arch/i386/paging.h"
@@ -261,7 +259,8 @@ void i386_init_stub( process_info_t *proc )
 }
 
 /**
- * This function implements the idle task that runs when there are no other running processes
+ * This function implements the idle task that runs when the scheduler had
+ * no real processes to run.
  */
 
 void i386_idle_task( process_info_t *proc )
@@ -270,11 +269,12 @@ void i386_idle_task( process_info_t *proc )
 	
 	scheduler_reown_task( scheduler_current_task, proc );
 	
-	asm ("sti");
+	enable();
 		
 	for (;;)
 		asm ("hlt;");
 }
+
 void sercon_init();
 void register_dev_drivers();
 /**
@@ -301,77 +301,75 @@ void i386_kmain()
 
 	cmdline_parse();
 
-	earlycon_puts("Initializing exception handlers...");
+	earlycon_puts("kinit: loading exception handlers\n");
 	i386_idt_initialize();
-	earlycon_puts("OK\n");
+	i386_protection_init();
 
-	earlycon_puts("Initializing scheduler...");
+	earlycon_printf("kinit: initializing initial task\n");
 	scheduler_init();
 	process_init();
-	earlycon_puts("OK\n");
 
-	earlycon_puts("Initializing interrupt controller...");
-	interrupt_init();
-	i386_pic_initialize();
-	earlycon_puts("OK\n");
-
-	earlycon_puts("Initializing system timer...");
-	i386_pit_setup(1000, 0, I386_PIT_OCW_MODE_RATEGEN);
-	earlycon_puts("OK\n");
-
-	earlycon_puts("Initializing driver framework...");
+	earlycon_printf("kinit: initializing driver manager\n");
 	drivermgr_init();
-	device_char_init();
-	device_block_init();
-	tty_init();
-	earlycon_puts("OK\n");
 
-	earlycon_puts("Registering built in drivers...");
-	sercon_init();
+	earlycon_printf("kinit: initializing character device layer\n");
+	device_char_init();
+
+	earlycon_printf("kinit: initializing block device layer\n");
+	device_block_init();
+
+	earlycon_printf("kinit: initializing tty layer\n");
+	tty_init();
+
+	earlycon_printf("kinit: initializing systemcall dispatcher\n");
+	syscall_init();
+
+	earlycon_printf("kinit: initializing interrupt dispatcher\n");
+	interrupt_init();
+
+	earlycon_printf("kinit: initializing builtin drivers\n");
 	register_dev_drivers();
-	earlycon_puts("OK\n");
+
+	earlycon_printf("kinit: initializing platform support layer\n");
+	platform_initialize();
 
 #ifndef CONFIG_i386_NO_PCI
-	earlycon_puts("Enumerating PCI buses...");
+	earlycon_puts("kinit: enumerating PCI devices\n");
 	pci_enumerate_all();
-	earlycon_puts("OK\n");
 #endif
 
-	earlycon_puts("Loading module files...");
+	earlycon_puts("kinit: loading module files\n");
 	i386_init_load_modules(mb_info);
-	earlycon_puts("OK\n");
 
-	earlycon_puts("Initializing VFS and mounting rootfs...");
-	if (vfs_initialize( root_dev, root_fs ))
-		earlycon_puts("OK\n");
-	else
-		earlycon_puts("FAIL\n");
+	earlycon_printf("kinit: initializing SystemV IPC support\n");
+	ipc_init();
+
 //DEV_DRIVER(fb, video)
 //DEV_DRIVER(mbfb, video)
 //DEV_DRIVER(fbcon_vterm, console)
+
 	/*earlycon_puts("Extracting initrd..");
 	if (!tar_extract("/initrd.tar"))
 		earlycon_puts("OK\n");
 	else
 		earlycon_puts("FAIL\n");*/
 
-	ipc_init();
+	earlycon_printf("kinit: spinning up the idle task\n");
+	pid_idle = scheduler_spawn( i386_idle_task, current_process, NULL );
 	
-	earlycon_puts("Initializing protection...");
-	i386_protection_init();
-	earlycon_puts("OK\n");
-	
-	syscall_init();
+	if ( pid_idle < 0 )
+		earlycon_puts("FAIL\n");
 
+	earlycon_printf("kinit: mounting root device %X as %s\n", 
+		root_dev, root_fs);
+	if (!vfs_initialize( root_dev, root_fs )) {
+		earlycon_puts("kinit: failed to mount root filesystem, halting...\n");
+		halt();
+	}
 
 	pid_init = scheduler_spawn( i386_init_stub, fork_process(), NULL );
 	
 	if ( pid_init < 0 )
-		earlycon_puts("FAIL\n");
-
-	pid_idle = scheduler_spawn( i386_idle_task, current_process, NULL );
-	
-	if ( pid_idle < 0 )
 		earlycon_puts("FAIL\n");
 		
 	ata_interrupt_enabled = 1;
@@ -381,6 +379,5 @@ void i386_kmain()
 	earlycon_printf("PANIC! Init exited with status: %i %i\n",init_status,rv);
 
 	earlycon_puts("\n\nkernel main exited... halting!");
-	halt();
 
 }

@@ -16,7 +16,7 @@
 #include "util/llist.h"
 #include "config.h"
 #ifdef ARCH_I386
-#define INTERRUPT_IRQ_COUNT	(16)
+#define INTERRUPT_IRQ_COUNT	(17)
 #endif
 #ifdef ARCH_ARMV7
 #define INTERRUPT_IRQ_COUNT	(256)

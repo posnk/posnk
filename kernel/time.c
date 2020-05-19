@@ -37,5 +37,4 @@ void timer_interrupt()
 		system_time_micros+=1000;
 		timer_ticks_m = 0;
 	}
-	schedule();
 }
