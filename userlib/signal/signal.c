@@ -1,5 +1,5 @@
 /******************************************************************************\
-Copyright (C) 2017-2020 Peter Bosch
+Copyright (C) 2020 Peter Bosch
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,25 +17,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 \******************************************************************************/
 
 /**
- * @file userlib/time/time.c
+ * @file userlib/signal/signal.c
  *
  * Part of posnk kernel
  *
- * Written by Peter Bosch <peterbosc@gmail.com>
+ * Written by Peter Bosch <me@pbx.sh>
  *
  */
 
-#include <sys/types.h>
 #include <sys/syscall.h>
- 
-time_t	time( time_t *t )
+
+static void sigexit( int sig, void *info, void *context, void *sigret )
 {
-	time_t v;
-	
-	v = ( time_t ) syscall( SYS_TIME, 0, 0, 0, 0, 0, 0 );
-	
-	if ( t )
-		*t = v;
-		
-	return v;
+	syscall( SYS_SIGNAL, (uint32_t) sigret, 0, 0, 0, 0, 0 );
+	/* does not return */
+}
+
+static void __attribute__((constructor)) set_sigexit() {
+	syscall( SYS_SSIGEX, (uint32_t) sigexit, 0, 0, 0, 0, 0 );
+}
+
+
+void (*signal(int sig, void (*func)(int)))(int)
+{
+	return ( void (*)(int) ) 
+		syscall( SYS_SIGNAL, sig, (uint32_t) func, 0, 0, 0, 0 );
 }

@@ -1,5 +1,5 @@
 /******************************************************************************\
-Copyright (C) 2017-2020 Peter Bosch
+Copyright (C) 2020 Peter Bosch
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 \******************************************************************************/
 
 /**
- * @file userlib/time/time.c
+ * @file userlib/process/setgid.c
  *
  * Part of posnk kernel
  *
@@ -28,14 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <sys/types.h>
 #include <sys/syscall.h>
  
-time_t	time( time_t *t )
+int	setgid( gid_t gid )
 {
-	time_t v;
-	
-	v = ( time_t ) syscall( SYS_TIME, 0, 0, 0, 0, 0, 0 );
-	
-	if ( t )
-		*t = v;
-		
-	return v;
+	return ( int ) syscall( SYS_SETGID, gid, 0, 0, 0, 0, 0 );
 }

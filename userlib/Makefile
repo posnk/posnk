@@ -14,4 +14,9 @@ SRCS_USERLIB=userlib/errno.c	\
 	userlib/process/setsid.c\
 	userlib/process/setpgid.c\
 	userlib/process/setpgrp.c\
-	userlib/process/waitpid.c
+	userlib/process/waitpid.c\
+	userlib/process/getuid.c\
+	userlib/process/geteuid.c\
+	userlib/process/getgid.c\
+	userlib/process/getegid.c\
+	userlib/signal/signal.c
