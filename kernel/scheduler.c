@@ -269,6 +269,12 @@ void schedule()
 		dbgapi_invoke_kdbg(0);
 #endif
 	
+	if ( scheduler_current_task->state & TASK_STATE_READY &&
+		 ~scheduler_current_task->state & TASK_STATE_STOPPED &&
+			scheduler_current_task->cpu_end > system_time_micros )
+		return;
+
+
 	/* Account task activations */
 	scheduler_current_task->cpu_ticks++;
 	
@@ -308,6 +314,7 @@ void schedule()
 	
 	/* Set selected task active */
 	next_task->state |= TASK_STATE_RUNNING;
+	next_task->cpu_end = system_time_micros + 10000;
 	
 	/* If we switched to a new task, perform a context switch */	
 	if ( next_task != scheduler_current_task ) { 

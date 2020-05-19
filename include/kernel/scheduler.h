@@ -62,13 +62,14 @@ struct task {
 	int             flags;
 	
 	/* Scheduling state */
-	int		state;
+	int	            state;
 	
 	sigset_t        signal_mask;
 	stack_t         signal_altstack;
 	
 	ticks_t         cpu_ticks;
-	
+	ticks_t         cpu_end;
+
 	int		active;
 	
 	/** The process this task belongs to */
