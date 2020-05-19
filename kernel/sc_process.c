@@ -184,6 +184,7 @@ SYSCALL_DEF1(exit)
 	process_child_event(current_process, PROCESS_CHILD_KILLED);
 	stream_do_close_all (current_process);
 	procvmm_clear_mmaps();
+	process_deschedule( current_process );
 	schedule();
 	return 0; // NEVER REACHED
 }
@@ -212,7 +213,7 @@ SYSCALL_DEF3(waitpid)
 	}
 	pid = (pid_t) a;
 	options = (int) c;
-
+retry:
 	if (pid == 0)
 		pid = -(current_process->pid);
 	if (pid < -1) {
@@ -299,6 +300,9 @@ SYSCALL_DEF3(waitpid)
 		}
 	}
 	chld = process_get(ev_info->child_pid);
+	if (!chld)
+		goto retry;
+
 	pid = ev_info->child_pid;
 	switch (ev_info->event) {
 		case PROCESS_CHILD_KILLED:

@@ -192,7 +192,6 @@ int process_signal_handler_default(int signal)
 		case SIGNAL_ACTION_TERM:
 			cproc->term_cause = PROCESS_TERM_SIGNAL;	
 			cproc->state = PROCESS_KILLED;
-			process_deschedule( cproc );
 			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
 			break;
 		case SIGNAL_ACTION_STOP:
@@ -210,6 +209,7 @@ int process_signal_handler_default(int signal)
 		process_child_event( cproc, PROCESS_CHILD_KILLED);	
 		stream_do_close_all( cproc );
 		procvmm_clear_mmaps();
+		process_deschedule( cproc );
 		schedule();
 		return 0;
 	}
