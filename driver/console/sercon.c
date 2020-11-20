@@ -1,14 +1,15 @@
 #define PORT 0x2f8   /* COM1 */
 #include "driver/console/vgacon/vgacon.h"
 #include <string.h>
-#include <stdint.h> 
+#include <stdint.h>
 #include <sys/types.h>
 #include "kernel/tty.h"
+#include "kernel/console.h"
 
 int sserial_received() {
    return i386_inb(PORT + 5) & 1;
 }
- 
+
 void sercon_isr() {
    while (sserial_received() != 0)
 	tty_input_char(0x0D00, i386_inb(PORT));
@@ -17,13 +18,27 @@ void sercon_isr() {
 int sis_transmit_empty() {
    return i386_inb(PORT + 5) & 0x20;
 }
- 
+
 int sercon_putc(__attribute__((__unused__)) dev_t dev, char a) {
    while (sis_transmit_empty() == 0);
- 
+
    i386_outb(PORT,a);
    return 0;
 }
+
+void sercon_puts(
+	__attribute__((__unused__)) int sink,
+	__attribute__((__unused__)) int flags, const char *str)
+{
+	int i = 0;
+   	while (str[i])
+   	{
+		sercon_putc(0, str[i++]);
+   	}
+}
+
+
+
 
 void sercon_init() {
    i386_outb(PORT + 1, 0x01);    // Disable all interrupts
@@ -34,6 +49,7 @@ void sercon_init() {
    i386_outb(PORT + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
    i386_outb(PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
    tty_register_driver("sercon", 13, 1, &sercon_putc);
+   con_register_sink_s( "sercon", 0, sercon_puts );
 
 }
 

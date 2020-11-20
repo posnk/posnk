@@ -14,6 +14,8 @@
 #include "kernel/heapmm.h"
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
+#define CON_SRC ("i386_page")
+#include "kernel/console.h"
 #include "config.h"
 #include <string.h>
 #include <assert.h>
@@ -41,10 +43,10 @@ static inline void i386_native_write_cr3(physaddr_t val)
 }
 
 void paging_switch_dir(page_dir_t *new_dir)
-{ 
+{
 	if ( paging_active_dir == new_dir )
 		return;
-	paging_active_dir = new_dir;	
+	paging_active_dir = new_dir;
 	i386_native_write_cr3(paging_get_physical_address(new_dir->content));
 }
 
@@ -116,7 +118,7 @@ page_dir_t *paging_create_dir()
 			} else {
 				dir->directory[copy_counter] = 0;
 			}
-			
+
 		}
 		paging_map(new_table_ptr, table_phys, I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
 		heapmm_free(new_table_ptr, PHYSMM_PAGE_SIZE);
@@ -184,7 +186,7 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 		}
 		pd_entry = I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT;
 		pd_entry |= table_addr;
-		table = (i386_page_table_t *) (((uintptr_t)I386_ADDR_TO_PTEPTR(virt_addr)) & 0xFFFFF000);	
+		table = (i386_page_table_t *) (((uintptr_t)I386_ADDR_TO_PTEPTR(virt_addr)) & 0xFFFFF000);
 
 		if (!(flags & PAGING_PAGE_FLAG_USER)) {
 			/* Kernel page! Need to add this table to all directories */
@@ -209,7 +211,7 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 		//TODO: Determine whether we have to free previously mapped frame
 		table->pages[pt_idx] = 0;
 	}
-	
+
 	pt_entry = I386_PAGE_FLAG_PRESENT;
 	if (flags & PAGING_PAGE_FLAG_USER)
 		pt_entry |= I386_PAGE_FLAG_USER;
@@ -225,22 +227,22 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 
 void paging_unmap(void * virt_addr)
 {
-	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);	
+	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);
 	*pt_entry &= ~I386_PAGE_FLAG_PRESENT;
 	i386_native_flush_tlb_single((uintptr_t)virt_addr);
 }
 
 void paging_tag(void * virt_addr, page_tag_t tag)
 {
-	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);	
+	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);
 	*pt_entry &= ~0xE00;
-	*pt_entry |= ( ((uint32_t)tag) << 9) & 0xE00;	
+	*pt_entry |= ( ((uint32_t)tag) << 9) & 0xE00;
 }
 
 page_tag_t paging_get_tag( const void * virt_addr )
 {
-	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);	
-	return (page_tag_t) (((*pt_entry) & 0xE00) >> 9);	
+	uint32_t *pt_entry = I386_ADDR_TO_PTEPTR(virt_addr);
+	return (page_tag_t) (((*pt_entry) & 0xE00) >> 9);
 }
 
 void i386_paging_enable()
@@ -254,34 +256,34 @@ void i386_paging_enable()
 void i386_init_switch_gdt(void);
 
 void paging_init()
-{	
+{
 	physaddr_t map_addr;
 	page_dir_t *pdir;
 	i386_page_dir_t *dir;
 	i386_page_table_t *initial_table = (i386_page_table_t *) i386_alloc_page();
 
 	llist_create(&i386_page_directory_list);
-	debugcon_printf("\nInitial table: %x\n", initial_table);
-	
+	printf( CON_TRACE, "initial table: %x\n", initial_table);
+
 	pdir = paging_create_dir();
 	dir = (i386_page_dir_t *) pdir->content;
-	debugcon_printf("\nInitial dir: %x\n", dir);
-	debugcon_printf("\nInitial dir: %x\n", dir->directory);
+	printf( CON_TRACE, "initial dir: %x\n", dir);
+	printf( CON_TRACE, "initial dir: %x\n", dir->directory);
 
 	dir->directory[0x3FF] = (((uint32_t) dir) - 0xC0000000) | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_NOCACHE | I386_PAGE_FLAG_PRESENT;
-	
+
 	memset(initial_table, 0, sizeof(i386_page_table_t));
-	
+
 	for ( map_addr = 0; map_addr < 0x400000;map_addr += 4096 ) { //Map the first 4MB
-		initial_table->pages[I386_ADDR_TO_PT_IDX(map_addr)] 
+		initial_table->pages[I386_ADDR_TO_PT_IDX(map_addr)]
 			= ((uint32_t)map_addr) | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_USER;
 	}
 	/* Identity map the first 4 MB */
 	dir->directory[0x000] = (((uint32_t) initial_table) - 0xC0000000) | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_USER;
 	/* Map the first 4 MB to 3GB too */
 	dir->directory[0x300] = (((uint32_t) initial_table) - 0xC0000000) | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_USER;
-	/* Activate new directory */		
-	paging_active_dir = pdir;	
+	/* Activate new directory */
+	paging_active_dir = pdir;
 	i386_native_write_cr3( ((uint32_t) dir) - 0xC0000000);
 	/* Activate paging */
 	i386_paging_enable();
@@ -296,14 +298,14 @@ uintptr_t paging_get_physical_address_other(page_dir_t *dir,const void * virt_ad
 	uintptr_t pt_idx = I386_ADDR_TO_PT_IDX(virt_addr);
 	uint32_t pd_entry = page_dir->directory[pd_idx];
 	physaddr_t pt_o;
-	i386_page_table_t *pt;	
+	i386_page_table_t *pt;
 	uint32_t pt_v;
 	if (pd_entry & I386_PAGE_FLAG_PRESENT) {
-		pt = heapmm_alloc_page();	
+		pt = heapmm_alloc_page();
 		pt_o = paging_get_physical_address( pt );
 		paging_map( pt, pd_entry & 0xFFFFF000, I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
 		pt_v = pt->pages[pt_idx];
-	
+
 		paging_map( pt, pt_o, I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT);
 		heapmm_free( pt, 4096);
 		if (pt_v & I386_PAGE_FLAG_PRESENT)

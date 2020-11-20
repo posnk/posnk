@@ -21,6 +21,8 @@
 #include "arch/i386/multiboot.h"
 #include "arch/i386/protection.h"
 #include "arch/i386/vbe.h"
+#define CON_SRC "i386_init"
+#include "kernel/console.h"
 #include "driver/block/ramblk.h"
 #include "kdbg/dbgapi.h"
 #include <sys/stat.h>
@@ -42,7 +44,7 @@ uint32_t i386_init_multiboot_memprobe(multiboot_info_t* mbt)
 	multiboot_memory_map_t* mmap = mmapr;
 	physmm_free_range(0x400000, 0x800000);
 	while(((uintptr_t)mmap) < (((uintptr_t)mmapr) + mbt->mmap_length)) {
-			/*earlycon_printf("MMAP ENTRY baseh=0x%x basel=0x%x lenh=0x%x lenl=0x%x type=0x%x\n",
+			/*earlycon_printf("MMAP ENTRY baseh=0x%x basel=0x%x lenh=0x%x lenl=0x%x type=0x%x",
 				 mmap->base_addr_high,
 				 mmap->base_addr_low,
 				 mmap->length_high,
@@ -50,14 +52,14 @@ uint32_t i386_init_multiboot_memprobe(multiboot_info_t* mbt)
 				 mmap->type);*/
 			// TODO : Verify page alignment of mmap entries
 			if (mmap->base_addr_low >= 0x100000){
-			
+
 			if ((mmap->type == 1) && (mmap->base_addr_high == 0)) {
 				if (mmap->length_high != 0)
 					mmap->length_low = 0xFFFFFFFF - mmap->base_addr_low;
 				available += mmap->length_low;
 				physmm_free_range(mmap->base_addr_low, mmap->base_addr_low+mmap->length_low);
 			}
-			
+
 		}
 			mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(unsigned int) );
 	}
@@ -79,11 +81,11 @@ void i386_init_reserve_modules(multiboot_info_t *mbt)
 
 void i386_init_handle_elf(multiboot_info_t *mbt)
 {
-	earlycon_printf("multiboot: flags=0x%x\n",mbt->flags);
+	printf( CON_INFO, "multiboot: flags=0x%x",mbt->flags);
 	if ( MULTIBOOT_INFO_ELFSYM & ~mbt->flags )
 		return;
-	earlycon_printf("multiboot: elf symbol header"
-	                "num:%i size:%i addr:%x shndx:%x\n",
+	printf( CON_INFO, "multiboot: elf symbol header"
+	                "num:%i size:%i addr:%x shndx:%x",
 	                mbt->u.elf_sec.num,
 	                mbt->u.elf_sec.size,
 	                mbt->u.elf_sec.addr,
@@ -115,20 +117,20 @@ void i386_init_load_modules(multiboot_info_t *mbt)
 		//	paging_unmap((void *) (page_ptr + ptr));
 		//	physmm_free_frame((physaddr_t)(modules[i].mod_start + ptr));
 		//}
-			
+
 	}
 }
 
 void i386_init_handle_vbe(multiboot_info_t *mbt)
 {
 	if ((~mbt->flags & MULTIBOOT_INFO_VIDEO_INFO) || (!mbt->vbe_mode_info)) {
-		debugcon_puts("BOOTLOADER DID NOT SET UP VIDEO MODE\n");
+		puts(CON_ERROR, "BOOTLOADER DID NOT SET UP VIDEO MODE");
 		vbe_mode.Xres = 0;
 		return;
 	}
 	mbt->vbe_mode_info |= 0xC0000000;
 	memcpy(&vbe_mode, (void *) mbt->vbe_mode_info, sizeof(vbe_mode_info_t));
-	debugcon_printf("Bootloader VBE info @%x : {mode: %i,  lfb: %x, w:%i, h: %i, bpp: %i}\n", (mbt->vbe_mode_info), (int)mbt->vbe_mode, (int)vbe_mode.physbase, (int)vbe_mode.Xres, (int)vbe_mode.Yres, (int)vbe_mode.bpp);	
+	printf( CON_DEBUG, "Bootloader VBE info @%x : {mode: %i,  lfb: %x, w:%i, h: %i, bpp: %i}", (mbt->vbe_mode_info), (int)mbt->vbe_mode, (int)vbe_mode.physbase, (int)vbe_mode.Xres, (int)vbe_mode.Yres, (int)vbe_mode.bpp);
 }
 
 void i386_init_handle_cmdline(multiboot_info_t *mbt)
@@ -136,7 +138,7 @@ void i386_init_handle_cmdline(multiboot_info_t *mbt)
 	/* Check if we had a command line */
 	if ( (~mbt->flags & MULTIBOOT_INFO_CMDLINE) || (!mbt->cmdline) )
 		return;
-	memcpy( kernel_cmdline, (char *)(mbt->cmdline| 0xC0000000), 
+	memcpy( kernel_cmdline, (char *)(mbt->cmdline| 0xC0000000),
 			CONFIG_CMDLINE_MAX_LENGTH );
 	kernel_cmdline[CONFIG_CMDLINE_MAX_LENGTH-1] = 0;
 }
@@ -148,25 +150,27 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	size_t initial_heap = 4096;
 	uint32_t mem_avail = 0;
 	void *pdir_ptr;
-	
+
 	mbd= (multiboot_info_t*) (((uintptr_t)mbd) + 0xC0000000);
-	
-	/* Before setting up kernel memory we want to be able to produce debug 
+
+	/* Before setting up kernel memory we want to be able to produce debug
 	 * output. Here we set up the debugger output */
+	con_init();
 	earlycon_init();
 	debugcon_init();
-	debugcon_puts("Debugger console up on ttyS0\n");
+	con_register_src("i386_init");
+	puts( CON_DEBUG, "Debugger console up on ttyS0");
 
 	i386_fpu_initialize();
 
-	earlycon_puts("Initializing physical memory manager...");
+	puts( CON_DEBUG, "Initializing physical memory manager...");
 	physmm_init();
 
-	earlycon_puts("OK\nRegistering available memory...");
+	puts( CON_DEBUG, "Registering available memory...");
 
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-		earlycon_puts("WARN: Not loaded by multiboot\n");
-		earlycon_puts("Assuming 8MB of RAM and trying again...");
+		puts(CON_WARN, "Not loaded by multiboot");
+		puts(CON_WARN, "Assuming 8MB of RAM and trying again...");
 		physmm_free_range(0x100000, 0x800000);
 		mem_avail = 0x700000;
 	} else {
@@ -178,20 +182,19 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	}
 	physmm_claim_range(0x100000, 0x400000);
 	physmm_free_range((physaddr_t)&i386_resvmem_start - 0xc0000000,(physaddr_t)&i386_resvmem_end - 0xc0000000);
-	earlycon_puts("OK\n");
-	earlycon_printf("Reserved memory: %x %x\n", &i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
-	earlycon_printf("Detected %i MB of RAM.\n", (mem_avail/0x100000));
-	earlycon_puts("Enabling paging...");
+	printf( CON_DEBUG, "Reserved memory: %x %x", &i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
+	printf( CON_DEBUG, "Detected %i MB of RAM.", (mem_avail/0x100000));
+	puts( CON_DEBUG, "Enabling paging...");
 	paging_init();
 
-	earlycon_puts("OK\nInitializing kernel heap manager...");
+	puts( CON_DEBUG, "Initializing kernel heap manager...");
 	kdbg_initialize();
 
 	initial_heap = heapmm_request_core((void *)0xD0000000, initial_heap);
 
 	if (initial_heap == 0) {
-		earlycon_puts("FAIL\nCould not allocate first page of heap!\n");
-		for(;;); //TODO: PANIC!!!		
+		puts( CON_DEBUG,"Could not allocate first page of heap!");
+		for(;;); //TODO: PANIC!!!
 	}
 
 	heapmm_init((void *)0xD0000000, initial_heap);
@@ -200,9 +203,9 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	physmm_free_frame(paging_get_physical_address(pdir_ptr));
 	paging_map(pdir_ptr, paging_get_physical_address((void *)0xFFFFF000), PAGING_PAGE_FLAG_RW);
 	paging_active_dir->content = pdir_ptr;
-	earlycon_puts("OK\nInitializing kernel stack...");
-	
-	earlycon_puts("OK\nCalling kmain...\n\n");
+	puts( CON_DEBUG, "initializing kernel stack...");
+
+	puts( CON_DEBUG, "calling kmain...");
 	mb_info = mbd;
 	paging_unmap( 0 );
 	/**
@@ -217,16 +220,16 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	 */
 	kmain();
 
-	
-} 
+
+}
 
 void arch_init_early() {
-	earlycon_puts("kinit: loading exception handlers\n");
+	puts( CON_DEBUG, "loading exception handlers");
 	i386_idt_initialize();
 	i386_protection_init();
 }
 
 void arch_init_late() {
-	earlycon_puts("kinit: loading module files\n");
+	puts( CON_DEBUG, "loading module files");
 	i386_init_load_modules(mb_info);
 }

@@ -8,9 +8,7 @@ arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
 arch/i386/gdbstub.c \
-driver/console/vgacon.c \
 driver/console/sercon.c \
-driver/console/vgacon_early.c \
 driver/console/sercon_debug.c \
 driver/bus/pci.c \
 driver/bus/pci_intel_host.c
@@ -20,7 +18,7 @@ arch/i386/fastcrt/memchr.S \
 arch/i386/fastcrt/memmove.S \
 arch/i386/fastcrt/memset.S \
 arch/i386/fastcrt/strchr.S \
-arch/i386/fastcrt/strlen.S 
+arch/i386/fastcrt/strlen.S
 
 SRCS_N_I386 = arch/i386/start.s \
 arch/i386/isr_entry.s \

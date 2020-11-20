@@ -14,7 +14,8 @@
 #include <sys/errno.h>
 #include <sys/types.h>
 #include "config.h"
-#include "kernel/earlycon.h"
+#define CON_SRC ("kinit")
+#include "kernel/console.h"
 
 char kernel_cmdline [ CONFIG_CMDLINE_MAX_LENGTH ]   = CONFIG_CMDLINE_DEFAULT;
 char init_path      [ CONFIG_FILE_MAX_NAME_LENGTH ] = CONFIG_INIT_DEFAULT;
@@ -26,7 +27,7 @@ uintptr_t cmdline_parse_hex( char *str )
 {
 	size_t l = strlen(str);
 	int n;
-	char c; 
+	char c;
 	uintptr_t acc = 0;
 	int b = -4;
 	for (n = l -1; n >= 0; n--) {
@@ -38,7 +39,7 @@ uintptr_t cmdline_parse_hex( char *str )
 		else if ((c >= 'a') && (c <= 'f'))
 			c -= 'a' - 10;
 		else
-			break; 
+			break;
 		acc |= ((uintptr_t)c) << (b+=4);
 	}
 	return acc;
@@ -55,7 +56,7 @@ int cmdline_do_field( char *field, char *value )
 	 else if ( !strcmp( field, "root" ) )
 		root_dev = (dev_t) cmdline_parse_hex(value); //TODO: Support symb. root
 	 else
-		earlycon_printf("Unknown kernel parameter \"%s\" with value \"%s\"\n",
+		printf(CON_WARN, "Unknown kernel parameter \"%s\" with value \"%s\"",
 		                field,value);
 	//TODO: Allow drivers to parse options
 	return 0;

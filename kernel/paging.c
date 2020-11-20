@@ -21,7 +21,7 @@
 page_dir_t *paging_active_dir;
 
 size_t heapmm_request_core ( void *address, size_t size )
-{	
+{
 	size_t size_counter;
 	physaddr_t frame;
 	if (paging_active_dir == NULL)
@@ -31,8 +31,8 @@ size_t heapmm_request_core ( void *address, size_t size )
 	for (size_counter = 0; size_counter < size; size_counter += PHYSMM_PAGE_SIZE) {
 		frame = physmm_alloc_frame();
 		if (frame == PHYSMM_NO_FRAME){
-			debugcon_aputs(" KHEAP:: OUT OF MEM !!!!");
-			earlycon_aputs(" KHEAP:: OUT OF MEM !!!!");
+			debugcon_puts(" KHEAP:: OUT OF MEM !!!!");
+			earlycon_puts(" KHEAP:: OUT OF MEM !!!!");
 			break;
 		}
 		paging_map(address, frame, PAGING_PAGE_FLAG_RW);
@@ -63,7 +63,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 		if ((addr >= 0xBFFF0000) && (addr < 0xBFFFB000)) {
 			/* Task stack area, add more stack */
 			virt_addr = (void *)(addr & ~PHYSMM_PAGE_ADDRESS_MASK);
-			phys_addr = physmm_alloc_frame();		
+			phys_addr = physmm_alloc_frame();
 			if (phys_addr == PHYSMM_NO_FRAME) {
 				paging_handle_out_of_memory();
 				phys_addr = physmm_alloc_frame();
@@ -81,7 +81,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 				return;
 		}
 	} else if (write) {
-		//TODO: Copy on write, 
+		//TODO: Copy on write,
 	}
 	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
 	if ( !present )
@@ -90,5 +90,5 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 		info.si_code = SEGV_ACCERR;
 	info.si_addr = virt_addr;
 	exception_handle( SIGSEGV, info, instr_ptr, user , !user );
-	
+
 }

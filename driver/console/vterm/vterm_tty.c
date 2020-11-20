@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "kernel/heapmm.h"
 #include "kernel/tty.h"
+#include "kernel/console.h"
 
 vterm_t *vterm_minor_terms;
 
@@ -61,7 +62,7 @@ int vterm_putc(dev_t dev, char c)
 	return 0;
 }
 
-void con_puts(char *b)
+void vterm_con_puts(int sink, int flags, char *b)
 {
 	size_t c;
 	size_t size = strlen(b);
@@ -86,6 +87,7 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 		tty_get(MAKEDEV(major, minor))->win_size.ws_col = cols;
 		tty_get(MAKEDEV(major, minor))->win_size.ws_row = rows;
 	}
+	con_register_sink_s( "vterm", 0, vterm_con_puts );
 }
 
 //tty_register_driver("vgacon", 12, 1, &vgacon_putc);

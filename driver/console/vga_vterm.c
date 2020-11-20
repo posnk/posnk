@@ -123,7 +123,7 @@ void vga_vterm_init(){
 	int vc_id;
         for (vc_id = 0;vc_id < 9;vc_id++){
                 vterm_vga_all_vcs[vc_id].cursor_x = 0;
-                vterm_vga_all_vcs[vc_id].cursor_y = 0;  
+                vterm_vga_all_vcs[vc_id].cursor_y = 0;
                 vterm_vga_all_vcs[vc_id].page_id = vc_id;
                 vterm_vga_all_vcs[vc_id].video_buffer = (vga_vterm_screen_character_t *)
 			( ((uint32_t)vga_vterm_get_text_video_memory()) + 80 * 25 * 2 * vc_id);
@@ -136,5 +136,5 @@ void vga_vterm_init(){
 
 void panicscreen(const char *text)
 {
-	earlycon_aputs(text);
+	panic_printf(text);
 }

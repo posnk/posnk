@@ -14,21 +14,12 @@
 
 #include <stddef.h>
 #include <stdarg.h>
-
+#include "kernel/console.h"
 void earlycon_init();
 
 void debugcon_init();
 
-void earlycon_putc(char c);
 void debugcon_putc(char c);
-
-void earlycon_aputs(const char *string);
-
-int earlycon_vsprintf(char *str,const char* format, va_list args);
-
-int earlycon_sprintf(char *str,const char* format,...);
-
-int earlycon_aprintf(const char* str,...);
 
 int debugcon_aprintf(const char* str,...);
 
@@ -36,18 +27,15 @@ int panic_printf(const char* str,...);
 
 void debugcon_aputs(const char *str);
 
-void earlycon_puts(const char *str);
-
 int debugcon_have_data();
 
 void panicscreen(const char *text);
-
-void con_puts(const char *b);
-
 void earlycon_switchover();
 
-#define earlycon_printf earlycon_aprintf
-
-#define debugcon_printf debugcon_aprintf
-#define debugcon_puts debugcon_aputs
+#define earlycon_printf(...) con_hprintf( 0, CON_ERROR, __VA_ARGS__ )
+#define debugcon_printf(...) con_hprintf( 0, CON_DEBUG, __VA_ARGS__ )
+#define panic_printf(...) con_hprintf( 0, CON_PANIC, __VA_ARGS__ )
+#define earlycon_puts(...) con_hprintf( 0, CON_ERROR, __VA_ARGS__ )
+#define debugcon_puts(...) con_hprintf( 0, CON_DEBUG, __VA_ARGS__ )
+#define panic_puts(...) con_hprintf( 0, CON_PANIC, __VA_ARGS__ )
 #endif

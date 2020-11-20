@@ -1,5 +1,5 @@
 #
-# 'make depend' uses makedepend to automatically generate dependencies 
+# 'make depend' uses makedepend to automatically generate dependencies
 #               (dependencies are added to end of Makefile)
 # 'make'        build executable file 'mycc'
 # 'make clean'  removes all .o and executable files
@@ -35,8 +35,8 @@ HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 # Set the compiler and assembler flags
 CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
-	-fauto-inc-dec 
-	
+	-fauto-inc-dec
+
 ULCFLAGS = $(ULDEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-finline-functions -finline-functions-called-once
 
@@ -64,7 +64,7 @@ LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
 HLFLAGS = -g -lfuse
 
 # define any libraries to link into executable
-LIBS = 
+LIBS = -lgcc
 
 # define the source files for using Peter's kernel heap manager
 SRCS_PHEAPMM = kernel/heapmm.c
@@ -122,6 +122,10 @@ kernel/init/cmdline.c \
 kernel/init/kinit.c \
 kernel/init/uinit.c \
 kernel/init/idle.c \
+kernel/console/srcmap.c \
+kernel/console/conmgr.c \
+kernel/console/conput.c \
+kernel/console/consink.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \
@@ -132,7 +136,9 @@ fs/mbr.c \
 util/llist.c \
 util/mruc.c \
 crt/string.c \
-crt/stdlib.c 
+crt/stdlib.c \
+crt/numfmt.c \
+crt/printf.c
 
 # define the source files for the hosted filesystem test
 TEST_FS_SRCS = tests/fs/mm.c \
@@ -209,7 +215,7 @@ $(OBJS_DLHEAPMM): $(BUILDDIR)%.o: %.c
 $(OBJS_PHEAPMM): $(BUILDDIR)%.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# build tree creation 
+# build tree creation
 
 # dynamic makefile and source generation
 
@@ -233,14 +239,14 @@ OBJS_KERN = $(BUILDDIR)arch/$(ARCH).o $(OBJS) $(OBJS_DLHEAPMM) $(OBJS_DRIVER)
 # kernel linking rule
 
 $(BUILDDIR)vmpos: $(BUILDDIR)_dmake $(OBJS_KERN)
-	$(LD) $(LFLAGS) $(LIBS) -T arch/$(ARCH)/kern.ld -o $@ $(OBJS_KERN)
+	$(LD) $(LFLAGS) -T arch/$(ARCH)/kern.ld -o $@ $(OBJS_KERN) $(LIBS)
 	@rm $(BUILDDIR)_dmake $(BUILDDIR)kernel/version.o
 
 # userlib archiving rule
 $(BUILDDIR)libposnk.a: $(BUILDDIR)_dmake $(OBJS_USERLIB) $(OBJS_ULARCH)
-	$(AR) $(ULARFLAGS) $(BUILDDIR)libposnk.a $(OBJS_USERLIB) $(OBJS_ULARCH)	
+	$(AR) $(ULARFLAGS) $(BUILDDIR)libposnk.a $(OBJS_USERLIB) $(OBJS_ULARCH)
 	$(RL) $(BUILDDIR)libposnk.a
-	
+
 # kernel install rule
 
 install: $(BUILDDIR)vmpos
@@ -267,7 +273,7 @@ install_h:
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
-# the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
+# the rule(a .c file) and $@: the name of the target of the rule (a .o file)
 # (see the gnu make manual section about automatic variables)
 
 clean: clean_driver

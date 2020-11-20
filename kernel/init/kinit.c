@@ -8,7 +8,8 @@
  */
 
 #include "kernel/physmm.h"
-#include "kernel/earlycon.h"
+#define CON_SRC ("kinit")
+#include "kernel/console.h"
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
 #include "driver/bus/pci.h"
@@ -31,9 +32,10 @@
 
 static void print_banner()
 {
-	earlycon_printf("P-OS Release %s Version %s. %i MB free\n",
+	printf(CON_INFO, "P-OS Release %s Version %s. %i MB free",
 		posnk_release, posnk_version, physmm_count_free()/0x100000);
-	earlycon_printf("kernel commandline:\n%s\n",kernel_cmdline);
+	printf(CON_INFO, "kernel commandline:");
+	printf(CON_INFO, "%s",kernel_cmdline);
 }
 
 void register_dev_drivers();
@@ -42,45 +44,45 @@ extern int ata_interrupt_enabled;
 
 void kmain()
 {
-
+	con_register_src( "kinit" );
 	print_banner();
 
 	cmdline_parse();
 
 	arch_init_early();
 
-	earlycon_printf("kinit: initializing initial task\n");
+	printf(CON_INFO, "initializing initial task");
 	scheduler_init();
 	process_init();
 
-	earlycon_printf("kinit: initializing driver infrastructure\n");
+	printf(CON_INFO, "initializing driver infrastructure");
 	drivermgr_init();
 	device_char_init();
 	device_block_init();
 	tty_init();
 	interrupt_init();
 
-
-	earlycon_printf("kinit: initializing builtin drivers\n");
+	printf(CON_INFO, "initializing builtin drivers");
 	register_dev_drivers();
 
 #ifndef CONFIG_i386_NO_PCI
-	earlycon_puts("kinit: enumerating PCI devices\n");
+	puts(CON_INFO, "enumerating PCI devices");
 	pci_enumerate_all();
 #endif
 
 	arch_init_late();
 
-	earlycon_printf("kinit: initializing system calls\n");
+	printf(CON_INFO, "initializing system calls");
 	syscall_init();
 	ipc_init();
 
 	kinit_start_idle_task();
 
-	earlycon_printf("kinit: mounting root device %X as %s\n", 
+	printf(CON_INFO, "mounting root device %X as %s",
 		root_dev, root_fs);
+
 	if (!vfs_initialize( root_dev, root_fs )) {
-		earlycon_puts("kinit: failed to mount root filesystem, halting...\n");
+		puts(CON_PANIC, "failed to mount root filesystem, halting...");
 		halt();
 	}
 
@@ -88,6 +90,6 @@ void kmain()
 
 	kinit_start_uinit();
 
-	earlycon_puts("\n\nkernel main exited... halting!");
+	printf(CON_PANIC, "\n\nkernel main exited... halting!");
 
 }
