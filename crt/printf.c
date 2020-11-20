@@ -288,6 +288,8 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 					fch == 'o' ||
 					fch == 'u' ||
 					fch == 's' ) {
+					if ( !sval )
+						sval = "(null)";
 					while ( ( c = *sval++ ) != 0 )
 						putch( arg, c, count++ );
 				}

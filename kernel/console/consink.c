@@ -48,6 +48,7 @@ int  con_get_sink( const char *name ) {
 
 	con_sink_map[sink].log_level = -1;
 	con_sink_map[sink].name = name;
+	printf( CON_DEBUG, "create sink %s (%i)", con_sink_map[ sink ].name, sink);
 
 	return sink;
 }
@@ -137,7 +138,7 @@ void con_sink_puts( int sink, int flags, int hnd, int lvl, const char *msg ) {
 
 	dn = con_get_src_display_name( hnd );
 
-	snprintf( line_buffer, sizeof line_buffer, "%s: %s\n", dn, msg );
+	snprintf( line_buffer, sizeof line_buffer, "%s: %s: %s\n", con_sink_map[ sink ].name, dn, msg );
 
 	puts_s( sink, flags, line_buffer );
 
@@ -152,7 +153,7 @@ void con_set_sink_level( const char* name, int level ) {
 		return;
 
 	con_sink_map[ sink ].log_level = level;
-
+	printf( CON_DEBUG, "set sink %s (%i) to level %x", con_sink_map[ sink ].name, sink, level);
 }
 
 void con_set_log_level( int level ) {

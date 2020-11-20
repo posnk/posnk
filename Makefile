@@ -126,6 +126,7 @@ kernel/console/srcmap.c \
 kernel/console/conmgr.c \
 kernel/console/conput.c \
 kernel/console/consink.c \
+kernel/console/cmdline.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \

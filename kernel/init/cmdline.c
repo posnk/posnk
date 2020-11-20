@@ -23,7 +23,7 @@ char console_path   [ CONFIG_FILE_MAX_NAME_LENGTH ] = CONFIG_CONSOLE_DEFAULT;
 char root_fs        [ 32 ]                          = CONFIG_ROOT_FS_DEFAULT;
 dev_t root_dev                                      = CONFIG_ROOT_DEFAULT;
 
-uintptr_t cmdline_parse_hex( char *str )
+uintptr_t cmdline_parse_hex( const char *str )
 {
 	size_t l = strlen(str);
 	int n;
@@ -55,6 +55,8 @@ int cmdline_do_field( char *field, char *value )
 		strcpy( root_fs, value );
 	 else if ( !strcmp( field, "root" ) )
 		root_dev = (dev_t) cmdline_parse_hex(value); //TODO: Support symb. root
+	 else if ( con_handle_cmdline( field, value ) )
+	 	return 0;
 	 else
 		printf(CON_WARN, "Unknown kernel parameter \"%s\" with value \"%s\"",
 		                field,value);

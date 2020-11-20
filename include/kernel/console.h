@@ -111,6 +111,7 @@ void con_hprintf( int hnd, int lvl, const char *fmt, ... );
 
 void con_puts( const char *src, int lvl, const char *msg );
 void con_printf( const char *src, int lvl, const char *fmt, ... );
+int con_handle_cmdline( const char *field, const char *value );
 
 #ifndef CON_SRC
 #define CON_SRC (CON_UNCONFIG_SRC_NAME)
