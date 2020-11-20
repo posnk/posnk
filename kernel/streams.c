@@ -4,7 +4,7 @@
  * @brief Implements the UNIX file API ( fd streams )
  *
  * Slightly different terminology is used here:
- * 
+ *
  * UNIX - POSNK
  * @li File description - stream info
  * @li File descriptor - stream pointer
@@ -17,6 +17,8 @@
  * Changelog:\n
  * @li 20-04-2014 - Created
  */
+#define CON_SRC "streams"
+#include "kernel/console.h"
 #include "kernel/syscall.h"
 #include "kernel/streams.h"
 #include "kernel/scheduler.h"
@@ -58,7 +60,7 @@ void stream_poll( stream_poll_t *poll ) {
 			break;
 		case STREAM_TYPE_EXTERNAL:
 			if ( ptr->info->ops->poll != NULL ) {
-				en = ptr->info->ops->poll( ptr->info, poll->events, &rv);	
+				en = ptr->info->ops->poll( ptr->info, poll->events, &rv);
 				if ( en )
 					poll->revents |= POLLERR;
 				else
@@ -73,7 +75,7 @@ void stream_poll( stream_poll_t *poll ) {
 
 exitpl:
 	if ( poll->revents != 0 )
-		semaphore_up( poll->notify );	
+		semaphore_up( poll->notify );
 }
 
 /**
@@ -93,7 +95,7 @@ void stream_notify_poll( stream_info_t *info )
 		assert( poll != NULL );
 
 		stream_poll( poll );
-		
+
 	}
 }
 
@@ -107,7 +109,7 @@ int stream_ptr_search_iterator (llist_t *node, void *param)
 	return ptr->id == id;
 }
 
-/** 
+/**
  * @brief Get the stream pointer object for a file number
  * @param fd The open file number to look up
  * @return The stream pointer or NULL if fd is invalid
@@ -118,8 +120,8 @@ stream_ptr_t *stream_get_ptr (int fd)
 	return (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_ptr_search_iterator, (void *) fd);
 }
 
-/** 
- * @brief Get the stream pointer object for a file number on a different 
+/**
+ * @brief Get the stream pointer object for a file number on a different
  * process
  * @param process The process context to use when looking up the stream pointer
  * @param fd The open file number to look up
@@ -134,7 +136,7 @@ stream_ptr_t *stream_get_ptr_o (process_info_t *process, int fd)
 }
 
 /**
- * @brief Linked list iterator that copies a process's open fds 
+ * @brief Linked list iterator that copies a process's open fds
  *
  * This iterator will create a new stream pointer for each fd it is called on
  * that refers to the same stream info
@@ -163,12 +165,12 @@ int stream_ptr_copy_iterator (llist_t *node, void *param)
 
 	/* Stream pointer flags are NOT copied */
 	newptr->fd_flags = 0;
-	
+
 	/* Up the reference counter for the stream info */
 	newptr->info->ref_count++;
-	
+
 	/* Add the copied stream pointer to the table */
-	llist_add_end(table, (llist_t *) newptr);	
+	llist_add_end(table, (llist_t *) newptr);
 
 	return 0;
 }
@@ -216,14 +218,14 @@ void stream_do_close_on_exec ()
 {
 	stream_ptr_t *ptr;
 	/* Loop until there are no more ptrs left that are to be closed */
-	for (ptr = (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_exec_iterator, NULL); ptr != NULL; 
+	for (ptr = (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_exec_iterator, NULL); ptr != NULL;
 	     ptr = (stream_ptr_t *) llist_iterate_select(current_process->fd_table, &stream_exec_iterator, NULL))
 		/* Close the pointer that was found */
 		_sys_close(ptr->id);
 }
 
 /**
- * @brief Iterator that will select all closeable stream pointers 
+ * @brief Iterator that will select all closeable stream pointers
  * @return Whether the stream is closeable
  */
 int stream_closeall_iterator ( __attribute__((__unused__)) llist_t *node, __attribute__((__unused__)) void *param)
@@ -240,7 +242,7 @@ void stream_do_close_all (process_info_t *process)
 	stream_ptr_t *ptr;
 	assert(process != NULL);
 	/* Loop until there are no more ptrs left that are to be closed */
-	for (ptr = (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_closeall_iterator, NULL); ptr != NULL; 
+	for (ptr = (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_closeall_iterator, NULL); ptr != NULL;
 	     ptr = (stream_ptr_t *) llist_iterate_select(process->fd_table, &stream_closeall_iterator, NULL))
 		/* Close the pointer that was found */
 		_sys_close_int(process, ptr->id);
@@ -284,9 +286,9 @@ void stream_free_fd( __attribute__(( __unused__ )) int fd)
 
 /**
  * @brief Get directory entries
- *  
+ *
  * This function implements the getdents(2) system call
- * It will read as many *whole* dirent's as will fit in count, no partial 
+ * It will read as many *whole* dirent's as will fit in count, no partial
  * dirents will be read.
  * @param fd The directory stream to read from
  * @param buffer The buffer to store the dirents in
@@ -295,7 +297,7 @@ void stream_free_fd( __attribute__(( __unused__ )) int fd)
  * @exception EBADF fd does not refer to an open file stream
  * @exception EINVAL fd was not opened with READ access mode
  * @exception ENOTDIR fd does not refer to a directory stream
- * @exception EFAULT At least one of the parameters was a null pointer 
+ * @exception EFAULT At least one of the parameters was a null pointer
  * @see vfs_getdents for other errors that might occur
  */
 
@@ -312,7 +314,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -328,18 +330,18 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-	
+
 		/* Signal the error, EINVAL because directories can not
                  * be opened write only */
 		syscall_errno = EINVAL;
-		return -1;		
+		return -1;
 	}
 
 	/* Check stream type */
 	switch (ptr->info->type) {
 		case STREAM_TYPE_FILE:
 			/* Stream is a file or directory stream */
-			
+
 			/* Call VFS function */
 			st = vfs_getdents(ptr->info->inode, ptr->info->offset, buffer, (aoff_t) count, &read_count);
 
@@ -349,7 +351,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 			/* Check for errors */
 			if (st) {
 				/* Pass error code to userland */
-				syscall_errno = st;		
+				syscall_errno = st;
 
 				/* Release the lock on the stream */
 				semaphore_up(ptr->info->lock);
@@ -358,7 +360,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 				return -1;
 			}
 
-			/* Release the lock on the stream */			
+			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
 
 			/* Return the amount of bytes read */
@@ -405,7 +407,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -421,10 +423,10 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-	
+
 		/* Signal the error */
 		syscall_errno = EBADF;
-		return -1;		
+		return -1;
 	}
 
 	/* Handle the various stream types */
@@ -432,28 +434,28 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 		case STREAM_TYPE_FILE:
 		case STREAM_TYPE_PIPE:
 			/* Stream is a file stream */
-			
+
 			/* Pass error code to userland */
-			syscall_errno = ENOTDIR;		
+			syscall_errno = ENOTDIR;
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
 
 			/* Return -1 to signal insuccessful read */
 			return -1;
-			
+
 		case STREAM_TYPE_EXTERNAL:
 			/* Stream is externally implemented */
-			
+
 			assert( ptr->info->ops != NULL );
 			assert( ptr->info->ops->read != NULL );
-			
+
 			/* Call the implementation */
 			st = ptr->info->ops->readdir( ptr->info, buffer, buflen, &read_count );
-			
+
 			/* Check for errors */
 			if ( st ) {
-				
+
 				/* Pass error code to userland */
 				syscall_errno = st;
 
@@ -463,8 +465,8 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 				/* Return error */
 				if (read_count == 0)
 					read_count = 1;
-				return -((ssize_t)read_count); 
-				
+				return -((ssize_t)read_count);
+
 			}
 
 			/* Release the lock on the stream  */
@@ -473,7 +475,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 
 			/* Return the amo unt of bytes read */
 			return (ssize_t) read_count;
-			
+
 		default:
 			/* Invalid stream type */
 
@@ -489,8 +491,8 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 
 /**
  * @brief Read from a stream
- *  
- * This function implements the read(2) system call, 
+ *
+ * This function implements the read(2) system call,
  * It attempts to read _count_ number of bytes from the stream
  *
  * @param fd The stream to read from
@@ -500,7 +502,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
  * @exception EBADF fd does not refer to an open file stream
  * @exception EBADF fd was not opened with READ access mode
  * @exception EISDIR fd refers to a directory stream
- * @exception EFAULT At least one of the parameters was a null pointer 
+ * @exception EFAULT At least one of the parameters was a null pointer
  * @exception EPIPE The remote end of the pipe has closed and no data remains
  * @see vfs_read for other errors that might occur
  */
@@ -516,7 +518,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -532,10 +534,10 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-	
+
 		/* Signal the error */
 		syscall_errno = EBADF;
-		return -1;		
+		return -1;
 	}
 
 	/* Handle the various stream types */
@@ -552,7 +554,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			/* Check for errors */
 			if (st) {
 				/* Pass error code to userland */
-				syscall_errno = st;		
+				syscall_errno = st;
 
 				/* Release the lock on the stream */
 				semaphore_up(ptr->info->lock);
@@ -561,7 +563,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				return -1;
 			}
 
-			/* Release the lock on the stream */			
+			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
 
 			/* Return the amount of bytes read */
@@ -582,24 +584,24 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Return error */
-				return -1; 
+				return -1;
 			}
 
 			/* Return the amount of bytes read */
 			return (ssize_t) read_count;
-			
+
 		case STREAM_TYPE_EXTERNAL:
 			/* Stream is externally implemented */
-			
+
 			assert( ptr->info->ops != NULL );
 			assert( ptr->info->ops->read != NULL );
-			
+
 			/* Call the implementation */
 			st = ptr->info->ops->read( ptr->info, buffer, count, &read_count );
-			
+
 			/* Check for errors */
 			if ( st ) {
-				
+
 				/* Pass error code to userland */
 				syscall_errno = st;
 
@@ -607,8 +609,8 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				semaphore_up(ptr->info->lock);
 
 				/* Return error */
-				return -1; 
-				
+				return -1;
+
 			}
 
 			/* Release the lock on the stream  */
@@ -617,7 +619,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 
 			/* Return the amount of bytes read */
 			return (ssize_t) read_count;
-			
+
 		default:
 			/* Invalid stream type */
 
@@ -633,8 +635,8 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 
 /**
  * @brief Write to a stream
- *  
- * This function implements the write(2) system call, 
+ *
+ * This function implements the write(2) system call,
  * It attempts to write _count_ number of bytes from to stream
  *
  * @param fd The stream to write to
@@ -644,7 +646,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
  * @exception EBADF fd does not refer to an open file stream
  * @exception EBADF fd was not opened with WRITE access mode
  * @exception EISDIR fd refers to a directory stream
- * @exception EFAULT At least one of the parameters was a null pointer 
+ * @exception EFAULT At least one of the parameters was a null pointer
  * @exception EPIPE The remote end of the pipe has been closed and there is no room
  *        left in the pipe buffer
  * @see vfs_write for other errors that might occur
@@ -664,7 +666,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -680,10 +682,10 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-	
+
 		/* Signal the error */
 		syscall_errno = EBADF;
-		return -1;		
+		return -1;
 	}
 
 	/* Handle the various stream types */
@@ -695,7 +697,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 			if (ptr->info->flags & O_APPEND) {
 				/* It is set, seek to EOF */
 				ptr->info->offset = ptr->info->inode->size;
-	
+
 			}
 
 			/* Call the VFS */
@@ -707,7 +709,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 			/* Check for errors */
 			if (st) {
 				/* Pass error code to userland */
-				syscall_errno = st;		
+				syscall_errno = st;
 
 				/* Release the lock on the stream */
 				semaphore_up(ptr->info->lock);
@@ -716,7 +718,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 				return -1;
 			}
 
-			/* Release the lock on the stream */	
+			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
 
 			/* Return the amount of bytes written */
@@ -732,7 +734,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 
 			/* Check for errors */
 			if (st) {
-	
+
 				/* In case of EPIPE the process should also be
 				 * sent SIGPIPE */
 				if (st == EPIPE)
@@ -742,22 +744,22 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Return error */
-				return -1; 
+				return -1;
 			}
 			return (ssize_t) read_count;
-			
+
 		case STREAM_TYPE_EXTERNAL:
 			/* Stream is externally implemented */
-			
+
 			assert( ptr->info->ops != NULL );
 			assert( ptr->info->ops->write != NULL );
-			
+
 			/* Call the implementation */
 			st = ptr->info->ops->write( ptr->info, buffer, count, &read_count );
-			
+
 			/* Check for errors */
 			if ( st ) {
-				
+
 				/* Pass error code to userland */
 				syscall_errno = st;
 
@@ -765,8 +767,8 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 				semaphore_up(ptr->info->lock);
 
 				/* Return error */
-				return -1; 
-				
+				return -1;
+
 			}
 
 			/* Release the lock on the stream  */
@@ -775,7 +777,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 
 			/* Return the amount of bytes written */
 			return (ssize_t) read_count;
-			
+
 		default:
 			/* Invalid stream type */
 
@@ -790,11 +792,11 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 
 /**
  * @brief Resize a file
- * 
+ *
  * If the new size is larger than the file currently is the new room will be
  * filled with zero bytes, if the new size is smaller the data in the truncated
  * part of the file is deleted
- * 
+ *
  * @param fd          The file stream to operate on
  * @param size        The new size of the file
  * @return In case of error: -1, Otherwise 0
@@ -812,7 +814,7 @@ int _sys_ftruncate(int fd, off_t size)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -828,10 +830,10 @@ int _sys_ftruncate(int fd, off_t size)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-	
+
 		/* Signal the error */
 		syscall_errno = EBADF;
-		return -1;		
+		return -1;
 	}
 
 	/* Handle the various stream types */
@@ -846,28 +848,28 @@ int _sys_ftruncate(int fd, off_t size)
 			/* We can't ftruncate a pipe */
 			syscall_errno = EINVAL;
 			return -1;
-			
+
 		case STREAM_TYPE_EXTERNAL:
 			/* Stream is externally implemented */
-			
+
 			assert( ptr->info->ops != NULL );
-			
+
 			if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_TRUNC ) {
-			
+
 				if ( ptr->info->ops->truncate == NULL ) {
 
 					/* Release the lock on the stream  */
 					semaphore_up(ptr->info->lock);
-					
+
 					return EINVAL;
 				}
-				
+
 				/* Call the implementation */
 				st = ptr->info->ops->truncate( ptr->info, (aoff_t) size );
-				
+
 				/* Check for errors */
 				if ( st ) {
-					
+
 					/* Pass error code to userland */
 					syscall_errno = st;
 
@@ -875,8 +877,8 @@ int _sys_ftruncate(int fd, off_t size)
 					semaphore_up(ptr->info->lock);
 
 					/* Return error */
-					return -1; 
-					
+					return -1;
+
 				}
 
 				/* Release the lock on the stream  */
@@ -886,7 +888,7 @@ int _sys_ftruncate(int fd, off_t size)
 				/* Return the amount of bytes read */
 				return 0;
 			}
-			
+
 		case STREAM_TYPE_FILE:
 			/* Stream is a file or directory stream */
 
@@ -912,7 +914,7 @@ int _sys_ftruncate(int fd, off_t size)
 
 /**
  * @brief Reposition read/write file offset
- * 
+ *
  * The way the new file offset is calculated is determined by _whence_:@n@n
  * Whence:@n
  * @li *SEEK_SET*\n The offset is set to _offset_ bytes
@@ -942,19 +944,19 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
 	}
-	
+
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_LSEEK ) {
-			
+
 			if ( ptr->info->ops->lseek == NULL ) {
 				syscall_errno = ESPIPE;
 				return (off_t) -1;
@@ -962,23 +964,23 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 
 			/* Acquire a lock on the stream */
 			semaphore_down(ptr->info->lock);
-			
+
 			st = ptr->info->ops->lseek( ptr->info, offset, whence, &out );
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			syscall_errno = st;
-			
+
 			return out;
-			
+
 		} else if ( S_ISFIFO(ptr->info->inode->mode) ) {
-			
+
 			syscall_errno = ESPIPE;
 			return (off_t) -1;
-			
+
 		}
-		
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE) || (S_ISFIFO(ptr->info->inode->mode))) {
 		syscall_errno = ESPIPE;
 		return (off_t) -1;
@@ -1002,19 +1004,19 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 
 			/* Check whether offset is positive */
 			if (offset >= 0) {
-				/* It is, just add it to the offset */	
+				/* It is, just add it to the offset */
 				ptr->info->offset += (aoff_t) offset;
 			} else {
 				/* This hack is necessary because file offset
                                  * is unsigned and 2^32-1 is a valid offset */
-	
+
 				/* It is negative, check for negative result */
 				if (((aoff_t) -offset) > ptr->info->offset)
 					_before_begin = 1;
-				
+
 				/* Subtract it from the offset */
 				ptr->info->offset -= (aoff_t) -offset;
-			}			
+			}
 
 			break;
 		case SEEK_END:
@@ -1022,16 +1024,16 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 
 			/* Check whether offset is positive */
 			if (offset >= 0) {
-				/* It is, just add it to the size */	
+				/* It is, just add it to the size */
 				ptr->info->offset = ptr->info->inode->size + (aoff_t) offset;
 			} else {
 				/* This hack is necessary because file offset
                                  * is unsigned and 2^32-1 is a valid offset */
-	
+
 				/* It is negative, check for negative result */
 				if (((aoff_t) -offset) > ptr->info->inode->size)
 					_before_begin = 1;
-				
+
 				/* Subtract it from the size */
 				ptr->info->offset = ptr->info->inode->size - (aoff_t) -offset;
 			}
@@ -1041,7 +1043,7 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 			/* Invalid whence value */
 			/* Set before_begin to trigger an undo */
 			_before_begin = 1;
-			break;			
+			break;
 	}
 
 	/* Check for errors */
@@ -1051,30 +1053,30 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-		
+
 		/* Report error */
 		syscall_errno = EINVAL;
 		return (off_t) -1;
-	} else if ( (ptr->info->type == STREAM_TYPE_EXTERNAL) && 
+	} else if ( (ptr->info->type == STREAM_TYPE_EXTERNAL) &&
 				(ptr->info->ops->seek != NULL) ) {
-		
+
 		st = ptr->info->ops->seek( ptr->info, ptr->info->offset );
-		
+
 		if ( st ) {
-			
+
 			/* Undo seek */
 			ptr->info->offset = old_offset;
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			/* Report error */
 			syscall_errno = st;
-			
+
 			return (off_t) -1;
-			
+
 		}
-		
+
 	}
 
 	/* Release the lock on the stream */
@@ -1102,19 +1104,19 @@ int _sys_fchdir(int fd)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
 	}
-	
+
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_CHDIR ) {
-			
+
 			if ( ptr->info->ops->chdir == NULL ) {
 				syscall_errno = ENOTDIR;
 				return -1;
@@ -1122,35 +1124,35 @@ int _sys_fchdir(int fd)
 
 			/* Acquire a lock on the stream */
 			semaphore_down(ptr->info->lock);
-			
+
 			status = ptr->info->ops->chdir( ptr->info );
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			syscall_errno = status;
-			
+
 			return status ? -1 : 0;
-			
+
 		} else if ( !S_ISDIR(ptr->info->inode->mode) ) {
-			
+
 			syscall_errno = ENOTDIR;
 			return -1;
-			
+
 		}
-		
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE) || (!S_ISDIR(ptr->info->inode->mode))) {
 		syscall_errno = ENOTDIR;
 		return -1;
 	}
-	
+
 	/* Call the VFS */
 	status = vfs_chdir(ptr->info->dirc);
 
 	/* Report any errors to the application */
 	if (status)
 		syscall_errno = status;
-	
+
 	/* Return -1 on error, 0 on success */
 	return status ? -1 : 0;
 }
@@ -1172,7 +1174,7 @@ int _sys_fstat(int fd, struct stat* buf)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
@@ -1181,11 +1183,11 @@ int _sys_fstat(int fd, struct stat* buf)
 
 	/* Check whether this is a file stream */
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_FSTAT ) {
-			
+
 			if ( ptr->info->ops->stat == NULL ) {
 				syscall_errno = EBADF;
 				return -1;
@@ -1193,18 +1195,18 @@ int _sys_fstat(int fd, struct stat* buf)
 
 			/* Acquire a lock on the stream */
 			semaphore_down(ptr->info->lock);
-			
+
 			status = ptr->info->ops->stat( ptr->info, buf );
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			syscall_errno = status;
-			
+
 			return status ? -1 : 0;
-			
+
 		}
-		
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE)) {
 		syscall_errno = EBADF;
 		return -1;
@@ -1221,7 +1223,7 @@ int _sys_fstat(int fd, struct stat* buf)
 	buf->st_nlink = ptr->info->inode->hard_link_count;
 	buf->st_uid = ptr->info->inode->uid;
 	buf->st_gid = ptr->info->inode->gid;
-	buf->st_atime = (time_t) ptr->info->inode->atime; 
+	buf->st_atime = (time_t) ptr->info->inode->atime;
 	buf->st_mtime = (time_t) ptr->info->inode->mtime;
 	buf->st_ctime = (time_t) ptr->info->inode->ctime;
 
@@ -1247,20 +1249,20 @@ int _sys_fchmod(int fd, mode_t mode)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
-	} 
+	}
 
 	/* Check whether this is a file stream */
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_CHMOD ) {
-			
+
 			if ( ptr->info->ops->chmod == NULL ) {
 				syscall_errno = EBADF;
 				return -1;
@@ -1268,18 +1270,18 @@ int _sys_fchmod(int fd, mode_t mode)
 
 			/* Acquire a lock on the stream */
 			semaphore_down(ptr->info->lock);
-			
+
 			status = ptr->info->ops->chmod( ptr->info, mode );
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			syscall_errno = status;
-			
+
 			return status ? -1 : 0;
-			
-		} 
-		
+
+		}
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE)) {
 		syscall_errno = EBADF;
 		return -1;
@@ -1325,20 +1327,20 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
-	} 
+	}
 
 	/* Check whether this is a file stream */
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ~ptr->info->impl_flags & STREAM_IMPL_FILE_CHOWN ) {
-			
+
 			if ( ptr->info->ops->chown == NULL ) {
 				syscall_errno = EBADF;
 				return -1;
@@ -1346,18 +1348,18 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
 
 			/* Acquire a lock on the stream */
 			semaphore_down(ptr->info->lock);
-			
+
 			status = ptr->info->ops->chown( ptr->info, owner, group );
 
 			/* Release the lock on the stream */
 			semaphore_up(ptr->info->lock);
-			
+
 			syscall_errno = status;
-			
+
 			return status ? -1 : 0;
-			
-		} 
-		
+
+		}
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE)) {
 		syscall_errno = EBADF;
 		return -1;
@@ -1368,7 +1370,7 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
 		syscall_errno = EPERM;
 		return -1;
 	}
-	
+
 	/* Check whether we may change the group for this file */
 	if (get_perm_class(-1, group) > PERM_CLASS_GROUP)
 		group = 65535;
@@ -1392,7 +1394,7 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
  * @param arg An argument to the function
  *
  * Supported functions are:
- * @li *F_DUPFD* Duplicate stream pointer\n \n This differs from dup2 in that it 
+ * @li *F_DUPFD* Duplicate stream pointer\n \n This differs from dup2 in that it
  * will use the lowest available fd when arg does not refer to an existant fd.
  * @param arg The fd to assign to the duplicate stream pointer
  * @return The duplicate fd or -1 in case of an error
@@ -1410,7 +1412,7 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
  * @param arg IGNORED
  * @return The stream flags or -1 in case of an error
  *
- * @li *F_SETFL* Set the stream flags\n \n 
+ * @li *F_SETFL* Set the stream flags\n \n
  * The stream creation and access flags are ignored
  * @param arg The new stream pointer flags
  * @return In case of an error: -1, Otherwise 0
@@ -1424,12 +1426,12 @@ int _sys_fcntl(int fd, int cmd, int arg)
 
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
-	} 
+	}
 
 	/* Handle the various commands */
 	switch (cmd) {
@@ -1439,7 +1441,7 @@ int _sys_fcntl(int fd, int cmd, int arg)
 			else
 				return _sys_dup(fd);
 		case F_GETFD:
-			return ptr->fd_flags; 
+			return ptr->fd_flags;
 		case F_SETFD:
 			ptr->fd_flags = arg;
 			return 0;
@@ -1459,7 +1461,7 @@ int _sys_fcntl(int fd, int cmd, int arg)
  * @param fd The fd to operate on
  * @param cmd The function to execute
  * @param arg An argument to the function
- * 
+ *
  * @return Usually 0 on success, and -1 on error.
  * @exception EBADF fd does not refer to an open stream
  * @exception ENOTTY fd does not refer to a special file
@@ -1473,21 +1475,21 @@ int _sys_ioctl(int fd, int cmd, int arg)
 	stream_ptr_t *ptr;
 	errno_t status;
 	int result;
-	
+
 	/* Get the stream ptr for fd */
  	ptr = stream_get_ptr(fd);
-	
+
 	/* Check whether the fd exists */
 	if (!ptr) {
 		syscall_errno = EBADF;
 		return -1;
-	} 
+	}
 
 	/* Check whether fd refers to a file */
 	if ( ptr->info->type == STREAM_TYPE_EXTERNAL ) {
-			
+
 		assert ( ptr->info->ops != NULL );
-		
+
 		if ( ptr->info->ops->ioctl == NULL ) {
 			syscall_errno = ENOTTY;
 			return -1;
@@ -1495,16 +1497,16 @@ int _sys_ioctl(int fd, int cmd, int arg)
 
 		/* Acquire a lock on the stream */
 		semaphore_down(ptr->info->lock);
-			
+
 		status = ptr->info->ops->ioctl( ptr->info, cmd, (void *) arg, &result );
 
 		/* Release the lock on the stream */
 		semaphore_up(ptr->info->lock);
-			
+
 		syscall_errno = status;
-			
+
 		return result;
-			
+
 	} else if ((ptr->info->type != STREAM_TYPE_FILE)) {
 		syscall_errno = ENOTTY;
 		return -1;
@@ -1543,19 +1545,19 @@ int _sys_dup2(int oldfd, int newfd)
 
 	/* Get the stream ptr for oldfd */
  	oldptr = stream_get_ptr(oldfd);
-	
+
 	/* Check whether the fd exists */
 	if (!oldptr) {
 		syscall_errno = EBADF;
 		return -1;
 	}
-	
-	/* Check if newfd is valid */	
+
+	/* Check if newfd is valid */
 	if (newfd < 0) {
 		syscall_errno = EBADF;
 		return -1;
-	} 
-	
+	}
+
 	/* Get the stream ptr for newfd */
 	newptr = stream_get_ptr(newfd);
 
@@ -1583,15 +1585,15 @@ int _sys_dup2(int oldfd, int newfd)
 
 	/* Bump stream info reference count */
 	newptr->info->ref_count++;
-	
+
 	/* Add duplicate to the table */
 	llist_add_end(current_process->fd_table, (llist_t *) newptr);
 
-	if ((newptr->info->type == STREAM_TYPE_FILE) && 
+	if ((newptr->info->type == STREAM_TYPE_FILE) &&
 			S_ISCHR(newptr->info->inode->mode))
 		device_char_dup( newptr->info->inode->if_dev, newptr );
 
-	return newfd;	
+	return newfd;
 }
 
 /**
@@ -1609,13 +1611,13 @@ int _sys_dup(int oldfd)
 
 	/* Allocate a new fd */
 	newfd = stream_alloc_fd();
-	
+
 	/* Check for errors */
 	if (newfd == -1){
 		syscall_errno = EMFILE;
 		return -1;
-	}	
-	
+	}
+
 	/** Call _sys_dup2 with a new fd for newfd */
 	status = _sys_dup2(oldfd, newfd);
 
@@ -1627,9 +1629,9 @@ int _sys_dup(int oldfd)
 	return status;
 }
 
-/** 
+/**
  * @brief Create a pipe
- * @param pipefd The created fd's will be put in this array, the 
+ * @param pipefd The created fd's will be put in this array, the
  * read endpoint will be in pipefd[0], the write endpoint in pipefd[1]
  * @param flags Flags to set on the streams (O_CLOEXEC and/or O_NONBLOCK)
  * @return On success, zero is returned. On error, -1 is returned.
@@ -1643,7 +1645,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 	stream_info_t	*info_read;
 	stream_info_t	*info_write;
 	stream_ptr_t	*ptr_read;
-	stream_ptr_t	*ptr_write;	
+	stream_ptr_t	*ptr_write;
 
 	/* Allocate new fd's for the pipe endpoints */
 	if ((pipefd[0] = stream_alloc_fd()) == -1) {
@@ -1700,7 +1702,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 		syscall_errno = ENOMEM;
 		goto _bailout_5;
 	}
-	
+
 	/* Fill out the read endpoint pointer fields */
 	ptr_read->id = pipefd[0];
 	ptr_read->info = info_read;
@@ -1762,12 +1764,12 @@ int _sys_pipe2(int pipefd[2], int flags)
 	pipe_open_write(pipe);
 
 	/* Release the lock on the endpoints */
-	semaphore_up(info_read->lock);	
-	semaphore_up(info_write->lock);	
+	semaphore_up(info_read->lock);
+	semaphore_up(info_write->lock);
 
 	/* Add the endpoints to the fd table */
 	llist_add_end(current_process->fd_table, (llist_t *) ptr_read);
-	llist_add_end(current_process->fd_table, (llist_t *) ptr_write);		
+	llist_add_end(current_process->fd_table, (llist_t *) ptr_write);
 
 	/* Return success */
 	return 0;
@@ -1791,12 +1793,12 @@ _bailout_B:
 	stream_free_fd(pipefd[0]);
 _bailout_A:
 	return -1;
-	
+
 }
 
 /**
  * @brief Open a file stream
- * 
+ *
  * The behaviour of this function is determined by _flags_\n
  * It is required to specify one of the access mode flags:\n
  * @li *O_RDONLY* Open read-only
@@ -1804,31 +1806,31 @@ _bailout_A:
  * @li *O_RDWR* Open read-write\n
  *
  * Valid optional flags:\n \n
- * @li *O_APPEND* Open the file for appending \n 
+ * @li *O_APPEND* Open the file for appending \n
  * \n
  * Before each _sys_write the offset is set to the end of the file\n
  * \n
- * @li *O_CLOEXEC* Set this stream pointer to close on execve(2) \n 
+ * @li *O_CLOEXEC* Set this stream pointer to close on execve(2) \n
  * \n
- * When this flag is set this stream pointer will be closed when executing a 
+ * When this flag is set this stream pointer will be closed when executing a
  * new program.\n
  * \n
- * @li *O_CREAT* Create file \n 
+ * @li *O_CREAT* Create file \n
  * \n
  * If this flag is set and the file does not exist the file will be created
  * using the mode specified in _mode_ \n
  * \n
- * @li *O_NONBLOCK* Use non-blocking IO \n 
+ * @li *O_NONBLOCK* Use non-blocking IO \n
  * \n
  * When this flag is set _sys_read and _sys_write will not block if no data is
  * available\n
  * \n
- * @li *O_TRUNC* Truncate file \n 
+ * @li *O_TRUNC* Truncate file \n
  * \n
- * If this file already exists and is a regular file and the open mode allows 
+ * If this file already exists and is a regular file and the open mode allows
  * writing the file will be truncated to length 0\n
  * \n
- * @li *O_EXCL* Ensure the file is created \n 
+ * @li *O_EXCL* Ensure the file is created \n
  * \n
  * If this flag is set and O_CREAT is set and the file already exists _sys_open
  * \n
@@ -1837,7 +1839,7 @@ _bailout_A:
  * @param path The path of the file to open
  * @param flags The options for opening the file
  * @param mode The mode to create the file with
- * @return -1 if an error occurred, if successful the fd of the opened stream 
+ * @return -1 if an error occurred, if successful the fd of the opened stream
  * is returned
  * @exception ENOENT The file does not exist and *O_CREAT* is not set
  * @exception EEXIST The file exists and *O_EXCL* is set
@@ -1858,25 +1860,25 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	int st;
 	int fd;
 	stream_info_t *info;
-	stream_ptr_t *ptr;	
+	stream_ptr_t *ptr;
 	dir_cache_t *dirc;
 	inode_t *inode;
 
-	
+
 	/* Check for null pointers */
 	assert(path != NULL);
 
 	/* Look up the file */
 	st = vfs_find_dirc(path, &dirc);
-	
+
 	/* Check if the file exists */
 	if (st == ENOENT) {
 		/* If not, check if we are to create it */
 		if (flags & O_CREAT) {
-	
+
 			/* Create the file */
 			st = vfs_mknod(path, (mode & 0777) | S_IFREG, 0);
-	
+
 			/* Check for errors */
 			if (st != 0) {
 				/* Pass the error to the application */
@@ -1907,7 +1909,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 		vfs_dir_cache_release(dirc);
 		return -1;
 	}
-	
+
 	/* Grab the files inode */
 	inode = vfs_inode_ref(dirc->inode);
 
@@ -1924,7 +1926,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 		syscall_errno = EACCES;
 		return -1;
 	}
-	
+
 	/* Allocate memory for the stream info */
 	info = heapmm_alloc(sizeof(stream_info_t));
 
@@ -1956,7 +1958,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 		syscall_errno = EMFILE;
 		return -1;
 	}
-			
+
 	/* Fill stream pointer fields */
 	ptr->id = fd;
 	ptr->info = info;
@@ -1974,7 +1976,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	/* Allocate stream lock */
 	info->lock = semaphore_alloc();
 
-	/* Check for errors */	
+	/* Check for errors */
 	if (!(info->lock)) {
 		heapmm_free(ptr, sizeof(stream_ptr_t));
 		heapmm_free(info, sizeof(stream_info_t));
@@ -2003,12 +2005,12 @@ int _sys_open(const char *path, int flags, mode_t mode)
 			return -1;
 		}
 	}
-	
+
 	/* Is the append flag set? */
 	if (flags & O_APPEND) {
 		//TODO: Implement O_APPEND
 	}
-	
+
 	/* Check if file is a FIFO */
 	if (S_ISFIFO(inode->mode)) {
 
@@ -2093,10 +2095,10 @@ int _sys_close(int fd)
  */
 
 int _sys_close_int(process_info_t *process, int fd)
-{	
+{
 	stream_ptr_t *ptr;
 	errno_t status;
-	
+
 	assert(process != NULL);
 
 	/* Get the stream pointer */
@@ -2120,14 +2122,14 @@ int _sys_close_int(process_info_t *process, int fd)
 	ptr->info->ref_count--;
 
 	/* Signal close to drivers */
-	if ((ptr->info->type == STREAM_TYPE_FILE) && 
+	if ((ptr->info->type == STREAM_TYPE_FILE) &&
 			S_ISCHR(ptr->info->inode->mode))
 		device_char_close(ptr->info->inode->if_dev, ptr);
 
 	/* Check if this was the last pointer */
 	if (ptr->info->ref_count == 0) {
 		/* Close the stream */
-	
+
 		/* Acquire a lock on the stream */
 		semaphore_down(ptr->info->lock);
 
@@ -2136,7 +2138,7 @@ int _sys_close_int(process_info_t *process, int fd)
 			case STREAM_TYPE_FILE:
 				/* Stream is a file or directory stream */
 
-				/* If the stream referred to a FIFO signal 
+				/* If the stream referred to a FIFO signal
 				 * the pipe driver */
 				if (S_ISFIFO(ptr->info->inode->mode)) {
 					if ((ptr->info->flags & O_ACCMODE) == O_RDONLY)
@@ -2148,10 +2150,10 @@ int _sys_close_int(process_info_t *process, int fd)
 						pipe_close_write(ptr->info->inode->fifo);
 					}
 				}
-	
+
 				/* If the pointer refers to a device stream, signal the device driver */
-				else if ((ptr->info->type == STREAM_TYPE_FILE) && 
-					S_ISBLK(ptr->info->inode->mode) && 
+				else if ((ptr->info->type == STREAM_TYPE_FILE) &&
+					S_ISBLK(ptr->info->inode->mode) &&
 					(process == current_process))
 					device_block_close(ptr->info->inode->if_dev, fd);
 				ptr->info->inode->open_count--;
@@ -2163,7 +2165,7 @@ int _sys_close_int(process_info_t *process, int fd)
 				break;
 			case STREAM_TYPE_PIPE:
 				/* Stream is a pipe */
-		
+
 				/* Signal the pipe driver */
 				if ((ptr->info->flags & O_ACCMODE) == O_RDONLY)
 					pipe_close_read(ptr->info->pipe);
@@ -2171,26 +2173,26 @@ int _sys_close_int(process_info_t *process, int fd)
 					pipe_close_write(ptr->info->pipe);
 
 				/* Free the pipe, if there are still endpoints
-				 * open this will fail, which is not an error 
+				 * open this will fail, which is not an error
                                  * condition here */
 				pipe_free(ptr->info->pipe);
 				break;
-				
+
 			case STREAM_TYPE_EXTERNAL:
 				/* Stream is externally implemented */
-				
+
 				assert( ptr->info->ops != NULL );
 				assert( ptr->info->ops->close != NULL );
-				
-				/* Call implementation */				
+
+				/* Call implementation */
 				status = ptr->info->ops->close( ptr->info );
-				
+
 				//TODO: Figure out what to do here
 				if ( status ) {
 					syscall_errno = status;
 					return -1;
 				}
-				
+
 				break;
 		}
 
@@ -2231,7 +2233,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	}
 
 	poll = heapmm_alloc( sizeof( stream_poll_t ) * nfds );
-	
+
 	if ( poll == NULL ) {
 		syscall_errno = ENOMEM;
 		goto fail_pollalloc;
@@ -2283,7 +2285,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	for ( i = 0; i < nfds; i++ ) {
 		stream_poll( poll );
 		if ( poll[i].revents != 0 ) {
-			debugcon_printf("poll: revents=%x\n", poll[i].revents);
+			printf( CON_TRACE, "poll: revents=%x\n", poll[i].revents);
 			nsel++;
 		}
 	}
@@ -2310,5 +2312,5 @@ fail_pollalloc:
 	semaphore_free( sem );
 fail_semalloc:
 	return -1;
-	
+
 }

@@ -26,7 +26,6 @@
 #include "kernel/syscall.h"
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
-#include "kernel/earlycon.h"
 #include "config.h"
 
 tty_info_t ***tty_list;
@@ -36,8 +35,8 @@ tty_ops_t *tty_operations;
 
 	if (S_ISCHR(inode->mode) && !(flags & O_NOCTTY)) {
 		if ((scheduler_current_task->pid == scheduler_current_task->sid) && !scheduler_current_task->ctty) {
-			scheduler_current_task->ctty = inode->if_def; 
-			
+			scheduler_current_task->ctty = inode->if_def;
+
 		}
 	}
 */
@@ -67,7 +66,7 @@ void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out
 	dev_t c;
 	tty_info_t *tty;
 	char_dev_t *dev;
-	tty_list[major] = heapmm_alloc(sizeof(tty_info_t *) * 256); 	
+	tty_list[major] = heapmm_alloc(sizeof(tty_info_t *) * 256);
 	for (c = 0; c < (dev_t) minor_count; c++) {
 		tty = heapmm_alloc(sizeof(tty_info_t));
 		tty->pipe_in = pipe_create();
@@ -94,7 +93,7 @@ void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out
 
 tty_info_t *tty_get(dev_t device)
 {
-	dev_t major = MAJOR(device);	
+	dev_t major = MAJOR(device);
 	dev_t minor = MINOR(device);
 	tty_info_t *ttyi = tty_list[major][minor];
 	return ttyi;
@@ -116,19 +115,19 @@ int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, option
 	llist_add_end( &tty->fds, ( llist_t *) fdp );
 	if (!(options & O_NOCTTY)) {
 		if (( current_process->pid == current_process->sid) && !current_process->ctty) {
-			current_process->ctty = device; 
+			current_process->ctty = device;
 			tty->ct_pid = current_process->pid;
 			tty->fg_pgid = current_process->pgid;
 		}
 	}
 	return 0;
-	
+
 }
 
 int tty_dup(dev_t device, stream_ptr_t *fd)			//device, fd, options
 {
 	return tty_open( device, fd, O_NOCTTY );
-	
+
 }
 
 int tty_close(dev_t device, stream_ptr_t *fd)
@@ -151,7 +150,7 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 		//TODO: process_strip_ctty(device);
 		if (device == current_process->ctty)
 			current_process->ctty = 0;
-	}	
+	}
 	return 0;
 }
 
@@ -184,7 +183,7 @@ void tty_buf_out_char(tty_info_t *tty, char c)
 void tty_flush_line_buffer(tty_info_t *tty){
 	aoff_t w;
 	pipe_write(tty->pipe_in, tty->line_buffer, tty->line_buffer_pos, &w, 1);
-	tty->line_buffer_pos = 0;	
+	tty->line_buffer_pos = 0;
 }
 
 void tty_buf_line_char(tty_info_t *tty, char c)
@@ -201,7 +200,7 @@ void tty_output_char(dev_t device, char c)
 	if (tty->termios.c_oflag & OPOST) { //TODO: Flow control
 		if ((tty->termios.c_oflag & ONLCR) && (c == '\n')) {
 			tty->write_out(device, '\r');
-			
+
 		} else if ((tty->termios.c_oflag & OCRNL) && (c == '\r'))
 			c = '\n';
 		tty->write_out(device, c);
@@ -247,19 +246,19 @@ void tty_input_char(dev_t device, char c)
 				tty->write_out(device, '\b');
 				tty->write_out(device, ' ');
 				tty->write_out(device, '\b');
-			}				
-		} else if ((tty->termios.c_lflag & ECHO) || 
+			}
+		} else if ((tty->termios.c_lflag & ECHO) ||
 		    ((c == '\n') && (tty->termios.c_lflag & ECHONL)))
-			tty_output_char(device, c);		
-	
+			tty_output_char(device, c);
+
 		if ((c == '\n') || (c == tty->termios.c_cc[VEOL])) {
 			tty_buf_line_char(tty, c);
 			tty_flush_line_buffer(tty);
 		} else if (c == tty->termios.c_cc[VERASE]) {
 			if (tty->line_buffer_pos)
-				tty->line_buffer_pos--;			
+				tty->line_buffer_pos--;
 		} else if (c == tty->termios.c_cc[VKILL]) {
-			tty->line_buffer_pos = 0;			
+			tty->line_buffer_pos = 0;
 		} else if (tty->termios.c_lflag & ISIG) {
 			if (c == tty->termios.c_cc[VQUIT]) {
 				process_signal_pgroup( tty->fg_pgid, SIGQUIT, info );
@@ -267,11 +266,11 @@ void tty_input_char(dev_t device, char c)
 				process_signal_pgroup( tty->fg_pgid, SIGINT, info );
 			} else if (c == tty->termios.c_cc[VSUSP]) {
 				process_signal_pgroup( tty->fg_pgid, SIGTSTP, info );
-			} else 
+			} else
 				tty_buf_line_char(tty, c);
 		} else {
 			tty_buf_line_char(tty, c);
-		}			
+		}
 	} else if (tty->termios.c_lflag & ECHO) {
 		tty->write_out(device, c);
 		tty_buf_out_char(tty, c);
@@ -331,24 +330,24 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 			if (!copy_kern_to_user(&(tty->fg_pgid), (void *) arg, sizeof(pid_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			return 0;
 		case TIOCSPGRP:
 			if (!copy_user_to_kern((void *) arg, &(tty->fg_pgid), sizeof(pid_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			return 0;
 
 		case TIOCSCTTY:
 			if ((current_process->pid == current_process->sid) && ((current_process->ctty == device) || !current_process->ctty)) {
-				current_process->ctty = device; 
+				current_process->ctty = device;
 				tty->ct_pid = current_process->pid;
 				tty->fg_pgid = current_process->pgid;
 			}
 			return 0;
 		case TIOCNOTTY:
-			if (current_process->ctty != device) 
+			if (current_process->ctty != device)
 				return 0;
 			current_process->ctty = 0;
 			if (current_process->pid == current_process->sid) {
@@ -361,20 +360,20 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 			if (!copy_kern_to_user(&(tty->win_size), (void *) arg, sizeof(winsize_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			return 0;
 
 		case TIOCSWINSZ:
 			if (!copy_user_to_kern((void *) arg, &(tty->win_size), sizeof(winsize_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			//TODO: process_signal_pgroup(tty->fg_pgid, SIGWINCH);
 			return 0;
-						
-			
+
+
 		default:
-			return 0;				
+			return 0;
 	}
 }
 

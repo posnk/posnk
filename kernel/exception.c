@@ -8,11 +8,12 @@
  * Changelog:
  * 02-04-2014 - Created
  */
- 
+
 #include <stddef.h>
 #include <stdint.h>
 #include <signal.h>
-#include "kernel/earlycon.h"
+#define CON_SRC "exception"
+#include "kernel/console.h"
 #include "kernel/system.h"
 #include "kernel/signals.h"
 #include "kernel/scheduler.h"
@@ -20,25 +21,24 @@
 
 void exception_panic( int sig, void *instr_pointer )
 {
-	panic_printf("PANIC! Unhandled kernelmode exception: (%i)\n",sig);
-	earlycon_printf("PANIC! Unhandled kernelmode exception: (%i)\n", sig);
-	earlycon_printf("Exception occurred at 0x%x\n", instr_pointer);
-	earlycon_printf("Register dump: \n");
+	printf(CON_PANIC, "PANIC! Unhandled kernelmode exception: (%i)", sig);
+	printf(CON_PANIC, "Exception occurred at 0x%x", instr_pointer);
+	printf(CON_PANIC, "Register dump: ");
 	debug_dump_state();
 	debug_postmortem_hook();
-	earlycon_printf("Halting processor.\n");
+	printf(CON_PANIC, "Halting processor.");
 	halt();
 }
- 
+
 void exception_handle( int sig, struct siginfo info, void *instr, int forceusr, int kern )
 {
 	if ((!forceusr) && kern) {
 		//TODO: Kernel mode exception
 		exception_panic(sig,instr);
 	} else {
-		debugcon_printf("Userland exception: (%i), sending signal!\n", sig);
-		debugcon_printf("Exception occurred at 0x%x\n", instr);
-		debugcon_printf("Register dump: \n");
+		printf( CON_WARN, "Userland exception: (%i), sending signal!", sig);
+		printf( CON_WARN, "Exception occurred at 0x%x", instr);
+		printf( CON_WARN, "Register dump: ");
 		debug_dump_state();
 		process_send_signal(current_process, sig, info ); //TODO: Look up appropriate signal for exception
 	}

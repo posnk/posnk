@@ -64,7 +64,7 @@ void vgacon_early_move_cursor()
 	vgacon_early_write_crtc_register(0x0F,offset);
 }
 
-int vgacon_early_get_cursor()
+void vgacon_early_get_cursor()
 {
 	int offset = (vgacon_early_read_crtc_register(0x0e) << 8) | vgacon_early_read_crtc_register(0x0f);
 	vgacon_early_vc.cursor_y = offset / 80;

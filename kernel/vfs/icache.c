@@ -25,7 +25,9 @@
 
 #include "kernel/heapmm.h"
 
-#include "kernel/earlycon.h"
+#undef CON_SRC
+#define  CON_SRC "vfs"
+#include "kernel/console.h"
 
 /* Global Variables */
 
@@ -55,33 +57,33 @@ void vfs_icache_evict( mruc_e_t *entry )
 	errno_t status;
 	inode_t *inode = ( inode_t * ) entry;
 
-	debugcon_printf("evict inode: 0x%08x \n", entry );
-	
+	printf(CON_TRACE, "evict inode: 0x%08x", entry );
+
 	mruc_remove( entry );
 
 	status = ifs_store_inode(inode);
-	
+
 	if (status) {
-	
-		debugcon_printf("vfs: error while syncing inode: %i\n", status);
-	
+
+		printf(CON_ERROR, "error while syncing inode: %i", status);
+
 	} else {
-	
-		
-		semaphore_free( inode->lock ); 
-		
+
+
+		semaphore_free( inode->lock );
+
 		heapmm_free( inode, inode->device->inode_size );
-	
+
 	}
-	
-	
+
+
 
 }
 
 void vfs_icache_initialize()
 {
 
-	int tsize, csize; 
+	int tsize, csize;
 	mruc_e_t **table;
 
 	tsize = CONFIG_INODE_CACHE_TABLESIZE;
@@ -126,11 +128,11 @@ void vfs_inode_release(inode_t *inode)
 	//status = ifs_store_inode( inode );
 
 	//if (status) {
-	//	debugcon_printf("vfs: failed to sync inode (%i)\n", status);
+	//	printf(CON_ERROR, failed to sync inode (%i)\n", status);
 	//}
 
 	llist_unlink((llist_t *) inode);
-	
+
 	mruc_add( inode_cache, ( mruc_e_t * ) inode, INODE_HASH(inode) );
 	//debugcon_printf("rel inode: 0x%x rc: %i EXITM\n",inode,inode->usage_count);
 
@@ -182,12 +184,12 @@ int vfs_cache_find_iterator (llist_t *node, void *param)
 {
 	inode_t *inode = (inode_t *) node;
 	vfs_cache_params_t *p = (vfs_cache_params_t *) param;
-	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);		
+	return (inode->id == p->inode_id) && (inode->device_id == p->device_id);
 }
 
 /**
  * @brief Get an inode from cache by it's ID
- * 
+ *
  * @param device   The device to get the inode from
  * @param inode_id The ID of the inode to look up
  * @return The inode with id inode_id from device or NULL if the inode was not
@@ -215,7 +217,7 @@ inode_t *vfs_get_cached_inode(fs_device_t *device, ino_t inode_id)
 	}
 
 	/* Search inode cache */
-	result = (inode_t *) mruc_get( inode_cache, 
+	result = (inode_t *) mruc_get( inode_cache,
 									INODE_HASHR( inode_id, device->id ));
 
 	if (result) {
@@ -235,23 +237,23 @@ int vfs_cache_flush_iterator (llist_t *node, __attribute__((unused)) void *param
 {
 	errno_t status;
 	inode_t *inode = (inode_t *) node;
-	
+
 	//semaphore_down( inode->lock );
 
 	status = ifs_store_inode(inode);
-	
+
 	if (status) {
-		debugcon_printf("vfs: error while syncing inode: %i\n", status);
+		printf(CON_ERROR, "error while syncing inode: %i", status);
 	}
 
 	//semaphore_up( inode->lock );
 
-	return 0;		
+	return 0;
 }
 
 /**
  * @brief Flush the inode cache
- * 
+ *
  */
 
 void vfs_cache_flush()
@@ -272,8 +274,8 @@ void vfs_cache_flush()
 SVFUNC(vfs_sync_inode, inode_t *inode)
 {
 	assert ( inode != NULL );
-	
+
 	CHAINRETV(ifs_store_inode, inode);
-	
+
 }
 

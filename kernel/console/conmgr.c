@@ -37,7 +37,7 @@ int con_register_src( const char *name ) {
 }
 
 int con_ref_src( const char *name ) {
-	#if no_auto_src
+	#ifndef no_auto_src
 	return con_register_src( name );
 	#else
 	int hnd;

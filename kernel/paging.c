@@ -16,7 +16,8 @@
 #include "kernel/physmm.h"
 #include "kernel/heapmm.h"
 #include "kernel/exception.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "paging"
+#include "kernel/console.h"
 #include "kernel/process.h"
 page_dir_t *paging_active_dir;
 
@@ -27,12 +28,11 @@ size_t heapmm_request_core ( void *address, size_t size )
 	if (paging_active_dir == NULL)
 		return 0;
 	if ( ((uintptr_t)(address  + size)) > 0xF0000000 )
-		debugcon_printf("[0x%x] %i morecore \n", address, size);
+		printf(CON_WARN, "[0x%x] %i morecore", address, size);
 	for (size_counter = 0; size_counter < size; size_counter += PHYSMM_PAGE_SIZE) {
 		frame = physmm_alloc_frame();
 		if (frame == PHYSMM_NO_FRAME){
-			debugcon_puts(" KHEAP:: OUT OF MEM !!!!");
-			earlycon_puts(" KHEAP:: OUT OF MEM !!!!");
+			printf(CON_WARN, " KHEAP:: OUT OF MEM !!!!");
 			break;
 		}
 		paging_map(address, frame, PAGING_PAGE_FLAG_RW);
@@ -44,7 +44,7 @@ size_t heapmm_request_core ( void *address, size_t size )
 
 void paging_handle_out_of_memory()
 {
-	earlycon_printf("OOM NOH\n");
+	printf(CON_ERROR, "Out of memory! No handling for this yet");
 }
 
 void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int write, int user)
@@ -83,7 +83,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 	} else if (write) {
 		//TODO: Copy on write,
 	}
-	debugcon_printf("[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i) \n", virt_addr, curpid(), instr_ptr, present, user, write);
+	printf(CON_ERROR, "[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i)", virt_addr, curpid(), instr_ptr, present, user, write);
 	if ( !present )
 		info.si_code = SEGV_MAPERR;
 	else

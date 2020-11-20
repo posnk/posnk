@@ -19,7 +19,8 @@
 #include "kernel/signals.h"
 #include "kernel/paging.h"
 #include "kernel/syscall.h"
-#include "kernel/earlycon.h"
+#define  CON_SRC "syscall"
+#include "kernel/console.h"
 #include "kdbg/dbgapi.h"
 #include "config.h"
 
@@ -124,7 +125,7 @@ int copy_user_to_kern(const void *src, void *dest, size_t size)
 {
 	if (!procvmm_check(src,size))
 		return 0;
-	memcpy(dest,src,size);	
+	memcpy(dest,src,size);
 	return 1;
 }
 
@@ -132,30 +133,14 @@ int copy_kern_to_user(const void *src, void *dest, size_t size)
 {
 	if (!procvmm_check(dest,size))
 		return 0;
-	memcpy(dest,src,size);	
+	memcpy(dest,src,size);
 	return 1;
 }
-/*
-uint32_t debug_uputs(uint32_t param[4], uint32_t param_size[4])
-{
-	char *buffer;
-	if (param[1] > 256) {
-		syscall_errno = 1; //TODO: ENOMEM
-		return 0;
-	}
-	buffer = heapmm_alloc(param_size[0]);
-	copy_user_to_kern((void *)param[0], buffer, param_size[0]);
-	buffer[param_size[0] - 1] = '\0';
-	earlycon_puts(buffer);
-	heapmm_free(buffer, param_size[0]);
-	shutdown();
-	return 1;	
-}*/
 
 SYSCALL_DEF0(dbgdrop)
 {
 	dbgapi_invoke_kdbg(0);
-	return 1;	
+	return 1;
 }
 
 int curpid();
@@ -170,8 +155,8 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 	int call;
 #endif
 	syscall_params_t params;
-	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {	
-		debugcon_printf("Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x\n",current_process->name,curpid(), instr_ptr, user_param_block);
+	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {
+		printf(CON_WARN, "Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x",current_process->name,curpid(), instr_ptr, user_param_block);
 		sigi.si_code = SEGV_MAPERR;
 		sigi.si_addr = user_param_block;
 		process_send_signal(current_process, SIGSEGV, sigi);
@@ -185,9 +170,9 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 #ifdef CONFIG_SYSCALL_DEBUG
 	call = params.call_id;
 	if ((call == SYS_OPEN) || (call == SYS_STAT)|| (call == SYS_EXECVE))
-		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
+		printf( CON_TRACE, "[%s:%i] %s(\"%s\", %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else
-		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
+		printf( CON_TRACE, "[%s:%i] %s(%x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 #endif
 	scheduler_current_task->in_syscall = params.call_id;
 	if ( call == SYS_FORK ) {
@@ -203,7 +188,7 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 						params.param_size[1] );
 	scheduler_current_task->in_syscall = 0xFFFFFFFF;
 #ifdef CONFIG_SYSCALL_DEBUG
-	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
+	printf(CON_TRACE,"[%s:%i] %x (Errno: %i)", current_process->name, curpid(), result,syscall_errno);
 #endif
 	params.return_val = result;
 	params.sc_errno = syscall_errno;
@@ -211,7 +196,7 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 }
 
 uint32_t syscall_dispatch_new( int call,
-				uint32_t a, 
+				uint32_t a,
 				uint32_t b,
 				uint32_t c,
 				uint32_t d,
@@ -223,7 +208,7 @@ uint32_t syscall_dispatch_new( int call,
 
 	memset( &sigi, 0, sizeof( struct siginfo ) );
 	uint32_t result;
-	
+
 	if (( call > CONFIG_MAX_SYSCALL_COUNT) || syscall_table[call] == NULL) {
 		process_send_signal(current_process, SIGSYS, sigi);
 		return -1;
@@ -231,15 +216,15 @@ uint32_t syscall_dispatch_new( int call,
 	syscall_errno = 0;
 #ifdef CONFIG_SYSCALL_DEBUG
 	if ((call == SYS_OPEN) || (call == SYS_STAT))
-		debugcon_printf("[%s:%i] %s(\"%s\", %x, %x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], a, b, c, d, e, f);
+		printf(CON_TRACE,"[%s:%i] %s(\"%s\", %x, %x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], a, b, c, d, e, f);
 	else
-		debugcon_printf("[%s:%i] %s(%x, %x, %x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], a, b, c, d, e, f);
+		printf(CON_TRACE,"[%s:%i] %s(%x, %x, %x, %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], a, b, c, d, e, f);
 #endif
 	scheduler_current_task->in_syscall = call;
 	result = syscall_table[call]( a, b, c, d, e, f );
 	scheduler_current_task->in_syscall = 0xFFFFFFFF;
 #ifdef CONFIG_SYSCALL_DEBUG
-	debugcon_printf("%x (Errno: %i)\n", result,syscall_errno);
+	printf(CON_TRACE,"[%s:%i] %x (Errno: %i)", current_process->name, curpid(), result,syscall_errno);
 #endif
 	return result;
 }
@@ -286,7 +271,7 @@ void syscall_init()
 	syscall_register(SYS_WAITPID, &sys_waitpid);
 	syscall_register(SYS_GETPPID, &sys_getppid);
 	syscall_register(SYS_FCNTL, &sys_fcntl);
-	syscall_register(SYS_UMASK, &sys_umask);	
+	syscall_register(SYS_UMASK, &sys_umask);
 	syscall_register(SYS_READLINK, &sys_readlink);
 	syscall_register(SYS_LSTAT, &sys_lstat);
 	syscall_register(SYS_SYMLINK, &sys_symlink);

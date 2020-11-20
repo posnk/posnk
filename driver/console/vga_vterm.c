@@ -40,6 +40,18 @@ void vterm_vga_write_crtc_register(char id,char val){
 	i386_outb(0x3D5,val);
 }
 
+unsigned char vterm_vga_read_crtc_register(char id){
+	i386_outb(0x3D4,id);
+	return i386_inb(0x3D5);
+}
+
+void vterm_vga_get_cursor(vga_vterm_vc_t *vc)
+{
+	int offset = (vterm_vga_read_crtc_register(0x0e) << 8) | vterm_vga_read_crtc_register(0x0f);
+	vc->cursor_y = offset / 80;
+	vc->cursor_x = offset % 80;
+}
+
 static inline char vga_vterm_map_attr(vterm_t *vt, int attr)
 {
 	char fg, bg;
@@ -128,7 +140,9 @@ void vga_vterm_init(){
                 vterm_vga_all_vcs[vc_id].video_buffer = (vga_vterm_screen_character_t *)
 			( ((uint32_t)vga_vterm_get_text_video_memory()) + 80 * 25 * 2 * vc_id);
         }
+	vterm_vga_get_cursor(vterm_vga_all_vcs + 0);
 	vterm_tty_setup("vgacon", 2, 9, 25,80);
+	vterm_vga_get_cursor(vterm_vga_all_vcs + 0);
 	vterm_vga_switch_vc(0);
 	vterm_tty_invalidate_screen(MAKEDEV(2, 0));
 	earlycon_switchover();

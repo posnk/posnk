@@ -17,7 +17,8 @@
 #include "kernel/paging.h"
 #include "kernel/process.h"
 #include "kernel/scheduler.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "process"
+#include "kernel/console.h"
 #include "kernel/permissions.h"
 #include "kernel/synch.h"
 #include "kernel/syscall.h"
@@ -25,7 +26,7 @@
 
 /**
  * @brief Syscall implementation: fork
- * Create a copy of a 
+ * Create a copy of a
  */
 
 SYSCALL_DEF0(fork)
@@ -34,7 +35,7 @@ SYSCALL_DEF0(fork)
 
 	/* Call the schedulur to actually do the fork */
 	return (uint32_t) posix_fork();
-	
+
 }
 
 /**
@@ -46,70 +47,70 @@ SYSCALL_DEF2(kill)
 {
 	struct siginfo info;
 	process_info_t *process;
-	
+
 	memset( &info, 0, sizeof( struct siginfo ) );
 
 	/* The process to signal */
 	int pid = (int) a;
-	
+
 	/* The signal to send */
 	int sig = (int) b;
 
-	/* Do a range check on sid */	
+	/* Do a range check on sid */
 	if (sig < 0 || sig > 31) {
 		syscall_errno = EINVAL;
-		return (uint32_t)-1;		
-	} 
+		return (uint32_t)-1;
+	}
 
 	/* Fill info */
 	info.si_code = SI_USER;
 	info.si_pid  = current_process->pid;
 	info.si_uid  = current_process->uid;
-	
+
 	/* Handle various cases for pid */
-	if (pid == 0) {		   
-	
+	if (pid == 0) {
+
 		/* pid = 0  -> Send signal to current process group */
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup(
 			current_process->pgid, sig, info ) == 0) {
 			return (uint32_t) -1;
-		} 
+		}
 		syscall_errno = 0;
 		return 0;
-		
+
 	} else if (pid == -1) {
 		/* pid = -1 -> Send signal to all processes except init and things we
 		   aren't allowed to signal. */
 		//TODO: Implement kill all system processes
 		syscall_errno = EINVAL;
 		return (uint32_t)-1;
-		
+
 	} else if (pid < -1) {
 		/* pid < -1 -> Send signal to process group -pgid */
-	
+
 		syscall_errno = ESRCH;
 		if (process_signal_pgroup((pid_t) -pid, sig, info) == 0) {
 			return (uint32_t) -1;
-		} 
+		}
 		syscall_errno = 0;
 		return 0;
-		
+
 	} else {
 		/* Signal process with id pid */
-		
+
 		process = process_get((pid_t) pid);
 		if (process == NULL) {
 			syscall_errno = ESRCH;
-			return (uint32_t) -1;			
+			return (uint32_t) -1;
 		}
 		if (get_perm_class(process->uid, process->gid) != PERM_CLASS_OWNER){
 			syscall_errno = EPERM;
 			return (uint32_t) -1;
-		}	
+		}
 		process_send_signal(process, sig, info);
 		return 0;
-	}		
+	}
 }
 
 SYSCALL_DEF0(getpid)
@@ -136,7 +137,7 @@ SYSCALL_DEF0(setsid)
 {
 	if (current_process->pgid == current_process->pid) {
 		syscall_errno = EPERM;
-		return (uint32_t) -1;	
+		return (uint32_t) -1;
 	}
 	current_process->pgid = current_process->pid;
 	current_process->sid = current_process->pid;
@@ -148,7 +149,7 @@ SYSCALL_DEF0(setpgrp)
 {
 	if (current_process->pgid == current_process->pid) {
 		syscall_errno = EPERM;
-		return (uint32_t) -1;	
+		return (uint32_t) -1;
 	}
 	current_process->pgid = current_process->pid;
 	return 0;
@@ -170,7 +171,7 @@ SYSCALL_DEF2(setpgid)
 	task = process_get(pid);
 	if (!task) {
 		syscall_errno = ESRCH;
-		return (uint32_t) -1;	
+		return (uint32_t) -1;
 	}
 	task->pgid = pgid;
 	return 0;
@@ -219,22 +220,22 @@ retry:
 	if (pid < -1) {
 		//TODO: Determine whether pgroup exists
 		if (options & WNOHANG) {
-			while (  (!(ev_info = process_get_event_pg(-pid))) || 
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+			while (  (!(ev_info = process_get_event_pg(-pid))) ||
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (!ev_info)	
-					return 0;	
+				if (!ev_info)
+					return 0;
 
 				process_absorb_event(ev_info);
 			}
-			
+
 		} else {
-			while (  (!(ev_info = process_get_event_pg(-pid))) || 
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+			while (  (!(ev_info = process_get_event_pg(-pid))) ||
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (ev_info)		
+				if (ev_info)
 					process_absorb_event(ev_info);
 
 				if (semaphore_idown(current_process->child_sema)) {
@@ -245,23 +246,23 @@ retry:
 		}
 	} else if (pid == -1) {
 		if (options & WNOHANG) {
-			while (  
-				(!(ev_info = (process_child_event_t *) 
+			while (
+				(!(ev_info = (process_child_event_t *)
 					llist_get_last(current_process->child_events))) ||
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (ev_info == NULL)	
-					return 0;	
+				if (ev_info == NULL)
+					return 0;
 
 				process_absorb_event(ev_info);
 			}
 		} else {
 			while (  (!(ev_info = (process_child_event_t *) llist_get_last(current_process->child_events)))  ||
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
-				if (ev_info != NULL)	
+				if (ev_info != NULL)
 					process_absorb_event(ev_info);
 
 				if (semaphore_idown(current_process->child_sema)) {
@@ -277,19 +278,19 @@ retry:
 			return -1;
 		}
 		if (options & WNOHANG) {
-			while (  (!(ev_info = process_get_event(pid))) || 
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+			while (  (!(ev_info = process_get_event(pid))) ||
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
-				if (!ev_info)	
-					return 0;	
+				if (!ev_info)
+					return 0;
 				process_absorb_event(ev_info);
 			}
-			
+
 		} else {
-			while (  (!(ev_info = process_get_event(pid))) || 
-				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) || 
+			while (  (!(ev_info = process_get_event(pid))) ||
+				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
-				if (ev_info)		
+				if (ev_info)
 					process_absorb_event(ev_info);
 
 				if (semaphore_idown(current_process->child_sema)) {
@@ -317,13 +318,13 @@ retry:
 			process_reap(chld);
 			break;
 		case PROCESS_CHILD_STOPPED:
-			if(options & WUNTRACED) 
+			if(options & WUNTRACED)
 				status = (((chld->last_signal) << 8) & 0xFF00) | 0x7f;
 			else
 				return 0;
 			break;
 		case PROCESS_CHILD_CONTD://TODO: Implement this in libc, linux only hehehe
-			//if(options & WCONTINUED) 
+			//if(options & WCONTINUED)
 			//	status = (((chld->last_signal) << 8) & 0xFF00) | 0x7f;
 			//else
 				return 0;
@@ -334,7 +335,7 @@ retry:
 		syscall_errno = EFAULT;
 		return -1;
 	}
-	return pid;	
+	return pid;
 }
 
 SYSCALL_DEF1(sbrk)
@@ -344,7 +345,7 @@ SYSCALL_DEF1(sbrk)
 	uintptr_t base = (uintptr_t) current_process->heap_start;
 	uintptr_t old_size = old_brk - base;
 	int incr = a;
-	if (incr > 0) {	
+	if (incr > 0) {
 		if (incr & PHYSMM_PAGE_ADDRESS_MASK)
 			incr = (incr & ~PHYSMM_PAGE_ADDRESS_MASK) + PHYSMM_PAGE_SIZE;
 		if ((old_brk + incr) >= heap_max) {
@@ -361,7 +362,7 @@ SYSCALL_DEF1(sbrk)
 				syscall_errno = ENOMEM;
 				return (uint32_t) -1;
 			}
-	
+
 		}
 		current_process->heap_end = (void *) (old_brk + incr);
 		return (uint32_t) old_brk;
@@ -391,25 +392,25 @@ SYSCALL_DEF3(execve)
 	patho = ( const char * ) a;
 	argvo = ( const char ** ) b;
 	envpo = ( const char ** ) c;
-	
+
 	pl = procvmm_check_string( patho, CONFIG_FILE_MAX_NAME_LENGTH );
 	if ( pl < 0 ) {
 		syscall_errno = EFAULT;
 		goto fault_a;
 	}
-	
+
 	argvc = procvmm_check_stringlist( argvo, CONFIG_MAX_ARG_COUNT );
 	if ( argvc < 0 ) {
 		syscall_errno = EFAULT;
 		goto fault_a;
 	}
-	
+
 	envpc = procvmm_check_stringlist( envpo, CONFIG_MAX_ENV_COUNT );
 	if ( envpc < 0 ) {
 		syscall_errno = EFAULT;
 		goto fault_a;
 	}
-	
+
 	path = heapmm_alloc( pl * sizeof( char ) );
 	if (!path) {
 		syscall_errno = ENOMEM;
@@ -425,7 +426,7 @@ SYSCALL_DEF3(execve)
 		syscall_errno = ENOMEM;
 		goto fault_c;
 	}
-	
+
 	if (!copy_user_to_kern(patho, path, pl)) {
 		syscall_errno = EFAULT;
 		goto fault_d;
@@ -438,33 +439,33 @@ SYSCALL_DEF3(execve)
 		syscall_errno = EFAULT;
 		goto fault_d;
 	}
-	
+
 	for (ct = 0; ct < argvc - 1; ct++) {
 		user_str = argv[ct];
 		sc = procvmm_check_string( user_str, CONFIG_MAX_ARG_LENGTH );
 		if (( sc < 0 ) || !(argv[ct] = heapmm_alloc(sc))) {
-			debugcon_printf("alloc %x %i\n",user_str,sc);
+			printf(CON_TRACE, "alloc %x %i",user_str,sc);
 			argvc = ct;
 			syscall_errno = EFAULT;
-			goto fault_e;		
+			goto fault_e;
 		}
 		if (!copy_user_to_kern(user_str, argv[ct], sc)) {
-			debugcon_printf("copy\n");
+			printf(CON_TRACE, "copy");
 			argvc = ct + 1;
 			memset ( argv[ct], ' ', sc );
 			argv[ct][sc - 1] = 0;
 			syscall_errno = EFAULT;
 			goto fault_e;
-		}		
+		}
 	}
-	
+
 	for (ct = 0; ct < envpc - 1; ct++) {
 		user_str = envp[ct];
 		sc = procvmm_check_string( user_str, CONFIG_MAX_ENV_LENGTH );
 		if (( sc < 0 ) || !(envp[ct] = heapmm_alloc(sc))) {
 			envpc = ct;
 			syscall_errno = EFAULT;
-			goto fault_f;		
+			goto fault_f;
 		}
 		if (!copy_user_to_kern(user_str, envp[ct], sc)) {
 			envpc = ct + 1;
@@ -472,35 +473,35 @@ SYSCALL_DEF3(execve)
 			envp[ct][sc - 1] = 0;
 			syscall_errno = EFAULT;
 			goto fault_f;
-		}		
+		}
 	}
-	
+
 	status = process_exec( path,  argv, envp );
 	if ( status != 0 ) {
 		syscall_errno = status;
 		status = -1;
 	}
-	
+
 	return (uint32_t) status;
 fault_f:
-	debugcon_printf("Fault f\n");
-	for (ct = 0; ct < envpc; ct++) 
+	printf(CON_ERROR, "exec fault f");
+	for (ct = 0; ct < envpc; ct++)
 		heapmm_free(envp[ct], strlen(envp[ct])+1);
 fault_e:
-	debugcon_printf("Fault e\n");
-	for (ct = 0; ct < argvc; ct++) 
+	printf(CON_ERROR, "Fault e");
+	for (ct = 0; ct < argvc; ct++)
 		heapmm_free(argv[ct], strlen(argv[ct])+1);
 fault_d:
-	debugcon_printf("Fault d\n");
+	printf(CON_ERROR, "Fault d");
 	heapmm_free(envp , envpc * sizeof ( char * ));
 fault_c:
-	debugcon_printf("Fault c\n");
+	printf(CON_ERROR, "Fault c");
 	heapmm_free(argv , argvc * sizeof ( char * ));
 fault_b:
-	debugcon_printf("Fault b\n");
+	printf(CON_ERROR, "Fault b");
 	heapmm_free(path , pl * sizeof( char ));
 fault_a:
-	debugcon_printf("Fault a\n");
+	printf(CON_ERROR, "Fault a");
 	return (uint32_t) -1;
 }
 
@@ -508,9 +509,9 @@ fault_a:
 
 SYSCALL_DEF6(mmap)
 {
-	return (uint32_t) _sys_mmap(	(void *) a, 
-					(size_t) b, 
-					(int)    c, 
+	return (uint32_t) _sys_mmap(	(void *) a,
+					(size_t) b,
+					(int)    c,
 					(int)    d,
 					(int)    e,
 					(int)    f);

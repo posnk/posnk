@@ -33,10 +33,10 @@ pid_t		    pid_counter = 1;
 void create_kprocess()
 {
 	/* Allocate and clear descriptor */
-	kernel_process = 
+	kernel_process =
 		(process_info_t *) heapmm_alloc( sizeof( process_info_t ) );
 	memset( kernel_process, 0, sizeof( process_info_t ));
-	
+
 	/* Initialize process info */
 	kernel_process->uid  = 0;
 	kernel_process->gid  = 0;
@@ -73,7 +73,7 @@ void create_kprocess()
 
 	kernel_process->state = PROCESS_READY;
 	llist_add_end( process_list, (llist_t *) kernel_process );
-	
+
 	scheduler_reown_task( scheduler_current_task, kernel_process );
 }
 
@@ -82,21 +82,21 @@ int posix_fork()
 
 	int status;
 	process_info_t *proc;
-	
+
 	proc = fork_process();
 
 	status = scheduler_spawn( scheduler_fork_main, proc, NULL );
-	
+
 	if ( status ) {
-	
+
 		//TODO: Cleanup process
-	
+
 		return -1;
-	
+
 	}
-	
+
 	return proc->pid;
-	
+
 }
 
 
@@ -132,10 +132,10 @@ process_info_t *fork_process( void )
 	child->root_directory = vfs_dir_cache_ref(current_process->root_directory);
 	child->root_directory->usage_count++;
 	child->current_directory->usage_count++;
-	
+
 	/* Initialize proces signal handling */
 	memcpy( child->signal_actions,
-			current_process->signal_actions, 
+			current_process->signal_actions,
 			sizeof(struct sigaction[32]));
 
 	/* Initialize process memory info */
@@ -149,14 +149,14 @@ process_info_t *fork_process( void )
 	child->child_events = heapmm_alloc(sizeof(llist_t));
 	llist_create(child->child_events);
 	llist_create(&child->tasks);
-	
+
 	/* fork the user pages */
 	child->page_directory = paging_create_dir(); //TODO: Check for errors
 
 	/* Initialize process state */
 	child->state = PROCESS_READY;
 	llist_add_end( process_list, (llist_t *) child );
-	
+
 	return child;
 }
 
@@ -175,13 +175,13 @@ int curpid()
 	return -1;
 }
 
-/** 
+/**
  * Iterator function that looks up eventwith the given child pid
  */
 int process_find_event_iterator (llist_t *node, void *param)
 {
 	process_child_event_t *ev_info = (process_child_event_t *) node;
-	return (ev_info->child_pid == (pid_t) param);		
+	return (ev_info->child_pid == (pid_t) param);
 }
 
 process_child_event_t *process_get_event(pid_t pid)
@@ -192,19 +192,19 @@ process_child_event_t *process_get_event(pid_t pid)
 		(void *) pid);
 }
 
-/** 
+/**
  * Iterator function that looks up eventwith the given child pid
  */
 int process_find_event_pg_iterator (llist_t *node, void *param)
 {
 	process_child_event_t *ev_info = (process_child_event_t *) node;
-	return (ev_info->child_pgid == (pid_t) param);		
+	return (ev_info->child_pgid == (pid_t) param);
 }
 
 process_child_event_t *process_get_event_pg(pid_t pid)
 {
 	return (process_child_event_t *) llist_iterate_select(
-		current_process->child_events, 
+		current_process->child_events,
 		&process_find_event_pg_iterator,
 		(void *) pid);
 }
@@ -223,7 +223,7 @@ void process_child_event(process_info_t *process, int event)
 		parent = process_get(1);//Orphaned processes get reaped by init
 	ev_info = heapmm_alloc(sizeof(process_child_event_t));
 	if (!ev_info) {
-		debugcon_printf("SERIOUS ERROR!!!! Could not allocate ev_info!\n");
+		printf( CON_ERROR, "SERIOUS ERROR!!!! Could not allocate ev_info!\n");
 		//TODO: Handle this shit...
 	}
 	ev_info->child_pid = process->pid;
@@ -240,9 +240,9 @@ void process_child_event(process_info_t *process, int event)
  */
 void process_interrupt_all( process_info_t *process ) {
 	llist_t *c, *n, *h;
-	
+
 	h = &process->tasks;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_interrupt_task( ( scheduler_task_t * ) c );
 	}
@@ -253,12 +253,12 @@ void process_interrupt_all( process_info_t *process ) {
  */
 void process_stop( process_info_t *process ) {
 	llist_t *c, *n, *h;
-	
+
 	h = &process->tasks;
-	
+
 	process->old_state = process->state;
 	process->state = PROCESS_STOPPED;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_stop_task( ( scheduler_task_t * ) c );
 	}
@@ -269,9 +269,9 @@ void process_stop( process_info_t *process ) {
  */
 void process_deschedule( process_info_t *process ) {
 	llist_t *c, *n, *h;
-	
+
 	h = &process->tasks;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_stop_task( ( scheduler_task_t * ) c );
 	}
@@ -282,13 +282,13 @@ void process_deschedule( process_info_t *process ) {
  */
 void process_continue( process_info_t *process ) {
 	llist_t *c, *n, *h;
-	
+
 	h = &process->tasks;
-	
+
 	assert( process->state == PROCESS_STOPPED );
-	
+
 	process->state = process->old_state;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_continue_task( ( scheduler_task_t * ) c );
 	}
@@ -299,16 +299,16 @@ void process_reap(process_info_t *process)
 
 	llist_t *c, *n, *h;
 	assert( process != current_process );
-	
+
 	//TODO: Implement
 	llist_unlink ((llist_t *) process);
 	heapmm_free(process->name, CONFIG_PROCESS_MAX_NAME_LENGTH);
 	h = &process->tasks;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_reap ( ( scheduler_task_t * ) c );//TODO: Check for errors
 	}
-	
+
 	//scheduler_free_task( process );//XXX: Broken due to threading
 	procvmm_clear_mmaps_other( process );
 	paging_free_dir( process->page_directory );
@@ -322,33 +322,33 @@ void process_reap(process_info_t *process)
 
 	stream_do_close_all (process);
 	semaphore_free(process->child_sema);
-	
+
 }
 
-/** 
+/**
  * Iterator function that looks up process with the given pid
  */
 int process_find_iterator (llist_t *node, void *param)
 {
 	process_info_t *task = (process_info_t *) node;
-	return (task->pid == (pid_t) param);		
+	return (task->pid == (pid_t) param);
 }
 
 process_info_t *process_get(pid_t pid)
 {
-	return (process_info_t *) 
+	return (process_info_t *)
 		llist_iterate_select( process_list, &process_find_iterator, (void *) pid);
 }
 
 typedef struct sig_pgrp_param {
 	pid_t	group;
-	int	signal;	
+	int	signal;
 	struct siginfo info;
 } sig_pgrp_param_t;
 
 uint32_t  process_signal_pgroup_numdone = 0;
 
-/** 
+/**
  * Iterator function that signals up processes with the given pgid
  */
 int process_sig_pgrp_iterator (llist_t *node, void *param )
@@ -361,7 +361,7 @@ int process_sig_pgrp_iterator (llist_t *node, void *param )
 			return 0;
 		}
 		process_send_signal(process, p->signal, p->info);
-		process_signal_pgroup_numdone++;	
+		process_signal_pgroup_numdone++;
 	}
 	return 0;
 }

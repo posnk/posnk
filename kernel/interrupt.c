@@ -11,7 +11,8 @@
 
 #include "kernel/interrupt.h"
 #include "kernel/heapmm.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "irqmgr"
+#include "kernel/console.h"
 
 llist_t	interrupt_handler_lists[INTERRUPT_IRQ_COUNT];
 
@@ -25,20 +26,20 @@ void interrupt_dispatch(irq_id_t irq_id)
 		if (e->handler(irq_id, e->context))
 			return;
 	}
-	debugcon_printf("warning: unhandled IRQ%i!\n", irq_id);
+	printf(CON_WARN, "unhandled IRQ%i!", irq_id);
 }
 
 void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler, void *context)
 {
 	interrupt_handler_t *desc = heapmm_alloc(sizeof(interrupt_handler_t));
 	if (!desc) {
-		debugcon_printf("error: could not register interrupt, out of heap!\n");
+		printf(CON_ERROR, "could not register interrupt, out of heap!");
 		return;
 	}
 	desc->handler = handler;
 	desc->context = context;
 	llist_add_end(&(interrupt_handler_lists[irq_id]), (llist_t *) desc);
-	debugcon_printf("info: registered handler for IRQ%i!\n", irq_id);
+	printf(CON_INFO, "registered handler for IRQ%i!", irq_id);
 }
 
 void interrupt_init()

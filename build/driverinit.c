@@ -1,5 +1,5 @@
 #define FS_DRIVER(NaMe, PaTh) int NaMe ## _register();
-#define PNP_DRIVER(NaMe, PaTh) int NaMe ## _register(); 
+#define PNP_DRIVER(NaMe, PaTh) int NaMe ## _register();
 #define DEV_DRIVER(NaMe, PaTh) int NaMe ## _init();
 
 #include "fs/fs.list"
@@ -17,11 +17,11 @@ void register_fs_drivers() {
 
 }
 #ifndef HOSTED_TEST
-#include "kernel/earlycon.h"
+#include "kernel/console.h"
 void register_dev_drivers() {
 
-#define DEV_DRIVER(NaMe, PaTh) debugcon_printf("\n%s: init();\r\n", #NaMe);NaMe ## _init();
-#define PNP_DRIVER(NaMe, PaTh) debugcon_printf("\n%s: register();\r\n", #NaMe);NaMe ## _register();
+#define DEV_DRIVER(NaMe, PaTh) con_printf(#NaMe, CON_DEBUG, "init();");NaMe ## _init();
+#define PNP_DRIVER(NaMe, PaTh) con_printf(#NaMe, CON_DEBUG, "register();");NaMe ## _register();
 #include "driver/dev.list"
 
 }

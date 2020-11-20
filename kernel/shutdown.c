@@ -12,21 +12,20 @@
 #include <sys/errno.h>
 #include "kernel/device.h"
 #include "kernel/vfs.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "shutdown"
+#include "kernel/console.h"
 
 
 void shutdown()
 {
-	earlycon_printf("Flushing inode cache...");
+	printf(CON_INFO, "Flushing inode cache...");
 	vfs_cache_flush();
-	earlycon_printf("OK\nSynchronizing filesystems...");
+	printf(CON_INFO, "Synchronizing filesystems...");
 	vfs_sync_filesystems();
-	earlycon_printf("OK\nFlushing block cache...");
+	printf(CON_INFO, "Flushing block cache...");
 	if (device_block_flush_global())
-		earlycon_printf("FAILED\n");
-	else
-		earlycon_printf("OK\n");
-	earlycon_printf("Halting...");
+		printf(CON_ERROR, "Block cache flush FAILED\n");
+	printf(CON_INFO, "Halting...");
 	halt();
 	//earlycon_printf("Bringing down system using a panic...");
 	//*((uint32_t *)0xF0000000) = 0;

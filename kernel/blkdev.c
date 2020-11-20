@@ -12,14 +12,15 @@
 
 #include "kernel/heapmm.h"
 #include "kernel/device.h"
-#include "kernel/earlycon.h"
+#define CON_SRC ("blkdev")
+#include "kernel/console.h"
 #include <sys/types.h>
 #include <sys/errno.h>
 #include <string.h>
 #include <assert.h>
 
 /**
- * @brief Stores the driver descriptors for each block major device 
+ * @brief Stores the driver descriptors for each block major device
  */
 blk_dev_t **block_dev_table;
 
@@ -54,8 +55,8 @@ int device_block_register(blk_dev_t *driver)
 		return 0;
 
 	/* Allocate memory for the minor device cache table */
-	driver->caches = 
-		heapmm_alloc(sizeof(blkcache_cache_t *) 
+	driver->caches =
+		heapmm_alloc(sizeof(blkcache_cache_t *)
 				* driver->minor_count);
 
 	/* Check for errors */
@@ -74,16 +75,16 @@ int device_block_register(blk_dev_t *driver)
 			for (_m = 0; _m < minor; _m++)
 				blkcache_free(driver->caches[_m]);
 			heapmm_free(
-				driver->caches, 
-				sizeof(blkcache_cache_t *) 
+				driver->caches,
+				sizeof(blkcache_cache_t *)
 					* driver->minor_count);
 			return 0;
 		}
 	}
 
 	/* Allocate the minor device lock table */
-	driver->locks = 
-		heapmm_alloc(sizeof(semaphore_t *) 
+	driver->locks =
+		heapmm_alloc(sizeof(semaphore_t *)
 				* driver->minor_count);
 
 	/* Check for errors */
@@ -92,12 +93,12 @@ int device_block_register(blk_dev_t *driver)
 		for (_m = 0; _m < driver->minor_count; _m++)
 			blkcache_free(driver->caches[_m]);
 		heapmm_free(
-			driver->caches, 
-			sizeof(blkcache_cache_t *) 
+			driver->caches,
+			sizeof(blkcache_cache_t *)
 				* driver->minor_count);
 		return 0;
 	}
-	
+
 	/* Allocate the minor device locks */
 	for (minor = 0; minor < driver->minor_count; minor++) {
 		/* Allocate the lock */
@@ -110,21 +111,21 @@ int device_block_register(blk_dev_t *driver)
 			for (_m = 0; _m < driver->minor_count; _m++)
 				blkcache_free(driver->caches[_m]);
 			heapmm_free(
-				driver->locks, 
-				sizeof(semaphore_t *) 
+				driver->locks,
+				sizeof(semaphore_t *)
 					* driver->minor_count);
 			heapmm_free(
-				driver->caches, 
-				sizeof(blkcache_cache_t *) 
+				driver->caches,
+				sizeof(blkcache_cache_t *)
 					* driver->minor_count);
 			return 0;
 		}
-		
+
 		/* Release the lock */
 		semaphore_up(driver->locks[minor]);
 	}
-	
-	/* Add the driver to the table */	
+
+	/* Add the driver to the table */
 	block_dev_table[driver->major] = driver;
 	return 1;
 }
@@ -157,10 +158,10 @@ int device_block_flush(dev_t device, aoff_t block_offset)
 	if (!entry) {
 		return 0;
 	}
-	
+
 	/* Call the driver to write the block to storage */
 	rv = drv->ops->write(device, block_offset, entry->data);
-	
+
 	/* If successful clear the DIRTY flag from the cache entry */
 	if (!rv)
 		entry->flags &= ~BLKCACHE_ENTRY_FLAG_DIRTY;
@@ -197,7 +198,7 @@ int device_block_fetch(dev_t device, aoff_t block_offset)
 		/* If it is, flush the discard candidate */
 		rv = device_block_flush(device,
 			blkcache_get_discard_candidate(drv->caches[minor])->offset);
-				
+
 		/* Check for errors */
 		if (rv) {
 			return rv;
@@ -241,10 +242,10 @@ int device_block_flush_all(dev_t device)
 		if (!entry) {
 			return 0;
 		}
-	
+
 		/* Call the driver to write the block to storage */
 		rv = drv->ops->write(device, entry->offset, entry->data);
-	
+
 		/* If successful clear the DIRTY flag from the cache entry */
 		if (!rv)
 			entry->flags &= ~BLKCACHE_ENTRY_FLAG_DIRTY;
@@ -284,7 +285,7 @@ int device_block_flush_global()
 
 /**
  * @brief Handles the ioctl(2) call on a device
- * 
+ *
  * This function merely dispatches the call to the driver
  * @see _sys_ioctl for more information
  * @param device The device this call is to be performed on
@@ -311,7 +312,7 @@ int device_block_ioctl(dev_t device, int fd, int func, int arg)
 
 /**
  * @brief Notifies the device of an open(2) call
- * 
+ *
  * This function merely dispatches the call to the driver
  * @see _sys_open for more information
  * @param device The device this call is to be performed on
@@ -338,7 +339,7 @@ int device_block_open(dev_t device, int fd, int options)
 
 /**
  * @brief Notifies the device of an close(2) call
- * 
+ *
  * This function merely dispatches the call to the driver
  * @see _sys_close for more information
  * @param device The device this call is to be performed on
@@ -389,12 +390,12 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 
 	/* Check if the device exists */
 	if ((!drv) || (minor > drv->minor_count)) {
-		debugcon_printf("invalid %i %i\n", (int)major, (int)minor);
+		printf(CON_ERROR, "invalid device %i %i\n", (int)major, (int)minor);
 		return ENODEV;
 	}
 
 	in_buffer = 0;
-	
+
 	/* Acquire a lock on the device */
 	semaphore_down(drv->locks[minor]);
 	assert(*(drv->locks[minor]) == 0);
@@ -404,7 +405,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 
 		/* Calculate the offset into the block for this chunk */
 		in_block  = (file_offset + in_buffer) % drv->block_size;
-	
+
 		/* Calculate the block we are writing to */
 		block_offset = (file_offset + in_buffer) - in_block;
 
@@ -414,12 +415,12 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 		/* Check whether we want to write more data than would fit,
                  * if so, limit to the end of the block */
 		if(in_block_count > (drv->block_size - in_block))
-			in_block_count = drv->block_size - in_block;	
-		
+			in_block_count = drv->block_size - in_block;
+
 		/* Check whether we are replacing the whole block */
 		if (in_block_count != drv->block_size) {
 			/* We are not, read-modify-write needed */
-		
+
 			/* Get the block from the cache */
 			entry = blkcache_find(drv->caches[minor], block_offset);
 
@@ -437,8 +438,8 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 					/* Pass the error to the caller */
 					return rv;
 				}
-			}			
-		
+			}
+
 			/* The block should be cached now, get it from the cache */
 			entry = blkcache_find(drv->caches[minor], block_offset);
 			assert(entry != NULL);
@@ -456,7 +457,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 				/* Flush the discard candidate */
 				rv = device_block_flush(device,
 					blkcache_get_discard_candidate(drv->caches[minor])->offset);
-				
+
 				/* Check for errors */
 				if (rv) {
 					/* Release the lock on this device */
@@ -467,8 +468,8 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 				/* Retry */
 				entry = blkcache_get(drv->caches[minor], block_offset);
 
-			}		
-			
+			}
+
 			/* Check whether the cache ran out of memory */
 			if (entry == BLKCACHE_ENOMEM) {
 				/* Release the lock on this device */
@@ -486,7 +487,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 		/* Copy the block data to the cache entry */
 		memcpy( (void *) ( ((uintptr_t)entry->data) + in_block ),
 		        (void *) ( ((uintptr_t) buffer) + in_buffer ),
-                        in_block_count ); 
+                        in_block_count );
 
 		/* Set the dirty flag on the entry */
 		entry->flags |= BLKCACHE_ENTRY_FLAG_DIRTY;
@@ -494,7 +495,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 		/* Advance position */
 		in_buffer += in_block_count;
 		block_offset += drv->block_size;
-		
+
 		/* Update write_size */
 		*write_size = in_buffer;
 	}
@@ -503,8 +504,8 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 	semaphore_up(drv->locks[minor]);
 
 	return 0;
-	
-	
+
+
 }
 
 /**
@@ -537,7 +538,7 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 	}
 
 	in_buffer = 0;
-	
+
 	/* Acquire a lock on the device */
 	semaphore_down(drv->locks[minor]);
 	assert(*(drv->locks[minor]) == 0);
@@ -547,19 +548,19 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 
 		/* Calculate the offset into the block for this chunk */
 		in_block  = (file_offset + in_buffer) % drv->block_size;
-	
+
 		/* Calculate the block we are writing to */
 		block_offset = (file_offset + in_buffer) - in_block;
 
 		/* Calculate the number of bytes to write within this block */
 		in_block_count = count - in_buffer;
 
-		/* Check whether we want to read more data than the block 
+		/* Check whether we want to read more data than the block
                  * contains. if so, limit to the end of the block */
 		if(in_block_count > (drv->block_size - in_block))
-			in_block_count = drv->block_size - in_block;	
-		
-		/* Get the block from the cache */		
+			in_block_count = drv->block_size - in_block;
+
+		/* Get the block from the cache */
 		entry = blkcache_find(drv->caches[minor], block_offset);
 
 		/* Check if it was cached */
@@ -574,8 +575,8 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 
 				/* Pass the error to the caller */
 				return rv;
-			}			
-		
+			}
+
 			/* Retry */
 			entry = blkcache_find(drv->caches[minor], block_offset);
 		}
@@ -584,8 +585,8 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 
 		/* Copy the block data from the cache entry */
 		memcpy( (void *) ( ((uintptr_t) buffer) + in_buffer ),
-			(void *) ( ((uintptr_t)entry->data) + in_block ), 
-			in_block_count ); 
+			(void *) ( ((uintptr_t)entry->data) + in_block ),
+			in_block_count );
 
 		/* Advance position */
 		in_buffer += in_block_count;

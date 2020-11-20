@@ -26,7 +26,9 @@
 
 #include "kernel/heapmm.h"
 
-#include "kernel/earlycon.h"
+#undef CON_SRC
+#define  CON_SRC "vfs"
+#include "kernel/console.h"
 
 #include <string.h>
 
@@ -69,7 +71,7 @@ int vfs_gmnt_mpt_iterator (llist_t *node, void *param) {
 fs_mount_t	*vfs_get_mount_by_dev( dev_t device )
 {
 	return (fs_mount_t *)
-		llist_iterate_select(	&vfs_mount_list, 
+		llist_iterate_select(	&vfs_mount_list,
 					&vfs_gmnt_dev_iterator,
 					&device );
 }
@@ -84,14 +86,14 @@ fs_mount_t	*vfs_get_mount_by_mountpoint( inode_t *mountpoint )
 	assert( mountpoint != NULL );
 
 	return (fs_mount_t *)
-		llist_iterate_select(	&vfs_mount_list, 
+		llist_iterate_select(	&vfs_mount_list,
 					&vfs_gmnt_mpt_iterator,
 					 mountpoint );
 }
 
 
 /**
- * @brief Registers a mounted filesystem 
+ * @brief Registers a mounted filesystem
  * @param device The filesystem that was mounted
  * @param mountpoint The inode it was mounted on.
  */
@@ -99,10 +101,10 @@ SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint)
 {
 
 	fs_mount_t *mount;
-	
+
 	assert ( device != NULL );
 	assert ( mountpoint != NULL );
-		
+
 	mount = heapmm_alloc ( sizeof( fs_mount_t ) );
 
 	if ( !mount )
@@ -118,7 +120,7 @@ SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint)
 }
 
 /**
- * @brief Unregisters a mounted filesystem 
+ * @brief Unregisters a mounted filesystem
  * @param device The filesystem that was mounted
  * @param mountpoint The inode it was mounted on.
  */
@@ -126,9 +128,9 @@ void vfs_unreg_mount( fs_mount_t *mount )
 {
 
 	llist_unlink ( (llist_t *) mount );
-		
+
 	vfs_inode_release( mount->mountpoint );
-	
+
 	heapmm_free( mount, sizeof( fs_mount_t ) );
 
 }
@@ -154,10 +156,10 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	/* Check for null pointers */
 	assert ( driver != NULL );
 	assert ( mountpoint != NULL );
-	
+
 	/* Check if the device has already been mounted */
 	if ( vfs_get_mount_by_dev( device ) ) {
-		
+
 		THROWV( EBUSY );
 
 	}
@@ -174,20 +176,20 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 		THROWV( ENOTDIR );
 
 	}
-	
+
 	/* Check if the target is already a mountpoint */
 	if ( vfs_get_mount_by_mountpoint( mp_inode ) ) {
 
 		/* Release the mountpoint inode */
 		vfs_inode_release(mp_inode);
-		
+
 		THROWV( EBUSY );
 
 	}
 
 	/* Mount the filesystem */
 	status = driver->mount( device, flags, &fsdevice );
-	
+
 	/* Check for errors */
 	if (status) {
 
@@ -196,13 +198,13 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 
 		THROWV( status );
 	}
-		
+
 	/* Attach the filesystems root inode to the mountpoint */
-	status = ifs_load_inode( fsdevice, 
-				 fsdevice->root_inode_id, 
-				 &(mp_inode->mount) );	
-	
-	/* Check for errors */	
+	status = ifs_load_inode( fsdevice,
+				 fsdevice->root_inode_id,
+				 &(mp_inode->mount) );
+
+	/* Check for errors */
 	if (status) {
 
 		/* Release the mountpoint inode */
@@ -231,26 +233,27 @@ void vfs_sync_filesystems( void )
 	n_fs = 0;
 	n_ok = 0;
 
-	for ( 	_mnt = vfs_mount_list.next; 
-		_mnt != &vfs_mount_list; 
+	for ( 	_mnt = vfs_mount_list.next;
+		_mnt != &vfs_mount_list;
 		_mnt = _mnt->next ) {
-		
+
 		mnt = ( fs_mount_t * ) _mnt;
 
 		n_fs++;
 
 		status = ifs_sync ( mnt->device );
-	
+
 		if ( status ) {
-			debugcon_printf(
-				"vfs: failed to sync a filesystem ( %i )\n",
+			printf( CON_ERROR,
+			        "failed to sync a filesystem ( %i )",
 				status );
 		} else {
 			n_ok++;
-		}		
+		}
 
 	}
 
-	debugcon_printf("vfs: %i/%i filesystems synchronized successfully.\n", n_ok, n_fs);
+	printf( CON_INFO,
+	        "%i/%i filesystems synchronized successfully.", n_ok, n_fs);
 
 }

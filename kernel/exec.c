@@ -18,7 +18,8 @@
 #include "kernel/syscall.h"
 #include "kernel/paging.h"
 #include "kernel/permissions.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "process"
+#include "kernel/console.h"
 #include "kernel/streams.h"
 #include "kernel/elf.h"
 #include "kernel/elfloader.h"
@@ -87,9 +88,9 @@ exec_start:
 	}
 
 	/* Check for shebang */
-	if ( rd_count >= 2	&& header[0] == '#' 
+	if ( rd_count >= 2	&& header[0] == '#'
 						&& header[1] == '!' ) {
-		
+
 		/* Close shell file */
 		vfs_inode_release( inode );
 
@@ -102,7 +103,7 @@ exec_start:
 
 		/* Terminate the string */
 		*sb_nl = 0;
-	
+
 		/* Check if we have an argument */
 		sb_sp = strchr( header + 3, ' ' );
 
@@ -125,12 +126,12 @@ exec_start:
 			sb_arg = NULL;
 
 		argl_size = strlistlen(args);
-		
+
 		if ( sb_arg )
 			d = 2;
 		else
 			d = 1;
-	
+
 		n_args = heapmm_alloc( sizeof( char * ) * ( argl_size + d + 1 ) );
 
 		for ( c = 0; c < argl_size; c++ )
@@ -145,7 +146,7 @@ exec_start:
 		args = n_args;
 
 		if ( strcmp( path, sb_path ) == 0 ) {
-			
+
 			return ELOOP;
 
 		}
@@ -154,7 +155,7 @@ exec_start:
 
 		//TODO: Move exec syscall in here to prevent leaking the kernel
 		//		copy of argv
-		
+
 		goto exec_start;
 
 	}
@@ -185,7 +186,7 @@ exec_start:
 	procvmm_clear_mmaps();
 
 	signal_init_process( current_process );
-	
+
 	signal_init_task( scheduler_current_task );
 
 	status = elf_load( inode );
@@ -193,7 +194,7 @@ exec_start:
 	vfs_inode_release( inode );
 
 	if (status) {
-		debugcon_printf("error loading elf %s\n",path);
+		printf(CON_WARN, "error loading elf %s",path);
 		process_send_signal(current_process, SIGSYS, sigi);
 		do_signals();
 		schedule();
@@ -206,7 +207,7 @@ exec_start:
 	/* Prepare environment */
 	status = procvmm_do_exec_mmaps();
 	if (status) {
-		debugcon_printf("error mmapping stuff\n");
+		printf(CON_WARN, "error mmapping stuff");
 		process_send_signal(current_process, SIGSYS, sigi);
 		do_signals();
 		schedule();
@@ -215,7 +216,7 @@ exec_start:
 	//TODO: Verify arg and env list sizes
 
 	argl_size = strlistlen(args);
-	
+
 	args_size = 0;
 
 	for (c = 0; c < argl_size; c++) {
@@ -231,13 +232,13 @@ exec_start:
 
 	for (c = 0; c < argl_size; c++) {
 		strcpy((char *)ptr, args[c]);
-		n_args[c] = (char *) ptr;		
+		n_args[c] = (char *) ptr;
 		ptr += strlen(args[c]) + 1;
 	}
 	n_args[argl_size] = (char *) 0;
 
 	envl_size = strlistlen(envs);
-	
+
 	envs_size = 0;
 
 	for (c = 0; c < envl_size; c++)
@@ -252,7 +253,7 @@ exec_start:
 
 	for (c = 0; c < envl_size; c++) {
 		strcpy((char *)ptr, envs[c]);
-		n_envs[c] = (char *) ptr;		
+		n_envs[c] = (char *) ptr;
 		ptr += strlen(envs[c]) + 1;
 	}
 	n_envs[envl_size] = (char *) 0;

@@ -14,7 +14,8 @@
 #include <sys/errno.h>
 #include <sys/stat.h>
 #include <string.h>
-#include "kernel/earlycon.h"
+#define CON_SRC "elfloader"
+#include "kernel/console.h"
 #include "kernel/vfs.h"
 #include "kernel/physmm.h"
 #include "kernel/heapmm.h"
@@ -42,9 +43,9 @@ int elf_verify( const char *hdr, size_t size )
 }
 
 int elf_load( inode_t *inode )
-{	
+{
 	aoff_t rd_count;
-	int status;	
+	int status;
 	int flags;
 	int ph_ptr = 0;
 	Elf32_Ehdr *elf_header;
@@ -87,7 +88,7 @@ int elf_load( inode_t *inode )
 		return ENOEXEC;
 	}
 
-	//debugcon_printf("Loading ELF binary %s, magic: %c%c%c%c, shnum:%i, phnum:%i ...\n", path, elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3], 
+	//debugcon_printf("Loading ELF binary %s, magic: %c%c%c%c, shnum:%i, phnum:%i ...\n", path, elf_header->e_ident[0], elf_header->e_ident[1], elf_header->e_ident[2], elf_header->e_ident[3],
 	//	elf_header->e_shnum, elf_header->e_phnum);
 
 	elf_pheader = (Elf32_Phdr *) heapmm_alloc(elf_header->e_phentsize);
@@ -116,7 +117,7 @@ int elf_load( inode_t *inode )
 		switch (elf_pheader->p_type) {
 			case PT_LOAD:
 				if (elf_pheader->p_vaddr >= 0xC0000000) {
-					//earlycon_printf("ERROR: tried to map kernel memory: %x\n", elf_pheader->p_vaddr);
+					printf(CON_ERROR, "tried to map kernel memory: %x", elf_pheader->p_vaddr);
 					heapmm_free(elf_pheader, elf_header->e_phentsize);
 					heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 					vfs_inode_release(inode);
@@ -124,12 +125,12 @@ int elf_load( inode_t *inode )
 				}
 				flags = 0;
 				if (elf_pheader->p_flags & PF_W)
-					flags |= PROCESS_MMAP_FLAG_WRITE;	
+					flags |= PROCESS_MMAP_FLAG_WRITE;
 				status = procvmm_mmap_file((void *)elf_pheader->p_vaddr, (size_t) elf_pheader->p_memsz,
 							    inode, (off_t) elf_pheader->p_offset, (off_t) elf_pheader->p_filesz,
 							    flags, NULL);
 				if (status) {
-					//earlycon_printf("ERROR: could not map PH_LOAD: %x\n", status);
+					printf(CON_DEBUG, "could not map PH_LOAD: %x", status);
 					heapmm_free(elf_pheader, elf_header->e_phentsize);
 					heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 					vfs_inode_release(inode);
@@ -143,7 +144,7 @@ int elf_load( inode_t *inode )
 			case PT_TLS:
 				break;
 			default:
-				debugcon_printf("ERROR: unknown program header type: %x\n", elf_pheader->p_type);
+				printf(CON_ERROR, "unknown program header type: %x", elf_pheader->p_type);
 				heapmm_free(elf_pheader, elf_header->e_phentsize);
 				heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 				vfs_inode_release(inode);
@@ -161,6 +162,6 @@ int elf_load( inode_t *inode )
 	heapmm_free(elf_pheader, elf_header->e_phentsize);
 	heapmm_free(elf_header, sizeof(Elf32_Ehdr));
 	vfs_inode_release(inode);
-	return 0;	
+	return 0;
 }
 

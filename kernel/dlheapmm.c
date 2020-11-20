@@ -13,7 +13,8 @@
 
 #include "kernel/physmm.h"
 #include "kernel/heapmm.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "heapmm"
+#include "kernel/console.h"
 #include "kernel/scheduler.h"
 #include "kdbg/dbgapi.h"
 #include <stdint.h>
@@ -41,12 +42,12 @@ void  heapmm_init(void *heap_start, size_t size)
 }
 
 /**
- * 
+ *
  */
 void dlheapmm_abort()
-{	
-	earlycon_printf("\n\nPANIC! dlmalloc abort \n");
-	earlycon_printf("Halting processor.\n");
+{
+	printf(CON_PANIC, "PANIC! dlmalloc abort");
+	printf(CON_PANIC, "Halting processor.");
 	halt();
 }
 
@@ -66,7 +67,7 @@ void *heapmm_alloc_alligned(size_t size, uintptr_t alignment)
 /**
  * Allocates a new block of memory of given size to the caller
  */
-void *heapmm_alloc(size_t size) 
+void *heapmm_alloc(size_t size)
 {
 	void *r;
 	semaphore_down( &heap_lock );
@@ -79,7 +80,7 @@ void *heapmm_alloc(size_t size)
 /**
  * Allocates a new page of heap space to the caller
  */
-void *heapmm_alloc_page() 
+void *heapmm_alloc_page()
 {
 	return heapmm_alloc_alligned(PHYSMM_PAGE_SIZE,PHYSMM_PAGE_SIZE);
 }
@@ -87,7 +88,7 @@ void *heapmm_alloc_page()
 /**
  * Releases a block of meory so it can be reallocated
  */
-void  heapmm_free(void *address, __attribute__((__unused__)) size_t size) 
+void  heapmm_free(void *address, __attribute__((__unused__)) size_t size)
 {
 	dlfree(address);
 }
