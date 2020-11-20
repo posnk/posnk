@@ -220,7 +220,7 @@ $(OBJS_PHEAPMM): $(BUILDDIR)%.o: %.c
 
 # dynamic makefile and source generation
 
-$(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list
+$(BUILDDIR)_dmake: build/driverinit.c build/drivermake.m4 fs/fs.list arch/$(ARCH)/Makefile
 	find -type d -links 2 -exec mkdir -p "$(BUILDDIR){}" \; 2> /dev/null
 	$(M4) -I . build/drivermake.m4 > $(BUILDDIR)_dmake
 	$(CPP) -I . -I ./include build/driverinit.c > _dinit.c

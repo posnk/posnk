@@ -1,4 +1,4 @@
-#define PORT 0x2f8   /* COM1 */
+#define PORT 0x3f8   /* COM1 */
 #include "driver/console/vgacon/vgacon.h"
 #include <string.h>
 #include <stdint.h>
@@ -12,7 +12,7 @@ int sserial_received() {
 
 void sercon_isr() {
    while (sserial_received() != 0)
-	tty_input_char(0x0D00, i386_inb(PORT));
+	tty_input_char(0x0E00, i386_inb(PORT));
 }
 
 int sis_transmit_empty() {
@@ -48,7 +48,7 @@ void sercon_init() {
    i386_outb(PORT + 3, 0x03);    // 8 bits, no parity, one stop bit
    i386_outb(PORT + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
    i386_outb(PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
-   tty_register_driver("sercon", 13, 1, &sercon_putc);
+   tty_register_driver("sercon", 14, 1, &sercon_putc);
    con_register_sink_s( "sercon", 0, sercon_puts );
 
 }

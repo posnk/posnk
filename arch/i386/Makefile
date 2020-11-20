@@ -8,7 +8,6 @@ arch/i386/fpu.c \
 arch/i386/task_switch.c \
 arch/i386/protection.c \
 arch/i386/gdbstub.c \
-driver/console/sercon.c \
 driver/console/sercon_debug.c \
 driver/bus/pci.c \
 driver/bus/pci_intel_host.c
