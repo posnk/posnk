@@ -9,7 +9,8 @@
  * 02-07-2014 - Created
  */
 
-#include "kernel/earlycon.h"
+#define CON_SRC "ata_pci"
+#include "kernel/console.h"
 #include "kernel/heapmm.h"
 #include "kernel/drivermgr.h"
 #include "driver/bus/pci.h"
@@ -32,21 +33,22 @@ int ata_pci_probe(uint32_t bus_addr) {
 		dev_s = NULL;
 	}
 	if (!dev_p) {
-		debugcon_printf("ata_pci: error initializing, out of memory!\n");
+		printf(CON_ERROR, "error initializing, out of memory!");
 		return 0;
 	}
-	debugcon_printf("ata_pci: initializing controller %i:%i.%i (%x, %x, %x, %x, %x)->IRQ%i\n", bus, device, function, bar0, bar1, bar2, bar3, bar4, irq);
+	printf(CON_INFO, "initializing controller %i:%i.%i (%x, %x, %x, %x, %x)->IRQ%i", bus, device, function, bar0, bar1, bar2, bar3, bar4, irq);
 
 	if ( irq == 255 ) {
-		debugcon_printf("ata_pci: allocating irq 14 to controller %i.%i.%i!\n",
+		irq = 14;
+		printf(CON_ERROR, "allocating irq %i to controller %i.%i.%i!",
+							irq,
 							bus,
 							device,
 							function);
 		pci_config_write_byte( bus, device, function, PCI_CONFIG_INTERRUPT_LINE,
-								14 );
-		irq = 14;
+								irq );
 	}
-	pci_config_write_byte( bus, device, function, PCI_CONFIG_COMMAND,0x5); 
+	pci_config_write_byte( bus, device, function, PCI_CONFIG_COMMAND,0x5);
 
 	dev_p->pio_base = (bar0 > 1) ? bar0 : 0x1F0;
 	dev_p->ctrl_base = (bar1 > 1) ? bar1 : 0x3F4;

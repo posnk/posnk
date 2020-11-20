@@ -32,17 +32,22 @@ void i386_fpu_initialize()
 void i386_enable_fpu()
 {
 	uint32_t temp;
-	asm volatile("clts;mov %%cr4, %0" : "=r"(temp));
+	asm volatile("clts");
+#ifdef CONFIG_CPU_SSE
+	asm volatile("mov %%cr4, %0" : "=r"(temp));
 	temp |= 3 << 9;
 	asm volatile("mov %0, %%cr4" :: "r"(temp));
+#endif
 }
 
 void i386_disable_fpu()
 {
 	uint32_t temp;
+#ifdef CONFIG_CPU_SSE
 	asm volatile("mov %%cr0, %0" : "=r"(temp));
 	temp |= 1 << 3;
 	asm volatile("mov %0, %%cr0" :: "r"(temp));
+#endif
 }
 
 void i386_init_fpu()
@@ -118,7 +123,7 @@ int i386_fpu_handle_ill()
 	if (!((i386_task_context_t *)i386_fpu_thread->arch_state)->fpu_used) {
 		i386_init_fpu();
 		((i386_task_context_t *)i386_fpu_thread->arch_state)->fpu_used = 1;
-		return 1;		
+		return 1;
 	}
 	i386_fpu_load((i386_task_context_t *)i386_fpu_thread->arch_state);
 	return 1;

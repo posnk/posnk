@@ -1,6 +1,7 @@
 #include "arch/i386/x86.h"
 #include "arch/i386/task_context.h"
-#include "kernel/earlycon.h"
+#define CON_SRC ("i386_process")
+#include "kernel/console.h"
 #include "kernel/scheduler.h"
 #include "kdbg/dbgapi.h"
 #include <stddef.h>
@@ -41,33 +42,33 @@ void i386_outl(uint16_t port,uint32_t value)
 	asm volatile ("outl %%eax,%%dx": :"d" (port), "a" (value));
 }
 
-void halt() 
+void halt()
 {
 	__asm__("cli;hlt");
 }
 
-void wait_int() 
+void wait_int()
 {
 	__asm__("sti;hlt");
 }
 
 
 void debug_dump_state()
-{	
+{
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->user_regs;
-	debugcon_printf(" User Registers: EIP: 0x%x\n",tctx->user_eip);
-	debugcon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
+	printf(CON_ERROR, " User Registers: EIP: 0x%x\n",tctx->user_eip);
+	printf(CON_ERROR, "EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
-	debugcon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
+	printf(CON_ERROR, "ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
-	debugcon_printf(" Interrupt Registers: EIP: 0x%x\n",tctx->intr_eip);
+	printf(CON_ERROR, " Interrupt Registers: EIP: 0x%x\n",tctx->intr_eip);
 	regs = (i386_pusha_registers_t *) &tctx->intr_regs;
-	debugcon_printf("EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X\n",
+	printf(CON_ERROR, "EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
-	debugcon_printf("ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X\n",
+	printf(CON_ERROR, "ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
-		
+
 }
 
 void debug_postmortem_hook()
@@ -76,7 +77,7 @@ void debug_postmortem_hook()
 	uint32_t eip = (uint32_t) tctx->intr_eip;
 	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->intr_regs;
 	asm("movl %0, %%esp;push %1;push %2;mov %%esp, %%ebp;cli;push $1;call dbgapi_invoke_kdbg"::"r"(regs->esp), "r"(eip), "r"(regs->ebp));
-	
+
 	dbgapi_invoke_kdbg(1);
-	
+
 }

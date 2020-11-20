@@ -111,13 +111,13 @@ int  con_register_sink_s( const char *name, int flags, con_puts_s_t puts_s ) {
 	return sink;
 }
 
-static char line_buffer[256]; //TODO: Reentrancy!
-
 void con_sink_puts( int sink, int flags, int hnd, int lvl, const char *msg ) {
+	char line_buffer[256];
 	const char *dn;
 	con_puts_r_t puts_r;
 	con_puts_s_t puts_s;
 	int log_level;
+	size_t sl = 0;
 
 	log_level = con_sink_map[ sink ].log_level;
 	if( log_level == -1 )
@@ -138,7 +138,11 @@ void con_sink_puts( int sink, int flags, int hnd, int lvl, const char *msg ) {
 
 	dn = con_get_src_display_name( hnd );
 
-	snprintf( line_buffer, sizeof line_buffer, "%s: %s: %s\n", con_sink_map[ sink ].name, dn, msg );
+	snprintf( line_buffer, sizeof line_buffer, "%s: %s\n", dn, msg );
+
+	sl = strlen(line_buffer);
+	if ( line_buffer[sl-2] == '\n' )
+		line_buffer[sl-1] = 0;
 
 	puts_s( sink, flags, line_buffer );
 

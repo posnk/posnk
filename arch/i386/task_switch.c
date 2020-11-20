@@ -1,4 +1,4 @@
-/* 
+/*
  * arch/i386/task_switch.c
  *
  * Part of P-OS kernel.
@@ -15,7 +15,8 @@
 #include "kernel/paging.h"
 #include "kernel/scheduler.h"
 #include "kernel/process.h"
-#include "kernel/earlycon.h"
+#define CON_SRC ("i386_process")
+#include "kernel/console.h"
 #include "arch/i386/isr_entry.h"
 #include "arch/i386/task_context.h"
 #include "arch/i386/protection.h"
@@ -27,13 +28,13 @@
 void scheduler_fork_main( void * arg )
 {
 	/* Assign the newly created task to the forked process */
-	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg ); 
+	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg );
 
 	/* Creates a fake user-to-kernel interrupt entry that solely invokes
 	 * i386_user_exit before using iret to return to ring 3 in the newly created
-	 * process. 
-	 * 
-	 * This is done to simplify logic elsewhere in the kernel: because of this 
+	 * process.
+	 *
+	 * This is done to simplify logic elsewhere in the kernel: because of this
 	 * code, all kernel<>user mode code can assume there is an interrupt entry
 	 * structure at top of stack. */
 	i386_fork_exit();
@@ -53,15 +54,15 @@ void i386_kern_enter ( i386_isr_stack_t *stack )
 
 	if ( tctx == 0 )
 		return;
-	
+
 	tctx->intr_regs		= stack->regs;
 	tctx->intr_eip		= stack->eip;
 	tctx->intr_cs		= stack->cs;
 	tctx->intr_ds		= stack->ds;
-	
+
 	/* The ESP in the pusha structure is the ISR stack, not the user stack */
-	tctx->intr_regs.esp = ( (uint32_t) stack ) + sizeof( i386_isr_stack_t ) - 8; 
-  
+	tctx->intr_regs.esp = ( (uint32_t) stack ) + sizeof( i386_isr_stack_t ) - 8;
+
 }
 
 /**
@@ -75,11 +76,11 @@ void i386_user_enter ( i386_isr_stack_t *stack )
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	if ( tctx == 0 )
 		return;
-		
+
 	tctx->intr_regs		= stack->regs;
 	/* The ESP in the pusha structure is the ISR stack, not the user stack */
 	tctx->intr_regs.esp = stack->esp;
-	
+
 	tctx->user_regs		= stack->regs;
 	tctx->user_regs.esp = stack->esp;
 	tctx->user_eip		= stack->eip;
@@ -87,7 +88,7 @@ void i386_user_enter ( i386_isr_stack_t *stack )
 	tctx->user_cs		= stack->cs;
 	tctx->user_ds		= stack->ds;
 	tctx->user_eflags	= stack->eflags;
- 
+
 }
 
 /**
@@ -98,10 +99,10 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 {
 
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
-	
+
 	if ( tctx == 0 )
 		return;
-		
+
 	/*This will corrupt the ESP value on the stack, but it is ignored by POPA*/
 	stack->regs			= tctx->user_regs;
 	/* Restore DS */
@@ -129,37 +130,37 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 	int s;
 	i386_task_context_t *tctx;
 	i386_task_context_t *nctx;
-	
+
 	/* Stop interrupts, we are going to do critical stuff here */
 	/* Said cricical stuff will only be CPU local so this solution should work*/
 	s = disable();
-	
+
 	tctx = scheduler_current_task->arch_state;
 	nctx = new_task->arch_state;
-	
+
 	/* If we want to switch to the current task, NOP */
 	if ( new_task != scheduler_current_task ) {
-	
+
 		//csstack_t *ess = (void*)(nctx->kern_esp);
-		
+
 		if ( new_task->process && (TASK_GLOBAL & ~new_task->flags) ) {
-		
+
 			/* Switch page tables */
 			paging_switch_dir( new_task->process->page_directory );
 		}
-		
+
 		/* Update task pointer */
 		scheduler_current_task = new_task;
-		
+
 		/* Flag context switch to the FPU */
 		i386_fpu_on_cs();
-		
+
 		/* Switch kernel threads */
-		i386_context_switch(     nctx->kern_esp, 
+		i386_context_switch(     nctx->kern_esp,
 								&tctx->kern_esp
 				    			);
 	}
-	
+
 	/* Restore interrupt flag */
 	restore( s );
 }
@@ -176,7 +177,7 @@ int scheduler_init_task(scheduler_task_t *new_task) {
 
 	/* Clear it */
 	memset(new_task->arch_state, 0, sizeof(i386_task_context_t));
-	
+
 	return 0;
 }
 
@@ -186,21 +187,21 @@ int scheduler_init_task(scheduler_task_t *new_task) {
 int scheduler_alloc_kstack(scheduler_task_t *task)
 {
 	physaddr_t frame;
-	
+
 	/* Allocate the stack from the kheap */
 	task->kernel_stack = heapmm_alloc_alligned
 		( CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE, PHYSMM_PAGE_SIZE );
 	if ( !task->kernel_stack )
 		return -1;
-	
+
 	/* Unmap and release the lowest frame of the stack */
 	/* to guard against stack overflow */
 	frame = paging_get_physical_address( task->kernel_stack );
-	debugcon_printf( "Setting up stack overflow guard: %x to %x\n",
+	printf( CON_DEBUG, "Setting up stack overflow guard: %x to %x",
 						task->kernel_stack, task->kernel_stack + PHYSMM_PAGE_SIZE );
 	paging_unmap( task->kernel_stack );
 	physmm_free_frame( frame );
-	
+
 	return 0;
 }
 
@@ -210,15 +211,15 @@ int scheduler_alloc_kstack(scheduler_task_t *task)
 int scheduler_free_kstack(scheduler_task_t *task)
 {
 	physaddr_t frame;
-	
-	/* Allocate a frame to restore the guard area */ 
+
+	/* Allocate a frame to restore the guard area */
 	frame = physmm_alloc_frame();
 	if ( frame == PHYSMM_NO_FRAME )
 		return -1;
-		
+
 	/* Map the guard area back into RAM */
 	paging_map( task->kernel_stack, frame, PAGING_PAGE_FLAG_RW );
-	
+
 	/* Free the heap space used by the stack */
 	heapmm_free( task->kernel_stack,
 				CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE);
@@ -232,14 +233,14 @@ int scheduler_free_task(scheduler_task_t *new_task) {
 
 	/* Notify the lazy FPU code about the tasks EOL */
 	i386_fpu_del_task( new_task );
-	
+
 	/* Free the architecture specific state */
 	heapmm_free(new_task->arch_state,sizeof(i386_task_context_t));
-	
+
 	/* Release its stack */
 	if ( new_task->kernel_stack )
 		return scheduler_free_kstack( new_task );
-	
+
 	return 0;
 }
 
@@ -257,7 +258,7 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	i386_task_context_t *nctx;
 	int s2;
 	struct csstack *nstate;
-	
+
 	/* Allocate its kernel stack */
 	if ( scheduler_alloc_kstack( new_task ) )
 		return ENOMEM;
@@ -272,8 +273,8 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	memcpy( nctx, tctx, sizeof( i386_task_context_t ) );
 
 	/* Handle FPU lazy switching */
-	i386_fpu_fork();	
-	
+	i386_fpu_fork();
+
 	/* Set up kernel state */
 	nctx->kern_esp = ( uint32_t ) new_task->kernel_stack;
 	nctx->kern_esp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
@@ -281,30 +282,30 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 
 	/* Push the arguments for the entry shim */
 	push_32( &nctx->kern_esp, (uint32_t) s );
-	
+
 	/* Push the arguments for the entry point */
 	push_32( &nctx->kern_esp, (uint32_t) arg );
 
 	/* Push the arguments for the entry shim */
 	push_32( &nctx->kern_esp, (uint32_t) callee );
-	
+
 	/* Push the return address */
 	push_32( &nctx->kern_esp, 0x0 );
-	
+
 	/* Push the new task state */
 	nctx->kern_esp -= sizeof( csstack_t );
 	nstate = ( struct csstack * ) nctx->kern_esp;
 	memset( nstate, 0, sizeof( csstack_t ) );
-	
+
 	nstate->eip = ( uint32_t ) &scheduler_spawnentry;
 	nstate->regs.ebp = 0xCAFE57AC;
-	
+
 	restore(s2);
-	
+
 	/* Switch to new process ? */
-	
+
 	return 0;
-	
+
 }
 
 /**
@@ -322,7 +323,7 @@ void debug_attach_task(process_info_t *new_task)
 				nctx->user_regs.ebp,
 				nctx->user_eip,
 				paging_get_physical_address(new_task->page_directory->content));
-	//TODO: Implement	
+	//TODO: Implement
 }
 
 

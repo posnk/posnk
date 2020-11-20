@@ -9,7 +9,8 @@
  * 01-07-2014 - Created
  */
 #include "kernel/drivermgr.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "pci"
+#include "kernel/console.h"
 
 #include "driver/bus/pci.h"
 #include "driver/bus/pci_list.h"
@@ -41,7 +42,7 @@ void pci_enumerate_all()
 	hdr_type = pci_config_read_byte( 0, 0, 0, PCI_CONFIG_HEADER_TYPE );
 	function_count = ( hdr_type & PCI_CONFIG_MULTIFUNCTION ) ? 8 : 1;
 
-	debugcon_printf("Enumerating PCI...\n");
+	printf(CON_INFO,"Enumerating PCI...");
 
 	for ( function = 0; function < function_count; function++ ) {
 		vid = pci_config_read_short( 0, 0, function, PCI_CONFIG_VENDOR_ID );
@@ -49,7 +50,7 @@ void pci_enumerate_all()
 			continue;
 		pci_enumerate_bus( function );
 	}
-		
+
 }
 
 void pci_enumerate_bus(uint8_t bus)
@@ -70,7 +71,7 @@ void pci_enumerate_bus(uint8_t bus)
 				continue;
 			pci_enumerate_function( bus, device, function );
 		}
-		
+
 	}
 }
 
@@ -87,10 +88,10 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 
 	if ((class == PCI_CLASS_BRIDGE) && (subclass == PCI_SUBCLASS_PCI2PCI)) {
 		secbus = pci_config_read_byte( bus, device, function, PCI_CONFIG_SECONDARY_BUS);
-		pci_enumerate_bus( secbus );	
-		return;	
+		pci_enumerate_bus( secbus );
+		return;
 	}
-	
+
 	busaddr = ((bus << 16) & 0xFF0000) | ((device << 8) & 0xFF00) | (function & 0xFF);
 
 	if (drivermgr_enumerate_device(DEVICE_TYPE_PCI, busaddr, vid, pid))
@@ -102,7 +103,7 @@ void pci_enumerate_function ( uint8_t bus, uint8_t device, uint8_t function )
 	if (drivermgr_enumerate_interface(DEVICE_TYPE_PCI, busaddr, interface))
 		return;
 
-	debugcon_printf("%i:%i.%i - %x:%x %s %s NO DRIVER FOUND!!!\n", bus, device, function,
+	printf(CON_INFO,"%i:%i.%i - %x:%x %s %s NO DRIVER FOUND!!!", bus, device, function,
 			vid, pid,
 			pci_vendor_lookup(vid),
 			pci_device_lookup(vid, pid));
