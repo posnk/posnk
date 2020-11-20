@@ -1,5 +1,5 @@
 /**
- * arch/i386/paging.c
+ * arch/i386/init.c
  *
  * Part of P-OS kernel.
  *
@@ -9,10 +9,12 @@
  * 30-03-2014 - Created
  */
 
+#include "kernel/init.h"
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
 #include "kernel/paging.h"
-#include "kernel/earlycon.h"
+#define CON_SRC "i386_init"
+#include "kernel/console.h"
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
 #include "arch/i386/x86.h"
@@ -21,8 +23,6 @@
 #include "arch/i386/multiboot.h"
 #include "arch/i386/protection.h"
 #include "arch/i386/vbe.h"
-#define CON_SRC "i386_init"
-#include "kernel/console.h"
 #include "driver/block/ramblk.h"
 #include "kdbg/dbgapi.h"
 #include <sys/stat.h>

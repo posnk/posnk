@@ -612,7 +612,7 @@ int procvmm_handle_fault(void *address)
 	uintptr_t in_region;
 	aoff_t file_off;
 	size_t read_size = PHYSMM_PAGE_SIZE;
-	size_t rd_count = 0;
+	aoff_t rd_count = 0;
 	physaddr_t frame;
 	process_mmap_t *region = procvmm_get_memory_region(address);
 	int status;

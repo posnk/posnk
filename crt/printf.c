@@ -32,6 +32,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <assert.h>
 #include <numfmt.h>
 
+#define UNUSED __attribute__((unused))
+
 #define PF_PRINT	(0)
 #define PF_FSPEC	(1)
 #define PF_WIDTH	(2)
@@ -103,6 +105,7 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 					nflags |= NF_ZEROPAD;
 					break;
 				}
+				// fall through
 			case PF_WIDTH:
 				state = PF_WIDTH;
 				if ( fch >= '0' && fch <= '9' ) {
@@ -113,12 +116,14 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 					state = PF_AWIDT;
 					break;
 				}
+				// fall through
 			case PF_AWIDT:
 				state = PF_AWIDT;
 				if ( fch == '.' ) {
 					state = PF_PRESC;
 					break;
 				}
+				// fall through
 			case PF_LMOD:
 				state = PF_LMOD;
 				if (  fch == 'h' && size != PF_SHORT) {
@@ -149,6 +154,7 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 					break;
 				}
 				assert( fch != 'L' );
+				// fall through
 			case PF_TYPE:
 				state = PF_TYPE;
 				if ( fch == 'i' || fch == 'd' ) {
@@ -304,6 +310,7 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 					state = PF_LMOD;
 					break;
 				}
+				// fall through
 			default:
 				assert(!"INVALID PF STATE");
 				break;
@@ -321,8 +328,9 @@ void __snprintf_putch( void * arg, char c, int count )
 {
 	__snprintf_str *str = ( __snprintf_str * ) arg;
 	assert( str != NULL );
+	assert( count >= 0 );
 
-	if ( count >= str->len - 1 )
+	if ( ((size_t)count) >= str->len - 1 )
 		return;
 
 	str->str[ count ] = c;
@@ -348,7 +356,9 @@ int vsnprintf(	char *str, size_t size, const char *format, va_list list )
 
 	result = vpprintf( __snprintf_putch, &arg, format, list );
 
-	if ( result > size - 1 )
+	if ( result < 0 )
+		result = 0;
+	else if ( ((size_t)result) > size - 1 )
 		result = size - 1;
 
 	str[ result ] = 0;
@@ -365,7 +375,7 @@ int vsnprintf(	char *str, size_t size, const char *format, va_list list )
  * @deprecated *Very* unsafe function
  * @see vpprintf
  */
-int vsprintf( char *str, const char *format, va_list list )
+int vsprintf( UNUSED char *str, UNUSED const char *format, UNUSED va_list list )
 {
 	assert(!"Attempting to use unsafe interface!");
 	return 0;

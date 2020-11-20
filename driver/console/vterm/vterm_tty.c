@@ -62,7 +62,9 @@ int vterm_putc(dev_t dev, char c)
 	return 0;
 }
 
-void vterm_con_puts(int sink, int flags, char *b)
+void vterm_con_puts(
+	__attribute__((__unused__)) int sink,
+	__attribute__((__unused__)) int flags, const char *b)
 {
 	size_t c;
 	size_t size = strlen(b);

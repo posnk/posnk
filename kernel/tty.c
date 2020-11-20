@@ -355,7 +355,7 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 				process_signal_pgroup(tty->fg_pgid, SIGHUP, info);
 				//TODO: Strip pgrp of ctty
 			}
-
+			return 0;
 		case TIOCGWINSZ:
 			if (!copy_kern_to_user(&(tty->win_size), (void *) arg, sizeof(winsize_t))){
 				syscall_errno = EFAULT;

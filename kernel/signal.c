@@ -23,7 +23,7 @@
 #include "kernel/syscall.h"
 
 /** The default behaviour for each signal ( this is used when SIG_DFL is set )*/
-int signal_default_actions[] = 
+int signal_default_actions[] =
 {
 	SIGNAL_ACTION_IGNORE,	//UNDEFINED
 	SIGNAL_ACTION_TERM,		//SIGHUP
@@ -141,7 +141,7 @@ void process_send_signal(	process_info_t *process,
 	assert( signal >= 0 && signal < 32 );
 
 	debugcon_printf("sending signal to pid %i : %i\n",process->pid, signal);
-	
+
 	if (signal == 0)
 		return;
 
@@ -167,8 +167,8 @@ void process_send_signal(	process_info_t *process,
 			signal == SIGTTOU ) {
 		sigdelset( &process->signal_pending, SIGCONT );
 	}
-		
-	process_handle_signal_scheduling( process ); 
+
+	process_handle_signal_scheduling( process );
 
 }
 
@@ -180,9 +180,9 @@ int process_signal_handler_default(int signal)
 
 	ctask = scheduler_current_task;
 	cproc = ctask->process;
-	
+
 	assert( ctask != NULL );
-	
+
 	//debugcon_printf("sigrecv: %i\n", scheduler_current_task->pid);
 	cproc->last_signal = signal;
 
@@ -190,23 +190,23 @@ int process_signal_handler_default(int signal)
 		case SIGNAL_ACTION_ABORT:
 			//TODO: Dump core
 		case SIGNAL_ACTION_TERM:
-			cproc->term_cause = PROCESS_TERM_SIGNAL;	
+			cproc->term_cause = PROCESS_TERM_SIGNAL;
 			cproc->state = PROCESS_KILLED;
 			//earlycon_printf("killed: %i\n", scheduler_current_task->pid);
 			break;
 		case SIGNAL_ACTION_STOP:
 			process_stop( cproc );
-			process_child_event( cproc, PROCESS_CHILD_STOPPED );			
+			process_child_event( cproc, PROCESS_CHILD_STOPPED );
 			schedule();
 			return 1;
 		case SIGNAL_ACTION_IGNORE:
 		default:
-			return 1;			
+			return 1;
 	}
-	
+
 	if ( cproc->state == PROCESS_KILLED ) {
 		debugcon_printf( "killedby: %i\n", signal );
-		process_child_event( cproc, PROCESS_CHILD_KILLED);	
+		process_child_event( cproc, PROCESS_CHILD_KILLED);
 		stream_do_close_all( cproc );
 		procvmm_clear_mmaps();
 		process_deschedule( cproc );
@@ -226,9 +226,9 @@ void thread_handle_signal_scheduling( scheduler_task_t *task );
  * @param process	The process to check
  */
 void process_handle_signal_scheduling( process_info_t *process )
-{	
+{
 	llist_t *c, *n, *h;
-	
+
 	/* SIGKILL and SIGCONT resume the process regardless of the mask value */
 	sigset_t sig_active = process->signal_pending;
 
@@ -241,11 +241,11 @@ void process_handle_signal_scheduling( process_info_t *process )
 		if ( process->state == PROCESS_STOPPED )
 			process_continue( process );
 	}
-	 
+
 	h = &process->tasks;
-	
+
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next )
-		thread_handle_signal_scheduling( c );
+		thread_handle_signal_scheduling( ( scheduler_task_t * ) c );
 
 }
 
@@ -253,23 +253,23 @@ void thread_handle_signal_scheduling( scheduler_task_t *task )
 {
 	int sig;
 	struct sigaction *act;
-	
+
 	//TODO: Figure out whether to interrupt calls on an SIG_IGN action
 	sigset_t sig_active;
-	
+
 	if ( !task->process )
-		return 0;
-	
+		return;
+
 	sig_active = task->process->signal_pending & ~task->signal_mask;
 
 	if ( sig_active == 0 )
-		return 0;
+		return;
 
 	for ( sig = 0; sig < 32; sig++ ) {
 
 		if ( !sigismember( &sig_active, sig ) )
 			continue;
-		
+
 		act = &task->process->signal_actions[sig];
 
 		if ( act->sa_handler == SIG_IGN )
@@ -284,11 +284,11 @@ void thread_handle_signal_scheduling( scheduler_task_t *task )
 /*		if ( signal_default_actions[ sig ] == SIGNAL_ACTION_STOP ) {
 			sigdelset( &task->process->signal_pending, sig );
 			process_stop( task->process );
-			process_child_event( task->process, PROCESS_CHILD_STOPPED );			
+			process_child_event( task->process, PROCESS_CHILD_STOPPED );
 			return;
 		}*/
 	}
-	
+
 	/* This would imply resuming a task even if a signal was ignored */
 	if ( sig_active )
 		scheduler_interrupt_task( task );
@@ -309,9 +309,9 @@ int process_handle_signal( int sig )
 
 	ctask = scheduler_current_task;
 	cproc = ctask->process;
-	
+
 	assert( cproc != NULL );
-	
+
 	/* Get the sigaction for the signal */
 	act = &cproc->signal_actions[ sig ];
 
@@ -331,7 +331,7 @@ int process_handle_signal( int sig )
 		/* The default action should be invoked */
 		return process_signal_handler_default( sig );
 
-	} else {		
+	} else {
 
 		/* We have a real handler in place, this architecture specific */
 		/* function should take care of the relevant sa_flags */
@@ -345,7 +345,7 @@ int process_handle_signal( int sig )
 }
 
 /**
- * Handle all unmasked pending signals	
+ * Handle all unmasked pending signals
  */
 void do_signals()
 {
@@ -357,17 +357,17 @@ void do_signals()
 
 	ctask = scheduler_current_task;
 	cproc = ctask->process;
-	
+
 	if ( !cproc )
 		return;
-		
+
 	/* Determine which signals we need to handle */
 	sig_active = cproc->signal_pending & ~ctask->signal_mask;
 
 	/* If there are none, we have nothing to do */
 	if (sig_active == 0)
 		return;
-	
+
 	debugcon_printf("sighandle: %i\n", cproc->pid);
 
 	//TODO: Find out why i thought this was important
@@ -383,16 +383,16 @@ void do_signals()
 		/* Only handle pending signals */
 		if ( !sigismember( &sig_active, sig ) )
 			continue;
-		
+
 		/* Remove the signal from the pending set */
 		sigdelset( &cproc->signal_pending, sig );
 
 		debugcon_printf( "handling signal: %i\n", sig );
-		
+
 		/* Handle the signal */
 		if ( !process_handle_signal( sig ) )
 			break;
-		
+
 	}
 
 }
@@ -409,7 +409,7 @@ void (*_sys_signal(	int sig, void (*disp)(int) ))( int )
 
 	old = scheduler_current_task->process->signal_actions[sig].sa_handler;
 
-	scheduler_current_task->process->signal_actions[sig] 
+	scheduler_current_task->process->signal_actions[sig]
 		= sig_action_default;
 	scheduler_current_task->process->signal_actions[sig].sa_handler
 		= disp;
@@ -417,8 +417,8 @@ void (*_sys_signal(	int sig, void (*disp)(int) ))( int )
 	return old;
 }
 
-int _sys_sigaction(	int sig, 
-					const struct sigaction *act, 
+int _sys_sigaction(	int sig,
+					const struct sigaction *act,
 					struct sigaction *oact )
 {
 
@@ -427,7 +427,7 @@ int _sys_sigaction(	int sig,
 		syscall_errno = EINVAL;
 		return -1;
 	}
-	
+
 	/* Copy the old action to userland if requested */
 	if ( oact != NULL ) {
 		if ( !procvmm_check( oact, sizeof( struct sigaction ) ) ) {
@@ -454,10 +454,10 @@ int _sys_sigaction(	int sig,
 
 }
 
-int _sys_sigaltstack(	const stack_t *ss, 
+int _sys_sigaltstack(	const stack_t *ss,
 						stack_t *oss )
 {
-	
+
 	/* Copy the old stack to userland if requested */
 	if ( oss != NULL ) {
 		if ( !procvmm_check( oss, sizeof( stack_t ) ) ) {
@@ -475,17 +475,17 @@ int _sys_sigaltstack(	const stack_t *ss,
 			syscall_errno = EFAULT;
 			return -1;
 		}
-		
+
 		if ( ss->ss_size < MINSIGSTKSZ ) {
 			syscall_errno = ENOMEM;
 			return -1;
 		}
-		
+
 		if ( ss->ss_flags & ~SS_DISABLE ) {
 			syscall_errno = EINVAL;
 			return -1;
 		}
-	
+
 		//TODO: Check if the stack is usable?
 
 		if ( scheduler_current_task->signal_altstack.ss_flags & SS_ONSTACK ) {
@@ -502,11 +502,11 @@ int _sys_sigaltstack(	const stack_t *ss,
 
 }
 
-int _sys_sigprocmask(	int how, 
-						const sigset_t *set, 
+int _sys_sigprocmask(	int how,
+						const sigset_t *set,
 						sigset_t *oset )
 {
-	
+
 	/* Copy the old mask to userland if requested */
 	if ( oset != NULL ) {
 		if ( !procvmm_check( oset, sizeof( sigset_t ) ) ) {
@@ -526,13 +526,13 @@ int _sys_sigprocmask(	int how,
 		syscall_errno = EFAULT;
 		return -1;
 	}
-	
+
 	switch ( how ) {
 
 		case SIG_BLOCK:
 			scheduler_current_task->signal_mask |=  *set;
 			break;
-		
+
 		case SIG_SETMASK:
 			scheduler_current_task->signal_mask  =  *set;
 			break;

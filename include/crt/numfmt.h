@@ -38,12 +38,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #define NF_SGNPLUS	(1 << 1)
 
+/**
+ * Format a signed number
+ * @param num        The number to format.
+ * @param flags      Any of the NF_ flags defined in this header
+ * @param width      The width of the field. Used for padding.
+ * @param base       The base to print the numbers in. Must be <= 16
+ * @param str        The string to write the formatted number to.
+ * @param str_len    The maximum length of the output array, including 0 term.
+ */
 void numfmt_signed(	intmax_t num,
 			int flags,
 			int width,
 			int base,
 			char *str,
 			size_t str_len);
+
+
+/**
+ * Format an unsigned number
+ * @param num        The number to format.
+ * @param flags      Any of the NF_ flags defined in this header
+ * @param width      The width of the field. Used for padding.
+ * @param base       The base to print the numbers in. Must be <= 16
+ * @param str        The string to write the formatted number to.
+ * @param str_len    The maximum length of the output array, including 0 term.
+ */
 void numfmt_unsigned(	uintmax_t num,
 			int flags,
 			int width,

@@ -121,10 +121,10 @@ int vt_mod_ctrl = 0, vt_mod_alt = 0;
 
 void con_handle_key(int keycode, int val)
 {
-    if ( keycode == KEY_LEFTCTRL || keycode == KEY_RIGHTCTRL )
-        vt_mod_ctrl = val;
-    else if ( keycode == KEY_LEFTALT || keycode == KEY_RIGHTALT )
-        vt_mod_alt = val;
+	if ( keycode == KEY_LEFTCTRL || keycode == KEY_RIGHTCTRL )
+        	vt_mod_ctrl = val;
+	else if ( keycode == KEY_LEFTALT || keycode == KEY_RIGHTALT )
+        	vt_mod_alt = val;
 	if ( vt_mod_ctrl && vt_mod_alt && keycode >= KEY_F1 && keycode <= KEY_F10 ){
 		vterm_vga_switch_vc( keycode - KEY_F1 );
 	} else
