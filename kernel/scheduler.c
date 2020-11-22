@@ -29,6 +29,18 @@ scheduler_task_t *scheduler_task_list;
 
 spinlock_t scheduling_lock = 0;
 
+scheduler_task_t *scheduler_get_task( tid_t tid )
+{
+	scheduler_task_t *task = scheduler_task_list;
+	do {
+		if ( task->tid == tid )
+			return task;
+		task = task->next;
+	} while ( task != scheduler_task_list );
+	return NULL;
+}
+
+
 void scheduler_init()
 {
 	scheduler_task_list = NULL;

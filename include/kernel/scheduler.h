@@ -48,39 +48,39 @@ typedef struct task scheduler_task_t;
 struct task {
 
 	llist_t         node;
-	
+
 	/** Previous task in the scheduling queue */
 	struct task    *prev;
-	
+
 	/** Next task in the scheduling queue */
 	struct task    *next;
 
 	/** The task id */
 	tid_t           tid;
-	
+
 	/** The task flags */
 	int             flags;
-	
+
 	/* Scheduling state */
-	int	            state;
-	
+	int	        state;
+
 	sigset_t        signal_mask;
 	stack_t         signal_altstack;
-	
+
 	ticks_t         cpu_ticks;
 	ticks_t         cpu_end;
 
 	int		active;
-	
+
 	/** The process this task belongs to */
 	process_info_t *process;
-	
+
 	/** Processor state */
 	void		   *arch_state;
-	
+
 	/** The kernel stack */
 	void           *kernel_stack;
-	
+
 	uint32_t        in_syscall;
 
 	/** Wait target */
@@ -103,6 +103,8 @@ void scheduler_stop_task( scheduler_task_t *task );
 void scheduler_continue_task( scheduler_task_t *task );
 
 void scheduler_interrupt_task( scheduler_task_t *task );
+
+scheduler_task_t *scheduler_get_task( tid_t tid );
 
 void scheduler_fork_main( void * arg );
 

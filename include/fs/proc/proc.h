@@ -17,9 +17,10 @@
 #include "util/llist.h"
 #include "kernel/streams.h"
 
-#define PROC_INODE_PID(InO)	( (pid_t) ( ( InO << 12 ) & 0xFFFF ))
-#define PROC_INODE_FILE(InO)	(         ( ( InO       ) & 0x0FFF ))
-
+#define PROC_INODE_FILE(InO)	(         ( ( InO       ) & 0x0FFF ) )
+#define PROC_INODE_PID(InO)	( (pid_t) ( ( InO >> 12 ) & 0xFFFF ) )
+#define PROC_INODE_TID(InO)	( (tid_t) ( ( InO >> 12 ) & 0xFFFF ) )
+#define PROC_INODE( Pid, File ) ( (ino_t) ( (Pid << 12) | File ) )
 #define PROC_ROOT_INODE		( 0 )
 
 typedef struct {
@@ -94,5 +95,15 @@ extern stream_ops_t proc_dir_ops;
 extern stream_ops_t proc_snapfile_ops;
 
 proc_file_t *proc_get_file( ino_t id );
+errno_t proc_snap_setstring( proc_snap_t *snap, const char *str );
+errno_t proc_snap_setline( proc_snap_t *snap, const char *str );
+errno_t proc_process_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_task_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_tasks_list ( proc_snap_t *snap, ino_t inode );
+errno_t proc_proc_name_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_proc_state_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_proc_tasks_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_task_state_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_task_syscall_open ( proc_snap_t *snap, ino_t inode );
 
 #endif
