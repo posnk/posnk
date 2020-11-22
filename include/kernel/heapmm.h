@@ -66,6 +66,11 @@ void *heapmm_alloc_alligned(size_t size, uintptr_t alignment);
 void *heapmm_alloc(size_t size);
 
 /**
+ * Allocates a new block of memory of given size to the caller
+ */
+void *heapmm_realloc( void* address, size_t old_size, size_t size );
+
+/**
  * Releases a block of memory so it can be reallocated
  */
 void  heapmm_free(void *address, size_t size);

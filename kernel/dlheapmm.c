@@ -23,6 +23,7 @@
 #include "kernel/system.h"
 
 void* dlmemalign(size_t,size_t);
+void* dlrealloc(void *,size_t);
 void* dlmalloc(size_t);
 void  dlfree(void*);
 
@@ -90,7 +91,20 @@ void *heapmm_alloc_page()
  */
 void  heapmm_free(void *address, __attribute__((__unused__)) size_t size)
 {
+	semaphore_down( &heap_lock );
 	dlfree(address);
+	semaphore_up( &heap_lock );
+}
+
+
+void *heapmm_realloc( void* address,
+                      __attribute__((__unused__)) size_t old_size,
+                      size_t size ) {
+        void *r;
+	semaphore_down( &heap_lock );
+	r = dlrealloc( address, size );
+	semaphore_up( &heap_lock );
+	return r;
 }
 
 /**
