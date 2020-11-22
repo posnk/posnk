@@ -15,11 +15,12 @@
 #include <sys/types.h>
 #include "kernel/vfs.h"
 #include "util/llist.h"
+#include "kernel/streams.h"
 
-#define PROC_INODE_PID(InO)	( (pid_t) ( ( InO << 16 ) & 0xFFFF ))
-#define PROC_INODE_FILE(InO)	(         ( ( InO       ) & 0xFFFF ))
+#define PROC_INODE_PID(InO)	( (pid_t) ( ( InO << 12 ) & 0xFFFF ))
+#define PROC_INODE_FILE(InO)	(         ( ( InO       ) & 0x0FFF ))
 
-#define PROC_ROOT_INODE		(0)
+#define PROC_ROOT_INODE		( 0 )
 
 typedef struct {
 	inode_t		 vfs_inode;
@@ -28,10 +29,70 @@ typedef struct {
 } proc_vinode_t;
 
 typedef struct {
-	llist_t		 link;
-	char		*name;
-	ino_t		 ino_id;
-	stream_ops_t	*ops;
-} proc_dirent_t;
+	aoff_t           size;
+	size_t           alloc_size;
+	void *           data;
+} proc_snap_t;
+
+struct proc_dirent {
+	uint32_t inode;
+	uint16_t rec_len;
+	uint8_t  name_len;
+	uint8_t  file_type;
+}  __attribute__((packed)); //8 long
+
+typedef struct proc_dirent proc_dirent_t;
+
+typedef errno_t (*proc_snapopen_t) ( proc_snap_t *snap, ino_t inode );
+
+#define PROC_FLAG_PID_UIDGID (1)
+
+typedef struct proc_file {
+	const char *    name;
+	mode_t          mode;
+	aoff_t          size;
+	proc_snapopen_t open;
+	uint32_t        flags;
+} proc_file_t;
+
+SFUNC( proc_snap_t *,proc_snap_create,
+                                aoff_t            alloc_size );
+
+void proc_snap_delete( proc_snap_t *snap );
+
+SVFUNC( proc_snap_trunc,
+                                proc_snap_t *     snap,
+                                aoff_t            size );
+
+SFUNC( aoff_t, proc_snap_read,
+                                proc_snap_t *     snap,
+                                aoff_t            offset,
+                                void *            buffer,
+                                aoff_t            count );
+
+SFUNC( aoff_t, proc_snap_write,
+                                proc_snap_t *     snap,
+                                aoff_t            offset,
+                                const void *      buffer,
+                                aoff_t            count );
+
+SVFUNC( proc_snap_appenddir,
+                                proc_snap_t *     snap,
+                                const char *      name,
+                                ino_t             ino );
+
+SFUNC( aoff_t, proc_snap_readdir,
+				dev_t device,
+				proc_snap_t *     snap,
+				aoff_t *          offset,
+				sys_dirent_t *    buffer,
+				aoff_t            buflen);
+SFUNC( dirent_t *, proc_finddir, inode_t *_inode, const char * name );
+SFUNC(proc_snap_t *, proc_open_snap, ino_t inode );
+
+extern stream_ops_t proc_dir_ops;
+extern stream_ops_t proc_snapfile_ops;
+
+proc_file_t *proc_get_file( ino_t id );
 
 #endif
