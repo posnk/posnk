@@ -152,6 +152,7 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	fs_device_t 	*fsdevice;
 	errno_t	     	 status;
 	inode_t		*mp_inode;
+	inode_t		*rf_inode;
 
 	/* Check for null pointers */
 	assert ( driver != NULL );
@@ -202,7 +203,7 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 	/* Attach the filesystems root inode to the mountpoint */
 	status = ifs_load_inode( fsdevice,
 				 fsdevice->root_inode_id,
-				 &(mp_inode->mount) );
+				 &rf_inode );
 
 	/* Check for errors */
 	if (status) {
@@ -212,6 +213,11 @@ SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uin
 
 		THROWV( status ); //TODO: Unmount
 	}
+
+	vfs_inode_cache( rf_inode );
+	//NOTE : Schedule may have happened
+
+	mp_inode->mount = vfs_inode_ref( rf_inode);
 
 	/* Register the mount */
 	vfs_reg_mount ( fsdevice, mp_inode );

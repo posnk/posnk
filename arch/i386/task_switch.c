@@ -197,8 +197,8 @@ int scheduler_alloc_kstack(scheduler_task_t *task)
 	/* Unmap and release the lowest frame of the stack */
 	/* to guard against stack overflow */
 	frame = paging_get_physical_address( task->kernel_stack );
-	printf( CON_DEBUG, "Setting up stack overflow guard: %x to %x",
-						task->kernel_stack, task->kernel_stack + PHYSMM_PAGE_SIZE );
+	printf( CON_TRACE, "Setting up stack overflow guard: %x to %x",
+	        task->kernel_stack, task->kernel_stack + PHYSMM_PAGE_SIZE );
 	paging_unmap( task->kernel_stack );
 	physmm_free_frame( frame );
 

@@ -1,4 +1,4 @@
-/* 
+/*
  * kdbg/heapdbg.c
  *
  * Part of P-OS kernel.
@@ -52,7 +52,7 @@ int kdbg_find_bf_iterator(llist_t *node, void *param) {
 
 int kdbg_find_in_iterator(llist_t *node, __attribute__((unused)) void *param) {
 	kdbg_heap_use_t *use = (kdbg_heap_use_t *) node;
-	uintptr_t p = (uintptr_t) p;
+	uintptr_t p = (uintptr_t) param;
 	return (p >= use->start) && (p < (use->start + use->size));
 }
 
@@ -66,14 +66,14 @@ void kdbg_print_memuse_brdr(void *addr)
 	if (!use) {
 		kdbg_printf("Address not in use: 0x%x\n",addr);
 		use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_bf_iterator, addr);
-		//return;	
+		//return;
 	}
 	kdbg_printf("  Memory region 0x%x - 0x%x used by:\n", use->start, use->start + use->size);
 	kdbg_print_calltrace(use->calltrace);
 	use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_bf_iterator, (void*) use->start);
 	if (!use) {
 		kdbg_printf("No bordering region: 0x%x\n",addr);
-		return;	
+		return;
 	}
 	kdbg_printf("  Border region 0x%x - 0x%x used by:\n", use->start, use->start + use->size);
 	kdbg_print_calltrace(use->calltrace);
@@ -82,7 +82,7 @@ void kdbg_print_memuse_brdr(void *addr)
 void dbgapi_unreg_memuse(void *addr, size_t size)
 {
 	//kdbg_printf("F|%x|%x\n",addr,size);
-	
+
 	if (!heapdbg_up)
 		return;
 	kdbg_heap_use_t *use = (kdbg_heap_use_t *) llist_iterate_select(&kdbg_heap_use_list, &kdbg_find_memuse_iterator, addr);
@@ -94,7 +94,7 @@ void dbgapi_unreg_memuse(void *addr, size_t size)
 		kdbg_printf("Size mismatch at address 0x%x  %u != %u\n",addr,use->size, size);
 		dbgapi_invoke_kdbg(1);
 	}
-	llist_unlink((llist_t*)use);	
+	llist_unlink((llist_t*)use);
 	kdbg_free_calltrace(use->calltrace);
 	kdbgmm_free(use, sizeof(kdbg_heap_use_t));
 }

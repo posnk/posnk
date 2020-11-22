@@ -8,6 +8,7 @@
  * Changelog:
  * 20-07-2014 - Created
  */
+#include <string.h>
 #include "kdbg/stacktrc.h"
 #include "kdbg/kdbgio.h"
 #include "kdbg/kdbgmm.h"

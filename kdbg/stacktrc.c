@@ -22,7 +22,7 @@ extern char i386_symtab_end;
 Elf32_Sym *kdbg_symtab = NULL;//&i386_symtab;
 #endif
 
-char *kdbg_symbol_name(uintptr_t addr)
+char *kdbg_symbol_name(__attribute__((unused)) uintptr_t addr)
 {
 	/*int i,f = 0;
 	ptrdiff_t ssz = &i386_symtab_end - &i386_symtab;
@@ -91,7 +91,7 @@ void kdbg_pt_calltrace(scheduler_task_t *t)
 		if (c_ebp == 0xCAFE8007) {
 			kdbg_printf("       Kernel Entry\n");
 			return;
-		} else if (c_ebp == 0xCAFE57AC) {	
+		} else if (c_ebp == 0xCAFE57AC) {
 /*
 Interrupt Entry: EBP set to CAFE57AC
 Interrupt Stack
@@ -104,8 +104,8 @@ Interrupt Stack
 	uint32_t				eflags;
 	uint32_t				esp;            | Ring0->Ring 3 Only!
 	uint32_t				ss;             |
-	
-	
+
+
 	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
 */
 			kdbg_printf("       Interrupt In:%s\n",
@@ -137,17 +137,17 @@ Interrupt Stack
 				kdbg_printf("           ss: 0x%x\tesp:0x%x\n",
 						isrst->ss, isrst->esp );
 				kdbg_printf("        USER CODE\n");
-				return;          
+				return;
 			}
 		} else {
 			l_ebp = c_ebp;
 			if ( c_ebp < 0xc0000000 ) {
 				kdbg_printf("        STACK CORRUPT\n");
-				return;          
+				return;
 			}
 			c_eip = *((uintptr_t *) (c_ebp + 4));
 			c_ebp = *((uintptr_t *)  c_ebp);
-			kdbg_printf("       0x%x %s() 0x%x\n", 
+			kdbg_printf("       0x%x %s() 0x%x\n",
 						entry->func_addr,
 						kdbg_symbol_name(entry->func_addr),
 						entry->frame_addr);

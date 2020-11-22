@@ -888,7 +888,7 @@ int _sys_ftruncate(int fd, off_t size)
 				/* Return the amount of bytes read */
 				return 0;
 			}
-
+			//fall through
 		case STREAM_TYPE_FILE:
 			/* Stream is a file or directory stream */
 

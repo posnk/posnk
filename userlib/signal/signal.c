@@ -27,7 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <sys/syscall.h>
 
-static void sigexit( int sig, void *info, void *context, void *sigret )
+static void sigexit(
+	__attribute__((unused)) int sig,
+	__attribute__((unused)) void *info,
+	__attribute__((unused)) void *context,
+	__attribute__((unused)) void *sigret )
 {
 	syscall( SYS_SIGNAL, (uint32_t) sigret, 0, 0, 0, 0, 0 );
 	/* does not return */
@@ -40,6 +44,6 @@ static void __attribute__((constructor)) set_sigexit() {
 
 void (*signal(int sig, void (*func)(int)))(int)
 {
-	return ( void (*)(int) ) 
+	return ( void (*)(int) )
 		syscall( SYS_SIGNAL, sig, (uint32_t) func, 0, 0, 0, 0 );
 }

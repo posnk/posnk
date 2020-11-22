@@ -32,7 +32,10 @@ static int parse_level( const char *level ) {
 	return cmdline_parse_hex( level );
 }
 
-static int handle_src_prop( const char *src, const char *prop, const char *value ) {
+static int handle_src_prop(
+	__attribute__((unused)) const char *src,
+	__attribute__((unused)) const char *prop,
+	__attribute__((unused)) const char *value ) {
 	return 0;
 }
 

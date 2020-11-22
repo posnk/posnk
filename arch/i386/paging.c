@@ -107,7 +107,7 @@ page_dir_t *paging_create_dir()
 								new_frame_phys = physmm_alloc_frame();
 							}
 							frame_phys = (physaddr_t)(table_ptr->pages[frame_counter] & ~0xFFF);
-							i386_phys_copy_frame(frame_phys, new_frame_phys);
+							i386_phys_copy_frame(frame_phys, new_frame_phys);//TODO: Get rid of cursed phys copy routine
 							new_table_ptr->pages[frame_counter] = (table_ptr->pages[frame_counter] & 0xFFF) | new_frame_phys;
 						}
 					} else

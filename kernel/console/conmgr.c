@@ -56,7 +56,7 @@ int con_ref_src( const char *name ) {
 	#endif
 }
 
-void con_release_src( int hnd ) {
+void con_release_src( __attribute__((unused)) int hnd ) {
 	/* For now, this is a no-op */
 }
 

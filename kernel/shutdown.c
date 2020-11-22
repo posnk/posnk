@@ -14,6 +14,7 @@
 #include "kernel/vfs.h"
 #define CON_SRC "shutdown"
 #include "kernel/console.h"
+#include "kernel/system.h"
 
 
 void shutdown()
