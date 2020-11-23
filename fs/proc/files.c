@@ -4,40 +4,40 @@
 #include <stdio.h>
 #include <string.h>
 
-errno_t proc_root_open ( proc_snap_t *snap, ino_t inode ) {
+errno_t proc_root_open ( snap_t *snap, ino_t inode ) {
 	process_info_t *p;
 	llist_t *_p;
 	char name[16];
 
-	proc_snap_appenddir( snap, "."    , inode);
-	proc_snap_appenddir( snap, ".."   , 0x000 );
+	snap_appenddir( snap, "."    , inode);
+	snap_appenddir( snap, ".."   , 0x000 );
 
 	for (_p = process_list->next; _p != process_list; _p = _p->next) {
 		p = (process_info_t *) _p;
 		snprintf( name, sizeof name, "%i", p->pid );
-		proc_snap_appenddir( snap, name, PROC_INODE(p->pid, 0x001) );
+		snap_appenddir( snap, name, PROC_INODE(p->pid, 0x001) );
 	}
 
 	return 0;
 }
 
-errno_t proc_snap_setstring( proc_snap_t *snap, const char *str )
+errno_t snap_setstring( snap_t *snap, const char *str )
 {
 	aoff_t wr;
-	return proc_snap_write( snap, 0, str, strlen(str), &wr );
+	return snap_write( snap, 0, str, strlen(str), &wr );
 }
 
-errno_t proc_snap_setline( proc_snap_t *snap, const char *str )
+errno_t snap_setline( snap_t *snap, const char *str )
 {
 	errno_t status;
 	aoff_t wr;
 	char nl='\n';
 
-	status = proc_snap_write( snap, 0, str, strlen(str), &wr );
+	status = snap_write( snap, 0, str, strlen(str), &wr );
 	if (status)
 		return status;
 
-	status = proc_snap_write( snap, strlen(str), &nl, 1, &wr );
+	status = snap_write( snap, strlen(str), &nl, 1, &wr );
 	if (status)
 		return status;
 

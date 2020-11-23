@@ -21,7 +21,7 @@
 #include <sys/types.h>
 #include <sys/dirent.h>
 
-#include "fs/proc/proc.h"
+#include "fs/snap/snap.h"
 #include "kernel/heapmm.h"
 #include "kernel/vfs.h"
 #include "kernel/streams.h"
@@ -31,17 +31,17 @@
  *
  * @param alloc_size    Size of the initial allocation for the snap
  * @return              The snap that was created. To be freed using
- *                      proc_snap_delete.
+ *                      snap_delete.
  * @exception ENOMEM    If either the descriptor or data could not
  *                      be allocated.
  */
-SFUNC( proc_snap_t *, proc_snap_create,
+SFUNC( snap_t *, snap_create,
                                 aoff_t            alloc_size )
 {
-	proc_snap_t *snap;
+	snap_t *snap;
 
 	/* Allocate the snap info block */
-	snap = heapmm_alloc( sizeof(proc_snap_t) );
+	snap = heapmm_alloc( sizeof(snap_t) );
 	if ( !snap )
 		THROW( ENOMEM, NULL );
 
@@ -52,7 +52,7 @@ SFUNC( proc_snap_t *, proc_snap_create,
 
 	/* Handle data allocation failure */
 	if ( !snap->data ) {
-		heapmm_free( snap, sizeof(proc_snap_t) );
+		heapmm_free( snap, sizeof(snap_t) );
 		THROW( ENOMEM, NULL );
 	}
 
@@ -63,10 +63,10 @@ SFUNC( proc_snap_t *, proc_snap_create,
  * Deletes a snap.
  * @param snap          The snap to delete.
  */
-void proc_snap_delete( proc_snap_t *snap )
+void snap_delete( snap_t *snap )
 {
 	heapmm_free( snap->data, snap->alloc_size );
-	heapmm_free( snap, sizeof(proc_snap_t) );
+	heapmm_free( snap, sizeof(snap_t) );
 }
 
 /**
@@ -77,8 +77,8 @@ void proc_snap_delete( proc_snap_t *snap )
  * @param size        The new size for the snap.
  * @exception ENOMEM  Not enough memory was available to enlarge the snap.
  */
-SVFUNC( proc_snap_trunc,
-                                proc_snap_t *     snap,
+SVFUNC( snap_trunc,
+                                snap_t *     snap,
                                 aoff_t            size )
 {
 	aoff_t new_asz;
@@ -134,8 +134,8 @@ SVFUNC( proc_snap_trunc,
  * @param count    The number of bytes to read
  * @return         The number of bytes read
  */
-SFUNC( aoff_t, proc_snap_read,
-                                proc_snap_t *     snap,
+SFUNC( aoff_t, snap_read,
+                                snap_t *     snap,
                                 aoff_t            offset,
                                 void *            buffer,
                                 aoff_t            count )
@@ -165,8 +165,8 @@ SFUNC( aoff_t, proc_snap_read,
  * @param count    The number of bytes to write
  * @return         The number of bytes written
  */
-SFUNC( aoff_t, proc_snap_write,
-                                proc_snap_t *     snap,
+SFUNC( aoff_t, snap_write,
+                                snap_t *     snap,
                                 aoff_t            offset,
                                 const void *      buffer,
                                 aoff_t            count )
@@ -177,7 +177,7 @@ SFUNC( aoff_t, proc_snap_write,
 
 	/* If the write is beyond the current end of the snap, grow the snap */
 	if ( offset >= snap->size || offset + count >= snap->size ) {
-		status = proc_snap_trunc( snap, offset + count );
+		status = snap_trunc( snap, offset + count );
 		if ( status )
 			THROW( status, 0 );
 	}
@@ -196,14 +196,14 @@ SFUNC( aoff_t, proc_snap_write,
  * @param ino         The inode number the dirent should refer too
  * @exception ENOMEM  If there was not enough space to grow the snap.
  */
-SVFUNC( proc_snap_appenddir,
-                                proc_snap_t *     snap,
+SVFUNC( snap_appenddir,
+                                snap_t *     snap,
                                 const char *      name,
                                 ino_t             ino )
 {
 	errno_t status;
 	aoff_t wrsz,base;
-	proc_dirent_t dirent_hdr;
+	snap_dirent_t dirent_hdr;
 
 	assert( snap   != NULL );
 	assert( name   != NULL );
@@ -211,35 +211,35 @@ SVFUNC( proc_snap_appenddir,
 	/* Fill dirent header */
 	dirent_hdr.inode    = ino;
 	dirent_hdr.name_len = strlen( name );
-	dirent_hdr.rec_len  = dirent_hdr.name_len + sizeof( proc_dirent_t );
+	dirent_hdr.rec_len  = dirent_hdr.name_len + sizeof( snap_dirent_t );
 
 	/* The dirent will be written to the end of the snap */
 	base = snap->size;
 
 	/* Grow the snap first, so any errors will happen before modifying
 	 * the snap */
-	status = proc_snap_trunc( snap, base + dirent_hdr.rec_len );
+	status = snap_trunc( snap, base + dirent_hdr.rec_len );
 	if ( status )
 		THROWV( status );
 
 	/* Write out the dirent header */
-	status = proc_snap_write(
+	status = snap_write(
 		snap,
 		base,
 		&dirent_hdr,
-		sizeof( proc_dirent_t ),
+		sizeof( snap_dirent_t ),
 		&wrsz );
 
 	if ( status )
 		THROWV( status );
 
-	if ( wrsz != sizeof( proc_dirent_t ) )
+	if ( wrsz != sizeof( snap_dirent_t ) )
 		THROWV( ENOSPC );
 
 	/* Write out the dirent name */
-	status = proc_snap_write(
+	status = snap_write(
 		snap,
-		base+sizeof( proc_dirent_t ),
+		base + sizeof( snap_dirent_t ),
 		name,
 		dirent_hdr.name_len,
 		&wrsz );
@@ -259,14 +259,14 @@ SVFUNC( proc_snap_appenddir,
  * @param buflen      The size of the buffer.
  * @exception E2BIG   The buffer was too small to even fit the dirent header.
  */
-SFUNC( aoff_t, proc_snap_readdir,
+SFUNC( aoff_t, snap_readdir,
 				dev_t device,
-				proc_snap_t *     snap,
+				snap_t *     snap,
 				aoff_t *          offset,
 				sys_dirent_t *    buffer,
 				aoff_t            buflen)
 {
-	proc_dirent_t	dirent_hdr;
+	snap_dirent_t	dirent_hdr;
 	aoff_t          name_offset;
 	size_t          full_sz;
 
@@ -315,4 +315,5 @@ SFUNC( aoff_t, proc_snap_readdir,
 
 	RETURN( full_sz );
 }
+
 

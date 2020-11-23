@@ -1,5 +1,5 @@
 FS_SRC(proc/proc)
-FS_SRC(proc/snap)
+FS_SRC(snap/snap)
 FS_SRC(proc/dir)
 FS_SRC(proc/snapfile)
 FS_SRC(proc/task)

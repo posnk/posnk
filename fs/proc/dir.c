@@ -25,7 +25,7 @@
 
 SFUNC( dirent_t *, proc_finddir, inode_t *_inode, const char * name )
 {
-	proc_snap_t     *snap;
+	snap_t     *snap;
 	sys_dirent_t	*dirent;
 	errno_t			status;
 	aoff_t			nread;
@@ -40,18 +40,18 @@ SFUNC( dirent_t *, proc_finddir, inode_t *_inode, const char * name )
 	if( status )
 		THROW( status, NULL );
 
-	while ( (status = proc_snap_readdir(_inode->device_id,
-	                                    snap,
-										&offset,
-										dirent,
-										sizeof(sys_dirent_t),
-										&nread ) ) == 0 && nread != 0) {
+	while ( (status = snap_readdir( _inode->device_id,
+	                                     snap,
+					     &offset,
+					     dirent,
+					     sizeof(sys_dirent_t),
+					     &nread ) ) == 0 && nread != 0) {
 		if ( strcmp ( dirent->d_name, name ) == 0 )
 			RETURN( ( dirent_t * ) dirent);
 
 	}
 
-	proc_snap_delete( snap );
+	snap_delete( snap );
 
 	assert ( status != E2BIG );
 
@@ -83,7 +83,7 @@ SVFUNC( proc_dir_close, stream_info_t *stream )
 {
 
 	/* Delete the snap */
-	proc_snap_delete( stream->impl );
+	snap_delete( stream->impl );
 
 	stream->inode->open_count--;
 
@@ -103,7 +103,7 @@ SFUNC( aoff_t, proc_dir_readdir,
                                  aoff_t buflen)
 {
 	CHAINRET(
-		proc_snap_readdir,
+		snap_readdir,
 		stream->inode->device_id,
 		stream->impl,
 		&stream->offset,

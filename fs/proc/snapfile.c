@@ -31,7 +31,7 @@ SFUNC( aoff_t, proc_snapfile_read,
 	aoff_t sz;
 	errno_t status;
 
-	status = proc_snap_read(
+	status = snap_read(
 	                         stream->impl,
 	                         stream->offset,
 	                         buffer,
@@ -54,7 +54,7 @@ SFUNC( aoff_t, proc_snapfile_write,
 	aoff_t sz;
 	errno_t status;
 
-	status = proc_snap_write(
+	status = snap_write(
 	                         stream->impl,
 	                         stream->offset,
 	                         buffer,
@@ -73,7 +73,7 @@ SVFUNC( proc_snapfile_close, stream_info_t *stream )
 {
 
 	/* Delete the snap */
-	proc_snap_delete( stream->impl );
+	snap_delete( stream->impl );
 
 	stream->inode->open_count--;
 

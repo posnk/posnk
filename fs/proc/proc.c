@@ -89,22 +89,22 @@ SVFUNC(proc_store_inode,inode_t *_inode) {
 	RETURNV;
 }
 
-SFUNC(proc_snap_t *, proc_open_snap, ino_t inode ) {
+SFUNC(snap_t *, proc_open_snap, ino_t inode ) {
 	errno_t status;
-	proc_snap_t *snap;
+	snap_t *snap;
 	proc_file_t *file;
 
 	file = proc_get_file( inode );
 	if ( !file )
 		THROWV(EINVAL);
 
-	status = proc_snap_create( 64, &snap );
+	status = snap_create( 64, &snap );
 	if (status)
 		THROW(status, NULL);
 
 	status = file->open( snap, inode );
 	if (status) {
-		proc_snap_delete( snap );
+		snap_delete( snap );
 		THROW(status, NULL);
 	}
 
@@ -133,7 +133,7 @@ SVFUNC ( proc_open_inode, inode_t *inode, void *_stream )
 							STREAM_IMPL_FILE_LSEEK |
 							STREAM_IMPL_FILE_TRUNC;
 
-	status = proc_open_snap( inode->id, (proc_snap_t **)&(stream->impl) );
+	status = proc_open_snap( inode->id, (snap_t **)&(stream->impl) );
 	if (status)
 		THROWV(status);
 
@@ -163,7 +163,7 @@ fs_device_t proc_dev = {
 	.root_inode_id = PROC_ROOT_INODE,
 	.ops = &proc_ops,
 	.lock = NULL,
-	.inode_size = sizeof(proc_vinode_t)
+	.inode_size = sizeof(inode_t)
 };
 
 SFUNC(fs_device_t *, proc_mount, __attribute__((__unused__)) dev_t device, __attribute__((__unused__)) uint32_t flags)
