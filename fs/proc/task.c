@@ -40,6 +40,7 @@ errno_t proc_task_open ( proc_snap_t *snap, ino_t inode ) {
 	proc_snap_appenddir( snap, ".."    , PROC_INODE( t->process->pid, 0x001 ) );
 	proc_snap_appenddir( snap, "state" , PROC_INODE( tid, 0x006 ) );
 	proc_snap_appenddir( snap, "syscall", PROC_INODE( tid, 0x007 ) );
+	proc_snap_appenddir( snap, "cpustate", PROC_INODE( tid, 0x008 ) );
 	return 0;
 }
 
@@ -70,6 +71,17 @@ errno_t proc_task_syscall_open ( proc_snap_t *snap, ino_t inode ) {
 		proc_snap_setline( snap, "(running)" );
 	else
 		proc_snap_setline( snap, syscall_names[t->in_syscall] );
+
+	return 0;
+}
+
+errno_t proc_task_cpustate_open ( proc_snap_t *snap, ino_t inode ) {
+	scheduler_task_t *t = scheduler_get_task( PROC_INODE_TID( inode ) );
+	aoff_t ws;
+	if ( !t || !t->arch_state)
+		return EINVAL;
+
+	proc_snap_write( snap, 0, t->arch_state, scheduler_get_state_size(), &ws );
 
 	return 0;
 }

@@ -83,15 +83,21 @@ proc_file_t proc_file_list[] = {
 		.flags=0
 	}, { // 6
 		.name="state",
-		.mode=S_IFREG | 0555,
+		.mode=S_IFREG | 0444,
 		.size=4096,
 		.open=proc_task_state_open,
 		.flags=0
 	}, { // 7
 		.name="syscall",
-		.mode=S_IFREG | 0555,
+		.mode=S_IFREG | 0444,
 		.size=4096,
 		.open=proc_task_syscall_open,
+		.flags=0
+	}, { // 7
+		.name="cpustate",
+		.mode=S_IFREG | 0444,
+		.size=4096,
+		.open=proc_task_cpustate_open,
 		.flags=0
 	}
 };

@@ -181,6 +181,10 @@ int scheduler_init_task(scheduler_task_t *new_task) {
 	return 0;
 }
 
+size_t scheduler_get_state_size( ) {
+	return sizeof(i386_task_context_t);
+}
+
 /**
  * Allocate a new kernel stack
  */

@@ -90,6 +90,8 @@ struct task {
 
 };
 
+size_t scheduler_get_state_size( );
+
 extern scheduler_task_t *scheduler_current_task;
 
 int scheduler_init_task(scheduler_task_t *new_task);

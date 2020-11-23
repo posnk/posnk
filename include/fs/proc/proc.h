@@ -105,5 +105,6 @@ errno_t proc_proc_state_open ( proc_snap_t *snap, ino_t inode );
 errno_t proc_proc_tasks_open ( proc_snap_t *snap, ino_t inode );
 errno_t proc_task_state_open ( proc_snap_t *snap, ino_t inode );
 errno_t proc_task_syscall_open ( proc_snap_t *snap, ino_t inode );
+errno_t proc_task_cpustate_open ( proc_snap_t *snap, ino_t inode );
 
 #endif
