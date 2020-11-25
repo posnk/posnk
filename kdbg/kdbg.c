@@ -18,17 +18,18 @@
 #include "kernel/system.h"
 #include "kernel/heapmm.h"
 #include <string.h>
+extern void parse_kern();
 void gdbstub();
 void kdbg_shell();
 void kdbg_initialize()
 {
-	size_t initial_heap = 8192;	
+	size_t initial_heap = 8192;
 	kdbg_init_memuse();
 	initial_heap = heapmm_request_core((void *)0xE8000000, initial_heap);
 
 	if (initial_heap == 0) {
 		earlycon_puts("FAIL\nCould not allocate first page of heap!\n");
-		for(;;); //TODO: PANIC!!!		
+		for(;;); //TODO: PANIC!!!
 	}
 
 	kdbgmm_init((void *)0xE8000000, initial_heap);
@@ -66,7 +67,7 @@ void kdbg_shell()
 		kdbg_gets(buf, 80);
 		if (!strncmp(buf, "memuse", 6)) {
 			kdbg_print_memuse_brdr((void*)kdbg_parsehex(buf));
-		} 
+		}
 		if (!strncmp(buf, "smu", 3)) {
 			kdbg_enable_memuse();
 		} else if (!strncmp(buf, "exit", 4)) {

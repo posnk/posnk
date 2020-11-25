@@ -42,6 +42,11 @@ int elf_verify( const char *hdr, size_t size )
 
 }
 
+Elf32_Shdr *elf_get_shdr( Elf32_Shdr* first, size_t shentsz, int i )
+{
+	return ((void*)first) + shentsz * i;
+}
+
 int elf_load( inode_t *inode )
 {
 	aoff_t rd_count;

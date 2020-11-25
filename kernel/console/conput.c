@@ -97,6 +97,19 @@ void con_puts( const char *src, int lvl, const char * msg ) {
 
 }
 
+void con_vprintf( const char *src, int lvl, const char *fmt, va_list args ) {
+
+	int hnd;
+
+	hnd = con_ref_src( src );
+
+	vsnprintf( line_buffer, sizeof line_buffer, fmt, args );
+
+	con_hputs( hnd, lvl, line_buffer );
+
+}
+
+
 void con_printf( const char *src, int lvl, const char *fmt, ... ) {
 	va_list args;
 	int hnd;

@@ -17,6 +17,7 @@
 #include "kernel/console.h"
 #include "kernel/system.h"
 #include "kernel/scheduler.h"
+#include "kernel/elf.h"
 #include "arch/i386/x86.h"
 #include "arch/i386/idt.h"
 #include "arch/i386/paging.h"
@@ -30,6 +31,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+#define PHYS_TO_VIRTP( a ) ((void*)( a + 0xC0000000 ))
+
 multiboot_info_t *mb_info;
 
 //XXX: Dirty Hack
@@ -40,7 +43,7 @@ extern uint32_t i386_start_kheap;
 uint32_t i386_init_multiboot_memprobe(multiboot_info_t* mbt)
 {
 	uint32_t available = 0;
-	multiboot_memory_map_t* mmapr= (multiboot_memory_map_t*) (((uintptr_t)mbt->mmap_addr) + 0xC0000000) ;
+	multiboot_memory_map_t* mmapr= (multiboot_memory_map_t*) PHYS_TO_VIRTP(mbt->mmap_addr);
 	multiboot_memory_map_t* mmap = mmapr;
 	physmm_free_range(0x400000, 0x800000);
 	while(((uintptr_t)mmap) < (((uintptr_t)mmapr) + mbt->mmap_length)) {
@@ -69,7 +72,7 @@ uint32_t i386_init_multiboot_memprobe(multiboot_info_t* mbt)
 void i386_init_reserve_modules(multiboot_info_t *mbt)
 {
 	unsigned int i;
-	multiboot_module_t *modules = (multiboot_module_t *) (mbt->mods_addr + 0xC0000000);
+	multiboot_module_t *modules = (multiboot_module_t *) PHYS_TO_VIRTP(mbt->mods_addr);
 	if ( !mbt->mods_count )
 		return;
 	physmm_claim_range((physaddr_t)mbt->mods_addr, ((physaddr_t)mbt->mods_addr) + sizeof(multiboot_module_t)*(mbt->mods_count));
@@ -79,18 +82,156 @@ void i386_init_reserve_modules(multiboot_info_t *mbt)
 	}
 }
 
+static void mbelf_reserve_section( Elf32_Shdr *sec ) {
+	printf( CON_DEBUG, "multiboot: reserving ELF section %08x with size %x",
+	                   sec->sh_addr, sec->sh_size );
+	physmm_claim_range( (physaddr_t) sec->sh_addr,
+	                    (physaddr_t) sec->sh_addr + sec->sh_size );
+}
+
+
+static Elf32_Shdr *mbelf_get_section( multiboot_info_t *mbt, int idx )
+{
+	int i;
+	Elf32_Shdr *first;
+
+	first = PHYS_TO_VIRTP( mbt->u.elf_sec.addr );
+
+	if ( idx >= mbt->u.elf_sec.num )
+		return NULL;
+
+	return elf_get_shdr( first, mbt->u.elf_sec.size, idx );
+
+}
+
+static Elf32_Shdr *mbelf_resolve_section( multiboot_info_t *mbt, const char *name )
+{
+	int i;
+	const char *strtab;
+	Elf32_Shdr *strtab_sh;
+	Elf32_Shdr *val;
+
+	strtab_sh = mbelf_get_section( mbt, mbt->u.elf_sec.shndx );
+
+	strtab = PHYS_TO_VIRTP( strtab_sh->sh_addr );
+	for ( i = 0; i < mbt->u.elf_sec.num; i++ ) {
+		val = mbelf_get_section( mbt, i );
+		if ( strcmp( strtab + val->sh_name, name ) == 0 )
+			return val;
+	}
+
+	return NULL;
+
+}
+static uintptr_t mbelf_sym_start    = 0;
+static size_t    mbelf_sym_size     = 0;
+static int       mbelf_sym_count    = 0;
+static uintptr_t mbelf_symstr_start = 0;
+static size_t    mbelf_symstr_size  = 0;
+
 void i386_init_handle_elf(multiboot_info_t *mbt)
 {
+	Elf32_Shdr *strtab_sh;
+	Elf32_Shdr *symtab_sh;
+	Elf32_Shdr *symstr_sh;
+	const char *strtab;
+
 	printf( CON_INFO, "multiboot: flags=0x%x",mbt->flags);
+
 	if ( MULTIBOOT_INFO_ELFSYM & ~mbt->flags )
 		return;
+
 	printf( CON_INFO, "multiboot: elf symbol header"
 	                "num:%i size:%i addr:%x shndx:%x",
 	                mbt->u.elf_sec.num,
 	                mbt->u.elf_sec.size,
 	                mbt->u.elf_sec.addr,
 	                mbt->u.elf_sec.shndx);
+
+	/* Reserve section headers */
+	physmm_claim_range( (physaddr_t) mbt->u.elf_sec.addr,
+	                    (physaddr_t) mbt->u.elf_sec.addr +
+	                                 mbt->u.elf_sec.size *
+	                                 mbt->u.elf_sec.num );
+
+	/* Resolve section name string table */
+	strtab_sh = mbelf_get_section( mbt, mbt->u.elf_sec.shndx );
+
+	/* Reserve section name string table */
+	mbelf_reserve_section( strtab_sh );
+	strtab = PHYS_TO_VIRTP( strtab_sh->sh_addr );
+
+	/* Resolve symbol section */
+	symtab_sh = mbelf_resolve_section( mbt, ".symtab" );
+	if ( !symtab_sh ) {
+		printf( CON_WARN,
+		        "multiboot: elf header but no .symtab section" );
+		return;
+	}
+
+	/* Reserve symbol section */
+	mbelf_reserve_section( symtab_sh );
+
+	mbelf_sym_start = symtab_sh->sh_addr;
+	mbelf_sym_size  = symtab_sh->sh_size;
+	mbelf_sym_count = symtab_sh->sh_size / symtab_sh->sh_entsize;
+
+	/* Resolve symbol strings section */
+	symstr_sh = mbelf_get_section( mbt, symtab_sh->sh_link );
+	if ( !symstr_sh ) {
+		printf( CON_WARN,
+		        "multiboot: could not find symbol table strings" );
+		return;
+	}
+
+	/* Reserve symbol strings section */
+	mbelf_reserve_section( symstr_sh );
+
+	mbelf_symstr_start = symstr_sh->sh_addr;
+	mbelf_symstr_size  = symstr_sh->sh_size;
+	dbgapi_set_symtab(
+		PHYS_TO_VIRTP( mbelf_sym_start ),
+		PHYS_TO_VIRTP( mbelf_symstr_start ),
+		mbelf_sym_count );
+
+
 }
+
+void *i386_init_mapphys( physaddr_t addr, size_t size )
+{
+	size_t ptr, start;
+	void *range_ptr, *page_ptr;
+
+	start = addr & 0xFFF;
+	addr &= ~0xFFF;
+
+	range_ptr = heapmm_alloc_alligned( size, PHYSMM_PAGE_SIZE );
+
+	for ( ptr = 0; ptr < size + start; ptr += PHYSMM_PAGE_SIZE ) {
+		page_ptr = range_ptr + ptr;
+
+		physmm_free_frame( paging_get_physical_address( page_ptr ) );
+		paging_unmap( page_ptr );
+
+		paging_map( page_ptr , addr + ptr,
+		            I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT );
+	}
+
+	return start + range_ptr;
+}
+
+void i386_init_load_dbgsyms()
+{
+	int i = 0;
+	Elf32_Sym *symtab;
+	const char *strtab;
+	symtab = i386_init_mapphys( mbelf_sym_start, mbelf_sym_size );
+	strtab = i386_init_mapphys( mbelf_symstr_start, mbelf_symstr_size );
+	dbgapi_set_symtab( symtab, strtab, mbelf_sym_count );
+}
+
+
+
 //TODO: Unify Module handling across architectures
 void i386_init_load_modules(multiboot_info_t *mbt)
 {
@@ -185,6 +326,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	printf( CON_DEBUG, "Reserved memory: %x %x", &i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
 	printf( CON_DEBUG, "Detected %i MB of RAM.", (mem_avail/0x100000));
 	puts( CON_DEBUG, "Enabling paging...");
+	dbgapi_set_symtab( NULL, NULL, mbelf_sym_count );
 	paging_init();
 
 	puts( CON_DEBUG, "Initializing kernel heap manager...");
@@ -232,4 +374,5 @@ void arch_init_early() {
 void arch_init_late() {
 	puts( CON_DEBUG, "loading module files");
 	i386_init_load_modules(mb_info);
+	i386_init_load_dbgsyms();
 }

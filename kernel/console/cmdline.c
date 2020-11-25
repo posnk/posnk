@@ -56,6 +56,8 @@ int con_handle_cmdline( const char *field, const char *value ) {
 	strncpy(val_work, field, sizeof val_work );
 
 	base = strtok( val_work, "." );
+	if ( !base )
+		return 0;
 	if ( strcmp( base, "con" ) != 0 )
 		return 0;
 

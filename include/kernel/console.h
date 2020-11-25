@@ -110,7 +110,13 @@ void con_hputs( int hnd, int lvl, const char *msg );
 void con_hprintf( int hnd, int lvl, const char *fmt, ... );
 
 void con_puts( const char *src, int lvl, const char *msg );
+
 void con_printf( const char *src, int lvl, const char *fmt, ... );
+
+void con_vhprintf( int hnd, int lvl, const char *fmt, va_list args );
+
+void con_vprintf( const char *src, int lvl, const char *fmt, va_list args );
+
 int con_handle_cmdline( const char *field, const char *value );
 
 #ifndef CON_SRC
@@ -122,11 +128,13 @@ static int con_src = CON_PREINIT_SRC;
                                        con_src = con_register_src(CON_SRC);\
                                  } while(0)
 #define printf( lvl, ... )  con_hprintf( con_src, lvl, __VA_ARGS__ )
+#define vprintf( lvl, fmt, args )  con_vhprintf( con_src, lvl, fmt, args )
 #define printf( lvl, msg )       con_hputs  ( con_src, lvl, msg )
 #else
 #define con_src_init()
 #define puts( lvl, msg )         con_puts  ( CON_SRC, lvl, msg )
 #define printf( lvl, ... )  con_printf( CON_SRC, lvl, __VA_ARGS__ )
+#define vprintf( lvl, fmt, args )  con_vprintf( CON_SRC, lvl, fmt, args )
 #endif
 
 #endif

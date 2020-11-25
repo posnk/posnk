@@ -12,32 +12,41 @@
 #include "kdbg/kdbgio.h"
 #include "kdbg/kdbgmm.h"
 #include "kernel/elf.h"
-
+#define CON_SRC ("kdbg")
+#include "kernel/console.h"
 #ifdef ARCH_I386
 #include "arch/i386/task_context.h"
 #include "arch/i386/isr_entry.h"
-extern char i386_strtab;
-extern char i386_symtab;
-extern char i386_symtab_end;
-Elf32_Sym *kdbg_symtab = NULL;//&i386_symtab;
 #endif
+#include "kernel/elf.h"
 
-char *kdbg_symbol_name(__attribute__((unused)) uintptr_t addr)
+static const Elf32_Sym  *symtab;
+static const char       *symstr;
+static int               symtab_cnt;
+
+
+void dbgapi_set_symtab( const void *_symtab, const void *_strtab, int symcount )
 {
-	/*int i,f = 0;
-	ptrdiff_t ssz = &i386_symtab_end - &i386_symtab;
-	int sc = ssz / sizeof ( Elf32_Sym );
-	//kdbg_printf("%i %i\n", sc,ssz);
-	for ( i = 0; i < sc; i++ ) {
-//	kdbg_printf("%x %i\n", kdbg_symtab[i].st_value,i);
-		if ( kdbg_symtab[i].st_value <= addr &&
-		     (kdbg_symtab[i].st_value +
-		      kdbg_symtab[i].st_size) > addr )
-			f = i;
+	symtab = _symtab;
+	symstr = _strtab;
+	symtab_cnt = symcount;
+}
+char *kdbg_symbol_name( uintptr_t addr )
+{
+	int i;
+	static char symname[32];
+
+	if ( symtab ) {
+		for ( i = 0; i < symtab_cnt; i++ ) {
+			if (  symtab[i].st_value <= addr &&
+			     (symtab[i].st_value + symtab[i].st_size) > addr )
+				      return symstr + symtab[i].st_name;
+		}
 	}
-	if ( f != 0 )
-		return (char *) (kdbg_symtab[f].st_name + &i386_strtab);*/
-	return "";
+
+	snprintf( symname, sizeof symname, "0x%08X", addr );
+
+	return symname;
 }
 
 llist_t *kdbg_do_calltrace()
@@ -174,7 +183,7 @@ void kdbg_p_calltrace()
 			return;
 		c_eip = *((uintptr_t *) (c_ebp + 4));
 		c_ebp = *((uintptr_t *)  c_ebp);
-		kdbg_printf("       0x%x () 0x%x\n",entry->func_addr, entry->frame_addr);
+		kdbg_printf("       %s() 0x%x\n", kdbg_symbol_name(entry->func_addr), entry->frame_addr);
 
 	}
 #endif
@@ -195,7 +204,7 @@ void kdbg_print_calltrace(llist_t *st){
 	kdbg_calltrace_t *entry;
 	for (a = st->prev; a != st; a = a->prev) {
 		entry = (kdbg_calltrace_t *) a;
-		kdbg_printf("       0x%x () 0x%x\n",entry->func_addr, entry->frame_addr);
+		kdbg_printf("       %s() 0x%x\n",kdbg_symbol_name(entry->func_addr), entry->frame_addr);
 
 	}
 }

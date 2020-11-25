@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include "kernel/scheduler.h"
 
+char *kdbg_symbol_name( uintptr_t addr);
+
 typedef struct kdbg_calltrace {
 	llist_t		link;
 	uintptr_t	func_addr;

@@ -1,4 +1,4 @@
-/* 
+/*
  * kdbg/dbgapi.h
  *
  * Part of P-OS kernel.
@@ -13,6 +13,8 @@
 #include <stddef.h>
 
 void kdbg_initialize();
+
+void dbgapi_set_symtab( const void *symtab, const void *strtab, int symcount );
 
 void dbgapi_register_memuse(void *addr, size_t size);
 

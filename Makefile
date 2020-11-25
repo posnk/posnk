@@ -35,7 +35,7 @@ HGAS = @echo " [ HOSTAS  ]	" $@ ; as
 # Set the compiler and assembler flags
 CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
-	-fauto-inc-dec
+	-fauto-inc-dec -fsanitize=undefined
 
 ULCFLAGS = $(ULDEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-finline-functions -finline-functions-called-once
@@ -59,7 +59,7 @@ HINCLUDES = -I./include -I./include/hcrt
 ULINCLUDES = -I./include/crt
 
 # Set the required linker flags
-LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc
+LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc -fsanitize=undefined
 
 HLFLAGS = -g -lfuse
 
@@ -133,6 +133,7 @@ kdbg/kdbg.c \
 kdbg/kdbgio.c \
 kdbg/kdbgmm.c \
 kdbg/stacktrc.c \
+kdbg/ubsan.c \
 fs/mbr.c \
 util/llist.c \
 util/mruc.c \

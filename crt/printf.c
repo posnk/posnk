@@ -231,7 +231,7 @@ int vpprintf(	void (*putch)( void *arg, char c, int count ),
 							unsigned long );
 						break;
 					case PF_LONGLONG:
-						sival = va_arg(	list,
+						uival = va_arg(	list,
 							unsigned long long );
 						break;
 					case PF_INTMAX:

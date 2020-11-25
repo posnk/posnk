@@ -15,19 +15,19 @@
 
 uint32_t physmm_bitmap[PHYSMM_BITMAP_SIZE];
 
-void physmm_set_bit(physaddr_t address) 
+void physmm_set_bit(physaddr_t address)
 {
 	address >>= 12;
 	physmm_bitmap[(address >> 5) & 0x7FFF] |= 1 << (address & 0x1F);
 }
 
-void physmm_clear_bit(physaddr_t address) 
+void physmm_clear_bit(physaddr_t address)
 {
 	address >>= 12;
 	physmm_bitmap[(address >> 5) & 0x7FFF] &= ~(1 << (address & 0x1F));
 }
 
-void physmm_free_range(physaddr_t start, physaddr_t end) 
+void physmm_free_range(physaddr_t start, physaddr_t end)
 {
 	physaddr_t counter;
 	assert(start < end);
@@ -36,7 +36,7 @@ void physmm_free_range(physaddr_t start, physaddr_t end)
 	}
 }
 
-void physmm_claim_range(physaddr_t start, physaddr_t end) 
+void physmm_claim_range(physaddr_t start, physaddr_t end)
 {
 	physaddr_t counter;
 	assert(start < end);
@@ -45,7 +45,7 @@ void physmm_claim_range(physaddr_t start, physaddr_t end)
 	}
 }
 
-physaddr_t physmm_alloc_frame() 
+physaddr_t physmm_alloc_frame()
 {
 	//TODO: Lock physmm_bitmap
 	physaddr_t counter, bit_counter;
@@ -67,7 +67,7 @@ physaddr_t physmm_alloc_frame()
 	return PHYSMM_NO_FRAME;
 }
 
-physaddr_t physmm_alloc_quadframe() 
+physaddr_t physmm_alloc_quadframe()
 {
 	//TODO: Lock physmm_bitmap
 	physaddr_t counter, bit_counter;
@@ -92,7 +92,7 @@ physaddr_t physmm_alloc_quadframe()
 	return PHYSMM_NO_FRAME;
 }
 
-physaddr_t physmm_alloc_bmcopy() 
+physaddr_t physmm_alloc_bmcopy()
 {
 	//TODO: Lock physmm_bitmap
 	physaddr_t counter;
@@ -106,7 +106,7 @@ physaddr_t physmm_alloc_bmcopy()
 	return PHYSMM_NO_FRAME;
 }
 
-physaddr_t physmm_count_free() 
+physaddr_t physmm_count_free()
 {
 	//TODO: Lock physmm_bitmap
 	physaddr_t counter, bit_counter, result;

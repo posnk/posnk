@@ -79,7 +79,7 @@
 #define SHT_REL         9		/* relocation table */
 #define SHT_SHLIB       10		/* unspecified */
 #define SHT_DYNSYM      11		/* symbol table, compact for dynlink */
-#define SHT_NUM         12		
+#define SHT_NUM         12
 #define SHT_LOPROC      0x70000000
 #define SHT_HIPROC      0x7fffffff
 #define SHT_LOUSER      0x80000000
@@ -116,10 +116,10 @@ typedef  int32_t	Elf32_Sword;
 typedef uint32_t	Elf32_Word;
 
 typedef struct {
-        unsigned char e_ident[EI_NIDENT]; 
-        Elf32_Half    e_type;			
-        Elf32_Half    e_machine;		
-        Elf32_Word    e_version;		
+        unsigned char e_ident[EI_NIDENT];
+        Elf32_Half    e_type;
+        Elf32_Half    e_machine;
+        Elf32_Word    e_version;
         Elf32_Addr    e_entry;			/* Entry point virt_addr */
         Elf32_Off     e_phoff;			/* Program header offset */
         Elf32_Off     e_shoff;			/* Section header offset */
@@ -140,8 +140,8 @@ typedef struct {
 	Elf32_Off	sh_offset;		/* Section data file offset */
 	Elf32_Word	sh_size;		/* Section size */
 	Elf32_Word	sh_link;		/* Section header table link */
-	Elf32_Word	sh_info;	
-	Elf32_Word	sh_addralign;		
+	Elf32_Word	sh_info;
+	Elf32_Word	sh_addralign;
 	Elf32_Word	sh_entsize;		/* Entry size */
 } Elf32_Shdr;
 
@@ -166,7 +166,7 @@ typedef struct {
 	Elf32_Half		st_shndx;
 } Elf32_Sym;
 
-
+Elf32_Shdr *elf_get_shdr( Elf32_Shdr* first, size_t shentsz, int i );
 
 #endif
 
