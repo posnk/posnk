@@ -57,16 +57,22 @@ void debug_dump_state()
 {
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->user_regs;
-	printf(CON_ERROR, " User Registers: EIP: 0x%x\n",tctx->user_eip);
-	printf(CON_ERROR, "EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X",
+	printf(CON_ERROR, "User Registers:");
+	printf(CON_ERROR, "  EIP: %08X EFLAGS: %08X",
+		tctx->user_eip, tctx->user_eflags );
+	printf(CON_ERROR, "  CS: %04X SS: %04X DS: %04X",
+		tctx->user_cs, tctx->user_ss, tctx->user_ds );
+	printf(CON_ERROR, "  EAX: %08X EBX: %08X ECX: %08X EDX: %08X",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
-	printf(CON_ERROR, "ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X",
+	printf(CON_ERROR, "  ESP: %08X EBP: %08X ESI: %08X EDI: %08X",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
-	printf(CON_ERROR, " Interrupt Registers: EIP: 0x%x\n",tctx->intr_eip);
+	printf(CON_ERROR, "Interrupt Registers:");
+	printf(CON_ERROR, "  EIP: %08X CS: %04X DS: %04X",
+		tctx->intr_eip, tctx->intr_cs, tctx->intr_ds );
 	regs = (i386_pusha_registers_t *) &tctx->intr_regs;
-	printf(CON_ERROR, "EAX: 0x%X EBX: 0x%X ECX: 0x%X EDX: 0x%X",
+	printf(CON_ERROR, "  EAX: %08X EBX: %08X ECX: %08X EDX: %08X",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
-	printf(CON_ERROR, "ESP: 0x%X EBP: 0x%X ESI: 0x%X EDI: 0x%X",
+	printf(CON_ERROR, "  ESP: %08X EBP: %08X ESI: %08X EDI: %08X",
 		regs->esp, regs->ebp, regs->esi, regs->edi);
 
 }
