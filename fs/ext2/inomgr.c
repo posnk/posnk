@@ -1,6 +1,6 @@
 /**
  * fs/ext2/blkmgr.c
- * 
+ *
  * Implements functions for allocating and freeing inodes
  *
  * Part of P-OS kernel.
@@ -31,7 +31,7 @@ SFUNC(uint32_t, ext2_alloc_inode, ext2_device_t *device)
 	uint32_t bgrp_id = 0;
 	uint32_t bgrp_icnt = device->superblock.inodes_per_group;
 	uint32_t bgrp_count = ext2_divup(i_count,bgrp_icnt);//DIVUP
-	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_size = 256u << device->superblock.block_size_enc;
 	uint32_t bm_block_icnt = bm_block_size * 32;
 	uint32_t bgrp_bmcnt = ext2_divup(bgrp_icnt,bm_block_icnt);//DIVUP
 	uint32_t bm_id;
@@ -65,17 +65,17 @@ SFUNC(uint32_t, ext2_alloc_inode, ext2_device_t *device)
 				if (status)
 					THROW(status, 0);
 				for (; idx < bm_block_size; idx++) {
-					if (inode_map[idx] != 0xFFFFFFFF) {					
+					if (inode_map[idx] != 0xFFFFFFFF) {
 						for (; nb < 32; nb++)
 							if (!EXT2_BITMAP_GET(inode_map[idx], nb))
 								goto found_it;
 					}
-					nb = 0;	
+					nb = 0;
 				}
 				idx = 0;
 			}
 		}
-		bm_id = 0;		
+		bm_id = 0;
 		ext2_free_bgd(device, bgd);
 	}
 	bgrp_id = 0;
@@ -113,7 +113,7 @@ SVFUNC( ext2_free_inode, ext2_device_t *device, uint32_t inode_id)
 	uint32_t i_count = device->superblock.inode_count;
 	uint32_t bgrp_id = 0;
 	uint32_t bgrp_icnt = device->superblock.inodes_per_group;
-	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_size = 256u << device->superblock.block_size_enc;
 	uint32_t bm_block_icnt = bm_block_size * 32;
 	uint32_t bm_id;
 	uint32_t inode_map[bm_block_size];
@@ -137,7 +137,7 @@ SVFUNC( ext2_free_inode, ext2_device_t *device, uint32_t inode_id)
 	nb = idx % 32;
 	idx -= nb;
 	idx /= 32;
-	
+
 	status = ext2_load_bgd(device, bgrp_id, &bgd);
 	if (status)
 		THROWV(status);

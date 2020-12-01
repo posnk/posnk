@@ -17,9 +17,9 @@
 #include "fs/ext2/fsdata.h"
 #include "kernel/streams.h"
 
-#define EXT2_BITMAP_GET(V,B)		((V) &  (1 << (B)))
-#define EXT2_BITMAP_SET(V,B)		((V) |= (1 << (B)))
-#define EXT2_BITMAP_CLR(V,B)		((V) &= ~(1 << (B)))
+#define EXT2_BITMAP_GET(V,B)		((V) &  (1u << (B)))
+#define EXT2_BITMAP_SET(V,B)		((V) |= (1u << (B)))
+#define EXT2_BITMAP_CLR(V,B)		((V) &= ~(1u << (B)))
 
 //We currently only support filetype in dirent
 #define EXT2_SUPPORTED_REQ_FEATURES	(2)
@@ -45,42 +45,42 @@ struct ext2_device {
 void ext2_handle_error(ext2_device_t *device);
 uint32_t ext2_divup(uint32_t a, uint32_t b);
 uint32_t ext2_roundup(uint32_t a, uint32_t b);
-SFUNC(aoff_t, ext2_read_block, 
-					ext2_device_t *dev, 
-					uint32_t block_ptr, 
-					uint32_t in_block, 
-					void *buffer, 
+SFUNC(aoff_t, ext2_read_block,
+					ext2_device_t *dev,
+					uint32_t block_ptr,
+					uint32_t in_block,
+					void *buffer,
 					aoff_t count);
-SFUNC(aoff_t, ext2_write_block, 
-					ext2_device_t *dev, 
-					uint32_t block_ptr, 
-					uint32_t in_block, 
-					const void *buffer, 
+SFUNC(aoff_t, ext2_write_block,
+					ext2_device_t *dev,
+					uint32_t block_ptr,
+					uint32_t in_block,
+					const void *buffer,
 					aoff_t count);
-SFUNC(ext2_block_group_desc_t *, ext2_load_bgd, 
-									ext2_device_t *device, 
+SFUNC(ext2_block_group_desc_t *, ext2_load_bgd,
+									ext2_device_t *device,
 									uint32_t bg_id);
-SVFUNC(ext2_store_bgd, 
-									ext2_device_t *device, 
-									uint32_t bg_id, 
+SVFUNC(ext2_store_bgd,
+									ext2_device_t *device,
+									uint32_t bg_id,
 									ext2_block_group_desc_t *bgd);
 
-void ext2_free_bgd(	__attribute__((__unused__)) ext2_device_t *device, 
-					ext2_block_group_desc_t *bgd);			
+void ext2_free_bgd(	__attribute__((__unused__)) ext2_device_t *device,
+					ext2_block_group_desc_t *bgd);
 SVFUNC(ext2_free_block, ext2_device_t *device, uint32_t block_id);
 SFUNC(uint32_t, ext2_alloc_block, ext2_device_t *device, uint32_t start);
 SFUNC(uint32_t, ext2_alloc_inode, ext2_device_t *device);
 SVFUNC( ext2_free_inode, ext2_device_t *device, uint32_t inode_id);
-SFUNC(uint32_t, ext2_allocate_indirect_block, 
-					ext2_device_t *device, 
+SFUNC(uint32_t, ext2_allocate_indirect_block,
+					ext2_device_t *device,
 					ext2_inode_t *inode);
-SFUNC(uint32_t, ext2_decode_block_id, 
-					ext2_device_t *device, 
-					ext2_inode_t *inode, 
+SFUNC(uint32_t, ext2_decode_block_id,
+					ext2_device_t *device,
+					ext2_inode_t *inode,
 					uint32_t block_id);
-SVFUNC(ext2_set_block_id, ext2_device_t *device, 
-							ext2_inode_t *inode, 
-							uint32_t block_id, 
+SVFUNC(ext2_set_block_id, ext2_device_t *device,
+							ext2_inode_t *inode,
+							uint32_t block_id,
 							uint32_t block_v);
 void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id);
 void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id);
@@ -98,11 +98,11 @@ SVFUNC(ext2_mkdir, inode_t *_inode);
 SVFUNC( ext2_unlink, inode_t *_inode, const char *name );
 SVFUNC( ext2_link, inode_t *_inode, const char *name, ino_t ino_id);
 SFUNC(aoff_t, ext2_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, aoff_t length);
-SFUNC( aoff_t, ext2_dir_read_stub, 	
+SFUNC( aoff_t, ext2_dir_read_stub,
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) void *buffer,
 					__attribute__((__unused__)) aoff_t length );
-SFUNC( aoff_t, ext2_dir_write_stub, 	
+SFUNC( aoff_t, ext2_dir_write_stub,
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) const void *buffer,
 					__attribute__((__unused__)) aoff_t length );

@@ -18,13 +18,13 @@ uint32_t physmm_bitmap[PHYSMM_BITMAP_SIZE];
 void physmm_set_bit(physaddr_t address)
 {
 	address >>= 12;
-	physmm_bitmap[(address >> 5) & 0x7FFF] |= 1 << (address & 0x1F);
+	physmm_bitmap[(address >> 5) & 0x7FFF] |= 1u << (address & 0x1F);
 }
 
 void physmm_clear_bit(physaddr_t address)
 {
 	address >>= 12;
-	physmm_bitmap[(address >> 5) & 0x7FFF] &= ~(1 << (address & 0x1F));
+	physmm_bitmap[(address >> 5) & 0x7FFF] &= ~(1u << (address & 0x1F));
 }
 
 void physmm_free_range(physaddr_t start, physaddr_t end)
@@ -53,7 +53,7 @@ physaddr_t physmm_alloc_frame()
 		if (physmm_bitmap[counter] == 0)
 			continue;
 		for (bit_counter = 0; bit_counter < 32; bit_counter++) {
-			if (physmm_bitmap[counter] & (1 << bit_counter)) {
+			if (physmm_bitmap[counter] & (1u << bit_counter)) {
 				counter <<= 5;
 				counter |= bit_counter;
 				counter <<= 12;
@@ -115,7 +115,7 @@ physaddr_t physmm_count_free()
 		if (physmm_bitmap[counter] == 0)
 			continue;
 		for (bit_counter = 0; bit_counter < 32; bit_counter++) {
-			if (physmm_bitmap[counter] & (1 << bit_counter))
+			if (physmm_bitmap[counter] & (1u << bit_counter))
 				result += PHYSMM_PAGE_SIZE;
 		}
 	}

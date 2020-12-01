@@ -1,6 +1,6 @@
 /**
  * fs/ext2/blkmgr.c
- * 
+ *
  * Implements functions for allocating and freeing blocks
  *
  * Part of P-OS kernel.
@@ -29,7 +29,7 @@ SVFUNC(ext2_free_block, ext2_device_t *device, uint32_t block_id)
 	uint32_t b_count = device->superblock.block_count;
 	uint32_t bgrp_id = 0;
 	uint32_t bgrp_bcnt = device->superblock.blocks_per_group;
-	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_size = 256u << device->superblock.block_size_enc;
 	uint32_t bm_block_bcnt = bm_block_size * 32;
 	uint32_t bm_id;
 	uint32_t block_map[bm_block_size];
@@ -50,7 +50,7 @@ SVFUNC(ext2_free_block, ext2_device_t *device, uint32_t block_id)
 	nb = idx % 32;
 	idx -= nb;
 	idx /= 32;
-	
+
 	status = ext2_load_bgd(device, bgrp_id, &bgd);
 	if (status)
 		THROWV(status);
@@ -90,7 +90,7 @@ SFUNC(uint32_t, ext2_alloc_block, ext2_device_t *device, uint32_t start)
 	uint32_t bgrp_id = 0;
 	uint32_t bgrp_bcnt = device->superblock.blocks_per_group;
 	uint32_t bgrp_count = ext2_divup(b_count,bgrp_bcnt);//DIVUP
-	uint32_t bm_block_size = 256 << device->superblock.block_size_enc;
+	uint32_t bm_block_size = 256u << device->superblock.block_size_enc;
 	uint32_t bm_block_bcnt = bm_block_size * 32;
 	uint32_t bgrp_bmcnt = ext2_divup(bgrp_bcnt,bm_block_bcnt);//DIVUP
 	uint32_t bm_id;
@@ -125,17 +125,17 @@ SFUNC(uint32_t, ext2_alloc_block, ext2_device_t *device, uint32_t start)
 				if (status)
 					THROW(status, 0);
 				for (; idx < bm_block_size; idx++) {
-					if (block_map[idx] != 0xFFFFFFFF) {					
+					if (block_map[idx] != 0xFFFFFFFF) {
 						for (; nb < 32; nb++)
 							if (!EXT2_BITMAP_GET(block_map[idx], nb))
 								goto found_it;
 					}
-					nb = 0;	
+					nb = 0;
 				}
 				idx = 0;
 			}
 		}
-		bm_id = 0;		
+		bm_id = 0;
 		ext2_free_bgd(device, bgd);
 	}
 	bgrp_id = 0;
@@ -150,17 +150,17 @@ SFUNC(uint32_t, ext2_alloc_block, ext2_device_t *device, uint32_t start)
 				if (status)
 					THROW(status, 0);
 				for (; idx < bm_block_size; idx++) {
-					if (block_map[idx] != 0xFFFFFFFF) {					
+					if (block_map[idx] != 0xFFFFFFFF) {
 						for (; nb < 32; nb++)
 							if (!EXT2_BITMAP_GET(block_map[idx], nb))
 								goto found_it;
 					}
-					nb = 0;	
+					nb = 0;
 				}
 				idx = 0;
 			}
 		}
-		bm_id = 0;		
+		bm_id = 0;
 		ext2_free_bgd(device, bgd);
 	}
 
@@ -188,7 +188,7 @@ found_it:
 	ext2_free_bgd(device, bgd);
 
 	device->superblock.free_block_count--;
-	
+
 	memset(block_map, 0, bm_block_size * 4);
 
 	status = ext2_write_block(device, block_id, 0, block_map, bm_block_size * 4, &rsize);
