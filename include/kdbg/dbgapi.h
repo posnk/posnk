@@ -14,7 +14,7 @@
 
 void kdbg_initialize();
 
-void dbgapi_set_symtab( const void *symtab, const void *strtab, int symcount );
+void dbgapi_set_symtab( const void *_symtab, const void *_strtab, int symcount, uint32_t str_sz );
 
 void dbgapi_register_memuse(void *addr, size_t size);
 

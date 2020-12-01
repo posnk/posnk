@@ -23,23 +23,26 @@
 static const Elf32_Sym  *symtab;
 static const char       *symstr;
 static int               symtab_cnt;
+static uint32_t          symstr_sz;
 
 
-void dbgapi_set_symtab( const void *_symtab, const void *_strtab, int symcount )
+void dbgapi_set_symtab( const void *_symtab, const void *_strtab, int symcount, uint32_t str_sz )
 {
 	symtab = _symtab;
 	symstr = _strtab;
 	symtab_cnt = symcount;
+	symstr_sz = str_sz;
 }
+static char symname[32];
 char *kdbg_symbol_name( uintptr_t addr )
 {
 	int i;
-	static char symname[32];
 
 	if ( symtab ) {
 		for ( i = 0; i < symtab_cnt; i++ ) {
 			if (  symtab[i].st_value <= addr &&
-			     (symtab[i].st_value + symtab[i].st_size) > addr )
+			     (symtab[i].st_value + symtab[i].st_size) > addr &&
+			      symtab[i].st_name < symstr_sz)
 				      return symstr + symtab[i].st_name;
 		}
 	}
@@ -123,27 +126,27 @@ Interrupt Stack
 			c_eip = isrst->eip;
 			c_ebp = isrst->regs.ebp;
 			l_ebp =(uintptr_t)isrst + sizeof(i386_isr_stack_t)-24;
-			kdbg_printf("           ds: 0x%x\tint: 0x%x\terr: 0x%x\n",
+			kdbg_printf("           ds: %04x\tint: %02x\terr: %08x\n",
 							isrst->ds,
 							isrst->int_id,
 							isrst->error_code );
-			kdbg_printf("           eip:0x%x\tcs: 0x%x\t flags: 0x%x\n",
+			kdbg_printf("           eip:%08x\tcs: %04x\t flags: %08x\n",
                             c_eip,
 							isrst->cs,
 							isrst->eflags);
-			kdbg_printf("           edi:0x%x\tesi: 0x%x\t ebp: 0x%x\n",
+			kdbg_printf("           edi:%08x\tesi: %08x\t ebp: %08x\n",
                             isrst->regs.edi,
                             isrst->regs.esi,
                             isrst->regs.ebp);
-			kdbg_printf("           esp:0x%x\tebx: 0x%x\t edx: 0x%x\n",
+			kdbg_printf("           esp:%08x\tebx: %08x\t edx: %08x\n",
                             isrst->regs.esp,
                             isrst->regs.ebx,
                             isrst->regs.edx);
-			kdbg_printf("           ecx:0x%x\teax: 0x%x\n",
+			kdbg_printf("           ecx:%08x\teax: %08x\n",
                             isrst->regs.ecx,
                             isrst->regs.eax);
 			if ( isrst->cs == 0x2B ) {
-				kdbg_printf("           ss: 0x%x\tesp:0x%x\n",
+				kdbg_printf("           ss: %04x\tesp:%08x\n",
 						isrst->ss, isrst->esp );
 				kdbg_printf("        USER CODE\n");
 				return;
@@ -154,12 +157,12 @@ Interrupt Stack
 				kdbg_printf("        STACK CORRUPT\n");
 				return;
 			}
-			c_eip = *((uintptr_t *) (c_ebp + 4));
-			c_ebp = *((uintptr_t *)  c_ebp);
 			kdbg_printf("       0x%x %s() 0x%x\n",
 						entry->func_addr,
 						kdbg_symbol_name(entry->func_addr),
 						entry->frame_addr);
+			c_eip = *((uintptr_t *) (c_ebp + 4));
+			c_ebp = *((uintptr_t *)  c_ebp);
 		}
 	}
 #endif

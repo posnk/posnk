@@ -192,7 +192,8 @@ void i386_init_handle_elf(multiboot_info_t *mbt)
 	dbgapi_set_symtab(
 		PHYS_TO_VIRTP( mbelf_sym_start ),
 		PHYS_TO_VIRTP( mbelf_symstr_start ),
-		mbelf_sym_count );
+		mbelf_sym_count,
+		NULL );
 
 
 }
@@ -227,7 +228,7 @@ void i386_init_load_dbgsyms()
 	const char *strtab;
 	symtab = i386_init_mapphys( mbelf_sym_start, mbelf_sym_size );
 	strtab = i386_init_mapphys( mbelf_symstr_start, mbelf_symstr_size );
-	dbgapi_set_symtab( symtab, strtab, mbelf_sym_count );
+	dbgapi_set_symtab( symtab, strtab, mbelf_sym_count, mbelf_symstr_size );
 }
 
 
@@ -326,7 +327,7 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	printf( CON_DEBUG, "Reserved memory: %x %x", &i386_resvmem_start - 0xc0000000,&i386_resvmem_end - 0xc0000000);
 	printf( CON_DEBUG, "Detected %i MB of RAM.", (mem_avail/0x100000));
 	puts( CON_DEBUG, "Enabling paging...");
-	dbgapi_set_symtab( NULL, NULL, mbelf_sym_count );
+	dbgapi_set_symtab( NULL, NULL, mbelf_sym_count, NULL );
 	paging_init();
 
 	puts( CON_DEBUG, "Initializing kernel heap manager...");
