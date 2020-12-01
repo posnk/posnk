@@ -25,6 +25,7 @@
 #include "kernel/interrupt.h"
 #include "kernel/time.h"
 #include "util/debug.h"
+#include <assert.h>
 /*
 	uint32_t				ds;
 	i386_pusha_registers_t	regs;
@@ -49,7 +50,7 @@ void dumpisrstack( i386_isr_stack_t *stack ) {
 					stack->ds, stack->cs, stack->eip, stack->eflags );
 	debugcon_printf("int: %i\t ECODE: 0x%x sctp:%x cpp: %x\n",
 					stack->int_id, stack->error_code,
-					scheduler_current_task, 
+					scheduler_current_task,
 					scheduler_current_task->process
 					);
 	if ( scheduler_current_task->process )
@@ -59,7 +60,7 @@ void dumpisrstack( i386_isr_stack_t *stack ) {
 }
 
 /**
- * Reads the faulting address from CR2. 
+ * Reads the faulting address from CR2.
  */
 void *i386_get_page_fault_addr() {
 	uint32_t cr2;
@@ -68,7 +69,7 @@ void *i386_get_page_fault_addr() {
 }
 
 /**
- * Handle a CPU exception. 
+ * Handle a CPU exception.
  * This transforms the architectural exception into the appropriate
  * POSIX signal and passes it on to the portable kernel.
  */
@@ -141,31 +142,34 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 			info.si_addr = (void*) stack->eip;
 			info.si_code = ILL_ILLTRP;
 			break;
-	}; 
+	};
 	dumpisrstack( stack );
 	exception_handle( sig, info, (void*) stack->eip,0,stack->cs == 0x2B );
-	
+
 }
 
 /**
  * Interrupt handler!
  */
 void i386_handle_interrupt( i386_isr_stack_t *stack )
-{	
+{
 	uint32_t scpf;
 	int s;
 	int int_id = stack->int_id, hw_int;
-	
+
 	s = disable();
-	
+
 	/* Check if the interrupt came from ring 3 */
 	if ( stack->cs == 0x2B ) {
+
+		assert( stack->eip < 0xc0000000u );
 
 		/* If it did, we need to record the userland task state */
 		i386_user_enter( stack );
 
-	}
-	
+	} else
+		assert( stack->eip >= 0xc0000000u );
+
 	/* Record the interrupted state */
 	i386_kern_enter( stack );
 
@@ -187,7 +191,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 
 			/* The address was not present. Handle the fault as a normal PF */
 			paging_handle_fault(
-				(void *)stack->esp, 
+				(void *)stack->esp,
 				(void *)stack->eip,
 				0,
 				0,
@@ -198,7 +202,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 			/* We can access the memory, proceed to fetch the stack argument */
 			scpf = *( (uint32_t *) stack->esp );
 
-			/* and call the dispatcher with the arguments from the stack and 
+			/* and call the dispatcher with the arguments from the stack and
 			 * registers */
 			stack->regs.eax =
 				syscall_dispatch_new(
@@ -235,8 +239,8 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 			//TODO: Track/report spurious interrupts
 		}
 
-		/* After the driver has cleared the interrupt, we need to clear the 
-		 * pending interrupt from the interrupt controllers to prevent it 
+		/* After the driver has cleared the interrupt, we need to clear the
+		 * pending interrupt from the interrupt controllers to prevent it
 		 * re-firing immediately */
 		platform_end_of_interrupt( int_id, hw_int );
 
@@ -244,27 +248,27 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 		/* Page faults are in many ways a special case */
 
 		/* Unlike most other exceptions they are often not fatal, and are used
-		 * for demang paging. For this reason, there is a separate code path 
+		 * for demang paging. For this reason, there is a separate code path
 		 * dedicated to page fault handling */
 
 		paging_handle_fault(
-			i386_get_page_fault_addr(), 
+			i386_get_page_fault_addr(),
 			(void *)stack->eip,
 			stack->error_code & 1,
 			stack->error_code & 2,
 			stack->error_code & 4);
 
-	} else if (	(int_id == I386_EXCEPTION_NO_COPROCESSOR) || 
+	} else if (	(int_id == I386_EXCEPTION_NO_COPROCESSOR) ||
 				(int_id == I386_EXCEPTION_INVALID_OPCODE)) {
-		/* Another pair of exceptions with special cased behaviour are the 
+		/* Another pair of exceptions with special cased behaviour are the
 		 * #NM and #UD faults. These are generated when an instruction is
 		 * executed which the processor does not currently support. This can
 		 * have two possible causes (in a modern system): the processor does not
-		 * support the instruction, or, the instruction set extension was 
+		 * support the instruction, or, the instruction set extension was
 		 * disabled. The latter is done to implement lazy context switching for
-		 * the FPU/SIMD units: when a context switch occurs, the extensions are 
-		 * disabled until another program tries using them. When that happens 
-		 * this exception will fire and the kernel only then performs the 
+		 * the FPU/SIMD units: when a context switch occurs, the extensions are
+		 * disabled until another program tries using them. When that happens
+		 * this exception will fire and the kernel only then performs the
 		 * context switch for the extended registers. */
 
 		/* Check for and possibly resolve lazy-switch exceptions */
@@ -287,6 +291,9 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 	if ( stack->cs == 0x2B ) {
 		/* We came from userland */
 		i386_user_exit( stack );
-	} else
+	} else {
 		restore(s);
+		if ( stack->cs != 0x2B )
+			assert ( stack->eip >= (unsigned) 0xc0000000 );
+	}
 }
