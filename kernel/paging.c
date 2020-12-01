@@ -83,7 +83,7 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 	} else if (write) {
 		//TODO: Copy on write,
 	}
-	printf(CON_ERROR, "[0x%x] page fault in %i @ 0x%x (P:%i, W:%i, U:%i)", virt_addr, curpid(), instr_ptr, present, user, write);
+	printf(CON_ERROR, "[0x%x] page fault in %i @ 0x%x (P:%i, U:%i, W:%i)", virt_addr, curpid(), instr_ptr, present, user, write);
 	if ( !present )
 		info.si_code = SEGV_MAPERR;
 	else
