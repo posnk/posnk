@@ -21,7 +21,7 @@
 #include "arch/i386/task_context.h"
 #include "arch/i386/protection.h"
 #include "arch/i386/x86.h"
-
+#include <assert.h>
 /**
  * Entry point for fork() processes
  */
@@ -100,8 +100,10 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 
-	if ( tctx == 0 )
+	if ( tctx == 0 ) {
+		printf(CON_ERROR, "exit from kernel without tctx");
 		return;
+	}
 
 	/*This will corrupt the ESP value on the stack, but it is ignored by POPA*/
 	stack->regs			= tctx->user_regs;
@@ -113,7 +115,9 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 	stack->esp			= tctx->user_regs.esp;
 	stack->ss			= tctx->user_ss;
 	stack->cs			= tctx->user_cs;
-	stack->eflags		= tctx->user_eflags;
+	stack->eflags		        = tctx->user_eflags;
+
+	assert( (stack->cs & 3) == 3 );
 
 	/* Update the TSS to point to the correct supervisor stack for this task */
  	i386_tss_update();
@@ -322,6 +326,7 @@ void debug_attach_task(process_info_t *new_task)
 	i386_task_context_t *nctx;
 	scheduler_task_t *thetask = (void*) new_task->tasks.next;
 	nctx = thetask->arch_state;
+	assert(!"IMPL");
 	i386_cs_debug_attach(
 				nctx->user_regs.esp,
 				nctx->user_regs.ebp,
