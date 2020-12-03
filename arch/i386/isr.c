@@ -155,8 +155,10 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 {
 	uint32_t scpf;
 	int s;
+	int fru;
 	int int_id = stack->int_id, hw_int;
 
+	fru = stack->cs == 0x2b;
 	s = disable();
 
 	/* Check if the interrupt came from ring 3 */
@@ -167,8 +169,10 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 		/* If it did, we need to record the userland task state */
 		i386_user_enter( stack );
 
-	} else
+	} else {
 		assert( stack->eip >= 0xc0000000u );
+
+	}
 
 	/* Record the interrupted state */
 	i386_kern_enter( stack );
@@ -292,8 +296,9 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 		/* We came from userland */
 		i386_user_exit( stack );
 	} else {
-		restore(s);
-		if ( stack->cs != 0x2B )
-			assert ( stack->eip >= (unsigned) 0xc0000000 );
+		assert ( ( stack->cs & 3 ) == 0 );
+		assert ( stack->eip >= (unsigned) 0xc0000000 );
 	}
+
+	assert( (stack->cs == 0x2b) == fru );
 }

@@ -72,7 +72,7 @@ int procvmm_do_exec_mmaps()
 	cproc->heap_max	=
 				(void *) 0x40000000; //User mmap area starts here
 	cproc->stack_bottom =
-				(void *) 0xBFBFEFFF; //Start of kernel stack area etc etc etc
+				(void *) 0xBFBFF000; //Start of kernel stack area etc etc etc
 	cproc->stack_top	=
 				(void *) 0xBF400000; //TODO: Implement dynamic stack size
 	procvmm_mmap_anon(
@@ -83,7 +83,7 @@ int procvmm_do_exec_mmaps()
 
 	return procvmm_mmap_anon(
 				cproc->stack_top,
-				0x7FEFFF,
+				0x7FF000,
 				PROCESS_MMAP_FLAG_WRITE | PROCESS_MMAP_FLAG_STACK,
 				"(stack)" );
 }

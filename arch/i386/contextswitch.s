@@ -26,7 +26,7 @@ i386_context_switch:
 	mov    esp  , eax         ; esp = param0
 	popa                      ; Restore caller state
 	ret                       ; Return
-	
+
 [extern dbgapi_invoke_kdbg]
 [global i386_cs_debug_attach]
 i386_cs_debug_attach:
@@ -41,9 +41,5 @@ i386_cs_debug_attach:
 	mov ebp, ebx
 	mov cr3, edx
 	mov eax, 0xFFFDCAFE
-	push ecx
-	push ebx
-	mov ebp, esp
-	push ecx
 	call dbgapi_invoke_kdbg
 	hlt

@@ -4,7 +4,7 @@
 #include "kernel/earlycon.h"
 #include <string.h>
 
-/** 
+/**
  * This symbol directly references the GDT TSS descriptor
  */
 extern i386_gdt_descriptor_t i386_tss_descriptor;
@@ -24,7 +24,7 @@ i386_tss_entry_t i386_tss_entry;
 void i386_set_tss_descriptor(
 	uint32_t base, uint32_t limit, uint8_t flags, uint8_t gran ){
 	memset(&i386_tss_descriptor,0,sizeof(i386_gdt_descriptor_t));
-	i386_tss_descriptor.baseLo	
+	i386_tss_descriptor.baseLo
 		= (base >> I386_GDT_BASE_LOW_SHIFT)	& I386_GDT_BASE_LOW_MASK;
 	i386_tss_descriptor.baseMid
 		= (base >> I386_GDT_BASE_MID_SHIFT)	& I386_GDT_BASE_MID_MASK;
@@ -33,7 +33,7 @@ void i386_set_tss_descriptor(
 	i386_tss_descriptor.limit
 		= (limit >> I386_GDT_LIMIT_LOW_SHIFT) & I386_GDT_LIMIT_LOW_MASK;
 	i386_tss_descriptor.granularity  = gran;
-	i386_tss_descriptor.granularity |= 
+	i386_tss_descriptor.granularity |=
 		((limit >> I386_GDT_LIMIT_HIGH_SHIFT) & I386_GDT_LIMIT_HIGH_MASK);
 	i386_tss_descriptor.flags		= flags;
 }
@@ -60,7 +60,7 @@ void i386_protection_init()
 
 	/* Zero out the new TSS entry */
 	memset(&i386_tss_entry, 0, sizeof(i386_tss_entry_t));
-	
+
 	/* And setup the values, we do not use hardware task switching so only the
 	 * SS0, ESP0, CS and SS values are required. These are used by the CPU to
 	 * load the ring 0 stack segment and pointer. */
@@ -69,10 +69,10 @@ void i386_protection_init()
 
 	//TODO: Are these actually needed?
 	i386_tss_entry.cs	= 0x28 | I386_RPL_USERMODE_MASK;
-	i386_tss_entry.ss	= 
-		i386_tss_entry.ds = 
-		i386_tss_entry.es = 
-		i386_tss_entry.fs = 
+	i386_tss_entry.ss	=
+		i386_tss_entry.ds =
+		i386_tss_entry.es =
+		i386_tss_entry.fs =
 		i386_tss_entry.gs = 0x30 | I386_RPL_USERMODE_MASK;
 
 	/* Have the processor load the new TSS values */
