@@ -22,25 +22,7 @@
 #include "arch/i386/protection.h"
 #include "arch/i386/x86.h"
 #include <assert.h>
-/**
- * Entry point for fork() processes
- */
-void scheduler_fork_main( void * arg )
-{
-	/* Assign the newly created task to the forked process */
-	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg );
 
-	/* Creates a fake user-to-kernel interrupt entry that solely invokes
-	 * i386_user_exit before using iret to return to ring 3 in the newly created
-	 * process.
-	 *
-	 * This is done to simplify logic elsewhere in the kernel: because of this
-	 * code, all kernel<>user mode code can assume there is an interrupt entry
-	 * structure at top of stack. */
-	i386_fork_exit();
-
-	/* never reached*/
-}
 
 /**
  * Called from interrupt handlers to update the kernel state
@@ -74,21 +56,42 @@ void i386_user_enter ( i386_isr_stack_t *stack )
 {
 
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
-	if ( tctx == 0 )
-		return;
+	assert( tctx != NULL );
 
 	tctx->intr_regs		= stack->regs;
 	/* The ESP in the pusha structure is the ISR stack, not the user stack */
 	tctx->intr_regs.esp = stack->esp;
 
 	tctx->user_regs		= stack->regs;
-	tctx->user_regs.esp = stack->esp;
+	tctx->user_regs.esp     = stack->esp;
 	tctx->user_eip		= stack->eip;
 	tctx->user_ss		= stack->ss;
 	tctx->user_cs		= stack->cs;
 	tctx->user_ds		= stack->ds;
 	tctx->user_eflags	= stack->eflags;
 
+}
+
+
+void process_load_exec_state( void *entry, void *stack ) {
+
+	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+
+	assert( tctx != NULL );
+
+	tctx->user_regs.eax = 0;
+	tctx->user_regs.edx = 0;
+	tctx->user_regs.ecx = 0;
+	tctx->user_regs.ebx = 0;
+	tctx->user_regs.esi = 0;
+	tctx->user_regs.edi = 0;
+	tctx->user_regs.ebp = 0;
+	tctx->user_regs.esp = (uint32_t) stack;
+	tctx->user_eip      = (uint32_t) entry;
+	tctx->user_ds       = 0x33;
+	tctx->user_ss       = 0x33;
+	tctx->user_cs       = 0x2B;
+	tctx->user_eflags   = (1<<9);//IF Set
 }
 
 /**
@@ -117,10 +120,11 @@ void i386_user_exit ( i386_isr_stack_t *stack )
 	stack->cs			= tctx->user_cs;
 	stack->eflags		        = tctx->user_eflags;
 
-	assert( (stack->cs & 3) == 3 );
-
 	/* Update the TSS to point to the correct supervisor stack for this task */
  	i386_tss_update();
+
+	assert ( ( stack->cs & 3 ) == 3 );
+	assert ( stack->eip < (unsigned) 0xc0000000 );
 }
 
 void i386_fpu_del_task(scheduler_task_t *task);
@@ -159,10 +163,12 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 		/* Flag context switch to the FPU */
 		i386_fpu_on_cs();
 
+		uint32_t *ctx = nctx->kern_esp;
+		assert( ctx[8] >= 0xc0000000 );
+		//printf( CON_TRACE, "taskswitch to eip=%08X esp=%08X", ctx[8], nctx->kern_esp );
+
 		/* Switch kernel threads */
-		i386_context_switch(     nctx->kern_esp,
-								&tctx->kern_esp
-				    			);
+		i386_context_switch( nctx->kern_esp, &tctx->kern_esp );
 	}
 
 	/* Restore interrupt flag */
@@ -298,7 +304,15 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	push_32( &nctx->kern_esp, (uint32_t) callee );
 
 	/* Push the return address */
-	push_32( &nctx->kern_esp, 0x0 );
+	/* Creates a fake user-to-kernel interrupt entry that solely invokes
+	 * i386_user_exit before using iret to return to ring 3 in the newly
+	 * created process.
+	 *
+	 * This is done to simplify logic elsewhere in the kernel: because of
+	 * this code, all kernel<>user mode code can assume there is an
+	 * interrupt entry structure at top of stack.
+	 */
+	push_32( &nctx->kern_esp, (uint32_t) i386_fork_exit );
 
 	/* Push the new task state */
 	nctx->kern_esp -= sizeof( csstack_t );

@@ -16,7 +16,10 @@ extern "C"{
 #define I386_FLAGS_IF			(1<<9)
 #define I386_FLAGS_DF			(1<<10)
 #define I386_FLAGS_OF			(1<<11)
-#define I386_FLAGS_IOPL(Flg)	((Flg>>12)&3)
+#define I386_FLAGS_IOPL(Flg)	        ((Flg>>12)&3)
+
+#define I386_CR4_SMEP                   (1<<20)
+#define I386_CR4_SMAP                   (1<<21)
 
 #define I386_EXCEPTION_DIV_ZERO			0
 #define I386_EXCEPTION_DEBUG			1
@@ -59,7 +62,7 @@ void i386_fpu_sigenter();
 void i386_fpu_sigexit();
 void i386_fpu_fork();
 int i386_fpu_handle_ill();
-
+void i386_enable_smep();
 #ifdef __cplusplus
 }
 #endif

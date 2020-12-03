@@ -88,8 +88,7 @@ exec_start:
 	}
 
 	/* Check for shebang */
-	if ( rd_count >= 2	&& header[0] == '#'
-						&& header[1] == '!' ) {
+	if ( rd_count >= 2 && header[0] == '#' && header[1] == '!' ) {
 
 		/* Close shell file */
 		vfs_inode_release( inode );
@@ -259,7 +258,8 @@ exec_start:
 	n_envs[envl_size] = (char *) 0;
 	//debugcon_printf("calling program\n");
 
-	process_user_call(current_process->entry_point, current_process->stack_bottom);
+	process_load_exec_state(current_process->entry_point, current_process->stack_bottom);
+
 	return 0;//NEVER REACHED
 
 }

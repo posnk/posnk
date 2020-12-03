@@ -347,6 +347,20 @@ void scheduler_spawnentry( void (*callee)(void *), void *arg, int s )
 	/* Now that the scheduler is in a sane state, defer control to the callee */
 	callee( arg );
 
+	/* The return from this function goes to the architecture module,
+	 * which is required to simulate a normal kernel exit to usermode */
+
+}
+
+/**
+ * Entry point for fork() processes
+ */
+void scheduler_fork_main( void * arg )
+{
+	/* Assign the newly created task to the forked process */
+	scheduler_reown_task( scheduler_current_task, ( process_info_t * ) arg );
+
+	/* return to userland is guaranteed by the architecture interface */
 }
 
 /**

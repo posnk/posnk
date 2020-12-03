@@ -64,9 +64,9 @@ struct process_mmap {
 	char		*name;
 	void		*start;
 	size_t		 size;
-	int		 	 flags;
+	int		 flags;
 	inode_t		*file;
-	int		 	 fd;
+	int		 fd;
 	aoff_t		 offset;
 	aoff_t		 file_sz;
 	shm_info_t	*shm;
@@ -76,7 +76,7 @@ struct process_child_event {
 	llist_t		 node;
 	pid_t		 child_pid;
 	pid_t		 child_pgid;
-	int		 	 event;
+	int		 event;
 };
 
 struct process_info {
@@ -114,7 +114,7 @@ struct process_info {
 	int			 last_signal;
 	int			 old_state;
 	int			 state;
-	
+
 	/* Proces status */
 	int			 sc_errno;
 	int			 term_cause;
@@ -146,7 +146,7 @@ int curpid();
 
 void procvmm_clear_mmaps_other( process_info_t *info );
 
-process_info_t *process_get(pid_t pid);	
+process_info_t *process_get(pid_t pid);
 
 int process_push_user_data(const void *data, size_t size);
 
@@ -196,10 +196,11 @@ process_info_t *fork_process( void );
 
 int procvmm_check( const void *dest, size_t size);
 int procvmm_check_string( const char *dest, size_t size_max );
-int procvmm_check_stringlist(	const char **dest, 
+int procvmm_check_stringlist(	const char **dest,
 				size_t len_max );
 
-void process_user_call(void *entry, void *stack);
+void process_load_exec_state( void *entry, void *stack );
+
 int posix_fork(void);
 int process_exec(const char *path, char * const args[], char * const envs[] );
 

@@ -187,6 +187,9 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 						params.param_size[0],
 						params.param_size[1] );
 	scheduler_current_task->in_syscall = 0xFFFFFFFF;
+	if ( call == SYS_EXECVE && result == 0 && syscall_errno == 0 ) {
+		return;
+	}
 #ifdef CONFIG_SYSCALL_DEBUG
 	printf(CON_TRACE,"[%s:%i] %x (Errno: %i)", current_process->name, curpid(), result,syscall_errno);
 #endif
