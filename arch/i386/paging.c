@@ -274,9 +274,9 @@ void paging_init()
 
 	memset(initial_table, 0, sizeof(i386_page_table_t));
 
-	for ( map_addr = 0; map_addr < 0x400000;map_addr += 4096 ) { //Map the first 4MB
+	for ( map_addr = 0; map_addr < 0x400000; map_addr += 4096 ) { //Map the first 4MB
 		initial_table->pages[I386_ADDR_TO_PT_IDX(map_addr)]
-			= ((uint32_t)map_addr) | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_USER;
+			= ((uint32_t)map_addr) | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_RW;
 	}
 	/* Identity map the first 4 MB */
 	dir->directory[0x000] = (((uint32_t) initial_table) - 0xC0000000) | I386_PAGE_FLAG_RW | I386_PAGE_FLAG_PRESENT | I386_PAGE_FLAG_GLOBAL | I386_PAGE_FLAG_USER;
