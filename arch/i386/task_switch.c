@@ -201,19 +201,29 @@ size_t scheduler_get_state_size( ) {
 int scheduler_alloc_kstack(scheduler_task_t *task)
 {
 	physaddr_t frame;
+	void *guard;
 
 	/* Allocate the stack from the kheap */
 	task->kernel_stack = heapmm_alloc_alligned
-		( CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE, PHYSMM_PAGE_SIZE );
+		( CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE * 2
+		, PHYSMM_PAGE_SIZE );
 	if ( !task->kernel_stack )
 		return -1;
 
 	/* Unmap and release the lowest frame of the stack */
 	/* to guard against stack overflow */
-	frame = paging_get_physical_address( task->kernel_stack );
+	guard = task->kernel_stack;
+	frame = paging_get_physical_address( guard );
 	printf( CON_TRACE, "Setting up stack overflow guard: %x to %x",
-	        task->kernel_stack, task->kernel_stack + PHYSMM_PAGE_SIZE );
-	paging_unmap( task->kernel_stack );
+	        guard, guard + PHYSMM_PAGE_SIZE );
+	paging_unmap( guard );
+	physmm_free_frame( frame );
+
+	guard = task->kernel_stack + CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
+	frame = paging_get_physical_address( guard );
+	printf( CON_TRACE, "Setting up stack underflow guard: %x to %x",
+	        guard, guard + PHYSMM_PAGE_SIZE );
+	paging_unmap( guard );
 	physmm_free_frame( frame );
 
 	return 0;
@@ -234,9 +244,19 @@ int scheduler_free_kstack(scheduler_task_t *task)
 	/* Map the guard area back into RAM */
 	paging_map( task->kernel_stack, frame, PAGING_PAGE_FLAG_RW );
 
+	/* Allocate a frame to restore the guard area */
+	frame = physmm_alloc_frame();
+	if ( frame == PHYSMM_NO_FRAME )
+		return -1;
+
+	/* Map the guard area back into RAM */
+	paging_map(
+		task->kernel_stack + CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE
+		,frame, PAGING_PAGE_FLAG_RW );
+
 	/* Free the heap space used by the stack */
 	heapmm_free( task->kernel_stack,
-				CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE);
+				CONFIG_KERNEL_STACK_SIZE + 2 * PHYSMM_PAGE_SIZE);
 	return 0;
 }
 
@@ -283,11 +303,11 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	nctx = (i386_task_context_t *) new_task->arch_state;
 	tctx = (i386_task_context_t *) scheduler_current_task->arch_state;
 
-	/* Copy process state for userland fork */
-	memcpy( nctx, tctx, sizeof( i386_task_context_t ) );
-
 	/* Handle FPU lazy switching */
 	i386_fpu_fork();
+
+	/* Copy process state for userland fork */
+	memcpy( nctx, tctx, sizeof( i386_task_context_t ) );
 
 	/* Set up kernel state */
 	nctx->kern_esp = ( uint32_t ) new_task->kernel_stack;
