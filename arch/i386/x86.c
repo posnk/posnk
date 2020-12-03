@@ -5,6 +5,18 @@
 #include "kernel/scheduler.h"
 #include "kdbg/dbgapi.h"
 #include <stddef.h>
+extern uint32_t i386_force_order;
+/**
+ * Taken from Linux source
+ */
+static inline void i386_or_cr4(uint32_t bits)
+{
+	uint32_t val = 0;
+	asm volatile("mov %%cr4,%%eax": : "a" (val), "m" (i386_force_order));
+	val |= bits;
+	asm volatile("mov %0,%%cr4": : "r" (val), "m" (i386_force_order));
+}
+
 
 uint8_t i386_inb(uint16_t port)
 {
@@ -52,11 +64,14 @@ void wait_int()
 	__asm__("sti;hlt");
 }
 
+void i386_enable_smep() {
+	i386_or_cr4(I386_CR4_SMEP);
+}
 
 void debug_dump_state()
 {
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
-	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->user_regs;
+	i386_pusha_registers_t *regs = &tctx->user_regs;
 	printf(CON_ERROR, "User Registers:");
 	printf(CON_ERROR, "  EIP: %08X EFLAGS: %08X",
 		tctx->user_eip, tctx->user_eflags );
@@ -69,7 +84,7 @@ void debug_dump_state()
 	printf(CON_ERROR, "Interrupt Registers:");
 	printf(CON_ERROR, "  EIP: %08X CS: %04X DS: %04X",
 		tctx->intr_eip, tctx->intr_cs, tctx->intr_ds );
-	regs = (i386_pusha_registers_t *) &tctx->intr_regs;
+	regs = &tctx->intr_regs;
 	printf(CON_ERROR, "  EAX: %08X EBX: %08X ECX: %08X EDX: %08X",
 		regs->eax, regs->ebx, regs->ecx, regs->edx);
 	printf(CON_ERROR, "  ESP: %08X EBP: %08X ESI: %08X EDI: %08X",
@@ -81,7 +96,7 @@ void debug_postmortem_hook()
 {
 	i386_task_context_t *tctx = scheduler_current_task->arch_state;
 	uint32_t eip = (uint32_t) tctx->intr_eip;
-	i386_pusha_registers_t *regs = (i386_pusha_registers_t *) &tctx->intr_regs;
+	i386_pusha_registers_t *regs = &tctx->intr_regs;
 	asm("movl %0, %%esp;push %1;push %2;mov %%esp, %%ebp;cli;push $1;call dbgapi_invoke_kdbg"::"r"(regs->esp), "r"(eip), "r"(regs->ebp));
 
 	dbgapi_invoke_kdbg(1);

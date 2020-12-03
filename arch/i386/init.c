@@ -329,7 +329,6 @@ void i386_init_mm(multiboot_info_t* mbd, unsigned int magic)
 	puts( CON_DEBUG, "Enabling paging...");
 	dbgapi_set_symtab( NULL, NULL, mbelf_sym_count, NULL );
 	paging_init();
-
 	puts( CON_DEBUG, "Initializing kernel heap manager...");
 	kdbg_initialize();
 
@@ -370,6 +369,7 @@ void arch_init_early() {
 	puts( CON_DEBUG, "loading exception handlers");
 	i386_idt_initialize();
 	i386_protection_init();
+	i386_enable_smep();
 }
 
 void arch_init_late() {
