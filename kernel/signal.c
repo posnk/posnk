@@ -88,7 +88,7 @@ inline int sigaddset( sigset_t *set, int sig )
 {
 	if ( set == NULL )
 		return EFAULT;
-	*set |= 1 << sig;
+	*set |= 1u << sig;
 	return 0;
 }
 
@@ -100,7 +100,7 @@ inline int sigdelset( sigset_t *set, int sig )
 {
 	if ( set == NULL )
 		return EFAULT;
-	*set &= ~(1 << sig);
+	*set &= ~(1u << sig);
 	return 0;
 }
 
@@ -109,7 +109,7 @@ inline int sigdelset( sigset_t *set, int sig )
  */
 inline int sigismember( const sigset_t *set, int sig )
 {
-	return *set & (1 << sig);
+	return *set & (1u << sig);
 }
 
 /**
