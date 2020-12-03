@@ -19,7 +19,7 @@
 ; This code segment is invoked by the interrupt handler stubs
 ; it will push the processor state and call the C interrupt handler
 ; which can then either return or branch out to another process.
-; Expected stack contents: 
+; Expected stack contents:
 ;	C	(SS)
 ;	C	(ESP)
 ;	C	EFLAGS
@@ -36,7 +36,7 @@ i386_entry_core:
 	xor	eax, eax
 	mov	ax, ds
 	push	eax
-	
+
 	; Switch to supervisor segment for data access
 	mov	ax, 0x20
 	mov	ds, ax
@@ -50,12 +50,15 @@ i386_entry_core:
 	; Push the stack address
 	push	esp
 
+	; Clear the direction flag
+	cld
+
 	; Call the interrupt handler
 	call	i386_handle_interrupt
 
 	; "Pop" the stack address
 	add	esp, 4
-	
+
 	; Restore data segment
 	pop	eax
 	mov	ds, ax
@@ -76,9 +79,11 @@ i386_entry_core:
 [extern i386_user_exit]
 ; Simulate interrupt return to duplicate user state
 i386_fork_exit:
+	; disable interrupts
+	cli
 
 	; alloca( sizeof( i386_isr_stack_t ) )
-	
+
 	sub esp, 64
 
 	; Set magic base pointer to stop kernel stacktraces
@@ -92,7 +97,7 @@ i386_fork_exit:
 
 	; "Pop" the stack address
 	add	esp, 4
-	
+
 	; Restore data segment
 	pop	eax
 	mov	ds, ax
@@ -110,16 +115,16 @@ i386_fork_exit:
 	iret
 
 %macro ISR_SYSCALL 1
-	
-[global i386_isr_entry_%1]		
-i386_isr_entry_%1:	
-	
+
+[global i386_isr_entry_%1]
+i386_isr_entry_%1:
+
 	; Push fake error code
 	push	dword 0x0BADCA11
 
 	; Push interrupt id
 	push	dword %1
-	
+
 	; Jump to common entry code
 	jmp	i386_entry_core
 
@@ -129,16 +134,16 @@ i386_isr_entry_%1:
 
 ; ISR macro for interrupts and exceptions that do not post an error code
 %macro ISR_NOCODE 1
-	
-[global i386_isr_entry_%1]		
-i386_isr_entry_%1:	
-	
+
+[global i386_isr_entry_%1]
+i386_isr_entry_%1:
+
 	; Push fake error code
 	push	dword 0x0BADC0D3
 
 	; Push interrupt id
 	push	dword %1
-	
+
 	; Jump to common entry code
 	jmp	i386_entry_core
 
@@ -148,12 +153,12 @@ i386_isr_entry_%1:
 ; ISR macro for interrupts and exceptions that post an error code
 %macro ISR_CODE 1
 
-[global i386_isr_entry_%1]	
-i386_isr_entry_%1:	
-	
+[global i386_isr_entry_%1]
+i386_isr_entry_%1:
+
 	; Push interrupt id
 	push	dword %1
-	
+
 	; Jump to common entry code
 	jmp	i386_entry_core
 
