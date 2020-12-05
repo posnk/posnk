@@ -31,11 +31,11 @@ HCC  = @echo " [ HOSTCC  ]	" $< ; gcc
 HLD  = @echo " [ HOSTLD  ]	" $@ ; gcc
 HCPP = @echo " [ HOSTCPP ]	" $@ ; cpp
 HGAS = @echo " [ HOSTAS  ]	" $@ ; as
-
+SANITIZE=-fsanitize=undefined
 # Set the compiler and assembler flags
 CFLAGS = $(DEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-fno-omit-frame-pointer -finline-functions -finline-functions-called-once \
-	-fauto-inc-dec -fsanitize=undefined
+	-fauto-inc-dec $(SANITIZE)
 
 ULCFLAGS = $(ULDEFS) -Wall -g -Wextra -fno-exceptions -ffreestanding \
 	-finline-functions -finline-functions-called-once
@@ -59,7 +59,7 @@ HINCLUDES = -I./include -I./include/hcrt
 ULINCLUDES = -I./include/crt
 
 # Set the required linker flags
-LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc -fsanitize=undefined
+LFLAGS = -g -ffreestanding -O2 -nostdlib -static-libgcc $(SANITIZE)
 
 HLFLAGS = -g -lfuse
 
