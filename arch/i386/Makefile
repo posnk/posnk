@@ -1,6 +1,8 @@
 SRCS_C_I386 = arch/i386/x86.c \
 arch/i386/paging.c \
-arch/i386/init.c \
+arch/i386/init/init.c \
+arch/i386/init/mbelf.c \
+arch/i386/init/multiboot.c \
 arch/i386/isr.c \
 arch/i386/idt.c \
 arch/i386/signal.c \
@@ -56,9 +58,4 @@ $(ARCHOBJ): $(OBJS_I386)
 	$(RLD) $(RLDFLAGS) -r $(OBJS_I386) -o $@
 
 default_i386: $(BUILDDIR)vmpos $(BUILDDIR)libposnk.a
-
-cdrom_i386: vmpos cdrom_files/ramdisk.ext2
-#	@echo " [  TAR ]	initrd.tar" ; ./mkinitrd_pos
-	@cp vmpos cdrom_files/vmpos
-	@echo " [ MKCD ]	pos.iso" ; grub-mkrescue -o pos.iso cdrom_files
 
