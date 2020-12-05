@@ -126,7 +126,7 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 		case I386_EXCEPTION_STACK_EXCEPTION:
 			sig = SIGILL;
 			info.si_code = ILL_ILLADR;
-			info.si_addr = (void*) stack->eip;
+				info.si_addr = (void*) stack->eip;
 			break;
 		case I386_EXCEPTION_GP_FAULT:
 			sig = SIGILL;
@@ -154,12 +154,10 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 void i386_handle_interrupt( i386_isr_stack_t *stack )
 {
 	uint32_t scpf;
-	int s;
 	int fru;
 	int int_id = stack->int_id, hw_int;
 
 	fru = stack->cs == 0x2b;
-	s = disable();
 
 	/* Check if the interrupt came from ring 3 */
 	if ( stack->cs == 0x2B ) {

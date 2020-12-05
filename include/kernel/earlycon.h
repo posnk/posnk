@@ -15,10 +15,6 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include "kernel/console.h"
-void earlycon_init();
-
-void debugcon_init();
-
 void debugcon_putc(char c);
 
 int debugcon_aprintf(const char* str,...);

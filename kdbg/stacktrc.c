@@ -8,12 +8,13 @@
  * Changelog:
  * 12-05-2014 - Created
  */
+#include <stdio.h>
+#define CON_SRC ("kdbg")
+#include "kernel/console.h"
 #include "kdbg/stacktrc.h"
 #include "kdbg/kdbgio.h"
 #include "kdbg/kdbgmm.h"
 #include "kernel/elf.h"
-#define CON_SRC ("kdbg")
-#include "kernel/console.h"
 #ifdef ARCH_I386
 #include "arch/i386/task_context.h"
 #include "arch/i386/isr_entry.h"
@@ -34,7 +35,7 @@ void dbgapi_set_symtab( const void *_symtab, const void *_strtab, int symcount, 
 	symstr_sz = str_sz;
 }
 static char symname[32];
-char *kdbg_symbol_name( uintptr_t addr )
+const char *kdbg_symbol_name( uintptr_t addr )
 {
 	int i;
 

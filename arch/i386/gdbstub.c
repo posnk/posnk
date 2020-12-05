@@ -23,7 +23,7 @@
 
 void gdb_sendregs ( void )
 {
-    static char buf[113];/*
+    /*static char buf[113];
 
     if ( gdb_debug_user == 0 ) {
         gdb_enc32 ( buf +   0, state->intr_regs.eax );

@@ -31,7 +31,9 @@ void i386_fpu_initialize()
 
 void i386_enable_fpu()
 {
+#ifdef CONFIG_CPU_SSE
 	uint32_t temp;
+#endif
 	asm volatile("clts");
 #ifdef CONFIG_CPU_SSE
 	asm volatile("mov %%cr4, %0" : "=r"(temp));
@@ -42,8 +44,8 @@ void i386_enable_fpu()
 
 void i386_disable_fpu()
 {
-	uint32_t temp;
 #ifdef CONFIG_CPU_SSE
+	uint32_t temp;
 	asm volatile("mov %%cr0, %0" : "=r"(temp));
 	temp |= 1 << 3;
 	asm volatile("mov %0, %%cr0" :: "r"(temp));

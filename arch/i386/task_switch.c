@@ -163,12 +163,12 @@ void scheduler_switch_task( scheduler_task_t *new_task )
 		/* Flag context switch to the FPU */
 		i386_fpu_on_cs();
 
-		uint32_t *ctx = nctx->kern_esp;
-		assert( ctx[8] >= 0xc0000000 );
-		//printf( CON_TRACE, "taskswitch to eip=%08X esp=%08X", ctx[8], nctx->kern_esp );
-
 		/* Switch kernel threads */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress-of-packed-member"
 		i386_context_switch( nctx->kern_esp, &tctx->kern_esp );
+#pragma GCC diagnostic pop
+
 	}
 
 	/* Restore interrupt flag */
@@ -314,6 +314,9 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	nctx->kern_esp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
 	nctx->tss_esp  = nctx->kern_esp;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+
 	/* Push the arguments for the entry shim */
 	push_32( &nctx->kern_esp, (uint32_t) s );
 
@@ -333,6 +336,8 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	 * interrupt entry structure at top of stack.
 	 */
 	push_32( &nctx->kern_esp, (uint32_t) i386_fork_exit );
+
+#pragma GCC diagnostic pop
 
 	/* Push the new task state */
 	nctx->kern_esp -= sizeof( csstack_t );

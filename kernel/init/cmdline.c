@@ -81,7 +81,7 @@ void cmdline_parse()
 		*work = 0;
 		/* Look for the next field */
 		work = strchr( value, ' ' );
-		printf(CON_INFO, "%x %x %x %x",pos,field,value,work);
+
 		/* If there is, terminate the current field and update pos */
 		if ( work ) {
 			*work = 0;

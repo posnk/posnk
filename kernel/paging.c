@@ -42,6 +42,123 @@ size_t heapmm_request_core ( void *address, size_t size )
 	return size_counter;
 }
 
+/**
+ * @brief Map a range of physical memory into virtual memory
+ * This function maps an arbitrarily sized chunk of physical address space
+ * into kernel heap address space. The address space taken from the heap
+ * must be restored to be backed by normal RAM before freeing it. For this
+ * reason, this function returns a structure describing the mapping, which
+ * can be passed to paging_unmap_phys_range.
+ * @param addr  The physical address to map.
+ * @param size  The size of the region to map.
+ * @param flags Page mapping flags to be used when mapping the range.
+ * @return The mapping, if successful, NULL otherwise.
+ */
+physmap_t *paging_map_phys_range( physaddr_t addr, size_t size, int flags )
+{
+	size_t ptr, start;
+	void *page_ptr;
+	physmap_t *map;
+
+	start = addr & PHYSMM_PAGE_ADDRESS_MASK;
+	addr &= ~PHYSMM_PAGE_ADDRESS_MASK;
+
+	/* Allocate a descriptor for this mapping */
+	map = heapmm_alloc( sizeof( physmap_t ) );
+	if ( !map )
+		return NULL;
+
+	/* Compute page rounded size */
+	map->map_size  = (size + start + PHYSMM_PAGE_SIZE - 1) &
+	          ~PHYSMM_PAGE_ADDRESS_MASK;
+
+	/* Allocate a suitable bit of kernel heap address space */
+	map->map_start = heapmm_alloc_alligned( map->map_size,
+	                                        PHYSMM_PAGE_SIZE );
+	if ( !map->map_start ) {
+		heapmm_free( map, sizeof( physmap_t ) );
+		return NULL;
+	}
+
+	/* Fill out the descriptor */
+	map->virt      = start + map->map_start;
+	map->phys      = addr;
+	map->size      = size;
+	map->flags     = flags;
+
+	/* Iterate over all the pages in the range */
+	for ( ptr = 0; ptr < map->map_size; ptr += PHYSMM_PAGE_SIZE ) {
+		/* Get the virtual memory address for this page */
+		page_ptr = map->map_start + ptr;
+
+		/* Release the frame currently backing this bit of heap... */
+		physmm_free_frame( paging_get_physical_address( page_ptr ) );
+
+		/* ...and unmap it. */
+		paging_unmap( page_ptr );
+
+		/* Map the input physical page */
+		paging_map( page_ptr , map->phys + ptr, flags );
+	}
+
+	return map;
+}
+
+/**
+ * @brief Unmap a phyisical range mapped using paging_map_phys_range()
+ * This function needs to rebind the virtual mapping to normal memory, and
+ * as such temporarily requires exactly map->map_size bytes of physical memory.
+ * If this is not available the function will return ENOMEM and the mapping
+ * will not be affected.
+ * @param map The mapping to destroy
+ * @return Zero on success, an ERRNO code otherwise.
+ */
+int paging_unmap_phys_range( physmap_t *map )
+{
+	physaddr_t addr;
+	void *page_ptr;
+	size_t ptr, eptr;
+
+	/* Iterate over all the pages in the range */
+	for ( ptr = 0; ptr < map->map_size; ptr += PHYSMM_PAGE_SIZE ) {
+		/* Get the virtual memory address for this page */
+		page_ptr = map->map_start + ptr;
+
+		/* ...and unmap it. */
+		paging_unmap( page_ptr );
+
+		/* Allocate the phys page */
+		addr = physmm_alloc_frame();
+		if ( addr == PHYSMM_NO_FRAME )
+			goto fail_map;
+
+		/* Map a normal physical page */
+		paging_map( page_ptr, addr, PAGING_PAGE_FLAG_RW );
+	}
+
+	heapmm_free( map->map_start, map->map_size );
+	heapmm_free( map, sizeof( physmap_t ) );
+	return 0;
+
+fail_map:
+	eptr = ptr;
+	/* Iterate over all the pages in the range */
+	for ( ptr = 0; ptr <= eptr; ptr += PHYSMM_PAGE_SIZE ) {
+		/* Get the virtual memory address for this page */
+		page_ptr = map->map_start + ptr;
+
+		/* Release the frame currently backing this bit of heap... */
+		physmm_free_frame( paging_get_physical_address( page_ptr ) );
+
+		/* ...and unmap it. */
+		paging_unmap( page_ptr );
+
+		/* Map the input physical page */
+		paging_map( page_ptr , map->phys + ptr, map->flags );
+	}
+	return ENOMEM;
+}
+
 void paging_handle_out_of_memory()
 {
 	printf(CON_ERROR, "Out of memory! No handling for this yet");
@@ -92,3 +209,5 @@ void paging_handle_fault(void *virt_addr, void * instr_ptr, int present, int wri
 	exception_handle( SIGSEGV, info, instr_ptr, user , !user );
 
 }
+
+

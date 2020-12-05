@@ -88,6 +88,10 @@ extern int con_src_map_size;
 void con_sink_puts( int sink, int flags, int hnd, int lvl, const char *msg );
 #endif
 
+void earlycon_init(); //TODO: Remove
+
+void debugcon_init(); //TODO: Remove
+
 void con_init();
 
 const char *con_get_src_display_name( int hnd );

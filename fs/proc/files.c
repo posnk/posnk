@@ -107,7 +107,7 @@ proc_file_t *proc_get_file( ino_t id ) {
 
 	file_id = PROC_INODE_FILE(id);
 
-	if ( file_id < 0 || file_id >= (sizeof proc_file_list / sizeof(proc_file_t)) )
+	if ( file_id < 0 || file_id >= (int) (sizeof proc_file_list / sizeof(proc_file_t)) )
 		return NULL;
 
 	return proc_file_list + file_id;

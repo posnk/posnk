@@ -16,14 +16,14 @@
 #include "kernel/paging.h"
 #include "util/llist.h"
 
-#define I386_PAGE_FLAG_PRESENT		  (0x1)
-#define I386_PAGE_FLAG_RW		  (0x2)
-#define I386_PAGE_FLAG_USER		  (0x4)
-#define I386_PAGE_FLAG_WRITETHROUGH	  (0x8)
-#define I386_PAGE_FLAG_NOCACHE		 (0x10)
-#define I386_PAGE_FLAG_ACCESSED		 (0x20)
-#define I386_PAGE_FLAG_DIRTY		 (0x40)
-#define I386_PAGE_FLAG_PAGE_SIZE	 (0x80)
+#define I386_PAGE_FLAG_PRESENT		(0x1)
+#define I386_PAGE_FLAG_RW		(0x2)
+#define I386_PAGE_FLAG_USER		(0x4)
+#define I386_PAGE_FLAG_WRITETHROUGH	(0x8)
+#define I386_PAGE_FLAG_NOCACHE		(0x10)
+#define I386_PAGE_FLAG_ACCESSED		(0x20)
+#define I386_PAGE_FLAG_DIRTY		(0x40)
+#define I386_PAGE_FLAG_PAGE_SIZE	(0x80)
 #define I386_PAGE_FLAG_GLOBAL		(0x100)
 
 #define I386_TABLE_TAG_RESERVED		(0x200)

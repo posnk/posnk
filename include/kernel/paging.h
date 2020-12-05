@@ -37,6 +37,14 @@ struct page_dir {
 #define PAGING_PAGE_TAG_USER_CODE	(5)
 #define PAGING_PAGE_TAG_USER_MMAP	(6)
 
+typedef struct {
+	void *     virt;
+	size_t     size;
+	physaddr_t phys;
+	int        flags;
+	void *     map_start;
+	size_t     map_size;
+} physmap_t;
 
 extern page_dir_t *paging_active_dir;
 
@@ -66,5 +74,9 @@ int		paging_soft_check(void *virt_addr, size_t size);
 uintptr_t	paging_get_physical_address(const void * virt_addr);
 
 uintptr_t paging_get_physical_address_other(page_dir_t *dir,const void * virt_addr);
+
+physmap_t *paging_map_phys_range( physaddr_t addr, size_t size, int flags );
+
+int paging_unmap_phys_range( physmap_t *map );
 
 #endif
