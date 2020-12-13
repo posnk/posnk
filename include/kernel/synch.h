@@ -35,6 +35,8 @@ void semaphore_up(semaphore_t *semaphore);
 
 void semaphore_add(semaphore_t *semaphore, unsigned int n);
 
+int semaphore_ndown( semaphore_t *semaphore, utime_t timeout, int flags );
+
 int semaphore_down(semaphore_t *semaphore);
 
 int semaphore_idown(semaphore_t *semaphore);

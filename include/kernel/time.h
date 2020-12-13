@@ -8,15 +8,17 @@
  * Changelog:
  * 07-04-2014 - Created
  */
- 
+
  #ifndef __KERNEL_TIME_H__
  #define __KERNEL_TIME_H__
- 
+
 #include <stdint.h>
 
 typedef uint64_t		ticks_t;
- 
+
 typedef uint64_t		ktime_t;
+
+typedef uint64_t                utime_t;
 
 extern ticks_t timer_ticks;
 

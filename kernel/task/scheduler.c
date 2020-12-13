@@ -388,9 +388,9 @@ void scheduler_interrupt_task( scheduler_task_t *task ) {
 }
 
 /**
- * Blocks task until condition is hit
+ * Blocks task until condition is hit, or task was interrupted
  */
-int scheduler_block_on( int state ) {
+static int block_on_internal( int state ) {
 	int result_state;
 	/* TODO: Do we need to acquire the scheduler lock here? */
 	scheduler_current_task->state &= ~TASK_STATE_READY;
@@ -408,61 +408,117 @@ int scheduler_block_on( int state ) {
 
 	if ( (state & ~result_state) & TASK_STATE_BLOCKED )
 		return SCHED_WAIT_OK;
-	else if (~state & TASK_STATE_INTERRUPTED )
+	else if ( result_state & TASK_STATE_INTERRUPTED )
 		return SCHED_WAIT_INTR;
-	else if ( state & TASK_STATE_TIMED_OUT )
+	else if ( result_state & TASK_STATE_TIMED_OUT )
 		return SCHED_WAIT_TIMEOUT;
 	assert(!"Unknown reason for thread wakeup!");
 	return -1;/*never reached*/
 }
 
-int scheduler_wait_micros(ktime_t microtime)
-{
-	/* Setup wait deadline */
-	scheduler_current_task->wait_timeout_u = microtime;
+/**
+ * Blocks task until condition is hit.
+ * @param state The task state flags
+ * @param flags The wait flags
+ * @return Either SCHED_WAIT_OK or SCHED_WAIT_TIMEOUT.
+ */
+int scheduler_block_on( int state, int flags ) {
+	int r, intr;
+	intr = 0;
 
-	/* Unschedule ourselves until timeout reached */
-	scheduler_block_on( TASK_STATE_TIMEDWAIT_US );
+	do {
+		r = block_on_internal( state );
+		if ( flags & SCHED_WAITF_INTR ) {
+			break;
+		} else if ( r == SCHED_WAIT_INTR ) {
+			/* Defer interrupt handling to next wait */
+			intr = 1;
+		}
+	} while ( r == SCHED_WAIT_INTR );
 
-	/* When we get back here, we either got interrupted or timed out */
-	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S ) != SCHED_WAIT_INTR;
+	/* Re-assert pending task interrupt */
+	if ( intr )
+		scheduler_interrupt_task( scheduler_current_task );
+
+	return r;
 }
 
-int scheduler_wait_time(ktime_t time)
-{
-	/* Setup wait deadline */
-	scheduler_current_task->wait_timeout_s = time;
 
-	/* Unschedule ourselves until timeout reached */
-	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S ) != SCHED_WAIT_INTR;
-}
-
-int scheduler_wait_on(semaphore_t *semaphore)
+int scheduler_wait( semaphore_t *semaphore, utime_t timeout, int flags )
 {
-	scheduler_current_task->waiting_on = semaphore;
+	int state = 0;
+
+	if ( semaphore ) {
+		state |= TASK_STATE_BLOCKED;
+		scheduler_current_task->waiting_on = semaphore;
+	}
+
+	if ( flags & SCHED_WAITF_TIMEOUT )
+		timeout += system_time_micros;
+
+	if ( timeout ) {
+		state |= TASK_STATE_TIMEDWAIT_US;
+		scheduler_current_task->wait_timeout_u = timeout;
+	}
 
 	/* Unschedule ourselves until semaphore ready */
-	return scheduler_block_on( TASK_STATE_BLOCKED );
+	return scheduler_block_on( state, flags );
+}
+
+
+int scheduler_wait_micros( ktime_t microtime )
+{
+	int r;
+
+	/* Wait on the deadline */
+	r = scheduler_wait(
+		/* semaphore */ NULL,
+		/* timeout   */ microtime,
+		/* flags     */ SCHED_WAITF_INTR );
+
+	return r != SCHED_WAIT_INTR;
+}
+
+int scheduler_wait_time( ktime_t time )
+{
+	int r;
+
+	/* Wait on the deadline */
+	r = scheduler_wait(
+		/* semaphore */ NULL,
+		/* timeout   */ 10000000UL * time /* in us */,
+		/* flags     */ SCHED_WAITF_INTR );
+
+	return r != SCHED_WAIT_INTR;
+}
+
+int scheduler_wait_on( semaphore_t *semaphore )
+{
+
+	/* Wait on the semaphore */
+	return scheduler_wait(
+		/* semaphore */ semaphore,
+		/* timeout   */ 0,
+		/* flags     */ SCHED_WAITF_INTR );
+
 }
 
 int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
 {
-	scheduler_current_task->waiting_on = semaphore;
-	scheduler_current_task->wait_timeout_s = system_time + seconds;
 
-	/* Unschedule ourselves until timeout reached or semaphore ready */
-	return scheduler_block_on( TASK_STATE_TIMEDWAIT_S | TASK_STATE_BLOCKED );
+	/* Wait on the semaphore */
+	return scheduler_wait(
+		/* semaphore */ semaphore,
+		/* timeout   */ 10000000UL * seconds,
+		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
 
-	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
 
-int scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros)
+int scheduler_wait_on_to_us(semaphore_t *semaphore, ktime_t micros)
 {
-
-	scheduler_current_task->waiting_on = semaphore;
-	scheduler_current_task->wait_timeout_u = system_time_micros+micros;
-
-	/* Unschedule ourselves until timeout reached or semaphore ready */
-	return scheduler_block_on( TASK_STATE_TIMEDWAIT_US | TASK_STATE_BLOCKED );
+	return scheduler_wait(
+		/* semaphore */ semaphore,
+		/* timeout   */ micros,
+		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
 
 }

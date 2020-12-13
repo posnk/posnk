@@ -40,6 +40,9 @@ typedef struct task scheduler_task_t;
 #define SCHED_WAIT_INTR		(-2)
 #define SCHED_WAIT_TIMEOUT	(-1)
 
+#define SCHED_WAITF_INTR        (1 << 1)
+#define SCHED_WAITF_TIMEOUT     (1 << 2)
+
 #define TASK_GLOBAL         (1<<0)
 
 /**
@@ -122,15 +125,17 @@ void scheduler_init(void);
 
 void scheduler_reap( scheduler_task_t *task );
 
-int scheduler_wait_on(semaphore_t *semaphore);
+int scheduler_wait( semaphore_t *semaphore, utime_t timeout, int flags );
 
-int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds);
+int scheduler_wait_on( semaphore_t *semaphore );
 
-int scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros);
+int scheduler_wait_on_timeout( semaphore_t *semaphore, ktime_t seconds );
 
-int scheduler_wait_time(ktime_t time);
+int scheduler_wait_on_to_us( semaphore_t *semaphore, ktime_t micros );
 
-int scheduler_wait_micros(ktime_t microtime);
+int scheduler_wait_time( ktime_t time );
+
+int scheduler_wait_micros( ktime_t microtime );
 
 int scheduler_fork(void);
 
