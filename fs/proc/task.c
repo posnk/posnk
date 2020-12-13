@@ -19,16 +19,6 @@ static char * taskstates[] = {
 	"TIMED_OUT "
 };
 
-#define TASK_STATE_RUNNING	(1 << 0)
-#define TASK_STATE_READY	(1 << 1)
-#define TASK_STATE_STOPPED	(1 << 2)
-#define TASK_STATE_TIMEDWAIT_US	(1 << 3)
-#define TASK_STATE_TIMEDWAIT_S	(1 << 4)
-#define TASK_STATE_TIMEDWAIT	(3 << 3)
-#define TASK_STATE_BLOCKED	(1 << 5)
-#define TASK_STATE_INTERRUPTED	(1 << 8)
-#define TASK_STATE_TIMED_OUT	(1 << 9)
-
 errno_t proc_task_open ( snap_t *snap, ino_t inode ) {
 	tid_t tid = PROC_INODE_TID( inode );
 	scheduler_task_t *t = scheduler_get_task( PROC_INODE_TID( inode ) );

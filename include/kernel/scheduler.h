@@ -29,8 +29,7 @@ typedef struct task scheduler_task_t;
 #define TASK_STATE_READY	(1 << 1)
 #define TASK_STATE_STOPPED	(1 << 2)
 #define TASK_STATE_TIMEDWAIT_US	(1 << 3)
-#define TASK_STATE_TIMEDWAIT_S	(1 << 4)
-#define TASK_STATE_TIMEDWAIT	(3 << 3)
+#define TASK_STATE_TIMEDWAIT	TASK_STATE_TIMEDWAIT_US
 #define TASK_STATE_BLOCKED	(1 << 5)
 #define TASK_STATE_INTERRUPT	(1 << 6)
 #define TASK_STATE_INTERRUPTED	(1 << 8)
@@ -79,7 +78,7 @@ struct task {
 	process_info_t *process;
 
 	/** Processor state */
-	void		   *arch_state;
+	void           *arch_state;
 
 	/** The kernel stack */
 	void           *kernel_stack;
@@ -89,7 +88,6 @@ struct task {
 	/** Wait target */
 	semaphore_t    *waiting_on;
 	ktime_t         wait_timeout_u;//In microseconds
-	ktime_t         wait_timeout_s;//In microseconds
 
 };
 
@@ -126,16 +124,6 @@ void scheduler_init(void);
 void scheduler_reap( scheduler_task_t *task );
 
 int scheduler_wait( semaphore_t *semaphore, utime_t timeout, int flags );
-
-int scheduler_wait_on( semaphore_t *semaphore );
-
-int scheduler_wait_on_timeout( semaphore_t *semaphore, ktime_t seconds );
-
-int scheduler_wait_on_to_us( semaphore_t *semaphore, ktime_t micros );
-
-int scheduler_wait_time( ktime_t time );
-
-int scheduler_wait_micros( ktime_t microtime );
 
 int scheduler_fork(void);
 

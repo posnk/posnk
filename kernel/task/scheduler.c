@@ -44,6 +44,8 @@ scheduler_task_t *scheduler_get_task( tid_t tid )
 void scheduler_init()
 {
 	scheduler_task_list = NULL;
+
+	/* Create and initialize task 0 */
 	scheduler_current_task =
 		(scheduler_task_t *) heapmm_alloc(sizeof(scheduler_task_t));
 	memset(scheduler_current_task, 0, sizeof(scheduler_task_t));
@@ -59,6 +61,9 @@ void scheduler_init()
 
 	/* Task is not yet active */
 	scheduler_current_task->state = TASK_STATE_READY;
+
+	/* We are not in a syscall */
+	scheduler_current_task->in_syscall = 0xFFFFFFFF;
 
 	signal_init_task( scheduler_current_task );
 
@@ -137,7 +142,7 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 	/* Get a lock on the global scheduler state */
 	s = spinlock_enter( &scheduling_lock );
 
-	//TODO: Any reason we're not using the llist function here?
+	/* Add the new task to the task list */
 	new_task->prev = scheduler_task_list->prev;
 	new_task->next = scheduler_task_list;
 	new_task->next->prev = new_task;
@@ -182,26 +187,32 @@ void scheduler_reap( scheduler_task_t *task )
 
 	int s;
 
+	/* Make sure we are not trying to reap task 0 */
 	assert( task != scheduler_task_list );
 
+	/* Acquire the scheduling lock, as we are about to poll and modify the
+	 * task list */
 	s = spinlock_enter( &scheduling_lock );
 
+	/* Make sure that the task we are trying to reap is not
+	 * the current task. XXX: Shouldn't this check if the task is active
+	 * instead? This logic does not hold for SMP systems */
 	assert( task != scheduler_current_task );
 
+	/* Unlink the task from the global task list */
 	task->next->prev = task->prev;
 	task->prev->next = task->next;
 
 	spinlock_exit( &scheduling_lock, s );
 
-    /* If this task belonged to a process, remove it from that processes
-     * list. */
+	/* If this task belonged to a process, remove it from that processes
+	 * list. */
 	if ( task->process ) {
 		llist_unlink ((llist_t *) task);
 	}
 
+	/* Actually clean up the task's memory */
 	scheduler_free_task( task );
-
-	//TODO: Should this function check whether the process is still alive?
 
 }
 
@@ -226,18 +237,6 @@ void scheduler_handle_resume( scheduler_task_t *task ) {
 	if ( task->state & TASK_STATE_INTERRUPT ) {
 		task->state |= TASK_STATE_READY | TASK_STATE_INTERRUPTED;
 		task->state &= ~TASK_STATE_INTERRUPT;
-	}
-
-
-	/* Check if task had a seconds timer running */
-	if ( task->state & TASK_STATE_TIMEDWAIT_S ) {
-
-		/* Check if the timer elapsed */
-		if ( task->wait_timeout_s <= system_time ) {
-			task->state |= TASK_STATE_READY | TASK_STATE_TIMED_OUT;
-			task->state &= ~TASK_STATE_TIMEDWAIT_S;
-		}
-
 	}
 
 	/* Check if task had a microtimer running */
@@ -329,8 +328,8 @@ void schedule()
 
 	/* If we switched to a new task, perform a context switch */
 	if ( next_task != scheduler_current_task ) {
-    	scheduler_switch_task( next_task );	/* ------------------------- */
-    }
+    		scheduler_switch_task( next_task );	/* ------------------------- */
+	}
 
 	spinlock_exit( &scheduling_lock, s );
 
@@ -463,62 +462,4 @@ int scheduler_wait( semaphore_t *semaphore, utime_t timeout, int flags )
 
 	/* Unschedule ourselves until semaphore ready */
 	return scheduler_block_on( state, flags );
-}
-
-
-int scheduler_wait_micros( ktime_t microtime )
-{
-	int r;
-
-	/* Wait on the deadline */
-	r = scheduler_wait(
-		/* semaphore */ NULL,
-		/* timeout   */ microtime,
-		/* flags     */ SCHED_WAITF_INTR );
-
-	return r != SCHED_WAIT_INTR;
-}
-
-int scheduler_wait_time( ktime_t time )
-{
-	int r;
-
-	/* Wait on the deadline */
-	r = scheduler_wait(
-		/* semaphore */ NULL,
-		/* timeout   */ 10000000UL * time /* in us */,
-		/* flags     */ SCHED_WAITF_INTR );
-
-	return r != SCHED_WAIT_INTR;
-}
-
-int scheduler_wait_on( semaphore_t *semaphore )
-{
-
-	/* Wait on the semaphore */
-	return scheduler_wait(
-		/* semaphore */ semaphore,
-		/* timeout   */ 0,
-		/* flags     */ SCHED_WAITF_INTR );
-
-}
-
-int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
-{
-
-	/* Wait on the semaphore */
-	return scheduler_wait(
-		/* semaphore */ semaphore,
-		/* timeout   */ 10000000UL * seconds,
-		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
-
-}
-
-int scheduler_wait_on_to_us(semaphore_t *semaphore, ktime_t micros)
-{
-	return scheduler_wait(
-		/* semaphore */ semaphore,
-		/* timeout   */ micros,
-		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
-
 }

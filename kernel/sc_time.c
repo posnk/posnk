@@ -24,20 +24,40 @@ SYSCALL_DEF0(time)
 
 SYSCALL_DEF1(sleep)
 {
-	if (!scheduler_wait_time(system_time + (ktime_t) a)) {
+	int r;
+
+	/* Wait on the deadline */
+	r = scheduler_wait(
+		/* semaphore */ NULL,
+		/* timeout   */ 10000000UL * a,
+		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
+
+	/* Handle interrupted wait */
+	if ( r == SCHED_WAIT_INTR ) {
 		syscall_errno = EINTR;
 		return (uint32_t) -1;
+	} else {
+		return 0;
 	}
-	return 0;
 }
 
 SYSCALL_DEF1(usleep)
 {
-	if (!scheduler_wait_micros(system_time_micros + (ktime_t) a)) {
+	int r;
+
+	/* Wait on the deadline */
+	r = scheduler_wait(
+		/* semaphore */ NULL,
+		/* timeout   */ a,
+		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
+
+	/* Handle interrupted wait */
+	if ( r == SCHED_WAIT_INTR ) {
 		syscall_errno = EINTR;
 		return (uint32_t) -1;
+	} else {
+		return 0;
 	}
-	return 0;
 }
 
 SYSCALL_DEF1(stime)
@@ -53,6 +73,6 @@ SYSCALL_DEF1(stime)
 		return (uint32_t) -1;
 	}
 	system_time = t;
-	system_time_micros = system_time * 1000000;
+	system_time_micros = system_time * 1000000UL;
 	return 0;
 }
