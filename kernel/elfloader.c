@@ -47,7 +47,7 @@ Elf32_Shdr *elf_get_shdr( Elf32_Shdr* first, size_t shentsz, int i )
 	return ((void*)first) + shentsz * i;
 }
 
-int elf_load( inode_t *inode )
+int elf_load( inode_t *inode, const char *path )
 {
 	aoff_t rd_count;
 	int status;
@@ -133,7 +133,7 @@ int elf_load( inode_t *inode )
 					flags |= PROCESS_MMAP_FLAG_WRITE;
 				status = procvmm_mmap_file((void *)elf_pheader->p_vaddr, (size_t) elf_pheader->p_memsz,
 							    inode, (off_t) elf_pheader->p_offset, (off_t) elf_pheader->p_filesz,
-							    flags, NULL);
+							    flags, path );
 				if (status) {
 					printf(CON_DEBUG, "could not map PH_LOAD: %x", status);
 					heapmm_free(elf_pheader, elf_header->e_phentsize);

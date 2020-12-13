@@ -16,4 +16,4 @@
 
 int elf_verify( const char *header, size_t size );
 
-int elf_load( inode_t *inode );
+int elf_load( inode_t *inode, const char *path );

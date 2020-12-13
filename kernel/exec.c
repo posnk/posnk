@@ -188,7 +188,7 @@ exec_start:
 
 	signal_init_task( scheduler_current_task );
 
-	status = elf_load( inode );
+	status = elf_load( inode, path );
 
 	vfs_inode_release( inode );
 

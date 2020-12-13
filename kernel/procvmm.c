@@ -14,6 +14,8 @@
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
+#define  CON_SRC "procvmm"
+#include "kernel/console.h"
 #include "kernel/earlycon.h"
 #include "kernel/streams.h"
 #include "kernel/vfs.h"
@@ -336,15 +338,13 @@ int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off
 
 	/* Allocate memory for the region name */
 	region->name = heapmm_alloc(strlen(name)+1);
-
-	/* Copy region name */
-	strcpy(region->name, name);
-
 	if (!region->name) {
 		heapmm_free(region, sizeof(process_mmap_t));
 		return ENOMEM;
 	}
 
+	/* Copy region name */
+	strcpy(region->name, name);
 
 	/* Fill region fields */
 	region->start = start;
@@ -640,12 +640,11 @@ int procvmm_handle_fault(void *address)
 			if ((in_region + read_size) > (uintptr_t) region->file_sz)
 				read_size = (size_t) (region->file_sz - in_region);
 			status = vfs_read(region->file, file_off, address, read_size, &rd_count, 0);
-			if (status) {
-				paging_unmap(address);
-				physmm_free_frame(frame);
-				return 0;
-			}
-			if (rd_count != read_size) {
+			if (status || rd_count != read_size) {
+				printf( CON_ERROR,
+					"demand page read error "
+					"%i byte %i in %s",
+					status, rd_count, region->name );
 				paging_unmap(address);
 				physmm_free_frame(frame);
 				return 0;
