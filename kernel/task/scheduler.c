@@ -418,7 +418,6 @@ int scheduler_block_on( int state ) {
 
 int scheduler_wait_micros(ktime_t microtime)
 {
-
 	/* Setup wait deadline */
 	scheduler_current_task->wait_timeout_u = microtime;
 
@@ -431,7 +430,6 @@ int scheduler_wait_micros(ktime_t microtime)
 
 int scheduler_wait_time(ktime_t time)
 {
-
 	/* Setup wait deadline */
 	scheduler_current_task->wait_timeout_s = time;
 
@@ -441,18 +439,14 @@ int scheduler_wait_time(ktime_t time)
 
 int scheduler_wait_on(semaphore_t *semaphore)
 {
-	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
 	scheduler_current_task->waiting_on = semaphore;
 
 	/* Unschedule ourselves until semaphore ready */
 	return scheduler_block_on( TASK_STATE_BLOCKED );
-
-	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
 
 int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
 {
-	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
 	scheduler_current_task->waiting_on = semaphore;
 	scheduler_current_task->wait_timeout_s = system_time + seconds;
 
@@ -464,12 +458,11 @@ int scheduler_wait_on_timeout(semaphore_t *semaphore, ktime_t seconds)
 
 int scheduler_wait_on_to_ms(semaphore_t *semaphore, ktime_t micros)
 {
-	//earlycon_printf("pid %i wants to wait on %x\n",scheduler_current_task->pid, semaphore);
+
 	scheduler_current_task->waiting_on = semaphore;
 	scheduler_current_task->wait_timeout_u = system_time_micros+micros;
 
 	/* Unschedule ourselves until timeout reached or semaphore ready */
 	return scheduler_block_on( TASK_STATE_TIMEDWAIT_US | TASK_STATE_BLOCKED );
 
-	//earlycon_printf("pid %i came out of wait %x\n",scheduler_current_task->pid, semaphore);
 }
