@@ -133,6 +133,7 @@ typedef int64_t longest;
 typedef uint64_t ulongest;
 #endif
 
+#define PATH_MAX 4095
 
 /* Undefined Behavior specific defines and structures */
 

@@ -44,9 +44,18 @@ void sercon_puts(
 	}
 }
 
+char debugcon_getc() {
+	return sercon_getc();
+}
+
+void debugcon_putc(char c){
+	sercon_putc(c);
+}
+
 void earlycon_init()
 {
 	/* Do nothing much yet, bootloader has configured UART for us */
 	con_register_sink_s( "sercon", 0, sercon_puts );
 }
 
+void sercon_omap_init(){};

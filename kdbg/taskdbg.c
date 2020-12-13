@@ -61,8 +61,9 @@ char * kdbg_taskstates[] = {
 
 char *kdbg_taskstatestr(int s) {
 	static char state[80];
+	int i;
 	state[0] = 0;
-	for ( int i = 0; i < 10; i++ )
+	for ( i = 0; i < 10; i++ )
 		if ( s & (1 <<i) )
 			strcat( state, kdbg_taskstates[i] );
 	return state;

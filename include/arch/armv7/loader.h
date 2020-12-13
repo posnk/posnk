@@ -17,7 +17,7 @@ int sercon_printf(const char *fmt, ...);
 void sercon_init();
 
 extern uint32_t _armv7_start_kheap;
-extern uint32_t _binary_payload_armv7_start;
+extern uint32_t _binary_vmpos_start;
 
 uint32_t	armv7_get_mode( void );
 

@@ -64,12 +64,12 @@ void kmain()
 
 	printf(CON_INFO, "initializing builtin drivers");
 	register_dev_drivers();
-
+#ifdef ARCH_I386
 #ifndef CONFIG_i386_NO_PCI
 	puts(CON_INFO, "enumerating PCI devices");
 	pci_enumerate_all();
 #endif
-
+#endif
 	arch_init_late();
 
 	printf(CON_INFO, "initializing system calls");
@@ -86,7 +86,9 @@ void kmain()
 		halt();
 	}
 
+#ifdef ARCH_I386
 	ata_interrupt_enabled = 1;
+#endif
 
 	kinit_start_uinit();
 

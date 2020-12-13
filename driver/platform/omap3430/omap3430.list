@@ -1,0 +1,3 @@
+DRIVER_SRC(platform/omap3430/omap3430)
+DRIVER_SRC(platform/omap3430/mpu_intc)
+DRIVER_SRC(platform/omap3430/gptimer)

@@ -20,9 +20,14 @@ armv7_get_mode:
 	mov	pc,	lr
 
 .global armv7_enable_ints
+.global armv7_disable_ints
 
 armv7_enable_ints:
 	cpsie	if
+	mov	pc,	lr
+
+armv7_disable_ints:
+	cpsid	if
 	mov	pc,	lr
 
 .global armv7_set_mode_stack
@@ -37,7 +42,7 @@ armv7_set_mode_stack:
 	# Calculate new CPSR
 	and	r3,	r2,	#PSR_RESERVED	@ Preserve reserved CPSR bit
 	and	r0,	r0,	#PSR_MODE	@ Isolate mode bits from param
-	orr	r3,	r3,	r0		@ Set mode bits on new CPSR	
+	orr	r3,	r3,	r0		@ Set mode bits on new CPSR
 	# Load new CPSR
 	msr	cpsr_all,	r3		@ Load CPSR with the new value
 	# Load new stack pointer
@@ -58,7 +63,7 @@ process_user_call:
 	mvn	r3,	#(PSR_MODE|PSR_FIQ_MASK|PSR_IRQ_MASK)
 						@ Generate NOT_MODE mask
 	and	r2,	r2,	r3		@ Clear mode bits from CPSR
-	orr	r2,	r2,	#PSR_MODE_USR	@ Set mode bits on new CPSR	
+	orr	r2,	r2,	#PSR_MODE_USR	@ Set mode bits on new CPSR
 	# Load new CPSR
 	msr	spsr_all,	r2		@ Load SPSR with the new value
 	# Load new stack pointer

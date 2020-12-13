@@ -53,7 +53,7 @@ fbcon_vc_t fbcon_all_vcs[9];
 int fbcon_current_vc = 0;
 
 uint32_t fbcon_colour_map[16] = {
-0x000000, 0xCD0000, 0x00CD00, 0xCDCD00, 0x0000EE, 0xCD00CD, 0x00CDCD, 0xE5E5E5, 
+0x000000, 0xCD0000, 0x00CD00, 0xCDCD00, 0x0000EE, 0xCD00CD, 0x00CDCD, 0xE5E5E5,
 0x7F7F7F, 0xFF0000, 0x00FF00, 0xFFFF00, 0x5C5CFF, 0xFF00FF, 0x00FFFF, 0xFFFFFF
 };
 
@@ -61,7 +61,7 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 	int _x , _y, lp, bp;
 	uint8_t line;
 	uint32_t *_fb32 = fb_primary_lfb;
-	uint16_t *_fb16 = fb_primary_lfb;	
+	uint16_t *_fb16 = fb_primary_lfb;
 
 	if (c < fbcon_font->ascii_offset)
 		c = ' ';
@@ -77,9 +77,9 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 			line = fbcon_font->data[bp - _y];
 
 			for (_x = 7; _x >= 0; _x--) {
-				_fb16[lp] = 
-					(line & (1 << _x)) ? ((uint16_t)fg) : ((bg & 0xff000000) ? 
-						((uint16_t)bg): 
+				_fb16[lp] =
+					(line & (1 << _x)) ? ((uint16_t)fg) : ((bg & 0xff000000) ?
+						((uint16_t)bg):
 						(_fb16[lp]));
 				lp++;
 			}
@@ -98,27 +98,27 @@ void fbcon_render_char(int x, int y, uint32_t fg, uint32_t bg, char c) {
 			line = fbcon_font->data[bp - _y];
 
 			for (_x = 7; _x >= 0; _x--) {
-				_fb32[lp] = 
-					(line & (1 << _x)) ? fg : ((bg & 0xff000000) ? 
-						bg : 
+				_fb32[lp] =
+					(line & (1 << _x)) ? fg : ((bg & 0xff000000) ?
+						bg :
 						(_fb32[lp]));
 				lp++;
 			}
 		}
-	}	
+	}
 }
 
 void fbcon_draw_hline(int x, int y, int w, int c) {
 	int _x, lp;
 	lp = y * fbcon_width + x;
 	uint32_t *_fb32 = fb_primary_lfb;
-	uint16_t *_fb16 = fb_primary_lfb;	
+	uint16_t *_fb16 = fb_primary_lfb;
 	if (fbcon_bppix == 2) {
 		c = FBCON_RGBA8888_TO_RGBA8565(c);
-		for (_x = w; _x >= 0; _x--) 
+		for (_x = w; _x >= 0; _x--)
 			_fb16[lp++] = (uint16_t)c;
 	} else {
-		for (_x = w; _x >= 0; _x--) 
+		for (_x = w; _x >= 0; _x--)
 			_fb32[lp++] = c;
 	}
 }
@@ -130,17 +130,17 @@ int fbcon_line_len(char *str)
 	return i;
 }
 
-void fbcon_render_string(int x, int y, uint32_t fg, uint32_t bg, char *str) 
+void fbcon_render_string(int x, int y, uint32_t fg, uint32_t bg, char *str)
 {
 	int n, l, nl;
 	int sx = x;
 	l = strlen(str);
 	x = x - (fbcon_line_len(str) / 2) * 8;
 	nl = 1;
-	for (n = 0; n < l; n++) 
+	for (n = 0; n < l; n++)
 		if (str[n] == '\n')
 			 nl++;
-	y = y - (nl * (fbcon_font->height + 2)) / 2; 
+	y = y - (nl * (fbcon_font->height + 2)) / 2;
 	for (n = 0; n < l; n++) {
 		if ((str[n] == '\n') && (n != (l - 1))) {
 			x = sx - fbcon_line_len(&(str[n + 1])) * 4;
@@ -177,7 +177,7 @@ void vterm_draw_cursor(vterm_t *vt, int row, int col)
 	int c = ((row == vt->crow) && (col == vt->ccol)) ? 0xFF00CD00 : 0;
 	fbcon_draw_hline(x, y    , 8, c);
 	fbcon_draw_hline(x, y + 1, 8, c);
-	
+
 }
 
 void vterm_invalidate_screen(vterm_t *vt)
@@ -188,9 +188,9 @@ void vterm_invalidate_screen(vterm_t *vt)
 		return;
 	for (row = 0; row < vt->rows; row++)
 		for (col = 0; col < vt->cols; col++) {
-			fbcon_render_char(col * 9, 
-						row * (fbcon_font->height + 3), 
-						fbcon_get_fg(vt->cells[row][col].attr), 
+			fbcon_render_char(col * 9,
+						row * (fbcon_font->height + 3),
+						fbcon_get_fg(vt->cells[row][col].attr),
 						fbcon_get_bg(vt->cells[row][col].attr),
 						(char) vt->cells[row][col].ch);
 			vterm_draw_cursor(vt, row, col);
@@ -202,9 +202,9 @@ void vterm_invalidate_cell(vterm_t *vt, int row, int col)
 	//fbcon_vc_t *vc = &fbcon_all_vcs[MINOR(vt->device_id)];
 	if (MINOR(vt->device_id) != fbcon_current_vc)
 		return;
-	fbcon_render_char(col * 9, 
-				row * (fbcon_font->height + 3), 
-				fbcon_get_fg(vt->cells[row][col].attr), 
+	fbcon_render_char(col * 9,
+				row * (fbcon_font->height + 3),
+				fbcon_get_fg(vt->cells[row][col].attr),
 				fbcon_get_bg(vt->cells[row][col].attr),
 				(char) vt->cells[row][col].ch);
 	vterm_draw_cursor(vt, row, col);
@@ -212,7 +212,7 @@ void vterm_invalidate_cell(vterm_t *vt, int row, int col)
 
 void vterm_invalidate_cursor(vterm_t *vt)
 {
-	fbcon_vc_t *vc = &fbcon_all_vcs[MINOR(vt->device_id)];	
+	fbcon_vc_t *vc = &fbcon_all_vcs[MINOR(vt->device_id)];
 	if (MINOR(vt->device_id) != fbcon_current_vc){
 		vc->cursor_x = vt->ccol;
 		vc->cursor_y = vt->crow;
@@ -262,27 +262,26 @@ void fbcon_vterm_init()
 	fbcon_bpline = fbcon_bppix * fbcon_width;
         for (vc_id = 0;vc_id < 9;vc_id++){
                 fbcon_all_vcs[vc_id].cursor_x = 0;
-                fbcon_all_vcs[vc_id].cursor_y = 0;  
+                fbcon_all_vcs[vc_id].cursor_y = 0;
                 fbcon_all_vcs[vc_id].page_id = vc_id;
         }
 	vterm_tty_setup("fbcon", 2, 9, fbcon_height / (fbcon_font->height + 3), fbcon_width / 9);
 	fbcon_switch_vc(0);
-	earlycon_switchover();
 }
 
-inline uint32_t fbcon_mkrgb(uint32_t r, uint32_t g, uint32_t b)
+uint32_t fbcon_mkrgb(uint32_t r, uint32_t g, uint32_t b)
 {
 	return 0xFF000000 | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF) ;
 }
 
-inline uint32_t fbcon_mix(uint32_t a, uint32_t b, uint32_t m)
+uint32_t fbcon_mix(uint32_t a, uint32_t b, uint32_t m)
 {
 	uint32_t s = m & 0xFF;
-	uint32_t o = 255 - s;	
+	uint32_t o = 255 - s;
 	return (((a & 0xFF) * s) + ((b & 0xFF) * o))/255;
 }
 
-inline uint32_t fbcon_mixpix(uint32_t p1, uint32_t p2, uint32_t m)
+uint32_t fbcon_mixpix(uint32_t p1, uint32_t p2, uint32_t m)
 {
 	uint32_t r, g ,b,r1, g1 ,b1;
 	r = (p2 >> 16) & 0xff;
@@ -297,7 +296,7 @@ inline uint32_t fbcon_mixpix(uint32_t p1, uint32_t p2, uint32_t m)
 	return fbcon_mkrgb(r,g,b);
 }
 
-inline uint32_t fbcon_blurpix(int x, int y)
+uint32_t fbcon_blurpix(int x, int y)
 {
 	int rgb;
 	int s = fbcon_width * y + x;

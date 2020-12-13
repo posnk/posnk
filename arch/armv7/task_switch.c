@@ -1,4 +1,4 @@
-/* 
+/*
  * arch/armv7/task_switch.c
  *
  * Part of P-OS kernel.
@@ -17,104 +17,242 @@
 #include "kernel/process.h"
 #include "kernel/earlycon.h"
 #include "arch/armv7/cswitch.h"
+#include "arch/armv7/taskctx.h"
 #include "arch/armv7/cpu.h"
+#include "arch/armv7/exception.h"
 
 typedef struct {uint32_t entries[10];} taskstate;
 
-void scheduler_switch_task(scheduler_task_t *new_task)
+/**
+ * Switch to new task
+ * @param new_task	The target of the switch
+ */
+void scheduler_switch_task( scheduler_task_t *new_task )
 {
-	uint32_t	*new_sp, *old_sp;
-	
-	/* Havent switched yet */
-	if (scheduler_current_task->arch_state == 0) {
-		scheduler_current_task->arch_state = 
-			heapmm_alloc( sizeof(uint32_t) );
-		//earlycon_printf("arch_s:%x\n",scheduler_current_task->arch_state);
-	}
-	old_sp = (uint32_t *) scheduler_current_task->arch_state;
-	new_sp = (uint32_t *) 		    new_task->arch_state;
-	
-	if (new_task != scheduler_current_task) {
-	
-		/* Preset kernel state to new task */
-		paging_active_dir = new_task->page_directory;	
+	int s;
+	armv7_task_context_t *tctx;
+	armv7_task_context_t *nctx;
+
+	/* Stop interrupts, we are going to do critical stuff here */
+	/* Said cricical stuff will only be CPU local so this solution should work*/
+	s = disable();
+
+	tctx = scheduler_current_task->arch_state;
+	nctx = new_task->arch_state;
+
+	/* If we want to switch to the current task, NOP */
+	if ( new_task != scheduler_current_task ) {
+
+		if ( new_task->process && (TASK_GLOBAL & ~new_task->flags) ) {
+
+			/* Switch page tables */
+			paging_switch_dir( new_task->process->page_directory );
+		}
+
+		/* Update task pointer */
 		scheduler_current_task = new_task;
-		/* Now its time for some magic */
-		armv7_context_switch( 	*new_sp, 
-					paging_get_physical_address(
-						new_task->page_directory->content
-					),
-					old_sp
-				    );
+
+		/* Switch kernel threads */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Waddress-of-packed-member"
+		armv7_context_switch( nctx->kern_sp, &tctx->kern_sp );
+#pragma GCC diagnostic pop
+
 	}
-	/* Back from switch */
+
+	/* Restore interrupt flag */
+	restore( s );
 }
 
-int process_push_user_data(void *data, size_t size)
+void process_load_exec_state( void *entry, void *stack ) {
+
+	armv7_task_context_t *tctx = scheduler_current_task->arch_state;
+
+	assert( tctx != NULL );
+
+	memset( tctx->user_regs, 0, sizeof tctx->user_regs );
+	tctx->user_sp       = (uint32_t) stack;
+	tctx->user_pc       = (uint32_t) entry;
+	tctx->user_sr       = PSR_MODE_USR;
+	tctx->user_lr       = 0;
+}
+
+
+/**
+ * Initialize arch state for the task
+ */
+int scheduler_init_task(scheduler_task_t *new_task) {
+
+	/* Allocate CPU state struct */
+	new_task->arch_state = heapmm_alloc(sizeof(armv7_task_context_t));
+	if (!new_task->arch_state)
+		return ENOMEM;
+
+	/* Clear it */
+	memset(new_task->arch_state, 0, sizeof(armv7_task_context_t));
+
+	return 0;
+}
+
+size_t scheduler_get_state_size( ) {
+	return sizeof(armv7_task_context_t);
+}
+
+int disable() {
+	int s;
+	s = armv7_get_mode() & (PSR_IRQ_MASK | PSR_FIQ_MASK);
+	armv7_disable_ints();
+	return s == 0;
+}
+
+int enable() {
+	int s;
+	s = armv7_get_mode() & (PSR_IRQ_MASK | PSR_FIQ_MASK);
+	armv7_disable_ints();
+	return s == 0;
+}
+
+void restore(int s) {
+	if ( s )
+		armv7_enable_ints();
+	else
+		armv7_disable_ints();
+}
+
+/**
+ * Allocate a new kernel stack
+ */
+int scheduler_alloc_kstack(scheduler_task_t *task)
 {
-	int not_implemented = 0;
-	assert ( not_implemented );
-	return 1;
+	physaddr_t frame;
+	void *guard;
+
+	/* Allocate the stack from the kheap */
+	task->kernel_stack = heapmm_alloc_alligned
+		( CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE * 2
+		, PHYSMM_PAGE_SIZE );
+	if ( !task->kernel_stack )
+		return -1;
+
+	/* Unmap and release the lowest frame of the stack */
+	/* to guard against stack overflow */
+	guard = task->kernel_stack;
+	frame = paging_get_physical_address( guard );
+	printf( CON_TRACE, "Setting up stack overflow guard: %x to %x",
+	        guard, guard + PHYSMM_PAGE_SIZE );
+	paging_unmap( guard );
+	physmm_free_frame( frame );
+
+	guard = task->kernel_stack + CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
+	frame = paging_get_physical_address( guard );
+	printf( CON_TRACE, "Setting up stack underflow guard: %x to %x",
+	        guard, guard + PHYSMM_PAGE_SIZE );
+	paging_unmap( guard );
+	physmm_free_frame( frame );
+
+	return 0;
 }
 
-int scheduler_invoke_signal_handler(int signal)
+/**
+ * Free the kernel stack used by a task
+ */
+int scheduler_free_kstack(scheduler_task_t *task)
 {
-	/*
-	volatile uint32_t esp, ebp, eip;
-	void *stack_copy;
-	asm ("cli;");
-	asm volatile("mov %%esp, %0" : "=r"(esp));
-	asm volatile("mov %%ebp, %0" : "=r"(ebp)); 
-	eip = i386_get_return_address();
-	if (eip == 0xFFFDCAFE) {
-		/ * Back from switch * /
-		debugcon_printf("Back from sighandler\n");
-		return 1;
-	}
-	/ * Havent switched yet * /
-	stack_copy = heapmm_alloc(0x4000);
-	memcpy(stack_copy, (void *)0xBFFFD000, 0x4000);
-	scheduler_current_task->isr_stack_pre_signal = stack_copy;
-	scheduler_current_task->isr_stack_pre_signal_size = 0x4000;
-	if (scheduler_current_task->arch_state == 0) {
-		scheduler_current_task->arch_state = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
-		memset(scheduler_current_task->arch_state, 0, sizeof(i386_task_context_t));
-	}
-	if (scheduler_current_task->arch_state_pre_signal == 0) {
-		scheduler_current_task->arch_state_pre_signal = (i386_task_context_t *) heapmm_alloc(sizeof(i386_task_context_t));
-	}
-	((i386_task_context_t *)scheduler_current_task->arch_state_pre_signal)->eip = eip;
-	((i386_task_context_t *)scheduler_current_task->arch_state_pre_signal)->esp = esp;
-	((i386_task_context_t *)scheduler_current_task->arch_state_pre_signal)->ebp = ebp;
-	((i386_task_context_t *)scheduler_current_task->arch_state)->esp = 0xBFBFFFFF; //TODO: Use current user stack pointer
-	debugcon_printf("Pushing signal number\n");
-	if (!process_push_user_data(&(signal), 4))
-		return 0;//Parameter: signal number 
-	debugcon_printf("Pushing return addr\n");
-	if (!process_push_user_data(&(scheduler_current_task->signal_handler_exit_func), 4))
-		return 0;//Return address: sigreturn stub
-	/ * Now its time for some magic * /
-	debugcon_printf("Calling installed signal handler\n");
-	i386_protection_user_call((uint32_t) scheduler_current_task->signal_handler_table[signal], ((i386_task_context_t *)scheduler_current_task->arch_state)->esp);
-	return 1;
-	*/
+	physaddr_t frame;
+
+	/* Allocate a frame to restore the guard area */
+	frame = physmm_alloc_frame();
+	if ( frame == PHYSMM_NO_FRAME )
+		return -1;
+
+	/* Map the guard area back into RAM */
+	paging_map( task->kernel_stack, frame, PAGING_PAGE_FLAG_RW );
+
+	/* Allocate a frame to restore the guard area */
+	frame = physmm_alloc_frame();
+	if ( frame == PHYSMM_NO_FRAME )
+		return -1;
+
+	/* Map the guard area back into RAM */
+	paging_map(
+		task->kernel_stack + CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE
+		,frame, PAGING_PAGE_FLAG_RW );
+
+	/* Free the heap space used by the stack */
+	heapmm_free( task->kernel_stack,
+				CONFIG_KERNEL_STACK_SIZE + 2 * PHYSMM_PAGE_SIZE);
+	return 0;
 }
 
-void scheduler_exsig(){
-	/*
-	memcpy((void *)0xBFFFD000, scheduler_current_task->isr_stack_pre_signal, 0x4000);
-	heapmm_free(scheduler_current_task->isr_stack_pre_signal, scheduler_current_task->isr_stack_pre_signal_size);
-	heapmm_free(scheduler_current_task->arch_state, sizeof(i386_task_context_t));
-	scheduler_current_task->arch_state = scheduler_current_task->arch_state_pre_signal;
-	scheduler_current_task->arch_state_pre_signal = 0;
-	scheduler_current_task->isr_stack_pre_signal = 0;
-	scheduler_current_task->isr_stack_pre_signal_size = 0;
-	i386_fpu_on_cs();
-	i386_do_context_switch(((i386_task_context_t *)scheduler_current_task->arch_state)->esp,
-				((i386_task_context_t *)scheduler_current_task->arch_state)->ebp,
-				((i386_task_context_t *)scheduler_current_task->arch_state)->eip,
-				paging_get_physical_address(scheduler_current_task->page_directory->content));	
-	*/
+/**
+ * Free the architecture specific parts of a task
+ */
+int scheduler_free_task(scheduler_task_t *new_task) {
+
+	/* Free the architecture specific state */
+	heapmm_free(new_task->arch_state,sizeof(armv7_task_context_t));
+
+	/* Release its stack */
+	if ( new_task->kernel_stack )
+		return scheduler_free_kstack( new_task );
+
+	return 0;
+}
+
+/**
+ * Spawn a new task
+ */
+int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int s )
+{
+	armv7_task_context_t *tctx;
+	armv7_task_context_t *nctx;
+	int s2;
+	armv7_cswitch_stack_t *nstate;
+
+	/* Allocate its kernel stack */
+	if ( scheduler_alloc_kstack( new_task ) )
+		return ENOMEM;
+
+	/* Disable interrupts and get interrupt flag */
+	s2 = disable();
+
+	nctx = new_task->arch_state;
+	tctx = scheduler_current_task->arch_state;
+
+	/* Copy process state for userland fork */
+	memcpy( nctx, tctx, sizeof( armv7_task_context_t ) );
+
+	/* Set up kernel state */
+	nctx->kern_sp = ( uint32_t ) new_task->kernel_stack;
+	nctx->kern_sp += CONFIG_KERNEL_STACK_SIZE + PHYSMM_PAGE_SIZE;
+
+	/* Push the new task state */
+	nctx->kern_sp -= sizeof( armv7_cswitch_stack_t );
+	nstate = ( armv7_cswitch_stack_t * ) nctx->kern_sp;
+	memset( nstate, 0, sizeof( armv7_cswitch_stack_t ) );
+
+	/* Set the return address */
+	/* Creates a fake user-to-kernel interrupt entry that solely invokes
+	 * i386_user_exit before using iret to return to ring 3 in the newly
+	 * created process.
+	 *
+	 * This is done to simplify logic elsewhere in the kernel: because of
+	 * this code, all kernel<>user mode code can assume there is an
+	 * interrupt entry structure at top of stack.
+	 */
+	nstate->lr = (uint32_t) armv7_spawnentry;
+
+	/* Load the arguments for the entry shim */
+	nstate->regs[0] = (uint32_t) callee; /* R4 */
+	nstate->regs[1] = (uint32_t) arg;    /* R5 */
+	nstate->regs[2] = (uint32_t) s;      /* R6 */
+
+	restore(s2);
+
+	/* Switch to new process ? */
+
+	return 0;
+
 }
 
 void debug_attach_task(process_info_t *new_task)
@@ -124,39 +262,4 @@ void debug_attach_task(process_info_t *new_task)
 
 
 }
-
-void scheduler_exit_signal_handler()
-{
-	/*
-	uintptr_t init_sp, new_sp;
-	init_sp = new_sp = 0xBFFFC7FF;
-	*((int *)init_sp) = 0;
-	debugcon_printf("newstk:%x\n",init_sp);
-	asm ("movl %%esp, %%eax; movl %1, %%esp; call scheduler_exsig;movl %%eax, %%esp;"
-	     :"=r"(init_sp)        / * output * /
-	     :"r"(new_sp)         / * input * /
-	     :"%eax"         / * clobbered register * /
-	     );
-	*/
-}
-
-uint64_t forkstack[256];
-
-int scheduler_fork_to(scheduler_task_t *new_task)
-{
-	uint32_t is_parent;
-	/* Initialize process state */	
-	new_task->arch_state = heapmm_alloc( sizeof(uint32_t) );
-
-	/* Fork the context */
-	is_parent = armv7_context_fork( (uint32_t *) new_task->arch_state,
-					&new_task->page_directory,(uint32_t) &(forkstack[255]) ); 
-
-	/* If we are the child, return 0 */
-	if (!is_parent)	
-		return 0;
-	
-	return 1;
-}
-
 

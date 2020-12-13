@@ -16,6 +16,7 @@
 armv7_call_kern:
 	mov	r4,	r0
 	mov	r0,	r2
+	cpsid	aif,	#PSR_MODE_SVC
 	mov	sp,	r1
 	mov	pc,	r4
 	b	.

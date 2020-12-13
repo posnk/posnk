@@ -14,7 +14,8 @@
 #include "kernel/paging.h"
 #include "kernel/heapmm.h"
 #include "kernel/physmm.h"
-#include "kernel/earlycon.h"
+#define  CON_SRC "armv7_paging"
+#include "kernel/console.h"
 #include "config.h"
 #include <string.h>
 #include <assert.h>
@@ -40,7 +41,7 @@ physaddr_t armv7_paging_alloc_l2( void )
 {
 	physaddr_t level2_pa;
 
-	level2_pa = armv7_level_2_alloc_base + 
+	level2_pa = armv7_level_2_alloc_base +
 		ARMV7_L2_TABLE_SIZE * sizeof(uint32_t) * armv7_level_2_count++;
 	if (armv7_level_2_count == 4) {
 		armv7_level_2_count = 0;
@@ -95,20 +96,20 @@ void armv7_paging_init(armv7_bootargs_t *args)
 				ARMV7_L1_PAGE_TABLE_PA(spec_l2_pa);
 
 	/* Set up page table entry for special level 2 table */
-	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_L2SPEC)] = 
+	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_L2SPEC)] =
 				ARMV7_L2_TYPE_PAGE4 |
-				ARMV7_L2_PAGE4_PA(spec_l2_pa) | 
-				ARMV7_L2_PAGE4_TEX(0) | 
+				ARMV7_L2_PAGE4_PA(spec_l2_pa) |
+				ARMV7_L2_PAGE4_TEX(0) |
 				ARMV7_L2_PAGE_AP(1);
 
 	/* Set up page table entries for initial page dir */
 	km_va_end = ARMV7_INITIAL_L1 + ARMV7_L1_TABLE_SIZE * sizeof(uint32_t);
 	km_pa = level1_pa;
 	for (km_va = ARMV7_INITIAL_L1; km_va < km_va_end; km_va += 4096) {
-		armv7_special_l2->pages[ARMV7_TO_L2_IDX(km_va)] = 
+		armv7_special_l2->pages[ARMV7_TO_L2_IDX(km_va)] =
 					ARMV7_L2_TYPE_PAGE4 |
-					ARMV7_L2_PAGE4_PA(km_pa) | 
-					ARMV7_L2_PAGE4_TEX(0) | 
+					ARMV7_L2_PAGE4_PA(km_pa) |
+					ARMV7_L2_PAGE4_TEX(0) |
 					ARMV7_L2_PAGE_AP(1);
 		km_pa+=4096;
 	}
@@ -120,27 +121,29 @@ void armv7_paging_init(armv7_bootargs_t *args)
 		km_va_end = km_va + args->ba_kmap[kmap_ctr].ba_kmap_sz;
 		km_pa 	  = args->ba_kmap[kmap_ctr].ba_kmap_pa;
 		for (; km_va < km_va_end; km_va += 4096) {
-			
+
 			l1_entry = level1_va->entries[ARMV7_TO_L1_IDX(km_va)];
-			
+
 			if ((l1_entry & 3) == ARMV7_L1_TYPE_FAULT) {
 				level2_pa = armv7_paging_alloc_l2();
-				memset( (void *) level2_pa, 
-						0, 
-						ARMV7_L2_TABLE_SIZE * 
+				memset( (void *) level2_pa,
+						0,
+						ARMV7_L2_TABLE_SIZE *
 						sizeof(uint32_t));
 				l1_entry = ARMV7_L1_TYPE_PAGE_TABLE |
 					ARMV7_L1_PAGE_TABLE_PA(level2_pa);
-				level1_va->entries[ARMV7_TO_L1_IDX(km_va)] = 
+				level1_va->entries[ARMV7_TO_L1_IDX(km_va)] =
 					l1_entry;
 			}
 			level2_pa = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
 			level2_va = (armv7_l2_table_t *) level2_pa;
-			level2_va->pages[ARMV7_TO_L2_IDX(km_va)] = 
+			level2_va->pages[ARMV7_TO_L2_IDX(km_va)] =
 				ARMV7_L2_TYPE_PAGE4 |
-				ARMV7_L2_PAGE4_PA(km_pa) | 
-				ARMV7_L2_PAGE4_TEX(0) | 
+				ARMV7_L2_PAGE4_PA(km_pa) |
+				ARMV7_L2_PAGE4_TEX(0) |
 				ARMV7_L2_PAGE_AP(ARMV7_AP_PRIV_RW_USR_NA);
+
+
 			km_pa += 4096;
 		}
 
@@ -148,7 +151,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 
  	/* Identity map all DEVICES (for now) */
 	for (km_pa = 0x40000000; km_pa < 0x50000000; km_pa += ARMV7_SECTION_SIZE) {
-		level1_va->entries[ARMV7_TO_L1_IDX(km_pa)] = 
+		level1_va->entries[ARMV7_TO_L1_IDX(km_pa)] =
 				ARMV7_L1_SECTION_PA(km_pa) 	|
 				ARMV7_L1_SECTION_AP(ARMV7_AP_PRIV_RW_USR_NA)  |
 				ARMV7_L1_TYPE_SECTION;
@@ -167,7 +170,7 @@ void armv7_paging_init(armv7_bootargs_t *args)
 
 	paging_active_dir = &armv7_page_dir_initial;
 	paging_active_dir->content = level1_va;
-	llist_add_end(&armv7_l1_table_list, 
+	llist_add_end(&armv7_l1_table_list,
 				(llist_t *) &armv7_l1_table_list_initial);
 	armv7_l1_table_list_initial.dir = &armv7_page_dir_initial;
 }
@@ -178,10 +181,10 @@ armv7_l2_table_t *armv7_paging_map_l2( physaddr_t table_pa )
 
 	table_va |= ARMV7_PAGE_L2TABLE;
 
-	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_L2TABLE)] = 
+	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_L2TABLE)] =
 				ARMV7_L2_TYPE_PAGE4 |
-				ARMV7_L2_PAGE4_PA(table_pa) | 
-				ARMV7_L2_PAGE4_TEX(0) | 
+				ARMV7_L2_PAGE4_PA(table_pa) |
+				ARMV7_L2_PAGE4_TEX(0) |
 				ARMV7_L2_PAGE_AP(1);
 
 	armv7_mmu_flush_tlb_single(ARMV7_PAGE_L2TABLE);
@@ -194,10 +197,10 @@ void *armv7_paging_map_phys( physaddr_t pa )
 	uintptr_t va = pa & PHYSMM_PAGE_ADDRESS_MASK;
 
 	va |= ARMV7_PAGE_PHYSWIN;
-	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWIN)] = 
+	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWIN)] =
 				ARMV7_L2_TYPE_PAGE4 |
-				ARMV7_L2_PAGE4_PA(pa) | 
-				ARMV7_L2_PAGE4_TEX(0) | 
+				ARMV7_L2_PAGE4_PA(pa) |
+				ARMV7_L2_PAGE4_TEX(0) |
 				ARMV7_L2_PAGE_AP(1);
 
 	armv7_mmu_flush_tlb_single(ARMV7_PAGE_PHYSWIN);
@@ -210,10 +213,10 @@ void *armv7_paging_map_phys2( physaddr_t pa )
 	uintptr_t va = pa & PHYSMM_PAGE_ADDRESS_MASK;
 
 	va |= ARMV7_PAGE_PHYSWI2;
-	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWI2)] = 
+	armv7_special_l2->pages[ARMV7_TO_L2_IDX(ARMV7_PAGE_PHYSWI2)] =
 				ARMV7_L2_TYPE_PAGE4 |
-				ARMV7_L2_PAGE4_PA(pa) | 
-				ARMV7_L2_PAGE4_TEX(0) | 
+				ARMV7_L2_PAGE4_PA(pa) |
+				ARMV7_L2_PAGE4_TEX(0) |
 				ARMV7_L2_PAGE_AP(1);
 
 	armv7_mmu_flush_tlb_single(ARMV7_PAGE_PHYSWI2);
@@ -233,23 +236,23 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 	physaddr_t 		 pa;
 	uintptr_t		 va, va_ctr;
 	armv7_l1_table_t 	*l1;
-	
+
 	/* Allocate a 16K, 16K Alligned chunk of address space */
-	l1 = heapmm_alloc_alligned( 	sizeof( armv7_l1_table_t ), 
+	l1 = heapmm_alloc_alligned( 	sizeof( armv7_l1_table_t ),
 					sizeof( armv7_l1_table_t ) );
 
 	/* Pass out of memory error up the call chain */
-	if (l1 == NULL) 
+	if (l1 == NULL)
 		return NULL;
 
 	/* Get the address */
 	va = (uintptr_t) l1;
 
 	/* Check if the block is physically contiguous */
-	for (	va_ctr = va; 
-		va_ctr < (va + sizeof( armv7_l1_table_t )); 
+	for (	va_ctr = va;
+		va_ctr < (va + sizeof( armv7_l1_table_t ));
 		va_ctr += 4096) {
-		
+
 		/* If this is the first page, get the physical address */
 		if ( va_ctr == va ) {
 			pa = paging_get_physical_address ( (void *) va_ctr );
@@ -262,11 +265,11 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 			cont = 0;
 			break;
 		}
-		
+
 		pa += 4096;
 
 	}
-	
+
 	/* If the heap manager gave us a contiguous chunk of memory, accept it*/
 	if ( cont )
 		return l1;
@@ -274,11 +277,11 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 	/* If not, unmap the pages and remap them from a contiguous quad frame*/
 
 	/* Unmap the pages */
-	for (	va_ctr = va; 
-		va_ctr < (va + sizeof( armv7_l1_table_t )); 
+	for (	va_ctr = va;
+		va_ctr < (va + sizeof( armv7_l1_table_t ));
 		va_ctr += 4096) {
 
-		/* Get the frame to unmap */		
+		/* Get the frame to unmap */
 		pa = paging_get_physical_address ( (void *) va_ctr );
 
 		/* Unmap the page */
@@ -286,7 +289,7 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 
 		/* Free the frame */
 		physmm_free_frame( pa );
-		
+
 	}
 
 	/* Allocate a quadframe */
@@ -299,8 +302,8 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 	}
 
 	/* Remap the pages */
-	for (	va_ctr = va; 
-		va_ctr < (va + sizeof( armv7_l1_table_t )); 
+	for (	va_ctr = va;
+		va_ctr < (va + sizeof( armv7_l1_table_t ));
 		va_ctr += 4096) {
 
 		/* Map the page */
@@ -308,7 +311,7 @@ armv7_l1_table_t *armv7_paging_alloc_l1( void )
 
 		/* Get the next of the four frames */
 		pa += 4096;
-		
+
 	}
 
 	/* Return the now contiguous level 1 table */
@@ -350,18 +353,18 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 
 	/* Allocate the clone frame */
 	clone_pa = armv7_paging_alloc_l2();
-	
+
 	/* Temporarily map it into LEVEL2WIN */
 	clone_va = armv7_paging_map_l2( clone_pa );
-	
+
 	/* Temporarily map original into PHYSWIN */
 	orig_va = armv7_paging_map_phys( orig_pa );
-	
+
 	/* Copy level2 table over */
 	memcpy( clone_va, orig_va, sizeof(armv7_l2_table_t) );
-	
+
 	/* NOTE: At this point we do not need orig anymore, so PHYSWIN is free*/
-	
+
 	/* Iterate over entries */
 	for (page_ctr = 0; page_ctr < ARMV7_L2_TABLE_SIZE; page_ctr++) {
 		/* Get the entry */
@@ -383,18 +386,18 @@ physaddr_t armv7_clone_l2( physaddr_t orig_pa )
 						paging_handle_out_of_memory();
 						dst_pa = physmm_alloc_frame();
 					}
-					///earlycon_printf("cloning frame:0x%x to 0x%x\n", src_pa, dst_pa);	
+					///earlycon_printf("cloning frame:0x%x to 0x%x\n", src_pa, dst_pa);
 					/* Map the source and dest */
 					src_va = armv7_paging_map_phys(src_pa);
 					dst_va = armv7_paging_map_phys2(dst_pa);
-					
+
 					/* Source & Dest on PHYSWIN & PHYSWI2 */
 					memcpy(dst_va, src_va,PHYSMM_PAGE_SIZE);
-		
+
 					/* Update the entry */
 					l2_entry &=
 						 ~ARMV7_L2_PAGE4_PA(0xFFFFFFFF);
-					l2_entry|=ARMV7_L2_PAGE4_PA(dst_pa);				
+					l2_entry|=ARMV7_L2_PAGE4_PA(dst_pa);
 
 				}
 				break;
@@ -456,13 +459,13 @@ page_dir_t	*paging_create_dir()
 	nlevel1_va->entries[4095] = clevel1_va->entries[4095];
 
 	page_dir = heapmm_alloc(sizeof(page_dir));
-	
+
 	assert(page_dir != NULL);
-	
+
 	page_dir->content = nlevel1_va;
-	
+
 	list_entry = heapmm_alloc(sizeof(armv7_l1_table_list_t));
-	
+
 	list_entry->dir = page_dir;
 
 	llist_add_end(&armv7_l1_table_list, (llist_t *)list_entry);
@@ -470,13 +473,14 @@ page_dir_t	*paging_create_dir()
 	return page_dir;
 }
 
-void		paging_free_dir(page_dir_t *dir)
+void		paging_free_dir(__attribute__((unused)) page_dir_t *dir)
 {
+	//TODO: Implement
 }
 
 void armv7_paging_map(	armv7_l1_table_t *level1_va,
-			void * virt_addr, 
-			physaddr_t phys_addr, 
+			void * virt_addr,
+			physaddr_t phys_addr,
 			page_flags_t flags)
 {
 	uint32_t l1_entry, ap, ng;
@@ -492,8 +496,8 @@ void armv7_paging_map(	armv7_l1_table_t *level1_va,
 
 		level2_va = armv7_paging_map_l2(level2_pa);
 
-		memset( (void *) level2_va, 
-			0, 
+		memset( (void *) level2_va,
+			0,
 			ARMV7_L2_TABLE_SIZE * sizeof(uint32_t));
 
 		l1_entry = 	ARMV7_L1_TYPE_PAGE_TABLE |
@@ -506,22 +510,22 @@ void armv7_paging_map(	armv7_l1_table_t *level1_va,
 	}
 
 	if (flags & PAGING_PAGE_FLAG_USER) {
-		if (flags & PAGING_PAGE_FLAG_RW) 
+		if (flags & PAGING_PAGE_FLAG_RW)
 			ap = ARMV7_AP_PRIV_RW_USR_RW;
 		else
 			ap = ARMV7_AP_PRIV_RW_USR_RO;
 		ng = ARMV7_L2_PAGE_NOT_GLOBAL;
 	} else {
-		if (flags & PAGING_PAGE_FLAG_RW) 
+		if (flags & PAGING_PAGE_FLAG_RW)
 			ap = ARMV7_AP_PRIV_RW_USR_NA;
 		else
 			ap = ARMV7_AP_PRIV_RW_USR_NA;//Consistency with i386
 		ng = 0;
 		//TODO: Check if this is correct
-						
+
 	}
 
-	level2_va->pages[ARMV7_TO_L2_IDX(va)] = 
+	level2_va->pages[ARMV7_TO_L2_IDX(va)] =
 		ARMV7_L2_TYPE_PAGE4 |
 		ARMV7_L2_PAGE_AP(ap) |
 		ng |
@@ -539,7 +543,7 @@ int paging_map_iterator (llist_t *node, void *param)
 	armv7_l1_table_t *dir = (armv7_l1_table_t *)
 				((armv7_l1_table_list_t *) node)->dir->content;
 	armv7_map_param_t *p = (armv7_map_param_t *) param;
-	
+
 	armv7_paging_map( dir, p->va, p->pa, p->fl );
 
 	return 0;
@@ -558,11 +562,11 @@ void paging_map(void * virt_addr, physaddr_t phys_addr, page_flags_t flags)
 		param.va = virt_addr;
 		param.pa = phys_addr;
 		param.fl = flags;
-		llist_iterate_select(	&armv7_l1_table_list, 
-					&paging_map_iterator, 
-					(void *) &param);									
+		llist_iterate_select(	&armv7_l1_table_list,
+					&paging_map_iterator,
+					(void *) &param);
 	}
-	
+
 	armv7_mmu_flush_tlb_single( (uint32_t) virt_addr );
 }
 
@@ -582,33 +586,33 @@ void paging_unmap(void * virt_addr)
 
 	l1_idx = ARMV7_TO_L1_IDX( virt_addr );
 	l2_idx = ARMV7_TO_L2_IDX( virt_addr );
-	
+
 	l1_entry = level1_va->entries[l1_idx];
 
-	assert ( (l1_entry & 3) != ARMV7_L1_TYPE_FAULT );	
+	assert ( (l1_entry & 3) != ARMV7_L1_TYPE_FAULT );
 
 	level2_pa = ARMV7_L1_PAGE_TABLE_PA( l1_entry );
-	
+
 	level2_va = armv7_paging_map_l2( level2_pa );
-	
+
 	l2_entry = level2_va->pages[ l2_idx ];
 	l2_entry = (l2_entry & ~3) | ARMV7_L2_TYPE_FAULT;
 	level2_va->pages[ l2_idx ] = l2_entry;
-	
+
 	armv7_mmu_flush_tlb_single( (uint32_t) virt_addr );
 }
 
-page_tag_t	paging_get_tag(void * virt_addr)
+page_tag_t	paging_get_tag( __attribute__((unused)) const void * virt_addr)
 {
 	return (page_tag_t) 0;
 }
 
 
-void		paging_tag(void * virt_addr, page_tag_t tag)
+void		paging_tag(__attribute__((unused)) void * virt_addr, __attribute__((unused)) page_tag_t tag)
 {
 }
 
-uintptr_t	paging_get_physical_address(void * virt_addr)
+uintptr_t	paging_get_physical_address(const void * virt_addr)
 {
 	uint32_t par, l1_idx,l1_entry,l2_idx,l2_entry;
 	uintptr_t va;
@@ -635,9 +639,39 @@ uintptr_t	paging_get_physical_address(void * virt_addr)
 		l2_entry = level2_va->pages[l2_idx];
 		if ((l2_entry & 3) == ARMV7_L2_TYPE_FAULT)
 			return 0;
-	
+
 		par = ARMV7_L2_PAGE4_PA(l2_entry);
 	}
+	pa  = ARMV7_PAR_PA(par);
+	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
+//	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);
+	return pa;
+}
+uintptr_t	paging_get_physical_address_other(page_dir_t *dir,const void * virt_addr)
+{
+	uint32_t par, l1_idx,l1_entry,l2_idx,l2_entry;
+	uintptr_t va;
+	uintptr_t pa;
+	armv7_l1_table_t *l1_table;
+	armv7_l2_table_t *level2_va;
+	physaddr_t level2_pa;
+	va = (uintptr_t) virt_addr;
+
+	l1_table = (armv7_l1_table_t *) dir->content;
+	l1_idx = ARMV7_TO_L1_IDX(virt_addr);
+	l2_idx = ARMV7_TO_L2_IDX(virt_addr);
+	l1_entry = l1_table->entries[l1_idx];
+	if ((l1_entry & 3) == ARMV7_L1_TYPE_FAULT)
+		return 0;
+	level2_pa = ARMV7_L1_PAGE_TABLE_PA(l1_entry);
+	assert ( (l1_entry & 3) == ARMV7_L1_TYPE_PAGE_TABLE);
+	level2_va = armv7_paging_map_l2(level2_pa);
+	l2_entry = level2_va->pages[l2_idx];
+	if ((l2_entry & 3) == ARMV7_L2_TYPE_FAULT)
+		return 0;
+
+	par = ARMV7_L2_PAGE4_PA(l2_entry);
+
 	pa  = ARMV7_PAR_PA(par);
 	pa |= va & PHYSMM_PAGE_ADDRESS_MASK;
 //	earlycon_printf("par: 0x%x, pa: 0x%x\n", par, pa);

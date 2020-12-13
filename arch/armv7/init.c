@@ -34,9 +34,13 @@
 #include "arch/armv7/cpu.h"
 void sercon_init();
 
-char *armv7_cmdline[128];
+char armv7_cmdline[128];
 uint32_t armv7_initrd_start_pa;
 uint32_t armv7_initrd_end_pa;
+
+void stack_switch_call( void * pc, uint32_t sp );
+void armv7_enable_ints();
+void armv7_paging_init(armv7_bootargs_t *args);
 
 void halt()
 {
@@ -49,26 +53,23 @@ void wait_int() {
 
 void armv7_initrd_extr(physaddr_t start, physaddr_t end)
 {
-	physaddr_t pa, pac;
-	uintptr_t va, vap;
-	
-	pa = start & ~0xFFF;
-	va = 0x80000000;
-	vap = va;
-	for (pac = pa; pac < end; pac+=4096) {
-		paging_map ((void *)vap, pac, PAGING_PAGE_FLAG_RW );
-		vap+=4096;
+	physaddr_t mod_size;
+	physmap_t *map;
+
+	mod_size = end - start;
+	if ( start == end )
+		return;
+
+	map = paging_map_phys_range( start, mod_size,
+		                             PAGING_PAGE_FLAG_RW );
+
+	if ( !map ) {
+		printf( CON_ERROR, "could not map initrd" );
 	}
 
-	vap = va + (start & 0xFFF);
+	//TODO: Unify Module handling across architectures
 
-	tar_extract_mem((void *)vap);
-
-	for (pac = pa; pac< end; pac+=4096)  {
-		paging_unmap((void *)va);
-		physmm_free_frame(pac);
-		va += 4096;
-	}
+	ramblk_register( 0, (aoff_t) mod_size, (void*) map->virt );
 
 }
 
@@ -76,15 +77,16 @@ void armv7_init( armv7_bootargs_t *bootargs )
 {
 	size_t initial_heap = 4096;
 	char * rootfs_type = "ramfs";
-	sercon_init();
+	earlycon_init();
+	con_set_log_level( CON_TRACE );
 
 	earlycon_printf("posnk kernel built on %s %s\n", __DATE__, __TIME__);
 
 	earlycon_printf("bootargs: loading boot arguments from 0x%x\n", bootargs);
 
-	strcpy(armv7_cmdline, bootargs->ba_cmd);
-	
-	armv7_initrd_start_pa = bootargs->ba_initrd_pa;	
+	strcpy(armv7_cmdline, (char *)bootargs->ba_cmd);
+
+	armv7_initrd_start_pa = bootargs->ba_initrd_pa;
 	armv7_initrd_end_pa = bootargs->ba_initrd_pa + bootargs->ba_initrd_sz;
 
 	earlycon_printf("bootargs: command line = %s\n", armv7_cmdline);
@@ -95,6 +97,9 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	armv7_exception_init();
 	earlycon_printf("physmm: initializing...\n");
 
+	earlycon_printf("physmm: %i MB available before freeing loaded\n",
+			physmm_count_free() / 0x100000);
+
 	physmm_free_range((physaddr_t)bootargs->ba_pm_bitmap,
 			 ((physaddr_t)bootargs->ba_pm_bitmap)
 				 + 32768 * sizeof(uint32_t));
@@ -103,8 +108,9 @@ void armv7_init( armv7_bootargs_t *bootargs )
 			physmm_count_free() / 0x100000);
 
 	earlycon_printf("paging: initializing virtual memory support\n");
+	printf(CON_DEBUG, "kmap count: %i", bootargs->ba_kmap_count );
 	armv7_paging_init(bootargs);
-	
+
 	earlycon_printf("kdbg: initializing kernel debugger\n");
 	kdbg_initialize();
 	earlycon_printf("heapmm: initializing kernel heap manager\n");
@@ -115,10 +121,10 @@ void armv7_init( armv7_bootargs_t *bootargs )
 	}
 	heapmm_init((void *) 0xd0000000, initial_heap);
 
-	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(), 
+	paging_map((void *) 0xBFFFF000, physmm_alloc_frame(),
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
 
-	paging_map((void *) 0xBFFFE000, physmm_alloc_frame(), 
+	paging_map((void *) 0xBFFFE000, physmm_alloc_frame(),
 			PAGING_PAGE_FLAG_RW | PAGING_PAGE_FLAG_USER);
 	stack_switch_call(kmain, 0xBFFFFFF0);
 

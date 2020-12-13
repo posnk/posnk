@@ -45,7 +45,7 @@ $(OBJS_N_I386): $(BUILDDIR)%.o: %.s
 	$(NASM) $(NASMFLAGS) $< -o $@
 
 $(OBJS_A_I386): $(BUILDDIR)%.o: %.S
-	$(GAS) $(GASFLAGS) -c $< -o $@
+	$(GAS) $(GASFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJS_ULN_I386): $(BUILDDIR)%.o: %.s
 	$(NASM) $(ULNASMFLAGS) $< -o $@

@@ -11,7 +11,7 @@
 
 #ifndef __ARCH_ARMV7_EXCEPTION_H__
 #define __ARCH_ARMV7_EXCEPTION_H__
-
+#include <stdint.h>
 /**
  * The structure used for interpreting the stack contents left by the exception
  * entry routine
@@ -30,5 +30,9 @@ typedef struct a7est armv7_exception_state_t;
 void armv7_exception_init();
 
 void armv7_exception_handler(uint32_t vec_id, armv7_exception_state_t *state);
+
+void armv7_enable_ints();
+void armv7_disable_ints();
+uint32_t armv7_get_mode();
 
 #endif

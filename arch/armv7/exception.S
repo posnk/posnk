@@ -15,6 +15,7 @@
 
 .global armv7_handler_table
 .global armv7_chandler_table
+.global armv7_fork_exit
 
 .balign	32
 
@@ -35,7 +36,7 @@ armv7_vector_table:
 
 	srsdb	#PSR_MODE_SVC!		@ push {LR, SPSR} > SVC_STACK
 	cpsid	aif, #PSR_MODE_SVC	@ switch to SVC mode
-	
+
 	@ We are in supervisor mode now
 
 	push	{r0-r12, lr}		@ save lr too, need keep stack aligned
@@ -43,20 +44,20 @@ armv7_vector_table:
 	sub	sp,	sp,	#8	@ manually decrement the stack ptr
 	stmia	sp,	{sp, lr}^	@ push {sp_usr, lr_usr} > SVC_STACK
 
-#STACK HERE:
-#44		user_cpsr (SPSR)
-#40		 exc_lr ( return instruction )
-#3C		 svc_lr		 
-#08		 r0-12 [13 u32]
-#04		user_lr
-#00	SP -> 	user_sp
-		
+@STACK HERE:
+@44		user_cpsr (SPSR)
+@40		 exc_lr ( return instruction )
+@3C		 svc_lr
+@08		 r0-12 [13 u32]
+@04		user_lr
+@00	SP -> 	user_sp
+
 
 .endm
 
 .macro armv7_restore_userstate
 
-	ldmia	sp,	{sp, lr}^	@ push {sp_usr, lr_usr} > SVC_STACK
+	ldmia	sp,	{sp, lr}^	@ load {sp_usr, lr_usr} from SVC_STACK
 	add	sp,	sp,	#8	@ manually increment the stack ptr
 
 	pop	{r0-r12, lr}		@ restore lr too
@@ -149,6 +150,15 @@ armv7_exst_fiq:
 armv7_exhl_fiq_ptr:
 	.word	armv7_exception_handler
 
+armv7_fork_exit:
+	sub     sp,      sp,     #72
+	mov	r0,  	 sp
+	ldr     r4,      armv7_user_exit_ptr
+	blx     r4
+	armv7_restore_userstate
+
+armv7_user_exit_ptr:
+	.word armv7_user_exit
 armv7_handler_table:
 armv7_exhl_res:
 	.word	armv7_exst_res

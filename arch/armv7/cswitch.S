@@ -18,13 +18,14 @@
 .global	armv7_context_switch
 .global armv7_context_fork
 .global armv7_context_postfork
+.global armv7_spawnentry
 
 
-#void armv7_context_switch( uint32_t sp, uint32_t pdir_phys, uint32_t *sp_out );
+#void armv7_context_switch( uint32_t sp, uint32_t *sp_out );
 armv7_context_switch:
 
 	# Push callee saved state
-	push { r4-r12, lr } 
+	push { r4-r12, lr }
 
 	# Store stackpointer in output parameter
 	str	sp,	[r2]
@@ -32,18 +33,7 @@ armv7_context_switch:
 	# All state is now preserved, switch to new stack
 	mov	sp,	r0
 
-	# Switch page directories: 
-	# THESE FUNCTIONS MUST NOT USE STACK
-
-	mov	r0,	r1
-	bl	armv7_mmu_set_ttbr0
-	bl	armv7_mmu_set_ttbr1
-	
-	# Page directory switched, flush TLBs
-
-	bl	armv7_mmu_flush_tlb
-
-	# We are now using the correct page directory and stack
+	# We are now using the correct stack
 
 	# Restore state
 
@@ -58,29 +48,47 @@ armv7_context_switch:
 
 .ltorg
 
+# armv7_spawnentry
+#    R4 callee address
+#    R5 callee arg0
+#    R6 interrupt status
+armv7_spawnentry:
+	# Load r0 with callee argument
+	mov	r0,	r5
+
+	# Jump to callee
+	blx r4
+
+	# Return to user mode
+	blx	armv7_fork_exit
+here:
+	b here
+
+.ltorg
+
 #uint32_t armv7_context_fork( uint32_t *sp_out, page_directory_t **pdir_out );
 armv7_context_fork:
 
 	# Push callee saved state
-	push { r4-r12, lr } 
+	push { r4-r12, lr }
 
 	# Store stackpointer in output parameter
 	str	sp,	[r0]
-	
+
 	# Call address space cloning routine
 	mov	r4,	r1
-	
+
 	# pdir * paging_create_dir (void);
 	blx	paging_create_dir
-	
+
 	# Store new page directory pointer
 	str	r0,	[r4]
-	
+
 	# Restore state
 	pop { r4-r12, lr }
-	
+
 	# Return flag value so we know we are the parent
 	mov	r0,	#1
-	
+
 	# Return to where we came from
 	bx	lr
