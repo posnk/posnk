@@ -26,6 +26,9 @@
 #include "kernel/device.h"
 #include "fs/mbr.h"
 
+#define ATA_READ_TIMEOUT  ( 10000000UL )
+#define ATA_WRITE_TIMEOUT ( 10000000UL )
+
 int ata_bus_number_counter = 0;
 int ata_interrupt_enabled = 0;
 int ata_global_inited = 0;
@@ -152,7 +155,7 @@ int ata_irq_handler(__attribute__((__unused__)) irq_id_t irq_id, void *context)
 //		debugcon_printf("dstatus : 0x%x", device->int_status);
 		if (!(bstatus & ATA_BM_STATUS_FLAG_IREQ)){
 			return 0;//Forward interrupt to next handlers
-}
+		}
 		ata_write_port(device, ATA_BUSMASTER_STATUS_PORT, ATA_BM_STATUS_FLAG_IREQ);
 //		if (!(bstatus& ATA_BM_STATUS_FLAG_DMAGO))
 //			ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, 0);
@@ -321,7 +324,7 @@ void ata_setup_lba_transfer(ata_device_t *device, int drive, ata_lba_t lba, uint
 int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, uint16_t count)
 {
 	size_t byte_count = count * 512;
-	int status,dstatus;
+	int status,dstatus,ws;
 	int dma = (device->drives[drive].capabilities & ATA_IDENT_CAP_FLAG_DMA) && ata_interrupt_enabled;
 	semaphore_down(device->lock);
 
@@ -375,7 +378,8 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 			dstatus = ata_read_port(device, ATA_STATUS_PORT );
 			if ( ~dstatus & ATA_STATUS_FLAG_BSY )
 				break;
-			if (semaphore_tdown(device->int_wait, 3)) {
+			ws = semaphore_ndown( device->int_wait, ATA_READ_TIMEOUT, SCHED_WAITF_TIMEOUT );
+			if ( ws ) {
 				printf(CON_ERROR,"device %i:%i DMA read timeout", device->bus_number, drive);
 				status = ata_read_port(device, ATA_BUSMASTER_STATUS_PORT );
 //				debugcon_printf("mstatus : 0x%x", status);
@@ -411,7 +415,7 @@ int ata_read(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, ui
 
 		if (ata_interrupt_enabled) {
 
-			if (semaphore_tdown(device->int_wait, 3)) {
+			if (semaphore_ndown( device->int_wait, ATA_READ_TIMEOUT, SCHED_WAITF_TIMEOUT )) {
 				device->int_status = ata_read_port(device, ATA_STATUS_PORT);
 				printf(CON_WARN, "device %i:%i PIO read int timeout", device->bus_number, drive);
 				if ( device->int_status & ATA_STATUS_FLAG_BSY ) {
@@ -488,7 +492,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 		ata_prd_list[0].end_of_list = ATA_PRD_END_OF_LIST;
 		ata_write_port(device, ATA_BUSMASTER_COMMAND_PORT, ATA_BM_CMD_FLAG_DMA_ENABLE);
 		ata_do_wait(device);
-		if (semaphore_tdown(device->int_wait, 3)) {
+		if ( semaphore_ndown( device->int_wait, ATA_WRITE_TIMEOUT, SCHED_WAITF_TIMEOUT ) ) {
 			printf(CON_ERROR, "device %i:%i DMA write timeout", device->bus_number, drive);
 			semaphore_up(device->lock);
 			return 0;
