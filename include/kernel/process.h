@@ -176,9 +176,9 @@ int procvmm_copy_memory_map (llist_t *target);
 
 int procvmm_resize_map(void *start, size_t newsize);
 
-int procvmm_mmap_anon(void *start, size_t size, int flags, char *name);
+int procvmm_mmap_anon(void *start, size_t size, int flags, const char *name);
 
-int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, char *name);
+int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, const char *name);
 
 void procvmm_unmmap_other(process_info_t *task, process_mmap_t *region);
 

@@ -258,7 +258,7 @@ int procvmm_resize_map(void *start, size_t newsize)
 	return 0;
 }
 
-int procvmm_mmap_anon(void *start, size_t size, int flags, char *name)
+int procvmm_mmap_anon(void *start, size_t size, int flags, const char *name)
 {
 	process_mmap_t *region;
 	uintptr_t in_page = ((uintptr_t) start) & PHYSMM_PAGE_ADDRESS_MASK;
@@ -289,7 +289,7 @@ int procvmm_mmap_anon(void *start, size_t size, int flags, char *name)
 	return 0;
 }
 
-int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, char *name)
+int procvmm_mmap_file(void *start, size_t size, inode_t* file, off_t offset, off_t file_sz, int flags, const char *name)
 {
 	uintptr_t in_page;
 	process_mmap_t *region;

@@ -40,7 +40,6 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 // #include <sys/cdefs.h>
 #define __unreachable()  __builtin_unreachable()
-#include <sys/param.h>
 #include <sys/types.h>
 #include <stdarg.h>
 #define CON_SRC ("ubsan")
@@ -51,7 +50,7 @@
 #define PRIu32 "u"
 #define PRIu64 "llu"
 #define PRId64 "lld"
-#include <sys/param.h>
+
 #include <assert.h>
 #include <signal.h>
 #include <stdarg.h>
