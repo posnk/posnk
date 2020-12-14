@@ -158,7 +158,7 @@ ssize_t _sys_msgrcv(
 
 			/* Wait on the receive semaphore */
 			s = semaphore_ndown(
-				/* semaphore */ info->rwaitsem,
+				/* semaphore */ &info->rwaitsem,
 				/* timeout   */ 0,
 				/* flags     */ SCHED_WAITF_INTR );
 			if ( s != SCHED_WAIT_OK ) {
@@ -252,7 +252,7 @@ ssize_t _sys_msgrcv(
 	 * check for availability before proceeding. If the count is too high it
 	 * will simply be decremented until there is actually room to store another
 	 * message */
-	semaphore_up(info->swaitsem);
+	semaphore_up(&info->swaitsem);
 
 	/* Return the number of bytes read, minus the message id. */
 	return (ssize_t) (readsz - sizeof(long int));
@@ -321,7 +321,7 @@ int _sys_msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg)
 			 * is received from the queue. This may be non-zero even if there
 			 * is no room, hence the loop around this part of the logic. */
 			s = semaphore_ndown(
-				/* semaphore */ info->swaitsem,
+				/* semaphore */ &info->swaitsem,
 				/* timeout   */ 0,
 				/* flags     */ SCHED_WAITF_INTR );
 			if ( s != SCHED_WAIT_OK )  {
@@ -401,7 +401,7 @@ int _sys_msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg)
 	llist_add_end(&(info->msgs), (llist_t *) msg);
 
 	/* Wake up any processes blocking on the queue */
-	semaphore_up(info->rwaitsem);
+	semaphore_up(&info->rwaitsem);
 
 	return 0;
 
@@ -494,8 +494,8 @@ int _sys_msgctl(int id, int cmd, void *buf)
 				 * providing a near infinite amount of counts to the send and
 				 * receive semaphores. The last process to hold a reference
 				 * deletes the MQ. */
-				semaphore_add(info->rwaitsem, 999999);
-				semaphore_add(info->swaitsem, 999999);
+				semaphore_add(&info->rwaitsem, 999999);
+				semaphore_add(&info->swaitsem, 999999);
 			}
 
 			/* Report succesful completion */
@@ -524,9 +524,7 @@ void msg_do_delete(msg_info_t *info) {
 		heapmm_free(m, sizeof(sysv_msg_t));
 	}
 
-	/* Free the semaphores and MQ metadata */
-	semaphore_free(info->rwaitsem);
-	semaphore_free(info->swaitsem);
+	/* Free the MQ metadata */
 	heapmm_free(info, sizeof(msg_info_t));
 }
 
@@ -564,27 +562,14 @@ int _sys_msgget(key_t key, int flags)
 		}
 
 		/* ...the receive semaphore,... */
-		info->rwaitsem = semaphore_alloc();
-		if (!info->rwaitsem) {
-			heapmm_free(info, sizeof(msg_info_t));
-			syscall_errno = ENOMEM;
-			return -1;
-		}
+		semaphore_init(&info->rwaitsem);
 
 		/* ...and, the sender semaphore. */
-		info->swaitsem = semaphore_alloc();
-		if (!info->swaitsem) {
-			semaphore_free(info->rwaitsem);
-			heapmm_free(info, sizeof(msg_info_t));
-			syscall_errno = ENOMEM;
-			return -1;
-		}
+		semaphore_init(&info->swaitsem);
 
 		/* Try to allocate a MQ ID */
 		info->id = msg_alloc_id();
 		if (info->id == -1) {
-			semaphore_free(info->rwaitsem);
-			semaphore_free(info->swaitsem);
 			heapmm_free(info, sizeof(msg_info_t));
 			return -1;
 		}

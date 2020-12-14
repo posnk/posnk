@@ -26,8 +26,8 @@ struct pipe_info {
 	void		*buffer;
 	aoff_t		 write_ptr;
 	aoff_t		 read_ptr;
-	semaphore_t	*write_lock;
-	semaphore_t	*read_lock;
+	semaphore_t	 write_lock;
+	semaphore_t	 read_lock;
 };
 
 pipe_info_t *pipe_create(void);

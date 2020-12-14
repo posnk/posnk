@@ -322,14 +322,14 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Check if we are allowed to read from this stream */
 	if ((ptr->info->flags & O_ACCMODE) == O_WRONLY) {
 		/* We are not */
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Signal the error, EINVAL because directories can not
                  * be opened write only */
@@ -354,14 +354,14 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Release the lock on the stream */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return -1 to signal insuccessful read */
 				return -1;
 			}
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Return the amount of bytes read */
 			return (ssize_t) read_count;
@@ -369,7 +369,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 			/* Stream is a pipe endpoint */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* We can't get dirents from a pipe */
 			syscall_errno = ENOTDIR;
@@ -378,7 +378,7 @@ ssize_t _sys_getdents(int fd, void * buffer, size_t count)
 			/* Invalid stream type */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Tell the application about the error */
 			syscall_errno = EINVAL;
@@ -415,14 +415,14 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Check if we are allowed to read from this stream */
 	if ((ptr->info->flags & O_ACCMODE) == O_WRONLY) {
 		/* We are not */
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Signal the error */
 		syscall_errno = EBADF;
@@ -439,7 +439,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 			syscall_errno = ENOTDIR;
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Return -1 to signal insuccessful read */
 			return -1;
@@ -460,7 +460,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 				syscall_errno = st;
 
 				/* Release the lock on the stream  */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return error */
 				if (read_count == 0)
@@ -470,7 +470,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 			}
 
 			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 
 			/* Return the amo unt of bytes read */
@@ -480,7 +480,7 @@ ssize_t _sys_readdir(int fd, void * buffer, size_t buflen)
 			/* Invalid stream type */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Tell the application about the error */
 			syscall_errno = EINVAL;
@@ -526,14 +526,14 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Check if we are allowed to read from this stream */
 	if ((ptr->info->flags & O_ACCMODE) == O_WRONLY) {
 		/* We are not */
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Signal the error */
 		syscall_errno = EBADF;
@@ -557,14 +557,14 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Release the lock on the stream */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return -1 to signal insuccessful read */
 				return -1;
 			}
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Return the amount of bytes read */
 			return (ssize_t) read_count;
@@ -576,7 +576,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			st = pipe_read(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
 
 			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Check for errors */
 			if (st) {
@@ -606,7 +606,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Release the lock on the stream  */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return error */
 				return -1;
@@ -614,7 +614,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			}
 
 			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 
 			/* Return the amount of bytes read */
@@ -624,7 +624,7 @@ ssize_t _sys_read(int fd, void * buffer, size_t count)
 			/* Invalid stream type */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Tell the application about the error */
 			syscall_errno = EINVAL;
@@ -674,14 +674,14 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Check if we are allowed to write to this stream */
 	if ((ptr->info->flags & O_ACCMODE) == O_RDONLY) {
 		/* We are not */
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Signal the error */
 		syscall_errno = EBADF;
@@ -712,14 +712,14 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Release the lock on the stream */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return -1 to signal insuccessful read */
 				return -1;
 			}
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Return the amount of bytes written */
 			return (ssize_t) read_count;
@@ -730,7 +730,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 			st = pipe_write(ptr->info->pipe, buffer, count, &read_count, ptr->info->flags & O_NONBLOCK);
 
 			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Check for errors */
 			if (st) {
@@ -764,7 +764,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 				syscall_errno = st;
 
 				/* Release the lock on the stream  */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 				/* Return error */
 				return -1;
@@ -772,7 +772,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 			}
 
 			/* Release the lock on the stream  */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 
 			/* Return the amount of bytes written */
@@ -782,7 +782,7 @@ ssize_t _sys_write(int fd, const void * buffer, size_t count)
 			/* Invalid stream type */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Tell the application about the error */
 			syscall_errno = EINVAL;
@@ -822,14 +822,14 @@ int _sys_ftruncate(int fd, off_t size)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Check if we are allowed to write to this stream */
 	if ((ptr->info->flags & O_ACCMODE) == O_RDONLY) {
 		/* We are not */
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Signal the error */
 		syscall_errno = EBADF;
@@ -843,7 +843,7 @@ int _sys_ftruncate(int fd, off_t size)
 			/* Stream is a pipe or is otherwisely invalid */
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* We can't ftruncate a pipe */
 			syscall_errno = EINVAL;
@@ -859,7 +859,7 @@ int _sys_ftruncate(int fd, off_t size)
 				if ( ptr->info->ops->truncate == NULL ) {
 
 					/* Release the lock on the stream  */
-					semaphore_up(ptr->info->lock);
+					semaphore_up(&ptr->info->lock);
 
 					return EINVAL;
 				}
@@ -874,7 +874,7 @@ int _sys_ftruncate(int fd, off_t size)
 					syscall_errno = st;
 
 					/* Release the lock on the stream  */
-					semaphore_up(ptr->info->lock);
+					semaphore_up(&ptr->info->lock);
 
 					/* Return error */
 					return -1;
@@ -882,7 +882,7 @@ int _sys_ftruncate(int fd, off_t size)
 				}
 
 				/* Release the lock on the stream  */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 
 
 				/* Return the amount of bytes read */
@@ -901,12 +901,12 @@ int _sys_ftruncate(int fd, off_t size)
 				syscall_errno = st;
 
 				/* Release the lock on the stream */
-				semaphore_up(ptr->info->lock);
+				semaphore_up(&ptr->info->lock);
 				return -1;
 			}
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 			return 0;
 
 	}
@@ -963,12 +963,12 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 			}
 
 			/* Acquire a lock on the stream */
-			semaphore_down(ptr->info->lock);
+			semaphore_down(&ptr->info->lock);
 
 			st = ptr->info->ops->lseek( ptr->info, offset, whence, &out );
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			syscall_errno = st;
 
@@ -987,7 +987,7 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 	}
 
 	/* Acquire a lock on the stream */
-	semaphore_down(ptr->info->lock);
+	semaphore_down(&ptr->info->lock);
 
 	/* Store the old offset so we can recover from errors */
 	old_offset = ptr->info->offset;
@@ -1052,7 +1052,7 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 		ptr->info->offset = old_offset;
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		/* Report error */
 		syscall_errno = EINVAL;
@@ -1068,7 +1068,7 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 			ptr->info->offset = old_offset;
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			/* Report error */
 			syscall_errno = st;
@@ -1080,7 +1080,7 @@ off_t _sys_lseek(int fd, off_t offset, int whence)
 	}
 
 	/* Release the lock on the stream */
-	semaphore_up(ptr->info->lock);
+	semaphore_up(&ptr->info->lock);
 
 	/* Return the new offset */
 	return (off_t) ptr->info->offset;
@@ -1123,12 +1123,12 @@ int _sys_fchdir(int fd)
 			}
 
 			/* Acquire a lock on the stream */
-			semaphore_down(ptr->info->lock);
+			semaphore_down(&ptr->info->lock);
 
 			status = ptr->info->ops->chdir( ptr->info );
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			syscall_errno = status;
 
@@ -1194,12 +1194,12 @@ int _sys_fstat(int fd, struct stat* buf)
 			}
 
 			/* Acquire a lock on the stream */
-			semaphore_down(ptr->info->lock);
+			semaphore_down(&ptr->info->lock);
 
 			status = ptr->info->ops->stat( ptr->info, buf );
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			syscall_errno = status;
 
@@ -1269,12 +1269,12 @@ int _sys_fchmod(int fd, mode_t mode)
 			}
 
 			/* Acquire a lock on the stream */
-			semaphore_down(ptr->info->lock);
+			semaphore_down(&ptr->info->lock);
 
 			status = ptr->info->ops->chmod( ptr->info, mode );
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			syscall_errno = status;
 
@@ -1347,12 +1347,12 @@ int _sys_fchown(int fd, uid_t owner, gid_t group)
 			}
 
 			/* Acquire a lock on the stream */
-			semaphore_down(ptr->info->lock);
+			semaphore_down(&ptr->info->lock);
 
 			status = ptr->info->ops->chown( ptr->info, owner, group );
 
 			/* Release the lock on the stream */
-			semaphore_up(ptr->info->lock);
+			semaphore_up(&ptr->info->lock);
 
 			syscall_errno = status;
 
@@ -1496,12 +1496,12 @@ int _sys_ioctl(int fd, int cmd, int arg)
 		}
 
 		/* Acquire a lock on the stream */
-		semaphore_down(ptr->info->lock);
+		semaphore_down(&ptr->info->lock);
 
 		status = ptr->info->ops->ioctl( ptr->info, cmd, (void *) arg, &result );
 
 		/* Release the lock on the stream */
-		semaphore_up(ptr->info->lock);
+		semaphore_up(&ptr->info->lock);
 
 		syscall_errno = status;
 
@@ -1734,13 +1734,7 @@ int _sys_pipe2(int pipefd[2], int flags)
 	llist_create( &info_read->poll );
 
 	/* Allocate the write endpoint lock */
-	info_read->lock = semaphore_alloc();
-
-	/* Check for errors */
-	if (!(info_read->lock)) {
-		syscall_errno = ENOMEM;
-		goto _bailout_6;
-	}
+	semaphore_init(&info_read->lock);
 
 	/* Fill out the write endpoint info fields */
 	info_write->pipe = pipe;
@@ -1751,21 +1745,15 @@ int _sys_pipe2(int pipefd[2], int flags)
 	llist_create( &info_read->poll );
 
 	/* Allocate the read endpoint lock */
-	info_write->lock = semaphore_alloc();
-
-	/* Check for errors */
-	if (!(info_write->lock)) {
-		syscall_errno = ENOMEM;
-		goto _bailout_7;
-	}
+	semaphore_init(&info_write->lock);
 
 	/* Signal the opening of the endpoints to the pipe driver */
 	pipe_open_read(pipe);
 	pipe_open_write(pipe);
 
 	/* Release the lock on the endpoints */
-	semaphore_up(info_read->lock);
-	semaphore_up(info_write->lock);
+	semaphore_up(&info_read->lock);
+	semaphore_up(&info_write->lock);
 
 	/* Add the endpoints to the fd table */
 	llist_add_end(current_process->fd_table, (llist_t *) ptr_read);
@@ -1775,8 +1763,6 @@ int _sys_pipe2(int pipefd[2], int flags)
 	return 0;
 
 	/* Clean up on error */
-_bailout_7:
-	semaphore_free(info_read->lock);
 _bailout_6:
 	heapmm_free(ptr_write, sizeof(stream_ptr_t));
 _bailout_5:
@@ -1974,17 +1960,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	llist_create( &info->poll );
 
 	/* Allocate stream lock */
-	info->lock = semaphore_alloc();
-
-	/* Check for errors */
-	if (!(info->lock)) {
-		heapmm_free(ptr, sizeof(stream_ptr_t));
-		heapmm_free(info, sizeof(stream_info_t));
-		vfs_inode_release(inode);
-		stream_free_fd(fd);
-		syscall_errno = ENOMEM;
-		return -1;
-	}
+	semaphore_init(&info->lock);
 
 	/* Is the close on exec flag set? */
 	if (flags & O_CLOEXEC) {
@@ -1996,7 +1972,6 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	if ((flags & O_TRUNC) && S_ISREG(info->inode->mode)) {
 		st = vfs_truncate(inode, 0);
 		if (st) {
-			semaphore_free(info->lock);
 			heapmm_free(ptr, sizeof(stream_ptr_t));
 			heapmm_free(info, sizeof(stream_info_t));
 			vfs_inode_release(inode);
@@ -2034,7 +2009,7 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	inode->open_count++;
 
 	/* Release lock on the stream info */
-	semaphore_up(info->lock);
+	semaphore_up(&info->lock);
 
 	/* Add the pointer to the fd table */
 	llist_add_end(current_process->fd_table, (llist_t *) ptr);
@@ -2053,7 +2028,6 @@ int _sys_open(const char *path, int flags, mode_t mode)
 	/* Check for errors */
 	if (st) {
 		llist_unlink((llist_t *) ptr);
-		semaphore_free(info->lock);
 		heapmm_free(ptr, sizeof(stream_ptr_t));
 		heapmm_free(info, sizeof(stream_info_t));
 		vfs_inode_release(inode);
@@ -2131,7 +2105,7 @@ int _sys_close_int(process_info_t *process, int fd)
 		/* Close the stream */
 
 		/* Acquire a lock on the stream */
-		semaphore_down(ptr->info->lock);
+		semaphore_down(&ptr->info->lock);
 
 		/* Handle the various stream types */
 		switch (ptr->info->type) {
@@ -2197,7 +2171,6 @@ int _sys_close_int(process_info_t *process, int fd)
 		}
 
 		/* Free the memory for the stream info */
-		semaphore_free(ptr->info->lock);
 		heapmm_free(ptr->info, sizeof(stream_info_t));
 
 	}
@@ -2217,7 +2190,7 @@ int _sys_close_int(process_info_t *process, int fd)
  */
 int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 {
-	semaphore_t	*sem;
+	semaphore_t	sem;
 	stream_poll_t *poll;
 	stream_ptr_t *ptr;
 	nfds_t i, nsel = 0;
@@ -2225,12 +2198,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 
 	assert( fds != NULL );
 
-	sem = semaphore_alloc();
-
-	if ( sem == NULL ) {
-		syscall_errno = ENOMEM;
-		goto fail_semalloc;
-	}
+	semaphore_init(&sem);
 
 	poll = heapmm_alloc( sizeof( stream_poll_t ) * nfds );
 
@@ -2242,7 +2210,7 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	for ( i = 0; i < nfds; i++ ) {
 
 		/* Link in the semaphore */
-		poll[i].notify = sem;
+		poll[i].notify = &sem;
 
 		/* Copy over values from arguments */
 		poll[i].events  = fds[i].events;
@@ -2278,12 +2246,12 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	if ( (timeout != 0) && !nsel ) {
 		if ( timeout > 0 )
 			waitstat = semaphore_ndown(
-			              sem,
+			              &sem,
 			              timeout,
 			              SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
 		else if ( timeout < 0 )
 			waitstat = semaphore_ndown(
-			              sem,
+			              &sem,
 			              0,
 			              SCHED_WAITF_INTR ) - 1;
 	}
@@ -2305,7 +2273,6 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	}
 
 	heapmm_free( poll, sizeof( stream_poll_t ) );
-	semaphore_free( sem );
 
 	if ( waitstat == -2 && !nsel ) {
 		syscall_errno = EINTR;
@@ -2315,8 +2282,6 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	return ( int ) nsel;
 
 fail_pollalloc:
-	semaphore_free( sem );
-fail_semalloc:
 	return -1;
 
 }

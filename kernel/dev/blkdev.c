@@ -84,7 +84,7 @@ int device_block_register(blk_dev_t *driver)
 
 	/* Allocate the minor device lock table */
 	driver->locks =
-		heapmm_alloc(sizeof(semaphore_t *)
+		heapmm_alloc(sizeof(semaphore_t)
 				* driver->minor_count);
 
 	/* Check for errors */
@@ -102,17 +102,15 @@ int device_block_register(blk_dev_t *driver)
 	/* Allocate the minor device locks */
 	for (minor = 0; minor < driver->minor_count; minor++) {
 		/* Allocate the lock */
-		driver->locks[minor] = semaphore_alloc();
+		semaphore_init(&driver->locks[minor]);
 
 		/* Check for errors */
 		if (!driver->caches[minor]) {
-			for (_m = 0; _m < minor; _m++)
-				semaphore_free(driver->locks[_m]);
 			for (_m = 0; _m < driver->minor_count; _m++)
 				blkcache_free(driver->caches[_m]);
 			heapmm_free(
 				driver->locks,
-				sizeof(semaphore_t *)
+				sizeof(semaphore_t)
 					* driver->minor_count);
 			heapmm_free(
 				driver->caches,
@@ -122,7 +120,7 @@ int device_block_register(blk_dev_t *driver)
 		}
 
 		/* Release the lock */
-		semaphore_up(driver->locks[minor]);
+		semaphore_up(&driver->locks[minor]);
 	}
 
 	/* Add the driver to the table */
@@ -397,8 +395,8 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 	in_buffer = 0;
 
 	/* Acquire a lock on the device */
-	semaphore_down(drv->locks[minor]);
-	assert(*(drv->locks[minor]) == 0);
+	semaphore_down(&drv->locks[minor]);
+	assert((drv->locks[minor]) == 0);
 
 	/* Loop while we still have data left to write */
 	while (in_buffer != ((uintptr_t) count)) {
@@ -433,7 +431,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 				/* Check for errors */
 				if (rv) {
 					/* Release the lock on this device */
-					semaphore_up(drv->locks[minor]);
+					semaphore_up(&drv->locks[minor]);
 
 					/* Pass the error to the caller */
 					return rv;
@@ -461,7 +459,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 				/* Check for errors */
 				if (rv) {
 					/* Release the lock on this device */
-					semaphore_up(drv->locks[minor]);
+					semaphore_up(&drv->locks[minor]);
 					return rv;
 				}
 
@@ -473,7 +471,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 			/* Check whether the cache ran out of memory */
 			if (entry == BLKCACHE_ENOMEM) {
 				/* Release the lock on this device */
-				semaphore_up(drv->locks[minor]);
+				semaphore_up(&drv->locks[minor]);
 
 				/* Pass the error to the caller */
 				return ENOMEM;
@@ -501,7 +499,7 @@ int device_block_write(dev_t device, aoff_t file_offset, const void * buffer, ao
 	}
 
 	/* Release the lock on this device */
-	semaphore_up(drv->locks[minor]);
+	semaphore_up(&drv->locks[minor]);
 
 	return 0;
 
@@ -540,8 +538,8 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 	in_buffer = 0;
 
 	/* Acquire a lock on the device */
-	semaphore_down(drv->locks[minor]);
-	assert(*(drv->locks[minor]) == 0);
+	semaphore_down(&drv->locks[minor]);
+	assert((drv->locks[minor]) == 0);
 
 	/* Loop while we still have data left to read */
 	while (in_buffer != ((uintptr_t) count)) {
@@ -571,7 +569,7 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 			/* Check for errors */
 			if (rv) {
 				/* Release the lock on this device */
-				semaphore_up(drv->locks[minor]);
+				semaphore_up(&drv->locks[minor]);
 
 				/* Pass the error to the caller */
 				return rv;
@@ -597,7 +595,7 @@ int device_block_read(dev_t device, aoff_t file_offset, void * buffer, aoff_t co
 	}
 
 	/* Release the lock on this device */
-	semaphore_up(drv->locks[minor]);
+	semaphore_up(&drv->locks[minor]);
 
 	return 0;
 }

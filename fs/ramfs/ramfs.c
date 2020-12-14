@@ -38,7 +38,7 @@ SVFUNC(ramfs_mknod, inode_t *_inode)	//inode -> status
 
 	llist_create(inode->block_list);
 
-	RETURNV;	
+	RETURNV;
 }
 
 SVFUNC(ramfs_rmnod, inode_t *inode)	//inode -> status
@@ -83,8 +83,8 @@ SFUNC(aoff_t, ramfs_readdir, inode_t *_inode, void *_buffer, aoff_t f_offset, ao
 		pos += _block->dir.d_reclen;
 		buffer += _block->dir.d_reclen;
 		current_off += _block->dir.d_reclen;
-	}	
-	RETURN(pos);	
+	}
+	RETURN(pos);
 }
 
 int ramfs_block_search_iterator (llist_t *node, void *param)
@@ -118,9 +118,9 @@ SFUNC(aoff_t, ramfs_read_inode, inode_t *_inode, void *_buffer, aoff_t f_offset,
 		buffer += in_blk_len;
 		if (remaining_length == 0)
 			break;
-	}	
+	}
 	if (remaining_length)
-		THROW(EIO, length - remaining_length);	
+		THROW(EIO, length - remaining_length);
 	else
 		RETURN(length - remaining_length);
 }
@@ -150,7 +150,7 @@ SFUNC(aoff_t, ramfs_write_inode, inode_t *_inode, const void *_buffer, aoff_t f_
 		if (remaining_length == 0) {
 			RETURN(length);
 		}
-	}	
+	}
 	_block = (ramfs_block_t *) heapmm_alloc(sizeof(ramfs_block_t));
 	if (_block == NULL) {
 		THROW(ENOSPC, length - remaining_length);
@@ -191,7 +191,7 @@ SVFUNC(ramfs_trunc_inode, inode_t *_inode, aoff_t size)//buffer, f_offset, lengt
 		//   IF BLOCK EXTENDS PAST EOF TRUNCATE BLOCKS
 		THROWV(EIO);
 	}
-	RETURNV;	
+	RETURNV;
 }
 
 int ramfs_dirent_search_iterator (llist_t *node, void *param)
@@ -200,7 +200,7 @@ int ramfs_dirent_search_iterator (llist_t *node, void *param)
 	return strcmp(dirent->dir.name, (char *) param) == 0;
 }
 
-SFUNC(dirent_t *, ramfs_find_dirent, inode_t *_inode, const char *name )	//dir_inode_id, filename -> dirent_t 
+SFUNC(dirent_t *, ramfs_find_dirent, inode_t *_inode, const char *name )	//dir_inode_id, filename -> dirent_t
 {
 	ramfs_inode_t *inode = (ramfs_inode_t *) _inode;
 	ramfs_dirent_t *dirent = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_dirent_search_iterator, (void *) name);
@@ -234,8 +234,8 @@ SFUNC(inode_t *, ramfs_load_inode, fs_device_t *device, ino_t id)
 		inode->inode.if_dev = 0;
 		inode->inode.uid = 0; //root
 		inode->inode.gid = 0; //root
-		inode->inode.lock = semaphore_alloc();
-		semaphore_up(inode->inode.lock);
+		semaphore_init(&inode->inode.lock);
+		semaphore_up(&inode->inode.lock);
 		ramfs_mknod((inode_t *) inode);
 		ramfs_mkdir((inode_t *) inode);
 		RETURN((inode_t *) inode);
@@ -259,7 +259,7 @@ SVFUNC(ramfs_link, inode_t * _dir, const char *_name, ino_t inode_id)	//dir_inod
 	_dir->size += sizeof(dirent_t);
 
 	llist_add_end(_d_inode->dirent_list, (llist_t *) dirent);
-	RETURNV;	
+	RETURNV;
 }
 
 SVFUNC(ramfs_unlink, inode_t *_inode, const char *name )	//dir_inode_id, filename
@@ -275,7 +275,7 @@ SVFUNC(ramfs_unlink, inode_t *_inode, const char *name )	//dir_inode_id, filenam
 
 uint32_t ramfs_device_ctr = 0x0F00;
 
-SFUNC( aoff_t, ramfs_dir_read_stub, 	
+SFUNC( aoff_t, ramfs_dir_read_stub,
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) void *buffer,
 					__attribute__((__unused__)) aoff_t length )
@@ -283,7 +283,7 @@ SFUNC( aoff_t, ramfs_dir_read_stub,
 	THROW(EISDIR, 0);
 }
 
-SFUNC( aoff_t, ramfs_dir_write_stub, 	
+SFUNC( aoff_t, ramfs_dir_write_stub,
 					__attribute__((__unused__)) stream_info_t *stream,
 					__attribute__((__unused__)) const void *buffer,
 					__attribute__((__unused__)) aoff_t length )
@@ -295,10 +295,10 @@ SVFUNC( ramfs_dir_close, stream_info_t *stream )
 {
 
 	stream->inode->open_count--;
-	
+
 	/* Release the inode */
 	vfs_inode_release(stream->inode);
-	
+
 	/* Release the inode */
 	vfs_dir_cache_release(stream->dirc);
 
@@ -311,16 +311,16 @@ SFUNC( aoff_t, ramfs_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, a
 	ramfs_dirent_t plholder;
 	ramfs_inode_t *inode = (ramfs_inode_t *) stream->inode;
 	aoff_t current_off;
-	
+
 	ramfs_dirent_t *_block;
-	
+
 	current_off = stream->offset;
-	
+
 	if ( current_off > stream->inode->size )
 		RETURN(0);
-	
+
 	_block = (ramfs_dirent_t *) llist_iterate_select(inode->dirent_list, &ramfs_rawdir_search_iterator, (void *) current_off);
-	
+
 	if (_block == NULL) {
 		_block = &plholder;
 		plholder.dir.d_reclen = sizeof(dirent_t);
@@ -329,14 +329,14 @@ SFUNC( aoff_t, ramfs_dir_readdir, stream_info_t *stream, sys_dirent_t *buffer, a
 		plholder.dir.device_id = stream->inode->device_id;
 		plholder.start = current_off % (plholder.dir.d_reclen);
 	}
-	
+
 	if (_block->dir.d_reclen > buflen) {
 		THROW(E2BIG, _block->dir.d_reclen);
 	}
-	
+
 	memcpy(buffer, &_block->dir, _block->dir.d_reclen);
 	stream->offset += _block->dir.d_reclen;
-	
+
 	RETURN(_block->dir.d_reclen);
 }
 
@@ -354,32 +354,32 @@ stream_ops_t ramfs_dir_ops = {
 	.chmod = NULL,
 	.chown = NULL,
 	.truncate = NULL
-	
+
 };
 
 SVFUNC ( ramfs_open_inode, inode_t *inode, void *_stream )
 {
-	
+
 	stream_info_t *stream = _stream;
-	
+
 	if (S_ISDIR(inode->mode)) {
-		
+
 		stream->type		= STREAM_TYPE_EXTERNAL;
 		stream->ops  		= &ramfs_dir_ops;
-		stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR | 
+		stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR |
 								STREAM_IMPL_FILE_CHMOD |
 								STREAM_IMPL_FILE_CHOWN |
 								STREAM_IMPL_FILE_FSTAT |
 								STREAM_IMPL_FILE_LSEEK |
 								STREAM_IMPL_FILE_TRUNC;
-		
+
 	}
-	
+
 	return 0;
-	
+
 }
 
-SFUNC(fs_device_t *, ramfs_mount, 
+SFUNC(fs_device_t *, ramfs_mount,
 			__attribute__((__unused__)) dev_t device,
 			__attribute__((__unused__)) uint32_t flags)
 {
@@ -403,7 +403,7 @@ SFUNC(fs_device_t *, ramfs_mount,
 	dev->inode_id_ctr = 0;
 	dev->device.id = ramfs_device_ctr;
 	dev->device.root_inode_id = 0;
-	dev->device.lock = semaphore_alloc();
+	semaphore_init(&dev->device.lock);
 	dev->device.ops = ramfs_ops;
 	dev->device.inode_size = sizeof(ramfs_inode_t);
 	ramfs_device_ctr = ramfs_device_ctr + 1;

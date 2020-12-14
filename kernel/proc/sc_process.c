@@ -239,7 +239,7 @@ retry:
 					process_absorb_event(ev_info);
 
 				s = semaphore_ndown(
-					/* semaphore */ current_process->child_sema,
+					/* semaphore */ &current_process->child_sema,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 
@@ -253,7 +253,7 @@ retry:
 		if (options & WNOHANG) {
 			while (
 				(!(ev_info = (process_child_event_t *)
-					llist_get_last(current_process->child_events))) ||
+					llist_get_last(&current_process->child_events))) ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
@@ -263,7 +263,7 @@ retry:
 				process_absorb_event(ev_info);
 			}
 		} else {
-			while (  (!(ev_info = (process_child_event_t *) llist_get_last(current_process->child_events)))  ||
+			while (  (!(ev_info = (process_child_event_t *) llist_get_last(&current_process->child_events)))  ||
 				 ((ev_info->event == PROCESS_CHILD_STOPPED) && !(options & WUNTRACED)) ||
 				 (ev_info->event == PROCESS_CHILD_CONTD)) {
 
@@ -271,7 +271,7 @@ retry:
 					process_absorb_event(ev_info);
 
 				s = semaphore_ndown(
-					/* semaphore */ current_process->child_sema,
+					/* semaphore */ &current_process->child_sema,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 
@@ -304,7 +304,7 @@ retry:
 					process_absorb_event(ev_info);
 
 				s = semaphore_ndown(
-					/* semaphore */ current_process->child_sema,
+					/* semaphore */ &current_process->child_sema,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 

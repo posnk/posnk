@@ -137,8 +137,8 @@ struct process_info {
 	/* Process state */
 	page_dir_t	*page_directory;
 
-	semaphore_t	*child_sema;
-	llist_t		*child_events;
+	semaphore_t	 child_sema;
+	llist_t		 child_events;
 };
 
 

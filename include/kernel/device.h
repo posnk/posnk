@@ -2,10 +2,10 @@
  * @file kernel/device.h
  * @brief Device driver interface
  *
- * The device driver interface provides a way for device drivers to expose 
- * functionality to the OS and applications. It implements UNIX special 
- * files as the user API and provides a clean callback-based interface for 
- * the drivers. The driver interface also provides a transparent cache 
+ * The device driver interface provides a way for device drivers to expose
+ * functionality to the OS and applications. It implements UNIX special
+ * files as the user API and provides a clean callback-based interface for
+ * the drivers. The driver interface also provides a transparent cache
  * mechanism to allow fully random access to block devices.
  *
  * Part of P-OS kernel.
@@ -28,10 +28,10 @@
  * @defgroup drvapi Device driver interface
  * @brief Device driver interface
  *
- * The device driver interface provides a way for device drivers to expose 
- * functionality to the OS and applications. It implements UNIX special 
- * files as the user API and provides a clean callback-based interface for 
- * the drivers. The driver interface also provides a transparent cache 
+ * The device driver interface provides a way for device drivers to expose
+ * functionality to the OS and applications. It implements UNIX special
+ * files as the user API and provides a clean callback-based interface for
+ * the drivers. The driver interface also provides a transparent cache
  * mechanism to allow fully random access to block devices.
  * @{
  */
@@ -50,15 +50,15 @@ typedef struct char_dev	char_dev_t;
 
 typedef struct blk_dev	blk_dev_t;
 
-/** 
- * @brief Contains callbacks for all character device driver functions 
+/**
+ * @brief Contains callbacks for all character device driver functions
  * @see tty_ops
  */
 
 typedef struct tty_ops	tty_ops_t;
 
-/** 
- * @brief Contains callbacks for all block device driver functions 
+/**
+ * @brief Contains callbacks for all block device driver functions
  * @see blk_ops
  */
 
@@ -68,27 +68,27 @@ typedef struct blk_ops	blk_ops_t;
  * @brief Describes a character device driver instance
  *
  * Character device drivers use an id that consists of two parts, the
- * major id which selects the driver instance from a table and the minor id 
+ * major id which selects the driver instance from a table and the minor id
  * which selects the device handled by the driver. The driver's interface is
- * exposed through a table of callbacks passed in tty_ops 
+ * exposed through a table of callbacks passed in tty_ops
  */
- 
+
 struct char_dev {
 	/** The driver name */
 	char			 *name;
 	/** The major part of the device id this instance handles */
 	dev_t			  major;
 	/** A pointer to the callback table containing the driver functions */
-	tty_ops_t		 *ops;	
+	tty_ops_t		 *ops;
 };
 
-/** 
- * @brief Contains callbacks for all character device driver functions 
+/**
+ * @brief Contains callbacks for all character device driver functions
  *
  * This is the structure used to pass the callbacks for a character driver to
  * the kernel, it is referenced by char_dev, which describes an instance of a
- * character driver, implementation hints and requirements are given in the 
- * description of each callback, for more info on character driver 
+ * character driver, implementation hints and requirements are given in the
+ * description of each callback, for more info on character driver
  * implementation see char_dev
  */
 
@@ -114,7 +114,7 @@ struct tty_ops {
 	/**
 	 * @brief Hook function called on device close
 	 *
-	 * This function allows a to handle implementation-specific behaviour 
+	 * This function allows a to handle implementation-specific behaviour
 	 * on device close. @n
 	 * @n
          * Minimal implementation: @n
@@ -129,7 +129,7 @@ struct tty_ops {
 
 	/**
 	 * @brief Write data to device
- 	 * 
+ 	 *
 	 * It is not required to implement non-blocking IO in the driver
 	 * @n
          * Minimal implementation: @n
@@ -147,7 +147,7 @@ struct tty_ops {
 
 	/**
 	 * @brief Read data from device
- 	 * 
+ 	 *
 	 * It is not required to implement non-blocking IO in the driver
 	 * @n
          * Minimal implementation: @n
@@ -192,13 +192,13 @@ struct tty_ops {
  * @brief Describes a block device driver instance
  *
  * Character device drivers use an id that consists of two parts, the
- * major id which selects the driver instance from a table and the minor id 
+ * major id which selects the driver instance from a table and the minor id
  * which selects the device handled by the driver. The driver's interface is
  * exposed through a table of callbacks passed in blk_ops. The main difference
  * between block and character drivers is that block drivers cache the data so
  * that IO only takes place in fixed-size chunks. This behaviour is implemented
- * by the kernel's block device layer and drivers only have to provide 
- * functionality to write whole blocks. 
+ * by the kernel's block device layer and drivers only have to provide
+ * functionality to write whole blocks.
  */
 
 struct blk_dev {
@@ -213,20 +213,20 @@ struct blk_dev {
 	/** The amount of blocks the cache should at most contain */
 	int			  cache_size;
 	/** Mutex locks for each minor device */
-	semaphore_t		**locks;
+	semaphore_t		 *locks;
 	/** Block cache instances for each minor device */
 	blkcache_cache_t	**caches;
 	/** A pointer to the callback table containing the driver functions */
-	blk_ops_t		 *ops;	
+	blk_ops_t		 *ops;
 };
 
-/** 
- * @brief Contains callbacks for all block device driver functions 
+/**
+ * @brief Contains callbacks for all block device driver functions
  *
  * This is the structure used to pass the callbacks for a block driver to
  * the kernel, it is referenced by blk_dev, which describes an instance of a
- * block driver, implementation hints and requirements are given in the 
- * description of each callback, for more info on block driver implementation 
+ * block driver, implementation hints and requirements are given in the
+ * description of each callback, for more info on block driver implementation
  * see blk_dev
  */
 
@@ -245,13 +245,13 @@ struct blk_ops {
 	 * @param options The flags passed to open(2)
 	 * @return An error code on failure, 0 on success
 	 */
-		
+
 	int	(*open)		  (dev_t, int, int);			//device, fd, options
 
 	/**
 	 * @brief Hook function called on device close
 	 *
-	 * This function allows a to handle implementation-specific behaviour 
+	 * This function allows a to handle implementation-specific behaviour
 	 * on device close. @n
 	 * @n
          * Minimal implementation: @n
@@ -265,7 +265,7 @@ struct blk_ops {
 
 	/**
 	 * @brief Write block to storage
- 	 * 
+ 	 *
 	 * Writes a single block to storage at the specified linear offset.@n
 	 * @n
          * Minimal implementation: @n
@@ -281,7 +281,7 @@ struct blk_ops {
 
 	/**
 	 * @brief Read block from storage
- 	 * 
+ 	 *
 	 * Reads a single block from storage at the specified linear offset.@n
 	 * @n
          * Full implementation required

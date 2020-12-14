@@ -69,9 +69,6 @@ void vfs_icache_evict( mruc_e_t *entry )
 
 	} else {
 
-
-		semaphore_free( inode->lock );
-
 		heapmm_free( inode, inode->device->inode_size );
 
 	}

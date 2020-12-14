@@ -49,9 +49,7 @@ int semaphore_down(semaphore_t *semaphore);
 /* FOR INTERNAL USE BY SCHEDULER ONLY */
 int  semaphore_try_down(semaphore_t *semaphore);
 
-semaphore_t *semaphore_alloc();
-
-void semaphore_free(semaphore_t *semaphore);
+void semaphore_init(semaphore_t *semaphore);
 
 
 #endif

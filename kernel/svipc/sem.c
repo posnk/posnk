@@ -95,14 +95,14 @@ static inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __
 		return 0;
 	} else if (semop > 0) {
 		info->sems[semnum].semval += semop;
-		semaphore_add(info->nwaitsem, info->sems[semnum].semncnt);
+		semaphore_add(&info->nwaitsem, info->sems[semnum].semncnt);
 		info->sems[semnum].sempid = current_process->pid;
 		return 0;
 	} else if (semop < 0) {
 		assert (info->sems[semnum].semval >= (-semop));
 		info->sems[semnum].semval -= (-semop);
 		if (!info->sems[semnum].semval)
-			semaphore_add(info->zwaitsem, info->sems[semnum].semzcnt);
+			semaphore_add(&info->zwaitsem, info->sems[semnum].semzcnt);
 		info->sems[semnum].sempid = current_process->pid;
 		return 0;
 	}
@@ -153,7 +153,7 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 			if (waitz) {
 				info->sems[nblock].semzcnt++;
 				s = semaphore_ndown(
-					/* semaphore */ info->zwaitsem,
+					/* semaphore */ &info->zwaitsem,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 				if ( s != SCHED_WAIT_OK ) {
@@ -168,7 +168,7 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 			} else {
 				info->sems[nblock].semncnt++;
 				s = semaphore_ndown(
-					/* semaphore */ info->nwaitsem,
+					/* semaphore */ &info->nwaitsem,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 				if ( s != SCHED_WAIT_OK ) {
@@ -326,8 +326,8 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 			if (!info->refs) {
 				sem_do_delete(info);
 			} else {
-				semaphore_add(info->zwaitsem, 999999);
-				semaphore_add(info->nwaitsem, 999999);
+				semaphore_add(&info->zwaitsem, 999999);
+				semaphore_add(&info->nwaitsem, 999999);
 			}
 			return 0;
 		default:
@@ -338,8 +338,6 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 
 void sem_do_delete(sem_info_t *info) {
 	llist_unlink((llist_t *) info);
-	semaphore_free(info->zwaitsem);
-	semaphore_free(info->nwaitsem);
 	heapmm_free(info->sems, sizeof(sysv_sem_t) * info->info.sem_nsems);
 	heapmm_free(info, sizeof(sem_info_t));
 }
@@ -374,28 +372,12 @@ int _sys_semget(key_t key, int nsems, int flags)
 			return -1;
 		}
 
-		info->nwaitsem = semaphore_alloc();
-		if (!info->nwaitsem) {
-			heapmm_free(info->sems, sizeof(sysv_sem_t) * nsems);
-			heapmm_free(info, sizeof(sem_info_t));
-			syscall_errno = ENOMEM;
-			return -1;
-		}
-
-		info->zwaitsem = semaphore_alloc();
-		if (!info->zwaitsem) {
-			semaphore_free(info->nwaitsem);
-			heapmm_free(info->sems, sizeof(sysv_sem_t) * nsems);
-			heapmm_free(info, sizeof(sem_info_t));
-			syscall_errno = ENOMEM;
-			return -1;
-		}
+		semaphore_init(&info->nwaitsem);
+		semaphore_init(&info->zwaitsem);
 
 		/* Initialize info */
 		info->id = sem_alloc_id();
 		if (info->id == -1) {
-			semaphore_free(info->zwaitsem);
-			semaphore_free(info->nwaitsem);
 			heapmm_free(info->sems, sizeof(sysv_sem_t) * nsems);
 			heapmm_free(info, sizeof(sem_info_t));
 			return -1;

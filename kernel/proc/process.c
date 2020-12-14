@@ -65,11 +65,10 @@ void create_kprocess()
 	/* Initialize process state */
 	kernel_process->page_directory = paging_active_dir;
 
-	kernel_process->child_sema	= semaphore_alloc();
+	semaphore_init(&kernel_process->child_sema);
 
-	kernel_process->child_events = heapmm_alloc(sizeof(llist_t));
-	llist_create( kernel_process->child_events );
-	llist_create(&kernel_process->tasks);
+	llist_create( &kernel_process->child_events );
+	llist_create( &kernel_process->tasks );
 
 	kernel_process->state = PROCESS_READY;
 	llist_add_end( process_list, (llist_t *) kernel_process );
@@ -144,10 +143,9 @@ process_info_t *fork_process( void )
 	child->heap_max	    = current_process->heap_max;
 	child->stack_bottom	= current_process->stack_bottom;
 	child->stack_top	= current_process->stack_top;
-	child->child_sema	= semaphore_alloc();
+	semaphore_init(&child->child_sema);
 
-	child->child_events = heapmm_alloc(sizeof(llist_t));
-	llist_create(child->child_events);
+	llist_create(&child->child_events);
 	llist_create(&child->tasks);
 
 	/* fork the user pages */
@@ -187,7 +185,7 @@ int process_find_event_iterator (llist_t *node, void *param)
 process_child_event_t *process_get_event(pid_t pid)
 {
 	return (process_child_event_t *) llist_iterate_select(
-		current_process->child_events,
+		&current_process->child_events,
 		&process_find_event_iterator,
 		(void *) pid);
 }
@@ -204,7 +202,7 @@ int process_find_event_pg_iterator (llist_t *node, void *param)
 process_child_event_t *process_get_event_pg(pid_t pid)
 {
 	return (process_child_event_t *) llist_iterate_select(
-		current_process->child_events,
+		&current_process->child_events,
 		&process_find_event_pg_iterator,
 		(void *) pid);
 }
@@ -229,8 +227,8 @@ void process_child_event(process_info_t *process, int event)
 	ev_info->child_pid = process->pid;
 	ev_info->child_pgid = process->pgid;
 	ev_info->event = event;
-	llist_add_end(parent->child_events, (llist_t *) ev_info);
-	semaphore_up(parent->child_sema);
+	llist_add_end(&parent->child_events, (llist_t *) ev_info);
+	semaphore_up(&parent->child_sema);
 	//TODO: Generate SIGCHLD
 
 }
@@ -321,7 +319,6 @@ void process_reap(process_info_t *process)
 	}
 
 	stream_do_close_all (process);
-	semaphore_free(process->child_sema);
 
 }
 

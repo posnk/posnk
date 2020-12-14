@@ -30,19 +30,8 @@ pipe_info_t *pipe_create()
 	pipe->write_usage_count = 0;
 	pipe->write_ptr = 0;
 	pipe->read_ptr  = 0;
-	pipe->write_lock = semaphore_alloc();
-	if (!(pipe->write_lock)) {
-		heapmm_free(pipe->buffer, CONFIG_PIPE_BUFFER_SIZE);
-		heapmm_free(pipe, sizeof(pipe_info_t));
-		return NULL;
-	}
-	pipe->read_lock  = semaphore_alloc();
-	if (!(pipe->read_lock)) {
-		semaphore_free(pipe->write_lock);
-		heapmm_free(pipe->buffer, CONFIG_PIPE_BUFFER_SIZE);
-		heapmm_free(pipe, sizeof(pipe_info_t));
-		return NULL;
-	}
+	semaphore_init(&pipe->write_lock);
+	semaphore_init(&pipe->read_lock);
 	return pipe;
 }
 
@@ -50,8 +39,6 @@ int pipe_free(pipe_info_t *pipe)
 {
 	if ((pipe->read_usage_count + pipe->write_usage_count) != 0)
 		return EBUSY;
-	semaphore_free(pipe->write_lock);
-	semaphore_free(pipe->read_lock);
 	heapmm_free(pipe->buffer, CONFIG_PIPE_BUFFER_SIZE);
 	heapmm_free(pipe, sizeof(pipe_info_t));
 	return 0;
@@ -71,7 +58,7 @@ void pipe_close_read(pipe_info_t *pipe)
 {
 	pipe->read_usage_count--;
 	if (pipe->read_usage_count == 0) {
-		semaphore_up(pipe->write_lock);
+		semaphore_up(&pipe->write_lock);
 	}
 }
 
@@ -79,7 +66,7 @@ void pipe_close_write(pipe_info_t *pipe)
 {
 	pipe->write_usage_count--;
 	if (pipe->write_usage_count == 0) {
-		semaphore_up(pipe->read_lock);
+		semaphore_up(&pipe->read_lock);
 	}
 }
 
@@ -123,7 +110,7 @@ int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *wri
 					return EPIPE;
 			} else {
 				s = semaphore_ndown(
-					/* semaphore */ pipe->write_lock,
+					/* semaphore */ &pipe->write_lock,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 				if ( s != SCHED_WAIT_OK )
@@ -137,7 +124,7 @@ int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *wri
 		memcpy((void *)(pbuf + (uintptr_t) pipe->write_ptr), (void *)(wbuf + (uintptr_t) current_pos), turn_size);
 		pipe->write_ptr += turn_size;
 		current_pos += turn_size;
-		semaphore_up(pipe->read_lock);
+		semaphore_up(&pipe->read_lock);
 		(*write_count) = count;
 		if (current_pos == count)
 			return 0;
@@ -159,7 +146,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count
 		if (turn_size == 0) {
 			pipe->write_ptr = 0;
 			pipe->read_ptr = 0;
-			semaphore_up(pipe->write_lock);
+			semaphore_up(&pipe->write_lock);
 			(*read_count) = current_pos;
 			if (current_pos != 0) {
 				return 0;
@@ -170,7 +157,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count
 					return 0;
 			} else {
 				s = semaphore_ndown(
-					/* semaphore */ pipe->read_lock,
+					/* semaphore */ &pipe->read_lock,
 					/* timeout   */ 0,
 					/* flags     */ SCHED_WAITF_INTR );
 				if ( s != SCHED_WAIT_OK )
@@ -191,7 +178,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count
 			if (turn_size == 0) {
 				pipe->write_ptr = 0;
 				pipe->read_ptr = 0;
-				semaphore_up(pipe->write_lock);
+				semaphore_up(&pipe->write_lock);
 			} else {
 				ov_buf = heapmm_alloc(CONFIG_PIPE_BUFFER_SIZE);
 				if (ov_buf == NULL)
@@ -200,7 +187,7 @@ int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count
 				heapmm_free(ov_buf, CONFIG_PIPE_BUFFER_SIZE);
 				pipe->write_ptr = turn_size;
 				pipe->read_ptr = 0;
-				semaphore_up(pipe->write_lock);
+				semaphore_up(&pipe->write_lock);
 			}
 			return 0;
 		}

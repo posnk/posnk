@@ -1,6 +1,6 @@
 /**
  * fs/ext2/ifsino.c
- * 
+ *
  * Implements IFS interface to inodes
  *
  * Part of P-OS kernel.
@@ -34,9 +34,9 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 	vfs_ino->id = ino_id;
 	vfs_ino->device = (fs_device_t *) device;
 	vfs_ino->mount = NULL;
-	vfs_ino->lock = semaphore_alloc();
-	semaphore_up(vfs_ino->lock);
-	
+	semaphore_init(&vfs_ino->lock);
+	semaphore_up(&vfs_ino->lock);
+
 	vfs_ino->hard_link_count = (nlink_t) ino->link_count;
 	vfs_ino->uid = (uid_t) ino->uid;
 	vfs_ino->gid = (gid_t) ino->gid;
@@ -82,14 +82,14 @@ void ext2_e2tovfs_inode(ext2_device_t *device, ext2_vinode_t *_ino, ino_t ino_id
 
 void ext2_vfstoe2_inode(ext2_vinode_t *_ino, ino_t ino_id)
 {
-	
+
 	ext2_inode_t *ino;
 	inode_t *vfs_ino;
 
 	ino = &(_ino->inode);
 	vfs_ino = &(_ino->vfs_ino);
 	//semaphore_down(vfs_ino->lock);
-	
+
 	ino->link_count = vfs_ino->hard_link_count;
 	ino->uid = vfs_ino->uid;
 	ino->gid = vfs_ino->gid;
@@ -162,7 +162,7 @@ SVFUNC(ext2_store_inode,inode_t *_inode) {
 	ext2_device_t *device;
 	ext2_vinode_t *inode;
 
-	if (!_inode) {	
+	if (!_inode) {
 		THROWV(EFAULT);
 	}
 

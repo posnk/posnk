@@ -124,12 +124,8 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, __attribute__((unused)) uint32_t 
 	dev->device.id = device;
 	dev->device.root_inode_id = EXT2_ROOT_INODE;
 	dev->device.ops = &ext2_ops;
-	dev->device.lock = semaphore_alloc();
-	if(!dev->device.lock) {
-		heapmm_free(dev, sizeof(ext2_device_t));
-		THROW(ENOMEM, NULL);
-	}
-	semaphore_up(dev->device.lock);
+	semaphore_init(&dev->device.lock);
+	semaphore_up(&dev->device.lock);
 	dev->device.inode_size = sizeof(ext2_vinode_t);
 
 	status = device_block_read(dev->dev_id, 1024, &(dev->superblock), 1024, &_read_size);
@@ -138,14 +134,12 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, __attribute__((unused)) uint32_t 
 
 	if (_read_size != 1024) {
 		printf(CON_ERROR, "could not read superblock, error:%i, read:%i!", status, _read_size);
-		semaphore_free(dev->device.lock);
 		heapmm_free(dev, sizeof(ext2_device_t));
 		THROW(status, NULL);
 	}
 
 	if (dev->superblock.signature != 0xEF53) {
 		printf(CON_ERROR, "superblock signature incorrect: %i!", dev->superblock.signature);
-		semaphore_free(dev->device.lock);
 		heapmm_free(dev, sizeof(ext2_device_t));
 		THROW(EINVAL, NULL);
 	}
@@ -154,7 +148,6 @@ SFUNC(fs_device_t *, ext2_mount, dev_t device, __attribute__((unused)) uint32_t 
 
 		if (dev->superblock.required_features & ~(EXT2_SUPPORTED_REQ_FEATURES)) {
 			printf(CON_ERROR, "filesystem requires unsupported features, refusing to mount!");
-			semaphore_free(dev->device.lock);
 			heapmm_free(dev, sizeof(ext2_device_t));
 			THROW(EINVAL, NULL);
 		}

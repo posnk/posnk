@@ -28,7 +28,7 @@ struct blkcache_cache {
 	int	 	 max_entries;
 	aoff_t	 block_size;
 	llist_t	 block_list;
-	semaphore_t *lock;
+	semaphore_t lock;
 };
 
 struct blkcache_entry {
@@ -58,10 +58,10 @@ blkcache_cache_t *blkcache_create( aoff_t block_size, int max_entries );
  *
  * @param cache The cache to destroy
  *
- * @return TRUE if the cache was successfully destroyed, FALSE if there are 
+ * @return TRUE if the cache was successfully destroyed, FALSE if there are
  * 	dirty blocks left in the cache
  */
- 
+
 int blkcache_free( blkcache_cache_t *cache );
 
 /**

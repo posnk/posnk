@@ -191,13 +191,13 @@ int vfs_write(	inode_t	* _inode,
 	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Verify write permission */
 	if (!vfs_have_permissions(inode, MODE_WRITE)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -258,7 +258,7 @@ int vfs_write(	inode_t	* _inode,
 						*write_size = 0;
 
 						/* Release the lock on this inode */
-						semaphore_up(inode->lock);
+						semaphore_up(&inode->lock);
 
 						/* Release the dereferenced inode */
 						vfs_inode_release(inode);
@@ -281,7 +281,7 @@ int vfs_write(	inode_t	* _inode,
 				inode->size = file_offset + *write_size;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -294,7 +294,7 @@ int vfs_write(	inode_t	* _inode,
 			/* File is a directory */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -307,7 +307,7 @@ int vfs_write(	inode_t	* _inode,
 
 			/* Release the lock on this inode so write accesses */
 			/* can take place now */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Call on the pipe driver to write the data */
 			status = pipe_write(	inode->fifo,
@@ -327,7 +327,7 @@ int vfs_write(	inode_t	* _inode,
 			/* File is a character special file */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Call on the driver to write the data */
 			status = device_char_write(
@@ -356,7 +356,7 @@ int vfs_write(	inode_t	* _inode,
 										write_size);
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -368,7 +368,7 @@ int vfs_write(	inode_t	* _inode,
 			/* Unknown file type */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -426,13 +426,13 @@ int vfs_read(	inode_t	* _inode,
 	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Verify read permission */
 	if (!vfs_have_permissions(inode, MODE_READ)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -458,7 +458,7 @@ int vfs_read(	inode_t	* _inode,
 					/* Read starts past EOF */
 
 					/* Release the lock on this inode */
-					semaphore_up(inode->lock);
+					semaphore_up(&inode->lock);
 
 					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
@@ -482,7 +482,7 @@ int vfs_read(	inode_t	* _inode,
 				inode->atime = system_time;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -493,7 +493,7 @@ int vfs_read(	inode_t	* _inode,
 			/* File is a directory */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -506,7 +506,7 @@ int vfs_read(	inode_t	* _inode,
 
 			/* Release the lock on this inode so read accesses */
 			/* can take place now */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			status = pipe_read(inode->fifo, buffer, count, read_size, non_block);
 
@@ -522,7 +522,7 @@ int vfs_read(	inode_t	* _inode,
 			status = device_char_read(inode->if_dev, file_offset, buffer, count, read_size, non_block);
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -537,7 +537,7 @@ int vfs_read(	inode_t	* _inode,
 			status = device_block_read(inode->if_dev, file_offset, buffer, count, read_size);
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -549,7 +549,7 @@ int vfs_read(	inode_t	* _inode,
 			/* Unknown file type */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -599,13 +599,13 @@ int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_
 	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Verify read permission */
 	if (!vfs_have_permissions(inode, MODE_READ)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -631,7 +631,7 @@ int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_
 					/* Read starts past EOF */
 
 					/* Release the lock on this inode */
-					semaphore_up(inode->lock);
+					semaphore_up(&inode->lock);
 
 					/* Set read_size to 0, we have not yet read anything */
 					(*read_size) = 0;
@@ -655,7 +655,7 @@ int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_
 				inode->atime = system_time;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -666,7 +666,7 @@ int vfs_getdents(inode_t * _inode , aoff_t file_offset, dirent_t * buffer, aoff_
 			/* Other file type */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -709,13 +709,13 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
 	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Verify write permission */
 	if (!vfs_have_permissions(inode, MODE_WRITE)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -740,7 +740,7 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
 			}
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -752,7 +752,7 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
 			/* File is a directory */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -767,7 +767,7 @@ int vfs_truncate(inode_t * _inode, aoff_t length)
 			/* Other file type */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -812,13 +812,13 @@ int vfs_rmdir(const char *path)
 		return status;
 
 	/* Acquire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* If directory still has entries, return error "File exists" */
 	if (inode->size) {
 
 		/* Release the lock */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		return EEXIST;
 	}
@@ -833,7 +833,7 @@ int vfs_rmdir(const char *path)
 	vfs_inode_release(inode);
 
 	/* Release the lock */
-	semaphore_up(inode->lock);
+	semaphore_up(&inode->lock);
 
 	/* Remove directory */
 	return vfs_unlink(path);
@@ -885,7 +885,7 @@ int vfs_mkdir(const char *path, mode_t mode)
 		return err;
 
 	/* Accuire a lock on the inode */
-	semaphore_down(dir->lock);
+	semaphore_down(&dir->lock);
 
 	/* Create directory internal structure */
 	err = ifs_mkdir(dir);
@@ -894,7 +894,7 @@ int vfs_mkdir(const char *path, mode_t mode)
 	if (err) {
 
 		/* Release the lock on this inode */
-		semaphore_up(dir->lock);
+		semaphore_up(&dir->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -913,7 +913,7 @@ int vfs_mkdir(const char *path, mode_t mode)
 	parent->mtime = system_time;
 
 	/* Release the lock on this inode */
-	semaphore_up(dir->lock);
+	semaphore_up(&dir->lock);
 
 	/* Make self (".") link */
 	err = ifs_link(dir, ".", dir->id);
@@ -922,7 +922,7 @@ int vfs_mkdir(const char *path, mode_t mode)
 	if (err) {
 
 		/* Release the lock on this inode */
-		semaphore_up(dir->lock);
+		semaphore_up(&dir->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -944,7 +944,7 @@ int vfs_mkdir(const char *path, mode_t mode)
 	if (err) {
 
 		/* Release the lock on this inode */
-		semaphore_up(dir->lock);
+		semaphore_up(&dir->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1018,7 +1018,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 	}
 
 	/* Acquire a lock on the parent inode */
-	semaphore_down(parent->lock);
+	semaphore_down(&parent->lock);
 
 	/* Check whether the file already exists */
 	status = vfs_find_inode(path, &_inode);
@@ -1027,7 +1027,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1047,7 +1047,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1071,7 +1071,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1085,7 +1085,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1103,7 +1103,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 	inode->gid = current_process->gid;
 
 	/* Allocate inode lock */
-	inode->lock = semaphore_alloc();
+	semaphore_init(&inode->lock);
 
 	/* Set atime, mtime, ctime */
 	inode->atime = inode->mtime = inode->ctime = system_time;
@@ -1123,7 +1123,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1150,7 +1150,7 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1163,10 +1163,10 @@ int vfs_mknod(const char *path, mode_t mode, dev_t dev)
 	inode->hard_link_count++;
 
 	/* Release the lock on the inode */
-	semaphore_up(inode->lock);
+	semaphore_up(&inode->lock);
 
 	/* Release the lock on the parent inode*/
-	semaphore_up(parent->lock);
+	semaphore_up(&parent->lock);
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
@@ -1209,13 +1209,13 @@ int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
 	inode = vfs_inode_ref(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Verify read permission */
 	if (!vfs_have_permissions(inode, MODE_READ)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -1231,7 +1231,7 @@ int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
 	if (!S_ISLNK(inode->mode)) {
 
 		/* Release the lock on this inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the dereferenced inode */
 		vfs_inode_release(inode);
@@ -1256,7 +1256,7 @@ int vfs_readlink(inode_t *_inode, char * buffer, size_t size, size_t *read_size)
 		inode->atime = system_time;
 
 	/* Release the lock on this inode */
-	semaphore_up(inode->lock);
+	semaphore_up(&inode->lock);
 
 	/* Release the dereferenced inode */
 	vfs_inode_release(inode);
@@ -1308,13 +1308,13 @@ int vfs_symlink(const char *oldpath, const char *path)
 	inode = heapmm_alloc(parent->device->inode_size);
 
 	/* Acquire a lock on the parent inode*/
-	semaphore_down(parent->lock);
+	semaphore_down(&parent->lock);
 
 	/* Check if the allocation succeded, if not, return error */
 	if (!inode) {
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1330,7 +1330,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1350,7 +1350,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1377,7 +1377,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1391,7 +1391,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Free filename */
 		heapmm_free(name, strlen(name) + 1);
@@ -1404,8 +1404,8 @@ int vfs_symlink(const char *oldpath, const char *path)
 	inode->uid = current_process->uid;
 	inode->gid = current_process->gid;
 
-	/* Allocate inode lock */
-	inode->lock = semaphore_alloc();
+	/* Initialize inode lock */
+	semaphore_init(&inode->lock);
 
 	/* Set atime, mtime, ctime */
 	inode->atime = inode->mtime = inode->ctime = system_time;
@@ -1419,7 +1419,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1442,7 +1442,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1469,7 +1469,7 @@ int vfs_symlink(const char *oldpath, const char *path)
 		heapmm_free(inode, parent->device->inode_size);
 
 		/* Release the lock on the parent inode*/
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1482,13 +1482,13 @@ int vfs_symlink(const char *oldpath, const char *path)
 	inode->hard_link_count++;
 
 	/* Release the lock on the inode */
-	semaphore_up(inode->lock);
+	semaphore_up(&inode->lock);
 
 	/* Add inode to cache */
 	vfs_inode_cache(inode);//TODO: Check if duplicate? see vfs.c:1451
 
 	/* Release the lock on the parent inode*/
-	semaphore_up(parent->lock);
+	semaphore_up(&parent->lock);
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
@@ -1557,7 +1557,7 @@ int vfs_unlink(const char *path)
 	}
 
 	/* Aqquire lock on inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Resolve the filename */
 
@@ -1566,7 +1566,7 @@ int vfs_unlink(const char *path)
 	/* Check the filename length */
 	if (status) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 
 		/* Release the parent inode */
@@ -1581,7 +1581,7 @@ int vfs_unlink(const char *path)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1596,7 +1596,7 @@ int vfs_unlink(const char *path)
 	}
 
 	/* Aqquire lock on the parent dir */
-	semaphore_down(parent->lock);
+	semaphore_down(&parent->lock);
 
 	/* Delete directory entry */
 	status = ifs_unlink(parent, name);
@@ -1607,9 +1607,9 @@ int vfs_unlink(const char *path)
 	/* Check for errors */
 	if (status) {
 		/* Release the lock on the inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 		/* Release the lock on the parent dir */
-		semaphore_up(parent->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1622,7 +1622,7 @@ int vfs_unlink(const char *path)
 	}
 
 	/* Release the lock on the parent dir */
-	semaphore_up(parent->lock);
+	semaphore_up(&parent->lock);
 
 	/* Decrease hardlink count */
 	inode->hard_link_count--;
@@ -1636,7 +1636,7 @@ int vfs_unlink(const char *path)
 
 		/* Check if file is in use */
 		if (inode->open_count != 0) {
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the parent inode */
 			vfs_inode_release(parent);
@@ -1659,7 +1659,7 @@ int vfs_unlink(const char *path)
 
 	} else {
 		/* Release the lock on the inode */
-		semaphore_up(inode->lock);
+		semaphore_up(&inode->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1723,18 +1723,18 @@ int vfs_link(const char *oldpath, const char *newpath)
 	}
 
 	/* Aqquire a lock on the target */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	/* Aqquire a lock on the parent directory */
-	semaphore_down(parent->lock);
+	semaphore_down(&parent->lock);
 
 	/* Check whether the file already exists */
 	status = vfs_find_inode(newpath, &_inode);
 
 	if (status != ENOENT) {
 		/* If so, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1752,8 +1752,8 @@ int vfs_link(const char *oldpath, const char *newpath)
 	/* Check permissions on parent dir */
 	if (!vfs_have_permissions(parent, MODE_WRITE)) {
 		/* If not, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1767,8 +1767,8 @@ int vfs_link(const char *oldpath, const char *newpath)
 	/* Check for cross-device links */
 	if (parent->device_id != inode->device_id) {
 		/* If so, clean up and return an error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1785,8 +1785,8 @@ int vfs_link(const char *oldpath, const char *newpath)
 
 	if (status) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1800,8 +1800,8 @@ int vfs_link(const char *oldpath, const char *newpath)
 	/* Check the filename length */
 	if (strlen(name) >= CONFIG_FILE_MAX_NAME_LENGTH) {
 		/* Length is too long, clean up and return error */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1826,8 +1826,8 @@ int vfs_link(const char *oldpath, const char *newpath)
 		/* An error occurred */
 
 		/* Clean up */
-		semaphore_up(inode->lock);
-		semaphore_up(parent->lock);
+		semaphore_up(&inode->lock);
+		semaphore_up(&parent->lock);
 
 		/* Release the parent inode */
 		vfs_inode_release(parent);
@@ -1843,7 +1843,7 @@ int vfs_link(const char *oldpath, const char *newpath)
 	parent->mtime = system_time;
 
 	/* Release lock on parent inode */
-	semaphore_up(parent->lock);
+	semaphore_up(&parent->lock);
 
 	/* Update hardlink count */
 	inode->hard_link_count++;
@@ -1852,7 +1852,7 @@ int vfs_link(const char *oldpath, const char *newpath)
 	inode->ctime = system_time;
 
 	/* Release inode lock */
-	semaphore_up(inode->lock);
+	semaphore_up(&inode->lock);
 
 	/* Release the parent inode */
 	vfs_inode_release(parent);
@@ -2095,7 +2095,7 @@ short int vfs_poll(	inode_t	* _inode,
 	inode = vfs_effective_inode(_inode);
 
 	/* Accuire a lock on the inode */
-	semaphore_down(inode->lock);
+	semaphore_down(&inode->lock);
 
 	//TODO: Should we check permissions here?
 
@@ -2109,7 +2109,7 @@ short int vfs_poll(	inode_t	* _inode,
 			revents =  (POLLIN | POLLOUT) & events;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -2122,7 +2122,7 @@ short int vfs_poll(	inode_t	* _inode,
 			revents = pipe_poll(inode->fifo, events);
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -2136,7 +2136,7 @@ short int vfs_poll(	inode_t	* _inode,
 			revents = device_char_poll(inode->if_dev, events);
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -2151,7 +2151,7 @@ short int vfs_poll(	inode_t	* _inode,
 			revents =  (POLLIN | POLLOUT) & events;
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);
@@ -2163,7 +2163,7 @@ short int vfs_poll(	inode_t	* _inode,
 			/* Unknown file type */
 
 			/* Release the lock on this inode */
-			semaphore_up(inode->lock);
+			semaphore_up(&inode->lock);
 
 			/* Release the dereferenced inode */
 			vfs_inode_release(inode);

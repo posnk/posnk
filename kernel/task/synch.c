@@ -113,20 +113,9 @@ int semaphore_try_down(semaphore_t *semaphore)
 }
 
 /**
- * Allocates a semaphore
+ * Initializes a semaphore
  */
-semaphore_t *semaphore_alloc()
-{
-	semaphore_t *semaphore = (semaphore_t *) heapmm_alloc(sizeof(semaphore_t));
+void semaphore_init(semaphore_t *semaphore) {
 	*(semaphore) = 0;
-	return semaphore;
-}
-
-/**
- * Frees a semaphore
- */
-void semaphore_free(semaphore_t *semaphore)
-{
-	heapmm_free(semaphore, sizeof(semaphore_t));
 }
 

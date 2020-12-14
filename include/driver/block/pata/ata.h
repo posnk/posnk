@@ -156,7 +156,7 @@ struct ata_drive {
 
 /* Partitions */
 	partition_info_t partitions[31];
-	
+
 };
 
 struct ata_device {
@@ -167,8 +167,8 @@ struct ata_device {
 	irq_id_t	 irq;
 	uint8_t		 ctrl_reg;
 	ata_drive_t	 drives[2];
-	semaphore_t	*lock;
-	semaphore_t	*int_wait;
+	semaphore_t      lock;
+	semaphore_t      int_wait;
 	uint8_t		 int_status;
 };
 

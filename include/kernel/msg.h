@@ -33,8 +33,8 @@ typedef struct {
 	int          id;
 	int          del;
 	int          refs;
-	semaphore_t *swaitsem;
-	semaphore_t *rwaitsem;
+	semaphore_t  swaitsem;
+	semaphore_t  rwaitsem;
 	struct msqid_ds	 info;
 	llist_t      msgs;
 	msglen_t     used_bytes;

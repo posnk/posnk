@@ -32,8 +32,8 @@ typedef struct {
 	int		 id;
 	int		 del;
 	int		 refs;
-	semaphore_t	*nwaitsem;
-	semaphore_t	*zwaitsem;
+	semaphore_t	 nwaitsem;
+	semaphore_t	 zwaitsem;
 	struct semid_ds	 info;
 	sysv_sem_t	*sems;
 } sem_info_t;

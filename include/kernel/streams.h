@@ -25,12 +25,12 @@
  * @defgroup stream Stream API
  * @brief Implements the UNIX file API ( fd streams )
  *
- * The streams programming interface provides an unified way of transferring 
+ * The streams programming interface provides an unified way of transferring
  * data. It wraps the VFS API and implements pipes. For files it keeps track
  * of the current offset.
  *
  * Slightly different terminology is used here:
- * 
+ *
  * UNIX - POSNK
  * @li File description - stream info
  * @li File descriptor - stream pointer
@@ -86,8 +86,8 @@ typedef struct stream_poll stream_poll_t;
  * @brief Describes a pointer to a stream
  *
  * A stream pointer is what is handled by most programs, it is referred to by
- * a unique handle (fd) and refers to a stream. The actual state of a stream 
- * is stored in the stream info object, the stream pointer contains only 
+ * a unique handle (fd) and refers to a stream. The actual state of a stream
+ * is stored in the stream info object, the stream pointer contains only
  * flags affecting its behaviour on process events
  */
 
@@ -100,7 +100,7 @@ struct stream_ptr {
 	int 		id;
 
 	/**
-	 * @brief The flags for this stream pointer 
+	 * @brief The flags for this stream pointer
 	 * @warning These are distinct from the stream flags
 	 */
 	int			fd_flags;
@@ -112,7 +112,7 @@ struct stream_ptr {
 /**
  * @brief Describes a stream
  * A stream object is shared between all pointers to it and thus all processes
- * having such a pointer. This means that the state of the stream is shared 
+ * having such a pointer. This means that the state of the stream is shared
  * too. The stream object is only destroyed when the last pointer to it is
  * closed
  */
@@ -138,17 +138,17 @@ struct stream_info {
 	dir_cache_t	*dirc;
 
 	/** This stream's mutex lock */
-	semaphore_t	*lock;
+	semaphore_t	 lock;
 
 	/** The pipe referred to by this stream */
 	pipe_info_t	*pipe;
-	
+
 	/** Implementation flags */
 	int			 impl_flags;
-	
+
 	/** Implementation specific information */
 	void		*impl;
-	
+
 	/** Operations for external streams */
 	stream_ops_t *ops;
 
@@ -156,17 +156,17 @@ struct stream_info {
 	llist_t		 poll;
 };
 
-/** 
+/**
  * Callback functions for externally implemented streams
  */
 struct stream_ops {
-	
+
 	/**
 	 * @brief Performs on-close cleanup for the stream
 	 * @param stream	The pointer to the stream being closed
 	 */
 	SVFUNCPTR( close, stream_info_t * );
-	
+
 	/**
 	 * @brief Read information from the stream
 	 * @param stream	The stream to read from
@@ -175,7 +175,7 @@ struct stream_ops {
 	 * @return			The number of bytes actually transferred
 	 */
 	SFUNCPTR( aoff_t, read, stream_info_t *, void *, aoff_t );
-	
+
 	/**
 	 * @brief Write information to the stream
 	 * @param stream	The stream to write to
@@ -184,7 +184,7 @@ struct stream_ops {
 	 * @return			The number of bytes actually transferred
 	 */
 	SFUNCPTR( aoff_t, write, stream_info_t *, const void *, aoff_t );
-	
+
 	/**
 	 * @brief Controls a device
 	 * @param stream	The stream to operate on
@@ -194,17 +194,17 @@ struct stream_ops {
 	 * @exception ENOTTY fd does not refer to a special file
 	 */
 	SFUNCPTR( int, ioctl, stream_info_t *, int, void * );
-	
+
 	/**
 	 * @brief Seeks to a new position
 	 * @param stream	The stream to operate on
 	 * @param pos		The new position to set
 	 */
 	SVFUNCPTR( seek, stream_info_t *, aoff_t );
-	
+
 	/**
 	 * @brief Reposition read/write file offset
-	 * 
+	 *
 	 * The way the new file offset is calculated is determined by _whence_:@n@n
 	 * Whence:@n
 	 * @li *SEEK_SET*\n The offset is set to _offset_ bytes
@@ -224,7 +224,7 @@ struct stream_ops {
 	 * @exception EINVAL Invalid value for _whence_
 	 */
 	SFUNCPTR(off_t, lseek, stream_info_t *, off_t, int );
-	
+
 	/**
 	 * @brief Reads a directory entry from the stream
 	 * @param stream	The stream to read from
@@ -235,16 +235,16 @@ struct stream_ops {
 	 * @exception ENMFILE The end of the directory was reached
 	 */
 	 SFUNCPTR( aoff_t, readdir, stream_info_t *, sys_dirent_t *, aoff_t );
-	 
+
 	SVFUNCPTR( truncate, stream_info_t *, aoff_t );
-	 
+
 	SVFUNCPTR( chdir, stream_info_t * );
 	SVFUNCPTR( chmod, stream_info_t *, mode_t );
 	SVFUNCPTR( chown, stream_info_t *, uid_t, gid_t );
 	SVFUNCPTR( stat, stream_info_t *, struct stat* );
 	SFUNCPTR( short int, poll, stream_info_t *, short int );
-	
-	
+
+
 };
 
 /** Describes a poll request on a stream */
@@ -256,7 +256,7 @@ struct stream_poll {
 	short int		 events;
 	/** the output event flags */
 	short int		 revents;
-	/** the semaphore this poll is locked on 
+	/** the semaphore this poll is locked on
 	 * @note Owned by _sys_poll(), not this struct */
 	semaphore_t		*notify;
 };

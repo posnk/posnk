@@ -73,14 +73,14 @@ typedef struct dirent dirent_t;
  */
 typedef struct dir_cache dir_cache_t;
 
-/** 
- * @brief An instance of a filesystem driver 
+/**
+ * @brief An instance of a filesystem driver
  * @see fs_device
  */
 typedef struct fs_device fs_device_t;
 
-/** 
- * @brief Contains callbacks for all filesystem driver functions 
+/**
+ * @brief Contains callbacks for all filesystem driver functions
  * @see fs_device_operations
  */
 typedef struct fs_device_operations fs_device_operations_t;
@@ -100,7 +100,7 @@ typedef struct fs_mount fs_mount_t;
 /**
  * Describes a file currently cached by the kernel
  */
-struct inode {	
+struct inode {
 	/** Cache node */
 	mruc_e_t	 node;
 	/* Inode */
@@ -127,15 +127,15 @@ struct inode {
 	/** Mounted filesystem root inode */
 	inode_t	 	*mount;
 	/** Lock */
-	semaphore_t 	*lock;
+	semaphore_t 	 lock;
 	/** Reference count (for GC)*/
 	uint32_t 	 usage_count;
 	/** Open stream count */
 	uint32_t	 open_count;
 	/** File size */
-	aoff_t	 	 size;	
+	aoff_t	 	 size;
 	/** Access time */
-	ktime_t		 atime; 
+	ktime_t		 atime;
 	/** Modification time */
 	ktime_t		 mtime;
 	/** Metadata modification time */
@@ -152,10 +152,10 @@ struct dirent {
 	ino_t	 inode_id;
 	/** The filesystem device this entry points to */
 	dev_t	device_id;
-	/** @brief The length of this dirent 
-          * dirent structures are not always sizeof(dirent) long, most of the 
+	/** @brief The length of this dirent
+          * dirent structures are not always sizeof(dirent) long, most of the
           * time they are smaller, this field indicates the actual size of the
-          * structure but do not use it to calculate name length as padding 
+          * structure but do not use it to calculate name length as padding
           * after the name is allowed */
 	unsigned short int d_reclen;//2 + 2 + 4 = 8 -> this struct is long alligned
 	/** The name of the file described by this entry */
@@ -172,27 +172,27 @@ struct dir_cache {
 	/** The inode for this entry */
 	inode_t		*inode;
 	/** @brief The number of times this dir_cache is referenced
-          * This is used for a basic form of garbage collection, when this 
+          * This is used for a basic form of garbage collection, when this
           * hits 0 the dir_cache will be free'd */
 	uint32_t	 usage_count;
 };
 
-/** 
- * @brief Contains callbacks for all filesystem driver functions 
+/**
+ * @brief Contains callbacks for all filesystem driver functions
  *
  * This is the structure used to pass the callbacks for a filesystem driver to
  * the kernel, it is referenced by fs_device, which describes an instance of a
- * filesystem driver, implementation hints and requirements are given in the 
+ * filesystem driver, implementation hints and requirements are given in the
  * description of each callback, for more info on FS driver implementation see
  * fs_device
  */
 struct fs_device_operations {
-	
-	SVFUNCPTR( open_inode, inode_t *, void * );	
+
+	SVFUNCPTR( open_inode, inode_t *, void * );
 
 	/**
 	 * @brief Load an inode from storage
-	 * 
+	 *
          * REQUIRED
          *
 	 * Implementations of this function must fill ALL inode fields relevant
@@ -208,7 +208,7 @@ struct fs_device_operations {
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
          *
-	 * @param inode The inode to write 
+	 * @param inode The inode to write
 	 */
 	SVFUNCPTR( store_inode, inode_t * );
 
@@ -221,7 +221,7 @@ struct fs_device_operations {
 	 * Implementations must fill inode->id
 	 * @param inode The inode to create
 	 */
-	SVFUNCPTR( mknod, inode_t * );	
+	SVFUNCPTR( mknod, inode_t * );
 
 	/**
 	 * @brief Delete an inode
@@ -229,19 +229,19 @@ struct fs_device_operations {
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
          *
-         * Implementations are recommended to free any data associated with 
+         * Implementations are recommended to free any data associated with
          * the inode
 	 * @param inode The inode to delete
 	 */
-	SVFUNCPTR( rmnod, inode_t * );	
+	SVFUNCPTR( rmnod, inode_t * );
 
 	/**
 	 * @brief Read data from a file
-	 * 
+	 *
          * REQUIRED
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
-         * @note The VFS will adjust count so that the whole requested area is 
+         * @note The VFS will adjust count so that the whole requested area is
 	 * in the file
 	 * @param inode       The inode for the file
 	 * @param buffer      The buffer to store the data in
@@ -253,7 +253,7 @@ struct fs_device_operations {
 
 	/**
 	 * @brief Write data to a file
-	 * 
+	 *
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
          *
@@ -268,40 +268,40 @@ struct fs_device_operations {
 
 	/**
 	 * @brief Read directory entries from backing storage
-	 * 
+	 *
          * REQUIRED
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
 	 * @warning Implementations must only return whole directory entries
-	 * 
+	 *
 	 * @param inode       The inode for the directory
 	 * @param buffer      The buffer to store the entries in
 	 * @param file_offset The offset in the directory to start reading at
 	 * @param count       The number of bytes to read
 	 * @return The number of bytes read
 	 */
-	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread 
+	SFUNCPTR( aoff_t, read_dir, inode_t *, void *, aoff_t, aoff_t );//buffer, f_offset, length, nread
 
-	/** 
+	/**
 	 * @brief Find a directory entry
-	 * 
+	 *
          * REQUIRED
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
-	 * 
+	 *
 	 * @param inode The directory to search
 	 * @param name  The filename to match
-	 * @return The directory entry matching name from the directory inode, 
+	 * @return The directory entry matching name from the directory inode,
 	 *          if none, NULL is returned
 	 */
-	SFUNCPTR( dirent_t *, find_dirent, inode_t *, const char * );	//dir_inode_id, filename -> dirent_t  
+	SFUNCPTR( dirent_t *, find_dirent, inode_t *, const char * );	//dir_inode_id, filename -> dirent_t
 
 	/**
 	 * @brief Create directory structures
-	 * 
+	 *
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function
-	 * 
+	 *
          * Implementations are not required to implement this function but must
          * provide a stub to allow directories to be created
 	 * @param inode The inode for the new directory
@@ -310,12 +310,12 @@ struct fs_device_operations {
 
 	/**
 	 * @brief Create a directory entry
-	 * 
+	 *
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
+	 * @warning Implementations are required to update the directory size
          * field
-	 * 
+	 *
 	 * @param inode  The inode for the directory
 	 * @param name   The file name for the directory entry
 	 * @param nod_id The inode id that the directory entry will point to
@@ -327,9 +327,9 @@ struct fs_device_operations {
 	 * @brief Delete a directory entry
 	 * @warning Implementations must not modify the inode metadata from
 	 * this function, except for the size field
-	 * @warning Implementations are required to update the directory size 
+	 * @warning Implementations are required to update the directory size
          * field
-	 * 
+	 *
 	 * @param inode - The inode for the directory
 	 * @param name  - The file name of the directory entry to delete
 	 */
@@ -341,7 +341,7 @@ struct fs_device_operations {
 	 * this function
          * Implementations must fill the newly created space with zeroes and
          * free any truncated space
-	 * 
+	 *
 	 * @param inode       The inode for the file
 	 * @param size	      The new size of the file
 	 */
@@ -351,25 +351,25 @@ struct fs_device_operations {
 	 * @brief Synchronize the filesystem
 	 *
          * Implementations must flush any global metadata to backing storage
-	 * 
+	 *
 	 * @param inode       The inode for the file
 	 * @param size	      The new size of the file
 	 */
 	SVFUNCPTR( sync, fs_device_t * );
 };
 
-/** 
- * @brief An instance of a filesystem driver 
- * 
- * This structure describes an instance of a filesystem driver, it is returned 
+/**
+ * @brief An instance of a filesystem driver
+ *
+ * This structure describes an instance of a filesystem driver, it is returned
  * by a filesystem's mount function and contains information on the interface
  * provided by the driver aswell as the mounted device.
  * In order to implement a filesystem driver you must provide two things:
- * \li A mount function of the form 
+ * \li A mount function of the form
  *         fs_device_t fs_mount( dev_t device, uint32_t flags);
  * \li Implementations of the callbacks in fs_device_operations
- * 
- * For more information on the callbacks see the documentation of 
+ *
+ * For more information on the callbacks see the documentation of
  * fs_device_operations
  *
  */
@@ -381,7 +381,7 @@ struct fs_device {
 	/** Pointer to the callback list */
 	fs_device_operations_t *ops;
 	/** Filesystem lock */
-	semaphore_t	       *lock;	
+	semaphore_t	        lock;
 	/** @brief Inode structure size for this filesystem
           *
           * In memory size of the inode structures returned by the callbacks
@@ -407,7 +407,7 @@ struct fs_driver {
 
 /**
  * @brief A mounted filesystem descriptor
- * 
+ *
  * This structure describes a filesystem that has been mounted at a mountpoint
  *
  */
@@ -527,8 +527,8 @@ SVFUNC(vfs_sync_inode, inode_t *inode);
 SVFUNC(vfs_mount, char *device, char *mountpoint, char *fstype, uint32_t flags);
 SVFUNC(vfs_do_mount, fs_driver_t *driver, dev_t device, inode_t *mountpoint, uint32_t flags);
 SFUNC(fs_driver_t *, vfs_get_driver, char *fstype);
-SVFUNC( vfs_register_fs, 
-		const const char *name, 
+SVFUNC( vfs_register_fs,
+		const const char *name,
 		SFUNCPTR(fs_device_t *, mnt_cb, dev_t, uint32_t) );
 short int vfs_poll(inode_t *inode, short int events);
 void vfs_ifsmgr_initialize( void );

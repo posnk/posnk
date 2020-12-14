@@ -64,8 +64,8 @@ SFUNC(inode_t *, proc_load_inode, fs_device_t *device, ino_t id) {
 	ino->id              = id;
 	ino->device          = device;
 	ino->mount           = NULL;
-	ino->lock            = semaphore_alloc();
-	semaphore_up(ino->lock);
+	semaphore_init(&ino->lock);
+	semaphore_up(&ino->lock);
 	ino->hard_link_count = (nlink_t) 1;
 	ino->uid             = (uid_t) 0;
 	ino->gid             = (gid_t) 0;
@@ -162,20 +162,12 @@ fs_device_t proc_dev = {
 	.id = 0xFF00,
 	.root_inode_id = PROC_ROOT_INODE,
 	.ops = &proc_ops,
-	.lock = NULL,
+	.lock = 1,
 	.inode_size = sizeof(inode_t)
 };
 
 SFUNC(fs_device_t *, proc_mount, __attribute__((__unused__)) dev_t device, __attribute__((__unused__)) uint32_t flags)
 {
-	if ( !proc_dev.lock ) {
-		proc_dev.lock = semaphore_alloc();
-		if(!proc_dev.lock) {
-			THROW(ENOMEM, NULL);
-		}
-		semaphore_up( proc_dev.lock);
-	} //TODO: Acquire lock?
-
 	RETURN( (fs_device_t *) &proc_dev );
 }
 
