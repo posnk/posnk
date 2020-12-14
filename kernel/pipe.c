@@ -105,6 +105,7 @@ short int pipe_poll( pipe_info_t *pipe, short int events )
 
 int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *write_count, int non_block)
 {
+	int s;
 	uintptr_t wbuf = (uintptr_t) buffer;
 	uintptr_t pbuf = (uintptr_t) pipe->buffer;
 	aoff_t turn_size, current_pos;
@@ -121,7 +122,11 @@ int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *wri
 				else
 					return EPIPE;
 			} else {
-				if (semaphore_idown(pipe->write_lock))
+				s = semaphore_ndown(
+					/* semaphore */ pipe->write_lock,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+				if ( s != SCHED_WAIT_OK )
 					return EINTR;
 				if (pipe->read_usage_count != 0)
 					continue;
@@ -141,6 +146,7 @@ int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *wri
 
 int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count, int non_block)
 {
+	int s;
 	uintptr_t rbuf = (uintptr_t) buffer;
 	uintptr_t pbuf = (uintptr_t) pipe->buffer;
 	aoff_t turn_size, current_pos;
@@ -163,7 +169,11 @@ int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count
 				else
 					return 0;
 			} else {
-				if (semaphore_idown(pipe->read_lock))
+				s = semaphore_ndown(
+					/* semaphore */ pipe->read_lock,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+				if ( s != SCHED_WAIT_OK )
 					return EINTR;
 				turn_size = pipe->write_ptr - pipe->read_ptr;
 				if ((turn_size != 0) || (pipe->write_usage_count != 0))

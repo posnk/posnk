@@ -515,7 +515,7 @@ int ata_write(ata_device_t *device, int drive, ata_lba_t lba, uint8_t *buffer, u
 
 		if (ata_interrupt_enabled) {
 			device->int_status = ata_read_port(device, ATA_STATUS_PORT);
-			if ((device->int_status & ATA_STATUS_FLAG_BSY) && semaphore_tdown(device->int_wait, 3) ) {
+			if ((device->int_status & ATA_STATUS_FLAG_BSY) && semaphore_ndown( device->int_wait, ATA_WRITE_TIMEOUT, SCHED_WAITF_TIMEOUT )  ) {
 				device->int_status = ata_read_port(device, ATA_STATUS_PORT);
 				if ( device->int_status & ATA_STATUS_FLAG_BSY ) {
 					printf(CON_ERROR, "device %i:%i PIO write timeout", device->bus_number, drive);

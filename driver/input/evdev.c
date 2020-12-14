@@ -37,7 +37,7 @@ int evdev_register_device(evdev_device_info_t *info)
 }
 
 static inline evdev_device_t *evdev_get(dev_t device)
-{	
+{
 	dev_t minor = MINOR(device);
 	return evdev_list[minor];
 }
@@ -67,7 +67,7 @@ int evdev_open(dev_t device, __attribute__((__unused__)) int fd, __attribute__((
 	if (!dev)
 		return ENXIO;
 	return 0;
-	
+
 }
 
 int evdev_close(dev_t device, __attribute__((__unused__)) int fd)
@@ -88,7 +88,7 @@ int evdev_write(dev_t device, __attribute__((__unused__)) const void *buf, __att
 
 int evdev_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
 {
-	int ev_count, n;
+	int ev_count, n, s;
 	evdev_event_t *ev;
 	struct input_event *ev_buf;
 	evdev_device_t *dev = evdev_get(device);
@@ -102,7 +102,11 @@ int evdev_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non
 			*read_size = 0;
 			return EAGAIN;
 		} else {
-			if (semaphore_idown(&(dev->event_wait))){
+			s = semaphore_ndown(
+				/* semaphore */ &dev->event_wait,
+				/* timeout   */ 0,
+				/* flags     */ SCHED_WAITF_INTR );
+			if ( s != SCHED_WAIT_OK ) {
 				*read_size = 0;
 				return EINTR;
 			}
@@ -110,7 +114,7 @@ int evdev_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non
 	}
 	for (n = 0; n < ev_count; n++){
 		ev = (evdev_event_t *) llist_remove_first(&(dev->queue));
-		if (!ev) 
+		if (!ev)
 			break;
 		dev->queue_count--;
 		ev_buf[n] = ev->event;
@@ -128,7 +132,7 @@ int evdev_ioctl(dev_t device, __attribute__((__unused__)) int fd,
 	if (!dev)
 		return ENXIO;
 	switch (func) {
-		
+
 		default:
 			return 0;
 	}
@@ -150,6 +154,6 @@ char_dev_t evdev_driver = {
 };
 
 void evdev_init(){
-	evdev_list = heapmm_alloc(sizeof(evdev_device_t *) * 256);	
+	evdev_list = heapmm_alloc(sizeof(evdev_device_t *) * 256);
 	device_char_register(&evdev_driver);
 }

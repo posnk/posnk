@@ -2277,9 +2277,15 @@ int _sys_poll( struct pollfd fds[], nfds_t nfds, int timeout )
 	}
 	if ( (timeout != 0) && !nsel ) {
 		if ( timeout > 0 )
-			waitstat = semaphore_mdown( sem, timeout );
+			waitstat = semaphore_ndown(
+			              sem,
+			              timeout,
+			              SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
 		else if ( timeout < 0 )
-			waitstat = semaphore_idown( sem )-1;
+			waitstat = semaphore_ndown(
+			              sem,
+			              0,
+			              SCHED_WAITF_INTR ) - 1;
 	}
 	nsel = 0;
 	for ( i = 0; i < nfds; i++ ) {

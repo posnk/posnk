@@ -67,6 +67,12 @@ void semaphore_add(semaphore_t *semaphore, unsigned int n)
 	//Scheduler will check semaphore waits every time it is run.
 }
 
+/**
+ * Tries to decrement a semaphore with a fixed timeout
+ * If the timeout is reached before the semaphore became available this
+ * function will return SCHED_WAIT_TIMEOUT. If the wait was interrupted for
+ * any reason, this function will return SCHED_WAIT_INTR.
+ */
 int semaphore_ndown( semaphore_t *semaphore, utime_t timeout, int flags )
 {
 	/* Try to decrement the semaphore */
@@ -83,50 +89,6 @@ int semaphore_down(semaphore_t *semaphore)
 		/* semaphore */ semaphore,
 		/* timeout   */ 0,
 		/* flags     */ 0 );
-
-}
-
-int semaphore_idown(semaphore_t *semaphore)
-{
-
-	/* Try to decrement the semaphore */
-	return semaphore_ndown(
-		/* semaphore */ semaphore,
-		/* timeout   */ 0,
-		/* flags     */ SCHED_WAITF_INTR );
-
-}
-
-/**
- * Tries to decrement a semaphore with a fixed timeout
- * If the timeout is reached before the semaphore became available this
- * function will return SCHED_WAIT_TIMEOUT. If the wait was interrupted for
- * any reason, this function will return SCHED_WAIT_INTR.
- */
-int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds)
-{
-
-	/* Try to decrement the semaphore */
-	return semaphore_ndown(
-		/* semaphore */ semaphore,
-		/* timeout   */ 10000000UL * seconds,
-		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
-}
-
-/**
- * Tries to decrement a semaphore with a fixed timeout
- * If the timeout is reached before the semaphore became available this
- * function will return SCHED_WAIT_TIMEOUT. If the wait was interrupted for
- * any reason, this function will return SCHED_WAIT_INTR.
- */
-int semaphore_mdown(semaphore_t *semaphore, ktime_t micros)
-{
-
-	/* Try to decrement the semaphore */
-	return semaphore_ndown(
-		/* semaphore */ semaphore,
-		/* timeout   */ micros,
-		/* flags     */ SCHED_WAITF_INTR | SCHED_WAITF_TIMEOUT );
 
 }
 

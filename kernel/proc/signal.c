@@ -569,7 +569,10 @@ int _sys_sigsuspend( const sigset_t *sigmask )
 	scheduler_current_task->signal_mask &= ~( 1 << SIGKILL );
 	scheduler_current_task->signal_mask &= ~( 1 << SIGSTOP );
 
-	semaphore_idown ( &sem );
+	semaphore_ndown(
+		/* semaphore */ &sem,
+		/* timeout   */ 0,
+		/* flags     */ SCHED_WAITF_INTR );
 
 	scheduler_current_task->signal_mask = before;
 

@@ -17,6 +17,13 @@
 
 #include "kernel/time.h"
 
+#define SCHED_WAIT_OK		(0)
+#define SCHED_WAIT_INTR		(-2)
+#define SCHED_WAIT_TIMEOUT	(-1)
+
+#define SCHED_WAITF_INTR        (1 << 1)
+#define SCHED_WAITF_TIMEOUT     (1 << 2)
+
 typedef uint32_t semaphore_t;
 
 typedef volatile int spinlock_t;
@@ -39,17 +46,12 @@ int semaphore_ndown( semaphore_t *semaphore, utime_t timeout, int flags );
 
 int semaphore_down(semaphore_t *semaphore);
 
-int semaphore_idown(semaphore_t *semaphore);
-
-int semaphore_tdown(semaphore_t *semaphore, ktime_t seconds);
-
-int semaphore_mdown(semaphore_t *semaphore, ktime_t micros);
-
 /* FOR INTERNAL USE BY SCHEDULER ONLY */
 int  semaphore_try_down(semaphore_t *semaphore);
 
 semaphore_t *semaphore_alloc();
 
 void semaphore_free(semaphore_t *semaphore);
+
 
 #endif

@@ -68,12 +68,12 @@ int sem_alloc_id()
 	return id;
 }
 
-static inline int sysv_sem_checkblock_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
+static inline int checkblock_int(sem_info_t *info, short semnum, short semop, __attribute__((__unused__)) short semflg)
 {
 	assert(info != NULL);
 	assert(semnum >= 0);
 	assert(semnum < info->info.sem_nsems);
-	if (semop == 0) 
+	if (semop == 0)
 		return (info->sems[semnum].semval != 0);
 	if (semop > 0)
 		return 0;
@@ -101,7 +101,7 @@ static inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __
 	} else if (semop < 0) {
 		assert (info->sems[semnum].semval >= (-semop));
 		info->sems[semnum].semval -= (-semop);
-		if (!info->sems[semnum].semval) 
+		if (!info->sems[semnum].semval)
 			semaphore_add(info->zwaitsem, info->sems[semnum].semzcnt);
 		info->sems[semnum].sempid = current_process->pid;
 		return 0;
@@ -112,7 +112,7 @@ static inline int _sys_semop_int(sem_info_t *info, short semnum, short semop, __
 
 int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 {
-	int block = 1, again = 0, waitz = 0, nblock;
+	int block = 1, again = 0, waitz = 0, nblock, s;
 	size_t n;
 	sem_info_t *info;
 
@@ -132,7 +132,11 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 	while (block) {
 		block = 0;
 		for (n = 0; n < nsops; n++) {
-			if (sysv_sem_checkblock_int(info, sops[n].sem_num, sops[n].sem_op, sops[n].sem_flg)) {	
+			if ( checkblock_int(
+				  info,
+				  sops[n].sem_num,
+				  sops[n].sem_op,
+				  sops[n].sem_flg)) {
 				block = 1;
 				again = sops[n].sem_flg & IPC_NOWAIT;
 				waitz = sops[n].sem_op == 0;
@@ -148,7 +152,11 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 			}
 			if (waitz) {
 				info->sems[nblock].semzcnt++;
-				if (semaphore_idown(info->zwaitsem)) {
+				s = semaphore_ndown(
+					/* semaphore */ info->zwaitsem,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+				if ( s != SCHED_WAIT_OK ) {
 					info->sems[nblock].semzcnt--;
 					info->refs--;
 					syscall_errno = EINTR;
@@ -157,9 +165,13 @@ int _sys_semop(int semid, struct sembuf *sops, size_t nsops)
 					return -1;
 				}
 				info->sems[nblock].semzcnt--;
-			} else { 
+			} else {
 				info->sems[nblock].semncnt++;
-				if (semaphore_idown(info->nwaitsem)) {
+				s = semaphore_ndown(
+					/* semaphore */ info->nwaitsem,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+				if ( s != SCHED_WAIT_OK ) {
 					info->sems[nblock].semncnt--;
 					info->refs--;
 					syscall_errno = EINTR;
@@ -207,10 +219,10 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 		syscall_errno = EINVAL;
 		return -1;
 	}
-	 
+
 	switch (cmd) {
 		case GETVAL:
-			if (!ipc_have_permissions(&(info->info.sem_perm), IPC_PERM_READ)) {
+			if ( !ipc_have_permissions(&(info->info.sem_perm), IPC_PERM_READ)) {
 				syscall_errno = EACCES;
 				return -1;
 			}
@@ -258,7 +270,7 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 				syscall_errno = EFAULT;
 				heapmm_free(allbuf, sizeof(unsigned short) * info->info.sem_nsems);
 				return -1;
-			}	
+			}
 			heapmm_free(allbuf, sizeof(unsigned short) * info->info.sem_nsems);
 			return 0;
 		case SETALL:
@@ -275,7 +287,7 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 				syscall_errno = EFAULT;
 				heapmm_free(allbuf, sizeof(unsigned short) * info->info.sem_nsems);
 				return -1;
-			}	
+			}
 			for (n = 0; n < info->info.sem_nsems; n++)
 				info->sems[n].semval = allbuf[n];
 			heapmm_free(allbuf, sizeof(unsigned short) * info->info.sem_nsems);
@@ -312,13 +324,13 @@ int _sys_semctl(int id, int semnum, int cmd, void *buf)
 			}
 			info->del = 1;
 			if (!info->refs) {
-				sem_do_delete(info);				
+				sem_do_delete(info);
 			} else {
 				semaphore_add(info->zwaitsem, 999999);
 				semaphore_add(info->nwaitsem, 999999);
 			}
 			return 0;
-		default: 
+		default:
 			syscall_errno = EINVAL;
 			return -1;
 	}
@@ -337,7 +349,7 @@ int _sys_semget(key_t key, int nsems, int flags)
 	int n;
 	sem_info_t *info = NULL;
 	if (key != IPC_PRIVATE)
-		info = sem_get_by_key(key);	
+		info = sem_get_by_key(key);
 	if (info && (flags & IPC_CREAT) && (flags & IPC_EXCL)) {
 		syscall_errno = EEXIST;
 		return -1;
@@ -415,6 +427,6 @@ int _sys_semget(key_t key, int nsems, int flags)
 	} else if (info->del) {
 		syscall_errno = EIDRM;
 		return -1;
-	}	
+	}
 	return info->id;
 }

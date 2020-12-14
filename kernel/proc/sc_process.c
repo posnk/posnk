@@ -204,7 +204,7 @@ SYSCALL_DEF0(yield)
 
 SYSCALL_DEF3(waitpid)
 {
-	int status, options;
+	int status, options, s;
 	pid_t pid;
 	process_child_event_t *ev_info;
 	process_info_t *chld;
@@ -238,7 +238,12 @@ retry:
 				if (ev_info)
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(current_process->child_sema)) {
+				s = semaphore_ndown(
+					/* semaphore */ current_process->child_sema,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+
+				if ( s != SCHED_WAIT_OK ) {
 					syscall_errno = EINTR;
 					return -1;
 				}
@@ -265,7 +270,12 @@ retry:
 				if (ev_info != NULL)
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(current_process->child_sema)) {
+				s = semaphore_ndown(
+					/* semaphore */ current_process->child_sema,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+
+				if ( s != SCHED_WAIT_OK ) {
 					syscall_errno = EINTR;
 					return -1;
 				}
@@ -293,7 +303,12 @@ retry:
 				if (ev_info)
 					process_absorb_event(ev_info);
 
-				if (semaphore_idown(current_process->child_sema)) {
+				s = semaphore_ndown(
+					/* semaphore */ current_process->child_sema,
+					/* timeout   */ 0,
+					/* flags     */ SCHED_WAITF_INTR );
+
+				if ( s != SCHED_WAIT_OK ) {
 					syscall_errno = EINTR;
 					return -1;
 				}

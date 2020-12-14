@@ -67,29 +67,30 @@ HLFLAGS = -g -lfuse
 LIBS = -lgcc
 
 # define the source files for using Peter's kernel heap manager
-SRCS_PHEAPMM = kernel/heapmm.c
+SRCS_PHEAPMM = kernel/mm/heapmm.c
 
 # define the source files for using Doug Lea's malloc as kernel heap manager
-SRCS_DLHEAPMM = kernel/dlmalloc.c \
-		kernel/dlheapmm.c
+SRCS_DLHEAPMM = kernel/mm/dlmalloc.c \
+		kernel/mm/dlheapmm.c
 
 # define the platform-independent source files
-SRCS = kernel/physmm.c \
-kernel/paging.c \
-kernel/blkcache.c \
+SRCS = kernel/mm/physmm.c \
+kernel/mm/paging.c \
 kernel/earlycon.c \
 kernel/exception.c \
-kernel/interrupt.c \
-kernel/scheduler.c \
-kernel/synch.c \
-kernel/process.c \
-kernel/signal.c \
-kernel/procvmm.c \
-kernel/permissions.c \
-kernel/blkdev.c \
-kernel/chardev.c \
-kernel/tty.c \
-kernel/pipe.c \
+kernel/dev/blkcache.c \
+kernel/dev/interrupt.c \
+kernel/dev/drivermgr.c \
+kernel/dev/blkdev.c \
+kernel/dev/chardev.c \
+kernel/task/scheduler.c \
+kernel/task/synch.c \
+kernel/proc/process.c \
+kernel/proc/signal.c \
+kernel/proc/procvmm.c \
+kernel/proc/exec.c \
+kernel/proc/sc_process.c \
+kernel/proc/sc_signals.c \
 kernel/vfs/icache.c \
 kernel/vfs/dcache.c \
 kernel/vfs/ifswrap.c \
@@ -98,35 +99,34 @@ kernel/vfs/perm.c \
 kernel/vfs/ifsmgr.c \
 kernel/vfs/mount.c \
 kernel/vfs.c \
-kernel/elfloader.c \
-kernel/tar.c \
-kernel/version.c \
-kernel/syscall.c \
-kernel/streams.c \
+kernel/binfmt/elfloader.c \
 kernel/svipc/ipc.c \
 kernel/svipc/shm.c \
 kernel/svipc/sem.c \
 kernel/svipc/msg.c \
-kernel/time.c \
-kernel/exec.c \
-kernel/drivermgr.c \
-kernel/sc_process.c \
-kernel/sc_perm.c \
-kernel/sc_vfs.c \
-kernel/sc_ipc.c \
-kernel/sc_streams.c \
-kernel/sc_time.c \
-kernel/sc_signals.c \
-kernel/shutdown.c \
-kernel/init/cmdline.c \
-kernel/init/kinit.c \
-kernel/init/uinit.c \
-kernel/init/idle.c \
+kernel/svipc/sc_ipc.c \
 kernel/console/srcmap.c \
 kernel/console/conmgr.c \
 kernel/console/conput.c \
 kernel/console/consink.c \
 kernel/console/cmdline.c \
+kernel/init/cmdline.c \
+kernel/init/kinit.c \
+kernel/init/uinit.c \
+kernel/init/idle.c \
+kernel/permissions.c \
+kernel/tty.c \
+kernel/pipe.c \
+kernel/tar.c \
+kernel/version.c \
+kernel/syscall.c \
+kernel/streams.c \
+kernel/time.c \
+kernel/sc_perm.c \
+kernel/sc_vfs.c \
+kernel/sc_streams.c \
+kernel/sc_time.c \
+kernel/shutdown.c \
 kdbg/heapdbg.c \
 kdbg/taskdbg.c \
 kdbg/kdbg.c \
