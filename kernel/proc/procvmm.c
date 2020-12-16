@@ -108,15 +108,15 @@ int procvmm_check( const void *dest, size_t size)
 	uintptr_t p;
 
 	/* Compute the start of the first page of the area */
-	b = ((uintptr_t)dest) & ~PHYSMM_PAGE_ADDRESS_MASK;
+	b = ((uintptr_t)dest) & ~PAGE_ADDR_MASK;
 
-	/* If there is no current proces or the current process is the kernel
-	 * init process, we always allow creating the mapping */ //TODO: WHY?
+	/* If there is no current proces or the current process is the init
+	 * process, we always allow creating the mapping */ //TODO: WHY?
 	if ( (!current_process) || current_process->pid == 0 )
 		return 1;
 
 	/* Check if a mapping exists for any of the pages in the range */
-	for ( p = 0; p < size; p += PHYSMM_PAGE_SIZE ) {
+	for ( p = 0; p < size; p += PAGE_SIZE ) {
 		if (!procvmm_get_memory_region((void *) (b + p))) {
 			return 0;
 		}
@@ -149,7 +149,7 @@ int procvmm_check_string( const char *str, size_t size_max )
 	for (p = 0; p < size_max; p++) {
 
 		/* Keep track of the page we're on */
-		cp = (b + p) & PHYSMM_PAGE_ADDRESS_MASK;
+		cp = (b + p) & PAGE_ADDR_MASK;
 
 		/* If this is a different page than last iteration, verify
 		 * that we have access to it */
@@ -182,7 +182,7 @@ int procvmm_check_stringlist(	const char **dest,
 	b = ( uintptr_t ) dest;
 
 	for (p = 0; p < len_max; p++) {
-		cp = (b + 4*p) & PHYSMM_PAGE_ADDRESS_MASK;
+		cp = (b + 4*p) & PAGE_ADDR_MASK;
 		if ( lp != cp ) {
 			if (!procvmm_get_memory_region(dest))
 				return PROCVMM_INV_MAPPING;
@@ -214,8 +214,8 @@ static int get_mmap_iter (llist_t *node, void *param)
 process_mmap_t *procvmm_get_memory_region(const void *address)
 {
 
-	/* If this task does not belong to a process or belongs to the kernel
-	 * the procvmm is not active, return NULL */
+	/* If this task does not belong to a process or belongs to the
+	 * kernel the procvmm is not active, return NULL */
 	if ( (!current_process) || current_process->pid == 0 )
 		return NULL;
 
@@ -239,7 +239,7 @@ static process_mmap_t *mmap_alloc_init( const char *name ) {
 	memset( dst, 0, sizeof(process_mmap_t) );
 
 	/* Allocate dst region name */
-	dst->name    = heapmm_alloc( strlen( name ) + 1 );
+	dst->name = heapmm_alloc( strlen( name ) + 1 );
 	if ( !dst->name )
 		goto error_name;
 
@@ -264,7 +264,11 @@ static void mmap_free( process_mmap_t *region )
 
 	/* Adjust SHM refcount, if needed */
 	if ( region->flags & PROCESS_MMAP_FLAG_SHM ) {
+
 		region->shm->info.shm_nattch--;
+		if ( region->shm->del && !region->shm->info.shm_nattch )
+			shm_do_delete( region->shm );
+
 	}
 
 	/* Free region name */
@@ -376,9 +380,9 @@ static int coll_check_iter ( llist_t *_b, void *_c )
  * @brief Check whether region collides with any existing region
  *
  * @param region     The region to check
- * @return           True iff the region collided with another
+ * @return           The region that collided with the arg region.
  */
-static int does_collide( process_mmap_t *region )
+static process_mmap_t * find_collide( process_mmap_t *region )
 {
 	llist_t *overlap;
 
@@ -386,11 +390,56 @@ static int does_collide( process_mmap_t *region )
 	overlap = llist_iterate_select(
 	     /* list     */ current_process->memory_map,
 		 /* iterator */ &coll_check_iter,
-		 /* param    */ (void *) region );
+		 /* param    */ region );
 
 	/* If no region was found, there are no collisions */
-	return overlap != NULL;
+	return ( process_mmap_t * ) overlap;
 
+}
+
+/**
+ * @brief Check whether region collides with any existing region
+ *
+ * @param region     The region to check
+ * @return           True iff the region collided with another
+ */
+static int does_collide( process_mmap_t *region )
+{
+	return find_collide( region ) != NULL;
+}
+
+/**
+ * Tries to find a suitable address for a region of size
+ * @param size        The size of the region to allocate
+ * @return            The address that was found, or NULL if none was.
+ */
+static void *find_address( size_t size )
+{
+	process_mmap_t region, *_r;
+	uintptr_t end_region;
+
+	/* Set up the fake region to use to call find_collide */
+	region.start = (void *) current_process->heap_max;
+	region.size  = size;
+
+	/* As long as the address range tried overlaps with an existing
+	 * region, try to round up the end of the colliding region to a
+	 * page boundary and try that as the next address. This effectively
+	 * performs a greedy search for a sufficiently large hole in the
+	 * processes address map */
+	while ( ( _r = find_collide( &region ) ) != NULL ) {
+
+		end_region = (uintptr_t) ( _r->start + _r->size );
+
+		region.start = ( void *) PAGE_ROUND_UP( end_region );
+
+		/* Check if we ran out of address space */
+		if ( region.start >= current_process->stack_top )
+			return NULL;
+
+	}
+
+	return region.start;
 }
 
 
@@ -495,7 +544,7 @@ int procvmm_mmap_anon (
 /**
  * @brief Map file or stream into region of memory
  *
- * If size > (file_sz - offset) the remaining area is filled with zeros
+ * If size > file_sz the remaining area is filled with zeros
  * Device maps require fd to be set. If it is not, the device file will
  * be mapped as a regular file.
  *
@@ -620,7 +669,7 @@ error_collide:
 /**
  * @brief Map file into region of memory
  *
- * If size > (file_sz - offset) the remaining area is filled with zeros
+ * If size > file_sz the remaining area is filled with zeros
  * This function does not support mapping device files.
  *
  * @param start       The base address of the region.
@@ -659,7 +708,7 @@ int procvmm_mmap_file (
 /**
  * @brief Map stream into region of memory
  *
- * If size > (file_sz - offset) the remaining area is filled with zeros
+ * If size > file_sz the remaining area is filled with zeros
  *
  * @param start       The base address of the region.
  * @param size        The size of the region to map.
@@ -753,10 +802,12 @@ int procvmm_mmap_shm(
 	if (!region)
 		return ENOMEM;
 
+	flags |= PROCESS_MMAP_FLAG_SHM | PROCESS_MMAP_FLAG_PUBLIC;
+
 	/* Fill region fields */
 	region->start = start;
 	region->size = shm->info.shm_segsz;
-	region->flags = flags | PROCESS_MMAP_FLAG_SHM | PROCESS_MMAP_FLAG_PUBLIC;
+	region->flags = flags;
 	region->shm = shm;
 
 	/* Bump file usage count */
@@ -798,6 +849,7 @@ void procvmm_unmmap_other(process_info_t *task, process_mmap_t *region)
 
 
 				//TODO: Unmap-other?
+
 			}
 		}
 	}
@@ -851,146 +903,191 @@ void procvmm_unmmap(process_mmap_t *region)
 	mmap_free( region );
 }
 
-int procvmm_handle_fault(void *address)
-{//TODO: Implement public mappings
+/**
+ * Handle user land demand paging
+ * @param _address The address where the fault occurred
+ * @return         Returns whether or not the page fault could be
+ *                 resolved
+ */
+int procvmm_handle_fault( void *_address )
+{
 	page_flags_t flags = PAGING_PAGE_FLAG_USER;
 	uintptr_t in_region;
 	aoff_t file_off;
-	size_t read_size = PHYSMM_PAGE_SIZE;
+	size_t read_size;
 	aoff_t rd_count = 0;
 	physaddr_t frame;
-	process_mmap_t *region = procvmm_get_memory_region(address);
+	process_mmap_t *region;
 	int status;
-	address = (void *) (((uintptr_t)address) & ~PHYSMM_PAGE_ADDRESS_MASK);
-	if (!region)
+	uintptr_t address;
+
+	/* Find the region containing the address */
+	region = procvmm_get_memory_region( _address );
+
+	/* If there is none, this is a fatal fault */
+	if ( !region )
 		return 0;
 
 	/* Device maps are not demand paged, return 0 (fail to map) */
-	if (region->flags & PROCESS_MMAP_FLAG_DEVICE)
+	if ( region->flags & PROCESS_MMAP_FLAG_DEVICE )
 		return 0;
 
-	/* SHM has pre-allocated frames, no neet to allocate one now */
-	if ( ~region->flags & PROCESS_MMAP_FLAG_SHM ) {
-		frame = physmm_alloc_frame();
-		if (!frame)
-			return 0;
-	}
+	/* All logic from here on deals with a whole page, so round down */
+	address = PAGE_ROUND_DOWN( (uintptr_t) _address );
+
+	/* Determine how far into the region the page miss is */
+	in_region = address - ( uintptr_t ) region->start;
 
 	/* Handle WRITE flag */
 	if (region->flags & PROCESS_MMAP_FLAG_WRITE)
 		flags |= PAGING_PAGE_FLAG_RW;
 
-	if ( ~region->flags & PROCESS_MMAP_FLAG_SHM ) {
-		paging_map(address, frame, flags);
-		memset(address, 0, read_size);
-	}
+	/* SHM has pre-allocated frames, no need to allocate one now */
+	if ( region->flags & PROCESS_MMAP_FLAG_SHM ) {
 
-	if (region->flags & PROCESS_MMAP_FLAG_FILE) {
-		assert(region->file != NULL);
-		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
-		file_off = region->offset + ((aoff_t) in_region);
-		if ((in_region < (uintptr_t) region->file_sz) && (file_off < region->file->size)) {
-			if ((in_region + read_size) > (uintptr_t) region->file_sz)
-				read_size = (size_t) (region->file_sz - in_region);
-			status = vfs_read(region->file, file_off, address, read_size, &rd_count, 0);
-			if (status || rd_count != read_size) {
-				printf( CON_ERROR,
-					"demand page read error "
-					"%i byte %i in %s",
-					status, rd_count, region->name );
-				paging_unmap(address);
-				physmm_free_frame(frame);
-				return 0;
+		/* Make sure the region has a valid SHM segment pointer */
+		assert(region->shm != NULL);
+
+		/* Map the right frame */
+		paging_map(
+		    (void *) address,
+		    region->shm->frames[in_region / PHYSMM_PAGE_SIZE],
+		    flags );
+
+	} else { //TODO: Handle shared mappings
+
+		/* Try to allocate memory to fill the page */
+		frame = physmm_alloc_frame();
+		if ( frame == PHYSMM_NO_FRAME ) {
+			//TODO: This should not kill process, only in the worst case
+			//      freeze it until more memory is available.
+			return 0;
+		}
+
+		/* Map and zero the newly allocated memory */
+		paging_map( (void *) address, frame, flags );
+		memset( (void *) address, 0, PAGE_SIZE );
+
+		/* If this is a file mapping, load the contents of the file */
+		if (region->flags & PROCESS_MMAP_FLAG_FILE) {
+
+			/* Make sure that the region has a valid inode ref */
+			assert( region->file != NULL );
+
+			/* Compute the offset into the file */
+			file_off = region->offset + (aoff_t) in_region;
+
+			/* Make sure page is within file map range */
+			if ( ( in_region < (uintptr_t) region->file_sz ) &&
+			     ( file_off < region->file->size ) ) {
+
+				read_size = PHYSMM_PAGE_SIZE;
+
+				/* If only part of the page is in the file map range,
+				 * truncate the read */
+				if ( (in_region + read_size) > (uintptr_t) region->file_sz)
+					read_size = (size_t) (region->file_sz - in_region);
+
+				status = vfs_read(
+				    /* file   */   region->file,
+				    /* offset */   file_off,
+				    /* buffer */   (void *) address,
+				    /* size   */   read_size,
+				    /* size_out */ &rd_count, 0);
+
+				if ( status || rd_count != read_size ) {
+					/* Could not read file, report error and undo
+					 * already mapped memory */
+
+					printf( CON_ERROR,
+						"demand page read error "
+						"%i byte %i in %s",
+						status, rd_count, region->name );
+
+					paging_unmap( (void *) address );
+					physmm_free_frame( frame );
+
+					return 0;
+				}
 			}
 		}
 	}
-	if (region->flags & PROCESS_MMAP_FLAG_SHM) {
-		assert(region->shm != NULL);
-		in_region = ((uintptr_t) address) - ((uintptr_t) region->start);
-		//debugcon_printf("shmpf: 0x%x rsz:%i ir:%i pa:%x\n", address, region->size, in_region, region->shm->frames[in_region / PHYSMM_PAGE_SIZE]);
-		paging_map(address, region->shm->frames[in_region / PHYSMM_PAGE_SIZE], flags);
-	}
+
 	return 1;
 
+}
+
+void *_sys_mmap(
+        void *addr,
+        size_t len,
+        int prot,
+        int flags,
+        int fd,
+        off_t offset )
+{
+	int st;
+	int _flags = 0;
+
+	/* If the address is not to be fixed, find a new address */
+	if ( ~flags & MAP_FIXED )
+		addr = find_address( len );
+
+	/* Convert POSIX flags into internal procvmm flags */
+	if ( flags & MAP_SHARED )
+		_flags |= PROCESS_MMAP_FLAG_PUBLIC;
+
+	if ( prot & PROT_WRITE )
+		_flags |= PROCESS_MMAP_FLAG_WRITE;
+
+	st = procvmm_mmap_stream(
+		/* addr    */ addr,
+		/* size    */ len,
+		/* fd      */ fd,
+		/* offset  */ (aoff_t) offset,
+		/* file_sz */ len,
+		/* flags   */ _flags,
+		/* name    */ NULL );
+
+
+	if ( st ) {
+		syscall_errno = st;
+		return MAP_FAILED;
+	} else
+		return addr;
 }
 
 void *procvmm_attach_shm(void *addr, shm_info_t *shm, int flags)
 {
 	int st;
-	uintptr_t in_page;
-	process_mmap_t region, *_r;
-	if (addr == NULL) {
-		region.start = (void *) current_process->heap_max;
-		region.size = shm->info.shm_segsz;
-		while (1) {
-			_r = (process_mmap_t *) llist_iterate_select(
-				current_process->memory_map,
-				&coll_check_iter, (void *) &region);
-			if (!_r)
-				break;
-			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);
-		}
-		addr = region.start;
-	}
-	//debugcon_printf("ipt\n");
-	/* If start is not page alligned, try to adjust offset in such a way
-	 * that the file can be loaded at the start of the page */
-	in_page = ((uintptr_t) addr) & PHYSMM_PAGE_ADDRESS_MASK;
-	if (in_page) {
-		/* Page allign start */
-		addr = (void*)( ((uintptr_t)addr) - in_page);
-	}
-	//debugcon_printf("ashm: %x\n",addr);
+
+	/* If the address is not set, find one */
+	if ( addr == NULL )
+		addr = find_address( shm->info.shm_segsz );
+
+	/* If start is not page alligned, round down */
+	addr = (void *) PAGE_ROUND_DOWN( (uintptr_t) addr );
+
 	st = procvmm_mmap_shm(addr, shm, flags, NULL);
-	if (st) {
+
+	if ( st ) {
 		syscall_errno = st;
 		return (void *) -1;
+	} else {
+		return addr;
 	}
-	//debugcon_printf("raddr\n");
-	return addr;
 }
 
 int procvmm_detach_shm(void *shmaddr)
 {
-	process_mmap_t *region = (process_mmap_t *) llist_iterate_select(current_process->memory_map, &get_mmap_iter, shmaddr);
+	process_mmap_t *region;
+
+	region = procvmm_get_memory_region( shmaddr );
 	if (!region) {
 		syscall_errno = EINVAL;
 		return -1;
 	}
-	region->shm->info.shm_nattch--;
-	if (region->shm->del && !region->shm->info.shm_nattch)
-		shm_do_delete(region->shm);
-	procvmm_unmmap(region);
+
+	procvmm_unmmap( region );
 	return 0;
 }
 
-void *_sys_mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
-{
-	int st;
-	int _flags = 0;
-	process_mmap_t region, *_r;
-	if (flags & MAP_SHARED)
-		flags |= PROCESS_MMAP_FLAG_PUBLIC;
-	if (!(flags & MAP_FIXED)) {
-		region.start = (void *) current_process->heap_max;
-		region.size = len;
-		while (1) {
-			_r = (process_mmap_t *) llist_iterate_select(
-				current_process->memory_map,
-				&coll_check_iter, (void *) &region);
-			if (!_r)
-				break;
-			region.start = (void *)((((uintptr_t)_r->start) + _r->size + PHYSMM_PAGE_ADDRESS_MASK) & ~PHYSMM_PAGE_ADDRESS_MASK);
-		}
-		addr = region.start;
-	}
-
-	if (prot & PROT_WRITE)
-		_flags |= PROCESS_MMAP_FLAG_WRITE;
-	st = procvmm_mmap_stream(addr, len, fd, (aoff_t) offset, len, _flags, NULL);
-	if (st) {
-		syscall_errno = st;
-		return MAP_FAILED;
-	}
-	return addr;
-}

@@ -16,28 +16,18 @@
 #include <stdint.h>
 
 #include "config.h"
+#include "kernel/address.h"
 
 #ifdef ARCH_I386
-	#define PHYSMM_BITMAP_SIZE		(32768)
-	#define PHYSMM_PAGE_ADDRESS_MASK	(0xFFF)
-	#define PHYSMM_PAGE_SIZE		(4096)
-
-	/**
-	 * Type guaranteed to be able to contain a physical address
-	 */
-	typedef uint32_t	physaddr_t;
+	#define PHYSMM_BITMAP_SIZE          (32768)
 #endif
 
 #ifdef ARCH_ARMV7
-	#define PHYSMM_BITMAP_SIZE		(32768)
-	#define PHYSMM_PAGE_ADDRESS_MASK	(0xFFF)
-	#define PHYSMM_PAGE_SIZE		(4096)
-
-	/**
-	 * Type guaranteed to be able to contain a physical address
-	 */
-	typedef uint32_t	physaddr_t;
+	#define PHYSMM_BITMAP_SIZE          (32768)
 #endif
+
+#define PHYSMM_PAGE_ADDRESS_MASK    PAGE_ADDR_MASK
+#define PHYSMM_PAGE_SIZE            PAGE_SIZE
 
 #define PHYSMM_NO_FRAME	(1)
 

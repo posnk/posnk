@@ -19,13 +19,13 @@
 #include "kernel/physmm.h"
 
 typedef struct {
-	llist_t		 link;
-	key_t		 key;
-	int		 id;
-	int		 del;
-	int		 zero;
-	struct shmid_ds	 info;
-	physaddr_t	*frames;
+	llist_t          link;
+	key_t            key;
+	int              id;
+	int              del;
+	int              zero;
+	struct shmid_ds  info;
+	physaddr_t	*    frames;
 } shm_info_t;
 
 
