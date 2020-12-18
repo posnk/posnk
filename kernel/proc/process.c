@@ -28,7 +28,7 @@
 process_info_t *kernel_process;
 llist_t        *process_list;
 
-pid_t		    pid_counter = 1;
+pid_t           pid_counter = 1;
 
 void create_kprocess()
 {
@@ -56,7 +56,7 @@ void create_kprocess()
 	/* Initialize process memory info */
 	kernel_process->heap_start	 = (void *) 0xE0000000;
 	kernel_process->heap_end  	 = (void *) 0x12345678;
-		// TOTALLY NOT RELEVANT ON PROCESS ZERO
+	// TOTALLY NOT RELEVANT ON PROCESS ZERO
 	kernel_process->stack_bottom = (void *) 0x12345678;
 	kernel_process->stack_top	 = (void *) 0x12345678;
 
@@ -106,14 +106,14 @@ process_info_t *fork_process( void )
 	memset(child, 0, sizeof( process_info_t));
 
 	/* Initialize process info */
-	child->pid  = pid_counter++;
-	child->uid  = current_process->uid;
-	child->gid  = current_process->gid;
+	child->pid            = pid_counter++;
+	child->uid            = current_process->uid;
+	child->gid            = current_process->gid;
 	child->effective_uid  = current_process->effective_uid;
 	child->effective_gid  = current_process->effective_gid;
-	child->pgid = current_process->pgid;
-	child->sid = current_process->sid;
-	child->parent_pid = current_process->pid;
+	child->pgid           = current_process->pgid;
+	child->sid            = current_process->sid;
+	child->parent_pid     = current_process->pid;
 
 	child->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);
 	strcpy(child->name, current_process->name);
