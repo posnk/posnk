@@ -1,4 +1,4 @@
-/* 
+/*
  * arch/i386/signal.c
  *
  * Part of P-OS kernel.
@@ -22,7 +22,7 @@
 #include "arch/i386/protection.h"
 #include "arch/i386/x86.h"
 
-/**	
+/**
  * Push data onto process stack
  */
 int process_push_user_data(const void *data, size_t size)
@@ -66,7 +66,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 
 	act = cproc->signal_actions[signal];
 	altstack = &ctask->signal_altstack;
-	
+
 	/* Store FPU state */
 	i386_fpu_sigenter();
 
@@ -86,7 +86,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	}
 
 	/* If SA_NODEFER is not set, add current signal to mask */
-	if ( !( act.sa_flags & ( SA_RESETHAND | SA_NODEFER ) ) ) 
+	if ( !( act.sa_flags & ( SA_RESETHAND | SA_NODEFER ) ) )
 		sigaddset( &ctask->signal_mask, signal );
 
 	/* If SA_RESETHAND is set, reset the handler to SIG_DFL */
@@ -97,12 +97,12 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	ctask->signal_mask |= act.sa_mask;
 
 	/* If SA_ONSTACK is set and there is an available alternate stack, use it*/
-	if ( ( act.sa_flags & SA_ONSTACK ) && 
+	if ( ( act.sa_flags & SA_ONSTACK ) &&
 		 !( altstack->ss_flags & ( SS_DISABLE | SS_ONSTACK ) ) ) {
-		
+
 		/* Start stack at the altstack top */
 		tctx->user_regs.esp = ( uint32_t ) altstack->ss_sp + altstack->ss_size;
-	
+
 		/* Mark altstack as being used */
 		altstack->ss_flags |= SS_ONSTACK;
 
@@ -112,13 +112,20 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	}
 
 	/* Create a fake call frame */
-	debugcon_printf("Pushing signal number\n");
+	debugcon_printf("Pushing signal info\n");
 
-	if (!process_push_user_data( info, sizeof( struct siginfo ) ) )
-		return 0;
+	if ( info ) {
+		/* Push the siginfo structure */
+		if (!process_push_user_data( info, sizeof( struct siginfo ) ) )
+			return 0;
 
-	/* Get start address of siginfo */
-	usrinfo = ( void * ) tctx->user_regs.esp;
+		/* Get start address of siginfo */
+		usrinfo = ( void * ) tctx->user_regs.esp;
+	} else {
+		/* Did not push signal info, pass NULL to userland */
+		usrinfo = NULL;
+	}
+
 
 	if (!process_push_user_data(&restore, sizeof( i386_sigrest_t ) ) )
 		return 0;
@@ -130,13 +137,13 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 		return 0;//Parameter: sigret
 	if (!process_push_user_data(&sigret, 4))
 		return 0;//Parameter: dummy ( to patch shift by ret )
-	if (!process_push_user_data(&context, 4)) 
+	if (!process_push_user_data(&context, 4))
 		return 0;//Parameter: context
 	if (!process_push_user_data(&usrinfo, 4))
 		return 0;//Parameter: info
-	
+
 	if (!process_push_user_data(&signal, 4))
-		return 0;//Parameter: signal number 
+		return 0;//Parameter: signal number
 
 	debugcon_printf("Pushing return addr\n");
 	if (!process_push_user_data(&(cproc->signal_handler_exit_func), 4))
@@ -146,7 +153,7 @@ int invoke_signal_handler( int signal, siginfo_t *info, void *context )
 	if ( act.sa_flags & SA_SIGINFO )
 		tctx->user_eip = (uint32_t) act.sa_sigaction;
 	else
-	
+
 		tctx->user_eip = (uint32_t) act.sa_handler;
 
 	return 1;

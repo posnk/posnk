@@ -339,7 +339,7 @@ int process_handle_signal( int sig )
 		/* We have a real handler in place, this architecture specific */
 		/* function should take care of the relevant sa_flags */
 		//TODO: Implement siginfo and ucontext
-		invoke_signal_handler( sig, NULL, NULL );
+		invoke_signal_handler( sig, &cproc->signal_info[sig], NULL );
 
 		return 0;
 
