@@ -466,6 +466,8 @@ int vfs_chdir(dir_cache_t *dirc);
 
 SFUNC(char *, vfs_get_filename, const char *path);
 
+int vfs_access( const char *path, int mode );
+
 ///@}
 
 

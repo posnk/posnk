@@ -109,7 +109,8 @@ char *syscall_names[] =
 	"sigaltstack",
 	"sigpending",
 	"sigsuspend",
-	"uname"
+	"uname",
+	"access"
 };
 
 syscall_func_t syscall_table[CONFIG_MAX_SYSCALL_COUNT];
@@ -318,4 +319,5 @@ void syscall_init()
 	syscall_register(SYS_SIGPENDING, &sys_sigpending);
 	syscall_register(SYS_SIGSUSPEND, &sys_sigsuspend);
 	syscall_register(SYS_UNAME, &sys_uname);
+	syscall_register(SYS_ACCESS, &sys_access);
 }

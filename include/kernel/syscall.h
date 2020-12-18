@@ -23,7 +23,7 @@
 	__attribute__(( unused )) uint32_t d,	\
 	__attribute__(( unused )) uint32_t e,	\
 	__attribute__(( unused )) uint32_t f )
-	
+
 #define SYSCALL_DEF1(Name)	uint32_t sys_ ## Name ( \
 				  uint32_t a,	\
 	__attribute__(( unused )) uint32_t b,	\
@@ -39,7 +39,7 @@
 	__attribute__(( unused )) uint32_t d,	\
 	__attribute__(( unused )) uint32_t e,	\
 	__attribute__(( unused )) uint32_t f )
-	
+
 #define SYSCALL_DEF3(Name)	uint32_t sys_ ## Name ( \
 				  uint32_t a,	\
 				  uint32_t b,	\
@@ -47,7 +47,7 @@
 	__attribute__(( unused )) uint32_t d,	\
 	__attribute__(( unused )) uint32_t e,	\
 	__attribute__(( unused )) uint32_t f )
-	
+
 #define SYSCALL_DEF4(Name)	uint32_t sys_ ## Name ( \
 				  uint32_t a,	\
 				  uint32_t b,	\
@@ -55,7 +55,7 @@
 				  uint32_t d,	\
 	__attribute__(( unused )) uint32_t e,	\
 	__attribute__(( unused )) uint32_t f )
-	
+
 #define SYSCALL_DEF5(Name)	uint32_t sys_ ## Name ( \
 				  uint32_t a,	\
 				  uint32_t b,	\
@@ -63,7 +63,7 @@
 				  uint32_t d,	\
 	                          uint32_t e,	\
 	__attribute__(( unused )) uint32_t f )
-	
+
 #define SYSCALL_DEF6(Name)	uint32_t sys_ ## Name ( \
 				  uint32_t a,	\
 				  uint32_t b,	\
@@ -83,7 +83,7 @@ void syscall_init(void);
 void syscall_register(int call_id, syscall_func_t func);
 void syscall_dispatch(void *user_param_block, void *instr_ptr);
 uint32_t syscall_dispatch_new( int call,
-				uint32_t a, 
+				uint32_t a,
 				uint32_t b,
 				uint32_t c,
 				uint32_t d,
@@ -256,5 +256,7 @@ uint32_t sys_sigsuspend(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, 
 uint32_t sys_sigpending(uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f);
 
 uint32_t sys_uname( uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f);
+uint32_t sys_access( uint32_t a,uint32_t b,uint32_t c,uint32_t d,uint32_t e, uint32_t f);
+
 
 #endif

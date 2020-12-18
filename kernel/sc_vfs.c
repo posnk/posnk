@@ -29,7 +29,7 @@ SYSCALL_DEF2(link)
 	int sza, szb;
 	sza = procvmm_check_string( (char *)a, CONFIG_FILE_MAX_NAME_LENGTH );
 	szb = procvmm_check_string( (char *)b, CONFIG_FILE_MAX_NAME_LENGTH );
-	if (( sza < 0 ) || ( szb < 0 )) { 
+	if (( sza < 0 ) || ( szb < 0 )) {
 		syscall_errno = EFAULT;
 		return (uint32_t) -1;
 	}
@@ -45,7 +45,7 @@ SYSCALL_DEF2(link)
 		heapmm_free(oldpath, sza);
 		heapmm_free(newpath, szb);
 		return (uint32_t) -1;
-	}	
+	}
 	status = vfs_link(oldpath, newpath);
 	if (status != 0) {
 		syscall_errno = status;
@@ -90,7 +90,7 @@ SYSCALL_DEF4(mount)
 		heapmm_free(newpath, szb);
 		heapmm_free(fs, szc);
 		return (uint32_t) -1;
-	}	
+	}
 	status = vfs_mount(oldpath, newpath, fs, d);
 	if (status != 0) {
 		syscall_errno = status;
@@ -127,7 +127,7 @@ SYSCALL_DEF2(symlink)
 		heapmm_free(oldpath, sza);
 		heapmm_free(newpath, szb);
 		return (uint32_t) -1;
-	}	
+	}
 	status = vfs_symlink(oldpath, newpath);
 	if (status != 0) {
 		syscall_errno = status;
@@ -472,7 +472,7 @@ int _sys_stat(char *path, struct stat* buf)
 	buf->st_nlink = inode->hard_link_count;
 	buf->st_uid = inode->uid;
 	buf->st_gid = inode->gid;
-	buf->st_atime = (time_t) inode->atime; 
+	buf->st_atime = (time_t) inode->atime;
 	buf->st_mtime = (time_t) inode->mtime;
 	buf->st_ctime = (time_t) inode->ctime;
 	vfs_inode_release(inode);
@@ -595,7 +595,7 @@ int _sys_lstat(char *path, struct stat* buf)
 	buf->st_nlink = inode->hard_link_count;
 	buf->st_uid = inode->uid;
 	buf->st_gid = inode->gid;
-	buf->st_atime = (time_t) inode->atime; 
+	buf->st_atime = (time_t) inode->atime;
 	buf->st_mtime = (time_t) inode->mtime;
 	buf->st_ctime = (time_t) inode->ctime;
 	vfs_inode_release(inode);
@@ -654,6 +654,31 @@ SYSCALL_DEF1(rmdir)
 		return (uint32_t) -1;
 	}
 	status = vfs_rmdir(path);
+	if (status != 0) {
+		syscall_errno = status;
+		status = -1;
+	}
+	heapmm_free(path, sza);
+	return (uint32_t) status;
+}
+
+SYSCALL_DEF1(access)
+{
+	char *path;
+	int status;
+	int sza;
+	sza = procvmm_check_string((char*)a,CONFIG_FILE_MAX_NAME_LENGTH);
+	if ((sza < 0)) {
+		syscall_errno = EFAULT;
+		return (uint32_t) -1;
+	}
+	path = heapmm_alloc(sza);
+	if (!copy_user_to_kern((void *)a, path, sza)) {
+		syscall_errno = EFAULT;
+		heapmm_free(path, sza);
+		return (uint32_t) -1;
+	}
+	status = vfs_access(path, (int) b);
 	if (status != 0) {
 		syscall_errno = status;
 		status = -1;

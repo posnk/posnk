@@ -41,7 +41,7 @@
  * @return The required privilege class : other, group or owner
  */
 
-perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
+perm_class_t vfs_get_min_permissions( inode_t *inode, mode_t req_mode )
 {
 	assert (inode != NULL);
 	if (req_mode & ((inode->mode) & 7))
@@ -62,5 +62,6 @@ perm_class_t vfs_get_min_permissions(inode_t *inode, mode_t req_mode)
 
 int vfs_have_permissions(inode_t *inode, mode_t req_mode) {
 	assert (inode != NULL);
-	return get_perm_class(inode->uid, inode->gid) <= vfs_get_min_permissions(inode, req_mode);
+	return get_perm_class( inode->uid, inode->gid ) <=
+	       vfs_get_min_permissions(inode, req_mode);
 }

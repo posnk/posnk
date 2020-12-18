@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
  */
- 
+
 #ifndef __SYS_SYSCALL_H__
 #define __SYS_SYSCALL_H__
 
@@ -105,7 +105,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SYS_MSGGET	73
 #define SYS_MUNMAP	74
 #define SYS_CHROOT	75
-#define SYS_SYNC	76   
+#define SYS_SYNC	76
 #define SYS_READDIR	77
 #define SYS_POLL	78
 #define SYS_SIGACTION	79
@@ -113,12 +113,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SYS_SIGPENDING	81
 #define SYS_SIGSUSPEND	82
 #define SYS_UNAME	83
- 
-uint32_t syscall( int,	uint32_t a, 
+#define SYS_ACCESS  84
+
+uint32_t syscall( int,	uint32_t a,
 			uint32_t b,
 			uint32_t c,
 			uint32_t d,
 			uint32_t e,
 			uint32_t f);
- 
+
 #endif

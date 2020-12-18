@@ -16,6 +16,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <unistd.h>
 #include <assert.h>
 #include <poll.h>
 #include <sys/stat.h>
@@ -2175,6 +2176,58 @@ short int vfs_poll(	inode_t	* _inode,
 
 }
 
+/**
+ * @brief Verify access rights on a file
+ *
+ * The behaviour of this function is determined by _mode_\n
+ * Mode is either *F_OK* or a bitwise or of any of the following  \n
+ * @li *R_OK* Checks for read permission\n
+ * @li *W_OK* Checks for write permission\n
+ * @li *X_OK* Checks for execute permission\n
+ *
+ * @param path The path of the file to check
+ * @param mode The checks to perform
+ * @return 0 if succesful, otherwise an errno.
+ * @exception ENOENT The file does not exist
+ * @exception ENOENT An element in path does not exist
+ * @exception ENOMEM Insufficient kernel memory was available
+ * @exception EACCES The requested access is not allowed
+ * @exception EFAULT Path is a null pointer
+ */
+
+int vfs_access( const char *path, int mode )
+{
+	int st;
+	dir_cache_t *dirc;
+	inode_t *ino;
+
+
+	/* Check for null pointers */
+	assert( path != NULL );
+
+	/* Look up the file */
+	st = vfs_find_dirc( path, &dirc );
+
+	/* Check if this succeeded file exists */
+	if ( st )
+		return st;
+
+	/* Grab the file's inode */
+	ino = vfs_inode_ref( dirc->inode );
+
+	/* Release the file */
+	vfs_dir_cache_release( dirc );
+
+	/* Check whether we have permission to open with this mode */
+	if ( mode == F_OK )
+		st = 1;
+	else
+		st = vfs_have_permissions( ino, mode );
+
+	vfs_inode_release( ino );
+
+	return st ? 0 : EACCES;
+}
 
 ///@}
 
