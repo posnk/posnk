@@ -94,6 +94,63 @@ void process_load_exec_state( void *entry, void *stack ) {
 	tctx->user_eflags   = (1<<9);//IF Set
 }
 
+void scheduler_get_mcontext( const scheduler_task_t *_task,
+                              mcontext_t *ctx )
+{
+
+	i386_task_context_t *tctx;
+
+	assert( _task != NULL );
+	tctx = _task->arch_state;
+	assert( tctx != NULL );
+
+	ctx->reg_eflags = tctx->user_eflags;
+	ctx->reg_cs     = tctx->user_cs;
+	ctx->reg_eip    = tctx->user_eip;
+	ctx->reg_ss     = tctx->user_ss;
+	ctx->reg_esp    = tctx->user_regs.esp;
+	ctx->reg_ebp    = tctx->user_regs.ebp;
+	ctx->reg_ds     = tctx->user_ds;
+	ctx->reg_esi    = tctx->user_regs.esi;
+	ctx->reg_edi    = tctx->user_regs.edi;
+	ctx->reg_eax    = tctx->user_regs.eax;
+	ctx->reg_ebx    = tctx->user_regs.ebx;
+	ctx->reg_ecx    = tctx->user_regs.ecx;
+	ctx->reg_edx    = tctx->user_regs.edx;
+	ctx->using_fpu  = tctx->fpu_used;
+	//TODO: Handle lazy FPU here
+	memcpy( ctx->reg_xsave, tctx->fpu_state, sizeof ctx->reg_xsave );
+}
+
+void scheduler_set_mcontext( scheduler_task_t *_task,
+                             const mcontext_t *ctx )
+{
+
+	i386_task_context_t *tctx;
+
+	assert( _task != NULL );
+	tctx = _task->arch_state;
+	assert( tctx != NULL );
+
+	tctx->user_eflags   = ctx->reg_eflags;
+	tctx->user_cs       = ctx->reg_cs;
+	tctx->user_eip      = ctx->reg_eip;
+	tctx->user_ss       = ctx->reg_ss;
+	tctx->user_regs.esp = ctx->reg_esp;
+	tctx->user_regs.ebp = ctx->reg_ebp;
+	tctx->user_ds       = ctx->reg_ds;
+	tctx->user_regs.esi = ctx->reg_esi;
+	tctx->user_regs.edi = ctx->reg_edi;
+	tctx->user_regs.eax = ctx->reg_eax;
+	tctx->user_regs.ebx = ctx->reg_ebx;
+	tctx->user_regs.ecx = ctx->reg_ecx;
+	tctx->user_regs.edx = ctx->reg_edx;
+	tctx->fpu_used    = ctx->using_fpu;
+	//TODO: Handle lazy FPU here
+	memcpy( tctx->fpu_state, ctx->reg_xsave, sizeof ctx->reg_xsave );
+
+}
+
 /**
  * This function is called before returning to user mode
  * It will update the state information on the stack from the thread state.

@@ -15,6 +15,10 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MSG_NOERROR	(1<<0)
 
 typedef unsigned long	msgqnum_t;
@@ -35,6 +39,11 @@ int       msgctl(int, int, struct msqid_ds *);
 int       msgget(key_t, int);
 ssize_t   msgrcv(int, void *, size_t, long int, int);
 int       msgsnd(int, const void *, size_t, int);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

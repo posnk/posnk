@@ -15,6 +15,10 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SEM_UNDO	(1<<0)
 
 #define GETNCNT		(3)
@@ -41,5 +45,11 @@ struct sembuf {
 int	 semctl(int semid, int semnum, int cmd, ...);
 int	 semget(key_t key, int nsems, int semflg);
 int	 semop(int, struct sembuf *, size_t);
+
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -115,11 +115,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define SYS_UNAME	83
 #define SYS_ACCESS  84
 
-uint32_t syscall( int,	uint32_t a,
-			uint32_t b,
-			uint32_t c,
-			uint32_t d,
-			uint32_t e,
-			uint32_t f);
+uint32_t syscall( int,
+            uint32_t a, uint32_t b, uint32_t c,
+            uint32_t d, uint32_t e, uint32_t f);
 
 #endif

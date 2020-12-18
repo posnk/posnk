@@ -15,6 +15,10 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SHM_RDONLY	(1<<0)
 #define SHM_RND		(1<<1)
 
@@ -36,5 +40,9 @@ void	*shmat(int shmid, const void *shmaddr, int shmflg);
 int	 shmctl(int shmid, int cmd, struct shmid_ds *buf);
 int	 shmdt(const void *shmaddr);
 int	 shmget(key_t key, size_t size, int shmflg);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

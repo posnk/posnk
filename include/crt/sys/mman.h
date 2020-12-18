@@ -3,17 +3,20 @@
  *
  * Part of P-OS.
  *
- * 
- * Written by Peter Bosch <peterbosc@gmail.com>
  *
- * Changelog:
- * 20-07-2014 - Created
+ * Written by Peter Bosch <me@pbx.sh>
+ *
  */
 
 #ifndef __SYS_MMAN_H__
 #define __SYS_MMAN_H__
 
 #include <sys/types.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 #define PROT_READ	(1<<0)
 #define PROT_WRITE	(1<<1)
@@ -26,5 +29,11 @@
 #define MAP_FAILED	((void *)0)
 
 void *mmap(void *addr, size_t len, int prot, int flags, int fildes, off_t off);
+
+int munmap(void *addr, size_t len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

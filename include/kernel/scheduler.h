@@ -14,6 +14,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <sys/mcontext.h>
 
 typedef uint32_t    tid_t;
 
@@ -90,6 +91,12 @@ struct task {
 	ktime_t         wait_timeout_u;//In microseconds
 
 };
+
+void scheduler_get_mcontext( const scheduler_task_t *_task,
+                              mcontext_t *ctx );
+
+void scheduler_set_mcontext( scheduler_task_t *_task,
+                             const mcontext_t *ctx );
 
 size_t scheduler_get_state_size( );
 

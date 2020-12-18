@@ -15,6 +15,7 @@ ARCHDEF = -DARCH_$(ARCHCAP) -DARCH_NAME=\"$(ARCH)\"
 VERDEF = -DBUILD_MACHINE=\"`whoami`@`uname -n`\"
 DEFS = $(ARCHDEF) $(VERDEF)
 ULDEFS = $(VERDEF) $(ARCHDEF)
+HEADERDIR = $(DESTDIR)/usr/include/
 
 # define the C compiler to use
 CC   = @echo " [   CC    ]	" $< ; $(CROSS_COMPILE)gcc
@@ -251,21 +252,24 @@ $(BUILDDIR)libposnk.a: $(BUILDDIR)_dmake $(OBJS_USERLIB) $(OBJS_ULARCH)
 
 # kernel install rule
 
-install: $(BUILDDIR)vmpos
+install: $(BUILDDIR)vmpos install_h
 	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos
 	install $(BUILDDIR)vmpos $(DESTDIR)/boot/vmpos_unstripped
 	strip $(DESTDIR)/boot/vmpos
 
-install_h:
-	@cp include/crt/sys/ioctl.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ioctl.h
-	@cp include/crt/sys/termios.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/termios.h
-	@cp include/crt/sys/mman.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/mman.h
-	@cp include/crt/sys/ipc.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/ipc.h
-	@cp include/crt/sys/shm.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/shm.h
-	@cp include/crt/sys/sem.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/sem.h
-	@cp include/crt/sys/msg.h ../nkgcc/newlib-2.1.0/newlib/libc/sys/posnk/sys/msg.h
-	@cp include/crt/linux/input.h ../gcc_posnk/i386-pc-posnk/include/linux/
+# header install rule
 
+install_h:
+	install include/crt/sys/ioctl.h    $(HEADERDIR)sys/ioctl.h
+	install include/crt/sys/termios.h  $(HEADERDIR)sys/termios.h
+	install include/crt/sys/mman.h     $(HEADERDIR)sys/mman.h
+	install include/crt/sys/ipc.h      $(HEADERDIR)sys/ipc.h
+	install include/crt/sys/shm.h      $(HEADERDIR)sys/shm.h
+	install include/crt/sys/sem.h      $(HEADERDIR)sys/sem.h
+	install include/crt/sys/msg.h      $(HEADERDIR)sys/msg.h
+	mkdir -p $(HEADERDIR)linux
+	install include/crt/linux/input.h  $(HEADERDIR)linux/input.h
+	install include/crt/sys/machine/$(ARCH)/mcontext.h $(HEADERDIR)sys/mcontext.h
 
 #test_heapmm: $(OBJS) tests/test_heapmm.o
 #	$(CC) $(CFLAGS) $(INCLUDES) -o test_heapmm $(OBJS) tests/test_heapmm.o $(LFLAGS) $(LIBS)

@@ -4,7 +4,7 @@
  * Part of P-OS.
  *
  * Except where otherwise specified, this file is POSIX compliant.
- * 
+ *
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
@@ -92,7 +92,12 @@ typedef struct fb_mode_info {
 #define EVIOCGBIT(ev,len)	(27)
 #define EVIOCGABS(abs)		(28)
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 int ioctl(int fildes, int request, void *arg);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

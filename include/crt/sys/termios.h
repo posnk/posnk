@@ -4,9 +4,9 @@
  * Part of P-OS.
  *
  * Except where otherwise specified, this file is POSIX compliant,
- * for now there is no support for the SysV termio API, but that 
+ * for now there is no support for the SysV termio API, but that
  * might be added later on, should the need arise.
- * 
+ *
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
  * Changelog:
@@ -169,11 +169,16 @@ struct termios {
 
 	speed_t		c_ispeed;//SEMI POSIX
 	speed_t		c_ospeed;//SEMI POSIX
-	
+
 	int		c_addopt;//NOT POSIX, REQUIRED FOR IOCTL
 };
 
 /* Function definitions */
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 speed_t cfgetispeed(const struct termios *);
 speed_t cfgetospeed(const struct termios *);
@@ -186,5 +191,9 @@ int     tcgetattr(int, struct termios *);
 pid_t   tcgetsid(int);
 int     tcsendbreak(int, int);
 int     tcsetattr(int, int, struct termios *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
