@@ -160,7 +160,7 @@ fs_device_operations_t proc_ops = {
 
 fs_device_t proc_dev = {
 	.id = 0xFF00,
-	.root_inode_id = PROC_ROOT_INODE,
+	.root_inode_id = PROC_INO_ROOT,
 	.ops = &proc_ops,
 	.lock = 1,
 	.inode_size = sizeof(inode_t)
@@ -173,5 +173,6 @@ SFUNC(fs_device_t *, proc_mount, __attribute__((__unused__)) dev_t device, __att
 
 int proc_register()
 {
+	proc_init_files();
 	return vfs_register_fs("proc", &proc_mount);
 }

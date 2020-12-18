@@ -26,11 +26,11 @@ errno_t proc_task_open ( snap_t *snap, ino_t inode ) {
 	if ( !t )
 		return EINVAL;
 
-	snap_appenddir( snap, "."     , inode );
-	snap_appenddir( snap, ".."    , PROC_INODE( t->process->pid, 0x001 ) );
-	snap_appenddir( snap, "state" , PROC_INODE( tid, 0x006 ) );
-	snap_appenddir( snap, "syscall", PROC_INODE( tid, 0x007 ) );
-	snap_appenddir( snap, "cpustate", PROC_INODE( tid, 0x008 ) );
+	snap_appenddir( snap, "."       , inode );
+	snap_appenddir( snap, ".."      , PROC_INODE( t->process->pid, 0x001 ) );
+	snap_appenddir( snap, "state"   , PROC_INODE( tid, PROC_INO_T_STATE ) );
+	snap_appenddir( snap, "syscall" , PROC_INODE( tid, PROC_INO_T_SYSCALL ) );
+	snap_appenddir( snap, "mcontext", PROC_INODE( tid, PROC_INO_T_MCONTEXT ) );
 	return 0;
 }
 
@@ -65,13 +65,17 @@ errno_t proc_task_syscall_open ( snap_t *snap, ino_t inode ) {
 	return 0;
 }
 
-errno_t proc_task_cpustate_open ( snap_t *snap, ino_t inode ) {
+errno_t proc_task_mcontext_open ( snap_t *snap, ino_t inode ) {
 	scheduler_task_t *t = scheduler_get_task( PROC_INODE_TID( inode ) );
+	mcontext_t ctx;
 	aoff_t ws;
-	if ( !t || !t->arch_state)
+
+	if ( !t || !t->arch_state )
 		return EINVAL;
 
-	snap_write( snap, 0, t->arch_state, scheduler_get_state_size(), &ws );
+	scheduler_get_mcontext( t, &ctx );
+
+	snap_write( snap, 0, &ctx, sizeof ctx, &ws );
 
 	return 0;
 }

@@ -9,13 +9,13 @@ errno_t proc_root_open ( snap_t *snap, ino_t inode ) {
 	llist_t *_p;
 	char name[16];
 
-	snap_appenddir( snap, "."    , inode);
-	snap_appenddir( snap, ".."   , 0x000 );
+	snap_appenddir( snap, "."    , inode );
+	snap_appenddir( snap, ".."   , PROC_INO_ROOT );
 
 	for (_p = process_list->next; _p != process_list; _p = _p->next) {
 		p = (process_info_t *) _p;
 		snprintf( name, sizeof name, "%i", p->pid );
-		snap_appenddir( snap, name, PROC_INODE(p->pid, 0x001) );
+		snap_appenddir( snap, name, PROC_INODE(p->pid, PROC_INO_P_DIR));
 	}
 
 	return 0;
@@ -44,63 +44,24 @@ errno_t snap_setline( snap_t *snap, const char *str )
 	return 0;
 }
 
-proc_file_t proc_file_list[] = {
-	{    // 0
-		.name="<root>",
-		.mode=S_IFDIR | 0555,
-		.size=4096,
-		.open=proc_root_open,
-		.flags=0
-	}, { // 1
-		.name="<process>",
-		.mode=S_IFDIR | 0555,
-		.size=4096,
-		.open=proc_process_open,
-		.flags=0
-	}, { // 2
-		.name="name",
-		.mode=S_IFREG | 0444,
-		.size=4096,
-		.open=proc_proc_name_open,
-		.flags=0
-	}, { // 3
-		.name="state",
-		.mode=S_IFREG | 0444,
-		.size=4096,
-		.open=proc_proc_state_open,
-		.flags=0
-	}, { // 4
-		.name="<tasks>",
-		.mode=S_IFDIR | 0555,
-		.size=4096,
-		.open=proc_proc_tasks_open,
-		.flags=0
-	}, { // 5
-		.name="<task>",
-		.mode=S_IFDIR | 0555,
-		.size=4096,
-		.open=proc_task_open,
-		.flags=0
-	}, { // 6
-		.name="state",
-		.mode=S_IFREG | 0444,
-		.size=4096,
-		.open=proc_task_state_open,
-		.flags=0
-	}, { // 7
-		.name="syscall",
-		.mode=S_IFREG | 0444,
-		.size=4096,
-		.open=proc_task_syscall_open,
-		.flags=0
-	}, { // 7
-		.name="cpustate",
-		.mode=S_IFREG | 0444,
-		.size=4096,
-		.open=proc_task_cpustate_open,
-		.flags=0
-	}
-};
+#define PROC_DEF_FILE_INT( Id, Name, Open, Size, Mode, Flags ) \
+	proc_file_list[Id].name = Name; \
+	proc_file_list[Id].mode = Mode; \
+	proc_file_list[Id].size = Size; \
+	proc_file_list[Id].open = Open; \
+	proc_file_list[Id].flags = Flags
+
+#define PROC_MODE_FR_OWN  (S_IFREG | 0400)
+#define PROC_MODE_FRX_OWN (S_IFREG | 0500)
+#define PROC_MODE_DRX_OWN (S_IFDIR | 0500)
+
+#define DEF_FILE( Id, Name, Open, Size ) \
+	PROC_DEF_FILE_INT( Id, Name, Open, Size, PROC_MODE_FR_OWN, 0 )
+
+#define DEF_DIR( Id, Name, Open, Size ) \
+	PROC_DEF_FILE_INT( Id, Name, Open, Size, PROC_MODE_DRX_OWN, 0 )
+
+proc_file_t proc_file_list[64];
 
 proc_file_t *proc_get_file( ino_t id ) {
 	int file_id;
@@ -110,6 +71,21 @@ proc_file_t *proc_get_file( ino_t id ) {
 	if ( file_id < 0 || file_id >= (int) (sizeof proc_file_list / sizeof(proc_file_t)) )
 		return NULL;
 
+	if ( proc_file_list[ file_id ].open == NULL )
+		return NULL;
+
 	return proc_file_list + file_id;
 
+}
+
+void proc_init_files( void ) {
+	DEF_DIR(  PROC_INO_ROOT, "<root>", proc_root_open, 4096 );
+	DEF_DIR(  PROC_INO_P_DIR, "<pdir>", proc_process_open, 4096 );
+	DEF_FILE( PROC_INO_P_NAME, "name", proc_proc_name_open, 4096 );
+	DEF_FILE( PROC_INO_P_STATE, "state", proc_proc_state_open, 4096 );
+	DEF_DIR(  PROC_INO_P_TASKS, "tasks", proc_proc_tasks_open, 4096 );
+	DEF_DIR(  PROC_INO_T_DIR, "<tdir>", proc_task_open, 4096 );
+	DEF_FILE( PROC_INO_T_STATE, "state", proc_task_state_open, 4096 );
+	DEF_FILE( PROC_INO_T_SYSCALL, "syscall", proc_task_syscall_open, 4096 );
+	DEF_FILE( PROC_INO_T_MCONTEXT, "mcontext", proc_task_mcontext_open, 4096 );
 }

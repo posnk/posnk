@@ -17,11 +17,11 @@ static const char * procstates[] = {
 
 errno_t proc_process_open ( snap_t *snap, ino_t inode ) {
 	pid_t pid = PROC_INODE_PID( inode );
-	snap_appenddir( snap, "."     , inode );
-	snap_appenddir( snap, ".."    , PROC_INODE(   0, 0x000 ) );
-	snap_appenddir( snap, "tasks" , PROC_INODE( pid, 0x004 ) );
-	snap_appenddir( snap, "name"  , PROC_INODE( pid, 0x002 ) );
-	snap_appenddir( snap, "state" , PROC_INODE( pid, 0x003 ) );
+	snap_appenddir( snap, "."    , inode );
+	snap_appenddir( snap, ".."   , PROC_INODE(   0, PROC_INO_ROOT ) );
+	snap_appenddir( snap, "tasks", PROC_INODE( pid, PROC_INO_P_TASKS ));
+	snap_appenddir( snap, "name" , PROC_INODE( pid, PROC_INO_P_NAME ));
+	snap_appenddir( snap, "state", PROC_INODE( pid, PROC_INO_P_STATE ));
 	return 0;
 }
 
@@ -34,7 +34,7 @@ errno_t proc_proc_tasks_open ( snap_t *snap, ino_t inode ) {
 	for (_t  = p->tasks.next; _t != &p->tasks; _t  = _t->next) {
 		t = (scheduler_task_t *)_t;
 		snprintf( name, sizeof name, "%i", t->tid );
-		snap_appenddir( snap, name, PROC_INODE(t->tid, 0x005) );
+		snap_appenddir( snap, name, PROC_INODE(t->tid, PROC_INO_T_DIR));
 	}
 	return 0;
 }

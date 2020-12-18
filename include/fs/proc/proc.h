@@ -18,11 +18,20 @@
 #include "kernel/streams.h"
 #include "fs/snap/snap.h"
 
-#define PROC_INODE_FILE(InO)	(         ( ( InO       ) & 0x0FFF ) )
-#define PROC_INODE_PID(InO)	( (pid_t) ( ( InO >> 12 ) & 0xFFFF ) )
-#define PROC_INODE_TID(InO)	( (tid_t) ( ( InO >> 12 ) & 0xFFFF ) )
+#define PROC_INODE_FILE(InO)    (         ( ( InO       ) & 0x0FFF ) )
+#define PROC_INODE_PID(InO)     ( (pid_t) ( ( InO >> 12 ) & 0xFFFF ) )
+#define PROC_INODE_TID(InO)     ( (tid_t) ( ( InO >> 12 ) & 0xFFFF ) )
 #define PROC_INODE( Pid, File ) ( (ino_t) ( (Pid << 12) | File ) )
-#define PROC_ROOT_INODE		( 0 )
+
+#define PROC_INO_ROOT           ( 0x000 )
+#define PROC_INO_P_DIR          ( 0x001 )
+#define PROC_INO_P_NAME         ( 0x002 )
+#define PROC_INO_P_STATE        ( 0x003 )
+#define PROC_INO_P_TASKS        ( 0x004 )
+#define PROC_INO_T_DIR          ( 0x005 )
+#define PROC_INO_T_STATE        ( 0x006 )
+#define PROC_INO_T_SYSCALL      ( 0x007 )
+#define PROC_INO_T_MCONTEXT     ( 0x008 )
 
 typedef errno_t (*proc_snapopen_t) ( snap_t *snap, ino_t inode );
 
@@ -39,6 +48,8 @@ typedef struct proc_file {
 SFUNC( dirent_t *, proc_finddir, inode_t *_inode, const char * name );
 SFUNC(snap_t *, proc_open_snap, ino_t inode );
 
+void proc_init_files( void );
+
 extern stream_ops_t proc_dir_ops;
 extern stream_ops_t proc_snapfile_ops;
 
@@ -53,6 +64,6 @@ errno_t proc_proc_state_open ( snap_t *snap, ino_t inode );
 errno_t proc_proc_tasks_open ( snap_t *snap, ino_t inode );
 errno_t proc_task_state_open ( snap_t *snap, ino_t inode );
 errno_t proc_task_syscall_open ( snap_t *snap, ino_t inode );
-errno_t proc_task_cpustate_open ( snap_t *snap, ino_t inode );
+errno_t proc_task_mcontext_open ( snap_t *snap, ino_t inode );
 
 #endif
