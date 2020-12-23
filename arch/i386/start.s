@@ -1,11 +1,11 @@
 [BITS 32]       ; 32 bit code
 [section .multiboot] ; keep NASM happy
- 
+
 MULTIBOOT_PAGE_ALIGN	equ 1<<0
 MULTIBOOT_MEMORY_INFO	equ 1<<1
 MULTIBOOT_GRAPHICS	equ 1<<2
 MULTIBOOT_HEADER_MAGIC	equ 0x1BADB002
-MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO
+MULTIBOOT_HEADER_FLAGS	equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_GRAPHICS
 MULTIBOOT_CHECKSUM	equ -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
 
 
@@ -14,8 +14,8 @@ multiboot_header:
 	dd MULTIBOOT_HEADER_MAGIC
 	dd MULTIBOOT_HEADER_FLAGS
 	dd MULTIBOOT_CHECKSUM
-	dd 0 
-	dd 0 
+	dd 0
+	dd 0
 	dd 0
 	dd 0
 	dd 0
@@ -24,7 +24,7 @@ multiboot_header:
 	dd 768  ; height
 	dd 32   ; depth
 
-[section .text] 
+[section .text]
 
 [global i386_start]  ; make 'start' function global
 [global i386_init_switch_gdt]  ; make 'start' function global
@@ -46,7 +46,7 @@ i386_start:
 	mov fs, ax
 	mov gs, ax
 	mov ss, ax
- 
+
 	; load the page directory
 
 	mov eax, i386_init_pdir
@@ -57,24 +57,24 @@ i386_start:
 	mov eax, cr0
 	or  eax, 0x80000001
 	mov cr0, eax
-	
+
 
 	; jump to the higher half kernel
 	jmp 0x18:i386_init_higherhalf
- 
+
 i386_init_higherhalf:
 	; from now the CPU will translate automatically every address
 	; by adding the base 0x40000000
- 
+
 	mov esp, i386_sys_stack ; set up a new stack for our kernel
 	mov ebp, 0xCAFE8007	; set ebp as a token for the tracer
 	; push the multiboot parameters
-	
+
 	push edx
 	push ecx
- 
+
 	call i386_init_mm ; jump to our C kernel ;)
- 
+
 	; just a simple protection...
 	jmp $
 
@@ -85,10 +85,10 @@ i386_init_switch_gdt:
 	mov fs, ax
 	mov gs, ax
 	mov ss, ax
- 
+
 	; jump to the higher half kernel
 	jmp 0x18:i386_init_switch_gdt_ret
- 
+
 i386_init_switch_gdt_ret:
 	ret
 
@@ -135,7 +135,7 @@ i386_init_gdt:
 	db 10011010b 			; access - Notice that bits 5 and 6 (privilege level) are 0 for Ring 0
 	db 11001111b 			; granularity
 	db 0 				; base high
- 
+
 ; Kernel Space data (Offset: 32 (0x20) bytes
 	dw 0FFFFh 			; limit low (Same as code)
 	dw 0 				; base low
@@ -143,7 +143,7 @@ i386_init_gdt:
 	db 10010010b 			; access - Notice that bits 5 and 6 (privilege level) are 0 for Ring 0
 	db 11001111b 			; granularity
 	db 0				; base high
- 
+
 ; User Space code (Offset: 40 (0x28) bytes)
 	dw 0FFFFh 			; limit low
 	dw 0 				; base low
@@ -151,7 +151,7 @@ i386_init_gdt:
 	db 11111010b 			; access - Notice that bits 5 and 6 (privilege level) are 11b for Ring 3
 	db 11001111b 			; granularity
 	db 0 				; base high
- 
+
 ; User Space data (Offset: 48 (0x30) bytes
 	dw 0FFFFh 			; limit low (Same as code)
 	dw 0 				; base low

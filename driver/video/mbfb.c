@@ -38,12 +38,12 @@ uint32_t *mbfb_maplfb()
 		return NULL;
 
 	mu = (uintptr_t) fb;
-		
+
 	for (d = 0; d < mbfb_device_info.fb_size; d += 0x1000) {
 		physmm_free_frame(paging_get_physical_address((void *)(mu + d)));
 		paging_unmap((void *)(mu + d));
 	}
-	
+
 	for (d = 0; d < mbfb_device_info.fb_size; d += 0x1000) {
 
 		paging_map(	 (void *)(mu + d),
@@ -68,7 +68,7 @@ uint32_t *mbfb_detect()
 	legacy_fb[1] = MBFB_SEARCH_MAGIC_2;
 
 	mu = (uintptr_t) fb;
-		
+
 	for (d = 0; d < mbfb_device_info.fb_size; d += 0x1000) {
 		physmm_free_frame(paging_get_physical_address((void *)(mu + d)));
 		paging_unmap((void *)(mu + d));
@@ -96,7 +96,7 @@ uint32_t *mbfb_detect()
 		heapmm_free(fb, mbfb_device_info.fb_size);
 		return NULL;
 	}
-	
+
 	for (d = 0x1000; d < mbfb_device_info.fb_size; d += 0x1000) {
 
 		paging_map(	 (void *)(mu + d),
@@ -108,7 +108,7 @@ uint32_t *mbfb_detect()
 
 int mbfb_open(  __attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, __attribute__((__unused__)) int options)
 {
-	return 0;	
+	return 0;
 }
 
 int mbfb_close( __attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd)
@@ -116,8 +116,8 @@ int mbfb_close( __attribute__((__unused__)) dev_t device, __attribute__((__unuse
 	return 0;
 }
 
-int mbfb_write(	__attribute__((__unused__)) dev_t device, 
-		__attribute__((__unused__)) void *buf, 
+int mbfb_write(	__attribute__((__unused__)) dev_t device,
+		__attribute__((__unused__)) void *buf,
 		__attribute__((__unused__)) aoff_t count,
 		__attribute__((__unused__)) aoff_t *write_size,
 		__attribute__((__unused__)) int non_block)
@@ -125,8 +125,8 @@ int mbfb_write(	__attribute__((__unused__)) dev_t device,
 	return ENXIO;
 }
 
-int mbfb_read(	__attribute__((__unused__)) dev_t device, 
-		__attribute__((__unused__)) void *buf, 
+int mbfb_read(	__attribute__((__unused__)) dev_t device,
+		__attribute__((__unused__)) void *buf,
 		__attribute__((__unused__)) aoff_t count,
 		__attribute__((__unused__)) aoff_t *read_size,
 		__attribute__((__unused__)) int non_block)
@@ -136,33 +136,33 @@ int mbfb_read(	__attribute__((__unused__)) dev_t device,
 
 int mbfb_ioctl(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, int func, __attribute__((__unused__)) int arg)
 {
-	switch(func) {	
+	switch(func) {
 
 		case IOCTL_FBGDINFO:
 			if (!copy_kern_to_user(&mbfb_device_info, (void *) arg, sizeof(fb_device_info_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			return 0;
 
 		case IOCTL_FBGMINFO:
 			if (!copy_kern_to_user(&mbfb_mode_info, (void *) arg, sizeof(fb_mode_info_t))){
 				syscall_errno = EFAULT;
 				return -1;
-			}		
+			}
 			return 0;
 
 		case IOCTL_FBSMINFO:
-			return EINVAL;	
-		
+			return EINVAL;
+
 		default:
 			return 0;
-				
+
 	}
 }
 
 int mbfb_mmap(__attribute__((__unused__)) dev_t device, __attribute__((__unused__)) int fd, __attribute__((__unused__)) int flags, void *addr, aoff_t offset, aoff_t size)
-{	
+{
 	uintptr_t d, mu;
 	offset &= ~PHYSMM_PAGE_ADDRESS_MASK;
 	if (offset >= MBFB_FB_SIZE)
@@ -189,13 +189,13 @@ int mbfb_unmmap(__attribute__((__unused__)) dev_t device, __attribute__((__unuse
 }
 
 tty_ops_t mbfb_ops = {
-	&mbfb_open,
-	&mbfb_close,
-	&mbfb_write,
-	&mbfb_read,
-	&mbfb_ioctl,
-	&mbfb_mmap,
-	&mbfb_unmmap
+	.open = mbfb_open,
+	.close = mbfb_close,
+	.write = mbfb_write,
+	.read = mbfb_read,
+	.ioctl = mbfb_ioctl,
+	.mmap = mbfb_mmap,
+	.unmmap = mbfb_unmmap
 };
 
 char_dev_t mbfb_desc = {
@@ -205,7 +205,7 @@ char_dev_t mbfb_desc = {
 };
 
 void mbfb_init()
-{	
+{
 	if (!vbe_mode.Xres) {
 		mbfb_mode_info.fb_width = 1024;
 		mbfb_mode_info.fb_height = 768;
