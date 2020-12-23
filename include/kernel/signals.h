@@ -21,6 +21,8 @@
 #define SIGNAL_ACTION_IGNORE	3
 #define SIGNAL_ACTION_STOP		4
 
+extern struct sigaction sig_action_default;
+
 typedef struct {
 	/** The signal we are returning from */
 	int			sr_sig;
@@ -42,15 +44,15 @@ void	signal_init_task( scheduler_task_t *task );
 
 void (*_sys_signal(	int sig, void (*disp)(int) ))( int );
 
-int _sys_sigaction(	int sig, 
-					const struct sigaction *act, 
+int _sys_sigaction(	int sig,
+					const struct sigaction *act,
 					struct sigaction *oact );
 
-int _sys_sigaltstack(	const stack_t *ss, 
+int _sys_sigaltstack(	const stack_t *ss,
 						stack_t *oss );
 
-int _sys_sigprocmask(	int how, 
-						const sigset_t *set, 
+int _sys_sigprocmask(	int how,
+						const sigset_t *set,
 						sigset_t *oset );
 
 int _sys_sigsuspend( const sigset_t *sigmask );

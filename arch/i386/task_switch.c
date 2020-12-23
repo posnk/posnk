@@ -32,7 +32,11 @@
 void i386_kern_enter ( i386_isr_stack_t *stack )
 {
 
-	i386_task_context_t *tctx = scheduler_current_task->arch_state;
+	i386_task_context_t *tctx;
+
+	assert( scheduler_current_task != NULL );
+
+	tctx = scheduler_current_task->arch_state;
 
 	if ( tctx == 0 )
 		return;
@@ -402,7 +406,7 @@ int scheduler_do_spawn( scheduler_task_t *new_task, void *callee, void *arg, int
 	memset( nstate, 0, sizeof( csstack_t ) );
 
 	nstate->eip = ( uint32_t ) &scheduler_spawnentry;
-	nstate->regs.ebp = 0xCAFE57AC;
+	nstate->regs.ebp = 0xCAFE57AD;
 
 	restore(s2);
 

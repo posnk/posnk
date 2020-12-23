@@ -49,10 +49,11 @@ void kmain()
 
 	cmdline_parse();
 
-	arch_init_early();
-
 	printf(CON_INFO, "initializing initial task");
 	scheduler_init();
+
+	arch_init_early();
+
 	process_init();
 
 	printf(CON_INFO, "initializing driver infrastructure");

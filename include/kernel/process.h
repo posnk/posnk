@@ -41,6 +41,8 @@ typedef struct process_child_event process_child_event_t;
 #define PROCESS_TIMED_OUT	6
 #define PROCESS_STOPPED		7
 
+#define PROCESS_FLAG_TRACED (1 << 0)
+
 #define PROCESS_TERM_EXIT	0
 #define PROCESS_TERM_SIGNAL	1
 
@@ -122,6 +124,7 @@ struct process_info {
 	int			 sc_errno;
 	int			 term_cause;
 	int			 exit_status;
+	int          flags;
 
 	/* Process memory */
 	llist_t		*memory_map;
@@ -164,6 +167,10 @@ process_child_event_t *process_get_event(pid_t pid);
 process_child_event_t *process_get_event_pg(pid_t pid);
 
 void process_send_signal(	process_info_t *process,
+							int signal,
+							struct siginfo info );
+
+void thread_send_signal(	scheduler_task_t *task,
 							int signal,
 							struct siginfo info );
 

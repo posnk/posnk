@@ -25,55 +25,50 @@
 #include "kernel/heapmm.h"
 #include "config.h"
 
-process_info_t *kernel_process;
+process_info_t  kernel_process;
 llist_t        *process_list;
 
 pid_t           pid_counter = 1;
 
 void create_kprocess()
 {
-	/* Allocate and clear descriptor */
-	kernel_process =
-		(process_info_t *) heapmm_alloc( sizeof( process_info_t ) );
-	memset( kernel_process, 0, sizeof( process_info_t ));
 
 	/* Initialize process info */
-	kernel_process->uid  = 0;
-	kernel_process->gid  = 0;
-	kernel_process->pgid = 0;
-	kernel_process->sid  = 0;
-	kernel_process->pid  = 0;
-	kernel_process->parent_pid = 0;
-	kernel_process->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);
+	kernel_process.uid  = 0;
+	kernel_process.gid  = 0;
+	kernel_process.pgid = 0;
+	kernel_process.sid  = 0;
+	kernel_process.pid  = 0;
+	kernel_process.parent_pid = 0;
+	kernel_process.name = CONFIG_SYSTEM_PROCESS_NAME;
 
-	kernel_process->fd_table = heapmm_alloc(sizeof(llist_t));
-	llist_create(kernel_process->fd_table);
+	kernel_process.fd_table = heapmm_alloc(sizeof(llist_t));
+	llist_create(kernel_process.fd_table);
 
-	kernel_process->memory_map = heapmm_alloc(sizeof(llist_t));
-	llist_create(kernel_process->memory_map);
+	kernel_process.memory_map = heapmm_alloc(sizeof(llist_t));
+	llist_create(kernel_process.memory_map);
 
-	strcpy(kernel_process->name, CONFIG_SYSTEM_PROCESS_NAME);
 	/* Initialize process memory info */
-	kernel_process->heap_start	 = (void *) 0xE0000000;
-	kernel_process->heap_end  	 = (void *) 0x12345678;
+	kernel_process.heap_start	 = (void *) 0xE0000000;
+	kernel_process.heap_end  	 = (void *) 0x12345678;
 	// TOTALLY NOT RELEVANT ON PROCESS ZERO
-	kernel_process->stack_bottom = (void *) 0x12345678;
-	kernel_process->stack_top	 = (void *) 0x12345678;
+	kernel_process.stack_bottom = (void *) 0x12345678;
+	kernel_process.stack_top	 = (void *) 0x12345678;
 
-	signal_init_process( kernel_process );
+	signal_init_process( &kernel_process );
 
 	/* Initialize process state */
-	kernel_process->page_directory = paging_active_dir;
+	kernel_process.page_directory = paging_active_dir;
 
-	semaphore_init(&kernel_process->child_sema);
+	semaphore_init( &kernel_process.child_sema );
 
-	llist_create( &kernel_process->child_events );
-	llist_create( &kernel_process->tasks );
+	llist_create( &kernel_process.child_events );
+	llist_create( &kernel_process.tasks );
 
-	kernel_process->state = PROCESS_READY;
-	llist_add_end( process_list, (llist_t *) kernel_process );
+	kernel_process.state = PROCESS_READY;
+	llist_add_end( process_list, (llist_t *) &kernel_process );
 
-	scheduler_reown_task( scheduler_current_task, kernel_process );
+	scheduler_reown_task( scheduler_current_task, &kernel_process );
 }
 
 int posix_fork()
@@ -103,6 +98,10 @@ process_info_t *fork_process( void )
 {
 	process_info_t *child = ( process_info_t *)
 		heapmm_alloc(sizeof( process_info_t ));
+
+	if ( !child )
+		return NULL;
+
 	memset(child, 0, sizeof( process_info_t));
 
 	/* Initialize process info */
@@ -115,15 +114,16 @@ process_info_t *fork_process( void )
 	child->sid            = current_process->sid;
 	child->parent_pid     = current_process->pid;
 
-	child->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);
+	child->name = heapmm_alloc(CONFIG_PROCESS_MAX_NAME_LENGTH);//XXX: Why is this not part of process struct
+	//TODO: Handle out of memory condition here
 	strcpy(child->name, current_process->name);
 
-	child->fd_table = heapmm_alloc(sizeof(llist_t));
+	child->fd_table = heapmm_alloc(sizeof(llist_t));//XXX: Why is this not part of process struct
 	llist_create(child->fd_table);
 	stream_copy_fd_table (child->fd_table);
 	child->fd_ctr = current_process->fd_ctr;
 
-	child->memory_map = heapmm_alloc(sizeof(llist_t));
+	child->memory_map = heapmm_alloc(sizeof(llist_t));//XXX: Why is this not part of process struct
 	llist_create(child->memory_map);
 	procvmm_copy_memory_map (child->memory_map);
 
@@ -247,7 +247,7 @@ void process_interrupt_all( process_info_t *process ) {
 }
 
 /**
- * Stops all threads in the process
+ * Stops all threads in the process and stops the process itself
  */
 void process_stop( process_info_t *process ) {
 	llist_t *c, *n, *h;
@@ -269,10 +269,10 @@ void process_deschedule( process_info_t *process ) {
 	llist_t *c, *n, *h;
 
 	h = &process->tasks;
-
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_stop_task( ( scheduler_task_t * ) c );
 	}
+
 }
 
 /**
@@ -286,10 +286,10 @@ void process_continue( process_info_t *process ) {
 	assert( process->state == PROCESS_STOPPED );
 
 	process->state = process->old_state;
-
 	for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
 		scheduler_continue_task( ( scheduler_task_t * ) c );
 	}
+
 }
 
 void process_reap(process_info_t *process)
@@ -307,7 +307,6 @@ void process_reap(process_info_t *process)
 		scheduler_reap ( ( scheduler_task_t * ) c );//TODO: Check for errors
 	}
 
-	//scheduler_free_task( process );//XXX: Broken due to threading
 	procvmm_clear_mmaps_other( process );
 	paging_free_dir( process->page_directory );
 	vfs_dir_cache_release(process->root_directory);
@@ -337,43 +336,5 @@ process_info_t *process_get(pid_t pid)
 		llist_iterate_select( process_list, &process_find_iterator, (void *) pid);
 }
 
-typedef struct sig_pgrp_param {
-	pid_t	group;
-	int	signal;
-	struct siginfo info;
-} sig_pgrp_param_t;
-
-uint32_t  process_signal_pgroup_numdone = 0;
-
-/**
- * Iterator function that signals up processes with the given pgid
- */
-int process_sig_pgrp_iterator (llist_t *node, void *param )
-{
-	sig_pgrp_param_t *p = (sig_pgrp_param_t *) param;
-	process_info_t *process = (process_info_t *) node;
-	if ((process->pid > 1) && (process->pid != 2) && (process->pgid == p->group)) {
-		if (get_perm_class(process->uid, process->gid) != PERM_CLASS_OWNER){
-			syscall_errno = EPERM;
-			return 0;
-		}
-		process_send_signal(process, p->signal, p->info);
-		process_signal_pgroup_numdone++;
-	}
-	return 0;
-}
-
-/* TODO: Add some checks for existence to signal to caller */
-int process_signal_pgroup(pid_t pid, int signal, struct siginfo info)
-{
-	sig_pgrp_param_t param;
-	param.group = pid;
-	param.signal = signal;
-	param.info = info;
-	process_signal_pgroup_numdone = 0;
-	llist_iterate_select( process_list, &process_sig_pgrp_iterator, (void *) &param);
-	debugcon_printf(" sent %i to %i tasks in group %i\n", signal, process_signal_pgroup_numdone, pid);
-	return process_signal_pgroup_numdone;
-}
 
 

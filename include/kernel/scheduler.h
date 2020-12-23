@@ -14,6 +14,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <signal.h>
 #include <sys/mcontext.h>
 
 typedef uint32_t    tid_t;
@@ -26,24 +27,26 @@ typedef struct task scheduler_task_t;
 #include "kernel/time.h"
 #include "util/llist.h"
 
-#define TASK_STATE_RUNNING	(1 << 0)
-#define TASK_STATE_READY	(1 << 1)
-#define TASK_STATE_STOPPED	(1 << 2)
-#define TASK_STATE_TIMEDWAIT_US	(1 << 3)
-#define TASK_STATE_TIMEDWAIT	TASK_STATE_TIMEDWAIT_US
-#define TASK_STATE_BLOCKED	(1 << 5)
-#define TASK_STATE_INTERRUPT	(1 << 6)
-#define TASK_STATE_INTERRUPTED	(1 << 8)
-#define TASK_STATE_TIMED_OUT	(1 << 9)
+#define TASK_STATE_RUNNING      (1 << 0)
+#define TASK_STATE_READY        (1 << 1)
+#define TASK_STATE_STOPPED      (1 << 2)
+#define TASK_STATE_TIMEDWAIT_US (1 << 3)
+#define TASK_STATE_TIMEDWAIT    TASK_STATE_TIMEDWAIT_US
+#define TASK_STATE_BLOCKED      (1 << 5)
+#define TASK_STATE_INTERRUPT    (1 << 6)
+#define TASK_STATE_INTERRUPTED  (1 << 8)
+#define TASK_STATE_TIMED_OUT    (1 << 9)
 
-#define SCHED_WAIT_OK		(0)
-#define SCHED_WAIT_INTR		(-2)
-#define SCHED_WAIT_TIMEOUT	(-1)
+#define SCHED_WAIT_OK           (0)
+#define SCHED_WAIT_INTR         (-2)
+#define SCHED_WAIT_TIMEOUT      (-1)
 
 #define SCHED_WAITF_INTR        (1 << 1)
 #define SCHED_WAITF_TIMEOUT     (1 << 2)
 
-#define TASK_GLOBAL         (1<<0)
+#define TASK_GLOBAL             (1<<0)
+
+#define TASK_NO_SYSCALL         (0xFFFFFFFF)
 
 /**
  * Describes a thread
@@ -64,16 +67,28 @@ struct task {
 	/** The task flags */
 	int             flags;
 
-	/* Scheduling state */
-	int	        state;
+	/** Scheduling state */
+	int	            state;
 
+	/** Currently active system call */
+	int             in_syscall;
+
+	/** Signal mask */
 	sigset_t        signal_mask;
+
+	/** Pending per-thread signals */
+	sigset_t        signal_pending;
+
+	/** Per-thread signal info */
+	struct siginfo  signal_info[32];
+
+	/** Alternative stack for signal handlers */
 	stack_t         signal_altstack;
 
 	ticks_t         cpu_ticks;
 	ticks_t         cpu_end;
 
-	int		active;
+	int             active;
 
 	/** The process this task belongs to */
 	process_info_t *process;
@@ -83,8 +98,6 @@ struct task {
 
 	/** The kernel stack */
 	void           *kernel_stack;
-
-	uint32_t        in_syscall;
 
 	/** Wait target */
 	semaphore_t    *waiting_on;

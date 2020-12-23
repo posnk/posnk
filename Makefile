@@ -92,6 +92,7 @@ kernel/proc/procvmm.c \
 kernel/proc/exec.c \
 kernel/proc/sc_process.c \
 kernel/proc/sc_signals.c \
+kernel/proc/signal_api.c \
 kernel/vfs/icache.c \
 kernel/vfs/dcache.c \
 kernel/vfs/ifswrap.c \

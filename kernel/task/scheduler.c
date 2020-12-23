@@ -70,6 +70,7 @@ void scheduler_init()
 	scheduler_task_list = scheduler_current_task;
 
 	scheduler_init_task(scheduler_current_task);//TODO: Handle errors
+
 }
 
 /**
@@ -129,6 +130,8 @@ int scheduler_spawn( void *callee, void *arg, scheduler_task_t **t )
 
 	if ( status )
 		goto exitfail_0;
+
+	signal_init_task(scheduler_current_task) ;
 
 	/* Get interrupt flag */
 	s = disable();restore(s);

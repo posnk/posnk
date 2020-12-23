@@ -152,9 +152,7 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 
 	memset( &sigi, 0, sizeof( struct siginfo ) );
 	int result;
-#ifdef CONFIG_SYSCALL_DEBUG
 	int call;
-#endif
 	syscall_params_t params;
 	if (!copy_user_to_kern(user_param_block, &params, sizeof(syscall_params_t))) {
 		printf(CON_WARN, "Error copying data for syscall in process <%s>[%i] at 0x%x, data: 0x%x",current_process->name,curpid(), instr_ptr, user_param_block);
@@ -168,8 +166,8 @@ void syscall_dispatch(void *user_param_block, void *instr_ptr)
 		return;
 	}
 	syscall_errno = 0;
-#ifdef CONFIG_SYSCALL_DEBUG
 	call = params.call_id;
+#ifdef CONFIG_SYSCALL_DEBUG
 	if ((call == SYS_OPEN) || (call == SYS_STAT)|| (call == SYS_EXECVE))
 		printf( CON_TRACE, "[%s:%i] %s(\"%s\", %x, %x, %x) = ", current_process->name, curpid(), syscall_names[call], params.param[0], params.param[1], params.param[2], params.param[3]);
 	else

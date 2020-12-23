@@ -26,7 +26,7 @@ void interrupt_dispatch(irq_id_t irq_id)
 		if (e->handler(irq_id, e->context))
 			return;
 	}
-	printf(CON_WARN, "unhandled IRQ%i!", irq_id);
+	printf(CON_TRACE, "unhandled IRQ%i!", irq_id);
 }
 
 void interrupt_register_handler(irq_id_t irq_id, irq_handler_t handler, void *context)

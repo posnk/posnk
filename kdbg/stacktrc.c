@@ -104,6 +104,9 @@ void kdbg_pt_calltrace(scheduler_task_t *t)
 		if (c_ebp == 0xCAFE8007) {
 			kdbg_printf("       Kernel Entry\n");
 			return;
+		} else if (c_ebp == 0xCAFE57AD) {
+			kdbg_printf("       Thread Spawn\n");
+			return;
 		} else if (c_ebp == 0xCAFE57AC) {
 /*
 Interrupt Entry: EBP set to CAFE57AC

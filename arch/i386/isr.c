@@ -48,15 +48,16 @@ void dumpisrstack( i386_isr_stack_t *stack ) {
 		regs->esp, regs->ebp, regs->esi, regs->edi);
 	debugcon_printf("DS: 0x%x\t CS: 0x%x\t EIP: 0x%x\t EFLAGS:0x%x\n",
 					stack->ds, stack->cs, stack->eip, stack->eflags );
-	debugcon_printf("int: %i\t ECODE: 0x%x sctp:%x cpp: %x\n",
+	debugcon_printf("int: %i\t ECODE: 0x%x sctp:%x\\\n",
 					stack->int_id, stack->error_code,
-					scheduler_current_task,
-					scheduler_current_task->process
-					);
-	if ( scheduler_current_task->process )
-		pid = scheduler_current_task->process->pid;
-	debugcon_printf("tid:%x\n pid:%x\n\n\n",
-					scheduler_current_task->tid,pid);
+					scheduler_current_task );
+	if ( scheduler_current_task ) {
+		if ( scheduler_current_task->process )
+			pid = scheduler_current_task->process->pid;
+		debugcon_printf("tid:%x\n pid:%x\n\n\n",
+						scheduler_current_task->tid,pid);
+
+	}
 }
 
 /**
@@ -144,7 +145,7 @@ void i386_exception_handle( i386_isr_stack_t *stack )
 			break;
 	};
 	dumpisrstack( stack );
-	exception_handle( sig, info, (void*) stack->eip,0,stack->cs == 0x2B );
+	exception_handle( sig, info, (void*) stack->eip,0,stack->cs != 0x2B );
 
 }
 
@@ -168,7 +169,7 @@ void i386_handle_interrupt( i386_isr_stack_t *stack )
 		i386_user_enter( stack );
 
 	} else {
-		assert( stack->eip >= 0xc0000000u );
+		assert( stack->eip < 0x1000 || stack->eip >= 0xc0000000u );
 
 	}
 
