@@ -112,30 +112,48 @@ SFUNC(snap_t *, proc_open_snap, ino_t inode ) {
 
 }
 
+SVFUNC ( proc_open_snap_inode, inode_t *inode, stream_info_t *stream )
+{
+    errno_t status;
+
+    stream->type		= STREAM_TYPE_EXTERNAL;
+    if ( S_ISDIR( inode->mode ) ) {
+        stream->ops  		= &proc_dir_ops;
+    } else {
+        stream->ops         = &proc_snapfile_ops;
+    }
+
+    stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR |
+                             STREAM_IMPL_FILE_CHMOD |
+                             STREAM_IMPL_FILE_CHOWN |
+                             //STREAM_IMPL_FILE_FSTAT |
+                             STREAM_IMPL_FILE_LSEEK |
+                             STREAM_IMPL_FILE_TRUNC;
+
+    status = proc_open_snap( inode->id, (snap_t **)&(stream->impl) );
+
+    if (status)
+        THROWV(status);
+
+    return 0;
+
+}
 SVFUNC ( proc_open_inode, inode_t *inode, void *_stream )
 {
 	errno_t status;
 	stream_info_t *stream = _stream;
+    proc_file_t *file;
 
 	if (!inode)
 		THROWV(EFAULT);
 
-	stream->type		= STREAM_TYPE_EXTERNAL;
-	if ( S_ISDIR( inode->mode ) ) {
-		stream->ops  		= &proc_dir_ops;
-	} else {
-		stream->ops         = &proc_snapfile_ops;
-	}
-	stream->impl_flags  = 	STREAM_IMPL_FILE_CHDIR |
-							STREAM_IMPL_FILE_CHMOD |
-							STREAM_IMPL_FILE_CHOWN |
-							//STREAM_IMPL_FILE_FSTAT |
-							STREAM_IMPL_FILE_LSEEK |
-							STREAM_IMPL_FILE_TRUNC;
-
-	status = proc_open_snap( inode->id, (snap_t **)&(stream->impl) );
-	if (status)
-		THROWV(status);
+    file = proc_get_file( inode->id );
+    if ( !file )
+        THROWV(EINVAL);
+    if ( ~file->flags & PROC_FLAG_NOT_SNAP )
+        CHAINRETV( proc_open_snap_inode, inode, stream );
+    else
+        CHAINRETV( file->custopen, inode, stream );
 
 	return 0;
 

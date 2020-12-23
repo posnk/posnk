@@ -71,7 +71,8 @@ proc_file_t *proc_get_file( ino_t id ) {
 	if ( file_id < 0 || file_id >= (int) (sizeof proc_file_list / sizeof(proc_file_t)) )
 		return NULL;
 
-	if ( proc_file_list[ file_id ].open == NULL )
+	if ( proc_file_list[ file_id ].open == NULL &&
+	     proc_file_list[ file_id ].custopen == NULL )
 		return NULL;
 
 	return proc_file_list + file_id;
@@ -88,4 +89,10 @@ void proc_init_files( void ) {
 	DEF_FILE( PROC_INO_T_STATE, "state", proc_task_state_open, 4096 );
 	DEF_FILE( PROC_INO_T_SYSCALL, "syscall", proc_task_syscall_open, 4096 );
 	DEF_FILE( PROC_INO_T_MCONTEXT, "mcontext", proc_task_mcontext_open, 4096 );
+	proc_file_list[ PROC_INO_P_MEM ].custopen = proc_open_mem_inode;
+    proc_file_list[ PROC_INO_P_MEM ].size = 0xC0000000; /* so we can't map kernel mem */
+    proc_file_list[ PROC_INO_P_MEM ].flags = PROC_FLAG_NOT_SNAP;
+    proc_file_list[ PROC_INO_P_MEM ].mode = PROC_MODE_FR_OWN;
+    proc_file_list[ PROC_INO_P_MEM ].name = "mem";
+
 }
