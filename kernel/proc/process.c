@@ -276,6 +276,32 @@ void process_deschedule( process_info_t *process ) {
 }
 
 /**
+ * Restarts all threads in the process
+ */
+void process_debug_start( process_info_t *process ) {
+    llist_t *c, *n, *h;
+
+    h = &process->tasks;
+    for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+        scheduler_debug_start_task( ( scheduler_task_t * ) c );
+    }
+
+}
+
+/**
+ * Stops all threads in the process
+ */
+void process_debug_stop( process_info_t *process ) {
+    llist_t *c, *n, *h;
+
+    h = &process->tasks;
+    for ( c = h->next, n = c->next; c != h; c = n, n = c->next ) {
+        scheduler_debug_stop_task( ( scheduler_task_t * ) c );
+    }
+
+}
+
+/**
  * Continues all threads in the process
  */
 void process_continue( process_info_t *process ) {

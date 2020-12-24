@@ -64,24 +64,32 @@ typedef struct process_child_event process_child_event_t;
 
 #define current_process (scheduler_current_task->process)
 extern llist_t *process_list;
+
 struct process_mmap {
 	llist_t		 node;
 	char		*name;
 	void		*start;
 	size_t		 size;
-	int		 flags;
+	int		     flags;
 	inode_t		*file;
-	int		 fd;
+	int		     fd;
 	aoff_t		 offset;
 	aoff_t		 file_sz;
 	shm_info_t	*shm;
 };
 
 struct process_child_event {
-	llist_t		 node;
-	pid_t		 child_pid;
-	pid_t		 child_pgid;
+	llist_t  node;
+	pid_t    child_pid;
+	pid_t    child_pgid;
 	int		 event;
+};
+
+struct process_debug_sig {
+    llist_t           list;
+    scheduler_task_t *task;
+    int               signal;
+    struct siginfo    info;
 };
 
 struct process_info {
@@ -120,6 +128,9 @@ struct process_info {
 	int			 old_state;
 	int			 state;
 
+	semaphore_t  sig_queue_sem;
+	llist_t      sig_queue;
+
 	/* Proces status */
 	int			 sc_errno;
 	int			 term_cause;
@@ -140,6 +151,9 @@ struct process_info {
 	/* Process statistics */
 	ticks_t		 cpu_ticks;
 	llist_t		 tasks;
+
+	/* Signals awaiting delivery */
+
 	/* Process state */
 	page_dir_t	*page_directory;
 
@@ -227,5 +241,18 @@ void process_stop( process_info_t *process );
 void process_continue( process_info_t *process );
 
 void process_deschedule( process_info_t *process );
+
+void process_debug_start( process_info_t *process );
+
+void process_debug_stop( process_info_t *process );
+
+int process_debug_attach(process_info_t *process);
+
+struct process_debug_sig *process_debug_getsig( process_info_t *process );
+
+void process_deliver_signal( process_info_t *proc,
+                             struct process_debug_sig *sig );
+
+void process_debug_detach(process_info_t *process);
 
 #endif

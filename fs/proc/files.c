@@ -94,5 +94,9 @@ void proc_init_files( void ) {
     proc_file_list[ PROC_INO_P_MEM ].flags = PROC_FLAG_NOT_SNAP;
     proc_file_list[ PROC_INO_P_MEM ].mode = PROC_MODE_FR_OWN;
     proc_file_list[ PROC_INO_P_MEM ].name = "mem";
-
+    proc_file_list[ PROC_INO_P_SIG ].custopen = proc_open_sig_inode;
+    proc_file_list[ PROC_INO_P_SIG ].size = 4096; /* so we can't map kernel mem */
+    proc_file_list[ PROC_INO_P_SIG ].flags = PROC_FLAG_NOT_SNAP;
+    proc_file_list[ PROC_INO_P_SIG ].mode = PROC_MODE_FR_OWN;
+    proc_file_list[ PROC_INO_P_SIG ].name = "sig";
 }

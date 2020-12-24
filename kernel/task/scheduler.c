@@ -256,13 +256,18 @@ void scheduler_handle_resume( scheduler_task_t *task ) {
 
 }
 
+#define STATE_MAY_RUN(s) ( (s) & TASK_STATE_READY &&\
+                          ~(s) & TASK_STATE_STOPPED &&\
+                          ~(s) & TASK_STATE_DEBUG_STOP)
+
 /**
  * Iterator function that tests for running tasks that are not the current
  */
 int scheduler_may_run ( scheduler_task_t *task )
 {
 
-	if ( task->state & ( TASK_STATE_RUNNING | TASK_STATE_STOPPED ) )
+	if ( task->state &
+	    ( TASK_STATE_RUNNING | TASK_STATE_STOPPED | TASK_STATE_DEBUG_STOP ) )
 		return 0;
 
 	scheduler_handle_resume( task ); /* TODO: Find a better place to put this */
@@ -270,6 +275,7 @@ int scheduler_may_run ( scheduler_task_t *task )
 	return task->state & TASK_STATE_READY;
 
 }
+
 
 void schedule()
 {
@@ -282,8 +288,7 @@ void schedule()
 		dbgapi_invoke_kdbg(0);
 #endif
 
-	if ( scheduler_current_task->state & TASK_STATE_READY &&
-		 ~scheduler_current_task->state & TASK_STATE_STOPPED &&
+	if ( STATE_MAY_RUN(scheduler_current_task->state) &&
 			scheduler_current_task->cpu_end > system_time_micros )
 		return;
 
@@ -372,6 +377,16 @@ void scheduler_set_as_idle()
 {
 	scheduler_idle_task = scheduler_current_task;
 	scheduler_idle_task->state = TASK_STATE_STOPPED;
+}
+
+void scheduler_debug_start_task( scheduler_task_t *task ) {
+    /* TODO: Do we need to acquire the scheduler lock here? */
+    task->state &= ~TASK_STATE_DEBUG_STOP;
+}
+
+void scheduler_debug_stop_task( scheduler_task_t *task ) {
+    /* TODO: Do we need to acquire the scheduler lock here? */
+    task->state |= TASK_STATE_DEBUG_STOP;
 }
 
 void scheduler_stop_task( scheduler_task_t *task ) {

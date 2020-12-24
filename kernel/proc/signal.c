@@ -15,6 +15,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <string.h>
+#include "kernel/heapmm.h"
 #include "kernel/earlycon.h"
 #include "kernel/scheduler.h"
 #include "kernel/streams.h"
@@ -136,6 +137,99 @@ inline int sigemptyset( sigset_t *set )
 
 void process_handle_signal_scheduling( process_info_t *process );
 
+
+static int enqueue_dbg_signal( process_info_t *process,
+                               scheduler_task_t *task,
+                               int signal,
+                               struct siginfo info )
+{
+    struct process_debug_sig *sig;
+    assert( process != NULL );
+
+    assert( process->flags & PROCESS_FLAG_TRACED );
+
+    process_debug_stop( process );
+
+    sig = heapmm_alloc( sizeof(struct process_debug_sig ) );
+
+    if ( !sig ) {
+        printf( CON_ERROR, "Could not allocate debug signal log entry" );
+        return ENOMEM;
+    }
+
+    memset( sig, 0, sizeof( struct process_debug_sig ) );
+
+    sig->task   = task;
+    sig->signal = signal;
+    sig->info   = info;
+
+    llist_add_end(&process->sig_queue, (llist_t *) sig);
+
+    semaphore_up( &process->sig_queue_sem );
+
+    return 0;
+
+}
+
+int process_debug_attach(process_info_t *process)
+{
+
+            assert( process != NULL );
+            assert( process != current_process );
+    if ( process->flags & PROCESS_FLAG_TRACED )
+        return EBUSY;
+
+    semaphore_init( &process->sig_queue_sem );
+    llist_create( &process->sig_queue );
+    process->flags |= PROCESS_FLAG_TRACED;
+
+    return 0;
+}
+
+void process_deliver_signal( process_info_t *proc,
+                             struct process_debug_sig *sig )
+{
+    if ( sig->task ) {
+        thread_send_signal( sig->task, -sig->signal, sig->info );
+    } else {
+        process_send_signal( proc, -sig->signal, sig->info );
+    }
+}
+
+void process_debug_detach(process_info_t *process)
+{
+    llist_t *entry, *next;
+    struct process_debug_sig *sig;
+    if ( ~process->flags & PROCESS_FLAG_TRACED )
+        return;
+    process->flags &= ~PROCESS_FLAG_TRACED;
+    for ( entry  = process->sig_queue.next, next = entry->next;
+          entry != & process->sig_queue;
+          entry = next, next = entry->next ) {
+        sig = (struct process_debug_sig *) entry;
+        process_deliver_signal( process, sig );
+        heapmm_free( sig, sizeof( struct process_debug_sig ) );
+    }
+    process_debug_start( process );
+}
+
+struct process_debug_sig *process_debug_getsig( process_info_t *process )
+{
+    int s;
+    if ( ~process->flags & PROCESS_FLAG_TRACED )
+        return NULL;
+
+    s = semaphore_ndown( &process->sig_queue_sem, 0, SCHED_WAITF_INTR );
+
+    if ( s != SCHED_WAIT_OK )
+        return NULL;
+
+    if ( process->sig_queue.next == &process->sig_queue )
+        return NULL;
+
+    return (struct process_debug_sig *) llist_remove_first(&process->sig_queue);
+}
+
 /**
  * Send a signal to a process
  */
@@ -143,6 +237,13 @@ void process_send_signal(	process_info_t *process,
 							int signal,
 							struct siginfo info )
 {
+
+    if ( signal > 0 && process->flags & PROCESS_FLAG_TRACED ) {
+        enqueue_dbg_signal( process, NULL, signal, info );
+        return;
+    } else if ( signal < 0 )
+        signal = -signal;
+
 	assert( signal >= 0 && signal < 32 );
 
 	if (signal == 0)
@@ -191,12 +292,21 @@ void thread_send_signal(	scheduler_task_t *task,
 	assert( task != NULL );
 
 	process = task->process;
+
 	assert( process != NULL );
+
+	if ( signal > 0 && process->flags & PROCESS_FLAG_TRACED ) {
+	    enqueue_dbg_signal( process, task, signal, info );
+	    return;
+	} else if ( signal < 0 )
+	    signal = -signal;
 
 	assert( signal >= 0 && signal < 32 );
 
 	if (signal == 0)
 		return;
+
+
 
 	printf( CON_TRACE, "Sending signal %i to tid %i",
 	        signal, task->tid );

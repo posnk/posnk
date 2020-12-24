@@ -33,6 +33,7 @@
 #define PROC_INO_T_SYSCALL      ( 0x007 )
 #define PROC_INO_T_MCONTEXT     ( 0x008 )
 #define PROC_INO_P_MEM          ( 0x009 )
+#define PROC_INO_P_SIG          ( 0x00A )
 
 typedef errno_t (*proc_snapopen_t) ( snap_t *snap, ino_t inode );
 typedef errno_t (*proc_custopen_t) ( inode_t *inode, stream_info_t *stream );
@@ -48,6 +49,7 @@ typedef struct proc_file {
 	uint32_t        flags;
 } proc_file_t;
 
+SVFUNC ( proc_open_sig_inode, inode_t *inode, stream_info_t *stream );
 SVFUNC ( proc_open_mem_inode, inode_t *inode, stream_info_t *stream );
 SFUNC( dirent_t *, proc_finddir, inode_t *_inode, const char * name );
 SFUNC(snap_t *, proc_open_snap, ino_t inode );

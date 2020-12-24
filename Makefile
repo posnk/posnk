@@ -271,6 +271,7 @@ install_h:
 	mkdir -p $(HEADERDIR)linux
 	install include/crt/linux/input.h  $(HEADERDIR)linux/input.h
 	install include/crt/sys/machine/$(ARCH)/mcontext.h $(HEADERDIR)sys/mcontext.h
+	install include/crt/sys/procfs.h $(HEADERDIR)sys/procfs.h
 
 #test_heapmm: $(OBJS) tests/test_heapmm.o
 #	$(CC) $(CFLAGS) $(INCLUDES) -o test_heapmm $(OBJS) tests/test_heapmm.o $(LFLAGS) $(LIBS)

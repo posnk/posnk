@@ -36,6 +36,7 @@ typedef struct task scheduler_task_t;
 #define TASK_STATE_INTERRUPT    (1 << 6)
 #define TASK_STATE_INTERRUPTED  (1 << 8)
 #define TASK_STATE_TIMED_OUT    (1 << 9)
+#define TASK_STATE_DEBUG_STOP   (1 << 10)
 
 #define SCHED_WAIT_OK           (0)
 #define SCHED_WAIT_INTR         (-2)
@@ -120,6 +121,10 @@ int scheduler_init_task(scheduler_task_t *new_task);
 void scheduler_reown_task( scheduler_task_t *task, process_info_t *process );
 
 void scheduler_switch_task(scheduler_task_t *new_task);
+
+void scheduler_debug_start_task( scheduler_task_t *task );
+
+void scheduler_debug_stop_task( scheduler_task_t *task );
 
 void scheduler_stop_task( scheduler_task_t *task );
 

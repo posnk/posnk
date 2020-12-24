@@ -23,6 +23,7 @@ errno_t proc_process_open ( snap_t *snap, ino_t inode ) {
 	snap_appenddir( snap, "name" , PROC_INODE( pid, PROC_INO_P_NAME ));
 	snap_appenddir( snap, "state", PROC_INODE( pid, PROC_INO_P_STATE ));
     snap_appenddir( snap, "mem",   PROC_INODE( pid, PROC_INO_P_MEM));
+    snap_appenddir( snap, "sig",   PROC_INODE( pid, PROC_INO_P_SIG));
 	return 0;
 }
 
