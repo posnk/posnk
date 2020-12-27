@@ -38,9 +38,8 @@ struct tty_info {
 	winsize_t	 win_size;
 	int		 	 ref_count;
 
-	char		*line_buffer;
+	char		 line_buffer[ CONFIG_TTY_BUFFER ];
 	size_t		 line_buffer_pos;
-	size_t		 line_buffer_size;
 	
 	llist_t		 fds;
 

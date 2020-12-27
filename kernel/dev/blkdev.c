@@ -1,5 +1,5 @@
 /**
- * @file kernel/blkdev.c
+ * @file kernel/dev/blkdev.c
  *
  * Part of P-OS kernel.
  *

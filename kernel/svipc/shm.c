@@ -1,5 +1,5 @@
 /**
- * @file kernel/shm.c
+ * @file kernel/svipc/shm.c
  * 
  * @brief Implements SystemV shared memory IPC
  *

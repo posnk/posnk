@@ -139,7 +139,7 @@ int evdev_ioctl(dev_t device, __attribute__((__unused__)) int fd,
 	return 0;
 }
 
-tty_ops_t evdev_ops = {
+char_ops_t evdev_ops = {
 	.open = &evdev_open,
 	.close = &evdev_close,
 	.read = &evdev_read,

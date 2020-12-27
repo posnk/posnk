@@ -74,13 +74,13 @@ int blkcache_free( blkcache_cache_t *cache );
  */
 
 blkcache_entry_t *blkcache_find( blkcache_cache_t *cache, aoff_t offset );
+
 /**
  * blkcache_bump - Notify the cache of the usage of a block
  *
  * @param cache The cache to operate on
- * @param block The block that was used
+ * @param entry The block that was used
  */
-
 void blkcache_bump( blkcache_cache_t *cache, blkcache_entry_t *entry );
 
 blkcache_entry_t *blkcache_get_dirty( blkcache_cache_t *cache );
@@ -92,7 +92,6 @@ blkcache_entry_t *blkcache_get_dirty( blkcache_cache_t *cache );
  *
  * @return The block to be discarded next
  */
-
 blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache );
 
 /**
@@ -104,9 +103,8 @@ blkcache_entry_t *blkcache_get_discard_candidate( blkcache_cache_t *cache );
  *
  * @return The block that was requested, or NULL incase the cache was full and
  *	the block that was to be removed was dirty.
- * @error 2^32-1 is returned if there was not enough memory to add the block
+ * @exception 2^32-1 is returned if there was not enough memory to add the block
  */
-
 blkcache_entry_t *blkcache_get( blkcache_cache_t *cache, aoff_t offset );
 
 #endif

@@ -150,7 +150,7 @@ int omapfb_unmmap(
 	return 0;
 }
 
-tty_ops_t omapfb_ops = {
+char_ops_t omapfb_ops = {
 	&omapfb_open,
 	&omapfb_close,
 	&omapfb_write,

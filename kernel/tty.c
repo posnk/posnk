@@ -5,8 +5,7 @@
  *
  * Written by Peter Bosch <peterbosc@gmail.com>
  *
- * Changelog:
- * 08-05-2014 - Created
+ * @{
  */
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -28,9 +27,8 @@
 #include "kernel/device.h"
 #include "config.h"
 
-tty_info_t ***tty_list;
-tty_ops_t *tty_operations;
-
+tty_info_t *tty_list [256];
+int         tty_count[256];
 /*
 
 	if (S_ISCHR(inode->mode) && !(flags & O_NOCTTY)) {
@@ -61,46 +59,8 @@ void tty_reset_termios(tty_info_t *tty)
 	tty->win_size.ws_row = 25;
 }
 
-void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out_t write_out)
-{
-	dev_t c;
-	tty_info_t *tty;
-	char_dev_t *dev;
-	tty_list[major] = heapmm_alloc(sizeof(tty_info_t *) * 256);
-	for (c = 0; c < (dev_t) minor_count; c++) {
-		tty = heapmm_alloc(sizeof(tty_info_t));
-		tty->pipe_in = pipe_create();
-		pipe_open_read(tty->pipe_in);
-		pipe_open_write(tty->pipe_in);
-		tty->device = MAKEDEV(major,c);
-		tty->line_buffer = heapmm_alloc(CONFIG_TTY_BUFFER);
-		tty->line_buffer_pos = 0;
-		tty->line_buffer_size = CONFIG_TTY_BUFFER;
-		tty->ref_count = 0;
-		tty->fg_pgid = 0;
-		tty->ct_pid = 0;
-		tty->write_out = write_out;
-		tty_reset_termios(tty);
-		tty_list[major][c] = tty;
-		llist_create( &tty->fds );
-	}
-	dev = heapmm_alloc(sizeof(char_dev_t));
-	dev->major = major;
-	dev->name = name;
-	dev->ops = tty_operations;
-	device_char_register(dev);
-}
 
-tty_info_t *tty_get(dev_t device)
-{
-	dev_t major = MAJOR(device);
-	dev_t minor = MINOR(device);
-	tty_info_t *ttyi = tty_list[major][minor];
-	return ttyi;
-}
-
-
-int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, options
+int tty_open( dev_t device, stream_ptr_t *fd, int options )			//device, fd, options
 {
 	tty_fd_t *fdp;
 	tty_info_t *tty = tty_get(device);
@@ -127,7 +87,6 @@ int tty_open(dev_t device, stream_ptr_t *fd, int options)			//device, fd, option
 int tty_dup(dev_t device, stream_ptr_t *fd)			//device, fd, options
 {
 	return tty_open( device, fd, O_NOCTTY );
-
 }
 
 int tty_close(dev_t device, stream_ptr_t *fd)
@@ -188,7 +147,7 @@ void tty_flush_line_buffer(tty_info_t *tty){
 
 void tty_buf_line_char(tty_info_t *tty, char c)
 {
-	if (tty->line_buffer_pos == tty->line_buffer_size)
+	if ( tty->line_buffer_pos == CONFIG_TTY_BUFFER )
 		tty_flush_line_buffer(tty);
 	tty->line_buffer[tty->line_buffer_pos++] = c;
 }
@@ -197,7 +156,7 @@ void tty_output_char(dev_t device, char c)
 {
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
-	if (tty->termios.c_oflag & OPOST) { //TODO: Flow control
+	if ( tty->termios.c_oflag & OPOST ) { //TODO: Flow control
 		if ((tty->termios.c_oflag & ONLCR) && (c == '\n')) {
 			tty->write_out(device, '\r');
 
@@ -207,6 +166,7 @@ void tty_output_char(dev_t device, char c)
 	} else
 		tty->write_out(device, c);
 }
+
 void tty_input_str(dev_t device, const char *c)
 {
 	tty_info_t *tty = tty_get(device);
@@ -219,58 +179,79 @@ void tty_input_str(dev_t device, const char *c)
     }
 }
 
+static void echo_char ( tty_info_t *tty, char c )
+{
+    aoff_t a;
+
+    if (c == tty->termios.c_cc[VERASE] && tty->termios.c_lflag & ECHOE) {
+        if (tty->line_buffer_pos) {
+            tty->write_out( tty->device, '\b' );
+            tty->write_out( tty->device, ' ' );
+            tty->write_out( tty->device, '\b' );
+        }
+    } else if (c == tty->termios.c_cc[VKILL] &&
+               tty->termios.c_lflag & ECHOK) {
+        for (a = 0; a < tty->line_buffer_pos; a++) {
+            tty->write_out( tty->device, '\b' );
+            tty->write_out( tty->device, ' ' );
+            tty->write_out( tty->device, '\b' );
+        }
+    } else if ( tty->termios.c_lflag & ECHO ||
+               (c == '\n' && (tty->termios.c_lflag & ECHONL)))
+        tty_output_char( tty->device, c );
+}
+
+static void canon_input_char( tty_info_t *tty, char c )
+{
+    struct siginfo info;
+    memset( &info, 0, sizeof( struct siginfo ) );
+
+    /* Strip high bit if ISTRIP set */
+    if ( tty->termios.c_iflag & ISTRIP )
+        c &= 0x7F;
+
+    /* Translate newlines */
+    if ( (tty->termios.c_iflag & INLCR) && (c == '\n') )
+        c = '\r';
+    else if ( (tty->termios.c_iflag & ICRNL) && (c == '\r') )
+        c = '\n';
+
+    /* Drop CR if IGNCR is set */
+    if ( (tty->termios.c_iflag & IGNCR) && (c == '\r') )
+        return;
+
+    /* Echo characters */
+    echo_char( tty, c );
+
+    if ( c == '\n' || c == tty->termios.c_cc[VEOL] ) {
+        tty_buf_line_char( tty, c );
+        tty_flush_line_buffer( tty );
+    } else if ( c == tty->termios.c_cc[VERASE] ) {
+        if ( tty->line_buffer_pos )
+            tty->line_buffer_pos--;
+    } else if ( c == tty->termios.c_cc[VKILL] ) {
+        tty->line_buffer_pos = 0;
+    } else if ( tty->termios.c_lflag & ISIG ) {
+        if ( c == tty->termios.c_cc[VQUIT] ) {
+            process_signal_pgroup( tty->fg_pgid, SIGQUIT, info );
+        } else if ( c == tty->termios.c_cc[VINTR] ) {
+            process_signal_pgroup( tty->fg_pgid, SIGINT, info );
+        } else if ( c == tty->termios.c_cc[VSUSP] ) {
+            process_signal_pgroup( tty->fg_pgid, SIGTSTP, info );
+        } else
+            tty_buf_line_char(tty, c);
+    } else {
+        tty_buf_line_char(tty, c);
+    }
+}
+
 void tty_input_char(dev_t device, char c)
 {
-	struct siginfo info;
-	aoff_t a;
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
-	memset( &info, 0, sizeof( struct siginfo ) );
 	if (tty->termios.c_lflag & ICANON) { //TODO: Flow control
-		if ((tty->termios.c_iflag & INLCR) && (c == '\n'))
-			c = '\r';
-		else if ((tty->termios.c_iflag & ICRNL) && (c == '\r'))
-			c = '\n';
-		if ((tty->termios.c_iflag & IGNCR) && (c == '\r'))
-			return;
-		if ((tty->termios.c_iflag & ISTRIP))
-			c &= 0x7F;
-		if ((c == tty->termios.c_cc[VERASE]) && (tty->termios.c_lflag & ECHOE)) {
-			if ((tty->line_buffer_pos)) {
-				tty->write_out(device, '\b');
-				tty->write_out(device, ' ');
-				tty->write_out(device, '\b');
-			}
-		} else if ((c == tty->termios.c_cc[VKILL]) && (tty->termios.c_lflag & ECHOK)) {
-			for (a = 0; a < tty->line_buffer_pos; a++) {
-				tty->write_out(device, '\b');
-				tty->write_out(device, ' ');
-				tty->write_out(device, '\b');
-			}
-		} else if ((tty->termios.c_lflag & ECHO) ||
-		    ((c == '\n') && (tty->termios.c_lflag & ECHONL)))
-			tty_output_char(device, c);
+        canon_input_char( tty, c );
 
-		if ((c == '\n') || (c == tty->termios.c_cc[VEOL])) {
-			tty_buf_line_char(tty, c);
-			tty_flush_line_buffer(tty);
-		} else if (c == tty->termios.c_cc[VERASE]) {
-			if (tty->line_buffer_pos)
-				tty->line_buffer_pos--;
-		} else if (c == tty->termios.c_cc[VKILL]) {
-			tty->line_buffer_pos = 0;
-		} else if (tty->termios.c_lflag & ISIG) {
-			if (c == tty->termios.c_cc[VQUIT]) {
-				process_signal_pgroup( tty->fg_pgid, SIGQUIT, info );
-			} else if (c == tty->termios.c_cc[VINTR]) {
-				process_signal_pgroup( tty->fg_pgid, SIGINT, info );
-			} else if (c == tty->termios.c_cc[VSUSP]) {
-				process_signal_pgroup( tty->fg_pgid, SIGTSTP, info );
-			} else
-				tty_buf_line_char(tty, c);
-		} else {
-			tty_buf_line_char(tty, c);
-		}
 	} else if (tty->termios.c_lflag & ECHO) {
 		tty->write_out(device, c);
 		tty_buf_out_char(tty, c);
@@ -289,25 +270,54 @@ int tty_write(dev_t device, const void *buf, aoff_t count, aoff_t *write_size, _
 	return 0;
 }
 
-int tty_read(dev_t device, void *buf, aoff_t count, aoff_t *read_size, int non_block)	//device, buf, count, rd_size, non_block
+/**
+ * @brief Read data from TTY device
+ *
+ * @param device The device to read from
+ * @param buffer The buffer to read the data to
+ * @oaram count The number of bytes to read
+ * @param read_size Output parameter for the number of bytes actually read
+ * @param non_block If true, the call will not block when no data is available
+ * @return An error code on failure, 0 on success
+ * @exception EINVAL The device is not suitable for reading
+ */
+int tty_read(
+        dev_t device,
+        void *buf,
+        aoff_t count,
+        aoff_t *read_size,
+        int non_block)	//device, buf, count, rd_size, non_block
 {
 	tty_info_t *tty = tty_get(device);
-	assert(tty);
-	return pipe_read(tty->pipe_in, buf, count, read_size, non_block);
+	assert( tty != NULL );
+
+	/* Read directly for the input pipe. */
+	return pipe_read( tty->pipe_in, buf, count, read_size, non_block );
 }
 
 short int tty_poll(dev_t device, short int events ){
 	tty_info_t *tty = tty_get(device);
-	assert(tty);
+	assert( tty != NULL );
 	//TODO: Implement POLLHUP
-	return pipe_poll(tty->pipe_in,events) & POLLIN;
+	return pipe_poll( tty->pipe_in, events ) & POLLIN;
 }
 
-int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int arg)			//device, fd, func, arg
+int tty_ioctl(
+        dev_t device,
+        __attribute__((__unused__)) int fd,
+        int func,
+        int arg )
 {
 	struct siginfo info;
-	tty_info_t *tty = tty_get(device);
-	assert(tty);
+	tty_info_t *tty;
+
+	/* Get TTY to operate on */
+	tty = tty_get(device);
+	if ( tty == NULL ) {
+	    syscall_errno = ENODEV;
+	    return -1;
+	}
+
 	memset( &info, 0, sizeof( struct siginfo ) );
 	switch(func) {
 		case TCGETS:
@@ -316,6 +326,7 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 				return -1;
 			}
 			return 0;
+
 		case TCSETSW://For now, we don't have an output buffer...
 		case TCSETSF://Or an input buffer for that matter
 		case TCSETS:
@@ -332,6 +343,7 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 				return -1;
 			}
 			return 0;
+
 		case TIOCSPGRP:
 			if (!copy_user_to_kern((void *) arg, &(tty->fg_pgid), sizeof(pid_t))){
 				syscall_errno = EFAULT;
@@ -340,14 +352,15 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 			return 0;
 
 		case TIOCSCTTY:
-			if ((current_process->pid == current_process->sid) && ((current_process->ctty == device) || !current_process->ctty)) {
+			if ( (current_process->pid == current_process->sid) &&
+			   ((current_process->ctty == device) || !current_process->ctty)) {
 				current_process->ctty = device;
 				tty->ct_pid = current_process->pid;
 				tty->fg_pgid = current_process->pgid;
 			}
 			return 0;
 		case TIOCNOTTY:
-			if (current_process->ctty != device)
+			if ( current_process->ctty != device )
 				return 0;
 			current_process->ctty = 0;
 			if (current_process->pid == current_process->sid) {
@@ -356,6 +369,7 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 				//TODO: Strip pgrp of ctty
 			}
 			return 0;
+
 		case TIOCGWINSZ:
 			if (!copy_kern_to_user(&(tty->win_size), (void *) arg, sizeof(winsize_t))){
 				syscall_errno = EFAULT;
@@ -377,15 +391,79 @@ int tty_ioctl(dev_t device, __attribute__((__unused__)) int fd, int func, int ar
 	}
 }
 
+static char_ops_t tty_ops = {
+        .open_new  = tty_open,
+        .close_new = tty_close,
+        .ioctl     = tty_ioctl,
+        .read      = tty_read,
+        .write     = tty_write,
+        .poll      = tty_poll,
+        .dup       = tty_dup
+};
+
 void tty_init(){
-	tty_list = heapmm_alloc(sizeof(tty_info_t **) * 256);
-	tty_operations = heapmm_alloc(sizeof(tty_ops_t));
-	tty_operations->open = NULL;
-	tty_operations->open_new = &tty_open;
-	tty_operations->close_new = &tty_close;
-	tty_operations->ioctl = &tty_ioctl;
-	tty_operations->read = &tty_read;
-	tty_operations->write = &tty_write;
-	tty_operations->poll = &tty_poll;
-	tty_operations->dup = &tty_dup;
 }
+
+tty_info_t *tty_get(dev_t device)
+{
+    dev_t major = MAJOR(device);
+    dev_t minor = MINOR(device);
+    if ( tty_count[ major ] <= minor )
+        return NULL;
+    return &tty_list[major][minor];
+}
+
+void tty_register_driver( char *name, dev_t major, int minor_count, tty_write_out_t write_out )
+{
+    dev_t c;
+    tty_info_t *tty;
+    char_dev_t *dev;
+
+    /* Allocate minor devices */
+    tty_count[ major ] = minor_count;
+    tty_list [ major ] = heapmm_alloc( sizeof( tty_info_t ) * minor_count );
+    assert( tty_list[major] != NULL );
+    memset( tty_list[major], 0, sizeof( tty_info_t ) * minor_count );
+
+    for (c = 0; c < (dev_t) minor_count; c++) {
+        tty = &tty_list[ major ][ c ];
+
+        /* Create the pipe providing the TTY input buffer */
+        tty->pipe_in = pipe_create();
+        pipe_open_read( tty->pipe_in );
+        pipe_open_write( tty->pipe_in );
+
+        /* Set the device number */
+        tty->device = MAKEDEV( major, c );
+
+        /* Start with an empty input buffer */
+        tty->line_buffer_pos = 0;
+
+        /* Keep track of open handles */
+        tty->ref_count = 0;
+
+        /* Initialize task management info */
+        tty->fg_pgid = 0;
+        tty->ct_pid = 0;
+
+        /* Set character output callback */
+        tty->write_out = write_out;
+
+        /* Initialize TTY settings */
+        tty_reset_termios(tty);
+
+        llist_create( &tty->fds );
+    }
+
+    dev = heapmm_alloc(sizeof(char_dev_t));
+    assert( dev != NULL );
+
+    /* Setup character device */
+    dev->major = major;
+    dev->name = name;
+    dev->ops = &tty_ops;
+    device_char_register(dev);
+}
+/**
+@}
+ */

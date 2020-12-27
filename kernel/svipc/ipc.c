@@ -1,5 +1,5 @@
 /**
- * @file kernel/ipc.c
+ * @file kernel/svipc/ipc.c
  *
  * @brief Implements functionality common to all forms of SysV IPC
  * 

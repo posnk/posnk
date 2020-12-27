@@ -188,7 +188,7 @@ int mbfb_unmmap(__attribute__((__unused__)) dev_t device, __attribute__((__unuse
 	return 0;
 }
 
-tty_ops_t mbfb_ops = {
+char_ops_t mbfb_ops = {
 	.open = mbfb_open,
 	.close = mbfb_close,
 	.write = mbfb_write,

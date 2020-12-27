@@ -135,7 +135,7 @@ int pseudo_unmmap(
 }
 
 
-tty_ops_t pseudo_ops = {
+char_ops_t pseudo_ops = {
 	.open = &pseudo_open,
 	.close = &pseudo_close,
 	.read = &pseudo_read,

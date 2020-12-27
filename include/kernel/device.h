@@ -52,10 +52,10 @@ typedef struct blk_dev	blk_dev_t;
 
 /**
  * @brief Contains callbacks for all character device driver functions
- * @see tty_ops
+ * @see char_ops
  */
 
-typedef struct tty_ops	tty_ops_t;
+typedef struct char_ops	char_ops_t;
 
 /**
  * @brief Contains callbacks for all block device driver functions
@@ -70,7 +70,7 @@ typedef struct blk_ops	blk_ops_t;
  * Character device drivers use an id that consists of two parts, the
  * major id which selects the driver instance from a table and the minor id
  * which selects the device handled by the driver. The driver's interface is
- * exposed through a table of callbacks passed in tty_ops
+ * exposed through a table of callbacks passed in char_ops
  */
 
 struct char_dev {
@@ -79,7 +79,7 @@ struct char_dev {
 	/** The major part of the device id this instance handles */
 	dev_t			  major;
 	/** A pointer to the callback table containing the driver functions */
-	tty_ops_t		 *ops;
+	char_ops_t		 *ops;
 };
 
 /**
@@ -92,7 +92,7 @@ struct char_dev {
  * implementation see char_dev
  */
 
-struct tty_ops {
+struct char_ops {
 
 	/**
 	 * @brief Hook function called on device open
@@ -136,7 +136,7 @@ struct tty_ops {
 	 * Stub returning EINVAL
 	 * @param device The device to write to
 	 * @param buffer The buffer containing the data to write
-	 * @oaram count The number of bytes to write
+	 * @param count The number of bytes to write
 	 * @param write_size Output parameter for the number of bytes actually written
  	 * @param non_block If true, the call will not block when no room is available
 	 * @return An error code on failure, 0 on success
@@ -154,7 +154,7 @@ struct tty_ops {
 	 * Stub returning EINVAL
 	 * @param device The device to read from
 	 * @param buffer The buffer to read the data to
-	 * @oaram count The number of bytes to read
+	 * @param count The number of bytes to read
 	 * @param read_size Output parameter for the number of bytes actually read
  	 * @param non_block If true, the call will not block when no data is available
 	 * @return An error code on failure, 0 on success

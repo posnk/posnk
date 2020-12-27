@@ -23,7 +23,7 @@ void cmdline_parse();
 
 void wait_int();
 
-void halt();
+void __attribute__((noreturn)) halt();
  
 void shutdown();
 

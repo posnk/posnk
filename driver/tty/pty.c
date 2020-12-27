@@ -76,7 +76,7 @@ int pty_ioctl(__attribute__((__unused__)) dev_t device, __attribute__((__unused_
 	}
 }
 
-tty_ops_t pty_ops = {
+char_ops_t pty_ops = {
 	.open = &pty_open,
 	.close = &pty_close,
 	.write = &pty_write,

@@ -121,8 +121,7 @@ SVFUNC( vfs_reg_mount, fs_device_t *device, inode_t *mountpoint)
 
 /**
  * @brief Unregisters a mounted filesystem
- * @param device The filesystem that was mounted
- * @param mountpoint The inode it was mounted on.
+ * @param mount The filesystem that was mounted
  */
 void vfs_unreg_mount( fs_mount_t *mount )
 {

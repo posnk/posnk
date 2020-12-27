@@ -573,6 +573,7 @@ void  heapmm_free(void *address, size_t size)
 /**
  * Initializes the heap memory manager
  * @param heap_start The start of the heap
+ * @param size       The initial size of the heap
  */
 void  heapmm_init(void *heap_start, size_t size)
 {

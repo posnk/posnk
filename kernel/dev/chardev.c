@@ -1,5 +1,5 @@
 /**
- * @file kernel/chardev.c
+ * @file kernel/dev/chardev.c
  *
  * Part of P-OS kernel.
  *

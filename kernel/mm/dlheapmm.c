@@ -35,6 +35,7 @@ void       	*heapmm_top_of_heap;
 /**
  * Initializes the heap memory manager
  * @param heap_start The start of the heap
+ * @param size       The initial size of the heap
  */
 void  heapmm_init(void *heap_start, size_t size)
 {
