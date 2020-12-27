@@ -245,6 +245,10 @@ void vgacon_write_crtc_register(char id,char val){
 	i386_outb(0x3D5,val);
 }
 
+static tty_ops_t ops = {
+        .write_out = vgacon_putc
+};
+
 void vgacon_init(){
 	/*vgacon_vc.attrib = 0x07;
 	vgacon_vc.cursor_x = 0;
@@ -253,5 +257,5 @@ void vgacon_init(){
 	vgacon_vc.page_id =0;
 	vgacon_vc.escape = 0;
 	vgacon_vc.video_buffer = (vgacon_screen_character_t *)( ((uint32_t)vgacon_get_text_video_memory()));*/
-	tty_register_driver("vgacon", 12, 1, &vgacon_putc);
+	tty_register_driver("vgacon", 12, 1, &ops);
 }

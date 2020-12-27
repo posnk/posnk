@@ -19,7 +19,7 @@
 #include "util/llist.h"
 #include "kernel/process.h"
 #include "kernel/streams.h"
-
+typedef struct tty_ops  tty_ops_t;
 typedef struct tty_info tty_info_t;
 typedef int (*tty_write_out_t)(dev_t, char);
 typedef struct winsize winsize_t;
@@ -29,6 +29,13 @@ typedef struct {
 	process_info_t	*proc;
 	stream_ptr_t	*ptr;
 } tty_fd_t;
+
+struct tty_ops {
+    void             (*open) ( tty_info_t *tty );
+    void             (*close)( tty_info_t *tty );
+    void             (*termios_changed)( tty_info_t *tty );
+    tty_write_out_t  write_out;
+};
 
 struct tty_info {
 	dev_t		 device;
@@ -44,15 +51,13 @@ struct tty_info {
 	llist_t		 fds;
 
 	pipe_info_t	*pipe_in;
-	tty_write_out_t	 write_out;
-	
+	tty_ops_t   *ops;
 };
 
-void tty_register_driver(char *name, dev_t major, int minor_count, tty_write_out_t);
+void tty_register_driver(char *name, dev_t major, int minor_count, tty_ops_t *ops);
 
 void tty_input_char(dev_t device, char c);
 void tty_input_str(dev_t device, const char *c);
-
 
 void tty_init();
 

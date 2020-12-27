@@ -37,8 +37,9 @@ void sercon_puts(
    	}
 }
 
-
-
+static tty_ops_t ops = {
+        .write_out = sercon_putc
+};
 
 void sercon_init() {
    i386_outb(PORT + 1, 0x01);    // Disable all interrupts
@@ -48,7 +49,7 @@ void sercon_init() {
    i386_outb(PORT + 3, 0x03);    // 8 bits, no parity, one stop bit
    i386_outb(PORT + 2, 0xC7);    // Enable FIFO, clear them, with 14-byte threshold
    i386_outb(PORT + 4, 0x0B);    // IRQs enabled, RTS/DSR set
-   tty_register_driver("sercon", 14, 1, &sercon_putc);
+   tty_register_driver( "sercon", 14, 1, &ops );
    con_register_sink_s( "sercon", 0, sercon_puts );
 
 }

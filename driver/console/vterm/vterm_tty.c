@@ -75,6 +75,10 @@ void vterm_con_puts(
 	}
 }
 
+static tty_ops_t ops = {
+        .write_out = vterm_putc
+};
+
 void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int cols)
 {
 	dev_t minor;
@@ -84,7 +88,7 @@ void vterm_tty_setup(char *name, dev_t major, int minor_count, int rows, int col
 		vterm_init(&(vterm_minor_terms[minor]), 0, rows, cols);
 		//vterm_minor_terms[minor].ttyname   = "console";
 	}
-	tty_register_driver(name, major, minor_count, &vterm_putc);
+	tty_register_driver(name, major, minor_count, &ops);
 	for (minor = 0; minor < (dev_t) minor_count; minor++) {
 		tty_get(MAKEDEV(major, minor))->win_size.ws_col = cols;
 		tty_get(MAKEDEV(major, minor))->win_size.ws_row = rows;

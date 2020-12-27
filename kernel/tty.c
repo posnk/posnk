@@ -113,32 +113,41 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 	return 0;
 }
 
-void tty_buf_out_str(tty_info_t *tty, const char *c)
+static void tty_notify_poll( tty_info_t *tty )
+{
+    tty_fd_t *fdp;
+    llist_t *_fdp;
+    for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
+                assert(_fdp != NULL );
+        fdp = ( tty_fd_t *) _fdp;
+        stream_notify_poll( fdp->ptr->info );
+    }
+}
+
+/**
+ * Add string to input pipe
+ */
+void tty_queue_input_str( tty_info_t *tty, const char *c)
 {
 	aoff_t w;
-	tty_fd_t *fdp;
-	llist_t *_fdp;
 	pipe_write(tty->pipe_in, c, strlen(c), &w, 1);
-	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
-		assert(_fdp != NULL );
-		fdp = ( tty_fd_t *) _fdp;
-		stream_notify_poll( fdp->ptr->info );
-	}
+	tty_notify_poll( tty );
 }
 
-void tty_buf_out_char(tty_info_t *tty, char c)
+/**
+ * Add character to input pipe
+ */
+void tty_queue_input_char( tty_info_t *tty, char c)
 {
 	aoff_t w;
-	tty_fd_t *fdp;
-	llist_t *_fdp;
 	pipe_write(tty->pipe_in, &c, 1, &w, 1);
-	for ( _fdp = tty->fds.next; _fdp !=& tty->fds; _fdp = _fdp->next ){
-		assert(_fdp != NULL );
-		fdp = ( tty_fd_t *) _fdp;
-		stream_notify_poll( fdp->ptr->info );
-	}
+    tty_notify_poll( tty );
 }
 
+/**
+ * Flushes the input line buffer into the input pipe
+ * @param tty
+ */
 void tty_flush_line_buffer(tty_info_t *tty){
 	aoff_t w;
 	pipe_write(tty->pipe_in, tty->line_buffer, tty->line_buffer_pos, &w, 1);
@@ -152,22 +161,22 @@ void tty_buf_line_char(tty_info_t *tty, char c)
 	tty->line_buffer[tty->line_buffer_pos++] = c;
 }
 
-void tty_output_char(dev_t device, char c)
+void tty_output_char( dev_t device, char c )
 {
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
 	if ( tty->termios.c_oflag & OPOST ) { //TODO: Flow control
 		if ((tty->termios.c_oflag & ONLCR) && (c == '\n')) {
-			tty->write_out(device, '\r');
+			tty->ops->write_out(device, '\r');
 
 		} else if ((tty->termios.c_oflag & OCRNL) && (c == '\r'))
 			c = '\n';
-		tty->write_out(device, c);
+		tty->ops->write_out(device, c);
 	} else
-		tty->write_out(device, c);
+		tty->ops->write_out(device, c);
 }
 
-void tty_input_str(dev_t device, const char *c)
+void tty_input_str( dev_t device, const char *c )
 {
 	tty_info_t *tty = tty_get(device);
 	assert(tty);
@@ -175,26 +184,25 @@ void tty_input_str(dev_t device, const char *c)
         while (*c)
             tty_input_char( device, *c++ );
     } else {
-        tty_buf_out_str( tty, c );
+        tty_queue_input_str( tty, c );
     }
 }
 
 static void echo_char ( tty_info_t *tty, char c )
 {
     aoff_t a;
-
     if (c == tty->termios.c_cc[VERASE] && tty->termios.c_lflag & ECHOE) {
         if (tty->line_buffer_pos) {
-            tty->write_out( tty->device, '\b' );
-            tty->write_out( tty->device, ' ' );
-            tty->write_out( tty->device, '\b' );
+            tty->ops->write_out( tty->device, '\b' );
+            tty->ops->write_out( tty->device, ' ' );
+            tty->ops->write_out( tty->device, '\b' );
         }
     } else if (c == tty->termios.c_cc[VKILL] &&
                tty->termios.c_lflag & ECHOK) {
         for (a = 0; a < tty->line_buffer_pos; a++) {
-            tty->write_out( tty->device, '\b' );
-            tty->write_out( tty->device, ' ' );
-            tty->write_out( tty->device, '\b' );
+            tty->ops->write_out( tty->device, '\b' );
+            tty->ops->write_out( tty->device, ' ' );
+            tty->ops->write_out( tty->device, '\b' );
         }
     } else if ( tty->termios.c_lflag & ECHO ||
                (c == '\n' && (tty->termios.c_lflag & ECHONL)))
@@ -223,6 +231,7 @@ static void canon_input_char( tty_info_t *tty, char c )
     /* Echo characters */
     echo_char( tty, c );
 
+    /* Handle control characters */
     if ( c == '\n' || c == tty->termios.c_cc[VEOL] ) {
         tty_buf_line_char( tty, c );
         tty_flush_line_buffer( tty );
@@ -252,11 +261,11 @@ void tty_input_char(dev_t device, char c)
 	if (tty->termios.c_lflag & ICANON) { //TODO: Flow control
         canon_input_char( tty, c );
 
-	} else if (tty->termios.c_lflag & ECHO) {
-		tty->write_out(device, c);
-		tty_buf_out_char(tty, c);
 	} else {
-		tty_buf_out_char(tty, c);
+	    if (tty->termios.c_lflag & ECHO) {
+	        tty->ops->write_out(device, c);
+	    }
+        tty_queue_input_char( tty, c );
 	}
 }
 
@@ -413,7 +422,7 @@ tty_info_t *tty_get(dev_t device)
     return &tty_list[major][minor];
 }
 
-void tty_register_driver( char *name, dev_t major, int minor_count, tty_write_out_t write_out )
+void tty_register_driver( char *name, dev_t major, int minor_count, tty_ops_t *ops )
 {
     dev_t c;
     tty_info_t *tty;
@@ -447,7 +456,7 @@ void tty_register_driver( char *name, dev_t major, int minor_count, tty_write_ou
         tty->ct_pid = 0;
 
         /* Set character output callback */
-        tty->write_out = write_out;
+        tty->ops = ops;
 
         /* Initialize TTY settings */
         tty_reset_termios(tty);

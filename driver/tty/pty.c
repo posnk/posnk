@@ -90,6 +90,10 @@ char_dev_t pty_desc = {
 	&pty_ops
 };
 
+static tty_ops_t ops = {
+        .write_out = pty_putc
+};
+
 void pty_init()
 {	
 	int m;
@@ -99,5 +103,5 @@ void pty_init()
 		pipe_open_write(ptys[m]);
 	}
 	device_char_register(&pty_desc);
-	tty_register_driver("pty slave", 0x78, 255, &pty_putc);
+	tty_register_driver("pty slave", 0x78, 255, &ops);
 }
