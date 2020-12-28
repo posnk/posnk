@@ -80,6 +80,10 @@ int tty_open( dev_t device, stream_ptr_t *fd, int options )			//device, fd, opti
 			tty->fg_pgid = current_process->pgid;
 		}
 	}
+
+	if ( tty->ops->open )
+        tty->ops->open( tty );
+
 	return 0;
 
 }
@@ -106,6 +110,9 @@ int tty_close(dev_t device, stream_ptr_t *fd)
 		heapmm_free(fdp,sizeof(tty_fd_t));
 	}
 	if (!tty->ref_count) {
+	    //TODO: Fix CTTY handling
+	    if ( tty->ops->close )
+	        tty->ops->close( tty );
 		//TODO: process_strip_ctty(device);
 		if (device == current_process->ctty)
 			current_process->ctty = 0;
@@ -217,6 +224,13 @@ static void canon_input_char( tty_info_t *tty, char c )
     /* Strip high bit if ISTRIP set */
     if ( tty->termios.c_iflag & ISTRIP )
         c &= 0x7F;
+    else if ( tty->termios.c_iflag & PARMRK &&
+              ((unsigned char)c) == 0377u ) {
+        /* If parity marking is enabled, escape 0377 */
+        //XXX: This means 0377 cannot be a control char in this case
+        tty_queue_input_char( tty, 0377 );
+        tty_queue_input_char( tty, 0377 );
+    }
 
     /* Translate newlines */
     if ( (tty->termios.c_iflag & INLCR) && (c == '\n') )
@@ -268,6 +282,48 @@ void tty_input_char(dev_t device, char c)
         tty_queue_input_char( tty, c );
 	}
 }
+
+int tty_input_queue_full( dev_t device )
+{
+    tty_info_t *tty = tty_get( device );
+    return pipe_is_full( tty->pipe_in );
+}
+
+void tty_input_break( dev_t device, char c )
+{
+    tty_info_t *tty = tty_get(device);
+            assert(tty);
+    if ( tty->termios.c_iflag & IGNBRK )
+        return;
+    if ( tty->termios.c_iflag & BRKINT ) {
+        //TODO: Handle BREAK interrupt
+    } else if ( tty->termios.c_iflag & PARMRK ) {
+        tty_queue_input_char( tty, 0377 );
+        tty_queue_input_char( tty, 0000 );
+        tty_queue_input_char( tty, 0000 );
+    } else {
+        tty_queue_input_char( tty, 0000 );
+    }
+}
+
+void tty_input_error( dev_t device, char c )
+{
+    tty_info_t *tty = tty_get(device);
+    assert(tty);
+    if ( tty->termios.c_iflag & IGNPAR ) {
+
+        /* Input the character as normal
+         * (check if this should also apply to framing errors) */
+        tty_input_char( device, c );
+
+    } else if ( tty->termios.c_iflag & PARMRK ) {
+        tty_queue_input_char( tty, 0377 );
+        tty_queue_input_char( tty, 0000 );
+    } else {
+        tty_queue_input_char( tty, 0000 );
+    }
+}
+
 
 int tty_write(dev_t device, const void *buf, aoff_t count, aoff_t *write_size, __attribute__((__unused__)) int non_block) //device, buf, count, wr_size, non_block
 {
@@ -343,7 +399,8 @@ int tty_ioctl(
 				syscall_errno = EFAULT;
 				return -1;
 			}
-			//TODO: Call driver
+            if ( tty->ops->termios_changed )
+                tty->ops->termios_changed( tty );
 			return 0;
 
 		case TIOCGPGRP:

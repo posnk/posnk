@@ -90,9 +90,9 @@
 
 /* Definitions for c_*speed */
 
-#define B0	(0)
-#define B50	(1)
-#define B75	(2)
+#define B0	    (0)
+#define B50	    (1)
+#define B75	    (2)
 #define B110	(3)
 #define B134	(4)
 #define B150	(5)
@@ -106,20 +106,23 @@
 #define B9600	(13)
 #define B19200	(14)
 #define B38400	(15)
+#define B57600	(16)
+#define B115200	(17)
 
 /* Definitions for c_cflag */
 
 #define CSIZE	(3<<0)
-#define CS5	(0<<0)
-#define CS6	(1<<0)
-#define CS7	(2<<0)
-#define CS8	(3<<0)
+#define CS5     (0<<0)
+#define CS6     (1<<0)
+#define CS7     (2<<0)
+#define CS8     (3<<0)
 #define CSTOPB	(1<<2)
 #define CREAD	(1<<3)
 #define PARENB	(1<<4)
 #define PARODD	(1<<5)
 #define HUPCL	(1<<6)
 #define CLOCAL	(1<<7)
+#define CRTSCTS (1<<8)
 
 /* Definitions for c_lflag */
 

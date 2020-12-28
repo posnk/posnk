@@ -58,7 +58,9 @@ void tty_register_driver(char *name, dev_t major, int minor_count, tty_ops_t *op
 
 void tty_input_char(dev_t device, char c);
 void tty_input_str(dev_t device, const char *c);
-
+void tty_input_break( dev_t device, char c );
+void tty_input_error( dev_t device, char c );
+int tty_input_queue_full( dev_t device );
 void tty_init();
 
 tty_info_t *tty_get(dev_t device);

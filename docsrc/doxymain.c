@@ -1,4 +1,5 @@
-/** \mainpage posnk project site
+/**
+ * \mainpage posnk project site
  *
  * \section intro_sec Introduction
  *

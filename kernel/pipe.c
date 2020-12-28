@@ -90,6 +90,21 @@ short int pipe_poll( pipe_info_t *pipe, short int events )
 	return revents;
 }
 
+int pipe_remaining_space( pipe_info_t *pipe )
+{
+    return CONFIG_PIPE_BUFFER_SIZE - pipe->write_ptr;
+}
+
+int pipe_is_full( pipe_info_t *pipe )
+{
+    return pipe->write_ptr >= CONFIG_PIPE_BUFFER_SIZE;
+}
+
+int pipe_is_empty( pipe_info_t *pipe )
+{
+    return pipe->write_ptr <= pipe->read_ptr;
+}
+
 int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *write_count, int non_block)
 {
 	int s;

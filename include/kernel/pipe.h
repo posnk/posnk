@@ -48,5 +48,11 @@ int pipe_write(pipe_info_t *pipe, const void * buffer, aoff_t count, aoff_t *wri
 
 int pipe_read(pipe_info_t *pipe, void * buffer, aoff_t count, aoff_t *read_count, int non_block);
 
+int pipe_is_full( pipe_info_t *pipe );
+
+int pipe_is_empty( pipe_info_t *pipe );
+
+int pipe_remaining_space( pipe_info_t *pipe );
+
 #endif
 
